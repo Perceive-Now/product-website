@@ -1,0 +1,19 @@
+button {
+  font-size: 16px;
+}
+
+.primary-button {
+  @apply bg-primary-900 text-white hover:bg-primary-50 hover:text-primary-900 focus:bg-primary-800 focus:text-white disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed;
+}
+
+.secondary-button {
+  @apply bg-white border-2 text-primary-900 border-primary-900 hover:border-primary-600 hover:text-primary-600 focus:border-primary-900 focus:text-primary-900 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed;
+}
+
+.full-width {
+  @apply min-w-[174px];
+}
+
+.full-width .flex {
+  @apply w-full justify-center;
+}
