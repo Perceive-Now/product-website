@@ -18,6 +18,11 @@ import ChevronRight from "./chevron/right";
 import ChevronDown from "./chevron/down";
 import ChevronLeft from "./chevron/left";
 
+// Social
+import TwitterIcon from "./social/twitter";
+import FacebookIcon from "./social/facebook";
+import InstagramIcon from "./social/instagram";
+
 export {
   // Sidenav icons
   DashboardIcon,
@@ -37,4 +42,8 @@ export {
   ChevronRight,
   ChevronDown,
   ChevronLeft,
+  //
+  TwitterIcon,
+  FacebookIcon,
+  InstagramIcon,
 };
