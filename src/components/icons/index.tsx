@@ -23,6 +23,9 @@ import TwitterIcon from "./social/twitter";
 import FacebookIcon from "./social/facebook";
 import InstagramIcon from "./social/instagram";
 
+// Miscs
+import SearchIcon from "./miscs/search";
+
 export {
   // Sidenav icons
   DashboardIcon,
@@ -42,8 +45,10 @@ export {
   ChevronRight,
   ChevronDown,
   ChevronLeft,
-  //
+  // Social icons
   TwitterIcon,
   FacebookIcon,
   InstagramIcon,
+  // Miscs icons
+  SearchIcon,
 };
