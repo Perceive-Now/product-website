@@ -12,6 +12,12 @@ import UniversitiesIcon from "./sidenav/universities";
 import SettingsIcon from "./sidenav/settings";
 import LogoutIcon from "./sidenav/logout";
 
+// Chevron
+import ChevronUp from "./chevron/up";
+import ChevronRight from "./chevron/right";
+import ChevronDown from "./chevron/down";
+import ChevronLeft from "./chevron/left";
+
 export {
   // Sidenav icons
   DashboardIcon,
@@ -26,4 +32,9 @@ export {
   UniversitiesIcon,
   SettingsIcon,
   LogoutIcon,
+  // Chevron icons
+  ChevronUp,
+  ChevronRight,
+  ChevronDown,
+  ChevronLeft,
 };
