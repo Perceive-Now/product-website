@@ -11,11 +11,23 @@ import {
   SummaryIcon,
   TrendsIcon,
   UniversitiesIcon,
+  DashboardIcon,
+  SettingsIcon,
+  LogoutIcon,
 } from "../../icons";
 
-const sidebarItems: ISidebarItem[] = [
+const topItems: ISidebarItem[] = [
+  {
+    title: "Dashboard",
+    icon: <DashboardIcon />,
+    to: "/dashboard",
+  },
+];
+
+const sidebarItems: ISidebarListItem[] = [
   {
     title: "Innovate AI",
+    key: "innovate-ai",
     children: [
       {
         title: "M&A Insignts",
@@ -41,6 +53,7 @@ const sidebarItems: ISidebarItem[] = [
   },
   {
     title: "Advance Search",
+    key: "advance-search",
     children: [
       {
         title: "Publications",
@@ -71,13 +84,29 @@ const sidebarItems: ISidebarItem[] = [
   },
 ];
 
-interface ISidebarItem {
+const bottomItems: ISidebarItem[] = [
+  {
+    title: "Settings",
+    icon: <SettingsIcon />,
+    to: "/settings",
+  },
+  {
+    title: "Logout",
+    icon: <LogoutIcon />,
+    to: "/logout",
+  },
+];
+
+export interface ISidebarItem {
   title: string;
-  children: {
-    title: string;
-    icon: ReactElement;
-    to: string;
-  }[];
+  icon: ReactElement;
+  to: string;
 }
 
-export default sidebarItems;
+export interface ISidebarListItem {
+  title: string;
+  key: string;
+  children: ISidebarItem[];
+}
+
+export { topItems, sidebarItems, bottomItems };

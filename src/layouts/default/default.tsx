@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import AppFooter from "../../components/app/footer";
 
 //
 import AppHeader from "../../components/app/header";
@@ -14,16 +15,18 @@ export default function DefaultLayout() {
         <AppSidebar />
       </div>
 
-      <div className="w-full h-screen overflow-y-auto">
-        <div className="sticky top-0 w-full  bg-white z-10">
+      <div className="w-full h-screen overflow-y-auto flex flex-col">
+        <div className="sticky top-0 w-full bg-white z-10">
           <div className="py-3 px-4 shadow">
             <AppHeader />
           </div>
         </div>
 
-        <div className="relative py-3 px-4 h-[9999px] z-0">
+        <div className="relative flex-grow py-3 px-4 z-0">
           <Outlet />
         </div>
+
+        <AppFooter />
       </div>
     </div>
   );

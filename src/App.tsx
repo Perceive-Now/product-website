@@ -7,6 +7,8 @@ import LoginPage from "./pages/login";
 
 import DashboardPage from "./pages/dashboard";
 
+import PageNotFound404 from "./pages/404";
+
 /**
  *
  */
@@ -22,6 +24,9 @@ function App() {
         <Route element={<DefaultLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
+
+        {/* 404 not found */}
+        <Route path="*" element={<PageNotFound404 />} />
       </Routes>
     </div>
   );

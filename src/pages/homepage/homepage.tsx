@@ -5,6 +5,7 @@ import UserIcon from "../../components/app/userIcon";
 
 //
 import PerceiveLogo from "../../assets/images/logo.svg";
+import Search from "../../components/reusable/search";
 
 /**
  *
@@ -25,10 +26,15 @@ export default function HomePage() {
           <h6 className="text-primary-900">Track and Follow Topics</h6>
 
           <div className="min-w-[612px]">
-            <input
-              placeholder="Search Keywords"
-              className="w-full mt-3 border border-gray-300 px-3 py-2 rounded-lg"
-            />
+            <div className="mt-3">
+              <Search
+                size="large"
+                className="w-full"
+                // TODO:: Handle form submit action
+                onSubmit={() => null}
+              />
+            </div>
+
             <div className="text-right text-sm text-gray-600 mt-2">
               {/* Temporary link please */}
               <Link to="/dashboard" className="mr-1">
