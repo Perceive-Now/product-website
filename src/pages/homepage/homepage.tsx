@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //
 import UserIcon from "../../components/app/userIcon";
@@ -11,6 +11,14 @@ import Search from "../../components/reusable/search";
  *
  */
 export default function HomePage() {
+  const navigate = useNavigate();
+
+  const handleSearch = (value: string) => {
+    navigate("/dashboard", {
+      state: { search: value },
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex w-full justify-between pr-4 py-3">
@@ -28,16 +36,15 @@ export default function HomePage() {
           <div className="min-w-[612px]">
             <div className="mt-3">
               <Search
+                required
                 size="large"
                 className="w-full"
-                // TODO:: Handle form submit action
-                onSubmit={() => null}
+                onSubmit={handleSearch}
               />
             </div>
 
             <div className="text-right text-sm text-gray-600 mt-2">
-              {/* Temporary link please */}
-              <Link to="/dashboard" className="mr-1">
+              <Link to="#" className="mr-1">
                 History
               </Link>
             </div>
