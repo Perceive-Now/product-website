@@ -18,6 +18,7 @@ export default function Search(props: ISearchProps) {
   };
 
   const inputSize = props.size ?? "small";
+  const isRequired = props.required ?? false;
 
   return (
     <form onSubmit={handleSubmit} className="relative">
@@ -30,6 +31,7 @@ export default function Search(props: ISearchProps) {
             inputSize === "small" ? "py-1" : "py-2",
             props.className
           )}
+          required={isRequired}
         />
 
         <div className="absolute top-0 right-0 h-full">
@@ -48,6 +50,7 @@ export default function Search(props: ISearchProps) {
 }
 
 interface ISearchProps {
+  required?: boolean;
   className?: string;
   placeholder?: string;
   initialValue?: string;

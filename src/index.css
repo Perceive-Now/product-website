@@ -13,4 +13,8 @@
     font-family: Mulish, system-ui, sans-serif;
     user-select: none;
   }
+
+  a {
+    @apply text-primary-500;
+  }
 }

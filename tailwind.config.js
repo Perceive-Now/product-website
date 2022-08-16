@@ -74,6 +74,9 @@ module.exports = {
           800: "#641B1B",
         },
       },
+      ringWidth: {
+        0.5: "0.5px",
+      },
     },
   },
   plugins: [
