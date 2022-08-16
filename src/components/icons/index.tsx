@@ -25,6 +25,8 @@ import InstagramIcon from "./social/instagram";
 
 // Miscs
 import SearchIcon from "./miscs/search";
+import EyeIcon from "./miscs/Eye";
+import EyeClosedIcon from "./miscs/EyeClosed";
 
 export {
   // Sidenav icons
@@ -51,4 +53,6 @@ export {
   InstagramIcon,
   // Miscs icons
   SearchIcon,
+  EyeIcon,
+  EyeClosedIcon,
 };
