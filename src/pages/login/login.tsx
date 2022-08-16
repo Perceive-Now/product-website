@@ -143,7 +143,7 @@ export default function LoginPage() {
           </fieldset>
 
           <div className="mt-2 text-sm">
-            <Link to="/foget-password">Forgot password?</Link>
+            <Link to="/forgot-password">Forgot password?</Link>
           </div>
         </div>
 
