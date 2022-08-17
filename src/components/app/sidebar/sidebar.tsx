@@ -120,7 +120,7 @@ function NavLinkItem(props: INavLinkItemProps) {
           )}
         >
           <div className="mr-2">{props.icon}</div>
-          <span>{props.title}</span>
+          <span className="h-4 flex items-center">{props.title}</span>
         </div>
       )}
     </NavLink>
