@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+
+//
 import DefaultLayout from "./layouts/default";
 
 //
@@ -7,6 +9,15 @@ import LoginPage from "./pages/login";
 import ForgotPasswordPage from "./pages/forgot-password";
 
 import DashboardPage from "./pages/dashboard";
+import InsightsPage from "./pages/insights";
+import TrendsPage from "./pages/trends";
+import HawkEyePage from "./pages/hawk-eye";
+import SummaryPage from "./pages/summary";
+import PublicationsPage from "./pages/publications";
+import PatentsPage from "./pages/patents";
+import ExpertsPage from "./pages/experts";
+import FundersPage from "./pages/funders";
+import UniversitiesPage from "./pages/universities";
 
 import PageNotFound404 from "./pages/404";
 
@@ -25,6 +36,15 @@ function App() {
 
         <Route element={<DefaultLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/insights" element={<InsightsPage />} />
+          <Route path="/trends" element={<TrendsPage />} />
+          <Route path="/hawk-eye-view" element={<HawkEyePage />} />
+          <Route path="/summary" element={<SummaryPage />} />
+          <Route path="/publications" element={<PublicationsPage />} />
+          <Route path="/patents" element={<PatentsPage />} />
+          <Route path="/experts" element={<ExpertsPage />} />
+          <Route path="/funders" element={<FundersPage />} />
+          <Route path="/universities" element={<UniversitiesPage />} />
         </Route>
 
         {/* 404 not found */}
