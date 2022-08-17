@@ -42,7 +42,7 @@ const sidebarItems: ISidebarListItem[] = [
       {
         title: "Hawk-eye view",
         icon: <PreviewIcon />,
-        to: "/preview",
+        to: "/hawk-eye-view",
       },
       {
         title: "Summarize",
