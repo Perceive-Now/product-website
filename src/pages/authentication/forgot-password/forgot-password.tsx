@@ -8,11 +8,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 //
-import Button from "../../components/reusable/button";
+import Button from "../../../components/reusable/button";
 
 //
-import Logo from "../../assets/images/logo-small.svg";
-import { BackIcon } from "../../components/icons";
+import Logo from "../../../assets/images/logo-small.svg";
+import { BackIcon } from "../../../components/icons";
 
 /**
  *

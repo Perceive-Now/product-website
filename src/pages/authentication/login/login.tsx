@@ -8,12 +8,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 //
-import Button from "../../components/reusable/button";
-import { EyeClosedIcon, EyeIcon } from "../../components/icons";
+import Button from "../../../components/reusable/button";
+import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
 //
-import Logo from "../../assets/images/logo-small.svg";
-import { WEBSITE_URL } from "../../utils/constants";
+import Logo from "../../../assets/images/logo-small.svg";
+import { WEBSITE_URL } from "../../../utils/constants";
 
 /**
  *

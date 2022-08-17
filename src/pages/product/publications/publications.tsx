@@ -1,4 +1,4 @@
-import Search from "../../components/reusable/search";
+import Search from "../../../components/reusable/search";
 
 export default function PublicationsPage() {
   return (

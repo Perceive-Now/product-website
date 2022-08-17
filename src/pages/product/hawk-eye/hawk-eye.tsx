@@ -1,6 +1,6 @@
-import Search from "../../components/reusable/search";
+import Search from "../../../components/reusable/search";
 
-export default function InsightsPage() {
+export default function HawkEyePage() {
   return (
     <div>
       <div className="w-1/2">
