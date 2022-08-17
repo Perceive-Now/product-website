@@ -27,7 +27,8 @@ export default function Search(props: ISearchProps) {
           onChange={(e) => setSearch(e.target.value)}
           placeholder={props.placeholder ?? "Search keywords"}
           className={classNames(
-            "pl-3 pr-7 border border-gray-300 rounded-lg",
+            "pl-3 pr-7 border border-gray-300 rounded-lg w-full",
+            "focus:outline-none focus:border-primary-500",
             inputSize === "small" ? "py-1" : "py-2",
             props.className
           )}
