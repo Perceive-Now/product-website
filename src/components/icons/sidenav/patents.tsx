@@ -3,17 +3,14 @@ import { SVGProps } from "react";
 export default function PatentsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M9.99 0C4.47 0 0 4.48 0 10C0 15.52 4.47 20 9.99 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 9.99 0ZM14.23 16L10 13.45L5.77 16L6.89 11.19L3.16 7.96L8.08 7.54L10 3L11.92 7.53L16.84 7.95L13.11 11.18L14.23 16Z"
-        fill="#323334"
-      />
+      <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM16.23 18L12 15.45L7.77 18L8.89 13.19L5.16 9.96L10.08 9.54L12 5L13.92 9.53L18.84 9.95L15.11 13.18L16.23 18Z" />
     </svg>
   );
 }

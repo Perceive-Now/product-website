@@ -114,13 +114,13 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900",
+            "flex items-center py-2 text-gray-900 hover:bg-primary-50",
             props.isTopLevel ? "px-3" : "px-6",
             { "bg-appGray-200": isActive }
           )}
         >
           <div className="mr-2">{props.icon}</div>
-          <span>{props.title}</span>
+          <span className="h-4 flex items-center">{props.title}</span>
         </div>
       )}
     </NavLink>
