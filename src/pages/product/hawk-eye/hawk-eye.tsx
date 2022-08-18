@@ -11,6 +11,7 @@ import {
 
 //
 import Search from "../../../components/reusable/search";
+import PageTitle from "../../../components/reusable/page-title";
 
 /**
  *
@@ -41,10 +42,8 @@ export default function HawkEyePage() {
             <span>"</span>
           </p>
 
-          <div className="flex justify-between my-3">
-            <p className="text-xl text-primary-900">Hawk-Eye View</p>
-
-            <p className="text-primary-500">Learn more</p>
+          <div className="my-2">
+            <PageTitle title="Hawk-eye view" learnMore="Learn more" />
           </div>
 
           <div className="grid grid-cols-3 gap-3">
