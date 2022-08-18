@@ -27,13 +27,16 @@ export default function AppHeader() {
     <div className="flex justify-between my-auto">
       <div className="flex items-center">
         {!isDashboardPage && (
-          <>
-            <div className="mr-[12px] cursor-pointer" onClick={handleBack}>
-              <ArrowBackIcon />
-            </div>
+          <div
+            onClick={handleBack}
+            className="cursor-pointer flex items-center"
+          >
+            <ArrowBackIcon />
 
-            <p>{isMultiLevel ? "Go back" : "Dashboard"}</p>
-          </>
+            <p className="ml-[12px]">
+              {isMultiLevel ? "Go back" : "Dashboard"}
+            </p>
+          </div>
         )}
       </div>
 
