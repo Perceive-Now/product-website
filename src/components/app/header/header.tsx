@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //
 import UserIcon from "../userIcon";
@@ -8,15 +8,33 @@ import UserIcon from "../userIcon";
  */
 export default function AppHeader() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isMultiLevel =
+    location.pathname.split("/").filter((itm) => itm).length > 1;
+
+  const isDashboardPage = location.pathname === "/dashboard";
+
+  const handleBack = () => {
+    if (isMultiLevel) {
+      navigate(-1);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div className="flex justify-between my-auto">
       <div className="flex items-center">
-        <div className="mr-[12px] cursor-pointer" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </div>
+        {!isDashboardPage && (
+          <>
+            <div className="mr-[12px] cursor-pointer" onClick={handleBack}>
+              <ArrowBackIcon />
+            </div>
 
-        <p>Dashboard</p>
+            <p>{isMultiLevel ? "Go back" : "Dashboard"}</p>
+          </>
+        )}
       </div>
 
       <UserIcon />
