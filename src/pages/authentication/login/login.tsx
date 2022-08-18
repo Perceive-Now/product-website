@@ -127,7 +127,7 @@ export default function LoginPage() {
 
               {passwordValue && (
                 <div
-                  className="absolute top-0 right-2 h-full flex items-center text-gray-600"
+                  className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
                   onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                 >
                   {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
