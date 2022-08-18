@@ -1,17 +1,8 @@
-import { ReactElement, useState } from "react";
-
-//
-import {
-  ExpertsIcon,
-  FundersIcon,
-  PatentsIcon,
-  PublicationsIcon,
-  UniversitiesIcon,
-} from "../../../components/icons";
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 //
 import Search from "../../../components/reusable/search";
-import PageTitle from "../../../components/reusable/page-title";
 
 /**
  *
@@ -19,7 +10,7 @@ import PageTitle from "../../../components/reusable/page-title";
 export default function HawkEyePage() {
   const [searchText, setSearchText] = useState("");
 
-  const [values] = useState({
+  const [count] = useState<IHawkEyeCount>({
     publications: 46,
     experts: 36,
     universities: 3,
@@ -33,71 +24,20 @@ export default function HawkEyePage() {
         <Search onSubmit={(value) => setSearchText(value)} />
       </div>
 
-      {searchText && (
-        <div className="mt-3">
-          <p className="text-sm">
-            <span className="text-gray-700">Showing result for:</span>
-            <span> "</span>
-            <span className="font-semibold">{searchText}</span>
-            <span>"</span>
-          </p>
-
-          <div className="my-2">
-            <PageTitle title="Hawk-eye view" learnMore="Learn more" />
-          </div>
-
-          <div className="grid grid-cols-3 gap-3">
-            <SingleSection
-              title="Publications"
-              value={values.publications}
-              icon={<PublicationsIcon width={72} height={72} />}
-            />
-
-            <SingleSection
-              title="Experts"
-              value={values.experts}
-              icon={<ExpertsIcon width={72} height={72} />}
-            />
-
-            <SingleSection
-              title="Universities"
-              value={values.universities}
-              icon={<UniversitiesIcon width={72} height={72} />}
-            />
-
-            <SingleSection
-              title="Patents"
-              value={values.patents}
-              icon={<PatentsIcon width={72} height={72} />}
-            />
-
-            <SingleSection
-              title="Funders"
-              value={values.funders}
-              icon={<FundersIcon width={72} height={72} />}
-            />
-          </div>
-        </div>
-      )}
+      <Outlet context={{ searchText, count }} />
     </div>
   );
 }
 
-function SingleSection(props: ISingleSectionProps) {
-  return (
-    <div className="py-6 px-3 rounded-lg border border-gray-300 flex flex-wrap items-center shadow hover:bg-primary-50 cursor-pointer">
-      <div className="text-primary-900 mr-3">{props.icon}</div>
-
-      <div>
-        <p className="mb-1 text-[28px]">{props.value}</p>
-        <p className="text-xl">{props.title}</p>
-      </div>
-    </div>
-  );
+interface IHawkEyeCount {
+  publications: number;
+  experts: number;
+  universities: number;
+  patents: number;
+  funders: number;
 }
 
-interface ISingleSectionProps {
-  icon: ReactElement;
-  title: string;
-  value: number;
+export interface IHawkEyeContext {
+  searchText: string;
+  count: IHawkEyeCount;
 }

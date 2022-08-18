@@ -12,7 +12,16 @@ import ForgotPasswordPage from "./pages/authentication/forgot-password";
 import DashboardPage from "./pages/product/dashboard";
 import InsightsPage from "./pages/product/insights";
 import TrendsPage from "./pages/product/trends";
+
+// Hawk-eye pages
 import HawkEyePage from "./pages/product/hawk-eye";
+import HawkEyeHomeSection from "./pages/product/hawk-eye/home";
+import HawkEyeFundersSection from "./pages/product/hawk-eye/sections/funders";
+import HawkEyePatentsSection from "./pages/product/hawk-eye/sections/patents";
+import HawkEyeExpertsSection from "./pages/product/hawk-eye/sections/experts";
+import HawkEyeUniversitiesSection from "./pages/product/hawk-eye/sections/universities";
+import HawkEyePublicationsSection from "./pages/product/hawk-eye/sections/publications";
+
 import SummaryPage from "./pages/product/summary";
 import PublicationsPage from "./pages/product/publications";
 import PatentsPage from "./pages/product/patents";
@@ -39,7 +48,33 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/insights" element={<InsightsPage />} />
           <Route path="/trends" element={<TrendsPage />} />
-          <Route path="/hawk-eye-view" element={<HawkEyePage />} />
+
+          {/* Hawk eye page section starts here */}
+          <Route path="/hawk-eye-view" element={<HawkEyePage />}>
+            <Route path="/hawk-eye-view" element={<HawkEyeHomeSection />} />
+            <Route
+              path="/hawk-eye-view/publications"
+              element={<HawkEyePublicationsSection />}
+            />
+            <Route
+              path="/hawk-eye-view/patents"
+              element={<HawkEyePatentsSection />}
+            />
+            <Route
+              path="/hawk-eye-view/experts"
+              element={<HawkEyeExpertsSection />}
+            />
+            <Route
+              path="/hawk-eye-view/universities"
+              element={<HawkEyeUniversitiesSection />}
+            />
+            <Route
+              path="/hawk-eye-view/funders"
+              element={<HawkEyeFundersSection />}
+            />
+          </Route>
+          {/* Hawk eye page section end here */}
+
           <Route path="/summary" element={<SummaryPage />} />
           <Route path="/publications" element={<PublicationsPage />} />
           <Route path="/patents" element={<PatentsPage />} />
