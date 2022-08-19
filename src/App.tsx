@@ -30,6 +30,7 @@ import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
 
 import PageNotFound404 from "./pages/404";
+import PatentsProfile from "./pages/product/patents/profile";
 
 /**
  *
@@ -78,6 +79,7 @@ function App() {
           <Route path="/summary" element={<SummaryPage />} />
           <Route path="/publications" element={<PublicationsPage />} />
           <Route path="/patents" element={<PatentsPage />} />
+          <Route path="/patents/profile/:id" element={<PatentsProfile />} />
           <Route path="/experts" element={<ExpertsPage />} />
           <Route path="/funders" element={<FundersPage />} />
           <Route path="/universities" element={<UniversitiesPage />} />
