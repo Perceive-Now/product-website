@@ -7,6 +7,7 @@ import LoginPage from "./pages/login";
 import ForgotPasswordPage from "./pages/forgot-password";
 
 import DashboardPage from "./pages/dashboard";
+import PublicationsPage from "./pages/publicationspage";
 
 import PageNotFound404 from "./pages/404";
 
@@ -25,6 +26,7 @@ function App() {
 
         <Route element={<DefaultLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/publications" element={<PublicationsPage />} />
         </Route>
 
         {/* 404 not found */}
