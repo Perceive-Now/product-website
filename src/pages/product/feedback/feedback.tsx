@@ -1,13 +1,29 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../../components/reusable/button";
+import Input from "../../../components/reusable/input";
 
 export default function Feedback() {
   const [feedbackNumber, setFeedbackNumber] = useState<number | null>(null);
+  const [feedback, setFeedback] = useState<string | undefined>();
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  useEffect(() => {
+    if (feedbackNumber && feedback) {
+      setIsSubmitDisabled(false);
+    } else {
+      setIsSubmitDisabled(true);
+    }
+  }, [feedbackNumber, feedback]);
 
   const handleFeedbackNumberChange = (number: number) => {
     setFeedbackNumber(number);
   };
+
+  const handleFeedbackChange = (e: any) => {
+    setFeedback(e.target.value);
+  };
+
   return (
     <div className="pt-16 text-appGray-900">
       <div className="font-semibold text-2xl">Feedback</div>
@@ -24,14 +40,19 @@ export default function Feedback() {
             />
           </div>
         </div>
-        <div className="mb-10">
+        <div className="mb-10 max-w-[580px]">
           <div className="text-[22px] font-semibold text-primary-900 mb-8">
             Let us know how we can better serve your needs
           </div>
-
-          <div>Comments</div>
+          <Input
+            type="textarea"
+            placeholder="example@gmail.com"
+            label="Comment"
+            value={feedback}
+            handleChange={handleFeedbackChange}
+          />
         </div>
-        <Button disabled>Submit Feedback</Button>
+        <Button disabled={isSubmitDisabled}>Submit Feedback</Button>
       </div>
     </div>
   );
