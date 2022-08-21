@@ -1,6 +1,11 @@
 import { useState } from "react";
+
+//
 import PageTitle from "../../../../components/reusable/page-title";
 
+/**
+ *
+ */
 export default function PatentsProfile() {
   const [patentsProfileData] = useState<IPatentsProfileData>({
     title: "Personal protective equipment and methods",
