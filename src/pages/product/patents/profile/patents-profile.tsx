@@ -27,15 +27,18 @@ export default function PatentsProfile() {
     ipc: "A 41 D 31/102",
     location: "Del Mar, CA, United States",
   });
-  
+
   return (
     <div className="max-w-[870px] text-appGray-900">
       <PageTitle title={patentsProfileData.title} />
+      
       <div className="pt-8 pb-4">
         <span className="pr-4 font-bold">Publication/Patent number:</span>
         <span>[{patentsProfileData.publicationPatentNumber}]</span>
       </div>
+
       <div className="pb-4">{patentsProfileData.description}</div>
+
       <div>
         <div className="pb-4">
           <span className="font-bold pr-4 ">Type:</span>
