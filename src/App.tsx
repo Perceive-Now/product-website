@@ -22,9 +22,12 @@ import HawkEyeExpertsSection from "./pages/product/hawk-eye/sections/experts";
 import HawkEyeUniversitiesSection from "./pages/product/hawk-eye/sections/universities";
 import HawkEyePublicationsSection from "./pages/product/hawk-eye/sections/publications";
 
+// Patents pages
+import PatentsPage from "./pages/product/patents";
+import PatentsProfile from "./pages/product/patents/profile";
+
 import SummaryPage from "./pages/product/summary";
 import PublicationsPage from "./pages/product/publications";
-import PatentsPage from "./pages/product/patents";
 import ExpertsPage from "./pages/product/experts";
 import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
@@ -77,7 +80,12 @@ function App() {
 
           <Route path="/summary" element={<SummaryPage />} />
           <Route path="/publications" element={<PublicationsPage />} />
+
+          {/* Patents page section starts here */}
           <Route path="/patents" element={<PatentsPage />} />
+          <Route path="/patents/profile/:id" element={<PatentsProfile />} />
+          {/* Patents page section end here */}
+
           <Route path="/experts" element={<ExpertsPage />} />
           <Route path="/funders" element={<FundersPage />} />
           <Route path="/universities" element={<UniversitiesPage />} />
