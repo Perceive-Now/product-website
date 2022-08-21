@@ -32,7 +32,7 @@ export default function PatentsProfile() {
     <div className="max-w-[870px] text-appGray-900">
       <PageTitle title={patentsProfileData.title} />
 
-      <div className="pt-4 pb-2">
+      <div className="pt-3 pb-2">
         <span className="pr-2 font-bold">Publication/Patent number:</span>
         <span>[{patentsProfileData.publicationPatentNumber}]</span>
       </div>
@@ -44,30 +44,37 @@ export default function PatentsProfile() {
           <span className="font-bold pr-2">Type:</span>
           <span>{patentsProfileData.type}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">Filed:</span>
           <span>{patentsProfileData.filed}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">Publication date:</span>
           <span>{patentsProfileData.publicationDate}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">Applicant:</span>
           <span>{patentsProfileData.applicant}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">Assignee:</span>
           <span>{patentsProfileData.assignee}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">Inventor(s):</span>
           <span>{patentsProfileData.inventors}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">IPC:</span>
           <span>{patentsProfileData.ipc}</span>
         </div>
+
         <div className="pb-2">
           <span className="font-bold pr-2">Location:</span>
           <span>{patentsProfileData.location}</span>
