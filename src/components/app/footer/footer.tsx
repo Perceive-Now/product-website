@@ -9,7 +9,7 @@ export default function AppFooter() {
   return (
     <div className="pt-8 pb-4 px-4 flex justify-between items-center">
       <div className="flex gap-x-4 font-normal text-sm">
-        <Link to="#" className="text-primary-900">
+        <Link to="/help" className="text-primary-900">
           Help
         </Link>
         <Link to="/feedback" className="text-primary-900">

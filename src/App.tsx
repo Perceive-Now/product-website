@@ -31,6 +31,7 @@ import UniversitiesPage from "./pages/product/universities";
 
 import PageNotFound404 from "./pages/404";
 import Feedback from "./pages/product/feedback";
+import Help from "./pages/help";
 
 /**
  *
@@ -84,6 +85,7 @@ function App() {
           <Route path="/universities" element={<UniversitiesPage />} />
 
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/help" element={<Help />} />
         </Route>
 
         {/* 404 not found */}
