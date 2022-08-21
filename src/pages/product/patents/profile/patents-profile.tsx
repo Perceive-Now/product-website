@@ -31,45 +31,45 @@ export default function PatentsProfile() {
   return (
     <div className="max-w-[870px] text-appGray-900">
       <PageTitle title={patentsProfileData.title} />
-      
-      <div className="pt-8 pb-4">
-        <span className="pr-4 font-bold">Publication/Patent number:</span>
+
+      <div className="pt-4 pb-2">
+        <span className="pr-2 font-bold">Publication/Patent number:</span>
         <span>[{patentsProfileData.publicationPatentNumber}]</span>
       </div>
 
-      <div className="pb-4">{patentsProfileData.description}</div>
+      <div className="pb-2">{patentsProfileData.description}</div>
 
       <div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Type:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Type:</span>
           <span>{patentsProfileData.type}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Filed:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Filed:</span>
           <span>{patentsProfileData.filed}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Publication date:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Publication date:</span>
           <span>{patentsProfileData.publicationDate}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Applicant:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Applicant:</span>
           <span>{patentsProfileData.applicant}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Assignee:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Assignee:</span>
           <span>{patentsProfileData.assignee}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Inventor(s):</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Inventor(s):</span>
           <span>{patentsProfileData.inventors}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">IPC:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">IPC:</span>
           <span>{patentsProfileData.ipc}</span>
         </div>
-        <div className="pb-4">
-          <span className="font-bold pr-4 ">Location:</span>
+        <div className="pb-2">
+          <span className="font-bold pr-2">Location:</span>
           <span>{patentsProfileData.location}</span>
         </div>
       </div>
