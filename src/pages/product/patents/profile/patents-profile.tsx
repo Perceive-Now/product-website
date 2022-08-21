@@ -72,6 +72,7 @@ export default function PatentsProfile() {
     </div>
   );
 }
+
 interface IPatentsProfileData {
   title: string;
   publicationPatentNumber: string;
