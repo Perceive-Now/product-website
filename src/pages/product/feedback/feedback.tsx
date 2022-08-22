@@ -29,6 +29,11 @@ export default function Feedback() {
     setFeedback(e.target.value);
   };
 
+  const handleSubmit = () => {
+    // TODO: submit feedback
+    console.log(feedbackNumber, feedback);
+  };
+
   return (
     <div className="text-appGray-900">
       <div className="font-semibold text-2xl">Feedback</div>
@@ -59,7 +64,9 @@ export default function Feedback() {
           />
         </div>
 
-        <Button disabled={isSubmitDisabled}>Submit Feedback</Button>
+        <Button disabled={isSubmitDisabled} handleClick={handleSubmit}>
+          Submit Feedback
+        </Button>
       </div>
     </div>
   );
