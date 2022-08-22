@@ -8,7 +8,7 @@ import Input from "../../../components/reusable/input";
 /**
  *
  */
-export default function Feedback() {
+export default function FeedbackPage() {
   const [feedbackNumber, setFeedbackNumber] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string | undefined>();
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -25,8 +25,8 @@ export default function Feedback() {
     setFeedbackNumber(number);
   };
 
-  const handleFeedbackChange = (e: any) => {
-    setFeedback(e.target.value);
+  const handleFeedbackChange = (value: string) => {
+    setFeedback(value);
   };
 
   const handleSubmit = () => {
@@ -103,5 +103,5 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
 
 interface IFeedbackInput {
   activeNumber: number | null;
-  handleChange: (number: number) => void;
+  handleChange: (value: number) => void;
 }

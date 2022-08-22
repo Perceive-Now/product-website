@@ -9,6 +9,8 @@ import HomePage from "./pages/homepage";
 import LoginPage from "./pages/authentication/login";
 import ForgotPasswordPage from "./pages/authentication/forgot-password";
 
+import FeedbackPage from "./pages/miscs/feedback";
+
 import DashboardPage from "./pages/product/dashboard";
 import InsightsPage from "./pages/product/insights";
 import TrendsPage from "./pages/product/trends";
@@ -32,8 +34,8 @@ import ExpertsPage from "./pages/product/experts";
 import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
 
+
 import PageNotFound404 from "./pages/404";
-import Feedback from "./pages/product/feedback";
 
 /**
  *
@@ -91,7 +93,7 @@ function App() {
           <Route path="/funders" element={<FundersPage />} />
           <Route path="/universities" element={<UniversitiesPage />} />
 
-          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
         </Route>
 
         {/* 404 not found */}
