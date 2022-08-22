@@ -1,9 +1,9 @@
-import { PropsWithChildren } from "react";
+import "./input.css";
 
 /**
  *
  */
-export default function Input(props: PropsWithChildren<IInput>) {
+export default function Input(props: IInput) {
   const inputType = props.type;
   const label = props.label;
   const placeholder = props.placeholder;
@@ -19,7 +19,7 @@ export default function Input(props: PropsWithChildren<IInput>) {
           className="input-field"
           placeholder={placeholder}
           value={value}
-          onChange={handleChange}
+          onChange={(e: any) => handleChange(e.target.value)}
           rows={8}
         />
       );
@@ -41,11 +41,10 @@ export default function Input(props: PropsWithChildren<IInput>) {
   );
 }
 
-type InputType = "textarea";
 interface IInput {
   label?: string;
-  type: InputType;
+  type: "textarea";
   placeholder?: string;
-  value: string | number | readonly string[] | undefined;
-  handleChange: (e: any) => void;
+  value?: string;
+  handleChange: (e: string) => void;
 }
