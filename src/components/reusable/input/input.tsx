@@ -40,6 +40,7 @@ export default function Input(props: PropsWithChildren<IInput>) {
       );
       break;
     }
+
     case "textarea":
       inputRender = (
         <textarea
@@ -67,6 +68,7 @@ export default function Input(props: PropsWithChildren<IInput>) {
       )}
 
       {inputRender}
+
       {error?.message && (
         <div className="mt-1 text-xs text-danger-500">{error.message}</div>
       )}
@@ -75,6 +77,7 @@ export default function Input(props: PropsWithChildren<IInput>) {
 }
 
 type InputType = "text" | "email" | "textarea";
+
 interface IInput {
   label?: string;
   id?: string;
