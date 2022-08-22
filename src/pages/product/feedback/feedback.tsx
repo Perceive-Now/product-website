@@ -76,19 +76,19 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
   return (
     <div className="w-min">
       <div className="flex">
-        {[1, 2, 3, 4, 5].map((i) => (
+        {[1, 2, 3, 4, 5].map((feedbackNumber) => (
           <div
-            key={i}
+            key={feedbackNumber}
             className={classNames(
               "flex items-center justify-center py-[12px] px-4 shadow-md border text-xl rounded-md cursor-pointer ease-in duration-150",
               "hover:bg-primary-50 hover:text-primary-900 hover:border-primary-50",
-              i !== 5 && "mr-3",
-              activeNumber === i &&
+              feedbackNumber !== 5 && "mr-3",
+              activeNumber === feedbackNumber &&
                 "border-primary-900 bg-primary-900 text-white cursor-default hover:bg-primary-900 hover:text-white"
             )}
-            onClick={() => handleChange(i)}
+            onClick={() => handleChange(feedbackNumber)}
           >
-            {i}
+            {feedbackNumber}
           </div>
         ))}
       </div>
