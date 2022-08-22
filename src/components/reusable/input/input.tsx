@@ -1,5 +1,8 @@
 import { PropsWithChildren } from "react";
 
+/**
+ *
+ */
 export default function Input(props: PropsWithChildren<IInput>) {
   const inputType = props.type ?? "text";
   const label = props.label;
@@ -19,6 +22,7 @@ export default function Input(props: PropsWithChildren<IInput>) {
   };
 
   let inputRender;
+
   switch (inputType) {
     case "text":
     case "email": {
@@ -50,12 +54,18 @@ export default function Input(props: PropsWithChildren<IInput>) {
         />
       );
       break;
+
+    default:
+      inputRender = null;
+      break;
   }
+
   return (
     <div>
       {label && (
         <div className="text-appGray-900 mb-0.5 font-semibold">{label}</div>
       )}
+
       {inputRender}
       {error?.message && (
         <div className="mt-1 text-xs text-danger-500">{error.message}</div>
