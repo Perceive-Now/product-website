@@ -80,7 +80,8 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
           <div
             key={i}
             className={classNames(
-              "flex items-center justify-center py-[12px] px-4 shadow-md border text-xl rounded-md cursor-pointer ease-in duration-150 hover:bg-primary-50 hover:text-primary-900 hover:border-primary-50",
+              "flex items-center justify-center py-[12px] px-4 shadow-md border text-xl rounded-md cursor-pointer ease-in duration-150",
+              "hover:bg-primary-50 hover:text-primary-900 hover:border-primary-50",
               i !== 5 && "mr-3",
               activeNumber === i &&
                 "border-primary-900 bg-primary-900 text-white cursor-default hover:bg-primary-900 hover:text-white"
@@ -91,6 +92,7 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
           </div>
         ))}
       </div>
+
       <div className="flex justify-between mt-1">
         <div>Not Satisfied</div>
         <div>Very Satisfied</div>
