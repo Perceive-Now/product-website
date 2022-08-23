@@ -1,22 +1,47 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //
 import UserIcon from "../userIcon";
+
+//
+const SPECIAL_PATHS = ["/feedback", "/help", "/faq"];
 
 /**
  *
  */
 export default function AppHeader() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isMultiLevel =
+    location.pathname.split("/").filter((itm) => itm).length > 1;
+
+  const isDashboardPage = location.pathname === "/dashboard";
+  const isSpecialPages = SPECIAL_PATHS.includes(location.pathname);
+
+  const handleBack = () => {
+    if (isMultiLevel || isSpecialPages) {
+      navigate(-1);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div className="flex justify-between my-auto">
       <div className="flex items-center">
-        <div className="mr-[12px] cursor-pointer" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </div>
+        {!isDashboardPage && (
+          <div
+            onClick={handleBack}
+            className="cursor-pointer flex items-center"
+          >
+            <ArrowBackIcon />
 
-        <p>Dashboard</p>
+            <p className="ml-[12px]">
+              {isMultiLevel || isSpecialPages ? "Go back" : "Dashboard"}
+            </p>
+          </div>
+        )}
       </div>
 
       <UserIcon />

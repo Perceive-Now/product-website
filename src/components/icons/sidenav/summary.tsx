@@ -3,18 +3,17 @@ import { SVGProps } from "react";
 export default function SummaryIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="20"
-      height="18"
-      viewBox="0 0 20 18"
-      fill="none"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M18 0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H18C19.1 18 20 17.1 20 16V2C20 0.9 19.1 0 18 0ZM8 14H3V12H8V14ZM8 10H3V8H8V10ZM8 6H3V4H8V6ZM12.82 12L10 9.16L11.41 7.75L12.82 9.17L15.99 6L17.41 7.42L12.82 12Z"
-        fill="#373D3F"
+        d="M20 3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V5C22 3.9 21.1 3 20 3ZM10 17H5V15H10V17ZM10 13H5V11H10V13ZM10 9H5V7H10V9ZM14.82 15L12 12.16L13.41 10.75L14.82 12.17L17.99 9L19.41 10.42L14.82 15Z"
       />
     </svg>
   );

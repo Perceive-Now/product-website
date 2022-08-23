@@ -13,7 +13,6 @@ import {
   UniversitiesIcon,
   DashboardIcon,
   SettingsIcon,
-  LogoutIcon,
 } from "../../icons";
 
 const topItems: ISidebarItem[] = [
@@ -42,7 +41,7 @@ const sidebarItems: ISidebarListItem[] = [
       {
         title: "Hawk-eye view",
         icon: <PreviewIcon />,
-        to: "/preview",
+        to: "/hawk-eye-view",
       },
       {
         title: "Summarize",
@@ -89,11 +88,6 @@ const bottomItems: ISidebarItem[] = [
     title: "Settings",
     icon: <SettingsIcon />,
     to: "/settings",
-  },
-  {
-    title: "Logout",
-    icon: <LogoutIcon />,
-    to: "/logout",
   },
 ];
 
