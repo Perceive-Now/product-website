@@ -12,7 +12,7 @@ export default function AppFooter() {
         <Link to="#" className="text-primary-900">
           Help
         </Link>
-        <Link to="#" className="text-primary-900">
+        <Link to="/feedback" className="text-primary-900">
           Feedback
         </Link>
         <Link to="#" className="text-primary-900">

@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 //
 import UserIcon from "../userIcon";
 
+//
+const SPECIAL_PATHS = ["/feedback", "/help", "/faq"];
+
 /**
  *
  */
@@ -14,9 +17,10 @@ export default function AppHeader() {
     location.pathname.split("/").filter((itm) => itm).length > 1;
 
   const isDashboardPage = location.pathname === "/dashboard";
+  const isSpecialPages = SPECIAL_PATHS.includes(location.pathname);
 
   const handleBack = () => {
-    if (isMultiLevel) {
+    if (isMultiLevel || isSpecialPages) {
       navigate(-1);
     } else {
       navigate("/dashboard");
@@ -34,7 +38,7 @@ export default function AppHeader() {
             <ArrowBackIcon />
 
             <p className="ml-[12px]">
-              {isMultiLevel ? "Go back" : "Dashboard"}
+              {isMultiLevel || isSpecialPages ? "Go back" : "Dashboard"}
             </p>
           </div>
         )}
