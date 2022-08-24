@@ -2,13 +2,13 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 
 //
-import Button from "../../../components/reusable/button";
 import Input from "../../../components/reusable/input";
+import Button from "../../../components/reusable/button";
 
 /**
  *
  */
-export default function Feedback() {
+export default function FeedbackPage() {
   const [feedbackNumber, setFeedbackNumber] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string | undefined>();
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
@@ -25,8 +25,8 @@ export default function Feedback() {
     setFeedbackNumber(number);
   };
 
-  const handleFeedbackChange = (e: any) => {
-    setFeedback(e.target.value);
+  const handleFeedbackChange = (value: string) => {
+    setFeedback(value);
   };
 
   const handleSubmit = () => {
@@ -43,18 +43,18 @@ export default function Feedback() {
           <div className="text-[22px] font-semibold text-primary-900 mb-4">
             How satisfied are you with the overall experience?
           </div>
-          <div>
-            <FeedbackInput
-              activeNumber={feedbackNumber}
-              handleChange={handleFeedbackNumberChange}
-            />
-          </div>
+
+          <FeedbackInput
+            activeNumber={feedbackNumber}
+            handleChange={handleFeedbackNumberChange}
+          />
         </div>
 
         <div className="mb-5 max-w-[580px]">
           <div className="text-[22px] font-semibold text-primary-900 mb-4">
             Let us know how we can better serve your needs
           </div>
+
           <Input
             type="textarea"
             placeholder="Enter your feedback"
@@ -75,16 +75,17 @@ export default function Feedback() {
 function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
   return (
     <div className="w-min">
-      <div className="flex">
+      <div className="flex gap-x-3">
         {[1, 2, 3, 4, 5].map((feedbackNumber) => (
           <div
             key={feedbackNumber}
             className={classNames(
               "flex items-center justify-center py-[12px] px-4 shadow-md border text-xl rounded-md cursor-pointer ease-in duration-150",
               "hover:bg-primary-50 hover:text-primary-900 hover:border-primary-50",
-              feedbackNumber !== 5 && "mr-3",
-              activeNumber === feedbackNumber &&
-                "border-primary-900 bg-primary-900 text-white cursor-default hover:bg-primary-900 hover:text-white"
+              {
+                "border-primary-900 bg-primary-900 text-white cursor-default hover:bg-primary-900 hover:text-white":
+                  activeNumber === feedbackNumber,
+              }
             )}
             onClick={() => handleChange(feedbackNumber)}
           >
@@ -93,7 +94,7 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
         ))}
       </div>
 
-      <div className="flex justify-between mt-1">
+      <div className="flex justify-between mt-1 text-appGray-500">
         <div>Not Satisfied</div>
         <div>Very Satisfied</div>
       </div>
@@ -103,5 +104,5 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
 
 interface IFeedbackInput {
   activeNumber: number | null;
-  handleChange: (number: number) => void;
+  handleChange: (value: number) => void;
 }

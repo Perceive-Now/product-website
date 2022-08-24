@@ -18,9 +18,3 @@
     @apply text-primary-500;
   }
 }
-
-@layer components {
-  .input-field {
-    @apply rounded px-2 py-[10px] bg-gray-100 border border-gray-400 focus:ring-0 focus:border-primary-500 w-full;
-  }
-}

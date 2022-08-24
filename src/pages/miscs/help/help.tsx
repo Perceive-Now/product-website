@@ -3,26 +3,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
 //
-import Button from "../../components/reusable/button";
-import Input from "../../components/reusable/input";
+import Button from "../../../components/reusable/button";
+import Input from "../../../components/reusable/input";
 
 /*
  *
  **/
-export default function Help() {
-  const formInitialValue: IHelpFormValues = {
-    fullname: "",
-    email: "",
+export default function HelpPage() {
+  const formInitialValue: IHelpPageFormValues = {
     subject: "",
     comment: "",
   };
 
   const formResolver = yup.object().shape({
-    fullname: yup.string().required("Full name is required"),
-    email: yup
-      .string()
-      .email("Please enter a valid email address")
-      .required("Email address is required"),
     subject: yup.string().required("Subject is required"),
     comment: yup.string().required("Comment is required"),
   });
@@ -35,14 +28,12 @@ export default function Help() {
 
   const { errors } = formState;
 
-  const handleHelpFormSubmit = (values: IHelpFormValues) => {
+  const handleHelpFormSubmit = (values: IHelpPageFormValues) => {
     console.log(values, "values");
 
     // TODO:: Make API call for submit
   };
 
-  const fullnameValue = watch("fullname");
-  const emailValue = watch("email");
   const subjectValue = watch("subject");
   const commentValue = watch("comment");
 
@@ -62,27 +53,6 @@ export default function Help() {
       >
         <div className="mb-4">
           <Input
-            name={"fullname"}
-            label="Full Name"
-            placeholder="John Doe"
-            register={register}
-            error={errors["fullname"]}
-          />
-        </div>
-
-        <div className="mb-4">
-          <Input
-            name={"email"}
-            register={register}
-            label="Email Address"
-            type="email"
-            placeholder="JohnDoe@abc.com"
-            error={errors["email"]}
-          />
-        </div>
-
-        <div className="mb-4">
-          <Input
             register={register}
             name={"subject"}
             label="Subject"
@@ -97,17 +67,12 @@ export default function Help() {
             label="Comment"
             register={register}
             type="textarea"
-            placeholder="example@gmail.com"
+            placeholder="Enter your comment"
             error={errors["comment"]}
           />
         </div>
 
-        <Button
-          classname="mt-7"
-          disabled={
-            !fullnameValue || !emailValue || !subjectValue || !commentValue
-          }
-        >
+        <Button classname="mt-7" disabled={!subjectValue || !commentValue}>
           Submit
         </Button>
       </form>
@@ -115,9 +80,7 @@ export default function Help() {
   );
 }
 
-interface IHelpFormValues {
-  fullname: string;
-  email: string;
+interface IHelpPageFormValues {
   subject: string;
   comment: string;
 }

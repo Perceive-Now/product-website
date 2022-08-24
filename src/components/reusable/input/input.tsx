@@ -1,9 +1,9 @@
-import { PropsWithChildren } from "react";
+import "./input.css";
 
 /**
  *
  */
-export default function Input(props: PropsWithChildren<IInput>) {
+export default function Input(props: IInput) {
   const inputType = props.type ?? "text";
   const label = props.label;
   const placeholder = props.placeholder;
@@ -17,7 +17,7 @@ export default function Input(props: PropsWithChildren<IInput>) {
   const handleInputChange = (event: any) => {
     register(name).onChange(event);
     if (handleChange) {
-      handleChange(event);
+      handleChange(event.target.value);
     }
   };
 
@@ -76,13 +76,11 @@ export default function Input(props: PropsWithChildren<IInput>) {
   );
 }
 
-type InputType = "text" | "email" | "textarea";
-
 interface IInput {
   label?: string;
   id?: string;
   name?: string;
-  type?: InputType;
+  type?: "text" | "email" | "textarea";
   placeholder?: string;
   value?: string | number | readonly string[] | undefined;
   handleChange?: (e: any) => void;
