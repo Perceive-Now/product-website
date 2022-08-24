@@ -20,22 +20,19 @@ export default function HelpPage() {
     comment: yup.string().required("Comment is required"),
   });
 
-  const { watch, register, formState, handleSubmit } = useForm({
-    mode: "onBlur",
+  const { register, formState, handleSubmit } = useForm({
+    mode: "onChange",
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
   });
 
-  const { errors } = formState;
+  const { errors, isValid } = formState;
 
   const handleHelpFormSubmit = (values: IHelpPageFormValues) => {
     console.log(values, "values");
 
     // TODO:: Make API call for submit
   };
-
-  const subjectValue = watch("subject");
-  const commentValue = watch("comment");
 
   return (
     <div className="text-appGray-900">
@@ -72,7 +69,7 @@ export default function HelpPage() {
           />
         </div>
 
-        <Button classname="mt-7" disabled={!subjectValue || !commentValue}>
+        <Button classname="mt-7" disabled={!isValid}>
           Submit
         </Button>
       </form>
