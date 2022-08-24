@@ -15,7 +15,9 @@ export default function Input(props: IInput) {
   const handleChange = props.handleChange;
 
   const handleInputChange = (event: any) => {
-    register(name).onChange(event);
+    if (register) {
+      register(name).onChange(event);
+    }
     if (handleChange) {
       handleChange(event.target.value);
     }
@@ -82,8 +84,8 @@ interface IInput {
   name?: string;
   type?: "text" | "email" | "textarea";
   placeholder?: string;
-  value?: string | number | readonly string[] | undefined;
-  handleChange?: (e: any) => void;
+  value?: string;
+  handleChange?: (e: string) => void;
   register?: any;
   error?: any;
 }

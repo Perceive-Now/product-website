@@ -37,7 +37,6 @@ import UniversitiesPage from "./pages/product/universities";
 
 import PageNotFound404 from "./pages/404";
 
-
 /**
  *
  */
