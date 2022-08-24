@@ -10,6 +10,7 @@ import LoginPage from "./pages/authentication/login";
 import ForgotPasswordPage from "./pages/authentication/forgot-password";
 
 import FeedbackPage from "./pages/miscs/feedback";
+import HelpPage from "./pages/miscs/help";
 
 import DashboardPage from "./pages/product/dashboard";
 import InsightsPage from "./pages/product/insights";
@@ -93,6 +94,7 @@ function App() {
           <Route path="/universities" element={<UniversitiesPage />} />
 
           <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/help" element={<HelpPage />} />
         </Route>
 
         {/* 404 not found */}
