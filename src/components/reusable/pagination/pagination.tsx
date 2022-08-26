@@ -48,7 +48,7 @@ function Pagination({
 
   const disablePrev = pageNum === 1;
   const disableNext = pageNum === totalPages;
-  
+
   return (
     <div className="flex items-center text-primary-900">
       <div
@@ -94,6 +94,7 @@ function Pagination({
           {lowerNeighbourPageArray.map((lowerNeighbourPage) => {
             return (
               <div
+                key={lowerNeighbourPage}
                 className="mr-2 cursor-pointer"
                 onClick={() => gotoPage(lowerNeighbourPage)}
               >
@@ -109,6 +110,7 @@ function Pagination({
           {higherNeighbourPageArray.map((higherNeighbourPage) => {
             return (
               <div
+                key={higherNeighbourPage}
                 className="mr-2 cursor-pointer"
                 onClick={() => gotoPage(higherNeighbourPage)}
               >
@@ -124,9 +126,7 @@ function Pagination({
       <div
         className={classNames(
           "mr-2",
-          disableNext
-            ? "cursor-not-allowed text-primary-50"
-            : "cursor-pointer"
+          disableNext ? "cursor-not-allowed text-primary-50" : "cursor-pointer"
         )}
         onClick={() => {
           if (disableNext) {
