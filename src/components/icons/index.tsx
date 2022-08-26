@@ -28,6 +28,7 @@ import SearchIcon from "./miscs/search";
 import EyeIcon from "./miscs/Eye";
 import EyeClosedIcon from "./miscs/EyeClosed";
 import BackIcon from "./miscs/Back";
+import VerticalThreeDots from "./miscs/VerticalThreeDots";
 
 export {
   // Sidenav icons
@@ -57,4 +58,6 @@ export {
   EyeIcon,
   EyeClosedIcon,
   BackIcon,
+  // used in tables
+  VerticalThreeDots,
 };

@@ -88,6 +88,7 @@ export default function ReactTable({ columnsData }: IReactTable) {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => {
+            console.log(row.getVisibleCells(), "w");
             return (
               <tr
                 key={row.id}
@@ -108,7 +109,7 @@ export default function ReactTable({ columnsData }: IReactTable) {
           })}
         </tbody>
       </table>
-      <div className="text-center mt-4">Pagination</div>
+      {/* <div className="text-center mt-4">Pagination</div> */}
     </div>
   );
 }
