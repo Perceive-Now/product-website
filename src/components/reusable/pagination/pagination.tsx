@@ -124,7 +124,7 @@ function Pagination({
         className={classNames(
           "mr-2",
           disableNext
-            ? "cursor-not-allowed text-primary-50 pointer-events-none"
+            ? "cursor-not-allowed text-primary-50"
             : "cursor-pointer"
         )}
         onClick={() => {
