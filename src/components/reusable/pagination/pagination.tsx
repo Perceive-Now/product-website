@@ -48,6 +48,7 @@ function Pagination({
 
   const disablePrev = pageNum === 1;
   const disableNext = pageNum === totalPages;
+  
   return (
     <div className="flex items-center text-primary-900">
       <div

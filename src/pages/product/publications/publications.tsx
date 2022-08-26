@@ -3,8 +3,6 @@ import { useState } from "react";
 //
 import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
-
-//
 import RelatedKeyword from "../../../components/reusable/relatedKeyword";
 import PublicationItem from "../../../components/reusable/publicationItem";
 import Pagination from "../../../components/reusable/pagination";
@@ -90,6 +88,7 @@ export default function PublicationsPage() {
                   />
                 );
               })}
+
               <div className="flex justify-center mt-7">
                 <Pagination
                   pageNum={pageNum}
