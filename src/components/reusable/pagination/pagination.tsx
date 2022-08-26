@@ -7,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "../../icons";
 /*
  *
  **/
-function Pagination({
+export default function Pagination({
   pageNum,
   visiblePageNumbers = 10,
   totalCount,
@@ -140,8 +140,6 @@ function Pagination({
     </div>
   );
 }
-
-export default Pagination;
 
 interface IPagination {
   pageNum: number; // current page number
