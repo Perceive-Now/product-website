@@ -12,7 +12,7 @@ import { BookmarkIcon, CitationIcon, ShareIcon } from "../../icons";
 function PublicationItem({ data }: IPublicationItem) {
   return (
     <div key={data.id} className="mb-4">
-      <div className="text-xl font-medium text-primary-900 truncate mb-1">
+      <div className="text-xl font-medium text-primary-900 truncate mb-1 cursor-pointer">
         {data.title}
       </div>
 
