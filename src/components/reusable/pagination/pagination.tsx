@@ -7,20 +7,22 @@ import { ChevronLeft, ChevronRight } from "../../icons";
 /*
  *
  **/
-export default function Pagination({
-  pageNum,
-  visiblePageNumbers = 10,
-  totalCount,
-  pageSize = 10,
-  gotoPage,
-}: IPagination) {
+export default function Pagination(props: IPagination) {
+  const {
+    currentPage,
+    visiblePageNumbers = 10,
+    totalCount,
+    pageSize = 10,
+    gotoPage,
+  } = props;
+
   const pageCountArray = useMemo(
     () =>
       Array.from({ length: Math.ceil(totalCount / pageSize) }, (v, i) => i + 1),
     [pageSize, totalCount]
   );
 
-  const isPageNumInVisibleRange = pageNum < visiblePageNumbers;
+  const isPageNumInVisibleRange = currentPage < visiblePageNumbers;
   const totalPages = pageCountArray.length;
 
   let NeighbourRange = 0;
@@ -29,12 +31,15 @@ export default function Pagination({
 
   if (!isPageNumInVisibleRange) {
     NeighbourRange = Math.ceil(visiblePageNumbers / 2);
+
     for (let i = 1; i <= NeighbourRange; i++) {
-      const lowerNeighbourPage = pageNum - i;
-      const higherNeighbourPage = pageNum + i;
+      const lowerNeighbourPage = currentPage - i;
+      const higherNeighbourPage = currentPage + i;
+
       if (lowerNeighbourPage >= 1) {
         lowerNeighbourPageArray.push(lowerNeighbourPage);
       }
+
       if (higherNeighbourPage <= totalPages) {
         higherNeighbourPageArray.push(higherNeighbourPage);
       }
@@ -46,8 +51,8 @@ export default function Pagination({
   const hasHigherPages =
     higherNeighbourPageArray[higherNeighbourPageArray.length - 1] < totalPages;
 
-  const disablePrev = pageNum === 1;
-  const disableNext = pageNum === totalPages;
+  const disablePrev = currentPage === 1;
+  const disableNext = currentPage === totalPages;
 
   return (
     <div className="flex items-center text-primary-900">
@@ -57,16 +62,14 @@ export default function Pagination({
           disablePrev ? "cursor-not-allowed text-primary-50" : "cursor-pointer"
         )}
         onClick={() => {
-          if (disablePrev) {
-            return;
-          }
-          gotoPage(pageNum - 1);
+          if (disablePrev) return;
+          gotoPage(currentPage - 1);
         }}
       >
         <ChevronLeft />
       </div>
 
-      {isPageNumInVisibleRange ? (
+      {isPageNumInVisibleRange && (
         <Fragment>
           {pageCountArray
             .filter((_, index) => index < visiblePageNumbers)
@@ -75,7 +78,7 @@ export default function Pagination({
                 key={count}
                 className={classNames(
                   "mr-2 cursor-pointer",
-                  count === pageNum ? "font-bold" : ""
+                  count === currentPage ? "font-bold" : ""
                 )}
                 onClick={() => gotoPage(count)}
               >
@@ -86,38 +89,36 @@ export default function Pagination({
             <div className="mr-2 cursor-pointer">...</div>
           )}
         </Fragment>
-      ) : (
+      )}
+
+      {!isPageNumInVisibleRange && (
         <Fragment>
           {hasLowerPages && <div className="mr-2 cursor-pointer">...</div>}
 
           {/* Lower page numbers */}
-          {lowerNeighbourPageArray.map((lowerNeighbourPage) => {
-            return (
-              <div
-                key={lowerNeighbourPage}
-                className="mr-2 cursor-pointer"
-                onClick={() => gotoPage(lowerNeighbourPage)}
-              >
-                {lowerNeighbourPage}
-              </div>
-            );
-          })}
+          {lowerNeighbourPageArray.map((lowerNeighbourPage) => (
+            <div
+              key={lowerNeighbourPage}
+              className="mr-2 cursor-pointer"
+              onClick={() => gotoPage(lowerNeighbourPage)}
+            >
+              {lowerNeighbourPage}
+            </div>
+          ))}
 
           {/* active page number */}
-          <div className={"mr-2 cursor-pointer font-bold"}>{pageNum}</div>
+          <div className={"mr-2 cursor-pointer font-bold"}>{currentPage}</div>
 
           {/* Higher page numbers */}
-          {higherNeighbourPageArray.map((higherNeighbourPage) => {
-            return (
-              <div
-                key={higherNeighbourPage}
-                className="mr-2 cursor-pointer"
-                onClick={() => gotoPage(higherNeighbourPage)}
-              >
-                {higherNeighbourPage}
-              </div>
-            );
-          })}
+          {higherNeighbourPageArray.map((higherNeighbourPage) => (
+            <div
+              key={higherNeighbourPage}
+              className="mr-2 cursor-pointer"
+              onClick={() => gotoPage(higherNeighbourPage)}
+            >
+              {higherNeighbourPage}
+            </div>
+          ))}
 
           {hasHigherPages && <div className="mr-2 cursor-pointer">...</div>}
         </Fragment>
@@ -129,10 +130,8 @@ export default function Pagination({
           disableNext ? "cursor-not-allowed text-primary-50" : "cursor-pointer"
         )}
         onClick={() => {
-          if (disableNext) {
-            return;
-          }
-          gotoPage(pageNum + 1);
+          if (disableNext) return;
+          gotoPage(currentPage + 1);
         }}
       >
         <ChevronRight />
@@ -142,7 +141,7 @@ export default function Pagination({
 }
 
 interface IPagination {
-  pageNum: number; // current page number
+  currentPage: number; // current page number
   visiblePageNumbers?: number; // number that is visible in pagination if 5 then 1 to max 5 will be visible in pagination
   totalCount: number; // total number of items
   pageSize?: number; // total number of items to show

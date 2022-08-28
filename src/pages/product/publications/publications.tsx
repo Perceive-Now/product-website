@@ -3,16 +3,18 @@ import { useState } from "react";
 //
 import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
+import Pagination from "../../../components/reusable/pagination";
 import RelatedKeyword from "../../../components/reusable/relatedKeyword";
 import PublicationItem from "../../../components/reusable/publicationItem";
-import Pagination from "../../../components/reusable/pagination";
 
 /**
  *
  */
 export default function PublicationsPage() {
   const [searchText, setSearchText] = useState<string>("");
-  const [publicationsData] = useState<IPublicationData[] | []>([
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const [publicationsData] = useState<IPublicationData[]>([
     {
       title:
         "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
@@ -49,14 +51,14 @@ export default function PublicationsPage() {
       id: 5,
     },
   ]);
-  const [relatedKeywords] = useState<string[] | []>([
+
+  const [relatedKeywords] = useState<string[]>([
     "sar-cov 2",
     "minimally invasive surgery murgery",
   ]);
-  const [pageNum, setPageNum] = useState<number>(1);
 
   const gotoPage = (page: number) => {
-    setPageNum(page);
+    setCurrentPage(page);
   };
 
   return (
@@ -80,19 +82,17 @@ export default function PublicationsPage() {
 
           <div className="grid grid-cols-12">
             <div className="col-span-9 mr-6">
-              {publicationsData.map((publicationData: IPublicationData) => {
-                return (
-                  <PublicationItem
-                    data={publicationData}
-                    key={publicationData.id}
-                  />
-                );
-              })}
+              {publicationsData.map((publicationData: IPublicationData) => (
+                <PublicationItem
+                  data={publicationData}
+                  key={publicationData.id}
+                />
+              ))}
 
               <div className="flex justify-center mt-7">
                 <Pagination
-                  pageNum={pageNum}
-                  totalCount={110}
+                  currentPage={currentPage}
+                  totalCount={111}
                   gotoPage={gotoPage}
                 />
               </div>
@@ -117,7 +117,7 @@ export default function PublicationsPage() {
 }
 
 export interface IPublicationData {
+  id: number;
   title: string;
   description: string;
-  id: number;
 }
