@@ -20,16 +20,24 @@ import type { IHawkEyeContext } from "./hawk-eye";
  *
  */
 export default function HawkEyeHomeSection() {
-  const { searchText, count } = useOutletContext<IHawkEyeContext>();
+  const { searchKeywords, count } = useOutletContext<IHawkEyeContext>();
 
   return (
     <div>
-      {searchText && (
+      {searchKeywords && searchKeywords.length > 0 && (
         <div className="mt-3">
           <p className="text-sm">
             <span className="text-gray-700">Showing result for:</span>
             <span> "</span>
-            <span className="font-semibold">{searchText}</span>
+            <span className="font-semibold">
+              {searchKeywords.map((keyword, index) => {
+                let comma = "";
+                if (searchKeywords.length - 1 > index) {
+                  comma = ", ";
+                }
+                return `${keyword.value}${comma}`;
+              })}
+            </span>
             <span>"</span>
           </p>
 

@@ -28,7 +28,7 @@ export default function HawkEyePage() {
       <div className="w-1/2">
         <Search onSubmit={handleSearch} />
       </div>
-
+      
       <Outlet context={{ searchKeywords, count }} />
     </div>
   );
@@ -43,6 +43,6 @@ interface IHawkEyeCount {
 }
 
 export interface IHawkEyeContext {
-  searchText: string;
+  searchKeywords: IKeywordOption[];
   count: IHawkEyeCount;
 }

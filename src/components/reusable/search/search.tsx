@@ -105,7 +105,7 @@ export default function Search(props: ISearchProps) {
             ClearIndicator: () => null,
           }}
           formatGroupLabel={formatGroupLabel}
-          noOptionsMessage={() => "Type any keyword"}
+          noOptionsMessage={() => "Type any keyword and press enter"}
           className={classNames(props.className)}
           classNamePrefix="custom_search"
           placeholder={props.placeholder ?? "Search keywords"}
