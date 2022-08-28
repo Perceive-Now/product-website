@@ -31,6 +31,9 @@ import BackIcon from "./miscs/Back";
 import BookmarkIcon from "./miscs/Bookmark";
 import ShareIcon from "./miscs/Share";
 import CitationIcon from "./miscs/Citation";
+import InfoIcon from "./miscs/Info";
+import MapMarkerIcon from "./miscs/MapMarker";
+import LocationIcon from "./miscs/Location";
 
 export {
   // Sidenav icons
@@ -63,4 +66,7 @@ export {
   BookmarkIcon,
   ShareIcon,
   CitationIcon,
+  InfoIcon,
+  MapMarkerIcon,
+  LocationIcon,
 };
