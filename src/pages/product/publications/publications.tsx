@@ -4,8 +4,8 @@ import { useState } from "react";
 import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
 import Pagination from "../../../components/reusable/pagination";
-import RelatedKeyword from "../../../components/reusable/relatedKeyword";
-import PublicationItem from "../../../components/reusable/publicationItem";
+import RelatedKeyword from "../../../components/@product/relatedKeyword";
+import PublicationItem from "../../../components/@product/publicationItem";
 
 /**
  *

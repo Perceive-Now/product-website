@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 //
-import WorldMap from "../../../components/reusable/world-map";
+import WorldMap from "../../../components/@product/world-map";
 import PageTitle from "../../../components/reusable/page-title";
 
 /**
