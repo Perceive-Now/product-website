@@ -31,6 +31,7 @@ import BackIcon from "./miscs/Back";
 import BookmarkIcon from "./miscs/Bookmark";
 import ShareIcon from "./miscs/Share";
 import CitationIcon from "./miscs/Citation";
+import InfoIcon from "./miscs/Info";
 
 export {
   // Sidenav icons
@@ -63,4 +64,5 @@ export {
   BookmarkIcon,
   ShareIcon,
   CitationIcon,
+  InfoIcon,
 };
