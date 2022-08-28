@@ -1,6 +1,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import AsyncCreateableSelect from "react-select/async-creatable";
+import { MultiValue } from "react-select";
 
 //
 import { SearchIcon } from "../../icons";
@@ -12,35 +13,23 @@ import "./search.css";
  *
  */
 export default function Search(props: ISearchProps) {
-  const [search, setSearch] = useState(props.initialValue ?? "");
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-
-    //
-    props.onSubmit(search);
-  };
-
   const inputSize = props.size ?? "small";
   const isRequired = props.required ?? false;
 
-  const filterOptionGroup = (inputValue: string): IFilterOptionGroup[] | [] => {
-    // filter the options with respect to inputValue
-    // sort the options in ascending order
-    // create group object
-    // loop through the remaining options
-    //// get 1st character of option,
-    //// convert to uppercase
-    //// compair with Alphabet regex
-    //// if alphabet group[key] = [...(group[key] || []), {label: option, value: option}]
-    //// else group["#123"] =  [...(group["#123"] || []), {label: option, value: option}]
-    // group ={"#123": [], "A":["Apple","Ant"],...}
-    // Object.entries(group) create [{label: "#123", options: options},...]
+  const [selectedKeywords, setSelectedKeywords] = useState(
+    props.initialValue ?? null
+  );
 
-    let filteredKeywords = response.data.filter((keyword) =>
-      keyword.toLowerCase().includes(inputValue.toLowerCase())
-    );
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (selectedKeywords) {
+      props.onSubmit(selectedKeywords);
+    }
+  };
 
+  const generateOptionsGroup = (
+    filteredKeywords: string[]
+  ): IFilterOptionGroup[] | [] => {
     let sortedFilteredKeywords = filteredKeywords.sort((a, b) =>
       a.toLowerCase() < b.toLowerCase() ? -1 : 1
     );
@@ -49,9 +38,11 @@ export default function Search(props: ISearchProps) {
 
     sortedFilteredKeywords.forEach((keyword: string) => {
       let firstCharacter = keyword[0];
+      let isFirstCharacterAlphabet = /^[A-Za-z]$/.test(firstCharacter);
 
-      if (/^[A-Za-z]$/.test(firstCharacter)) {
+      if (isFirstCharacterAlphabet) {
         firstCharacter = firstCharacter.toUpperCase();
+
         groupedOptions[firstCharacter] = [
           ...(groupedOptions[firstCharacter] || []),
           { label: keyword, value: keyword },
@@ -71,23 +62,32 @@ export default function Search(props: ISearchProps) {
       }
     );
   };
+
   const fetchOptions = (inputValue: string) => {
     try {
       // add fetch api here
       return new Promise<IFilterOptionGroup[] | []>((resolve) => {
         setTimeout(() => {
-          resolve(filterOptionGroup(inputValue));
+          let filteredKeywords = response.data.filter((keyword) =>
+            keyword.toLowerCase().includes(inputValue.toLowerCase())
+          );
+          resolve(generateOptionsGroup(filteredKeywords));
         }, 10);
       });
     } catch (error) {
       console.log(error);
     }
   };
-  const formatGroupLabel = (data: any) => (
-    <div>
-      <span>{data.label}</span>
-    </div>
-  );
+
+  const handleKeywordChange = (newValue: MultiValue<IFilterOptionGroup>) => {
+    let keywords: IKeywordOption[] = newValue.map((keyword) => {
+      return {
+        label: keyword.label,
+        value: keyword.value || "",
+      };
+    });
+    setSelectedKeywords(keywords);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="relative">
@@ -96,7 +96,6 @@ export default function Search(props: ISearchProps) {
           cacheOptions
           loadOptions={fetchOptions}
           formatCreateLabel={(inputValue: string) => inputValue}
-          defaultMenuIsOpen={false}
           isMulti
           // isOptionDisabled={() => selectedOptions.length >= 3}
           components={{
@@ -110,6 +109,7 @@ export default function Search(props: ISearchProps) {
           className={classNames(props.className)}
           classNamePrefix="custom_search"
           placeholder={props.placeholder ?? "Search keywords"}
+          onChange={handleKeywordChange}
         />
 
         <div
@@ -134,9 +134,9 @@ interface ISearchProps {
   required?: boolean;
   className?: string;
   placeholder?: string;
-  initialValue?: string;
+  initialValue?: IKeywordOption[];
   size?: "small" | "large";
-  onSubmit: (value: string) => void;
+  onSubmit: (value: IKeywordOption[]) => void;
 }
 
 // remove once api is received
@@ -144,7 +144,7 @@ interface IGroupOptions {
   [key: string]: IKeywordOption[];
 }
 
-interface IKeywordOption {
+export interface IKeywordOption {
   value: string;
   label: string;
 }
@@ -152,6 +152,7 @@ interface IKeywordOption {
 interface IFilterOptionGroup {
   label: string;
   options: IKeywordOption[];
+  value?: string;
 }
 
 export const response = {
@@ -175,3 +176,9 @@ export const response = {
     "antibody tests",
   ],
 };
+
+const formatGroupLabel = (data: any) => (
+  <div>
+    <span>{data.label}</span>
+  </div>
+);

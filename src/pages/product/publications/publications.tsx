@@ -4,25 +4,36 @@ import { useState } from "react";
 import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
 
+//
+import { IKeywordOption } from "../../../components/reusable/search/search";
+
 /**
  *
  */
 export default function PublicationsPage() {
-  const [searchText, setSearchText] = useState("");
+  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+
+  const handleSearch = (value: IKeywordOption[]) => {
+    setSearchKeywords(value);
+  };
 
   return (
     <div>
       <div className="w-1/2">
-        <Search onSubmit={(searchValue) => setSearchText(searchValue)} />
+        <Search onSubmit={handleSearch} />
       </div>
 
-      {searchText && (
+      {searchKeywords && (
         <div className="my-3">
           <p className="text-sm">
             <span className="text-gray-700">
               Showing trending publications for:
             </span>
-            <span> “{searchText}”</span>
+            “
+            {searchKeywords.map((keywords) => {
+              return <span key={keywords.value}>{keywords.value}</span>;
+            })}
+            ”
           </p>
 
           <div className="my-3">

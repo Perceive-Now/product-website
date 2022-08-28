@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
+//
+import { IKeywordOption } from "../../../components/reusable/search/search";
+
 export default function DashboardPage() {
   const location = useLocation();
   const locationState = location.state as ILocationState;
 
-  const [searchValue] = useState(locationState?.search ?? "");
+  const [searchValue] = useState(locationState?.search ?? []);
 
   return (
     <div>
@@ -13,7 +16,9 @@ export default function DashboardPage() {
         <p>
           <span>Searching for: </span>
           <span>"</span>
-          <span className="font-semibold">{searchValue}</span>
+          <span className="font-semibold">
+            {searchValue.map((keyword) => keyword.value)}
+          </span>
           <span>"</span>
         </p>
       )}
@@ -22,5 +27,5 @@ export default function DashboardPage() {
 }
 
 interface ILocationState {
-  search?: string;
+  search?: IKeywordOption[];
 }
