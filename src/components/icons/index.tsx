@@ -28,6 +28,9 @@ import SearchIcon from "./miscs/search";
 import EyeIcon from "./miscs/Eye";
 import EyeClosedIcon from "./miscs/EyeClosed";
 import BackIcon from "./miscs/Back";
+import BookmarkIcon from "./miscs/Bookmark";
+import ShareIcon from "./miscs/Share";
+import CitationIcon from "./miscs/Citation";
 
 export {
   // Sidenav icons
@@ -57,4 +60,7 @@ export {
   EyeIcon,
   EyeClosedIcon,
   BackIcon,
+  BookmarkIcon,
+  ShareIcon,
+  CitationIcon,
 };
