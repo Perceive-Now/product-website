@@ -23,7 +23,7 @@ export default function TrendsPage() {
         <Search onSubmit={handleSearch} />
       </div>
 
-      {searchKeywords && (
+      {searchKeywords && searchKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
             <span className="text-gray-700">

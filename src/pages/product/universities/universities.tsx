@@ -23,15 +23,19 @@ export default function UniversitiesPage() {
         <Search onSubmit={handleSearch} />
       </div>
 
-      {searchKeywords && (
+      {searchKeywords && searchKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
             <span className="text-gray-700">
               Showing top universities trends for:
             </span>
             “
-            {searchKeywords.map((keywords) => {
-              return <span key={keywords.value}> {keywords.value}</span>;
+            {searchKeywords.map((keyword, index) => {
+              let comma = "";
+              if (searchKeywords.length - 1 > index) {
+                comma = ", ";
+              }
+              return `${keyword.value}${comma}`;
             })}
             ”
           </p>
