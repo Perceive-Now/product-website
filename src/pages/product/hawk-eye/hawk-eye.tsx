@@ -3,12 +3,17 @@ import { Outlet } from "react-router-dom";
 
 //
 import Search from "../../../components/reusable/search";
+import { IKeywordOption } from "../../../components/reusable/search/search";
 
 /**
  *
  */
 export default function HawkEyePage() {
-  const [searchText, setSearchText] = useState("");
+  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+
+  const handleSearch = (value: IKeywordOption[]) => {
+    setSearchKeywords(value);
+  };
 
   const [count] = useState<IHawkEyeCount>({
     publications: 46,
@@ -21,10 +26,10 @@ export default function HawkEyePage() {
   return (
     <div>
       <div className="w-1/2">
-        <Search onSubmit={(value) => setSearchText(value)} />
+        <Search onSubmit={handleSearch} />
       </div>
-
-      <Outlet context={{ searchText, count }} />
+      
+      <Outlet context={{ searchKeywords, count }} />
     </div>
   );
 }
@@ -38,6 +43,6 @@ interface IHawkEyeCount {
 }
 
 export interface IHawkEyeContext {
-  searchText: string;
+  searchKeywords: IKeywordOption[];
   count: IHawkEyeCount;
 }

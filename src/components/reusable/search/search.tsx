@@ -1,41 +1,140 @@
 import { useState } from "react";
 import classNames from "classnames";
+import AsyncCreateableSelect from "react-select/async-creatable";
+import { MultiValue } from "react-select";
 
 //
 import { SearchIcon } from "../../icons";
+
+//
+import "./search.css";
+
+const MAX_KEYWORD = 3;
 
 /**
  *
  */
 export default function Search(props: ISearchProps) {
-  const [search, setSearch] = useState(props.initialValue ?? "");
+  // const inputSize = props.size ?? "small";
+  // const isRequired = props.required ?? false;
+
+  const [selectedKeywords, setSelectedKeywords] = useState(
+    props.initialValue ?? null
+  );
+  
+  const hasKeywordReachedMaxLimit = Boolean(
+    (selectedKeywords?.length || 0) >= MAX_KEYWORD
+  );
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
-    //
-    props.onSubmit(search);
+    if (selectedKeywords) {
+      props.onSubmit(selectedKeywords);
+    }
   };
 
-  const inputSize = props.size ?? "small";
-  const isRequired = props.required ?? false;
+  const generateOptionsGroup = (
+    filteredKeywords: string[]
+  ): IFilterOptionGroup[] | [] => {
+    let sortedFilteredKeywords = filteredKeywords.sort((a, b) =>
+      a.toLowerCase() < b.toLowerCase() ? -1 : 1
+    );
+
+    let groupedOptions: IGroupOptions = {};
+
+    sortedFilteredKeywords.forEach((keyword: string) => {
+      let firstCharacter = keyword[0];
+      let isFirstCharacterAlphabet = /^[A-Za-z]$/.test(firstCharacter);
+
+      if (isFirstCharacterAlphabet) {
+        firstCharacter = firstCharacter.toUpperCase();
+
+        groupedOptions[firstCharacter] = [
+          ...(groupedOptions[firstCharacter] || []),
+          { label: keyword, value: keyword },
+        ];
+      } else {
+        groupedOptions["#123"] = [
+          ...(groupedOptions["#123"] || []),
+          { label: keyword, value: keyword },
+        ];
+      }
+    });
+
+    return Object.entries(groupedOptions).map(
+      (group: [string, IKeywordOption[]]) => {
+        let [label, options] = group;
+        return { label: label, options: options };
+      }
+    );
+  };
+
+  const fetchOptions = (inputValue: string) => {
+    try {
+      const fetchKeywords = () => {
+        console.log("here");
+        // add fetch api here
+        return new Promise<IFilterOptionGroup[] | []>((resolve) => {
+          setTimeout(() => {
+            let filteredKeywords = response.data.filter((keyword) =>
+              keyword.toLowerCase().includes(inputValue.toLowerCase())
+            );
+            resolve(generateOptionsGroup(filteredKeywords));
+          }, 10);
+        });
+      };
+      if (!hasKeywordReachedMaxLimit) {
+        return fetchKeywords();
+      } else {
+        return new Promise<IFilterOptionGroup[] | []>((resolve) => {
+          resolve([]);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleKeywordChange = (newValue: MultiValue<IFilterOptionGroup>) => {
+    let keywords: IKeywordOption[] = newValue.map((keyword) => {
+      return {
+        label: keyword.label,
+        value: keyword.value || "",
+      };
+    });
+    setSelectedKeywords(keywords);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="relative">
       <div className="relative">
-        <input
-          onChange={(e) => setSearch(e.target.value)}
+        <AsyncCreateableSelect
+          loadOptions={fetchOptions}
+          formatCreateLabel={(inputValue: string) => inputValue}
+          isMulti
+          isOptionDisabled={() => hasKeywordReachedMaxLimit}
+          components={{
+            DropdownIndicator: () => null,
+            IndicatorSeparator: () => null,
+            LoadingIndicator: () => null,
+            ClearIndicator: () => null,
+          }}
+          formatGroupLabel={formatGroupLabel}
+          noOptionsMessage={() =>
+            hasKeywordReachedMaxLimit
+              ? `Max keyword limit selected, press enter to search`
+              : "Type any keyword and press enter"
+          }
+          className={classNames(props.className)}
+          classNamePrefix="custom_search"
           placeholder={props.placeholder ?? "Search keywords"}
-          className={classNames(
-            "pl-3 pr-7 border border-gray-300 rounded-lg w-full",
-            "focus:outline-none focus:border-primary-500",
-            inputSize === "small" ? "py-1" : "py-2",
-            props.className
-          )}
-          required={isRequired}
+          onChange={handleKeywordChange}
         />
 
-        <div className="absolute top-0 right-0 h-full">
+        <div
+          className="absolute top-0 right-0 h-full cursor-pointer"
+          onClick={handleSubmit}
+        >
           <div className="flex h-full items-center mr-3 ml-2">
             <SearchIcon className="text-gray-600" />
           </div>
@@ -54,7 +153,51 @@ interface ISearchProps {
   required?: boolean;
   className?: string;
   placeholder?: string;
-  initialValue?: string;
+  initialValue?: IKeywordOption[];
   size?: "small" | "large";
-  onSubmit: (value: string) => void;
+  onSubmit: (value: IKeywordOption[]) => void;
 }
+
+// remove once api is received
+interface IGroupOptions {
+  [key: string]: IKeywordOption[];
+}
+
+export interface IKeywordOption {
+  value: string;
+  label: string;
+}
+
+interface IFilterOptionGroup {
+  label: string;
+  options: IKeywordOption[];
+  value?: string;
+}
+
+export const response = {
+  data: [
+    "COVID-19",
+    "diagnosis",
+    "public health",
+    "virtual reality",
+    "pathology",
+    "asymptomatic contact",
+    "minimally invasive surgery",
+    "pneumonia",
+    "artificial intelligence",
+    "SARS-COV 2",
+    "haptic open glove",
+    "human computer interaction",
+    "RT-PCR",
+    "multibody dynamics",
+    "Vaccines",
+    "therapeutics",
+    "antibody tests",
+  ],
+};
+
+const formatGroupLabel = (data: any) => (
+  <div>
+    <span>{data.label}</span>
+  </div>
+);

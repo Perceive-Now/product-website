@@ -7,13 +7,17 @@ import UserIcon from "../../components/app/userIcon";
 import PerceiveLogo from "../../assets/images/logo.svg";
 import Search from "../../components/reusable/search";
 
+
+//
+import { IKeywordOption } from "../../components/reusable/search/search";
+
 /**
  *
  */
 export default function HomePage() {
   const navigate = useNavigate();
 
-  const handleSearch = (value: string) => {
+  const handleSearch = (value: IKeywordOption[]) => {
     navigate("/dashboard", {
       state: { search: value },
     });
