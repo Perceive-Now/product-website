@@ -4,22 +4,55 @@ import "./input.css";
  *
  */
 export default function Input(props: IInput) {
-  const inputType = props.type;
+  const inputType = props.type ?? "text";
   const label = props.label;
   const placeholder = props.placeholder;
   const value = props.value;
+  const name = props.name;
+  const id = props.id || props.name;
+  const register = props.register;
+  const error = props.error;
   const handleChange = props.handleChange;
+
+  const handleInputChange = (event: any) => {
+    if (register) {
+      register(name).onChange(event);
+    }
+    if (handleChange) {
+      handleChange(event.target.value);
+    }
+  };
 
   let inputRender;
 
   switch (inputType) {
+    case "text":
+    case "email": {
+      inputRender = (
+        <input
+          id={id}
+          name={name}
+          {...(register ? register(name) : {})}
+          className="input-field"
+          type={inputType}
+          placeholder={placeholder}
+          value={value}
+          onChange={handleInputChange}
+        />
+      );
+      break;
+    }
+
     case "textarea":
       inputRender = (
         <textarea
+          id={id}
+          name={name}
+          {...(register ? register(name) : {})}
           className="input-field"
           placeholder={placeholder}
           value={value}
-          onChange={(e: any) => handleChange(e.target.value)}
+          onChange={handleInputChange}
           rows={8}
         />
       );
@@ -37,14 +70,22 @@ export default function Input(props: IInput) {
       )}
 
       {inputRender}
+
+      {error?.message && (
+        <div className="mt-1 text-xs text-danger-500">{error.message}</div>
+      )}
     </div>
   );
 }
 
 interface IInput {
   label?: string;
-  type: "textarea";
+  id?: string;
+  name?: string;
+  type?: "text" | "email" | "textarea";
   placeholder?: string;
   value?: string;
-  handleChange: (e: string) => void;
+  handleChange?: (e: string) => void;
+  register?: any;
+  error?: any;
 }

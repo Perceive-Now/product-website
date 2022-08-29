@@ -39,6 +39,7 @@ export default function LoginPage() {
   const { watch, register, formState, handleSubmit } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
+    mode: "onBlur",
   });
 
   const { errors } = formState;

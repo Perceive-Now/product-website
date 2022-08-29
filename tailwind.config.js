@@ -82,5 +82,7 @@ module.exports = {
   plugins: [
     // https://github.com/tailwindlabs/tailwindcss-forms
     require("@tailwindcss/forms"),
+    // https://github.com/tailwindlabs/tailwindcss-line-clamp
+    require("@tailwindcss/line-clamp"),
   ],
 };

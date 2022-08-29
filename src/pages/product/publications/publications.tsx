@@ -3,6 +3,9 @@ import { useState } from "react";
 //
 import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
+import Pagination from "../../../components/reusable/pagination";
+import RelatedKeyword from "../../../components/@product/relatedKeyword";
+import PublicationItem from "../../../components/@product/publicationItem";
 
 //
 import { IKeywordOption } from "../../../components/reusable/search/search";
@@ -12,9 +15,57 @@ import { IKeywordOption } from "../../../components/reusable/search/search";
  */
 export default function PublicationsPage() {
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleSearch = (value: IKeywordOption[]) => {
     setSearchKeywords(value);
+  };
+
+  const [publicationsData] = useState<IPublicationData[]>([
+    {
+      title:
+        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
+      description:
+        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
+      id: 1,
+    },
+    {
+      title:
+        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
+      description:
+        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
+      id: 2,
+    },
+    {
+      title:
+        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
+      description:
+        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
+      id: 3,
+    },
+    {
+      title:
+        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
+      description:
+        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
+      id: 4,
+    },
+    {
+      title:
+        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
+      description:
+        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
+      id: 5,
+    },
+  ]);
+
+  const [relatedKeywords] = useState<string[]>([
+    "sar-cov 2",
+    "minimally invasive surgery murgery",
+  ]);
+
+  const gotoPage = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -41,10 +92,47 @@ export default function PublicationsPage() {
           </p>
 
           <div className="my-3">
-            <PageTitle title="publications" learnMore="Learn more" />
+            <PageTitle title="Publications" learnMore="Learn more" />
+          </div>
+
+          <div className="grid grid-cols-12">
+            <div className="col-span-9 mr-6">
+              {publicationsData.map((publicationData: IPublicationData) => (
+                <PublicationItem
+                  data={publicationData}
+                  key={publicationData.id}
+                />
+              ))}
+
+              <div className="flex justify-center mt-7">
+                <Pagination
+                  currentPage={currentPage}
+                  totalCount={111}
+                  gotoPage={gotoPage}
+                />
+              </div>
+            </div>
+
+            <div className="col-span-3">
+              <div className="uppercase font-semibold text-primary-900 text-sm mb-2">
+                Related keywords
+              </div>
+
+              <div className="flex items-start flex-col">
+                {relatedKeywords.map((keyword) => (
+                  <RelatedKeyword keyword={keyword} key={keyword} />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
     </div>
   );
+}
+
+export interface IPublicationData {
+  id: number;
+  title: string;
+  description: string;
 }

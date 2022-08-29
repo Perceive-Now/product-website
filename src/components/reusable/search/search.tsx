@@ -14,8 +14,8 @@ const MAX_KEYWORD = 3;
  *
  */
 export default function Search(props: ISearchProps) {
-  const inputSize = props.size ?? "small";
-  const isRequired = props.required ?? false;
+  // const inputSize = props.size ?? "small";
+  // const isRequired = props.required ?? false;
 
   const [selectedKeywords, setSelectedKeywords] = useState(
     props.initialValue ?? null
@@ -70,6 +70,7 @@ export default function Search(props: ISearchProps) {
   const fetchOptions = (inputValue: string) => {
     try {
       const fetchKeywords = () => {
+        console.log("here");
         // add fetch api here
         return new Promise<IFilterOptionGroup[] | []>((resolve) => {
           setTimeout(() => {
@@ -106,7 +107,6 @@ export default function Search(props: ISearchProps) {
     <form onSubmit={handleSubmit} className="relative">
       <div className="relative">
         <AsyncCreateableSelect
-          cacheOptions
           loadOptions={fetchOptions}
           formatCreateLabel={(inputValue: string) => inputValue}
           isMulti
