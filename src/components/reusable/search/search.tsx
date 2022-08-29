@@ -9,6 +9,7 @@ import { SearchIcon } from "../../icons";
 //
 import "./search.css";
 
+const MAX_KEYWORD = 3;
 /**
  *
  */
@@ -18,6 +19,9 @@ export default function Search(props: ISearchProps) {
 
   const [selectedKeywords, setSelectedKeywords] = useState(
     props.initialValue ?? null
+  );
+  const hasKeywordReachedMaxLimit = Boolean(
+    (selectedKeywords?.length || 0) >= MAX_KEYWORD
   );
 
   const handleSubmit = (e: any) => {
@@ -65,15 +69,24 @@ export default function Search(props: ISearchProps) {
 
   const fetchOptions = (inputValue: string) => {
     try {
-      // add fetch api here
-      return new Promise<IFilterOptionGroup[] | []>((resolve) => {
-        setTimeout(() => {
-          let filteredKeywords = response.data.filter((keyword) =>
-            keyword.toLowerCase().includes(inputValue.toLowerCase())
-          );
-          resolve(generateOptionsGroup(filteredKeywords));
-        }, 10);
-      });
+      const fetchKeywords = () => {
+        // add fetch api here
+        return new Promise<IFilterOptionGroup[] | []>((resolve) => {
+          setTimeout(() => {
+            let filteredKeywords = response.data.filter((keyword) =>
+              keyword.toLowerCase().includes(inputValue.toLowerCase())
+            );
+            resolve(generateOptionsGroup(filteredKeywords));
+          }, 10);
+        });
+      };
+      if (!hasKeywordReachedMaxLimit) {
+        return fetchKeywords();
+      } else {
+        return new Promise<IFilterOptionGroup[] | []>((resolve) => {
+          resolve([]);
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -97,7 +110,7 @@ export default function Search(props: ISearchProps) {
           loadOptions={fetchOptions}
           formatCreateLabel={(inputValue: string) => inputValue}
           isMulti
-          // isOptionDisabled={() => selectedOptions.length >= 3}
+          isOptionDisabled={() => hasKeywordReachedMaxLimit}
           components={{
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null,
@@ -105,7 +118,11 @@ export default function Search(props: ISearchProps) {
             ClearIndicator: () => null,
           }}
           formatGroupLabel={formatGroupLabel}
-          noOptionsMessage={() => "Type any keyword and press enter"}
+          noOptionsMessage={() =>
+            hasKeywordReachedMaxLimit
+              ? `Max keyword limit selected, press enter to search`
+              : "Type any keyword and press enter"
+          }
           className={classNames(props.className)}
           classNamePrefix="custom_search"
           placeholder={props.placeholder ?? "Search keywords"}

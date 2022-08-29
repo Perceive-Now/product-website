@@ -8,16 +8,22 @@ export default function DashboardPage() {
   const location = useLocation();
   const locationState = location.state as ILocationState;
 
-  const [searchValue] = useState(locationState?.search ?? []);
+  const [searchKeywords] = useState(locationState?.search ?? []);
 
   return (
     <div>
-      {searchValue && (
+      {searchKeywords && (
         <p>
           <span>Searching for: </span>
           <span>"</span>
           <span className="font-semibold">
-            {searchValue.map((keyword) => keyword.value)}
+            {searchKeywords.map((keyword, index) => {
+              let comma = "";
+              if (searchKeywords.length - 1 > index) {
+                comma = ", ";
+              }
+              return `${keyword.value}${comma}`;
+            })}
           </span>
           <span>"</span>
         </p>
