@@ -10,6 +10,7 @@ import { SearchIcon } from "../../icons";
 import "./search.css";
 
 const MAX_KEYWORD = 3;
+
 /**
  *
  */
@@ -20,6 +21,7 @@ export default function Search(props: ISearchProps) {
   const [selectedKeywords, setSelectedKeywords] = useState(
     props.initialValue ?? null
   );
+  
   const hasKeywordReachedMaxLimit = Boolean(
     (selectedKeywords?.length || 0) >= MAX_KEYWORD
   );
