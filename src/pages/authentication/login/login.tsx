@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //
@@ -15,12 +15,24 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 import Logo from "../../../assets/images/logo-small.svg";
 import { WEBSITE_URL } from "../../../utils/constants";
 
+// Store
+import { useAppDispatch } from "../../../hooks/redux";
+import { getCurrentSession, loginUser } from "../../../stores/auth";
+
 /**
  *
  */
 export default function LoginPage() {
   const navigate = useNavigate();
 
+  //
+  const dispatch = useAppDispatch();
+
+  //
+  const [isLoading, setIsLoading] = useState(true);
+
+  //
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: ILoginFormValues = {
@@ -44,16 +56,38 @@ export default function LoginPage() {
 
   const { errors } = formState;
 
-  const handleLogin = (values: ILoginFormValues) => {
-    console.log(values, "values");
+  const handleLogin = async (values: ILoginFormValues) => {
+    setIsSubmitting(true);
 
-    // TODO:: Make API call for login
+    // Login user
+    const response = await dispatch(loginUser(values)).unwrap();
 
-    navigate("/");
+    if (response.success) {
+      navigate("/");
+    } else {
+      alert(response.message);
+    }
+
+    setIsSubmitting(false);
   };
 
   const emailValue = watch("email");
   const passwordValue = watch("password");
+
+  const getSession = async () => {
+    const session = await dispatch(getCurrentSession()).unwrap();
+    if (session.success) navigate("/");
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Do not show login page content on initial load
+  if (isLoading) return <></>;
 
   return (
     <div className="flex justify-center items-center min-h-screen px-2">
@@ -149,7 +183,11 @@ export default function LoginPage() {
         </div>
 
         <div className="flex justify-center mt-3">
-          <Button htmlType="submit" disabled={!emailValue || !passwordValue}>
+          <Button
+            htmlType="submit"
+            disabled={!emailValue || !passwordValue}
+            loading={isSubmitting}
+          >
             Login
           </Button>
         </div>

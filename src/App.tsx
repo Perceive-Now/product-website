@@ -36,6 +36,7 @@ import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
 
 import PageNotFound404 from "./pages/404";
+import AuthLayout from "./layouts/auth";
 
 /**
  *
@@ -48,53 +49,55 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* All the routes below are protected */}
-        <Route path="/" element={<HomePage />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/" element={<HomePage />} />
 
-        <Route element={<DefaultLayout />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/insights" element={<InsightsPage />} />
-          <Route path="/trends" element={<TrendsPage />} />
+          <Route element={<DefaultLayout />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/insights" element={<InsightsPage />} />
+            <Route path="/trends" element={<TrendsPage />} />
 
-          {/* Hawk eye page section starts here */}
-          <Route path="/hawk-eye-view" element={<HawkEyePage />}>
-            <Route path="/hawk-eye-view" element={<HawkEyeHomeSection />} />
-            <Route
-              path="/hawk-eye-view/publications"
-              element={<HawkEyePublicationsSection />}
-            />
-            <Route
-              path="/hawk-eye-view/patents"
-              element={<HawkEyePatentsSection />}
-            />
-            <Route
-              path="/hawk-eye-view/experts"
-              element={<HawkEyeExpertsSection />}
-            />
-            <Route
-              path="/hawk-eye-view/universities"
-              element={<HawkEyeUniversitiesSection />}
-            />
-            <Route
-              path="/hawk-eye-view/funders"
-              element={<HawkEyeFundersSection />}
-            />
+            {/* Hawk eye page section starts here */}
+            <Route path="/hawk-eye-view" element={<HawkEyePage />}>
+              <Route path="/hawk-eye-view" element={<HawkEyeHomeSection />} />
+              <Route
+                path="/hawk-eye-view/publications"
+                element={<HawkEyePublicationsSection />}
+              />
+              <Route
+                path="/hawk-eye-view/patents"
+                element={<HawkEyePatentsSection />}
+              />
+              <Route
+                path="/hawk-eye-view/experts"
+                element={<HawkEyeExpertsSection />}
+              />
+              <Route
+                path="/hawk-eye-view/universities"
+                element={<HawkEyeUniversitiesSection />}
+              />
+              <Route
+                path="/hawk-eye-view/funders"
+                element={<HawkEyeFundersSection />}
+              />
+            </Route>
+            {/* Hawk eye page section end here */}
+
+            <Route path="/summary" element={<SummaryPage />} />
+            <Route path="/publications" element={<PublicationsPage />} />
+
+            {/* Patents page section starts here */}
+            <Route path="/patents" element={<PatentsPage />} />
+            <Route path="/patents/profile/:id" element={<PatentsProfile />} />
+            {/* Patents page section end here */}
+
+            <Route path="/experts" element={<ExpertsPage />} />
+            <Route path="/funders" element={<FundersPage />} />
+            <Route path="/universities" element={<UniversitiesPage />} />
+
+            <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/help" element={<HelpPage />} />
           </Route>
-          {/* Hawk eye page section end here */}
-
-          <Route path="/summary" element={<SummaryPage />} />
-          <Route path="/publications" element={<PublicationsPage />} />
-
-          {/* Patents page section starts here */}
-          <Route path="/patents" element={<PatentsPage />} />
-          <Route path="/patents/profile/:id" element={<PatentsProfile />} />
-          {/* Patents page section end here */}
-
-          <Route path="/experts" element={<ExpertsPage />} />
-          <Route path="/funders" element={<FundersPage />} />
-          <Route path="/universities" element={<UniversitiesPage />} />
-
-          <Route path="/feedback" element={<FeedbackPage />} />
-          <Route path="/help" element={<HelpPage />} />
         </Route>
 
         {/* 404 not found */}
