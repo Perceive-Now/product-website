@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 //
+import AuthLayout from "./layouts/auth";
 import DefaultLayout from "./layouts/default";
 
 //
@@ -9,8 +10,8 @@ import HomePage from "./pages/homepage";
 import LoginPage from "./pages/authentication/login";
 import ForgotPasswordPage from "./pages/authentication/forgot-password";
 
-import FeedbackPage from "./pages/miscs/feedback";
 import HelpPage from "./pages/miscs/help";
+import FeedbackPage from "./pages/miscs/feedback";
 
 import DashboardPage from "./pages/product/dashboard";
 import InsightsPage from "./pages/product/insights";
@@ -36,7 +37,6 @@ import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
 
 import PageNotFound404 from "./pages/404";
-import AuthLayout from "./layouts/auth";
 
 /**
  *
