@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 //
 import * as yup from "yup";
@@ -9,15 +9,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 //
 import Button from "../../../components/reusable/button";
+import { BackIcon } from "../../../components/icons";
 
 //
 import Logo from "../../../assets/images/logo-small.svg";
-import { BackIcon } from "../../../components/icons";
+
+//
+import { useAppDispatch } from "../../../hooks/redux";
+import { getCurrentSession } from "../../../stores/auth";
 
 /**
  *
  */
 export default function ForgotPasswordPage() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const formInitialValue: ILoginFormValues = {
@@ -48,6 +56,21 @@ export default function ForgotPasswordPage() {
   };
 
   const emailValue = watch("email");
+
+  const getSession = async () => {
+    const session = await dispatch(getCurrentSession()).unwrap();
+    if (session.success) navigate("/");
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Do not show login page content on initial load
+  if (isLoading) return <></>;
 
   return (
     <div className="flex justify-center items-center min-h-screen px-2">

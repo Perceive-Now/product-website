@@ -34,6 +34,7 @@ import CitationIcon from "./miscs/Citation";
 import InfoIcon from "./miscs/Info";
 import MapMarkerIcon from "./miscs/MapMarker";
 import LocationIcon from "./miscs/Location";
+import LoadingIcon from "./miscs/Loading";
 
 export {
   // Sidenav icons
@@ -69,4 +70,5 @@ export {
   InfoIcon,
   MapMarkerIcon,
   LocationIcon,
+  LoadingIcon,
 };
