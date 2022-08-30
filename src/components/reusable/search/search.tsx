@@ -134,7 +134,7 @@ export default function Search(props: ISearchProps) {
           className="absolute top-0 right-0 h-full cursor-pointer"
           onClick={handleSubmit}
         >
-          <div className="flex h-full items-center mr-3 ml-2">
+          <div className="flex h-full items-center mx-2">
             <SearchIcon className="text-gray-600" />
           </div>
         </div>
