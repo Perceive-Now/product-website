@@ -21,7 +21,7 @@ export default function Search(props: ISearchProps) {
   const [selectedKeywords, setSelectedKeywords] = useState(
     props.initialValue ?? null
   );
-  
+
   const hasKeywordReachedMaxLimit = Boolean(
     (selectedKeywords?.length || 0) >= MAX_KEYWORD
   );
@@ -72,7 +72,6 @@ export default function Search(props: ISearchProps) {
   const fetchOptions = (inputValue: string) => {
     try {
       const fetchKeywords = () => {
-        console.log("here");
         // add fetch api here
         return new Promise<IFilterOptionGroup[] | []>((resolve) => {
           setTimeout(() => {
