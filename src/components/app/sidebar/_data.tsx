@@ -12,7 +12,6 @@ import {
   TrendsIcon,
   UniversitiesIcon,
   DashboardIcon,
-  SettingsIcon,
 } from "../../icons";
 
 const topItems: ISidebarItem[] = [
@@ -34,7 +33,7 @@ const sidebarItems: ISidebarListItem[] = [
         to: "/insights",
       },
       {
-        title: "Trends",
+        title: "Technology Trends",
         icon: <TrendsIcon />,
         to: "/trends",
       },
@@ -83,14 +82,6 @@ const sidebarItems: ISidebarListItem[] = [
   },
 ];
 
-const bottomItems: ISidebarItem[] = [
-  {
-    title: "Settings",
-    icon: <SettingsIcon />,
-    to: "/settings",
-  },
-];
-
 export interface ISidebarItem {
   title: string;
   icon: ReactElement;
@@ -103,4 +94,4 @@ export interface ISidebarListItem {
   children: ISidebarItem[];
 }
 
-export { topItems, sidebarItems, bottomItems };
+export { topItems, sidebarItems };

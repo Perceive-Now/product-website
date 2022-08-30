@@ -8,7 +8,7 @@ import PerceiveLogo from "../../../assets/images/logo.svg";
 
 //
 import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
-import { topItems, sidebarItems, bottomItems, ISidebarItem } from "./_data";
+import { topItems, sidebarItems, ISidebarItem } from "./_data";
 
 // Redux
 import { logoutUser } from "../../../stores/auth";
@@ -76,7 +76,7 @@ export default function AppSidebar() {
                 className="px-3 py-2 flex items-center text-primary-600 cursor-pointer"
                 onClick={() => updateActiveGroup(item.key)}
               >
-                <div className="mr-[20px] pl-[4px]">
+                <div className="mr-1">
                   {expandedGroups.includes(item.key) && <ChevronUp />}
                   {!expandedGroups.includes(item.key) && <ChevronDown />}
                 </div>
@@ -97,17 +97,6 @@ export default function AppSidebar() {
                 </div>
               )}
             </div>
-          ))}
-
-          {/* Level 0 items after expandable group */}
-          {bottomItems.map((item, index) => (
-            <NavLinkItem
-              key={`bottom-${index}`}
-              to={item.to}
-              icon={item.icon}
-              title={item.title}
-              isTopLevel={true}
-            />
           ))}
         </div>
       </div>
@@ -134,12 +123,12 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900 hover:bg-primary-50",
-            props.isTopLevel ? "px-3" : "px-6",
+            "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
+            props.isTopLevel ? "pl-3" : "pl-6",
             { "bg-appGray-200": isActive }
           )}
         >
-          <div className="mr-2">{props.icon}</div>
+          <div className="mr-1">{props.icon}</div>
           <span className="h-4 flex items-center">{props.title}</span>
         </div>
       )}
