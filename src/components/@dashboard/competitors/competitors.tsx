@@ -68,7 +68,7 @@ export default function Competitors() {
             }),
         };
       };
-      
+
       const response = fetchCompetitorsData();
 
       let data = response.data.map((d, index) => {
@@ -95,14 +95,18 @@ export default function Competitors() {
   };
 
   return (
-    <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
-      <PageTitle
-        title="Competitors"
-        info="true"
-        subTitle={`"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
-      />
+    <div className="mt-3 rounded-2xl border border-gray-200 shadow">
+      <div className="pt-4 px-3">
+        <PageTitle
+          title="Competitors"
+          info="true"
+          subTitle={`"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
+        />
+      </div>
       <div className="mt-9">
-        <ReactTable columnsData={columns} rowsData={data} />
+        <div className="px-3">
+          <ReactTable columnsData={columns} rowsData={data} />
+        </div>
         <div>
           <ExpandBtn
             isExpanded={isExpanded}
