@@ -19,7 +19,7 @@ export default function ExpandBtn({
     <div className="w-full">
       {!isExpanded && (
         <div
-          className="w-full cursor-pointer font-medium bg-primary-900 text-white py-[12px] rounded-b-2xl hover:bg-primary-50 hover:text-primary-900"
+          className="w-full cursor-pointer transition duration-300 font-medium bg-primary-900 text-white py-[12px] rounded-b-2xl hover:bg-primary-50 hover:text-primary-900"
           onClick={handleExpandToggle}
         >
           <div className="flex justify-center items-center">
@@ -35,7 +35,7 @@ export default function ExpandBtn({
             <Fragment>
               <div
                 onClick={handleExpandToggle}
-                className="w-1/2 cursor-pointer font-medium bg-primary-900 hover:bg-primary-50 hover:text-primary-900 text-white py-[12px] rounded-bl-2xl"
+                className="w-1/2 cursor-pointer transition duration-300 font-medium bg-primary-900 hover:bg-primary-50 hover:text-primary-900 text-white py-[12px] rounded-bl-2xl"
               >
                 <div className="flex justify-center items-center">
                   <span className="mr-[12px]">Collapse</span>
@@ -44,7 +44,7 @@ export default function ExpandBtn({
               </div>
 
               <div
-                className="w-1/2 cursor-pointer font-medium bg-white text-primary-900 py-[12px] rounded-br-2xl border border-primary-900 hover:border-primary-600 hover:text-primary-600"
+                className="w-1/2 cursor-pointer transition duration-300 font-medium bg-white text-primary-900 py-[12px] rounded-br-2xl border border-primary-900 hover:border-primary-600 hover:text-primary-600"
                 onClick={handleSecondaryButtonClick}
               >
                 <div className="flex justify-center items-center">
@@ -57,7 +57,7 @@ export default function ExpandBtn({
 
           {!hasSecondaryButton && (
             <div
-              className="w-full cursor-pointer font-medium bg-primary-900 hover:bg-primary-50 hover:text-primary-900 text-white py-[12px] rounded-b-2xl"
+              className="w-full cursor-pointer transition duration-300 font-medium bg-primary-900 hover:bg-primary-50 hover:text-primary-900 text-white py-[12px] rounded-b-2xl"
               onClick={handleExpandToggle}
             >
               <div className="flex justify-center items-center">
