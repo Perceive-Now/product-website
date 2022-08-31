@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { PropsWithChildren } from "react";
 
 //
@@ -10,7 +11,14 @@ export default function PageTitle(props: PropsWithChildren<IPageTitleProps>) {
   return (
     <div className="py-1">
       <div className="flex justify-between items-center">
-        <p className="text-[22px] text-primary-900">{props.title}</p>
+        <p
+          className={classNames(
+            "text-[22px] text-primary-900",
+            props.titleClass
+          )}
+        >
+          {props.title}
+        </p>
 
         {props.learnMore && !props.info && (
           <div>
@@ -39,6 +47,7 @@ export default function PageTitle(props: PropsWithChildren<IPageTitleProps>) {
 
 interface IPageTitleProps {
   title: string;
+  titleClass?: string;
   info?: string;
   subTitle?: string;
   learnMore?: string;
