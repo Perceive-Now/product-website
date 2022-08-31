@@ -10,7 +10,7 @@ export default function TopUniversities() {
         title="Top 3 Universities with Highest Research Footprint"
         titleClass="font-bold"
       />
-      
+
       <div className="mt-3  grid grid-cols-3 gap-x-4">
         {topUniversitiesData.map((uniData) => {
           return (
@@ -42,7 +42,7 @@ export default function TopUniversities() {
                   <div className="text-gray-800 text-2xl font-semibold">
                     {uniData.funding}
                   </div>
-                  <div className="text-gray-800">Funding Received</div>
+                  <div className="text-gray-800 mt-[4px]">Funding Received</div>
                 </div>
               </div>
             </div>
