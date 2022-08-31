@@ -8,13 +8,20 @@ import PerceiveLogo from "../../../assets/images/logo.svg";
 
 //
 import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
-import { topItems, sidebarItems, bottomItems, ISidebarItem } from "./_data";
+import { topItems, sidebarItems, ISidebarItem } from "./_data";
+
+// Redux
+import { logoutUser } from "../../../stores/auth";
+import { useAppDispatch } from "../../../hooks/redux";
 
 /**
  *
  */
 export default function AppSidebar() {
   const navigate = useNavigate();
+  const dispath = useAppDispatch();
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
     sidebarItems.map((itm) => itm.key)
@@ -28,75 +35,77 @@ export default function AppSidebar() {
     }
   };
 
-  const handleLogout = () => {
-    // TODO:: Do the actual logout
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
 
-    navigate("/login");
+    const response = await dispath(logoutUser()).unwrap();
+
+    if (response.success) {
+      navigate("/login");
+    } else {
+      alert(response.message);
+    }
+
+    setIsLoggingOut(false);
   };
 
   return (
-    <div className="w-[256px] h-full pb-3">
-      <div className="flex justify-center py-3">
-        <img src={PerceiveLogo} alt="PerceiveNow logo" />
+    <div className="w-[256px] h-full flex flex-col justify-between my-auto">
+      <div>
+        <div className="flex justify-center py-3">
+          <img src={PerceiveLogo} alt="PerceiveNow logo" />
+        </div>
+
+        <div>
+          {/* Level 0 items before expandable group */}
+          {topItems.map((item, index) => (
+            <NavLinkItem
+              key={`top-${index}`}
+              to={item.to}
+              icon={item.icon}
+              title={item.title}
+              isTopLevel={true}
+            />
+          ))}
+
+          {/* Expandable groups */}
+          {sidebarItems.map((item, index) => (
+            <div key={index}>
+              <div
+                className="px-3 py-2 flex items-center text-primary-600 cursor-pointer"
+                onClick={() => updateActiveGroup(item.key)}
+              >
+                <div className="mr-1">
+                  {expandedGroups.includes(item.key) && <ChevronUp />}
+                  {!expandedGroups.includes(item.key) && <ChevronDown />}
+                </div>
+                <span>{item.title}</span>
+              </div>
+
+              {expandedGroups.includes(item.key) && (
+                <div>
+                  {item.children.map((child, jndex) => (
+                    <NavLinkItem
+                      key={`main-content-${jndex}`}
+                      to={child.to}
+                      icon={child.icon}
+                      title={child.title}
+                      isTopLevel={false}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="pb-3">
-        {/* Level 0 items before expandable group */}
-        {topItems.map((item, index) => (
-          <NavLinkItem
-            key={`top-${index}`}
-            to={item.to}
-            icon={item.icon}
-            title={item.title}
-            isTopLevel={true}
-          />
-        ))}
-
-        {/* Expandable groups */}
-        {sidebarItems.map((item, index) => (
-          <div key={index}>
-            <div
-              className="px-3 py-2 flex items-center text-primary-600 cursor-pointer"
-              onClick={() => updateActiveGroup(item.key)}
-            >
-              <div className="mr-[20px] pl-[4px]">
-                {expandedGroups.includes(item.key) && <ChevronUp />}
-                {!expandedGroups.includes(item.key) && <ChevronDown />}
-              </div>
-              <span>{item.title}</span>
-            </div>
-
-            {expandedGroups.includes(item.key) && (
-              <div>
-                {item.children.map((child, jndex) => (
-                  <NavLinkItem
-                    key={`main-content-${jndex}`}
-                    to={child.to}
-                    icon={child.icon}
-                    title={child.title}
-                    isTopLevel={false}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-
-        {/* Level 0 items after expandable group */}
-        {bottomItems.map((item, index) => (
-          <NavLinkItem
-            key={`bottom-${index}`}
-            to={item.to}
-            icon={item.icon}
-            title={item.title}
-            isTopLevel={true}
-          />
-        ))}
-
-        {/* Logout */}
+      {/* Logout */}
+      <div className="pb-3 text-gray-900">
         <div
+          className="px-3 py-2 flex items-center cursor-pointer"
           onClick={() => handleLogout()}
-          className="flex items-center py-2 text-gray-900 px-3 cursor-pointer"
         >
           <div className="mr-2">
             <LogoutIcon />
@@ -114,12 +123,12 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900 hover:bg-primary-50",
-            props.isTopLevel ? "px-3" : "px-6",
+            "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
+            props.isTopLevel ? "pl-3" : "pl-6",
             { "bg-appGray-200": isActive }
           )}
         >
-          <div className="mr-2">{props.icon}</div>
+          <div className="mr-1">{props.icon}</div>
           <span className="h-4 flex items-center">{props.title}</span>
         </div>
       )}

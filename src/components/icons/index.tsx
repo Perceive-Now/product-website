@@ -28,6 +28,13 @@ import SearchIcon from "./miscs/search";
 import EyeIcon from "./miscs/Eye";
 import EyeClosedIcon from "./miscs/EyeClosed";
 import BackIcon from "./miscs/Back";
+import BookmarkIcon from "./miscs/Bookmark";
+import ShareIcon from "./miscs/Share";
+import CitationIcon from "./miscs/Citation";
+import InfoIcon from "./miscs/Info";
+import MapMarkerIcon from "./miscs/MapMarker";
+import LocationIcon from "./miscs/Location";
+import LoadingIcon from "./miscs/Loading";
 import VerticalThreeDots from "./miscs/VerticalThreeDots";
 
 export {
@@ -58,6 +65,13 @@ export {
   EyeIcon,
   EyeClosedIcon,
   BackIcon,
+  BookmarkIcon,
+  ShareIcon,
+  CitationIcon,
+  InfoIcon,
+  MapMarkerIcon,
+  LocationIcon,
+  LoadingIcon,
   // used in tables
   VerticalThreeDots,
 };

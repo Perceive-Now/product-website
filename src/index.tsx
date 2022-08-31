@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 
+import { Amplify } from "aws-amplify";
 import { Provider } from "react-redux";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -14,8 +15,18 @@ import App from "./App";
 //
 import reportWebVitals from "./reportWebVitals";
 
+// AWS Amplify
+import AWSConfig from "./utils/aws-config";
+Amplify.configure(AWSConfig);
+
+/**
+ *
+ */
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
+/**
+ *
+ */
 root.render(
   <StrictMode>
     <BrowserRouter>
