@@ -77,9 +77,7 @@ export default function PatentsPage() {
             <PageTitle title="Patents" learnMore="Learn more" />
           </div>
 
-          <div>
-            <ReactTable columnsData={columns} />
-          </div>
+          <div>{/* <ReactTable columnsData={columns} /> */}</div>
         </div>
       )}
     </div>
