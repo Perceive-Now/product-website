@@ -28,6 +28,7 @@ export default function TopUniversities() {
                   <div className="text-gray-800 text-2xl font-semibold">
                     {uniData.publication}
                   </div>
+
                   <div className="text-gray-800">Publications</div>
                 </div>
 
@@ -35,6 +36,7 @@ export default function TopUniversities() {
                   <div className="text-gray-800 text-2xl font-semibold">
                     {uniData.patents}
                   </div>
+
                   <div className="text-gray-800">Patents</div>
                 </div>
 
@@ -42,6 +44,7 @@ export default function TopUniversities() {
                   <div className="text-gray-800 text-2xl font-semibold">
                     {uniData.funding}
                   </div>
+
                   <div className="text-gray-800 mt-[4px]">Funding Received</div>
                 </div>
               </div>

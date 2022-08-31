@@ -153,6 +153,7 @@ export default function DashboardPage() {
           titleClass="font-bold"
         />
       </div>
+      
       <TopUniversities />
     </div>
   );
