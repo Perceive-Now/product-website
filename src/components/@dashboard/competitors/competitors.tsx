@@ -4,13 +4,17 @@ import { useEffect, useMemo, useState } from "react";
 //
 import ReactTable from "../../reusable/ReactTable";
 import PageTitle from "../../reusable/page-title";
+import ExpandBtn from "../../reusable/expand-btn/expand-btn";
+
+//
+import { InfoIcon } from "../../icons";
 
 /*
  *
  **/
 export default function Competitors() {
-  const [totalData, setTotalData] = useState(4);
-  const [fetchedData, setFetchedData] = useState<any>();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [fetchedData, setFetchedData] = useState<CompetitorsType[]>([]);
 
   const columns = useMemo<ColumnDef<CompetitorsType>[]>(
     () => [
@@ -38,24 +42,57 @@ export default function Competitors() {
         header: "Funding",
         accessorKey: "funding",
       },
+      {
+        id: "actions",
+        cell: (props) => <RowActions {...props} />,
+      },
     ],
     []
   );
 
   useEffect(() => {
-    // api call to fetch data
-    setFetchedData(makeData());
+    try {
+      // api call to fetch data
+      const fetchCompetitorsData = (length = 10) => {
+        return {
+          data: Array(length)
+            .fill(null)
+            .map((slot) => {
+              return {
+                competitors: "Pharmaceutical",
+                patents: "1,025",
+                publications: "81,920",
+                experts: "8,392",
+                funding: "$60.2B",
+              };
+            }),
+        };
+      };
+      
+      const response = fetchCompetitorsData();
+
+      let data = response.data.map((d, index) => {
+        let sn = ("0" + (index + 1)).slice(-2);
+        return {
+          ...d,
+          sn: sn,
+        };
+      });
+
+      setFetchedData(data);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const data = useMemo(() => {
-    return fetchedData.slice(0, totalData);
-  }, [fetchedData, totalData]);
+    let displayRowCount = isExpanded ? 10 : 4;
+    return fetchedData.slice(0, displayRowCount);
+  }, [fetchedData, isExpanded]);
 
-  const handleExpandTable = () => {
-    setTotalData(10);
+  const handleExpandToggle = () => {
+    setIsExpanded((prev) => !prev);
   };
-
-  console.log(totalData, data, "totalData");
 
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
@@ -67,7 +104,11 @@ export default function Competitors() {
       <div className="mt-9">
         <ReactTable columnsData={columns} rowsData={data} />
         <div>
-          <button onClick={handleExpandTable}>Expand</button>
+          <ExpandBtn
+            isExpanded={isExpanded}
+            handleExpandToggle={handleExpandToggle}
+            secondaryButton="View More"
+          />
         </div>
       </div>
     </div>
@@ -83,18 +124,6 @@ interface CompetitorsType {
   funding: string;
 }
 
-const makeData = (length = 10) => {
-  return Array(length)
-    .fill(null)
-    .map((slot, index) => {
-      let sn = ("0" + (index + 1)).slice(-2);
-      return {
-        sn: sn,
-        competitors: "Ram Thapa",
-        patents: "Thapa industry",
-        publications: "Personal protective equipment and method",
-        experts: "/id",
-        funding: "2022-08-24",
-      };
-    });
+const RowActions = ({ row }: any) => {
+  return <InfoIcon className="cursor-pointer" />;
 };

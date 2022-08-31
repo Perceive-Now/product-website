@@ -66,7 +66,7 @@ export default function ReactTable({ columnsData, rowsData }: IReactTable) {
   return (
     <div className="mt-4 w-full">
       <table className="w-full">
-        <thead className="border-b-[1px] border-gray-400">
+        <thead className="border-b-[2px] border-gray-400">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -92,7 +92,6 @@ export default function ReactTable({ columnsData, rowsData }: IReactTable) {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => {
-            console.log(row.getVisibleCells(), "w");
             return (
               <tr
                 key={row.id}
