@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import TodayHighlights from "../../../components/@dashboard/today-highlights";
 import TopUniversities from "../../../components/@dashboard/top-universities";
 
 //
@@ -72,6 +73,9 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* 3rd row map */}
+      <TodayHighlights />
 
       {/* 5th row map */}
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
