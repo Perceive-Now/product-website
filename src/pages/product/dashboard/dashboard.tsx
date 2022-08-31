@@ -41,6 +41,7 @@ export default function DashboardPage() {
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
+          titleClass="font-bold"
           title="Geographical Footprint of Publications and Patents"
           children={
             <div className="flex justify-between">
@@ -76,6 +77,7 @@ export default function DashboardPage() {
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
+          titleClass="font-bold"
           title="Geographical Footprint of Competitors"
           children={
             <div className="flex justify-between">
@@ -111,6 +113,7 @@ export default function DashboardPage() {
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
+          titleClass="font-bold"
           title="Geographical footprint of experts "
           children={
             <div className="flex justify-between">
@@ -144,7 +147,11 @@ export default function DashboardPage() {
 
       {/* 9th row */}
       <div className="mt-4 mb-2">
-        <PageTitle info="Hello world" title="Academic R&D" />
+        <PageTitle
+          learnMore="Learn How"
+          title="Academic R&D"
+          titleClass="font-bold"
+        />
       </div>
       <TopUniversities />
     </div>
