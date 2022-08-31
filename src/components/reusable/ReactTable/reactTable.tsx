@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { makeData } from "./makeData";
 import { PatentType } from "../../../pages/product/patents/patents";
@@ -11,8 +11,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-export default function ReactTable({ columnsData }: IReactTable) {
+export default function ReactTable({ columnsData, rowsData }: IReactTable) {
   const [rowSelection, setRowSelection] = useState({});
+  const [data, setData] = useState(() => rowsData || makeData(10));
+
+  useEffect(() => {
+    setData(rowsData);
+  }, [rowsData]);
 
   const defaultColumns = useMemo<ColumnDef<PatentType>[]>(
     () => [
@@ -45,7 +50,6 @@ export default function ReactTable({ columnsData }: IReactTable) {
   );
 
   const columns = columnsData || defaultColumns;
-  const [data] = useState(() => makeData(10));
 
   const table = useReactTable({
     data,
@@ -140,4 +144,5 @@ export default function ReactTable({ columnsData }: IReactTable) {
 
 interface IReactTable {
   columnsData?: any;
+  rowsData?: any;
 }

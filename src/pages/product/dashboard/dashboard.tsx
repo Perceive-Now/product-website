@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import Competitors from "../../../components/@dashboard/competitors";
 
 //
 import WorldMap from "../../../components/@product/world-map";
 import PageTitle from "../../../components/reusable/page-title";
 
-/**
- *
- */
 //
 import { IKeywordOption } from "../../../components/reusable/search/search";
 
+/**
+ *
+ */
 export default function DashboardPage() {
   const location = useLocation();
   const locationState = location.state as ILocationState;
@@ -106,11 +107,17 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* 6th row  */}
+      <PageTitle title="Competitive Landscape" learnHow={true} />
+
+      <Competitors />
+      {/* 6th row end */}
+
       {/* 7th row map */}
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
-          title="Geographical footprint of experts "
+          title="Geographical footprint of experts"
           children={
             <div className="flex justify-between">
               <p className="text-sm">
