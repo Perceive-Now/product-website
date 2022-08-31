@@ -36,6 +36,8 @@ import MapMarkerIcon from "./miscs/MapMarker";
 import LocationIcon from "./miscs/Location";
 import LoadingIcon from "./miscs/Loading";
 import VerticalThreeDots from "./miscs/VerticalThreeDots";
+import RadioOffIcon from "./miscs/radio-off";
+import RadioOnIcon from "./miscs/radio-on";
 
 export {
   // Sidenav icons
@@ -72,6 +74,8 @@ export {
   MapMarkerIcon,
   LocationIcon,
   LoadingIcon,
+  RadioOnIcon,
+  RadioOffIcon,
   // used in tables
   VerticalThreeDots,
 };

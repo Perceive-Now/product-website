@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import ReactTable from "../../reusable/ReactTable";
 import PageTitle from "../../reusable/page-title";
 import ExpandBtn from "../../reusable/expand-btn/expand-btn";
+import RadioButtons from "../../reusable/radio-buttons";
 
 //
 import { InfoIcon } from "../../icons";
@@ -62,12 +63,22 @@ export default function ExpertsNetwork() {
           data: Array(length)
             .fill(null)
             .map((slot) => {
+              if (expertMode === "industryExperts") {
+                return {
+                  name: "Riccardo Privolizzi",
+
+                  companyName: "Company Name",
+                  location: "London, England, UK",
+                  patents: 32,
+                  publications: 203,
+                };
+              }
               return {
-                name: "Riccardo Privolizzi",
-                companyName: "Compnay Name",
-                location: "London, England, UK",
-                patents: 32,
-                publications: 203,
+                name: "Geoffrey Rogers",
+                companyName: "Company Name",
+                location: "Los Angeles, California, US",
+                patents: 23,
+                publications: 263,
               };
             }),
         };
@@ -87,7 +98,7 @@ export default function ExpertsNetwork() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [expertMode]);
 
   const data = useMemo(() => {
     let displayRowCount = isExpanded ? 10 : 4;
@@ -148,29 +159,14 @@ const RowActions = ({ row }: any) => {
 const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
   return (
     <div className="flex">
-      {[
-        { label: "Industry Experts", value: "industryExperts" },
-        { label: "Academic Experts", value: "academicExperts" },
-      ].map((mode) => {
-        return (
-          <div key={mode.value} className="flex items-center ml-3 ">
-            <input
-              type="radio"
-              name="expertMode"
-              id={mode.label}
-              value={mode.value}
-              checked={mode.value === activeMode}
-              className={"mr-[12px] cursor-pointer"}
-            />
-            <label
-              htmlFor={mode.label}
-              className="text-gray-600 cursor-pointer"
-            >
-              {mode.label}
-            </label>
-          </div>
-        );
-      })}
+      <RadioButtons
+        options={[
+          { label: "Industry Experts", value: "industryExperts" },
+          { label: "Academic Experts", value: "academicExperts" },
+        ]}
+        activeMode={activeMode}
+        handleModeChange={onModeChange}
+      />
     </div>
   );
 };
