@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import TopUniversities from "../../../components/@dashboard/top-universities";
 
 //
 import WorldMap from "../../../components/@product/world-map";
 import PageTitle from "../../../components/reusable/page-title";
 
-/**
- *
- */
 //
 import { IKeywordOption } from "../../../components/reusable/search/search";
 
+/**
+ *
+ */
 export default function DashboardPage() {
   const location = useLocation();
   const locationState = location.state as ILocationState;
@@ -40,6 +41,7 @@ export default function DashboardPage() {
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
+          titleClass="font-bold"
           title="Geographical Footprint of Publications and Patents"
           children={
             <div className="flex justify-between">
@@ -75,6 +77,7 @@ export default function DashboardPage() {
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
+          titleClass="font-bold"
           title="Geographical Footprint of Competitors"
           children={
             <div className="flex justify-between">
@@ -110,6 +113,7 @@ export default function DashboardPage() {
       <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
+          titleClass="font-bold"
           title="Geographical footprint of experts "
           children={
             <div className="flex justify-between">
@@ -140,6 +144,17 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* 9th row */}
+      <div className="mt-4 mb-2">
+        <PageTitle
+          learnMore="Learn How"
+          title="Academic R&D"
+          titleClass="font-bold"
+        />
+      </div>
+      
+      <TopUniversities />
     </div>
   );
 }
