@@ -104,10 +104,12 @@ export default function Competitors() {
           subTitle={`"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
         />
       </div>
+
       <div className="mt-9">
         <div className="px-3">
           <ReactTable columnsData={columns} rowsData={data} />
         </div>
+
         <div>
           <ExpandBtn
             isExpanded={isExpanded}

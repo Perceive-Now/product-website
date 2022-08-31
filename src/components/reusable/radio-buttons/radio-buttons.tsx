@@ -1,5 +1,8 @@
 import { RadioOffIcon, RadioOnIcon } from "../../icons";
 
+/*
+ *
+ **/
 export default function RadioButtons({
   options,
   activeMode,
@@ -18,6 +21,7 @@ export default function RadioButtons({
             <span className="block mr-1">
               {isSelected ? <RadioOnIcon /> : <RadioOffIcon />}
             </span>
+
             <span className="capitalize text-gray-600">{mode.label}</span>
           </div>
         );

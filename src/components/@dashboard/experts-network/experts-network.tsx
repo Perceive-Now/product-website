@@ -128,10 +128,12 @@ export default function ExpertsNetwork() {
           }
         />
       </div>
+
       <div className="mt-9">
         <div className="px-3">
           <ReactTable columnsData={columns} rowsData={data} />
         </div>
+
         <div>
           <ExpandBtn
             isExpanded={isExpanded}
