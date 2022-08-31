@@ -1,8 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-
-import { makeData } from "./makeData";
-import { PatentType } from "../../../pages/product/patents/patents";
-
 import {
   ColumnDef,
   flexRender,
@@ -11,6 +7,15 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+//
+import { makeData } from "./makeData";
+
+//
+import { PatentType } from "../../../pages/product/patents/patents";
+
+/*
+ *
+ **/
 export default function ReactTable({ columnsData, rowsData }: IReactTable) {
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState(() => rowsData || makeData(10));
@@ -90,6 +95,7 @@ export default function ReactTable({ columnsData, rowsData }: IReactTable) {
             </tr>
           ))}
         </thead>
+
         <tbody>
           {table.getRowModel().rows.map((row) => {
             return (
@@ -112,35 +118,9 @@ export default function ReactTable({ columnsData, rowsData }: IReactTable) {
           })}
         </tbody>
       </table>
-      {/* <div className="text-center mt-4">Pagination</div> */}
     </div>
   );
 }
-
-// Commented as a reference when we need it for selectable table
-// function IndeterminateCheckbox({
-//   indeterminate,
-//   className = "",
-//   ...rest
-// }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
-//   const ref = useRef<HTMLInputElement>(null!);
-
-//   useEffect(() => {
-//     if (typeof indeterminate === "boolean") {
-//       ref.current.indeterminate = !rest.checked && indeterminate;
-//     }
-//   }, [ref, indeterminate, rest.checked]);
-
-//   return (
-//     <input
-//       type="checkbox"
-//       ref={ref}
-//       className={className + " cursor-pointer"}
-//       {...rest}
-//     />
-//   );
-// }
-
 interface IReactTable {
   columnsData?: any;
   rowsData?: any;
