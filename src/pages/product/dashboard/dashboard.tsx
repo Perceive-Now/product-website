@@ -77,7 +77,11 @@ export default function DashboardPage() {
 
       {/* 4th row  */}
       <div className="pt-4">
-        <PageTitle title="Competitive Landscape" learnHow={true} />
+        <PageTitle
+          title="Competitive Landscape"
+          titleClass="font-bold"
+          learnHow={true}
+        />
       </div>
 
       <Competitors />
@@ -121,7 +125,11 @@ export default function DashboardPage() {
 
       {/* 6th row  */}
       <div className="pt-4">
-        <PageTitle title="Experts Network" learnHow={true} />
+        <PageTitle
+          title="Experts Network"
+          titleClass="font-bold"
+          learnHow={true}
+        />
       </div>
       <ExpertsNetwork />
       {/* 6th row end */}
@@ -170,7 +178,7 @@ export default function DashboardPage() {
           titleClass="font-bold"
         />
       </div>
-      
+
       <TopUniversities />
     </div>
   );

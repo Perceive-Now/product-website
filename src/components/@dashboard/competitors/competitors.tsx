@@ -100,6 +100,7 @@ export default function Competitors() {
         <PageTitle
           title="Competitors"
           info="true"
+          titleClass="font-bold"
           subTitle={`"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
         />
       </div>
@@ -111,7 +112,6 @@ export default function Competitors() {
           <ExpandBtn
             isExpanded={isExpanded}
             handleExpandToggle={handleExpandToggle}
-            secondaryButton="View More"
           />
         </div>
       </div>
