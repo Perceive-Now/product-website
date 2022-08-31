@@ -15,6 +15,7 @@ import { InfoIcon } from "../../icons";
 export default function ExpertsNetwork() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [fetchedData, setFetchedData] = useState<ExpertsNetworkType[]>([]);
+  const [expertMode, setExpertMode] = useState("industryExperts");
 
   const columns = useMemo<ColumnDef<ExpertsNetworkType>[]>(
     () => [
@@ -97,13 +98,22 @@ export default function ExpertsNetwork() {
     setIsExpanded((prev) => !prev);
   };
 
+  const handleModeChange = (mode: string) => {
+    setExpertMode(mode);
+  };
+
   return (
     <div className="mt-3 rounded-2xl border border-gray-200 shadow">
       <div className="pt-4 px-3">
         <PageTitle
           title="Experts"
-          info="true"
           subTitle={`Top list of experts with maximum number of publications and patents `}
+          sideTitleOption={
+            <ExpertsMode
+              activeMode={expertMode}
+              onModeChange={handleModeChange}
+            />
+          }
         />
       </div>
       <div className="mt-9">
@@ -134,3 +144,38 @@ interface ExpertsNetworkType {
 const RowActions = ({ row }: any) => {
   return <InfoIcon className="cursor-pointer" />;
 };
+
+const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
+  return (
+    <div className="flex">
+      {[
+        { label: "Industry Experts", value: "industryExperts" },
+        { label: "Academic Experts", value: "academicExperts" },
+      ].map((mode) => {
+        return (
+          <div key={mode.value} className="flex items-center ml-3 ">
+            <input
+              type="radio"
+              name="expertMode"
+              id={mode.label}
+              value={mode.value}
+              checked={mode.value === activeMode}
+              className={"mr-[12px] cursor-pointer"}
+            />
+            <label
+              htmlFor={mode.label}
+              className="text-gray-600 cursor-pointer"
+            >
+              {mode.label}
+            </label>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+interface IExpertMode {
+  activeMode: string;
+  onModeChange: (mode: string) => void;
+}

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
 //
 import { InfoIcon } from "../../icons";
@@ -12,25 +12,39 @@ export default function PageTitle(props: PropsWithChildren<IPageTitleProps>) {
       <div className="flex justify-between items-center">
         <p className="text-[22px] text-primary-900">{props.title}</p>
 
-        {props.learnMore && !props.info && !props.learnHow && (
-          <div>
-            <p className="text-primary-500 cursor-pointer">Learn more</p>
-          </div>
-        )}
+        {props.learnMore &&
+          !props.info &&
+          !props.learnHow &&
+          !props.sideTitleOption && (
+            <div>
+              <p className="text-primary-500 cursor-pointer">Learn more</p>
+            </div>
+          )}
 
-        {props.info && !props.learnMore && !props.learnHow && (
-          <div className="text-primary-900 cursor-pointer">
-            <InfoIcon />
-          </div>
-        )}
+        {props.info &&
+          !props.learnMore &&
+          !props.learnHow &&
+          !props.sideTitleOption && (
+            <div className="text-primary-900 cursor-pointer">
+              <InfoIcon />
+            </div>
+          )}
 
-        {props.learnHow && !props.learnMore && !props.info && (
-          <div>
-            <p className="font-medium text-primary-500 cursor-pointer">
-              Learn How
-            </p>
-          </div>
-        )}
+        {props.learnHow &&
+          !props.learnMore &&
+          !props.info &&
+          !props.sideTitleOption && (
+            <div>
+              <p className="font-medium text-primary-500 cursor-pointer">
+                Learn How
+              </p>
+            </div>
+          )}
+
+        {props.sideTitleOption &&
+          !props.learnHow &&
+          !props.learnMore &&
+          !props.info && <div>{props.sideTitleOption}</div>}
       </div>
 
       {props.subTitle && (
@@ -51,4 +65,5 @@ interface IPageTitleProps {
   subTitle?: string;
   learnMore?: string;
   learnHow?: boolean;
+  sideTitleOption?: ReactNode;
 }
