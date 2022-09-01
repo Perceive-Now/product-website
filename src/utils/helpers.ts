@@ -3,5 +3,4 @@ export const getNumberShortForm = (number: number, maxFraction: number = 1) => {
         notation: "compact",
         maximumFractionDigits: maxFraction
     }).format(number);
-
 }
