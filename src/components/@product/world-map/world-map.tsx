@@ -61,7 +61,9 @@ export default function WorldMap(props: ISvgMapProps) {
   const [hoveredCountry, setHoveredCountry] = useState("");
   const [heatmapHoveredCountry, setHeatmapHoveredCountry] = useState<any>("");
 
-  const [activeMarker, setActiveMarker] = useState<any>(null);
+  const [activeMarkerData, setActiveMarkerData] = useState<
+    IDataItem | undefined
+  >(undefined);
 
   // Miscs
   const isZoomed = scale > 125;
@@ -155,58 +157,70 @@ export default function WorldMap(props: ISvgMapProps) {
       )}
 
       {isHeatmap && heatmapHoveredCountry && (
-        <ReactTooltip id="country-name" place="bottom">
-          <div className="bg-white">
-            <p className="font-semibold text-xs">
-              {heatmapHoveredCountry?.properties?.name}
-            </p>
+        <ReactTooltip id="country-name">
+          <div className="flex items-center gap-x-0.5">
+            <LocationIcon className="text-gray-400" />
 
-            <hr className="my-1 border-gray-300" />
             <p>
-              <span className="font-bold">{546} </span>
-              <span>
-                {props.type === "publicationHeatmap"
-                  ? "Publications"
-                  : "Patents"}
-              </span>
+              {activeMarkerData?.location ??
+                heatmapHoveredCountry?.properties?.name}
             </p>
+          </div>
+
+          <div className="mt-2 flex gap-x-2">
+            {props.type === "patentsHeatmap" && (
+              <TooltipGroupItem
+                title="Patents"
+                value={activeMarkerData?.patents}
+              />
+            )}
+
+            {props.type === "publicationHeatmap" && (
+              <TooltipGroupItem
+                title="Publications"
+                value={activeMarkerData?.publications}
+              />
+            )}
+
+            <TooltipGroupItem
+              title="Experts"
+              value={activeMarkerData?.experts}
+            />
           </div>
         </ReactTooltip>
       )}
 
-      {!isHeatmap && activeMarker && (
+      {!isHeatmap && activeMarkerData && (
         <ReactTooltip id="marker-details">
           <div>
-            <p className="text-lg mb-1">
-              {activeMarker?.company ?? "Company Name"}
-            </p>
+            <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
 
             <div className="flex gap-x-1 items-center">
               <LocationIcon className="text-gray-400" />
-              <span>{activeMarker?.location ?? "Location"}</span>
+              <span>{activeMarkerData?.location ?? "-"}</span>
             </div>
 
             <div className="mt-2 flex gap-x-2">
-              <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow">
-                <p className="font-bold text-lg">
-                  {activeMarker?.experts ?? 0}
-                </p>
-                <p>Experts</p>
-              </div>
+              {!props.isExpertMap && (
+                <TooltipGroupItem
+                  title="Experts"
+                  value={activeMarkerData.experts}
+                />
+              )}
 
-              <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow">
-                <p className="font-bold text-lg">
-                  {activeMarker?.patents ?? 0}
-                </p>
-                <p>Patents</p>
-              </div>
+              {(props.type === "basicPatents" || props.isExpertMap) && (
+                <TooltipGroupItem
+                  title="Patents"
+                  value={activeMarkerData.patents}
+                />
+              )}
 
-              <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow">
-                <p className="font-bold text-lg">
-                  {activeMarker?.publications ?? 0}
-                </p>
-                <p>Publication</p>
-              </div>
+              {(props.type === "basicPublication" || props.isExpertMap) && (
+                <TooltipGroupItem
+                  title="Publications"
+                  value={activeMarkerData.publications}
+                />
+              )}
             </div>
           </div>
         </ReactTooltip>
@@ -276,6 +290,11 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseEnter={() => {
                     if (isHeatmap) {
                       setHeatmapHoveredCountry(geo);
+
+                      const dataForCurrentCountry = props.data?.find(
+                        (itm) => itm.country === geo.id
+                      );
+                      setActiveMarkerData(dataForCurrentCountry);
                     } else {
                       setHoveredCountry(geo.properties.name);
                     }
@@ -283,6 +302,7 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseLeave={() => {
                     if (isHeatmap) {
                       setHeatmapHoveredCountry("");
+                      setActiveMarkerData(undefined);
                     } else {
                       setHoveredCountry("");
                     }
@@ -294,25 +314,27 @@ export default function WorldMap(props: ISvgMapProps) {
 
           {/* Markers */}
           {!isHeatmap &&
-            props.markers?.map((marker, index) => (
-              <Marker
-                key={index}
-                coordinates={marker.coordinates}
-                className={classNames(
-                  "focus:outline-none",
-                  isZoomed ? "text-white" : "text-[#FFA300]"
-                )}
-                data-tip=""
-                data-for="marker-details"
-                onMouseEnter={() => setActiveMarker(marker)}
-                onMouseLeave={() => setActiveMarker(null)}
-              >
-                <MapMarkerIcon
-                  width={isZoomed ? 30 : 15}
-                  height={isZoomed ? 30 : 15}
-                />
-              </Marker>
-            ))}
+            props.data
+              ?.filter((item) => item.coordinate)
+              ?.map((marker, index) => (
+                <Marker
+                  key={index}
+                  coordinates={marker.coordinate}
+                  className={classNames(
+                    "focus:outline-none",
+                    isZoomed ? "text-white" : "text-[#FFA300]"
+                  )}
+                  data-tip=""
+                  data-for="marker-details"
+                  onMouseEnter={() => setActiveMarkerData(marker)}
+                  onMouseLeave={() => setActiveMarkerData(undefined)}
+                >
+                  <MapMarkerIcon
+                    width={isZoomed ? 30 : 15}
+                    height={isZoomed ? 30 : 15}
+                  />
+                </Marker>
+              ))}
         </ComposableMap>
       </div>
 
@@ -347,6 +369,31 @@ export default function WorldMap(props: ISvgMapProps) {
   );
 }
 
+function TooltipGroupItem(props: ITooltipGroupItemProp) {
+  return (
+    <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow">
+      <p className="font-bold text-lg">{props.value ?? "-"}</p>
+      <p>{props.title}</p>
+    </div>
+  );
+}
+
+//
+interface ITooltipGroupItemProp {
+  title: string;
+  value?: number;
+}
+
+interface IDataItem {
+  name?: string;
+  country?: string;
+  location?: string;
+  patents?: number;
+  publications?: number;
+  experts?: number;
+  coordinate?: [number, number];
+}
+
 interface ISvgMapProps {
   /**
    * publicationHeatmap: Geographical footprint for publication
@@ -354,13 +401,12 @@ interface ISvgMapProps {
    * basicPublication: Geographical footprint of competetors for publications
    * basicPatents: Geographical footprint of competetors for patents
    */
+  isExpertMap?: boolean;
   type:
     | "publicationHeatmap"
     | "patentsHeatmap"
     | "basicPublication"
     | "basicPatents";
   //
-  markers?: {
-    coordinates: [number, number];
-  }[];
+  data?: IDataItem[];
 }
