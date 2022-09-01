@@ -31,13 +31,10 @@ export default function TodayHighlights() {
         Global Technology Trends
       </div>
 
-      <div className="mt-3 grid grid-cols-3 gap-x-3" gap-y->
+      <div className="mt-3 grid grid-cols-3 gap-x-3  gap-y-3">
         {TodayHighlightsData.map((highlightData, index) => {
-          const route = metaInfo[highlightData.name].route;
-          const routeState = metaInfo[highlightData.name].routeState || {};
-          const isNumberShortForm =
-            metaInfo[highlightData.name].isNumberShortForm;
-          const valueSuffix = metaInfo[highlightData.name].valueSuffix || null;
+          const { route, routeState, isNumberShortForm, valueSuffix } =
+            metaInfo[highlightData.name];
 
           return (
             <div
@@ -55,9 +52,9 @@ export default function TodayHighlights() {
                     ? getNumberShortForm(highlightData.value)
                     : highlightData.value}
                 </div>
-                
+
                 <hr className="border-[#D9D9D9]" />
-                
+
                 <div className="text-center pt-2">
                   <div
                     className="cursor-pointer text-purple-600"
