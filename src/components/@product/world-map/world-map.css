@@ -1,5 +1,5 @@
 #country-name {
-  @apply bg-white text-gray-700 border border-gray-200 opacity-100 px-3 py-2 shadow-lg rounded-lg;
+  @apply bg-white text-gray-700 border border-gray-200 opacity-100 p-2 shadow-lg rounded-lg;
 }
 
 #country-name::after {

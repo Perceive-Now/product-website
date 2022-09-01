@@ -17,4 +17,8 @@
   a {
     @apply text-primary-500;
   }
+
+  input[type="radio"] {
+    @apply text-primary-600 focus:ring-0 cursor-pointer;
+  }
 }
