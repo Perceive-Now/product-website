@@ -1,11 +1,8 @@
 import { useState } from "react";
 
 //
-import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
-
-//
-import { IKeywordOption } from "../../../components/reusable/search/search";
+import Search, { IKeywordOption } from "../../../components/reusable/search";
 
 /**
  *

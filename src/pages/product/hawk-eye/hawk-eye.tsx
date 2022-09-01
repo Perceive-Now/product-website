@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 //
-import Search from "../../../components/reusable/search";
-import { IKeywordOption } from "../../../components/reusable/search/search";
+import Search, { IKeywordOption } from "../../../components/reusable/search";
 
 /**
  *
@@ -28,7 +27,7 @@ export default function HawkEyePage() {
       <div className="w-1/2">
         <Search onSubmit={handleSearch} />
       </div>
-      
+
       <Outlet context={{ searchKeywords, count }} />
     </div>
   );

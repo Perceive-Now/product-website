@@ -4,15 +4,12 @@ import { useState } from "react";
 // import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
-import Search from "../../../components/reusable/search";
 import PageTitle from "../../../components/reusable/page-title";
+import Search, { IKeywordOption } from "../../../components/reusable/search";
 // import ReactTable from "../../../components/reusable/ReactTable";
 
 //
 // import { VerticalThreeDots } from "../../../components/icons";
-
-//
-import { IKeywordOption } from "../../../components/reusable/search/search";
 
 /**
  *
