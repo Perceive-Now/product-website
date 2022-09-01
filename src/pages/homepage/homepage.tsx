@@ -5,11 +5,7 @@ import UserIcon from "../../components/app/userIcon";
 
 //
 import PerceiveLogo from "../../assets/images/logo.svg";
-import Search from "../../components/reusable/search";
-
-
-//
-import { IKeywordOption } from "../../components/reusable/search/search";
+import Search, { IKeywordOption } from "../../components/reusable/search";
 
 /**
  *
