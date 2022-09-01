@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import ExpertsMap from "../../../components/@dashboard/experts-map";
 import Competitors from "../../../components/@dashboard/competitors";
 import ExpertsNetwork from "../../../components/@dashboard/experts-network";
+import TodayHighlights from "../../../components/@dashboard/today-highlights";
 import CompetetitorMap from "../../../components/@dashboard/competetitor-map";
 import TopUniversities from "../../../components/@dashboard/top-universities";
 import FootprintHeatmap from "../../../components/@dashboard/footprint-heatmap";
@@ -36,6 +37,9 @@ export default function DashboardPage() {
 
       {/* 2nd row map */}
       <FootprintHeatmap keywords={searchKeywords.map((kwd) => kwd.value)} />
+
+      {/* 3rd row map */}
+      <TodayHighlights />
 
       {/* 4th row  */}
       <div className="pt-4">
