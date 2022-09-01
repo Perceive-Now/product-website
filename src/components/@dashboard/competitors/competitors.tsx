@@ -114,6 +114,7 @@ export default function Competitors() {
           <ExpandBtn
             isExpanded={isExpanded}
             handleExpandToggle={handleExpandToggle}
+            secondaryButton="View More"
           />
         </div>
       </div>

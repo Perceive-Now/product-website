@@ -34,7 +34,7 @@ export default function TodayHighlights() {
       <div className="mt-3 grid grid-cols-3 gap-x-3  gap-y-3">
         {TodayHighlightsData.map((highlightData, index) => {
           const { route, routeState, isNumberShortForm, valueSuffix } =
-            metaInfo[highlightData.name];
+            metaInfo[highlightData.name]?? {};
 
           return (
             <div
