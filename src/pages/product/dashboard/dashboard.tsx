@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import TodayHighlights from "../../../components/@dashboard/today-highlights";
 import TopUniversities from "../../../components/@dashboard/top-universities";
+import Competitors from "../../../components/@dashboard/competitors";
+import ExpertsNetwork from "../../../components/@dashboard/experts-network";
 
 //
 import WorldMap from "../../../components/@product/world-map";
@@ -77,8 +79,20 @@ export default function DashboardPage() {
       {/* 3rd row map */}
       <TodayHighlights />
 
+      {/* 4th row  */}
+      <div className="pt-4">
+        <PageTitle
+          title="Competitive Landscape"
+          titleClass="font-bold"
+          learnHow={true}
+        />
+      </div>
+
+      <Competitors />
+      {/* 4th row end */}
+
       {/* 5th row map */}
-      <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
+      <div className="mt-2 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
           titleClass="font-bold"
@@ -113,8 +127,19 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* 6th row  */}
+      <div className="pt-4">
+        <PageTitle
+          title="Experts Network"
+          titleClass="font-bold"
+          learnHow={true}
+        />
+      </div>
+      <ExpertsNetwork />
+      {/* 6th row end */}
+
       {/* 7th row map */}
-      <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
+      <div className="mt-2 p-3 rounded-lg border border-gray-200 shadow">
         <PageTitle
           info="Hello world"
           titleClass="font-bold"

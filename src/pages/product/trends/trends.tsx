@@ -30,9 +30,9 @@ export default function TrendsPage() {
               Showing technology trends for:
             </span>
             “
-            {searchKeywords.map((keywords) => {
-              return <span key={keywords.value}> {keywords.value}</span>;
-            })}
+            {searchKeywords.map((keywords) => (
+              <span key={keywords.value}> {keywords.value}</span>
+            ))}
             ”
           </p>
 
