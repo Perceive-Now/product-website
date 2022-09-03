@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 //
 import ReactTable from "../../reusable/ReactTable";
@@ -14,9 +14,11 @@ import { InfoIcon } from "../../icons";
  *
  **/
 export default function ExpertsNetwork() {
+  const customRef = useRef<HTMLDivElement | null>(null);
+
   const [isExpanded, setIsExpanded] = useState(false);
-  const [fetchedData, setFetchedData] = useState<ExpertsNetworkType[]>([]);
   const [expertMode, setExpertMode] = useState("industryExperts");
+  const [fetchedData, setFetchedData] = useState<ExpertsNetworkType[]>([]);
 
   const columns = useMemo<ColumnDef<ExpertsNetworkType>[]>(
     () => [
@@ -106,6 +108,9 @@ export default function ExpertsNetwork() {
   }, [fetchedData, isExpanded]);
 
   const handleExpandToggle = () => {
+    if (isExpanded) {
+      customRef.current?.scrollIntoView({ behavior: "auto" });
+    }
     setIsExpanded((prev) => !prev);
   };
 
@@ -114,7 +119,10 @@ export default function ExpertsNetwork() {
   };
 
   return (
-    <div className="mt-3 rounded-2xl border border-gray-200 shadow">
+    <div
+      className="mt-3 rounded-2xl border border-gray-200 shadow"
+      ref={customRef}
+    >
       <div className="pt-4 px-3">
         <PageTitle
           title="Experts"
