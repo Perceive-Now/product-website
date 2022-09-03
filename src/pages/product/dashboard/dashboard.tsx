@@ -2,6 +2,14 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
 //
+import Patents from "../../../components/@dashboard/patents";
+import ScholaryPublication from "../../../components/@dashboard/scholary-publication";
+
+//
+import AcademicResearchTrends from "../../../components/@dashboard/academic-research-trends";
+import AcademicResearchFundings from "../../../components/@dashboard/academic-research-fundings";
+
+//
 import ExpertsMap from "../../../components/@dashboard/experts-map";
 import Competitors from "../../../components/@dashboard/competitors";
 import ExpertsNetwork from "../../../components/@dashboard/experts-network";
@@ -29,11 +37,22 @@ export default function DashboardPage() {
   return (
     <div>
       {searchKeywords && (
-        <p>
+        <p className="mb-3">
           <span>Searching for: </span>
           <span className="font-semibold">{joinedKeywords}</span>
         </p>
       )}
+
+      {/* 1st row charts */}
+      <div className="grid grid-cols-2 gap-x-3">
+        <div className="col-span-1">
+          <ScholaryPublication />
+        </div>
+
+        <div className="col-span-1">
+          <Patents />
+        </div>
+      </div>
 
       {/* 2nd row map */}
       <FootprintHeatmap keywords={searchKeywords.map((kwd) => kwd.value)} />
@@ -80,6 +99,17 @@ export default function DashboardPage() {
       </div>
 
       <TopUniversities />
+
+      {/* Charts for Academinc R&D */}
+      <div className="grid grid-cols-2 gap-x-3 mt-3">
+        <div className="col-span-1">
+          <AcademicResearchTrends />
+        </div>
+
+        <div className="col-span-1">
+          <AcademicResearchFundings />
+        </div>
+      </div>
     </div>
   );
 }

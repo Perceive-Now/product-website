@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 //
-import { getNumberShortForm } from "../../../utils/helpers";
+import { formatNumber } from "../../../utils/helpers";
 
 //
 import PageTitle from "../../reusable/page-title";
@@ -34,7 +34,7 @@ export default function TodayHighlights() {
       <div className="mt-3 grid grid-cols-3 gap-x-3  gap-y-3">
         {TodayHighlightsData.map((highlightData, index) => {
           const { route, routeState, isNumberShortForm, valueSuffix } =
-            metaInfo[highlightData.name]?? {};
+            metaInfo[highlightData.name] ?? {};
 
           return (
             <div
@@ -49,7 +49,7 @@ export default function TodayHighlights() {
                 <div className="text-center text-[28px] mb-2 text-success-500">
                   {valueSuffix}
                   {isNumberShortForm
-                    ? getNumberShortForm(highlightData.value)
+                    ? formatNumber(highlightData.value)
                     : highlightData.value}
                 </div>
 
