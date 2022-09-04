@@ -27,6 +27,22 @@ export async function getTop3Universities() {
   return response.data.data;
 }
 
+export async function getExpertsCount() {
+  const response = await axiosInstance.get<IExpertCountResponse>(
+    "/dashboard/experts/count"
+  );
+
+  return response.data.data;
+}
+
+export async function getRelatedKeywords() {
+  const response = await axiosInstance.get<IRelatedKeywordsResponse>(
+    "/dashboard/related_keywords_list"
+  );
+
+  return response.data.data;
+}
+
 /**
  * Interfaces
  */
@@ -66,4 +82,21 @@ interface ITopUniversity {
 
 interface ITopUniversityResponse {
   data: ITopUniversity[];
+}
+
+//
+interface IExpertsCount {
+  expertsCount: number;
+  yearsElapsed: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface IExpertCountResponse {
+  data: IExpertsCount;
+}
+
+//
+interface IRelatedKeywordsResponse {
+  data: string[];
 }

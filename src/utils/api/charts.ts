@@ -19,6 +19,14 @@ export async function getPatentsPieChart() {
   return response.data.data;
 }
 
+export async function getExpertsCountGraph() {
+  const response = await axiosInstance.get<IExpertCountResponse>(
+    "/dashboard/experts_count_graph"
+  );
+
+  return response.data.data;
+}
+
 /**
  *
  */
@@ -40,4 +48,14 @@ interface IPatent {
 
 interface IPatentsPieResponse {
   data: IPatent[];
+}
+
+interface IExpertCount {
+  year: number;
+  closedExpertsCount: number;
+  openExpertsCount: number;
+}
+
+interface IExpertCountResponse {
+  data: IExpertCount[];
 }

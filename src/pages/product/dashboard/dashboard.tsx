@@ -10,6 +10,10 @@ import AcademicResearchTrends from "../../../components/@dashboard/academic-rese
 import AcademicResearchFundings from "../../../components/@dashboard/academic-research-fundings";
 
 //
+import ExpertsGraph from "../../../components/@dashboard/experts-graph";
+import RelatedKeywords from "../../../components/@dashboard/related-keywords";
+
+//
 import ExpertsMap from "../../../components/@dashboard/experts-map";
 import Competitors from "../../../components/@dashboard/competitors";
 import ExpertsNetwork from "../../../components/@dashboard/experts-network";
@@ -88,6 +92,17 @@ export default function DashboardPage() {
 
       {/* 7th row map */}
       <ExpertsMap keywords={searchKeywords.map((kwd) => kwd.value)} />
+
+      {/* 8th row; expert chart and related keywords */}
+      <div className="grid grid-cols-2 gap-x-3 mt-3">
+        <div className="col-span-1">
+          <ExpertsGraph />
+        </div>
+
+        <div className="col-span-1">
+          <RelatedKeywords />
+        </div>
+      </div>
 
       {/* 9th row */}
       <div className="mt-4 mb-2">
