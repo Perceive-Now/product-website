@@ -4,12 +4,17 @@ import { Link } from "react-router-dom";
 
 //
 import BarChart from "../../@product/bar-chart";
+import ChartButtons from "../../reusable/chart-buttons";
+import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
 import PageTitle from "../../reusable/page-title";
+import TimePeriod from "../../reusable/time-period/time-period";
+import { timeperiod } from "../academic-research-fundings/academic-research-fundings";
 
 /**
  *
  */
 export default function AcademicResearchTrends() {
+  const [activeChart, setActiveChart] = useState<ChartType>("bar");
   const [data, setData] = useState([
     { patents: 4100, closedArticles: 7900, openArticles: 9700, city: "NE" },
     { patents: 4200, closedArticles: 2400, openArticles: 4700, city: "SE" },
@@ -30,9 +35,16 @@ export default function AcademicResearchTrends() {
       <PageTitle title="Academic Research Trends" info="info" />
 
       <div className="pt-1 flex justify-end gap-x-3">
-        <div>Period</div>
+        <div>
+          <TimePeriod timePeriods={timeperiod} />
+        </div>
 
-        <div>Switch</div>
+        <div className="flex items-center">
+          <ChartButtons
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
       </div>
 
       <div className="flex justify-end gap-x-3 pt-1 -mb-3">
