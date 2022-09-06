@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 
 //
 import PieChart from "../../@product/pie-chart";
+import { ChevronDown } from "../../icons";
+import ChartButtons from "../../reusable/chart-buttons";
+import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
 import PageTitle from "../../reusable/page-title";
 
 /**
  *
  */
 export default function AcademicResearchFundings() {
+  const [activeChart, setActiveChart] = useState<ChartType>("bar");
   const [data, setData] = useState([
     {
       id: "london-college",
@@ -30,9 +34,19 @@ export default function AcademicResearchFundings() {
       <PageTitle title="Aacdemic Research Funding" info="info" />
 
       <div className="pt-1 flex justify-end gap-x-3">
-        <div>Periods</div>
+        <div>
+          <div className="flex">
+            <span className="mr-2 block cursor-pointer">View all periods</span>{" "}
+            <ChevronDown />
+          </div>
+        </div>
 
-        <div>Switch</div>
+        <div>
+          <ChartButtons
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
       </div>
 
       <PieChart data={data} />

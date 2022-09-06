@@ -7,11 +7,16 @@ import PageTitle from "../../reusable/page-title";
 //
 import { getPatentsCount } from "../../../utils/api/dashboard";
 import { getPatentsPieChart } from "../../../utils/api/charts";
+import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
+import { useState } from "react";
+import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
 
 /**
  *
  */
 export default function Patents() {
+  const [activeChart, setActiveChart] = useState<ChartType>("bar");
+
   const { data, isLoading } = useQuery(["patents-pie-chart"], async () => {
     return await getPatentsPieChart();
   });
@@ -38,7 +43,12 @@ export default function Patents() {
       <div className="pt-1 flex justify-end gap-x-3">
         <div>Periods</div>
 
-        <div>Switch</div>
+        <div>
+          <ChartButtons
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
       </div>
 
       <PieChart data={finalData} />
