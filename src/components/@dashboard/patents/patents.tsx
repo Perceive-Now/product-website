@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 //
 import PieChart from "../../@product/pie-chart";
 import PageTitle from "../../reusable/page-title";
+import TimePeriod from "../../reusable/time-period";
+import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 
 //
-import TimePeriod from "../../reusable/time-period";
-import { getPatentsPieChart } from "../../../utils/api/charts";
 import { getPatentsCount } from "../../../utils/api/dashboard";
-import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
+import { getPatentsPieChart } from "../../../utils/api/charts";
 import { timeperiod } from "../academic-research-fundings/academic-research-fundings";
 
 //

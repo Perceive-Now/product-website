@@ -1,5 +1,6 @@
 import { ResponsivePie } from "@nivo/pie";
 import { useEffect, useState } from "react";
+import { COLORS } from "../../../utils/constants";
 
 //
 import { formatNumber } from "../../../utils/helpers";
@@ -8,9 +9,6 @@ import { formatNumber } from "../../../utils/helpers";
  *
  */
 export default function PieChart(props: IPieChartProps) {
-  const pieColors = ["#D7D7D7", "#E1D5F2", "#B6A2D8", "#7F4BD8", "#442873"];
-
-  //
   const [dataItems, setDataItems] = useState(props.data);
 
   //
@@ -54,7 +52,7 @@ export default function PieChart(props: IPieChartProps) {
             symbolShape: "circle",
           },
         ]}
-        colors={pieColors.slice(5 - props.data.length)}
+        colors={COLORS.slice(5 - props.data.length)}
         onClick={(data) => props.onClick?.(data)}
         tooltip={(tProps) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">

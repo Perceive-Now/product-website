@@ -7,6 +7,12 @@ import PieChart from "../../@product/pie-chart";
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
 import ChartButtons from "../../reusable/chart-buttons";
+import ScatterChart from "../../@product/scatter-chart";
+
+//
+import { COLORS } from "../../../utils/constants";
+
+//
 import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
 
 /**
@@ -33,30 +39,42 @@ export default function AcademicResearchFundings() {
   let chart = null;
   switch (activeChart) {
     case "bar":
+      let barChartData = [...data].map((d) => {
+        return {
+          [d.id]: d.value,
+          university: d.label,
+        };
+      });
+
       chart = (
         <Fragment>
           <div className="flex justify-end gap-x-3 pt-1 -mb-3">
-            <div className="flex gap-x-1 text-sm items-center">
-              <div className="w-2 h-2 bg-primary-100 rounded-full" />
-              <span>Patents</span>
-            </div>
-
-            <div className="flex gap-x-1 text-sm items-center">
-              <div className="w-2 h-2 bg-primary-500 rounded-full" />
-              <span>Open</span>
-            </div>
-
-            <div className="flex gap-x-1 text-sm items-center">
-              <div className="w-2 h-2 bg-primary-800 rounded-full" />
-              <span>Closed</span>
-            </div>
+            {barChartData.map((data, index) => {
+              return (
+                <div
+                  className="flex gap-x-1 text-sm items-center flex-wrap"
+                  key={index}
+                >
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: COLORS[index],
+                      height: "16px",
+                      width: "16px",
+                    }}
+                  />
+                  <span>{data.university}</span>
+                </div>
+              );
+            })}
           </div>
 
           <BarChart
-            keys={["patents", "openArticles", "closedArticles"]}
-            indexBy="city"
+            keys={data.map((d) => d.id)}
+            indexBy="university"
             legendY="Number of Funding"
-            data={data ?? []}
+            data={barChartData ?? []}
+            groupMode="stacked"
           />
         </Fragment>
       );
@@ -65,13 +83,13 @@ export default function AcademicResearchFundings() {
       chart = <PieChart data={data} />;
       break;
     case "scatter":
-      chart = <div className="text-center my-8">Work on progress</div>;
+      chart = <ScatterChart data={[]} legendX="Years" legendY="Funding" />;
       break;
   }
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle title="Aacdemic Research Funding" info="info" />
+      <PageTitle title="Academic Research Funding" info="info" />
 
       <div className="pt-1 flex justify-end gap-x-3">
         <div>

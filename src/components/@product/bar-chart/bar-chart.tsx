@@ -2,15 +2,15 @@ import { ResponsiveBar } from "@nivo/bar";
 import { useEffect, useState } from "react";
 
 //
+import { COLORS } from "../../../utils/constants";
+
+//
 import { formatNumber } from "../../../utils/helpers";
 
 /**
  *
  */
 export default function BarChart(props: IBarChartProps) {
-  const barColors = ["#B6A2D8", "#7F4BD8", "#442873"];
-
-  //
   const [dataItems, setDataItems] = useState(props.data);
 
   //
@@ -33,7 +33,7 @@ export default function BarChart(props: IBarChartProps) {
         }}
         padding={0.4}
         innerPadding={4}
-        groupMode="grouped"
+        groupMode={props.groupMode || "grouped"}
         borderRadius={5}
         valueScale={{ type: "linear" }}
         indexScale={{ type: "band", round: true }}
@@ -65,7 +65,7 @@ export default function BarChart(props: IBarChartProps) {
         labelSkipHeight={12}
         animate={false}
         role="application"
-        colors={barColors.slice(3 - props.keys.length)}
+        colors={COLORS}
         tooltip={(item) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
             {formatNumber(item.value)}
@@ -82,5 +82,6 @@ interface IBarChartProps {
   indexBy: string;
   legendY?: string;
   legendX?: string;
+  groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
 }
