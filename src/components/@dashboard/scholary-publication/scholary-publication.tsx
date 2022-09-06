@@ -1,17 +1,24 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
 import BarChart from "../../@product/bar-chart";
 import PageTitle from "../../reusable/page-title";
+import ChartButtons from "../../reusable/chart-buttons";
 
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
 
+//
+import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
+
 /**
  *
  */
 export default function ScholaryPublication() {
+  const [activeChart, setActiveChart] = useState<ChartType>("bar");
+
   const { data: publicationChartData, isLoading } = useQuery(
     ["scholary-publications"],
     async () => {
@@ -43,7 +50,12 @@ export default function ScholaryPublication() {
           </div>
         </div>
 
-        <div>Switch</div>
+        <div className="flex items-center">
+          <ChartButtons
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
       </div>
 
       <BarChart

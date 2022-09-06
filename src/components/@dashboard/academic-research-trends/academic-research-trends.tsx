@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 //
 import BarChart from "../../@product/bar-chart";
+import PageTitle from "../../reusable/page-title";
+import TimePeriod from "../../reusable/time-period";
 import ChartButtons from "../../reusable/chart-buttons";
 import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
-import PageTitle from "../../reusable/page-title";
-import TimePeriod from "../../reusable/time-period/time-period";
 import { timeperiod } from "../academic-research-fundings/academic-research-fundings";
 
 /**
