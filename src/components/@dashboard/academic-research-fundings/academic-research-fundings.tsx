@@ -73,6 +73,7 @@ export default function AcademicResearchFundings() {
             keys={data.map((d) => d.id)}
             indexBy="university"
             legendY="Number of Funding"
+            legendX="Universities"
             data={barChartData ?? []}
             groupMode="stacked"
           />

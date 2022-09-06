@@ -19,6 +19,9 @@ export default function BarChart(props: IBarChartProps) {
   }, [props.data]);
 
   //
+  const barPadding = props.groupMode === "stacked" ? 0.85 : 0.4;
+
+  //
   return (
     <div className="h-[300px]">
       <ResponsiveBar
@@ -31,7 +34,7 @@ export default function BarChart(props: IBarChartProps) {
           left: 60,
           bottom: props.legendX ? 50 : 20,
         }}
-        padding={0.4}
+        padding={barPadding}
         innerPadding={4}
         groupMode={props.groupMode || "grouped"}
         borderRadius={5}
@@ -46,7 +49,7 @@ export default function BarChart(props: IBarChartProps) {
             tickRotation: 0,
             legend: props.legendX,
             legendPosition: "middle",
-            legendOffset: 32,
+            legendOffset: 40,
           },
         })}
         {...(props.legendY && {
