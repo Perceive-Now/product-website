@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 //
 import PieChart from "../../@product/pie-chart";
-import { ChevronDown } from "../../icons";
 import ChartButtons from "../../reusable/chart-buttons";
 import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
 import PageTitle from "../../reusable/page-title";
+import TimePeriod from "../../reusable/time-period/time-period";
 
 /**
  *
@@ -29,19 +29,35 @@ export default function AcademicResearchFundings() {
     { id: "imperial-college", label: "Imperial College London (8%)", value: 8 },
   ]);
 
+  const timeperiod = [
+    {
+      label: "Past 10 years",
+      value: "10yrs",
+    },
+    {
+      label: "Past 5 years",
+      value: "5yrs",
+    },
+    {
+      label: "Past 3 years",
+      value: "3yrs",
+    },
+    {
+      label: "Past 12 months",
+      value: "12mth",
+    },
+  ];
+  
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Aacdemic Research Funding" info="info" />
 
       <div className="pt-1 flex justify-end gap-x-3">
         <div>
-          <div className="flex">
-            <span className="mr-2 block cursor-pointer">View all periods</span>{" "}
-            <ChevronDown />
-          </div>
+          <TimePeriod timePeriods={timeperiod} />
         </div>
 
-        <div>
+        <div className="flex items-center">
           <ChartButtons
             activeChart={activeChart}
             setActiveChart={setActiveChart}
