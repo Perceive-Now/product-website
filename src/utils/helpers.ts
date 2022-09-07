@@ -9,9 +9,9 @@ export const formatNumber = (
     maximumFractionDigits: maxFraction,
     ...(options?.isCurrency
       ? {
-          style: "currency",
-          currency: "USD",
-        }
+        style: "currency",
+        currency: "USD",
+      }
       : {}),
   }).format(number);
 };
@@ -19,4 +19,13 @@ export const formatNumber = (
 interface IFormatNumberOptions {
   maxFraction?: number;
   isCurrency?: boolean;
+}
+
+
+export const abbreviateString = (value: string) => {
+  let abbreviatedString = '';
+  value.split(' ').forEach(word => {
+    abbreviatedString += word[0].toUpperCase();
+  })
+  return abbreviatedString;
 }

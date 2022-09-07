@@ -2,18 +2,20 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
+import BarChart from "../../@product/bar-chart";
 import PieChart from "../../@product/pie-chart";
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
+import ScatterChart from "../../@product/scatter-chart";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 
 //
+import { TIME_PERIODS } from "../../../utils/constants";
 import { getPatentsCount } from "../../../utils/api/dashboard";
 import { getPatentsPieChart } from "../../../utils/api/charts";
-import { timeperiod } from "../academic-research-fundings/academic-research-fundings";
 
 //
-import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
+import { ChartType } from "../../reusable/chart-buttons";
 
 /**
  *
@@ -40,13 +42,24 @@ export default function Patents() {
         value: item.value,
       }));
 
+  const finalScatterData = isLoading
+    ? []
+    : [
+        {
+          id: "Years",
+          data: (data ?? []).map((item) => ({
+            x: item.name,
+            y: item.percentage,
+          })),
+        },
+      ];
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Patents" info="info" />
 
       <div className="pt-1 flex justify-end gap-x-3">
         <div>
-          <TimePeriod timePeriods={timeperiod} />
+          <TimePeriod timePeriods={TIME_PERIODS} />
         </div>
 
         <div className="flex items-center">
@@ -57,7 +70,24 @@ export default function Patents() {
         </div>
       </div>
 
-      <PieChart data={finalData} />
+      {activeChart === "bar" && (
+        <BarChart
+          data={data ?? []}
+          keys={["value"]}
+          indexBy="name"
+          groupMode="stacked"
+        />
+      )}
+
+      {activeChart === "donut" && <PieChart data={finalData} />}
+
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Years"
+          legendY="Patents"
+        />
+      )}
 
       <div className="mt-4 text-sm">
         <span className="font-bold">"{patentCount?.patentCount ?? "-"}"</span>

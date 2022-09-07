@@ -8,7 +8,7 @@ export async function getScholaryPublications() {
     "/dashboard/scholarly_publications"
   );
 
-  return response.data.data;
+  return response.data.data.chart;
 }
 
 export async function getPatentsPieChart() {
@@ -16,12 +16,20 @@ export async function getPatentsPieChart() {
     "/dashboard/patents_pie_chart"
   );
 
-  return response.data.data;
+  return response.data.data.chart;
 }
 
 export async function getExpertsCountGraph() {
   const response = await axiosInstance.get<IExpertCountResponse>(
     "/dashboard/experts_count_graph"
+  );
+
+  return response.data.data.chart;
+}
+
+export async function getAcademicResearchFundingChart() {
+  const response = await axiosInstance.get<IAcademicResearchFundingResponse>(
+    "/dashboard/academic/funding_chart"
   );
 
   return response.data.data;
@@ -37,7 +45,9 @@ interface IScholaryPublication {
 }
 
 interface IScholaryPublicationResponse {
-  data: IScholaryPublication[];
+  data: {
+    chart: IScholaryPublication[];
+  };
 }
 
 interface IPatent {
@@ -47,7 +57,9 @@ interface IPatent {
 }
 
 interface IPatentsPieResponse {
-  data: IPatent[];
+  data: {
+    chart: IPatent[];
+  };
 }
 
 interface IExpertCount {
@@ -57,5 +69,22 @@ interface IExpertCount {
 }
 
 interface IExpertCountResponse {
-  data: IExpertCount[];
+  data: {
+    chart: IExpertCount[];
+  };
+}
+
+interface IAcademicResearchFunding {
+  name: string;
+  percentage: number;
+}
+
+interface IAcademicResearchFundingResponse {
+  data: {
+    chart: IAcademicResearchFunding[];
+    captionText: {
+      fundingAmount: number;
+      numberOfYears: number;
+    };
+  };
 }

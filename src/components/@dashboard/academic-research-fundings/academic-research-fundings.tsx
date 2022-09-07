@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import { Fragment, useState } from "react";
-import BarChart from "../../@product/bar-chart";
 
 //
+import { useQuery } from "@tanstack/react-query";
+import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
+
+//
+import BarChart from "../../@product/bar-chart";
 import PieChart from "../../@product/pie-chart";
+
+//
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
 import ChartButtons from "../../reusable/chart-buttons";
@@ -13,43 +19,40 @@ import ScatterChart from "../../@product/scatter-chart";
 import { COLORS } from "../../../utils/constants";
 
 //
-import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
+import { ChartType } from "../../reusable/chart-buttons";
+
+//
+import { abbreviateString, formatNumber } from "../../../utils/helpers";
+import { TIME_PERIODS } from "../../../utils/constants";
 
 /**
  *
  */
 export default function AcademicResearchFundings() {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
-  const [data, setData] = useState([
-    {
-      id: "london-college",
-      label: "University College London (34%)",
-      value: 34,
-    },
-    { id: "harvard-medical", label: "Harvard Medical School (28%)", value: 28 },
-    {
-      id: "south-california",
-      label: "University of Southern California (22%)",
-      value: 22,
-    },
-    { id: "meth-zurich", label: "METH Zurich (8%)", value: 8 },
-    { id: "imperial-college", label: "Imperial College London (8%)", value: 8 },
-  ]);
+
+  const { data, isLoading } = useQuery(
+    ["dashboard-academic-funding-chart"],
+    async () => {
+      return await getAcademicResearchFundingChart();
+    }
+  );
+  let chartData = data?.chart ?? [];
 
   let chart = null;
   switch (activeChart) {
     case "bar":
-      let barChartData = [...data].map((d) => {
+      let finalBarChartData = chartData.map((data) => {
         return {
-          [d.id]: d.value,
-          university: d.label,
+          [data.name]: data.percentage,
+          university: abbreviateString(data.name),
         };
       });
 
       chart = (
         <Fragment>
           <div className="flex justify-end gap-x-3 pt-1 -mb-3">
-            {barChartData.map((data, index) => {
+            {chartData.map((data, index) => {
               return (
                 <div
                   className="flex gap-x-1 text-sm items-center flex-wrap"
@@ -63,28 +66,54 @@ export default function AcademicResearchFundings() {
                       width: "16px",
                     }}
                   />
-                  <span>{data.university}</span>
+                  <span>
+                    {data.name} ({abbreviateString(data.name)})
+                  </span>
                 </div>
               );
             })}
           </div>
 
           <BarChart
-            keys={data.map((d) => d.id)}
+            keys={chartData.map((d) => d.name)}
             indexBy="university"
             legendY="Number of Funding"
             legendX="Universities"
-            data={barChartData ?? []}
+            data={finalBarChartData}
             groupMode="stacked"
           />
         </Fragment>
       );
       break;
     case "donut":
-      chart = <PieChart data={data} />;
+      const finalPieValue = isLoading
+        ? []
+        : chartData.map((itm, index) => ({
+            id: index,
+            label: itm.name,
+            value: itm.percentage,
+          }));
+      chart = <PieChart data={finalPieValue} />;
       break;
     case "scatter":
-      chart = <ScatterChart data={[]} legendX="Years" legendY="Funding" />;
+      const finalScatterData = isLoading
+        ? []
+        : [
+            {
+              id: "universities",
+              data: chartData.map((data) => ({
+                x: data.name,
+                y: data.percentage,
+              })),
+            },
+          ];
+      chart = (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="University"
+          legendY="Funding"
+        />
+      );
       break;
   }
 
@@ -92,9 +121,10 @@ export default function AcademicResearchFundings() {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Academic Research Funding" info="info" />
 
+      {/* Controls */}
       <div className="pt-1 flex justify-end gap-x-3">
         <div>
-          <TimePeriod timePeriods={timeperiod} />
+          <TimePeriod timePeriods={TIME_PERIODS} />
         </div>
 
         <div className="flex items-center">
@@ -107,10 +137,25 @@ export default function AcademicResearchFundings() {
 
       {chart}
 
+      {/* Caption */}
       <div className="mt-4">
+        <span className="font-semibold">
+          "
+          {formatNumber(data?.captionText.fundingAmount ?? 0, {
+            isCurrency: true,
+          })}
+          "
+        </span>
+        <span> </span>
         <span>
-          "$ X" amount of funding was received by the top 5 universities with
-          the maximum amount of funding in the past 1 year
+          amount of funding was received by the top 5 universities with the
+          maximum amount of funding in the past
+        </span>
+        <span> </span>
+        <span>{data?.captionText.numberOfYears ?? "-"}</span>
+        <span> </span>
+        <span>
+          {(data?.captionText.numberOfYears ?? 0) > 1 ? "years" : "year"}
         </span>
         <span className="ml-1">
           <Link to="#">Read More</Link>
@@ -119,22 +164,3 @@ export default function AcademicResearchFundings() {
     </div>
   );
 }
-
-export const timeperiod = [
-  {
-    label: "Past 10 years",
-    value: "10yrs",
-  },
-  {
-    label: "Past 5 years",
-    value: "5yrs",
-  },
-  {
-    label: "Past 3 years",
-    value: "3yrs",
-  },
-  {
-    label: "Past 12 months",
-    value: "12mth",
-  },
-];

@@ -2,7 +2,7 @@ import { ResponsiveLine } from "@nivo/line";
 import { useState } from "react";
 
 //
-import { formatNumber } from "../../../utils/helpers";
+import { abbreviateString, formatNumber } from "../../../utils/helpers";
 
 //
 import { COLORS } from "../../../utils/constants";
@@ -120,8 +120,7 @@ const DATA = [
  *
  **/
 export default function ScatterChart(props: IScatterChartProps) {
-  // making DATA as default for now
-  const [dataItems, setDataItems] = useState(DATA || props.data);
+  const [dataItems, setDataItems] = useState(props.data);
 
   return (
     <div className="h-[300px]">
@@ -147,6 +146,7 @@ export default function ScatterChart(props: IScatterChartProps) {
             legend: props.legendX,
             legendPosition: "middle",
             legendOffset: 36,
+            format: (value) => abbreviateString(value),
           },
         })}
         {...(props.legendY && {
