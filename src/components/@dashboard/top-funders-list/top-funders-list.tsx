@@ -9,7 +9,6 @@ import ReactTable from "../../reusable/ReactTable";
 //
 import { formatNumber } from "../../../utils/helpers";
 
-
 export default function TopFundersList(props: ITopFundersListProps) {
   const { data, isLoading } = useQuery(
     ["top-5-funders", ...props.keywords],
@@ -68,8 +67,8 @@ export default function TopFundersList(props: ITopFundersListProps) {
         ),
       },
       {
-        header: "Company/University",
-        accessorKey: "companyUniversity",
+        header: "Date",
+        accessorKey: "date",
       },
     ],
     []
