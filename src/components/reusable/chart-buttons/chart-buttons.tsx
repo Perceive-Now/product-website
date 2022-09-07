@@ -3,6 +3,9 @@ import classNames from "classnames";
 //
 import { BarIcon, PieIcon, ScatterIcon } from "../../icons";
 
+//
+import "./chart-buttons.css";
+
 /*
  *
  **/
