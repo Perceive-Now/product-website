@@ -16,6 +16,7 @@ import { getPatentsPieChart } from "../../../utils/api/charts";
 
 //
 import { ChartType } from "../../reusable/chart-buttons";
+import BarChart from "../../@product/bar-chart";
 
 /**
  *
@@ -59,7 +60,13 @@ export default function Patents() {
         </div>
       </div>
 
-      <PieChart data={finalData} />
+      {activeChart === "bar" && (
+        <BarChart data={data ?? []} keys={["value"]} indexBy="name" />
+      )}
+
+      {activeChart === "donut" && <PieChart data={finalData} />}
+
+      {activeChart === "scatter" && <>Scatter plot, yet to do</>}
 
       <div className="mt-4 text-sm">
         <span className="font-bold">"{patentCount?.patentCount ?? "-"}"</span>
