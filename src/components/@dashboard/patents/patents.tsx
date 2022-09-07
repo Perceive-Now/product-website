@@ -47,7 +47,7 @@ export default function Patents() {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Patents" info="info" />
 
-      <div className="pt-1 flex justify-end gap-x-3">
+      <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
           <TimePeriod timePeriods={TIME_PERIODS} />
         </div>

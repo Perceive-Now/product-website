@@ -36,7 +36,7 @@ export default function AcademicResearchTrends() {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Academic Research Trends" info="info" />
 
-      <div className="pt-1 flex justify-end gap-x-3">
+      <div className="pt-1 flex justify-end items-center gap-x-3">
         <div>
           <TimePeriod timePeriods={TIME_PERIODS} />
         </div>
