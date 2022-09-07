@@ -43,6 +43,14 @@ export async function getRelatedKeywords() {
   return response.data.data;
 }
 
+export async function getTodaysHighlight() {
+  const response = await axiosInstance.get<IHighlightResponse>(
+    "/dashboard/highlights"
+  );
+
+  return response.data.data;
+}
+
 /**
  * Interfaces
  */
@@ -99,4 +107,14 @@ interface IExpertCountResponse {
 //
 interface IRelatedKeywordsResponse {
   data: string[];
+}
+
+interface IHighlight {
+  id: string;
+  name: string;
+  value: number;
+}
+
+interface IHighlightResponse {
+  data: IHighlight[];
 }
