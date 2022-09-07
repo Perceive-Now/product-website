@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 //
 import BarChart from "../../@product/bar-chart";
@@ -11,26 +11,22 @@ import { ChartType } from "../../reusable/chart-buttons";
 
 //
 import { TIME_PERIODS } from "../../../utils/constants";
+import { getAcademicResearchTrends } from "../../../utils/api/charts";
 
 /**
  *
  */
 export default function AcademicResearchTrends() {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
-  const [data, setData] = useState([
-    { patents: 4100, closedArticles: 7900, openArticles: 9700, city: "NE" },
-    { patents: 4200, closedArticles: 2400, openArticles: 4700, city: "SE" },
-    { patents: 2400, closedArticles: 5100, openArticles: 5800, city: "MW" },
-    { patents: 8100, closedArticles: 9200, openArticles: 6100, city: "NW" },
-    { patents: 2400, closedArticles: 8000, openArticles: 5900, city: "SW" },
-  ]);
 
-  //   const { data, isLoading } = useQuery(
-  //     ["dashboard-academin-research-trend"],
-  //     async () => {
-  //       //
-  //     }
-  //   );
+  const { data, isLoading } = useQuery(
+    ["dashboard-academic-research-trend"],
+    async () => {
+      return await getAcademicResearchTrends();
+    }
+  );
+
+  const finalData = isLoading ? [] : data?.chart ?? [];
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
@@ -67,10 +63,10 @@ export default function AcademicResearchTrends() {
       </div>
 
       <BarChart
-        keys={["patents", "openArticles", "closedArticles"]}
-        indexBy="city"
+        keys={["patentsCount", "openArticlesCount", "closedArticlesCount"]}
+        indexBy="locationName"
         legendY="Number of Publications"
-        data={data ?? []}
+        data={finalData}
       />
 
       <div className="mt-4">

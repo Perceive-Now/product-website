@@ -35,6 +35,14 @@ export async function getAcademicResearchFundingChart() {
   return response.data.data;
 }
 
+export async function getAcademicResearchTrends() {
+  const response = await axiosInstance.get<IAcademicResearchTrendResponse>(
+    "/dashboard/academic/usa_research_trends"
+  );
+
+  return response.data.data;
+}
+
 /**
  *
  */
@@ -86,5 +94,18 @@ interface IAcademicResearchFundingResponse {
       fundingAmount: number;
       numberOfYears: number;
     };
+  };
+}
+
+interface IAcademicResearchTrend {
+  locationName: string;
+  patentsCount: number;
+  openArticlesCount: number;
+  closedArticlesCount: number;
+}
+
+interface IAcademicResearchTrendResponse {
+  data: {
+    chart: IAcademicResearchTrend[];
   };
 }
