@@ -43,6 +43,15 @@ export async function getAcademicResearchTrends() {
   return response.data.data;
 }
 
+export async function getTopFundingChart() {
+  const response = await axiosInstance.get<ITopFundingChartResponse>(
+    "/dashboard/funding/chart"
+  );
+
+  return response.data.data.chart;
+}
+
+
 /**
  *
  */
@@ -108,4 +117,15 @@ interface IAcademicResearchTrendResponse {
   data: {
     chart: IAcademicResearchTrend[];
   };
+}
+
+interface ITopFundingChart {
+  value: number;
+  year: string
+}
+
+interface ITopFundingChartResponse {
+  data: {
+    chart: ITopFundingChart[]
+  }
 }

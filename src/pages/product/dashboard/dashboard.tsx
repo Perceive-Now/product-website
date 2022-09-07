@@ -25,6 +25,8 @@ import FootprintHeatmap from "../../../components/@dashboard/footprint-heatmap";
 //
 import PageTitle from "../../../components/reusable/page-title";
 import { IKeywordOption } from "../../../components/reusable/search";
+import TopFundersList from "../../../components/@dashboard/top-funders-list";
+import TopFunderCharts from "../../../components/@dashboard/top-funder-charts";
 
 /**
  *
@@ -123,6 +125,24 @@ export default function DashboardPage() {
 
         <div className="col-span-1">
           <AcademicResearchFundings />
+        </div>
+      </div>
+
+      {/* 11th row */}
+      <div className="mt-4 mb-2">
+        <PageTitle
+          learnMore="Learn How"
+          title="Funding"
+          titleClass="font-bold"
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-x-3 mt-3">
+        <div className="col-span-1">
+          <TopFunderCharts />
+        </div>
+
+        <div className="col-span-1">
+          <TopFundersList keywords={searchKeywords.map((kwd) => kwd.value)} />
         </div>
       </div>
     </div>

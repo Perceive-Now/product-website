@@ -126,7 +126,7 @@ export default function ScatterChart(props: IScatterChartProps) {
     <div className="h-[300px]">
       <ResponsiveLine
         data={dataItems}
-        margin={{ top: 50, right: 120, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -174,32 +174,6 @@ export default function ScatterChart(props: IScatterChartProps) {
         useMesh={true}
         // colors={{ scheme: "purples" }}
         colors={COLORS}
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 100,
-            translateY: 0,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
       />
     </div>
   );
