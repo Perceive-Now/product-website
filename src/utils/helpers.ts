@@ -24,7 +24,8 @@ interface IFormatNumberOptions {
 
 export const abbreviateString = (value: string) => {
   let abbreviatedString = '';
-  value.split(' ').forEach(word => {
+  let tempValue = String(value);
+  tempValue.split(' ').forEach(word => {
     abbreviatedString += word[0].toUpperCase();
   })
   return abbreviatedString;

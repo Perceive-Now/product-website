@@ -146,7 +146,13 @@ export default function ScatterChart(props: IScatterChartProps) {
             legend: props.legendX,
             legendPosition: "middle",
             legendOffset: 36,
-            format: (value) => abbreviateString(value),
+            format: (value) => {
+              if (props.abbreviateLegendX) {
+                return abbreviateString(value);
+              } else {
+                return value;
+              }
+            },
           },
         })}
         {...(props.legendY && {
@@ -203,4 +209,5 @@ interface IScatterChartProps {
   data: any[];
   legendY?: string;
   legendX?: string;
+  abbreviateLegendX?: boolean | undefined;
 }

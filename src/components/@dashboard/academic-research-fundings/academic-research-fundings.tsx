@@ -112,6 +112,7 @@ export default function AcademicResearchFundings() {
           data={finalScatterData}
           legendX="University"
           legendY="Funding"
+          abbreviateLegendX={true}
         />
       );
       break;
