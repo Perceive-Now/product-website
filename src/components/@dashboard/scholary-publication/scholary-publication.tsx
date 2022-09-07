@@ -11,7 +11,7 @@ import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
 
 //
-import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
+import { ChartType } from "../../reusable/chart-buttons";
 
 /**
  *

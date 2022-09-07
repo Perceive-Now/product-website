@@ -1,81 +1,53 @@
 import { Link } from "react-router-dom";
 import { Fragment, useState } from "react";
-import BarChart from "../../@product/bar-chart";
 
 //
+import { useQuery } from "@tanstack/react-query";
+import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
+
+//
+import BarChart from "../../@product/bar-chart";
 import PieChart from "../../@product/pie-chart";
+
+//
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
 import ChartButtons from "../../reusable/chart-buttons";
-import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
+import { ChartType } from "../../reusable/chart-buttons";
+
+//
+import { formatNumber } from "../../../utils/helpers";
+import { TIME_PERIODS } from "../../../utils/constants";
 
 /**
  *
  */
 export default function AcademicResearchFundings() {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
-  const [data, setData] = useState([
-    {
-      id: "london-college",
-      label: "University College London (34%)",
-      value: 34,
-    },
-    { id: "harvard-medical", label: "Harvard Medical School (28%)", value: 28 },
-    {
-      id: "south-california",
-      label: "University of Southern California (22%)",
-      value: 22,
-    },
-    { id: "meth-zurich", label: "METH Zurich (8%)", value: 8 },
-    { id: "imperial-college", label: "Imperial College London (8%)", value: 8 },
-  ]);
 
-  let chart = null;
-  switch (activeChart) {
-    case "bar":
-      chart = (
-        <Fragment>
-          <div className="flex justify-end gap-x-3 pt-1 -mb-3">
-            <div className="flex gap-x-1 text-sm items-center">
-              <div className="w-2 h-2 bg-primary-100 rounded-full" />
-              <span>Patents</span>
-            </div>
+  const { data, isLoading } = useQuery(
+    ["dashboard-academic-funding-chart"],
+    async () => {
+      return await getAcademicResearchFundingChart();
+    }
+  );
 
-            <div className="flex gap-x-1 text-sm items-center">
-              <div className="w-2 h-2 bg-primary-500 rounded-full" />
-              <span>Open</span>
-            </div>
-
-            <div className="flex gap-x-1 text-sm items-center">
-              <div className="w-2 h-2 bg-primary-800 rounded-full" />
-              <span>Closed</span>
-            </div>
-          </div>
-
-          <BarChart
-            keys={["patents", "openArticles", "closedArticles"]}
-            indexBy="city"
-            legendY="Number of Funding"
-            data={data ?? []}
-          />
-        </Fragment>
-      );
-      break;
-    case "donut":
-      chart = <PieChart data={data} />;
-      break;
-    case "scatter":
-      chart = <div className="text-center my-8">Work on progress</div>;
-      break;
-  }
+  const finalPieValue = isLoading
+    ? []
+    : (data?.chart ?? []).map((itm, index) => ({
+        id: index,
+        label: itm.name,
+        value: itm.percentage,
+      }));
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Aacdemic Research Funding" info="info" />
 
+      {/* Controls */}
       <div className="pt-1 flex justify-end gap-x-3">
         <div>
-          <TimePeriod timePeriods={timeperiod} />
+          <TimePeriod timePeriods={TIME_PERIODS} />
         </div>
 
         <div className="flex items-center">
@@ -86,12 +58,45 @@ export default function AcademicResearchFundings() {
         </div>
       </div>
 
-      {chart}
+      {/* Bar Chart */}
+      {activeChart === "bar" && (
+        <Fragment>
+          <BarChart
+            keys={["percentage"]}
+            indexBy="name"
+            legendY="Number of Funding"
+            data={data?.chart ?? []}
+          />
+        </Fragment>
+      )}
 
+      {/* Pie Chart */}
+      {activeChart === "donut" && <PieChart data={finalPieValue} />}
+
+      {/* Scatter chart */}
+      {activeChart === "scatter" && (
+        <div className="text-center my-8">Work on progress</div>
+      )}
+
+      {/* Caption */}
       <div className="mt-4">
+        <span className="font-semibold">
+          "
+          {formatNumber(data?.captionText.fundingAmount ?? 0, {
+            isCurrency: true,
+          })}
+          "
+        </span>
+        <span> </span>
         <span>
-          "$ X" amount of funding was received by the top 5 universities with
-          the maximum amount of funding in the past 1 year
+          amount of funding was received by the top 5 universities with the
+          maximum amount of funding in the past
+        </span>
+        <span> </span>
+        <span>{data?.captionText.numberOfYears ?? "-"}</span>
+        <span> </span>
+        <span>
+          {(data?.captionText.numberOfYears ?? 0) > 1 ? "years" : "year"}
         </span>
         <span className="ml-1">
           <Link to="#">Read More</Link>
@@ -100,22 +105,3 @@ export default function AcademicResearchFundings() {
     </div>
   );
 }
-
-export const timeperiod = [
-  {
-    label: "Past 10 years",
-    value: "10yrs",
-  },
-  {
-    label: "Past 5 years",
-    value: "5yrs",
-  },
-  {
-    label: "Past 3 years",
-    value: "3yrs",
-  },
-  {
-    label: "Past 12 months",
-    value: "12mth",
-  },
-];

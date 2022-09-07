@@ -7,13 +7,15 @@ import PageTitle from "../../reusable/page-title";
 
 //
 import TimePeriod from "../../reusable/time-period";
-import { getPatentsPieChart } from "../../../utils/api/charts";
-import { getPatentsCount } from "../../../utils/api/dashboard";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
-import { timeperiod } from "../academic-research-fundings/academic-research-fundings";
 
 //
-import { ChartType } from "../../reusable/chart-buttons/chart-button/chart-button";
+import { TIME_PERIODS } from "../../../utils/constants";
+import { getPatentsCount } from "../../../utils/api/dashboard";
+import { getPatentsPieChart } from "../../../utils/api/charts";
+
+//
+import { ChartType } from "../../reusable/chart-buttons";
 
 /**
  *
@@ -46,7 +48,7 @@ export default function Patents() {
 
       <div className="pt-1 flex justify-end gap-x-3">
         <div>
-          <TimePeriod timePeriods={timeperiod} />
+          <TimePeriod timePeriods={TIME_PERIODS} />
         </div>
 
         <div className="flex items-center">
