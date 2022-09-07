@@ -27,6 +27,14 @@ export async function getExpertsCountGraph() {
   return response.data.data.chart;
 }
 
+export async function getAcademicResearchFundingChart() {
+  const response = await axiosInstance.get<IAcademicResearchFundingResponse>(
+    "/dashboard/academic/funding_chart"
+  );
+
+  return response.data.data;
+}
+
 /**
  *
  */
@@ -63,5 +71,20 @@ interface IExpertCount {
 interface IExpertCountResponse {
   data: {
     chart: IExpertCount[];
+  };
+}
+
+interface IAcademicResearchFunding {
+  name: string;
+  percentage: number;
+}
+
+interface IAcademicResearchFundingResponse {
+  data: {
+    chart: IAcademicResearchFunding[];
+    captionText: {
+      fundingAmount: number;
+      numberOfYears: number;
+    };
   };
 }
