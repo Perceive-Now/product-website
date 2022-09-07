@@ -3,10 +3,9 @@ import ChartButton, { ChartType } from "./chart-button/chart-button";
 /*
  *
  **/
-export default function ChartButtons({
-  activeChart,
-  setActiveChart,
-}: IChartButtons) {
+export default function ChartButtons(props: IChartButtons) {
+  const { activeChart, setActiveChart } = props;
+
   return (
     <div className="flex">
       <ChartButton

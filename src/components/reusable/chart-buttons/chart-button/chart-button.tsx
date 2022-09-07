@@ -1,30 +1,13 @@
 import classNames from "classnames";
+
+//
 import { BarIcon, PieIcon, ScatterIcon } from "../../../icons";
 
 //
 import "./chart-button.css";
 
-export default function ChartButton({
-  type,
-  active = false,
-  className,
-  setActiveChart,
-}: IGraphButtonProps) {
-  let icon;
-
-  switch (type) {
-    case "bar":
-      icon = <BarIcon />;
-      break;
-    case "donut":
-      icon = <PieIcon />;
-      break;
-    case "scatter":
-      icon = <ScatterIcon />;
-      break;
-    default:
-      icon = null;
-  }
+export default function ChartButton(props: IGraphButtonProps) {
+  const { type, active = false, className, setActiveChart } = props;
 
   const handleActiveGraph = () => {
     setActiveChart(type);
@@ -40,7 +23,9 @@ export default function ChartButton({
       )}
       onClick={handleActiveGraph}
     >
-      {icon}
+      {type === "bar" && <BarIcon />}
+      {type === "donut" && <PieIcon />}
+      {type === "scatter" && <ScatterIcon />}
     </div>
   );
 }
