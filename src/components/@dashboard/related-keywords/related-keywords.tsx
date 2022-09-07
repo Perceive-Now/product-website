@@ -15,21 +15,7 @@ export default function RelatedKeywords() {
     return await getRelatedKeywords();
   });
 
-  const allKeywords = data ?? [
-    "minimally invasive surgery",
-    "wearable interface",
-    "lateral flow immunoassay",
-    "antibody tests",
-    "swab",
-    "human computer interaction",
-    "therapeutics",
-    "sars-cov 2",
-    "pneumonia",
-    "detection kits",
-    "artificial intelligence",
-    "public health",
-    "assistive technology",
-  ];
+  const allKeywords = data ?? [];
 
   return (
     <div className="border border-gray-200 rounded-lg shadow h-full w-full py-2 px-3 overflow-y-scroll">
