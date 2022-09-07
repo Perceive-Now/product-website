@@ -91,7 +91,7 @@ export default function DashboardPage() {
         />
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
-        <div className="col-span-1">YOu</div>
+        <div className="col-span-1"></div>
 
         <div className="col-span-1">
           <TopFundersList keywords={searchKeywords.map((kwd) => kwd.value)} />
