@@ -37,7 +37,7 @@ export default function ScholaryPublication() {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Scholarly Publications" info="info" />
 
-      <div className="pt-1 flex justify-between">
+      <div className="pt-1 flex justify-between items-center h-5">
         <div className="flex gap-x-3">
           <div className="flex gap-x-1 text-sm items-center">
             <div className="w-2 h-2 bg-primary-500 rounded-full" />
