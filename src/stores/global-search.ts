@@ -24,9 +24,21 @@ export const GlobalSearchSlice = createSlice({
     }
 })
 
-export const { setGlobalSearch, clearGlobalSearch }
+const { setGlobalSearch, clearGlobalSearch }
     = GlobalSearchSlice.actions;
 export default GlobalSearchSlice.reducer;
+
+
+//
+export const handleSetGlobalSearchSlice = (searchKeywords: IKeywordOption[]) => (dispatch: any) => {
+    dispatch(setGlobalSearch(searchKeywords))
+}
+
+//
+export const handleClearGlobalSearch = () => (dispatch: any) => {
+    dispatch(clearGlobalSearch())
+}
+
 
 //
 interface ISearchState {
