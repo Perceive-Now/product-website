@@ -18,6 +18,14 @@ import { ChartType } from "../../reusable/chart-buttons";
  *
  */
 export default function TopFunderCharts() {
+  const colors = [
+    "#7F4BD8",
+    "#442873",
+    "#B6A2D8",
+    "#d6d6d6",
+    "#e0d4f2",
+    "#b5a2d8",
+  ];
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   //
@@ -79,10 +87,13 @@ export default function TopFunderCharts() {
           indexBy="year"
           groupMode="stacked"
           legendY="FUNDING AMOUNT ($)"
+          colors={colors}
         />
       )}
 
-      {activeChart === "donut" && <PieChart data={finalPieData} />}
+      {activeChart === "donut" && (
+        <PieChart data={finalPieData} colors={colors} />
+      )}
 
       {activeChart === "scatter" && (
         <ScatterChart

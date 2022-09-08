@@ -29,6 +29,14 @@ import { TIME_PERIODS } from "../../../utils/constants";
  *
  */
 export default function AcademicResearchFundings() {
+  const colors = [
+    "#7F4BD8",
+    "#442873",
+    "#B6A2D8",
+    "#d6d6d6",
+    "#e0d4f2",
+    "#b5a2d8",
+  ];
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data, isLoading } = useQuery(
@@ -61,7 +69,7 @@ export default function AcademicResearchFundings() {
                   <div
                     className="w-2 h-2 rounded-full"
                     style={{
-                      backgroundColor: COLORS[index],
+                      backgroundColor: colors[index],
                       height: "16px",
                       width: "16px",
                     }}
@@ -81,6 +89,7 @@ export default function AcademicResearchFundings() {
             legendX="Universities"
             data={finalBarChartData}
             groupMode="stacked"
+            colors={colors}
           />
         </Fragment>
       );
@@ -93,7 +102,7 @@ export default function AcademicResearchFundings() {
             label: itm.name,
             value: itm.percentage,
           }));
-      chart = <PieChart data={finalPieValue} />;
+      chart = <PieChart data={finalPieValue} colors={colors} />;
       break;
     case "scatter":
       const finalScatterData = isLoading

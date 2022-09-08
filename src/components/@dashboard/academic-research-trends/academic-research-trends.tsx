@@ -18,6 +18,7 @@ import { getAcademicResearchTrends } from "../../../utils/api/charts";
  */
 export default function AcademicResearchTrends() {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
+  const colors = ["#B6A2D8", "#7F4BD8", "#442873"];
 
   const { data, isLoading } = useQuery(
     ["dashboard-academic-research-trend"],
@@ -67,6 +68,7 @@ export default function AcademicResearchTrends() {
         indexBy="locationName"
         legendY="Number of Publications"
         data={finalData}
+        colors={colors}
       />
 
       <div className="mt-4">
