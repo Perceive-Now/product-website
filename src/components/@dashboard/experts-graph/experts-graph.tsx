@@ -18,6 +18,7 @@ import { ChartType } from "../../reusable/chart-buttons";
  */
 export default function ExpertsGraph() {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
+  const colors = ["#7F4BD8", "#442873"];
 
   const { data: expertsChartData, isLoading } = useQuery(
     ["experts-count-graph"],
@@ -63,6 +64,7 @@ export default function ExpertsGraph() {
         indexBy="year"
         legendY="Number of Experts"
         data={(isLoading ? [] : expertsChartData) ?? []}
+        colors={colors}
       />
 
       <div className="mt-4 text-sm">
