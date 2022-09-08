@@ -89,7 +89,7 @@ export default function DashboardPage() {
           learnHow={true}
         />
       </div>
-      <ExpertsNetwork />
+      <ExpertsNetwork keywords={searchKeywords.map((kwd) => kwd.value)} />
       {/* 6th row end */}
 
       {/* 7th row map */}

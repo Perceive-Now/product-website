@@ -8,44 +8,14 @@ import ReactTable from "../../reusable/ReactTable";
 
 //
 import { formatNumber } from "../../../utils/helpers";
+import { getTop5Funders } from "../../../utils/api/dashboard";
 
 /*
  *
  **/
 export default function TopFundersList(props: ITopFundersListProps) {
   const { data } = useQuery(["top-5-funders", ...props.keywords], async () => {
-    return [
-      {
-        rank: 1,
-        name: "World Bank",
-        fundingAmount: 6000000,
-        date: "2022-07-16",
-      },
-      {
-        rank: 2,
-        name: "National Science Foundation",
-        fundingAmount: 5800000,
-        date: "2022-05-21",
-      },
-      {
-        rank: 3,
-        name: "International Monetary Fund",
-        fundingAmount: 4900000,
-        date: "2022-02-18",
-      },
-      {
-        rank: 4,
-        name: "Asian Development Bank",
-        fundingAmount: 4100000,
-        date: "2021-11-24",
-      },
-      {
-        rank: 5,
-        name: "United Nations",
-        fundingAmount: 3800000,
-        date: "2021-04-13",
-      },
-    ];
+    return await getTop5Funders();
   });
 
   //
@@ -82,8 +52,8 @@ export default function TopFundersList(props: ITopFundersListProps) {
         titleClass="font-bold"
       />
 
-      <div className="mt-7">
-        <ReactTable columnsData={columns} rowsData={data} />
+      <div className="mt-2">
+        <ReactTable columnsData={columns} rowsData={data} size="medium" />
 
         <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
       </div>

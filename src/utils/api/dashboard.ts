@@ -51,6 +51,22 @@ export async function getTodaysHighlight() {
   return response.data.data;
 }
 
+export async function getTop5Funders() {
+  const response = await axiosInstance.get<ITopFunderResponse>(
+    "/dashboard/funding/top_5"
+  );
+
+  return response.data.data;
+}
+
+export async function getExpertsTable() {
+  const response = await axiosInstance.get<IExpertResponse>(
+    "/dashboard/experts_feature"
+  );
+
+  return response.data.data;
+}
+
 /**
  * Interfaces
  */
@@ -117,4 +133,46 @@ interface IHighlight {
 
 interface IHighlightResponse {
   data: IHighlight[];
+}
+
+//
+interface ITopFunder {
+  rank: number;
+  name: string;
+  fundingAmount: number;
+  date: string;
+}
+
+interface ITopFunderResponse {
+  data: ITopFunder[];
+}
+
+//
+export interface IExpert {
+  rank: number;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  locationText: string;
+  patentsCount: number;
+  pulicationsCount: number;
+  score: number;
+  coordinates: [number, number];
+}
+
+interface IExpertResponse {
+  data: {
+    academic: IExpert[];
+    industry: IExpert[];
+  };
+}
+
+//
+export interface ICompetitor {
+  rank: number;
+  name: string;
+  description: string;
+  locationText: string;
+  score: number;
+  coordinate: [number, number];
 }
