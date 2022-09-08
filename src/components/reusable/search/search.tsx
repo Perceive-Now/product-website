@@ -1,7 +1,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import AsyncCreateableSelect from "react-select/async-creatable";
-import { MultiValue } from "react-select";
+import { ActionMeta, MultiValue } from "react-select";
 
 //
 import { SearchIcon } from "../../icons";
@@ -94,7 +94,10 @@ export default function Search(props: ISearchProps) {
     }
   };
 
-  const handleKeywordChange = (newValue: MultiValue<IFilterOptionGroup>) => {
+  const handleKeywordChange = (
+    newValue: MultiValue<IKeywordOption>,
+    actionMeta: ActionMeta<IKeywordOption>
+  ) => {
     let keywords: IKeywordOption[] = newValue.map((keyword) => {
       return {
         label: keyword.label,
@@ -127,6 +130,7 @@ export default function Search(props: ISearchProps) {
           className={classNames(props.className)}
           classNamePrefix="custom_search"
           placeholder={props.placeholder ?? "Search keywords"}
+          value={selectedKeywords}
           onChange={handleKeywordChange}
         />
 

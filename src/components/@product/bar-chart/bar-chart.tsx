@@ -87,5 +87,5 @@ interface IBarChartProps {
   legendX?: string;
   groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
-  colors?: string[];
+  colors?: string[] | ((bar: any) => string);
 }

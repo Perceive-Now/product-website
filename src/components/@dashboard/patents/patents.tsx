@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 //
 import BarChart from "../../@product/bar-chart";
@@ -21,7 +22,10 @@ import { ChartType } from "../../reusable/chart-buttons";
  *
  */
 export default function Patents() {
+  const navigate = useNavigate();
+
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
+  const colorsArray = ["#B6A2D8", "#7F4BD8", "#442873"];
 
   const { data, isLoading } = useQuery(["patents-pie-chart"], async () => {
     return await getPatentsPieChart();
@@ -34,12 +38,17 @@ export default function Patents() {
     }
   );
 
-  const finalData = isLoading
+  const finalBarData = isLoading
     ? []
-    : (data ?? []).map((item) => ({
+    : (data ?? []).map((item, idx) => ({ ...item, color: colorsArray[idx] }));
+
+  const finalPieData = isLoading
+    ? []
+    : (data ?? []).map((item, idx) => ({
         id: item.name,
         label: `${item.name} (${item.percentage}%)`,
         value: item.value,
+        color: colorsArray[idx],
       }));
 
   const finalScatterData = isLoading
@@ -53,6 +62,13 @@ export default function Patents() {
           })),
         },
       ];
+
+  const handleArcClick = (data: any) => {
+    navigate("/patents", {
+      state: { search: [{ label: data.id, value: data.id }] },
+    });
+  };
+
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle title="Patents" info="info" />
@@ -72,14 +88,21 @@ export default function Patents() {
 
       {activeChart === "bar" && (
         <BarChart
-          data={data ?? []}
+          data={finalBarData ?? []}
           keys={["value"]}
           indexBy="name"
           groupMode="stacked"
+          colors={(bar) => bar.data.color}
         />
       )}
 
-      {activeChart === "donut" && <PieChart data={finalData} />}
+      {activeChart === "donut" && (
+        <PieChart
+          data={finalPieData}
+          colors={(bar) => bar.data.color}
+          onClick={handleArcClick}
+        />
+      )}
 
       {activeChart === "scatter" && (
         <ScatterChart

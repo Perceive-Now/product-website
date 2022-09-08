@@ -54,7 +54,7 @@ export default function PieChart(props: IPieChartProps) {
             symbolShape: "circle",
           },
         ]}
-        colors={COLORS.slice(5 - props.data.length)}
+        colors={props.colors || COLORS.slice(5 - props.data.length)}
         onClick={(data) => props.onClick?.(data)}
         tooltip={(tProps) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
@@ -68,5 +68,6 @@ export default function PieChart(props: IPieChartProps) {
 
 interface IPieChartProps {
   data: any[];
+  colors?: string[] | ((bar: any) => string);
   onClick?: (data: any) => void;
 }
