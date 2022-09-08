@@ -1,0 +1,178 @@
+import axiosInstance from "../axios";
+
+/**
+ *
+ */
+export async function getPatentsCount() {
+  const response = await axiosInstance.get<IPatentsCountResponse>(
+    "/dashboard/patents/count"
+  );
+
+  return response.data.data;
+}
+
+export async function getPublicationsCount() {
+  const response = await axiosInstance.get<IPublicationCountResponse>(
+    "/dashboard/publications/count"
+  );
+
+  return response.data.data;
+}
+
+export async function getTop3Universities() {
+  const response = await axiosInstance.get<ITopUniversityResponse>(
+    "/dashboard/academic/universities_top_3"
+  );
+
+  return response.data.data;
+}
+
+export async function getExpertsCount() {
+  const response = await axiosInstance.get<IExpertCountResponse>(
+    "/dashboard/experts/count"
+  );
+
+  return response.data.data;
+}
+
+export async function getRelatedKeywords() {
+  const response = await axiosInstance.get<IRelatedKeywordsResponse>(
+    "/dashboard/related_keywords_list"
+  );
+
+  return response.data.data;
+}
+
+export async function getTodaysHighlight() {
+  const response = await axiosInstance.get<IHighlightResponse>(
+    "/dashboard/highlights"
+  );
+
+  return response.data.data;
+}
+
+export async function getTop5Funders() {
+  const response = await axiosInstance.get<ITopFunderResponse>(
+    "/dashboard/funding/top_5"
+  );
+
+  return response.data.data;
+}
+
+export async function getExpertsTable() {
+  const response = await axiosInstance.get<IExpertResponse>(
+    "/dashboard/experts_feature"
+  );
+
+  return response.data.data;
+}
+
+/**
+ * Interfaces
+ */
+interface IpatentsCount {
+  patentCount: number;
+  yearsElapsed: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface IPatentsCountResponse {
+  data: IpatentsCount;
+}
+
+//
+interface IPublicationCount {
+  totalPublicationsCount: number;
+  openPublicationsCount: number;
+  closedPublicationsCount: number;
+  yearsElapsed: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface IPublicationCountResponse {
+  data: IPublicationCount;
+}
+
+//
+interface ITopUniversity {
+  universityName: string;
+  locationText: string;
+  publications: number;
+  patents: number;
+  fundingReceived: number;
+}
+
+interface ITopUniversityResponse {
+  data: ITopUniversity[];
+}
+
+//
+interface IExpertsCount {
+  expertsCount: number;
+  yearsElapsed: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface IExpertCountResponse {
+  data: IExpertsCount;
+}
+
+//
+interface IRelatedKeywordsResponse {
+  data: string[];
+}
+
+interface IHighlight {
+  id: string;
+  name: string;
+  value: number;
+}
+
+interface IHighlightResponse {
+  data: IHighlight[];
+}
+
+//
+interface ITopFunder {
+  rank: number;
+  name: string;
+  fundingAmount: number;
+  date: string;
+}
+
+interface ITopFunderResponse {
+  data: ITopFunder[];
+}
+
+//
+export interface IExpert {
+  rank: number;
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  locationText: string;
+  patentsCount: number;
+  pulicationsCount: number;
+  score: number;
+  coordinates: [number, number];
+}
+
+interface IExpertResponse {
+  data: {
+    academic: IExpert[];
+    industry: IExpert[];
+  };
+}
+
+//
+export interface ICompetitor {
+  rank: number;
+  name: string;
+  description: string;
+  locationText: string;
+  score: number;
+  coordinate: [number, number];
+}

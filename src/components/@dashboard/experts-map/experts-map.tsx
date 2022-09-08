@@ -3,7 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 
 //
 import WorldMap from "../../@product/world-map";
+
+//
 import PageTitle from "../../reusable/page-title";
+
+//
+import { getExpertsTable } from "../../../utils/api/dashboard";
 
 /**
  *
@@ -17,10 +22,19 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   const { data, isLoading } = useQuery(
     ["footprint-for-experts", ...props.keywords],
     async () => {
-      // TODO: Make API call
-      return [];
+      return await getExpertsTable();
     }
   );
+
+  const mapData = (
+    (currentMode === "basicPublication" ? data?.industry : data?.academic) ?? []
+  )?.map((itm) => ({
+    name: [itm.firstName, itm.lastName].join(" "),
+    location: itm.locationText,
+    patents: itm.patentsCount,
+    publications: itm.pulicationsCount,
+    coordinate: itm.coordinates,
+  }));
 
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
@@ -77,7 +91,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
           <WorldMap
             isExpertMap
             type={currentMode}
-            data={isLoading ? [] : data}
+            data={isLoading ? [] : mapData}
           />
         </div>
       </div>
