@@ -1,126 +1,19 @@
 import { ResponsiveLine } from "@nivo/line";
-import { useState } from "react";
-
-//
-import { abbreviateString, formatNumber } from "../../../utils/helpers";
+import { useEffect, useState } from "react";
 
 //
 import { COLORS } from "../../../utils/constants";
-
-//
-const DATA = [
-  {
-    id: "london-college",
-    data: [
-      {
-        x: "2019",
-        y: 320,
-      },
-      {
-        x: "2020",
-        y: 0,
-      },
-      {
-        x: "2021",
-        y: 432,
-      },
-      {
-        x: "2022",
-        y: 312,
-      },
-    ],
-  },
-  {
-    id: "harvard-medical",
-    data: [
-      {
-        x: "2019",
-        y: 263,
-      },
-      {
-        x: "2020",
-        y: 232,
-      },
-      {
-        x: "2021",
-        y: 124,
-      },
-      {
-        x: "2022",
-        y: 423,
-      },
-    ],
-  },
-  {
-    id: "south-california",
-    data: [
-      {
-        x: "2019",
-        y: 213,
-      },
-      {
-        x: "2020",
-        y: 453,
-      },
-      {
-        x: "2021",
-        y: 234,
-      },
-      {
-        x: "2022",
-        y: 123,
-      },
-    ],
-  },
-  {
-    id: "meth-zurich",
-    data: [
-      {
-        x: "2019",
-        y: 210,
-      },
-      {
-        x: "2020",
-        y: 334,
-      },
-      {
-        x: "2021",
-        y: 321,
-      },
-      {
-        x: "2022",
-        y: 421,
-      },
-    ],
-  },
-  {
-    id: "imperial-college",
-    data: [
-      {
-        x: "2019",
-        y: 280,
-      },
-      {
-        x: "2020",
-        y: 555,
-      },
-      {
-        x: "2021",
-        y: 321,
-      },
-      {
-        x: "2022",
-        y: 325,
-      },
-    ],
-  },
-];
+import { abbreviateString, formatNumber } from "../../../utils/helpers";
 
 /*
  *
  **/
 export default function ScatterChart(props: IScatterChartProps) {
   const [dataItems, setDataItems] = useState(props.data);
+
+  useEffect(() => {
+    setDataItems(props.data);
+  }, [props.data]);
 
   return (
     <div className="h-[300px]">

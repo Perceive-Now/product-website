@@ -4,28 +4,22 @@ import { useQuery } from "@tanstack/react-query";
 //
 import BarChart from "../../@product/bar-chart";
 import PieChart from "../../@product/pie-chart";
-import PageTitle from "../../reusable/page-title";
 import ScatterChart from "../../@product/scatter-chart";
+
+//
+import PageTitle from "../../reusable/page-title";
+import { ChartType } from "../../reusable/chart-buttons";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 
 //
 import { getTopFundingChart } from "../../../utils/api/charts";
 
 //
-import { ChartType } from "../../reusable/chart-buttons";
 
 /**
  *
  */
 export default function TopFunderCharts() {
-  const colors = [
-    "#7F4BD8",
-    "#442873",
-    "#B6A2D8",
-    "#d6d6d6",
-    "#e0d4f2",
-    "#b5a2d8",
-  ];
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   //
@@ -34,12 +28,7 @@ export default function TopFunderCharts() {
   });
 
   //
-  const finalBarData = isLoading
-    ? []
-    : (data ?? []).map((item) => ({
-        year: item.year,
-        [item.year]: item.value,
-      }));
+  const finalBarData = isLoading ? [] : data ?? [];
 
   //
   const finalPieData = isLoading
@@ -83,17 +72,14 @@ export default function TopFunderCharts() {
       {activeChart === "bar" && (
         <BarChart
           data={finalBarData ?? []}
-          keys={finalBarData.map((d) => d.year)}
+          keys={["value"]}
           indexBy="year"
           groupMode="stacked"
           legendY="FUNDING AMOUNT ($)"
-          colors={colors}
         />
       )}
 
-      {activeChart === "donut" && (
-        <PieChart data={finalPieData} colors={colors} />
-      )}
+      {activeChart === "donut" && <PieChart data={finalPieData} />}
 
       {activeChart === "scatter" && (
         <ScatterChart

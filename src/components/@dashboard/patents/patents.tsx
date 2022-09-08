@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 //
 import BarChart from "../../@product/bar-chart";
 import PieChart from "../../@product/pie-chart";
+import ScatterChart from "../../@product/scatter-chart";
+
+//
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
-import ScatterChart from "../../@product/scatter-chart";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 
 //
@@ -24,8 +26,9 @@ import { ChartType } from "../../reusable/chart-buttons";
 export default function Patents() {
   const navigate = useNavigate();
 
-  const [activeChart, setActiveChart] = useState<ChartType>("bar");
   const colorsArray = ["#B6A2D8", "#7F4BD8", "#442873"];
+
+  const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data, isLoading } = useQuery(["patents-pie-chart"], async () => {
     return await getPatentsPieChart();
@@ -38,9 +41,7 @@ export default function Patents() {
     }
   );
 
-  const finalBarData = isLoading
-    ? []
-    : (data ?? []).map((item, idx) => ({ ...item, color: colorsArray[idx] }));
+  const finalBarData = isLoading ? [] : data ?? [];
 
   const finalPieData = isLoading
     ? []
@@ -92,7 +93,6 @@ export default function Patents() {
           keys={["value"]}
           indexBy="name"
           groupMode="stacked"
-          colors={(bar) => bar.data.color}
         />
       )}
 
