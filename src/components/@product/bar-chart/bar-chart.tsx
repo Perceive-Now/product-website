@@ -68,7 +68,7 @@ export default function BarChart(props: IBarChartProps) {
         labelSkipHeight={12}
         animate={false}
         role="application"
-        colors={COLORS}
+        colors={props.colors ?? COLORS}
         tooltip={(item) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
             {formatNumber(item.value)}
@@ -87,4 +87,5 @@ interface IBarChartProps {
   legendX?: string;
   groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
+  colors?: string[];
 }

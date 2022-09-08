@@ -18,6 +18,7 @@ import { ChartType } from "../../reusable/chart-buttons";
  */
 export default function ScholaryPublication() {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
+  const colors = ["#7F4BD8", "#442873"];
 
   const { data: publicationChartData, isLoading } = useQuery(
     ["scholary-publications"],
@@ -63,6 +64,7 @@ export default function ScholaryPublication() {
         indexBy="year"
         legendY="Number of Publications"
         data={(isLoading ? [] : publicationChartData) ?? []}
+        colors={colors}
       />
 
       <div className="mt-4 text-sm">
