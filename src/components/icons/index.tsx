@@ -39,6 +39,11 @@ import VerticalThreeDots from "./miscs/VerticalThreeDots";
 import RadioOffIcon from "./miscs/radio-off";
 import RadioOnIcon from "./miscs/radio-on";
 
+// Charts
+import BarIcon from "./charts/bar";
+import PieIcon from "./charts/pie";
+import ScatterIcon from "./charts/scatter";
+
 export {
   // Sidenav icons
   DashboardIcon,
@@ -78,4 +83,8 @@ export {
   RadioOffIcon,
   // used in tables
   VerticalThreeDots,
+  // Chart icons
+  BarIcon,
+  PieIcon,
+  ScatterIcon,
 };

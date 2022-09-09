@@ -3,29 +3,24 @@ import { RadioOffIcon, RadioOnIcon } from "../../icons";
 /*
  *
  **/
-export default function RadioButtons({
-  options,
-  activeMode,
-  handleModeChange,
-}: IRadioButtons) {
+export default function RadioButtons(props: IRadioButtons) {
+  const { options, activeMode, handleModeChange } = props;
+
   return (
     <div className="flex">
-      {options.map((mode) => {
-        const isSelected = mode.value === activeMode;
-        return (
-          <div
-            className="flex items-center ml-3 cursor-pointer"
-            key={mode.value}
-            onClick={() => handleModeChange(mode.value)}
-          >
-            <span className="block mr-1">
-              {isSelected ? <RadioOnIcon /> : <RadioOffIcon />}
-            </span>
+      {options.map((mode) => (
+        <div
+          className="flex items-center ml-3 cursor-pointer"
+          key={mode.value}
+          onClick={() => handleModeChange(mode.value)}
+        >
+          <span className="block mr-1">
+            {mode.value === activeMode ? <RadioOnIcon /> : <RadioOffIcon />}
+          </span>
 
-            <span className="capitalize text-gray-600">{mode.label}</span>
-          </div>
-        );
-      })}
+          <span className="capitalize text-gray-600">{mode.label}</span>
+        </div>
+      ))}
     </div>
   );
 }

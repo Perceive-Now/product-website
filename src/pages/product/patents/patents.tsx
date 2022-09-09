@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 // import classNames from "classnames";
 // import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
@@ -15,7 +16,12 @@ import Search, { IKeywordOption } from "../../../components/reusable/search";
  *
  */
 export default function PatentsPage() {
-  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+  const location = useLocation();
+  const locationState = location.state as ILocationState;
+
+  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>(
+    locationState?.search ?? []
+  );
 
   const handleSearch = (value: IKeywordOption[]) => {
     setSearchKeywords(value);
@@ -54,7 +60,7 @@ export default function PatentsPage() {
   return (
     <div>
       <div className="w-1/2">
-        <Search onSubmit={handleSearch} />
+        <Search initialValue={searchKeywords} onSubmit={handleSearch} />
       </div>
 
       {searchKeywords && searchKeywords.length > 0 && (
@@ -149,3 +155,7 @@ export type PatentType = {
 //     </span>
 //   );
 // };
+
+interface ILocationState {
+  search?: IKeywordOption[];
+}
