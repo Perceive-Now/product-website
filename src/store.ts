@@ -2,13 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 
 //
 import AuthReducer from "./stores/auth";
-import globalSearch from "./stores/global-search";
+import DashboardReducer from "./stores/dashboard";
 
 //
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
-    globalSearch: globalSearch
+    dashboard: DashboardReducer
   },
 });
 

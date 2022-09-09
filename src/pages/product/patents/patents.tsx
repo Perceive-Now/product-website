@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 // import classNames from "classnames";
 // import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { handleSetDashboardSearch } from "../../../stores/dashboard";
 // import ReactTable from "../../../components/reusable/ReactTable";
 
 //
@@ -16,15 +17,18 @@ import Search, { IKeywordOption } from "../../../components/reusable/search";
  *
  */
 export default function PatentsPage() {
-  const location = useLocation();
-  const locationState = location.state as ILocationState;
+  const dispatch = useAppDispatch();
+  const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
 
-  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>(
-    locationState?.search ?? []
-  );
+  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+
+  //
+  useEffect(() => {
+    setSearchKeywords(dashboardSearch);
+  }, [dashboardSearch]);
 
   const handleSearch = (value: IKeywordOption[]) => {
-    setSearchKeywords(value);
+    dispatch(handleSetDashboardSearch(value));
   };
 
   // const columnHelper = createColumnHelper<PatentType>();

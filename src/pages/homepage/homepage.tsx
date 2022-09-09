@@ -6,8 +6,10 @@ import UserIcon from "../../components/app/userIcon";
 //
 import PerceiveLogo from "../../assets/images/logo.svg";
 import Search, { IKeywordOption } from "../../components/reusable/search";
-import { handleSetGlobalSearchSlice } from "../../stores/global-search";
 import { useAppDispatch } from "../../hooks/redux";
+
+//
+import { handleSetDashboardSearch } from "../../stores/dashboard";
 
 /**
  *
@@ -17,8 +19,8 @@ export default function HomePage() {
   const dispatch = useAppDispatch();
 
   const handleSearch = (value: IKeywordOption[]) => {
-    dispatch(handleSetGlobalSearchSlice(value));
-    
+    dispatch(handleSetDashboardSearch(value));
+
     navigate("/dashboard", {
       state: { search: value },
     });

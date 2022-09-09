@@ -7,7 +7,7 @@ import RelatedKeyword from "../../../components/@product/relatedKeyword";
 import PublicationItem from "../../../components/@product/publicationItem";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { handleSetGlobalSearchSlice } from "../../../stores/global-search";
+import { handleSetDashboardSearch } from "../../../stores/dashboard";
 
 //
 
@@ -16,18 +16,18 @@ import { handleSetGlobalSearchSlice } from "../../../stores/global-search";
  */
 export default function PublicationsPage() {
   const dispatch = useAppDispatch();
-  const globalSearch = useAppSelector((state) => state.globalSearch?.search);
+  const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
 
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   //
   useEffect(() => {
-    setSearchKeywords(globalSearch);
-  }, [globalSearch]);
+    setSearchKeywords(dashboardSearch);
+  }, [dashboardSearch]);
 
   const handleSearch = (value: IKeywordOption[]) => {
-    dispatch(handleSetGlobalSearchSlice(value));
+    dispatch(handleSetDashboardSearch(value));
   };
 
   const [publicationsData] = useState<IPublicationData[]>([
