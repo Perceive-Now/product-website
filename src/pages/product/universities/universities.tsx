@@ -1,23 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 
+//
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { handleSetDashboardSearch } from "../../../stores/dashboard";
+
 /**
  *
  */
 export default function UniversitiesPage() {
+  const dispatch = useAppDispatch();
+  const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
+
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
 
-  const handleSearch = (value: IKeywordOption[]) => {
-    setSearchKeywords(value);
-  };
+  //
+  useEffect(() => {
+    setSearchKeywords(dashboardSearch);
+  }, [dashboardSearch]);
 
+  const handleSearch = (value: IKeywordOption[]) => {
+    dispatch(handleSetDashboardSearch(value));
+  };
   return (
     <div>
       <div className="w-1/2">
-        <Search onSubmit={handleSearch} />
+        <Search initialValue={searchKeywords} onSubmit={handleSearch} />
       </div>
 
       {searchKeywords && searchKeywords.length > 0 && (

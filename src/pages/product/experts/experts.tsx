@@ -1,23 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 
+//
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { handleSetDashboardSearch } from "../../../stores/dashboard";
+
 /**
  *
  */
 export default function ExpertsPage() {
+  const dispatch = useAppDispatch();
+  const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
+
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
 
+  //
+  useEffect(() => {
+    setSearchKeywords(dashboardSearch);
+  }, [dashboardSearch]);
+
   const handleSearch = (value: IKeywordOption[]) => {
-    setSearchKeywords(value);
+    dispatch(handleSetDashboardSearch(value));
   };
 
   return (
     <div>
       <div className="w-1/2">
-        <Search onSubmit={handleSearch} />
+        <Search initialValue={searchKeywords} onSubmit={handleSearch} />
       </div>
 
       {searchKeywords && searchKeywords.length > 0 && (
