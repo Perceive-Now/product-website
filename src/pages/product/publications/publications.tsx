@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
@@ -6,6 +6,8 @@ import Pagination from "../../../components/reusable/pagination";
 import RelatedKeyword from "../../../components/@product/relatedKeyword";
 import PublicationItem from "../../../components/@product/publicationItem";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { handleSetGlobalSearchSlice } from "../../../stores/global-search";
 
 //
 
@@ -13,11 +15,19 @@ import Search, { IKeywordOption } from "../../../components/reusable/search";
  *
  */
 export default function PublicationsPage() {
+  const dispatch = useAppDispatch();
+  const globalSearch = useAppSelector((state) => state.globalSearch?.search);
+
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  //
+  useEffect(() => {
+    setSearchKeywords(globalSearch);
+  }, [globalSearch]);
+
   const handleSearch = (value: IKeywordOption[]) => {
-    setSearchKeywords(value);
+    dispatch(handleSetGlobalSearchSlice(value));
   };
 
   const [publicationsData] = useState<IPublicationData[]>([
@@ -70,7 +80,7 @@ export default function PublicationsPage() {
   return (
     <div>
       <div className="w-1/2">
-        <Search onSubmit={handleSearch} />
+        <Search initialValue={searchKeywords} onSubmit={handleSearch} />
       </div>
 
       {searchKeywords && searchKeywords.length > 0 && (

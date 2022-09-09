@@ -5,7 +5,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
  * 
  */
 const initialState: ISearchState = {
-    search: null
+    search: undefined
 }
 
 /**
@@ -19,7 +19,7 @@ export const GlobalSearchSlice = createSlice({
             state.search = action.payload;
         },
         clearGlobalSearch: (state) => {
-            state.search = null;
+            state.search = undefined;
         }
     }
 })
@@ -42,7 +42,7 @@ export const handleClearGlobalSearch = () => (dispatch: any) => {
 
 //
 interface ISearchState {
-    search: IKeywordOption[] | null;
+    search: IKeywordOption[] | undefined;
 }
 
 //
