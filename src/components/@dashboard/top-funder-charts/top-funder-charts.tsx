@@ -75,7 +75,7 @@ export default function TopFunderCharts() {
           keys={["value"]}
           indexBy="year"
           groupMode="stacked"
-          legendY="FUNDING AMOUNT ($)"
+          legendY="Funding Amount ($)"
         />
       )}
 
