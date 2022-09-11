@@ -61,6 +61,11 @@ export default function PieChart(props: IPieChartProps) {
             {formatNumber(tProps.datum.value)}
           </div>
         )}
+        theme={{
+          legends: {
+            text: { fontSize: 12 },
+          },
+        }}
       />
     </div>
   );
