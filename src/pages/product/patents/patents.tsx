@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 //
 import PageTitle from "../../../components/reusable/page-title";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
+
+//
+import { setDashboardSearch } from "../../../stores/dashboard";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { handleSetDashboardSearch } from "../../../stores/dashboard";
 // import ReactTable from "../../../components/reusable/ReactTable";
 
 //
@@ -19,16 +21,22 @@ export default function PatentsPage() {
   const dispatch = useAppDispatch();
   const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
 
+  //
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+
+  const joinedKeywords = searchKeywords
+    ?.map((kwd) => `"${kwd.value}"`)
+    .join(", ");
+
+  //
+  const handleSearch = (value: IKeywordOption[]) => {
+    dispatch(setDashboardSearch(value));
+  };
 
   //
   useEffect(() => {
     setSearchKeywords(dashboardSearch);
   }, [dashboardSearch]);
-
-  const handleSearch = (value: IKeywordOption[]) => {
-    dispatch(handleSetDashboardSearch(value));
-  };
 
   // const columnHelper = createColumnHelper<PatentType>();
 
@@ -69,15 +77,8 @@ export default function PatentsPage() {
       {searchKeywords && searchKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
-            <span className="text-gray-700">Showing active patents for:</span>“
-            {searchKeywords.map((keyword, index) => {
-              let comma = "";
-              if (searchKeywords.length - 1 > index) {
-                comma = ", ";
-              }
-              return `${keyword.value}${comma}`;
-            })}
-            ”{" "}
+            <span className="text-gray-700">Showing active patents for:</span>
+            <span className="font-semibold ml-1">{joinedKeywords}</span>
           </p>
 
           <div className="my-3">

@@ -2,14 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 //
 import UserIcon from "../../components/app/userIcon";
+import Search, { IKeywordOption } from "../../components/reusable/search";
+
+//
+import { useAppDispatch } from "../../hooks/redux";
+import { setDashboardSearch } from "../../stores/dashboard";
 
 //
 import PerceiveLogo from "../../assets/images/logo.svg";
-import Search, { IKeywordOption } from "../../components/reusable/search";
-import { useAppDispatch } from "../../hooks/redux";
-
-//
-import { handleSetDashboardSearch } from "../../stores/dashboard";
 
 /**
  *
@@ -18,14 +18,16 @@ export default function HomePage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  //
   const handleSearch = (value: IKeywordOption[]) => {
-    dispatch(handleSetDashboardSearch(value));
+    dispatch(setDashboardSearch(value));
 
     navigate("/dashboard", {
       state: { search: value },
     });
   };
 
+  //
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex w-full justify-between pr-4 py-3">
