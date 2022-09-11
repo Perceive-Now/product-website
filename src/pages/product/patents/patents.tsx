@@ -1,12 +1,14 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 // import classNames from "classnames";
 // import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
+
+//
+import { setDashboardSearch } from "../../../stores/dashboard";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 // import ReactTable from "../../../components/reusable/ReactTable";
 
 //
@@ -16,16 +18,25 @@ import Search, { IKeywordOption } from "../../../components/reusable/search";
  *
  */
 export default function PatentsPage() {
-  const location = useLocation();
-  const locationState = location.state as ILocationState;
+  const dispatch = useAppDispatch();
+  const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
 
-  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>(
-    locationState?.search ?? []
-  );
+  //
+  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
 
+  const joinedKeywords = searchKeywords
+    ?.map((kwd) => `"${kwd.value}"`)
+    .join(", ");
+
+  //
   const handleSearch = (value: IKeywordOption[]) => {
-    setSearchKeywords(value);
+    dispatch(setDashboardSearch(value));
   };
+
+  //
+  useEffect(() => {
+    setSearchKeywords(dashboardSearch);
+  }, [dashboardSearch]);
 
   // const columnHelper = createColumnHelper<PatentType>();
 
@@ -66,15 +77,8 @@ export default function PatentsPage() {
       {searchKeywords && searchKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
-            <span className="text-gray-700">Showing active patents for:</span>“
-            {searchKeywords.map((keyword, index) => {
-              let comma = "";
-              if (searchKeywords.length - 1 > index) {
-                comma = ", ";
-              }
-              return `${keyword.value}${comma}`;
-            })}
-            ”{" "}
+            <span className="text-gray-700">Showing active patents for:</span>
+            <span className="font-semibold ml-1">{joinedKeywords}</span>
           </p>
 
           <div className="my-3">
@@ -156,6 +160,6 @@ export type PatentType = {
 //   );
 // };
 
-interface ILocationState {
-  search?: IKeywordOption[];
-}
+// interface ILocationState {
+//   search?: IKeywordOption[];
+// }

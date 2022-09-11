@@ -67,6 +67,13 @@ export default function ScatterChart(props: IScatterChartProps) {
         useMesh={true}
         // colors={{ scheme: "purples" }}
         colors={COLORS}
+        theme={{
+          axis: {
+            legend: {
+              text: { fontSize: 16 },
+            },
+          },
+        }}
       />
     </div>
   );
