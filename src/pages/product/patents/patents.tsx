@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
 // import classNames from "classnames";
 // import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
@@ -160,6 +159,6 @@ export type PatentType = {
 //   );
 // };
 
-interface ILocationState {
-  search?: IKeywordOption[];
-}
+// interface ILocationState {
+//   search?: IKeywordOption[];
+// }
