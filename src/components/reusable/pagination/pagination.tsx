@@ -4,9 +4,9 @@ import { Fragment, useMemo } from "react";
 //
 import { ChevronLeft, ChevronRight } from "../../icons";
 
-/*
+/**
  *
- **/
+ */
 export default function Pagination(props: IPagination) {
   const {
     currentPage,
@@ -78,7 +78,7 @@ export default function Pagination(props: IPagination) {
                 key={count}
                 className={classNames(
                   "mr-2 cursor-pointer",
-                  count === currentPage ? "font-bold" : ""
+                  count === currentPage ? "font-bold" : "text-gray-500"
                 )}
                 onClick={() => gotoPage(count)}
               >
@@ -86,20 +86,20 @@ export default function Pagination(props: IPagination) {
               </div>
             ))}
           {totalPages > visiblePageNumbers && (
-            <div className="mr-2 cursor-pointer">...</div>
+            <div className="mr-2 cursor-pointer text-gray-500">...</div>
           )}
         </Fragment>
       )}
 
       {!isPageNumInVisibleRange && (
         <Fragment>
-          {hasLowerPages && <div className="mr-2 cursor-pointer">...</div>}
+          {hasLowerPages && <div className="mr-2 cursor-pointer text-gray-500">...</div>}
 
           {/* Lower page numbers */}
           {lowerNeighbourPageArray.map((lowerNeighbourPage) => (
             <div
               key={lowerNeighbourPage}
-              className="mr-2 cursor-pointer"
+              className="mr-2 cursor-pointer text-gray-500"
               onClick={() => gotoPage(lowerNeighbourPage)}
             >
               {lowerNeighbourPage}
@@ -113,14 +113,14 @@ export default function Pagination(props: IPagination) {
           {higherNeighbourPageArray.map((higherNeighbourPage) => (
             <div
               key={higherNeighbourPage}
-              className="mr-2 cursor-pointer"
+              className="mr-2 cursor-pointer text-gray-500"
               onClick={() => gotoPage(higherNeighbourPage)}
             >
               {higherNeighbourPage}
             </div>
           ))}
 
-          {hasHigherPages && <div className="mr-2 cursor-pointer">...</div>}
+          {hasHigherPages && <div className="mr-2 cursor-pointer text-gray-500">...</div>}
         </Fragment>
       )}
 
