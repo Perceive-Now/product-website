@@ -32,7 +32,7 @@ export default function BarChart(props: IBarChartProps) {
           top: 50,
           right: 0,
           left: 60,
-          bottom: props.legendX ? 50 : 20,
+          bottom: props.legendX ? 50 : 30,
         }}
         padding={barPadding}
         innerPadding={4}
@@ -74,6 +74,13 @@ export default function BarChart(props: IBarChartProps) {
             {formatNumber(item.value)}
           </div>
         )}
+        theme={{
+          axis: {
+            legend: {
+              text: { fontSize: 16 },
+            },
+          },
+        }}
       />
     </div>
   );

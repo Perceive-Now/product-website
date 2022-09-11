@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export const formatNumber = (
   number: number,
   options?: IFormatNumberOptions
@@ -9,24 +12,29 @@ export const formatNumber = (
     maximumFractionDigits: maxFraction,
     ...(options?.isCurrency
       ? {
-        style: "currency",
-        currency: "USD",
-      }
+          style: "currency",
+          currency: "USD",
+        }
       : {}),
   }).format(number);
 };
 
+/**
+ *
+ */
+export const abbreviateString = (inputString: string, maxLength?: number) => {
+  const maxLn = maxLength ?? 5;
+
+  return inputString
+    .split(" ")
+    .map((section) => section[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, maxLn);
+};
+
+//
 interface IFormatNumberOptions {
   maxFraction?: number;
   isCurrency?: boolean;
-}
-
-
-export const abbreviateString = (value: string) => {
-  let abbreviatedString = '';
-  let tempValue = String(value);
-  tempValue.split(' ').forEach(word => {
-    abbreviatedString += word[0].toUpperCase();
-  })
-  return abbreviatedString;
 }

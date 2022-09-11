@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 import AsyncCreateableSelect from "react-select/async-creatable";
 import { ActionMeta, MultiValue } from "react-select";
@@ -21,6 +21,13 @@ export default function Search(props: ISearchProps) {
   const [selectedKeywords, setSelectedKeywords] = useState(
     props.initialValue ?? null
   );
+
+  //
+  useEffect(() => {
+    if (props.initialValue) {
+      setSelectedKeywords(props.initialValue);
+    }
+  }, [props.initialValue]);
 
   const hasKeywordReachedMaxLimit = Boolean(
     (selectedKeywords?.length || 0) >= MAX_KEYWORD
