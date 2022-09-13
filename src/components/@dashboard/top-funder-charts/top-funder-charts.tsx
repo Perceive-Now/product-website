@@ -57,7 +57,7 @@ export default function TopFunderCharts() {
       <PageTitle
         titleClass="font-medium"
         title="Total Amount of Funding over time"
-        info="info"
+        info={`This list was extracted from "X" total number of funders worldwide`}
       />
 
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">

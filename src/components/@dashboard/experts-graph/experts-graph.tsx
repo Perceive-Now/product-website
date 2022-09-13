@@ -35,7 +35,10 @@ export default function ExpertsGraph() {
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle title="Number of Experts and Researchers" />
+      <PageTitle
+        title="Number of Experts and Researchers"
+        info={`This list was extracted from "X" total number of experts and researchers worldwide`}
+      />
 
       <div className="pt-1 flex justify-between items-center h-5">
         <div className="flex gap-x-3">

@@ -68,11 +68,7 @@ export default function DashboardPage() {
 
       {/* 4th row  */}
       <div className="pt-4">
-        <PageTitle
-          title="Competitive Landscape"
-          titleClass="font-bold"
-          learnHow={true}
-        />
+        <PageTitle title="Competitive Landscape" titleClass="font-bold" />
       </div>
 
       <Competitors />
@@ -83,12 +79,9 @@ export default function DashboardPage() {
 
       {/* 6th row  */}
       <div className="pt-4">
-        <PageTitle
-          title="Experts Network"
-          titleClass="font-bold"
-          learnHow={true}
-        />
+        <PageTitle title="Experts Network" titleClass="font-bold" />
       </div>
+
       <ExpertsNetwork keywords={searchKeywords.map((kwd) => kwd.value)} />
       {/* 6th row end */}
 
@@ -107,12 +100,8 @@ export default function DashboardPage() {
       </div>
 
       {/* 9th row */}
-      <div className="mt-4 mb-2">
-        <PageTitle
-          learnMore="Learn How"
-          title="Academic R&D"
-          titleClass="font-bold"
-        />
+      <div className="mt-4 mb-1">
+        <PageTitle title="Academic R&D" titleClass="font-bold" />
       </div>
 
       <TopUniversities />
@@ -130,11 +119,7 @@ export default function DashboardPage() {
 
       {/* 11th row */}
       <div className="mt-4 mb-2">
-        <PageTitle
-          learnMore="Learn How"
-          title="Funding"
-          titleClass="font-bold"
-        />
+        <PageTitle title="Funding" titleClass="font-bold" />
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">

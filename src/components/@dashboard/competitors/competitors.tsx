@@ -101,13 +101,13 @@ export default function Competitors() {
 
   return (
     <div
-      className="mt-3 rounded-2xl border border-gray-200 shadow"
+      className="mt-2 rounded-2xl border border-gray-200 shadow"
       ref={customRef}
     >
       <div className="pt-4 px-3">
         <PageTitle
           title="Competitors"
-          info="true"
+          info={`This list of top competitors was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-bold"
           subTitle={`"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
         />

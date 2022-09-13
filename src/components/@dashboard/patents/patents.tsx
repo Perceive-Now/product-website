@@ -72,7 +72,10 @@ export default function Patents() {
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle title="Patents" info="info" />
+      <PageTitle
+        title="Patents"
+        info={`Stats in this graph are extracted from a total of "X" number of patents`}
+      />
 
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
