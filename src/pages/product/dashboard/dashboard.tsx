@@ -1,6 +1,3 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-
 //
 import Patents from "../../../components/@dashboard/patents";
 import ScholaryPublication from "../../../components/@dashboard/scholary-publication";
@@ -15,34 +12,41 @@ import RelatedKeywords from "../../../components/@dashboard/related-keywords";
 
 //
 import ExpertsMap from "../../../components/@dashboard/experts-map";
-import Competitors from "../../../components/@dashboard/competitors";
 import ExpertsNetwork from "../../../components/@dashboard/experts-network";
-import TodayHighlights from "../../../components/@dashboard/today-highlights";
+
+//
+import Competitors from "../../../components/@dashboard/competitors";
 import CompetetitorMap from "../../../components/@dashboard/competetitor-map";
+
+//
+import TodayHighlights from "../../../components/@dashboard/today-highlights";
 import TopUniversities from "../../../components/@dashboard/top-universities";
 import FootprintHeatmap from "../../../components/@dashboard/footprint-heatmap";
 
 //
-import PageTitle from "../../../components/reusable/page-title";
-import { IKeywordOption } from "../../../components/reusable/search";
 import TopFundersList from "../../../components/@dashboard/top-funders-list";
 import TopFunderCharts from "../../../components/@dashboard/top-funder-charts";
+
+//
+import PageTitle from "../../../components/reusable/page-title";
+
+//
+import { useAppSelector } from "../../../hooks/redux";
 
 /**
  *
  */
 export default function DashboardPage() {
-  const location = useLocation();
-  const locationState = location.state as ILocationState;
+  const searchedKeywords =
+    useAppSelector((state) => state.dashboard?.search) ?? [];
 
-  const [searchKeywords] = useState(locationState?.search ?? []);
-  const joinedKeywords = searchKeywords
+  const joinedKeywords = searchedKeywords
     .map((kwd) => `"${kwd.value}"`)
     .join(", ");
 
   return (
     <div>
-      {searchKeywords && (
+      {searchedKeywords && (
         <p className="mb-3">
           <span>Searching for: </span>
           <span className="font-semibold">{joinedKeywords}</span>
@@ -61,7 +65,7 @@ export default function DashboardPage() {
       </div>
 
       {/* 2nd row map */}
-      <FootprintHeatmap keywords={searchKeywords.map((kwd) => kwd.value)} />
+      <FootprintHeatmap keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 3rd row map */}
       <TodayHighlights />
@@ -75,18 +79,18 @@ export default function DashboardPage() {
       {/* 4th row end */}
 
       {/* 5th row map */}
-      <CompetetitorMap keywords={searchKeywords.map((kwd) => kwd.value)} />
+      <CompetetitorMap keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 6th row  */}
       <div className="pt-4">
         <PageTitle title="Experts Network" titleClass="font-bold" />
       </div>
 
-      <ExpertsNetwork keywords={searchKeywords.map((kwd) => kwd.value)} />
+      <ExpertsNetwork keywords={searchedKeywords.map((kwd) => kwd.value)} />
       {/* 6th row end */}
 
       {/* 7th row map */}
-      <ExpertsMap keywords={searchKeywords.map((kwd) => kwd.value)} />
+      <ExpertsMap keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 8th row; expert chart and related keywords */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
@@ -127,13 +131,9 @@ export default function DashboardPage() {
         </div>
 
         <div className="col-span-1">
-          <TopFundersList keywords={searchKeywords.map((kwd) => kwd.value)} />
+          <TopFundersList keywords={searchedKeywords.map((kwd) => kwd.value)} />
         </div>
       </div>
     </div>
   );
-}
-
-interface ILocationState {
-  search?: IKeywordOption[];
 }
