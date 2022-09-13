@@ -10,6 +10,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.1",
     "@hookform/resolvers": "^2.9.7",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
