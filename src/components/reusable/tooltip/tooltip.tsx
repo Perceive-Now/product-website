@@ -14,7 +14,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
         {props.trigger}
       </Popover.Button>
 
-      <Popover.Panel className="absolute z-10 rounded-2xl bg-white border border-gray-200 shadow-md px-5 py-4 right-0 max-w-lg cursor-default">
+      <Popover.Panel className="absolute z-10 rounded-2xl bg-white border border-gray-300 shadow-lg px-5 py-4 right-0 max-w-lg cursor-default min-w-[420px]">
         {({ close }) => (
           <>
             <div
@@ -24,7 +24,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
               <CrossIcon />
             </div>
 
-            <div>{props.children}</div>
+            <div className="text-gray-800">{props.children}</div>
           </>
         )}
       </Popover.Panel>
