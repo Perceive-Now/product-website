@@ -10,7 +10,7 @@ import { CrossIcon } from "../../icons";
 export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
   return (
     <Popover className="relative">
-      <Popover.Button className="focus:outline-none">
+      <Popover.Button className="focus:outline-none flex items-center">
         {props.trigger}
       </Popover.Button>
 
