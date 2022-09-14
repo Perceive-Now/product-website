@@ -72,10 +72,10 @@
 }
 
 .custom_search__multi-value {
-  border-radius: 30px !important;
+  border-radius: 4px !important;
   padding: 4px 10px;
-  /* background-color: white !important; */
-  /* border: 1px solid #bababa; */
+  background-color: #fafafa !important;
+  border: 1px solid #d0d2d9;
   margin: 4px !important;
 }
 

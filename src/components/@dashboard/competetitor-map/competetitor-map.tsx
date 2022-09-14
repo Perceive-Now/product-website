@@ -26,7 +26,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
       <PageTitle
-        info="Hello world"
+        info={`Geographical footprint of competitors working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
         titleClass="font-bold"
         title="Geographical Footprint of Competitors"
         children={

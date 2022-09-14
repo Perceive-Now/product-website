@@ -27,7 +27,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
       <PageTitle
-        info="Hello world"
+        info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
         titleClass="font-bold"
         title="Geographical Footprint of Publications and Patents"
         children={

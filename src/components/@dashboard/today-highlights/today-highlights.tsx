@@ -32,7 +32,7 @@ export default function TodayHighlights() {
       <PageTitle
         title="Today's Highlights"
         titleClass="font-bold"
-        info="hello world"
+        info="Global Technology Trends shows a quick view of number of patents, publication, experts and funding in your area of interest"
       />
 
       <div className="text-gray-800 text-lg font-medium">
