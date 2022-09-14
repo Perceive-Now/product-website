@@ -35,7 +35,10 @@ export default function ScholaryPublication() {
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle title="Scholarly Publications" info="info" />
+      <PageTitle
+        title="Scholarly Publications"
+        info={`Stats in this graph are extracted from a total of "X" number of open access publications and "Y" number of closed access publications`}
+      />
 
       <div className="pt-1 flex justify-between items-center h-5">
         <div className="flex gap-x-3">

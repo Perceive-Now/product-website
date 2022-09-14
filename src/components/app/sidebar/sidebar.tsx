@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
 
@@ -54,7 +54,9 @@ export default function AppSidebar() {
     <div className="w-[256px] h-full flex flex-col justify-between my-auto">
       <div>
         <div className="flex justify-center py-3">
-          <img src={PerceiveLogo} alt="PerceiveNow logo" />
+          <Link to="/">
+            <img src={PerceiveLogo} alt="PerceiveNow logo" />
+          </Link>
         </div>
 
         <div>

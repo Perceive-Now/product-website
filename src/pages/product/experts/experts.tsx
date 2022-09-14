@@ -35,7 +35,10 @@ export default function ExpertsPage() {
           </p>
 
           <div className="my-3">
-            <PageTitle title="Experts" learnMore="Learn more" />
+            <PageTitle
+              title="Experts"
+              learnMore={`Expert trends are extracted from approx. 31 million authors and inventors of 96 million publications & 7 million patents respectively. These analytics allow you to uncover the top active experts for collaboration, outsourcing & network expansion.`}
+            />
           </div>
         </div>
       )}

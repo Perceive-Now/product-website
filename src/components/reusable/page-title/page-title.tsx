@@ -3,6 +3,7 @@ import { PropsWithChildren, ReactNode } from "react";
 
 //
 import { InfoIcon } from "../../icons";
+import Tooltip from "../tooltip";
 
 /**
  *
@@ -24,18 +25,22 @@ export default function PageTitle(props: PropsWithChildren<IPageTitleProps>) {
           !props.info &&
           !props.learnHow &&
           !props.sideTitleOption && (
-            <div>
-              <p className="text-primary-500 cursor-pointer">Learn more</p>
-            </div>
+            <Tooltip
+              trigger={
+                <p className="text-primary-500 cursor-pointer">
+                  <span>Learn more</span>
+                </p>
+              }
+            >
+              {props.learnMore}
+            </Tooltip>
           )}
 
         {props.info &&
           !props.learnMore &&
           !props.learnHow &&
           !props.sideTitleOption && (
-            <div className="text-primary-900 cursor-pointer">
-              <InfoIcon />
-            </div>
+            <Tooltip trigger={<InfoIcon />}>{props.info}</Tooltip>
           )}
 
         {props.learnHow &&

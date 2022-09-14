@@ -22,6 +22,7 @@ export default function TopUniversities() {
       <PageTitle
         title="Top 3 Universities with Highest Research Footprint"
         titleClass="font-bold"
+        info={`This list was extracted from "X" total number of universities worldwide`}
       />
 
       <div className="mt-3 grid grid-cols-3 gap-x-3">

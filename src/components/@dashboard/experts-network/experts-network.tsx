@@ -89,7 +89,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
 
   return (
     <div
-      className="mt-3 rounded-2xl border border-gray-200 shadow"
+      className="mt-1 rounded-2xl border border-gray-200 shadow"
       ref={customRef}
     >
       <div className="pt-4 px-3">

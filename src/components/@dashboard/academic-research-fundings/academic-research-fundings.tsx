@@ -59,7 +59,10 @@ export default function AcademicResearchFundings() {
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle title="Academic Research Funding" info="info" />
+      <PageTitle
+        title="Academic Research Funding"
+        info={`This list was extracted from "X" total number of universities worldwide`}
+      />
 
       {/* Controls */}
       <div className="pt-1 flex justify-end gap-x-3">
