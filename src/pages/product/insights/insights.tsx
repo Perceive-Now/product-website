@@ -1,11 +1,44 @@
-import Search from "../../../components/reusable/search";
+import { useQuery } from "@tanstack/react-query";
+import { Fragment, useState } from "react";
 
+//
+import SearchBarScreen from "../../../components/@product/search-bar-screen";
+
+//
+import { IKeywordOption } from "../../../components/reusable/search";
+import { getMAInsights } from "../../../utils/api/ma-insights";
+
+/**
+ *
+ *
+ */
 export default function InsightsPage() {
+  const [searchkeywords, setSearchKeywords] = useState<IKeywordOption[]>([]);
+
+  const { data, isLoading } = useQuery(
+    ["m&a-insight", searchkeywords],
+    async () => {
+      return await getMAInsights();
+    }
+  );
+
+  console.log(data, "data");
+
+  const handleKeywordChange = (value: IKeywordOption[]) => {
+    setSearchKeywords(value);
+  };
+
+  const handleSearch = () => {
+    console.log(searchkeywords);
+  };
+
   return (
-    <div>
-      <div className="w-1/2">
-        <Search onSubmit={() => null} />
-      </div>
-    </div>
+    <Fragment>
+      <SearchBarScreen
+        searchKeywords={searchkeywords}
+        handleKeywordChange={handleKeywordChange}
+        handleSearch={handleSearch}
+      />
+    </Fragment>
   );
 }
