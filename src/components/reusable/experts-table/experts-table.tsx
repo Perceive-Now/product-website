@@ -1,39 +1,36 @@
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
-import Tooltip from "../tooltip";
 import ReactTable from "../ReactTable";
-
-//
+import Tooltip from "../tooltip";
 import { VerticalThreeDots } from "../../icons";
 
 /**
  *
  */
-export default function PatentTable({ data }: IPatentTableProps) {
-  const columnHelper = createColumnHelper<PatentType>();
+export default function ExpertsTable({ data }: IExpertsTableProps) {
+  const columnHelper = createColumnHelper<ExpertsType>();
 
-  const columns: ColumnDef<PatentType>[] = [
+  const columns: ColumnDef<ExpertsType>[] = [
     {
-      header: "Inventor",
-      accessorKey: "inventor",
+      header: "Expert",
+      accessorKey: "expert",
     },
     {
-      header: "Industry",
-      accessorKey: "industry",
+      header: "Affiliation",
+      accessorKey: "affiliation",
     },
     {
-      header: "Title",
-      accessorKey: "title",
+      header: "Location",
+      accessorKey: "location",
     },
     {
-      header: "Abstract",
-      id: "abstract",
-      accessorFn: (row) => `View abstract`,
+      header: "Patents",
+      accessorKey: "patents",
     },
     {
-      header: "Date (Y/M/D)",
-      accessorKey: "date",
+      header: "Papers",
+      accessorKey: "papers",
     },
     columnHelper.display({
       id: "actions",
@@ -42,6 +39,19 @@ export default function PatentTable({ data }: IPatentTableProps) {
   ];
 
   return <ReactTable columnsData={columns} rowsData={data} />;
+}
+
+export type ExpertsType = {
+  id: string;
+  expert: string;
+  affiliation: string;
+  location: string;
+  patents: string;
+  papers: string;
+};
+
+interface IExpertsTableProps {
+  data: ExpertsType[];
 }
 
 const RowActions = ({ row }: any) => {
@@ -72,19 +82,3 @@ const RowActions = ({ row }: any) => {
     </span>
   );
 };
-
-export type PatentType = {
-  inventor: string;
-  industry: string;
-  title: string;
-  abstract: string;
-  date: string;
-};
-
-interface IPatentTableProps {
-  data: PatentType[];
-}
-
-// interface ILocationState {
-//   search?: IKeywordOption[];
-// }

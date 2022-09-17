@@ -7,8 +7,8 @@ import SearchBarScreen from "../../../components/@product/search-bar-screen";
 //
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 import { getMAInsights } from "../../../utils/api/ma-insights";
-import DisclosureSummary from "../../../components/reusable/Disclosure/disclosure-summary";
-import CompaniesDisclosure from "../../../components/@insights/companies-disclosure";
+import PatentsDisclosure from "../../../components/reusable/accordion/patents-disclosure";
+import DetailedDisclosure from "../../../components/reusable/detailed-disclosure";
 
 /**
  *
@@ -23,8 +23,6 @@ export default function InsightsPage() {
       return await getMAInsights();
     }
   );
-
-  console.log(data, "data");
 
   const handleKeywordChange = (value: IKeywordOption[]) => {
     setSearchKeywords(value);
@@ -62,7 +60,7 @@ export default function InsightsPage() {
 
               <div>
                 {data?.patentsTop5?.rankedList.map((listItem) => (
-                  <DisclosureSummary
+                  <PatentsDisclosure
                     key={listItem.uuid}
                     title={listItem.name}
                     description={listItem.description}
@@ -83,7 +81,7 @@ export default function InsightsPage() {
 
               <div>
                 {data?.companiesTop5?.rankedList.map((listItem) => (
-                  <CompaniesDisclosure
+                  <DetailedDisclosure
                     key={listItem.uuid}
                     title={listItem.name}
                     description={listItem.description}
@@ -104,7 +102,7 @@ export default function InsightsPage() {
 
               <div>
                 {data?.universitiesTop5?.rankedList.map((listItem) => (
-                  <DisclosureSummary
+                  <DetailedDisclosure
                     key={listItem.uuid}
                     title={listItem.name}
                     description={listItem.description}

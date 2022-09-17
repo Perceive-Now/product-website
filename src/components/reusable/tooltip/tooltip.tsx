@@ -1,4 +1,5 @@
 import { Popover } from "@headlessui/react";
+import classNames from "classnames";
 import { Fragment, PropsWithChildren, ReactElement } from "react";
 
 //
@@ -14,24 +15,41 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
         {props.trigger}
       </Popover.Button>
 
-      <Popover.Panel className="absolute z-10 rounded-2xl bg-white border border-gray-300 shadow-lg pl-6 pr-8 py-5 right-0 max-w-lg cursor-default min-w-[420px]">
-        {({ close }) => (
-          <Fragment>
-            <div
-              className="absolute top-2 right-2 cursor-pointer"
-              onClick={() => close()}
-            >
-              <CrossIcon />
-            </div>
+      {props.isCustomPanel && (
+        <Popover.Panel
+          className={classNames(
+            "absolute z-10 bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default",
+            props.panelClassName
+          )}
+        >
+          {props.children}
+        </Popover.Panel>
+      )}
 
-            <div className="text-gray-800">{props.children}</div>
-          </Fragment>
-        )}
-      </Popover.Panel>
+      {!props.isCustomPanel && (
+        <Popover.Panel className="absolute z-10 rounded-2xl pl-6 pr-8 py-5 min-w-[420px] bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default">
+          {({ close }) => (
+            <Fragment>
+              <Fragment>
+                <div
+                  className="absolute top-2 right-2 cursor-pointer"
+                  onClick={() => close()}
+                >
+                  <CrossIcon />
+                </div>
+
+                <div className="text-gray-800">{props.children}</div>
+              </Fragment>
+            </Fragment>
+          )}
+        </Popover.Panel>
+      )}
     </Popover>
   );
 }
 
 interface ITooltipProps {
   trigger: ReactElement;
+  isCustomPanel?: boolean;
+  panelClassName?: string;
 }
