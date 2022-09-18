@@ -112,6 +112,9 @@ export default function Search(props: ISearchProps) {
       };
     });
     setSelectedKeywords(keywords);
+    if (props.onKeywordsChange) {
+      props.onKeywordsChange(keywords);
+    }
   };
 
   return (
@@ -166,6 +169,7 @@ interface ISearchProps {
   initialValue?: IKeywordOption[];
   size?: "small" | "large";
   onSubmit: (value: IKeywordOption[]) => void;
+  onKeywordsChange?: (value: IKeywordOption[]) => void;
 }
 
 // remove once api is received
