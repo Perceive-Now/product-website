@@ -17,7 +17,7 @@ import DetailedDisclosure from "../../../components/reusable/detailed-disclosure
 export default function InsightsPage() {
   const [searchkeywords, setSearchKeywords] = useState<IKeywordOption[]>([]);
 
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     ["m&a-insight", searchkeywords],
     async () => {
       return await getMAInsights();

@@ -13,7 +13,7 @@ import { getTechnologyTrends } from "../../../utils/api/trends";
 export default function TrendsPage() {
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
 
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     ["technology-trends", searchKeywords],
     async () => {
       return await getTechnologyTrends();
