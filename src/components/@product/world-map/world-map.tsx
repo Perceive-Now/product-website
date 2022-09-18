@@ -333,7 +333,11 @@ export default function WorldMap(props: ISvgMapProps) {
           }}
         >
           {/* Maps */}
-          <Geographies geography={topology} id="hello-world">
+          <Geographies
+            geography={topology}
+            id="hello-world"
+            className="cursor-pointer"
+          >
             {({ geographies, projection, path }) =>
               geographies.map((geo) => (
                 <Geography
@@ -382,7 +386,7 @@ export default function WorldMap(props: ISvgMapProps) {
                     (marker.coordinate?.[0] ?? 0) + 0.25,
                   ]}
                   className={classNames(
-                    "focus:outline-none",
+                    "focus:outline-none cursor-pointer",
                     isZoomed ? "text-white" : "text-[#FFA300]"
                   )}
                   data-tip=""
