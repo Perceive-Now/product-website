@@ -46,7 +46,6 @@ export default function PatentTable({ data }: IPatentTableProps) {
 
 const RowActions = ({ row }: any) => {
   return (
-    <span>
       <Tooltip
         isCustomPanel={true}
         trigger={
@@ -69,7 +68,6 @@ const RowActions = ({ row }: any) => {
           </li>
         </ul>
       </Tooltip>
-    </span>
   );
 };
 
