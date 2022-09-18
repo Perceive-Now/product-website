@@ -12,7 +12,14 @@ import {
 } from "react-simple-maps";
 
 //
-import { LocationIcon, MapMarkerIcon } from "../../icons";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  LocationIcon,
+  MapMarkerIcon,
+} from "../../icons";
 
 // Topology
 import topology from "./topology.json";
@@ -139,7 +146,7 @@ export default function WorldMap(props: ISvgMapProps) {
 
   // Map controls
   const increaseScale = () => {
-    setScale((scaleValue) => Math.min(scaleValue + 200, 2000));
+    setScale((scaleValue) => Math.min(scaleValue + 200, 1500));
   };
 
   const decreaseScale = () => {
@@ -147,6 +154,30 @@ export default function WorldMap(props: ISvgMapProps) {
     setScale(newScale);
 
     if (newScale === 125) setCenter([0, 30]);
+  };
+
+  const moveHorizontal = (value: number) => {
+    let newValue = center[0] + value;
+
+    if (scale <= 700) {
+      newValue = newValue < -150 ? -150 : newValue > 150 ? 150 : newValue;
+    } else if (scale <= 1100) {
+      newValue = newValue < -170 ? -170 : newValue > 170 ? 170 : newValue;
+    }
+
+    setCenter([newValue, center[1]]);
+  };
+
+  const moveVertical = (value: number) => {
+    let newValue = center[1] + value;
+
+    if (scale <= 700) {
+      newValue = newValue < 0 ? 0 : newValue > 80 ? 80 : newValue;
+    } else if (scale <= 1100) {
+      newValue = newValue < -20 ? -20 : newValue > 80 ? 80 : newValue;
+    }
+
+    setCenter([center[0], newValue]);
   };
 
   return (
@@ -224,6 +255,35 @@ export default function WorldMap(props: ISvgMapProps) {
             </div>
           </div>
         </ReactTooltip>
+      )}
+
+      {/* Direction Controls */}
+      {isZoomed && (
+        <div className="relative">
+          <div className="absolute top-2 left-2">
+            <div className="w-8 h-8 bg-white rounded-full overflow-hidden shadow-lg relative text-gray-600">
+              <ChevronUp
+                className="absolute top-0 ml-[20px] cursor-pointer"
+                onClick={() => moveVertical(10)}
+              />
+
+              <ChevronRight
+                className="absolute right-0 mt-[20px] cursor-pointer"
+                onClick={() => moveHorizontal(20)}
+              />
+
+              <ChevronDown
+                className="absolute bottom-0 ml-[20px] cursor-pointer"
+                onClick={() => moveVertical(-10)}
+              />
+
+              <ChevronLeft
+                className="absolute left-0 mt-[20px] cursor-pointer"
+                onClick={() => moveHorizontal(-20)}
+              />
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Zoom Controls */}
