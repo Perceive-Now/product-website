@@ -18,7 +18,6 @@ import {
   ChevronRight,
   ChevronUp,
   LocationIcon,
-  MapMarkerIcon,
 } from "../../icons";
 
 // Topology
@@ -332,7 +331,6 @@ export default function WorldMap(props: ISvgMapProps) {
             scale: scale,
             center: center,
           }}
-          zoomAndPan="true"
         >
           {/* Maps */}
           <Geographies geography={topology} id="hello-world">
@@ -379,7 +377,10 @@ export default function WorldMap(props: ISvgMapProps) {
               ?.map((marker, index) => (
                 <Marker
                   key={index}
-                  coordinates={marker.coordinate}
+                  coordinates={[
+                    (marker.coordinate?.[1] ?? 0) - 10 - 0.25,
+                    (marker.coordinate?.[0] ?? 0) + 0.25,
+                  ]}
                   className={classNames(
                     "focus:outline-none",
                     isZoomed ? "text-white" : "text-[#FFA300]"
@@ -389,10 +390,8 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseEnter={() => setActiveMarkerData(marker)}
                   onMouseLeave={() => setActiveMarkerData(undefined)}
                 >
-                  <MapMarkerIcon
-                    width={isZoomed ? 30 : 15}
-                    height={isZoomed ? 30 : 15}
-                  />
+                  <circle r={isZoomed ? 15 : 9} fill="white" />
+                  <circle r={isZoomed ? 13 : 7} fill="red" />
                 </Marker>
               ))}
         </ComposableMap>
