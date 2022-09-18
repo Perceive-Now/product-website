@@ -7,7 +7,7 @@ import SearchBarScreen from "../../../components/@product/search-bar-screen";
 //
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 import { getMAInsights } from "../../../utils/api/ma-insights";
-import PatentsDisclosure from "../../../components/reusable/accordion/patents-disclosure";
+import PatentsDisclosure from "../../../components/reusable/patents-disclosure";
 import DetailedDisclosure from "../../../components/reusable/detailed-disclosure";
 
 /**
