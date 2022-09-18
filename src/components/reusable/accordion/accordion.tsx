@@ -1,4 +1,4 @@
-import { Disclosure, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import { ChevronDown } from "../../icons";
@@ -34,15 +34,6 @@ export default function Accordion({
             </div>
           </Disclosure.Button>
 
-          <Transition
-            show={open}
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
-          >
             <Disclosure.Panel className="text-appGray-900 border-t-2 border-appGray-300 mx-3 mt-4">
               {children}
 
@@ -53,7 +44,6 @@ export default function Accordion({
                 />
               </div>
             </Disclosure.Panel>
-          </Transition>
         </div>
       )}
     </Disclosure>
