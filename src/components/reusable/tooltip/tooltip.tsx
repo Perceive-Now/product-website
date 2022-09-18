@@ -29,7 +29,6 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
       {!props.isCustomPanel && (
         <Popover.Panel className="absolute z-10 rounded-2xl pl-6 pr-8 py-5 min-w-[420px] bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default">
           {({ close }) => (
-            <Fragment>
               <Fragment>
                 <div
                   className="absolute top-2 right-2 cursor-pointer"
@@ -40,7 +39,6 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
 
                 <div className="text-gray-800">{props.children}</div>
               </Fragment>
-            </Fragment>
           )}
         </Popover.Panel>
       )}
