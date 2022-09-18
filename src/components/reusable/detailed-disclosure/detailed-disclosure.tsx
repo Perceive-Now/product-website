@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 //
+import Button from "../button";
 import Accordion from "../accordion";
-import PillButton from "../pill-button";
 import PatentTable from "../patent-table";
 import FundingTable from "../funding-table";
 import ExpertsTable from "../experts-table";
@@ -65,13 +65,14 @@ export default function DetailedDisclosure({
         <div className="px-3 py-4">
           <div className="mb-5 font-bold flex">
             {options.map((option) => (
-              <PillButton
-                isActive={option.label === activeLabel}
-                key={id}
-                label={option.label}
-                handleOnClick={() => setActiveLabel(option.label)}
-                className="mr-3"
-              />
+              <Button
+                key={option.id}
+                handleClick={() => setActiveLabel(option.label)}
+                type={option.label === activeLabel ? "primary" : "secondary"}
+                classname="!py-0.5 mr-3"
+              >
+                {option.label}
+              </Button>
             ))}
           </div>
 
