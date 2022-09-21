@@ -4,10 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 
 //
 import BarChart from "../../@product/bar-chart";
+import RadialChart from "../../@product/radial-chart";
+
+//
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
-import ChartButtons from "../../reusable/chart-buttons";
-import { ChartType } from "../../reusable/chart-buttons";
+import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
 import { TIME_PERIODS } from "../../../utils/constants";
@@ -26,7 +28,44 @@ export default function AcademicResearchTrends() {
     }
   );
 
+  //
   const finalData = isLoading ? [] : data?.chart ?? [];
+
+  //
+  const finalPieData = isLoading ? [] : data?.chart ?? [];
+
+  const radialData = finalPieData
+    .map((itm) => itm.locationName)
+    .map((itm) => {
+      const data = finalPieData.find((it) => it.locationName === itm)!;
+
+      const total =
+        data.openArticlesCount + data.closedArticlesCount + data.patentsCount;
+      const openPercentage = (data.openArticlesCount / total) * 100;
+      const closedPercentage = (data.closedArticlesCount / total) * 100;
+      const patentsPercentage = (data.patentsCount / total) * 100;
+
+      return {
+        id: itm,
+        data: [
+          {
+            x: "Patents",
+            y: patentsPercentage,
+            value: data.patentsCount,
+          },
+          {
+            x: "Open Articles",
+            y: openPercentage,
+            value: data.openArticlesCount,
+          },
+          {
+            x: "Closed Articles",
+            y: closedPercentage,
+            value: data.closedArticlesCount,
+          },
+        ],
+      };
+    });
 
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
@@ -48,29 +87,35 @@ export default function AcademicResearchTrends() {
         </div>
       </div>
 
-      <div className="flex justify-end gap-x-3 pt-1 -mb-3">
-        <div className="flex gap-x-1 text-sm items-center">
-          <div className="w-2 h-2 bg-primary-100 rounded-full" />
-          <span>Patents</span>
-        </div>
+      {activeChart === "bar" && (
+        <>
+          <div className="flex justify-end gap-x-3 pt-1 -mb-3">
+            <div className="flex gap-x-1 text-sm items-center">
+              <div className="w-2 h-2 bg-primary-100 rounded-full" />
+              <span>Patents</span>
+            </div>
 
-        <div className="flex gap-x-1 text-sm items-center">
-          <div className="w-2 h-2 bg-primary-500 rounded-full" />
-          <span>Open</span>
-        </div>
+            <div className="flex gap-x-1 text-sm items-center">
+              <div className="w-2 h-2 bg-primary-500 rounded-full" />
+              <span>Open</span>
+            </div>
 
-        <div className="flex gap-x-1 text-sm items-center">
-          <div className="w-2 h-2 bg-primary-800 rounded-full" />
-          <span>Closed</span>
-        </div>
-      </div>
+            <div className="flex gap-x-1 text-sm items-center">
+              <div className="w-2 h-2 bg-primary-800 rounded-full" />
+              <span>Closed</span>
+            </div>
+          </div>
 
-      <BarChart
-        keys={["patentsCount", "openArticlesCount", "closedArticlesCount"]}
-        indexBy="locationName"
-        legendY="Number of Publications"
-        data={finalData}
-      />
+          <BarChart
+            keys={["patentsCount", "openArticlesCount", "closedArticlesCount"]}
+            indexBy="locationName"
+            legendY="Number of Publications"
+            data={finalData}
+          />
+        </>
+      )}
+
+      {activeChart === "donut" && <RadialChart data={radialData} />}
 
       <div className="mt-4">
         <span>

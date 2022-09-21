@@ -28,7 +28,7 @@ export default function TodayHighlights() {
   };
 
   return (
-    <div className="w-100 border bg-white rounded-lg p-3 mt-3">
+    <div className="w-100 border bg-white rounded-lg p-3 mt-3 shadow">
       <PageTitle
         title="Today's Highlights"
         titleClass="font-bold"
