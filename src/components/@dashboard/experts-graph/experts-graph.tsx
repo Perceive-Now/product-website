@@ -2,16 +2,16 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
-import BarChart from "../../@product/bar-chart";
 import PageTitle from "../../reusable/page-title";
-import ChartButtons from "../../reusable/chart-buttons";
+import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
+
+//
+import BarChart from "../../@product/bar-chart";
+import RadialChart from "../../@product/radial-chart";
 
 //
 import { getExpertsCount } from "../../../utils/api/dashboard";
 import { getExpertsCountGraph } from "../../../utils/api/charts";
-
-//
-import { ChartType } from "../../reusable/chart-buttons";
 
 /**
  *
@@ -33,6 +33,31 @@ export default function ExpertsGraph() {
     }
   );
 
+  //
+  const finalPieData = isLoading ? [] : expertsChartData ?? [];
+
+  const radialData = finalPieData
+    .map((itm) => itm.year)
+    .map((itm) => {
+      const data = finalPieData.find((it) => it.year === itm)!;
+
+      const total = data.openExpertsCount + data.closedExpertsCount;
+      const openPercentage = (data.openExpertsCount / total) * 100;
+      const closedPercentage = (data.closedExpertsCount / total) * 100;
+
+      return {
+        id: itm,
+        data: [
+          { x: "Open", y: openPercentage, value: data.openExpertsCount },
+          {
+            x: "Closed",
+            y: closedPercentage,
+            value: data.closedExpertsCount,
+          },
+        ],
+      };
+    });
+
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
@@ -42,15 +67,19 @@ export default function ExpertsGraph() {
 
       <div className="pt-1 flex justify-between items-center h-5">
         <div className="flex gap-x-3">
-          <div className="flex gap-x-1 text-sm items-center">
-            <div className="w-2 h-2 bg-primary-500 rounded-full" />
-            <span>Open</span>
-          </div>
+          {activeChart === "bar" && (
+            <>
+              <div className="flex gap-x-1 text-sm items-center">
+                <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                <span>Open</span>
+              </div>
 
-          <div className="flex gap-x-1 text-sm items-center">
-            <div className="w-2 h-2 bg-primary-800 rounded-full" />
-            <span>Closed</span>
-          </div>
+              <div className="flex gap-x-1 text-sm items-center">
+                <div className="w-2 h-2 bg-primary-800 rounded-full" />
+                <span>Closed</span>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="flex items-center">
@@ -61,12 +90,18 @@ export default function ExpertsGraph() {
         </div>
       </div>
 
-      <BarChart
-        keys={["openExpertsCount", "closedExpertsCount"]}
-        indexBy="year"
-        legendY="Number of Experts"
-        data={(isLoading ? [] : expertsChartData) ?? []}
-      />
+      {activeChart === "bar" && (
+        <BarChart
+          keys={["openExpertsCount", "closedExpertsCount"]}
+          indexBy="year"
+          legendY="Number of Experts"
+          data={(isLoading ? [] : expertsChartData) ?? []}
+        />
+      )}
+
+      {activeChart === "donut" && (
+        <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />
+      )}
 
       <div className="mt-4 text-sm">
         <span className="font-bold">"{expertsCount?.expertsCount ?? "-"}"</span>
