@@ -3,28 +3,28 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getTechnologyTrends() {
-    const response = await axiosInstance.get<ITrendResponse>(
-        "/trends/results"
-    );
+export async function getTechnologyTrends(keywords: string[]) {
+  const response = await axiosInstance.get<ITrendResponse>(
+    `/trends/results?q=${keywords.join(",")}`
+  );
 
-    return response.data;
+  return response.data;
 }
 
 /**
  * Interfaces
  */
 interface ITrendItem {
-    uuid: string;
-    name: string;
-    description: string;
+  uuid: string;
+  name: string;
+  description: string;
 }
 
 interface ITrendData {
-    respText: string;
+  respText: string;
 }
 
 interface ITrendResponse {
-    data: ITrendData;
-    trendsList: ITrendItem[];
+  data: ITrendData;
+  trendsList: ITrendItem[];
 }

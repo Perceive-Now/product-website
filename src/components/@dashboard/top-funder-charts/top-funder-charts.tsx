@@ -19,13 +19,16 @@ import { getTopFundingChart } from "../../../utils/api/charts";
 /**
  *
  */
-export default function TopFunderCharts() {
+export default function TopFunderCharts(props: ITopFunderProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   //
-  const { data, isLoading } = useQuery(["top-funder-charts"], async () => {
-    return await getTopFundingChart();
-  });
+  const { data, isLoading } = useQuery(
+    ["top-funder-charts", ...props.keywords],
+    async () => {
+      return await getTopFundingChart(props.keywords);
+    }
+  );
 
   //
   const finalBarData = isLoading ? [] : data ?? [];
@@ -92,4 +95,8 @@ export default function TopFunderCharts() {
       <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
     </div>
   );
+}
+
+interface ITopFunderProps {
+  keywords: string[];
 }

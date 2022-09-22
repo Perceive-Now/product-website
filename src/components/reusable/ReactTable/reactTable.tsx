@@ -6,13 +6,10 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-//
-import { makeData } from "./makeData";
+import classNames from "classnames";
 
 //
 import { PatentType } from "../../../pages/product/patents/patents";
-import classNames from "classnames";
 
 /*
  *
@@ -23,7 +20,7 @@ export default function ReactTable(props: IReactTable) {
   const size = props.size ?? "large";
 
   const [rowSelection, setRowSelection] = useState({});
-  const [data, setData] = useState(() => rowsData || makeData(10));
+  const [data, setData] = useState(rowsData ?? []);
 
   useEffect(() => {
     setData(rowsData);

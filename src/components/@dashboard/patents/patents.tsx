@@ -23,21 +23,24 @@ import { ChartType } from "../../reusable/chart-buttons";
 /**
  *
  */
-export default function Patents() {
+export default function Patents(props: IPatentsProps) {
   const navigate = useNavigate();
 
   const colorsArray = ["#B6A2D8", "#7F4BD8", "#442873"];
 
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading } = useQuery(["patents-pie-chart"], async () => {
-    return await getPatentsPieChart();
-  });
+  const { data, isLoading } = useQuery(
+    ["patents-pie-chart", ...props.keywords],
+    async () => {
+      return await getPatentsPieChart(props.keywords);
+    }
+  );
 
   const { data: patentCount } = useQuery(
-    ["patents-count-for-chart"],
+    ["patents-count-for-chart", ...props.keywords],
     async () => {
-      return await getPatentsCount();
+      return await getPatentsCount(props.keywords);
     }
   );
 
@@ -126,4 +129,8 @@ export default function Patents() {
       </div>
     </div>
   );
+}
+
+interface IPatentsProps {
+  keywords: string[];
 }

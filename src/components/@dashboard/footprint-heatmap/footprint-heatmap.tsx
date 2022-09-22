@@ -20,7 +20,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const { data, isLoading } = useQuery(
     ["footprint-for-patents-and-publications", ...props.keywords],
     async () => {
-      return await getPublicationsAndPatentsMap();
+      return await getPublicationsAndPatentsMap(props.keywords);
     }
   );
 

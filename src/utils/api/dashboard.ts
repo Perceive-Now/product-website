@@ -3,65 +3,65 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getPatentsCount() {
+export async function getPatentsCount(keywords: string[]) {
   const response = await axiosInstance.get<IPatentsCountResponse>(
-    "/dashboard/patents/count"
+    `/dashboard/patents/count?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getPublicationsCount() {
+export async function getPublicationsCount(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationCountResponse>(
-    "/dashboard/publications/count"
+    `/dashboard/publications/count?${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTop3Universities() {
+export async function getTop3Universities(keywords: string[]) {
   const response = await axiosInstance.get<ITopUniversityResponse>(
-    "/dashboard/academic/universities_top_3"
+    `/dashboard/academic/universities_top_3?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getExpertsCount() {
+export async function getExpertsCount(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    "/dashboard/experts/count"
+    `/dashboard/experts/count?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getRelatedKeywords() {
+export async function getRelatedKeywords(keywords: string[]) {
   const response = await axiosInstance.get<IRelatedKeywordsResponse>(
-    "/dashboard/related_keywords_list"
+    `/dashboard/related_keywords_list?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTodaysHighlight() {
+export async function getTodaysHighlight(keywords: string[]) {
   const response = await axiosInstance.get<IHighlightResponse>(
-    "/dashboard/highlights"
+    `/dashboard/highlights?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTop5Funders() {
+export async function getTop5Funders(keywords: string[]) {
   const response = await axiosInstance.get<ITopFunderResponse>(
-    "/dashboard/funding/top_5"
+    `/dashboard/funding/top_5?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getExpertsTable() {
+export async function getExpertsTable(keywords: string[]) {
   const response = await axiosInstance.get<IExpertResponse>(
-    "/dashboard/experts_feature"
+    `/dashboard/experts_feature?q=${keywords.join(",")}`
   );
 
   return response.data.data;

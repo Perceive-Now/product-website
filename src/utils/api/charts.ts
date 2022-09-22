@@ -3,54 +3,53 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getScholaryPublications() {
+export async function getScholaryPublications(keywords: string[]) {
   const response = await axiosInstance.get<IScholaryPublicationResponse>(
-    "/dashboard/scholarly_publications"
+    `/dashboard/scholarly_publications?q=${keywords.join(",")}`
   );
 
-  return response.data.data.chart;
+  return response.data.data.chart.sort((a, b) => a.year - b.year);
 }
 
-export async function getPatentsPieChart() {
+export async function getPatentsPieChart(keywords: string[]) {
   const response = await axiosInstance.get<IPatentsPieResponse>(
-    "/dashboard/patents_pie_chart"
+    `/dashboard/patents_pie_chart?q=${keywords.join(",")}`
   );
 
   return response.data.data.chart;
 }
 
-export async function getExpertsCountGraph() {
+export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    "/dashboard/experts_count_graph"
+    `/dashboard/experts_count_graph?q=${keywords.join(",")}`
   );
 
   return response.data.data.chart;
 }
 
-export async function getAcademicResearchFundingChart() {
+export async function getAcademicResearchFundingChart(keywords: string[]) {
   const response = await axiosInstance.get<IAcademicResearchFundingResponse>(
-    "/dashboard/academic/funding_chart"
+    `/dashboard/academic/funding_chart?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getAcademicResearchTrends() {
+export async function getAcademicResearchTrends(keywords: string[]) {
   const response = await axiosInstance.get<IAcademicResearchTrendResponse>(
-    "/dashboard/academic/usa_research_trends"
+    `/dashboard/academic/usa_research_trends?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTopFundingChart() {
+export async function getTopFundingChart(keywords: string[]) {
   const response = await axiosInstance.get<ITopFundingChartResponse>(
-    "/dashboard/funding/chart"
+    `/dashboard/funding/chart?q=${keywords.join(",")}`
   );
 
   return response.data.data.chart;
 }
-
 
 /**
  *
@@ -121,11 +120,11 @@ interface IAcademicResearchTrendResponse {
 
 interface ITopFundingChart {
   value: number;
-  year: string
+  year: string;
 }
 
 interface ITopFundingChartResponse {
   data: {
-    chart: ITopFundingChart[]
-  }
+    chart: ITopFundingChart[];
+  };
 }
