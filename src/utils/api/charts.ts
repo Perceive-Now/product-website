@@ -8,7 +8,7 @@ export async function getScholaryPublications(keywords: string[]) {
     `/dashboard/scholarly_publications?q=${keywords.join(",")}`
   );
 
-  return response.data.data.chart;
+  return response.data.data.chart.sort((a, b) => a.year - b.year);
 }
 
 export async function getPatentsPieChart(keywords: string[]) {
