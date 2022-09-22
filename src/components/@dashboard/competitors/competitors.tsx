@@ -12,7 +12,7 @@ import { InfoIcon } from "../../icons";
 /*
  *
  **/
-export default function Competitors() {
+export default function Competitors(props: ICompetitorProps) {
   const customRef = useRef<HTMLDivElement | null>(null);
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -142,3 +142,7 @@ interface CompetitorsType {
 const RowActions = ({ row }: any) => {
   return <InfoIcon className="cursor-pointer" />;
 };
+
+interface ICompetitorProps {
+  keywords: string[];
+}

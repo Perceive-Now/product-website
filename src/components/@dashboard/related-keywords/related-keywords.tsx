@@ -10,10 +10,13 @@ import { getRelatedKeywords } from "../../../utils/api/dashboard";
 /**
  *
  */
-export default function RelatedKeywords() {
-  const { data } = useQuery(["dashboard-most-related-keywords"], async () => {
-    return await getRelatedKeywords();
-  });
+export default function RelatedKeywords(props: IRelatedKeywordsProps) {
+  const { data } = useQuery(
+    ["dashboard-most-related-keywords", ...props.keywords],
+    async () => {
+      return await getRelatedKeywords(props.keywords);
+    }
+  );
 
   const allKeywords = data ?? [];
 
@@ -28,4 +31,8 @@ export default function RelatedKeywords() {
       </div>
     </div>
   );
+}
+
+interface IRelatedKeywordsProps {
+  keywords: string[];
 }

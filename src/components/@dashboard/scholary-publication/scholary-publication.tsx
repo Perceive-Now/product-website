@@ -18,20 +18,20 @@ import { getScholaryPublications } from "../../../utils/api/charts";
 /**
  *
  */
-export default function ScholaryPublication() {
+export default function ScholaryPublication(props: IScholaryPublicationProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data: publicationChartData, isLoading } = useQuery(
-    ["scholary-publications"],
+    ["scholary-publications", ...props.keywords],
     async () => {
-      return await getScholaryPublications();
+      return await getScholaryPublications(props.keywords);
     }
   );
 
   const { data: publicationCount } = useQuery(
-    ["scholarly-publications-count-for-chart"],
+    ["scholarly-publications-count-for-chart", ...props.keywords],
     async () => {
-      return await getPublicationsCount();
+      return await getPublicationsCount(props.keywords);
     }
   );
 
@@ -119,4 +119,8 @@ export default function ScholaryPublication() {
       </div>
     </div>
   );
+}
+
+interface IScholaryPublicationProps {
+  keywords: string[];
 }

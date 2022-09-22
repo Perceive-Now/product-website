@@ -10,10 +10,13 @@ import { getTop3Universities } from "../../../utils/api/dashboard";
 /**
  *
  */
-export default function TopUniversities() {
-  const { data } = useQuery(["dashboard-top-universities"], async () => {
-    return await getTop3Universities();
-  });
+export default function TopUniversities(props: ITopUniversitiesProps) {
+  const { data } = useQuery(
+    ["dashboard-top-universities", ...props.keywords],
+    async () => {
+      return await getTop3Universities(props.keywords);
+    }
+  );
 
   const finalData = data ?? [];
 
@@ -68,4 +71,8 @@ export default function TopUniversities() {
       </div>
     </div>
   );
+}
+
+interface ITopUniversitiesProps {
+  keywords: string[];
 }

@@ -10,11 +10,11 @@ import { getTodaysHighlight } from "../../../utils/api/dashboard";
 /*
  *
  **/
-export default function TodayHighlights() {
+export default function TodayHighlights(props: IHighlightsProps) {
   const { data, isLoading } = useQuery(
-    ["dashboard-today-highlights"],
+    ["dashboard-today-highlights", ...props.keywords],
     async () => {
-      return await getTodaysHighlight();
+      return await getTodaysHighlight(props.keywords);
     }
   );
 
@@ -65,4 +65,8 @@ export default function TodayHighlights() {
       </div>
     </div>
   );
+}
+
+interface IHighlightsProps {
+  keywords: string[];
 }

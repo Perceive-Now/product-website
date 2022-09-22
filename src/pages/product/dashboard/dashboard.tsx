@@ -56,11 +56,13 @@ export default function DashboardPage() {
       {/* 1st row charts */}
       <div className="grid grid-cols-2 gap-x-3">
         <div className="col-span-1">
-          <ScholaryPublication />
+          <ScholaryPublication
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
 
         <div className="col-span-1">
-          <Patents />
+          <Patents keywords={searchedKeywords.map((kwd) => kwd.value)} />
         </div>
       </div>
 
@@ -68,14 +70,14 @@ export default function DashboardPage() {
       <FootprintHeatmap keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 3rd row map */}
-      <TodayHighlights />
+      <TodayHighlights keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 4th row  */}
       <div className="pt-4">
         <PageTitle title="Competitive Landscape" titleClass="font-bold" />
       </div>
 
-      <Competitors />
+      <Competitors keywords={searchedKeywords.map((kwd) => kwd.value)} />
       {/* 4th row end */}
 
       {/* 5th row map */}
@@ -95,11 +97,13 @@ export default function DashboardPage() {
       {/* 8th row; expert chart and related keywords */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <ExpertsGraph />
+          <ExpertsGraph keywords={searchedKeywords.map((kwd) => kwd.value)} />
         </div>
 
         <div className="col-span-1">
-          <RelatedKeywords />
+          <RelatedKeywords
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
       </div>
 
@@ -108,16 +112,20 @@ export default function DashboardPage() {
         <PageTitle title="Academic R&D" titleClass="font-bold" />
       </div>
 
-      <TopUniversities />
+      <TopUniversities keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* Charts for Academinc R&D */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <AcademicResearchTrends />
+          <AcademicResearchTrends
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
 
         <div className="col-span-1">
-          <AcademicResearchFundings />
+          <AcademicResearchFundings
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
       </div>
 
@@ -127,7 +135,9 @@ export default function DashboardPage() {
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <TopFunderCharts />
+          <TopFunderCharts
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
 
         <div className="col-span-1">

@@ -18,13 +18,13 @@ import { getAcademicResearchTrends } from "../../../utils/api/charts";
 /**
  *
  */
-export default function AcademicResearchTrends() {
+export default function AcademicResearchTrends(props: IResearchProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data, isLoading } = useQuery(
-    ["dashboard-academic-research-trend"],
+    ["dashboard-academic-research-trend", ...props.keywords],
     async () => {
-      return await getAcademicResearchTrends();
+      return await getAcademicResearchTrends(props.keywords);
     }
   );
 
@@ -128,4 +128,8 @@ export default function AcademicResearchTrends() {
       </div>
     </div>
   );
+}
+
+interface IResearchProps {
+  keywords: string[];
 }

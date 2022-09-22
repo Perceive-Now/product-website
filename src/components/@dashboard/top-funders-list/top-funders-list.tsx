@@ -15,8 +15,10 @@ import { getTop5Funders } from "../../../utils/api/dashboard";
  **/
 export default function TopFundersList(props: ITopFundersListProps) {
   const { data } = useQuery(["top-5-funders", ...props.keywords], async () => {
-    return await getTop5Funders();
+    return await getTop5Funders(props.keywords);
   });
+
+  console.log({ data });
 
   //
   const columns = useMemo<ColumnDef<ITopFunders>[]>(

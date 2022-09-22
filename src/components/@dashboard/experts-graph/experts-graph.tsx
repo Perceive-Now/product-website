@@ -16,20 +16,20 @@ import { getExpertsCountGraph } from "../../../utils/api/charts";
 /**
  *
  */
-export default function ExpertsGraph() {
+export default function ExpertsGraph(props: IExpertsGraphProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data: expertsChartData, isLoading } = useQuery(
-    ["experts-count-graph"],
+    ["experts-count-graph", ...props.keywords],
     async () => {
-      return await getExpertsCountGraph();
+      return await getExpertsCountGraph(props.keywords);
     }
   );
 
   const { data: expertsCount } = useQuery(
-    ["expert-count-for-chart"],
+    ["expert-count-for-chart", ...props.keywords],
     async () => {
-      return await getExpertsCount();
+      return await getExpertsCount(props.keywords);
     }
   );
 
@@ -116,4 +116,8 @@ export default function ExpertsGraph() {
       </div>
     </div>
   );
+}
+
+interface IExpertsGraphProps {
+  keywords: string[];
 }

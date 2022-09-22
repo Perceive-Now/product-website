@@ -22,7 +22,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   const { data, isLoading } = useQuery(
     ["footprint-for-experts", ...props.keywords],
     async () => {
-      return await getExpertsTable();
+      return await getExpertsTable(props.keywords);
     }
   );
 
