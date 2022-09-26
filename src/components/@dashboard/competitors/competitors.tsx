@@ -8,12 +8,20 @@ import ExpandBtn from "../../reusable/expand-btn/expand-btn";
 
 //
 import { InfoIcon } from "../../icons";
+import { useQuery } from "@tanstack/react-query";
+import { getCompetitors } from "../../../utils/api/dashboard";
 
 /*
  *
  **/
 export default function Competitors(props: ICompetitorProps) {
   const customRef = useRef<HTMLDivElement | null>(null);
+  const { data, isLoading } = useQuery(
+    ["dashboard-competitors-table", ...props.keywords],
+    async () => {
+      return await getCompetitors(props.keywords);
+    }
+  );
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [fetchedData, setFetchedData] = useState<CompetitorsType[]>([]);
@@ -53,41 +61,26 @@ export default function Competitors(props: ICompetitorProps) {
   );
 
   useEffect(() => {
-    try {
-      // api call to fetch data
-      const fetchCompetitorsData = (length = 10) => {
-        return {
-          data: Array(length)
-            .fill(null)
-            .map((slot) => {
-              return {
-                competitors: "Pharmaceutical",
-                patents: "1,025",
-                publications: "81,920",
-                experts: "8,392",
-                funding: "$60.2B",
-              };
-            }),
-        };
-      };
+    if (data) {
+      try {
+        // API 
+        // let tempData = data.map((d, index) => {
+        //   let sn = ("0" + (index + 1)).slice(-2);
+        //   return {
+        //     ...d,
+        //     sn: sn,
+        //   };
+        // });
 
-      const response = fetchCompetitorsData();
-
-      let data = response.data.map((d, index) => {
-        let sn = ("0" + (index + 1)).slice(-2);
-        return {
-          ...d,
-          sn: sn,
-        };
-      });
-
-      setFetchedData(data);
-    } catch (error) {
-      console.log(error);
+        // setFetchedData(tempData);
+        setFetchedData(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, []);
+  }, [data]);
 
-  const data = useMemo(() => {
+  const rowsData = useMemo(() => {
     let displayRowCount = isExpanded ? 10 : 4;
     return fetchedData.slice(0, displayRowCount);
   }, [fetchedData, isExpanded]);
@@ -115,7 +108,7 @@ export default function Competitors(props: ICompetitorProps) {
 
       <div className="mt-9">
         <div className="px-3">
-          <ReactTable columnsData={columns} rowsData={data} />
+          <ReactTable columnsData={columns} rowsData={rowsData} />
         </div>
 
         <div>

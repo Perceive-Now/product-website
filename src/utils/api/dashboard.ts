@@ -51,6 +51,18 @@ export async function getTodaysHighlight(keywords: string[]) {
   return response.data.data;
 }
 
+export async function getCompetitors(keywords: string[]) {
+  /* API is not provided yet.
+   const response = await axiosInstance.get<ICompetitorResponse>(
+     `?q=${keywords.join(',')}`
+   )
+
+   return response.data.data;
+  */
+
+  return [];
+}
+
 export async function getTop5Funders(keywords: string[]) {
   const response = await axiosInstance.get<ITopFunderResponse>(
     `/dashboard/funding/top_5?q=${keywords.join(",")}`

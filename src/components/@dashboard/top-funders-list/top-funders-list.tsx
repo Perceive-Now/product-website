@@ -18,8 +18,6 @@ export default function TopFundersList(props: ITopFundersListProps) {
     return await getTop5Funders(props.keywords);
   });
 
-  console.log({ data });
-
   //
   const columns = useMemo<ColumnDef<ITopFunders>[]>(
     () => [
