@@ -89,6 +89,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
           <ChartButtons
             activeChart={activeChart}
             setActiveChart={setActiveChart}
+            isMultiData={true}
           />
         </div>
       </div>
