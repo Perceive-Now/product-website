@@ -12,15 +12,13 @@ import "./chart-buttons.css";
 export default function ChartButtons(props: IChartButtons) {
   const { activeChart, isMultiData, setActiveChart } = props;
 
-  let ButtonsType: ChartType[] = ["bar", "donut", "scatter"];
-
-  if (isMultiData) {
-    ButtonsType = ["bar", "scatter", "donut"];
-  }
+  const buttonsType: ChartType[] = isMultiData
+    ? ["bar", "scatter", "donut"]
+    : ["bar", "donut", "scatter"];
 
   return (
     <div className="flex">
-      {ButtonsType.map((type) => (
+      {buttonsType.map((type) => (
         <ChartButton
           key={type}
           type={type}

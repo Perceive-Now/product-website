@@ -12,6 +12,7 @@ import RadialChart from "../../@product/radial-chart";
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
+import ScatterChart from "../../@product/scatter-chart";
 
 //
 
@@ -60,6 +61,36 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
       };
     });
 
+  const finalScatterDataFormatHelper = (data: any) => {
+    if (!data) return [];
+
+    let closedArticlesObj = { id: "Closed Articles", data: [] };
+    let openArticlesObj = { id: "Open Articles", data: [] };
+
+    let closedArticlesData: any = [];
+    let openArticlesData: any = [];
+
+    data.forEach((d: IScholaryPublicationData) => {
+      closedArticlesData = [
+        ...closedArticlesData,
+        { x: d.year, y: d.closedArticles },
+      ];
+      openArticlesData = [
+        ...openArticlesData,
+        { x: d.year, y: d.openArticles },
+      ];
+    });
+
+    closedArticlesObj.data = closedArticlesData;
+    openArticlesObj.data = openArticlesData;
+
+    return [closedArticlesObj, openArticlesObj];
+  };
+
+  const finalScatterData = isLoading
+    ? []
+    : finalScatterDataFormatHelper(publicationChartData) ?? [];
+
   //
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
@@ -103,6 +134,14 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
         />
       )}
 
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Year"
+          legendY="Publications"
+        />
+      )}
+
       {activeChart === "donut" && (
         <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />
       )}
@@ -124,4 +163,10 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
 interface IScholaryPublicationProps {
   keywords: string[];
+}
+
+interface IScholaryPublicationData {
+  closedArticles: string;
+  openArticles: string;
+  year: string;
 }
