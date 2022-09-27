@@ -118,9 +118,9 @@ export default function ScholaryPublication() {
 
         <div className="flex items-center">
           <ChartButtons
+            isMultiData={true}
             activeChart={activeChart}
             setActiveChart={setActiveChart}
-            isMultiData={true}
           />
         </div>
       </div>
