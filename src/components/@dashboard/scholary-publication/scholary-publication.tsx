@@ -8,6 +8,7 @@ import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 //
 import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
+import ScatterChart from "../../@product/scatter-chart";
 
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
@@ -60,6 +61,36 @@ export default function ScholaryPublication() {
       };
     });
 
+  const finalScatterDataFormatHelper = (data: any) => {
+    if (!data) return [];
+
+    let closedArticlesObj = { id: "Closed Articles", data: [] };
+    let openArticlesObj = { id: "Open Articles", data: [] };
+
+    let closedArticlesData: any = [];
+    let openArticlesData: any = [];
+
+    data.forEach((d: any) => {
+      closedArticlesData = [
+        ...closedArticlesData,
+        { x: d.year, y: d.closedArticles },
+      ];
+      openArticlesData = [
+        ...openArticlesData,
+        { x: d.year, y: d.openArticles },
+      ];
+    });
+
+    closedArticlesObj.data = closedArticlesData;
+    openArticlesObj.data = openArticlesData;
+
+    return [closedArticlesObj, openArticlesObj];
+  };
+
+  const finalScatterData = isLoading
+    ? []
+    : finalScatterDataFormatHelper(publicationChartData) ?? [];
+
   //
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
@@ -99,6 +130,14 @@ export default function ScholaryPublication() {
           indexBy="year"
           legendY="Number of Publications"
           data={(isLoading ? [] : publicationChartData) ?? []}
+        />
+      )}
+
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Year"
+          legendY="Publications"
         />
       )}
 
