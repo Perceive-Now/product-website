@@ -10,25 +10,22 @@ import "./chart-buttons.css";
  *
  **/
 export default function ChartButtons(props: IChartButtons) {
-  const { activeChart, setActiveChart } = props;
+  const { activeChart, isMultiData, setActiveChart } = props;
+
+  const buttonsType: ChartType[] = isMultiData
+    ? ["bar", "scatter", "donut"]
+    : ["bar", "donut", "scatter"];
 
   return (
     <div className="flex">
-      <ChartButton
-        type="bar"
-        active={activeChart === "bar"}
-        setActiveChart={(type) => setActiveChart(type)}
-      />
-      <ChartButton
-        type="donut"
-        active={activeChart === "donut"}
-        setActiveChart={(type) => setActiveChart(type)}
-      />
-      <ChartButton
-        type="scatter"
-        active={activeChart === "scatter"}
-        setActiveChart={(type) => setActiveChart(type)}
-      />
+      {buttonsType.map((type) => (
+        <ChartButton
+          key={type}
+          type={type}
+          active={activeChart === type}
+          setActiveChart={(type) => setActiveChart(type)}
+        />
+      ))}
     </div>
   );
 }
@@ -62,6 +59,7 @@ export type ChartType = "donut" | "scatter" | "bar";
 interface IChartButtons {
   activeChart: ChartType;
   setActiveChart: (type: ChartType) => void;
+  isMultiData?: boolean;
 }
 
 interface IGraphButtonProps {

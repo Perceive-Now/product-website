@@ -120,6 +120,7 @@ export default function ScholaryPublication() {
           <ChartButtons
             activeChart={activeChart}
             setActiveChart={setActiveChart}
+            isMultiData={true}
           />
         </div>
       </div>
