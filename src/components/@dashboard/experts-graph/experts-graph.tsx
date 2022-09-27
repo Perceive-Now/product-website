@@ -62,27 +62,28 @@ export default function ExpertsGraph() {
   const finalScatterDataFormatHelper = (data: any) => {
     if (!data) return [];
 
-    let closedExpertsObj = { id: "Closed Experts", data: [] };
     let openExpertsObj = { id: "Open Experts", data: [] };
+    let closedExpertsObj = { id: "Closed Experts", data: [] };
 
-    let closedExpertsData: any = [];
     let openExpertsData: any = [];
+    let closedExpertsData: any = [];
 
     data.forEach((d: any) => {
-      closedExpertsData = [
-        ...closedExpertsData,
-        { x: d.year, y: d.closedExpertsCount },
-      ];
       openExpertsData = [
         ...openExpertsData,
         { x: d.year, y: d.openExpertsCount },
       ];
+
+      closedExpertsData = [
+        ...closedExpertsData,
+        { x: d.year, y: d.closedExpertsCount },
+      ];
     });
 
-    closedExpertsObj.data = closedExpertsData;
     openExpertsObj.data = openExpertsData;
+    closedExpertsObj.data = closedExpertsData;
 
-    return [closedExpertsObj, openExpertsObj];
+    return [openExpertsObj, closedExpertsObj];
   };
 
   const finalScatterData = isLoading

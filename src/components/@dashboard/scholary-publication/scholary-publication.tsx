@@ -64,27 +64,28 @@ export default function ScholaryPublication() {
   const finalScatterDataFormatHelper = (data: any) => {
     if (!data) return [];
 
-    let closedArticlesObj = { id: "Closed Articles", data: [] };
     let openArticlesObj = { id: "Open Articles", data: [] };
+    let closedArticlesObj = { id: "Closed Articles", data: [] };
 
-    let closedArticlesData: any = [];
     let openArticlesData: any = [];
+    let closedArticlesData: any = [];
 
     data.forEach((d: any) => {
-      closedArticlesData = [
-        ...closedArticlesData,
-        { x: d.year, y: d.closedArticles },
-      ];
       openArticlesData = [
         ...openArticlesData,
         { x: d.year, y: d.openArticles },
       ];
+
+      closedArticlesData = [
+        ...closedArticlesData,
+        { x: d.year, y: d.closedArticles },
+      ];
     });
 
-    closedArticlesObj.data = closedArticlesData;
     openArticlesObj.data = openArticlesData;
+    closedArticlesObj.data = closedArticlesData;
 
-    return [closedArticlesObj, openArticlesObj];
+    return [openArticlesObj, closedArticlesObj];
   };
 
   const finalScatterData = isLoading
