@@ -28,6 +28,7 @@ export default function ScatterChart(props: IScatterChartProps) {
           stacked: false,
           reverse: false,
         }}
+        enableSlices="x"
         yFormat=" >-.2f"
         axisTop={null}
         axisRight={null}
@@ -66,7 +67,7 @@ export default function ScatterChart(props: IScatterChartProps) {
         pointLabelYOffset={-12}
         useMesh={true}
         // colors={{ scheme: "purples" }}
-        colors={COLORS}
+        colors={props.colors || COLORS}
         theme={{
           axis: {
             legend: {
@@ -107,6 +108,7 @@ export default function ScatterChart(props: IScatterChartProps) {
 
 interface IScatterChartProps {
   data: any[];
+  colors?: string[];
   legendY?: string;
   legendX?: string;
   abbreviateLegendX?: boolean | undefined;
