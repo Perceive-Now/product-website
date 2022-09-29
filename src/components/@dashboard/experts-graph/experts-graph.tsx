@@ -137,6 +137,7 @@ export default function ExpertsGraph() {
           data={finalScatterData}
           legendX="Year"
           legendY="Experts"
+          colors={["#7F4BD8", "#442873"]}
         />
       )}
 

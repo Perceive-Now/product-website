@@ -140,6 +140,7 @@ export default function ScholaryPublication() {
           data={finalScatterData}
           legendX="Year"
           legendY="Publications"
+          colors={["#7F4BD8", "#442873"]}
         />
       )}
 
