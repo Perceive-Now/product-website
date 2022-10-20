@@ -394,8 +394,8 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseEnter={() => setActiveMarkerData(marker)}
                   onMouseLeave={() => setActiveMarkerData(undefined)}
                 >
-                  <circle r={isZoomed ? 15 : 9} fill="red" />
-                  <circle r={isZoomed ? 13 : 7} fill="white" />
+                  <circle r={isZoomed ? 15 : 7} fill="red" />
+                  <circle r={isZoomed ? 13 : 5} fill="white" />
                 </Marker>
               ))}
         </ComposableMap>
