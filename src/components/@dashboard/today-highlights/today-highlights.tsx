@@ -51,7 +51,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
               </div>
 
               <div className="text-center text-[28px] mb-2 text-success-500">
-                {getItemValue(item.id, item.value)}
+                {getItemValue(item.id, item.value) ?? "-"}
               </div>
 
               <hr className="border-[#D9D9D9]" />
