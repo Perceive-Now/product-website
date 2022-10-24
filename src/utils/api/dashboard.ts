@@ -155,7 +155,7 @@ export interface IExpert {
   companyName: string;
   locationText: string;
   patentsCount: number;
-  pulicationsCount: number;
+  publicationsCount: number;
   score: number;
   coordinates: [number, number];
 }

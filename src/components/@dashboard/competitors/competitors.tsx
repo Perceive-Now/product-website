@@ -6,9 +6,6 @@ import ReactTable from "../../reusable/ReactTable";
 import PageTitle from "../../reusable/page-title";
 import ExpandBtn from "../../reusable/expand-btn/expand-btn";
 
-//
-import { InfoIcon } from "../../icons";
-
 /*
  *
  **/
@@ -43,10 +40,6 @@ export default function Competitors(props: ICompetitorProps) {
       {
         header: "Funding",
         accessorKey: "funding",
-      },
-      {
-        id: "actions",
-        cell: (props) => <RowActions {...props} />,
       },
     ],
     []
@@ -138,10 +131,6 @@ interface CompetitorsType {
   experts: string;
   funding: string;
 }
-
-const RowActions = ({ row }: any) => {
-  return <InfoIcon className="cursor-pointer" />;
-};
 
 interface ICompetitorProps {
   keywords: string[];

@@ -32,7 +32,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     name: [itm.firstName, itm.lastName].join(" "),
     location: itm.locationText,
     patents: itm.patentsCount,
-    publications: itm.pulicationsCount,
+    publications: itm.publicationsCount,
     coordinate: itm.coordinates,
   }));
 
