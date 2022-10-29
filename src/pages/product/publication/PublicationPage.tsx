@@ -3,11 +3,13 @@ import { ActionButton } from "../../../components/@product/publicationItem/publi
 import {
   BookmarkIcon,
   CitationIcon,
+  InfoIcon,
   ShareIcon,
 } from "../../../components/icons";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
+import ReportButtons from "../../../components/reusable/reports-buttons";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setDashboardSearch } from "../../../stores/dashboard";
@@ -53,8 +55,17 @@ export default function PublicationPage() {
 
   return (
     <div>
-      <div className="w-1/2 mb-5">
-        <Search initialValue={searchedKeywords} onSubmit={handleSearch} />
+      <div className="mb-5 grid grid-cols-12">
+        <div className="col-span-8 flex items-center">
+          <div className="w-2/3">
+            <Search initialValue={searchedKeywords} onSubmit={handleSearch} />
+          </div>
+          <InfoIcon className="ml-2" />
+        </div>
+
+        <div className="col-span-4 flex justify-end	items-center">
+          <ReportButtons />
+        </div>
       </div>
 
       <div className="grid grid-cols-12">
