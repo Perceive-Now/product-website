@@ -39,6 +39,7 @@ import UniversitiesPage from "./pages/product/universities";
 //
 import PageNotFound404 from "./pages/404";
 import PublicationPage from "./pages/product/publication";
+import FunderProfilePage from "./pages/product/funder-profile";
 
 /**
  *
@@ -96,6 +97,10 @@ function App() {
 
             <Route path="/experts" element={<ExpertsPage />} />
             <Route path="/funders" element={<FundersPage />} />
+            <Route
+              path="/funders/profile/:id"
+              element={<FunderProfilePage />}
+            />
             <Route path="/universities" element={<UniversitiesPage />} />
 
             <Route path="/feedback" element={<FeedbackPage />} />
