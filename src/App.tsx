@@ -36,7 +36,9 @@ import ExpertsPage from "./pages/product/experts";
 import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
 
+//
 import PageNotFound404 from "./pages/404";
+import PublicationPage from "./pages/product/publication";
 
 /**
  *
@@ -85,6 +87,7 @@ function App() {
 
             <Route path="/summary" element={<SummaryPage />} />
             <Route path="/publications" element={<PublicationsPage />} />
+            <Route path="/publications/:id" element={<PublicationPage />} />
 
             {/* Patents page section starts here */}
             <Route path="/patents" element={<PatentsPage />} />
