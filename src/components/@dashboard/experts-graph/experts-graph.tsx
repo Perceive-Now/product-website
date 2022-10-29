@@ -8,6 +8,7 @@ import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 //
 import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
+import ScatterChart from "../../@product/scatter-chart";
 
 //
 import { getExpertsCount } from "../../../utils/api/dashboard";
@@ -58,6 +59,37 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
       };
     });
 
+  const finalScatterDataFormatHelper = (data: any) => {
+    if (!data) return [];
+
+    let openExpertsObj = { id: "Open Experts", data: [] };
+    let closedExpertsObj = { id: "Closed Experts", data: [] };
+
+    let openExpertsData: any = [];
+    let closedExpertsData: any = [];
+
+    data.forEach((d: any) => {
+      openExpertsData = [
+        ...openExpertsData,
+        { x: d.year, y: d.openExpertsCount },
+      ];
+
+      closedExpertsData = [
+        ...closedExpertsData,
+        { x: d.year, y: d.closedExpertsCount },
+      ];
+    });
+
+    openExpertsObj.data = openExpertsData;
+    closedExpertsObj.data = closedExpertsData;
+
+    return [openExpertsObj, closedExpertsObj];
+  };
+
+  const finalScatterData = isLoading
+    ? []
+    : finalScatterDataFormatHelper(expertsChartData) ?? [];
+
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
@@ -84,6 +116,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
 
         <div className="flex items-center">
           <ChartButtons
+            isMultiData={true}
             activeChart={activeChart}
             setActiveChart={setActiveChart}
           />
@@ -96,6 +129,15 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
           indexBy="year"
           legendY="Number of Experts"
           data={(isLoading ? [] : expertsChartData) ?? []}
+        />
+      )}
+
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Year"
+          legendY="Experts"
+          colors={["#7F4BD8", "#442873"]}
         />
       )}
 

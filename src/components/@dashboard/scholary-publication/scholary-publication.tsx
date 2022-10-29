@@ -8,6 +8,7 @@ import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 //
 import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
+import ScatterChart from "../../@product/scatter-chart";
 
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
@@ -60,6 +61,37 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
       };
     });
 
+  const finalScatterDataFormatHelper = (data: any) => {
+    if (!data) return [];
+
+    let openArticlesObj = { id: "Open Articles", data: [] };
+    let closedArticlesObj = { id: "Closed Articles", data: [] };
+
+    let openArticlesData: any = [];
+    let closedArticlesData: any = [];
+
+    data.forEach((d: any) => {
+      openArticlesData = [
+        ...openArticlesData,
+        { x: d.year, y: d.openArticles },
+      ];
+
+      closedArticlesData = [
+        ...closedArticlesData,
+        { x: d.year, y: d.closedArticles },
+      ];
+    });
+
+    openArticlesObj.data = openArticlesData;
+    closedArticlesObj.data = closedArticlesData;
+
+    return [openArticlesObj, closedArticlesObj];
+  };
+
+  const finalScatterData = isLoading
+    ? []
+    : finalScatterDataFormatHelper(publicationChartData) ?? [];
+
   //
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
@@ -87,6 +119,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
         <div className="flex items-center">
           <ChartButtons
+            isMultiData={true}
             activeChart={activeChart}
             setActiveChart={setActiveChart}
           />
@@ -99,6 +132,15 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
           indexBy="year"
           legendY="Number of Publications"
           data={(isLoading ? [] : publicationChartData) ?? []}
+        />
+      )}
+
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Year"
+          legendY="Publications"
+          colors={["#7F4BD8", "#442873"]}
         />
       )}
 

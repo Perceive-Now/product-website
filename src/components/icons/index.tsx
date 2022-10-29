@@ -39,6 +39,8 @@ import VerticalThreeDots from "./miscs/VerticalThreeDots";
 import RadioOffIcon from "./miscs/radio-off";
 import RadioOnIcon from "./miscs/radio-on";
 import CrossIcon from "./miscs/Cross";
+import ReportIcon from "./miscs/report";
+import MasterReportIcon from "./miscs/masterReport";
 
 // Charts
 import BarIcon from "./charts/bar";
@@ -83,6 +85,8 @@ export {
   RadioOnIcon,
   RadioOffIcon,
   CrossIcon,
+  ReportIcon,
+  MasterReportIcon,
   // used in tables
   VerticalThreeDots,
   // Chart icons
