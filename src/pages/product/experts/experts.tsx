@@ -60,11 +60,13 @@ export default function ExpertsPage() {
       header: "Patents",
       id: "patentsCount",
       accessorFn: (row) => row.patentsCount ?? "-",
+      minSize: 100,
     },
     {
       header: "Papers",
       accessorKey: "publicationsCount",
       accessorFn: (row) => row.publicationsCount ?? "-",
+      minSize: 100,
     },
   ];
 
