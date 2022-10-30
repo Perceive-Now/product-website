@@ -13,7 +13,6 @@ import ScatterChart from "../../@product/scatter-chart";
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
-import ScatterChart from "../../@product/scatter-chart";
 
 /**
  *
@@ -122,7 +121,6 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
             isMultiData={true}
             activeChart={activeChart}
             setActiveChart={setActiveChart}
-            isMultiData={true}
           />
         </div>
       </div>
