@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 //
 import { VerticalThreeDots } from "../../../components/icons";
 import { getPatents, IPatentItem } from "../../../utils/api/advance-search";
+import Tooltip from "../../../components/reusable/tooltip";
 
 /**
  *
@@ -113,63 +114,30 @@ export default function PatentsPage() {
     </div>
   );
 }
-
+//
 const RowActions = ({ row }: any) => {
-  const [show, setShow] = useState(false);
   return (
-    <span>
-      <VerticalThreeDots
-        data-dropdown-toggle="dropdown"
-        onClick={() => {
-          setShow(!show);
-        }}
-        className="cursor-pointer"
-      />
-      <span
-        id="dropdown"
-        className={classNames(
-          show ? "" : "hidden",
-          "block border border-primary-900 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
-        )}
-      >
-        <ul
-          className="py-1 text-sm text-gray-700 dark:text-gray-200"
-          aria-labelledby="dropdownDefault"
-        >
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Settings
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Earnings
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Sign out
-            </a>
-          </li>
-        </ul>
-      </span>
-    </span>
+    <Tooltip
+      isCustomPanel={true}
+      trigger={
+        <VerticalThreeDots
+          data-dropdown-toggle="dropdown"
+          className="cursor-pointer"
+        />
+      }
+      panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+    >
+      <ul id="dropdown">
+        <li className="mb-2 cursor-pointer">
+          <div>Bookmark</div>
+        </li>
+        <li className="mb-2 cursor-pointer">
+          <div>Generate Citation</div>
+        </li>
+        <li className="cursor-pointer">
+          <div>Share</div>
+        </li>
+      </ul>
+    </Tooltip>
   );
 };
