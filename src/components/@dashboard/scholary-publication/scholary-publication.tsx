@@ -13,6 +13,8 @@ import ScatterChart from "../../@product/scatter-chart";
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
+import { LoadingIcon } from "../../icons";
+import NoKeywordMessage from "../../reusable/no-keyword";
 
 /**
  *
@@ -97,66 +99,94 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
       <PageTitle
         title="Scholarly Publications"
         info={`Stats in this graph are extracted from a total of "X" number of open access publications and "Y" number of closed access publications`}
+        titleClass="font-semibold"
       />
 
-      <div className="pt-1 flex justify-between items-center h-5">
-        <div className="flex gap-x-3">
-          {activeChart === "bar" && (
-            <>
-              <div className="flex gap-x-1 text-sm items-center">
-                <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                <span>Open</span>
-              </div>
+      {props.keywords.length < 1 && (
+        <div className="h-[300px] flex justify-center items-center">
+          <NoKeywordMessage />
+        </div>
+      )}
 
-              <div className="flex gap-x-1 text-sm items-center">
-                <div className="w-2 h-2 bg-primary-800 rounded-full" />
-                <span>Closed</span>
+      {props.keywords.length > 0 && (
+        <>
+          <div className="pt-1 flex justify-between items-center h-5">
+            <div className="flex gap-x-3">
+              {activeChart === "bar" && (
+                <>
+                  <div className="flex gap-x-1 text-sm items-center">
+                    <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                    <span>Open</span>
+                  </div>
+
+                  <div className="flex gap-x-1 text-sm items-center">
+                    <div className="w-2 h-2 bg-primary-800 rounded-full" />
+                    <span>Closed</span>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center">
+              <ChartButtons
+                isMultiData={true}
+                activeChart={activeChart}
+                setActiveChart={setActiveChart}
+              />
+            </div>
+          </div>
+
+          {isLoading && (
+            <div className="h-[300px] flex justify-center items-center">
+              <LoadingIcon fontSize={52} />
+            </div>
+          )}
+
+          {!isLoading && (
+            <>
+              {activeChart === "bar" && (
+                <BarChart
+                  keys={["openArticles", "closedArticles"]}
+                  indexBy="year"
+                  legendY="Number of Publications"
+                  data={(isLoading ? [] : publicationChartData) ?? []}
+                />
+              )}
+
+              {activeChart === "scatter" && (
+                <ScatterChart
+                  data={finalScatterData}
+                  legendX="Year"
+                  legendY="Publications"
+                />
+              )}
+
+              {activeChart === "donut" && (
+                <RadialChart
+                  data={radialData}
+                  colors={["#7F4BD8", "#442873"]}
+                />
+              )}
+
+              <div className="mt-4 text-sm">
+                <span className="font-bold">
+                  "{publicationCount?.totalPublicationsCount ?? "-"}"
+                </span>
+                <span> </span>
+                <span>
+                  total number of publications was published in the past
+                </span>
+                <span> </span>
+                <span className="font-semibold">
+                  {publicationCount?.yearsElapsed}
+                </span>
+                <span> </span>
+                <span>years</span>
               </div>
             </>
           )}
-        </div>
-
-        <div className="flex items-center">
-          <ChartButtons
-            isMultiData={true}
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
-          />
-        </div>
-      </div>
-
-      {activeChart === "bar" && (
-        <BarChart
-          keys={["openArticles", "closedArticles"]}
-          indexBy="year"
-          legendY="Number of Publications"
-          data={(isLoading ? [] : publicationChartData) ?? []}
-        />
+        </>
       )}
-
-      {activeChart === "scatter" && (
-        <ScatterChart
-          data={finalScatterData}
-          legendX="Year"
-          legendY="Publications"
-        />
-      )}
-
-      {activeChart === "donut" && (
-        <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />
-      )}
-
-      <div className="mt-4 text-sm">
-        <span className="font-bold">
-          "{publicationCount?.totalPublicationsCount ?? "-"}"
-        </span>
-        <span> </span>
-        <span>total number of publications was published in the past</span>
-        <span> </span>
-        <span className="font-semibold">{publicationCount?.yearsElapsed}</span>
-        <span> </span>
-        <span>years</span>
-      </div>
     </div>
   );
 }
