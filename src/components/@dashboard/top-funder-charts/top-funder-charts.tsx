@@ -50,7 +50,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   );
 
   useEffect(() => {
-    if (timeperiod) {
+    if (timeperiod[0]) {
       setSelectedTimeperiod(timeperiod[0].value);
     }
   }, [timeperiod]);

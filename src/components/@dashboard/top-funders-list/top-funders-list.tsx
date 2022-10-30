@@ -9,36 +9,36 @@ import ReactTable from "../../reusable/ReactTable";
 //
 import { formatNumber } from "../../../utils/helpers";
 import { getTop5Funders } from "../../../utils/api/dashboard";
+import { LoadingIcon } from "../../icons";
 
 /*
  *
  **/
 export default function TopFundersList(props: ITopFundersListProps) {
-  const { data } = useQuery(["top-5-funders", ...props.keywords], async () => {
-    return await getTop5Funders(props.keywords);
-  });
+  const { data, isLoading } = useQuery(
+    ["top-5-funders", ...props.keywords],
+    async () => {
+      return await getTop5Funders(props.keywords);
+    }
+  );
 
   //
   const columns = useMemo<ColumnDef<ITopFunders>[]>(
     () => [
       {
         header: "Funder",
-        accessorKey: "name",
+        accessorKey: "funder_name",
       },
       {
-        header: "Funding",
-        accessorKey: "fundingAmount",
+        header: "Funding (USD)",
+        accessorKey: "total_funding",
         cell: (props) => (
           <span>
-            {formatNumber(props.row.original.fundingAmount, {
+            {formatNumber(props.row.original.total_funding, {
               isCurrency: true,
             })}
           </span>
         ),
-      },
-      {
-        header: "Date",
-        accessorKey: "date",
       },
     ],
     []
@@ -53,9 +53,21 @@ export default function TopFundersList(props: ITopFundersListProps) {
       />
 
       <div className="mt-2">
-        <ReactTable columnsData={columns} rowsData={data} size="medium" />
+        {isLoading && (
+          <div className="h-[300px] flex items-center justify-center">
+            <LoadingIcon fontSize={42} />
+          </div>
+        )}
 
-        <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
+        {!isLoading && (
+          <>
+            <ReactTable columnsData={columns} rowsData={data} size="medium" />
+
+            <div className="text-primary-600 mt-4 cursor-pointer">
+              Read more
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -66,8 +78,6 @@ interface ITopFundersListProps {
 }
 
 interface ITopFunders {
-  rank: number;
-  name: string;
-  fundingAmount: number;
-  date: string;
+  funder_name: string;
+  total_funding: number;
 }

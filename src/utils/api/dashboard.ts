@@ -64,8 +64,9 @@ export async function getCompetitors(keywords: string[]) {
 }
 
 export async function getTop5Funders(keywords: string[]) {
+  let query = keywords.join(",").replace(' ', '');
   const response = await axiosInstance.get<ITopFunderResponse>(
-    `/dashboard/funding/top_5?q=${keywords.join(",")}`
+    `/dashboard/top_5_funders?q=${query}`
   );
 
   return response.data.data;
