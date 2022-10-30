@@ -137,14 +137,15 @@ interface IRelatedKeywordsResponse {
   data: string[];
 }
 
-interface IHighlight {
-  id: string;
-  name: string;
-  value: number;
-}
-
 interface IHighlightResponse {
-  data: IHighlight[];
+  data: {
+    academicExpertsCount: number;
+    academicPublicationsCount: number;
+    fundingAmount: number;
+    industryExpertsCount: number;
+    industryPublicationsCount: number;
+    patentsCount: number;
+  };
 }
 
 //
@@ -167,7 +168,7 @@ export interface IExpert {
   companyName: string;
   locationText: string;
   patentsCount: number;
-  pulicationsCount: number;
+  publicationsCount: number;
   score: number;
   coordinates: [number, number];
 }

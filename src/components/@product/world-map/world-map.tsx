@@ -68,7 +68,7 @@ export default function WorldMap(props: ISvgMapProps) {
   const [heatmapHoveredCountry, setHeatmapHoveredCountry] = useState<any>("");
 
   const [activeMarkerData, setActiveMarkerData] = useState<
-    IDataItem | undefined
+    IWorldMapDataItem | undefined
   >(undefined);
 
   // Miscs
@@ -447,7 +447,7 @@ interface ITooltipGroupItemProp {
   value?: number;
 }
 
-interface IDataItem {
+export interface IWorldMapDataItem {
   name?: string;
   country?: string;
   location?: string;
@@ -471,5 +471,5 @@ interface ISvgMapProps {
     | "basicPublication"
     | "basicPatents";
   //
-  data?: IDataItem[];
+  data?: IWorldMapDataItem[];
 }

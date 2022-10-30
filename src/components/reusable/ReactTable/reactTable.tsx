@@ -1,15 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import classNames from "classnames";
+import { useEffect, useState } from "react";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import classNames from "classnames";
-
-//
-import { PatentType } from "../../../pages/product/patents/patents";
 
 /*
  *
@@ -26,44 +22,10 @@ export default function ReactTable(props: IReactTable) {
     setData(rowsData);
   }, [rowsData]);
 
-  const defaultColumns = useMemo<ColumnDef<PatentType>[]>(
-    () => [
-      {
-        header: "Inventor",
-        accessorKey: "inventor",
-      },
-      {
-        header: "Inventor",
-        accessorKey: "inventor",
-      },
-      {
-        header: "Industry",
-        accessorKey: "industry",
-      },
-      {
-        header: "Title",
-        accessorKey: "title",
-      },
-      {
-        header: "Abstract",
-        accessorKey: "abstract",
-      },
-      {
-        header: "Date (Y/M/D)",
-        accessorKey: "date",
-      },
-    ],
-    []
-  );
-
-  const columns = columnsData || defaultColumns;
-
   const table = useReactTable({
     data,
-    columns,
-    state: {
-      rowSelection,
-    },
+    columns: columnsData,
+    state: { rowSelection },
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

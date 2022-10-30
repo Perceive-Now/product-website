@@ -33,15 +33,20 @@ export default function Patents(props: IPatentsProps) {
   const { data, isLoading } = useQuery(
     ["patents-pie-chart", ...props.keywords],
     async () => {
-      return await getPatentsPieChart(props.keywords);
-    }
+      return (await getPatentsPieChart(props.keywords))
+        .sort((a, b) => +a.name - +b.name)
+        .reverse()
+        .slice(0, 5);
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const { data: patentCount } = useQuery(
     ["patents-count-for-chart", ...props.keywords],
     async () => {
       return await getPatentsCount(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const finalBarData = isLoading ? [] : data ?? [];

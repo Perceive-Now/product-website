@@ -1,6 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
 //
+import Search, { IKeywordOption } from "../../reusable/search";
+
+//
+import { useAppDispatch } from "../../../hooks/redux";
+import { setDashboardSearch } from "../../../stores/dashboard";
+
+//
 import UserIcon from "../userIcon";
 
 //
@@ -27,10 +34,26 @@ export default function AppHeader() {
     }
   };
 
+  const dispatch = useAppDispatch();
+
+  //
+  const handleSearch = (value: IKeywordOption[]) => {
+    dispatch(setDashboardSearch(value));
+  };
+
   return (
     <div className="flex justify-between my-auto">
-      <div className="flex items-center">
-        {!isDashboardPage && (
+      <>
+        {isDashboardPage ? (
+          <div className="flex-grow max-w-xl">
+            <Search
+              required
+              size="large"
+              className="w-full"
+              onSubmit={handleSearch}
+            />
+          </div>
+        ) : (
           <div
             onClick={handleBack}
             className="cursor-pointer flex items-center"
@@ -42,7 +65,7 @@ export default function AppHeader() {
             </p>
           </div>
         )}
-      </div>
+      </>
 
       <UserIcon />
     </div>

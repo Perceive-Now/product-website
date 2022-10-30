@@ -15,7 +15,8 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
     ["dashboard-top-universities", ...props.keywords],
     async () => {
       return await getTop3Universities(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const finalData = data ?? [];

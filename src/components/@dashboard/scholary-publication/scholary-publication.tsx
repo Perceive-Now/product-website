@@ -8,13 +8,12 @@ import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 //
 import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
+import ScatterChart from "../../@product/scatter-chart";
 
 //
 import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
 import ScatterChart from "../../@product/scatter-chart";
-
-//
 
 /**
  *
@@ -26,14 +25,16 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     ["scholary-publications", ...props.keywords],
     async () => {
       return await getScholaryPublications(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const { data: publicationCount } = useQuery(
     ["scholarly-publications-count-for-chart", ...props.keywords],
     async () => {
       return await getPublicationsCount(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //
@@ -118,6 +119,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
         <div className="flex items-center">
           <ChartButtons
+            isMultiData={true}
             activeChart={activeChart}
             setActiveChart={setActiveChart}
             isMultiData={true}

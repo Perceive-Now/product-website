@@ -20,7 +20,8 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
     async () => {
       // return await getPublicationsAndPatentsMap();
       return [];
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   return (

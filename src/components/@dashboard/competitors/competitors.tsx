@@ -52,10 +52,6 @@ export default function Competitors(props: ICompetitorProps) {
         header: "Funding",
         accessorKey: "funding",
       },
-      {
-        id: "actions",
-        cell: (props) => <RowActions {...props} />,
-      },
     ],
     []
   );
@@ -131,10 +127,6 @@ interface CompetitorsType {
   experts: string;
   funding: string;
 }
-
-const RowActions = ({ row }: any) => {
-  return <InfoIcon className="cursor-pointer" />;
-};
 
 interface ICompetitorProps {
   keywords: string[];

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 //
 import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
+import ScatterChart from "../../@product/scatter-chart";
 
 //
 import PageTitle from "../../reusable/page-title";
@@ -25,7 +26,8 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     ["dashboard-academic-research-trend", ...props.keywords],
     async () => {
       return await getAcademicResearchTrends(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //
@@ -67,6 +69,42 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       };
     });
 
+  const finalScatterDataFormatHelper = (data: any) => {
+    if (!data) return [];
+
+    let patentsObj = { id: "Patents", data: [] };
+    let openArticlesObj = { id: "Open Articles", data: [] };
+    let closedArticlesObj = { id: "Closed Articles", data: [] };
+
+    let patentsData: any = [];
+    let openArticlesData: any = [];
+    let closedArticlesData: any = [];
+
+    data.forEach((d: any) => {
+      patentsData = [...patentsData, { x: d.locationName, y: d.patentsCount }];
+
+      openArticlesData = [
+        ...openArticlesData,
+        { x: d.locationName, y: d.openArticlesCount },
+      ];
+
+      closedArticlesData = [
+        ...closedArticlesData,
+        { x: d.locationName, y: d.closedArticlesCount },
+      ];
+    });
+
+    patentsObj.data = patentsData;
+    openArticlesObj.data = openArticlesData;
+    closedArticlesObj.data = closedArticlesData;
+
+    return [patentsObj, openArticlesObj, closedArticlesObj];
+  };
+
+  const finalScatterData = isLoading
+    ? []
+    : finalScatterDataFormatHelper(data?.chart) ?? [];
+
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
@@ -81,6 +119,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
 
         <div className="flex items-center">
           <ChartButtons
+            isMultiData={true}
             activeChart={activeChart}
             setActiveChart={setActiveChart}
           />
@@ -113,6 +152,14 @@ export default function AcademicResearchTrends(props: IResearchProps) {
             data={finalData}
           />
         </>
+      )}
+
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Location"
+          legendY="Articles"
+        />
       )}
 
       {activeChart === "donut" && <RadialChart data={radialData} />}

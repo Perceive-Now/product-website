@@ -27,7 +27,8 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     ["top-funder-charts", ...props.keywords],
     async () => {
       return await getTopFundingChart(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //

@@ -9,7 +9,6 @@ import RadioButtons from "../../reusable/radio-buttons";
 import ExpandBtn from "../../reusable/expand-btn/expand-btn";
 
 //
-import { InfoIcon } from "../../icons";
 import { getExpertsTable, IExpert } from "../../../utils/api/dashboard";
 
 /*
@@ -25,7 +24,8 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
     ["footprint-for-experts", ...props.keywords],
     async () => {
       return await getExpertsTable(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const _tableData = isLoading
@@ -55,22 +55,30 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         maxWidth: 400,
         minWidth: 140,
         width: 200,
+        cell: (props) => {
+          return props.row.original.companyName ?? "-";
+        },
       },
       {
         header: "Location",
         accessorKey: "locationText",
+        cell: (props) => {
+          return props.row.original.locationText ?? "-";
+        },
       },
       {
         header: "Patents",
         accessorKey: "patentsCount",
+        cell: (props) => {
+          return props.row.original.patentsCount ?? "-";
+        },
       },
       {
         header: "Publications",
         accessorKey: "publicationsCount",
-      },
-      {
-        id: "actions",
-        cell: (props) => <RowActions {...props} />,
+        cell: (props) => {
+          return props.row.original.publicationsCount ?? "-";
+        },
       },
     ],
     []
@@ -124,10 +132,6 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
     </div>
   );
 }
-
-const RowActions = ({ row }: any) => {
-  return <InfoIcon className="cursor-pointer" />;
-};
 
 const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
   return (

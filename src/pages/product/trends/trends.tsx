@@ -19,7 +19,8 @@ export default function TrendsPage() {
       return await getTechnologyTrends(
         searchKeywords?.map((kwd) => kwd.value) ?? []
       );
-    }
+    },
+    { enabled: !!searchKeywords.length }
   );
 
   const handleSearch = (value: IKeywordOption[]) => {

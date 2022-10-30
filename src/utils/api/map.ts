@@ -16,8 +16,17 @@ export async function getPublicationsAndPatentsMap(keywords: string[]) {
  */
 interface IPublicationAndPatensMapResponse {
   data: {
-    country: string;
-    patents: number;
-    publications: number;
-  }[];
+    patents: {
+      topStateTitle: string[];
+      sortedCount: {
+        [x: string]: number;
+      };
+    };
+    publications: {
+      doiLinksMaxCountry: string[];
+      sortedCount: {
+        [x: string]: number;
+      };
+    };
+  };
 }

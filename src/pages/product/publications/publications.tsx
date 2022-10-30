@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
@@ -11,6 +12,7 @@ import PublicationItem from "../../../components/@product/publicationItem";
 
 //
 import { setDashboardSearch } from "../../../stores/dashboard";
+import { getPublications } from "../../../utils/api/advance-search";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 //
@@ -26,51 +28,29 @@ export default function PublicationsPage() {
     ?.map((kwd) => `"${kwd.value}"`)
     .join(", ");
 
+  const keywords = searchedKeywords?.map((kwd) => kwd.value) ?? [];
+
   //
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const { data: publicationsDataRaw, isLoading } = useQuery(
+    ["advanced-search-publications", ...keywords],
+    async () => {
+      return await getPublications(keywords);
+    },
+    { enabled: !!searchedKeywords?.length }
+  );
+
+  const publicationsData = (
+    isLoading ? [] : publicationsDataRaw?.data?.resultsList ?? []
+  )
+    .filter((itm) => itm.abstract)
+    .slice(0, 10);
+  //
   //
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
   };
-
-  const [publicationsData] = useState<IPublicationData[]>([
-    {
-      title:
-        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
-      description:
-        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
-      id: 1,
-    },
-    {
-      title:
-        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
-      description:
-        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
-      id: 2,
-    },
-    {
-      title:
-        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
-      description:
-        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
-      id: 3,
-    },
-    {
-      title:
-        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
-      description:
-        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
-      id: 4,
-    },
-    {
-      title:
-        "Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device) for COVID-19 diagnosis in primary healthcare centres",
-      description:
-        "To our knowledge, no previous study has assessed the performance of a rapid antigen diagnostic immunoassay (RAD) conducted at the point of care (POC). We evaluated the Panbio™ COVID-19 Ag Rapid Test Device for diagnosis of coronavirus 2019 disease (COVID-19) in symptomatic patients (n = 412) attending primary healthcare centers.",
-      id: 5,
-    },
-  ]);
 
   const [relatedKeywords] = useState<string[]>([
     "sar-cov 2",
@@ -103,10 +83,10 @@ export default function PublicationsPage() {
 
           <div className="grid grid-cols-12">
             <div className="col-span-9 mr-6">
-              {publicationsData.map((publicationData: IPublicationData) => (
+              {publicationsData?.map((publicationData) => (
                 <PublicationItem
                   data={publicationData}
-                  key={publicationData.id}
+                  key={publicationData.doi}
                 />
               ))}
 
