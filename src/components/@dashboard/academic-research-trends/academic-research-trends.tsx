@@ -108,8 +108,9 @@ export default function AcademicResearchTrends(props: IResearchProps) {
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
-        title="Academic Research Trends"
+        title="Academic Research Trends in the USA (by Region)"
         info={`This list was extracted from "X" total number of universities worldwide`}
+        titleClass="font-semibold"
       />
 
       <div className="pt-1 flex justify-end items-center gap-x-3">

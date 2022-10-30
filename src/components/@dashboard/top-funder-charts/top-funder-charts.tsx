@@ -87,9 +87,9 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
-        titleClass="font-medium"
         title="Total Amount of Funding over time"
         info={`This list was extracted from "X" total number of funders worldwide`}
+        titleClass="font-semibold"
       />
 
       {props.keywords.length > 0 && (
