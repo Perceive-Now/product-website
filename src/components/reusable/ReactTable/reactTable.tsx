@@ -50,7 +50,6 @@ export default function ReactTable(props: IReactTable) {
                   }}
                 >
                   <>
-                    {console.log(header, "header")}
                     {header.isPlaceholder ? null : (
                       <>
                         {flexRender(
