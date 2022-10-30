@@ -1,18 +1,20 @@
+import classNames from "classnames";
 import { useEffect, useState } from "react";
-// import classNames from "classnames";
-// import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { useQuery } from "@tanstack/react-query";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
+import ReactTable from "../../../components/reusable/ReactTable";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 
 //
 import { setDashboardSearch } from "../../../stores/dashboard";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-// import ReactTable from "../../../components/reusable/ReactTable";
 
 //
-// import { VerticalThreeDots } from "../../../components/icons";
+import { VerticalThreeDots } from "../../../components/icons";
+import { getPatents, IPatentItem } from "../../../utils/api/advance-search";
 
 /**
  *
@@ -28,6 +30,19 @@ export default function PatentsPage() {
     ?.map((kwd) => `"${kwd.value}"`)
     .join(", ");
 
+  const keywords = searchKeywords?.map((kwd) => kwd.value) ?? [];
+
+  const { data: patentsDataRaw, isLoading } = useQuery(
+    ["advanced-search-patents", ...keywords],
+    async () => {
+      return await getPatents(keywords);
+    }
+  );
+
+  const patentsData = (isLoading ? [] : patentsDataRaw?.data?.resultsList ?? [])
+    //
+    .slice(0, 10);
+
   //
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
@@ -38,35 +53,36 @@ export default function PatentsPage() {
     setSearchKeywords(dashboardSearch);
   }, [dashboardSearch]);
 
-  // const columnHelper = createColumnHelper<PatentType>();
+  const columnHelper = createColumnHelper<IPatentItem>();
 
-  // const columns: ColumnDef<PatentType>[] = [
-  //   {
-  //     header: "Inventor",
-  //     accessorKey: "inventor",
-  //   },
-  //   {
-  //     header: "Industry",
-  //     accessorKey: "industry",
-  //   },
-  //   {
-  //     header: "Title",
-  //     accessorKey: "title",
-  //   },
-  //   {
-  //     header: "Abstract",
-  //     id: "abstract",
-  //     accessorFn: (row) => `view more`,
-  //   },
-  //   {
-  //     header: "Date (Y/M/D)",
-  //     accessorKey: "date",
-  //   },
-  //   columnHelper.display({
-  //     id: "actions",
-  //     cell: (props) => <RowActions row={props.row} />,
-  //   }),
-  // ];
+  const columns: ColumnDef<IPatentItem>[] = [
+    {
+      header: "Inventor",
+      accessorKey: "inventorName",
+      accessorFn: (row) => row.inventorName ?? "-",
+    },
+    {
+      header: "Company/University",
+      accessorKey: "organizationName",
+    },
+    {
+      header: "Title",
+      accessorKey: "title",
+    },
+    {
+      header: "Abstract",
+      id: "abstract",
+      accessorFn: (row) => `View Abstract`,
+    },
+    {
+      header: "Date (Y/M/D)",
+      accessorKey: "date",
+    },
+    columnHelper.display({
+      id: "actions",
+      cell: (props) => <RowActions row={props.row} />,
+    }),
+  ];
 
   return (
     <div>
@@ -85,81 +101,75 @@ export default function PatentsPage() {
             <PageTitle title="Patents" learnMore="Learn more" />
           </div>
 
-          <div>{/* <ReactTable columnsData={columns} /> */}</div>
+          <div>
+            <ReactTable columnsData={columns} rowsData={patentsData} />
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-export type PatentType = {
-  inventor: string;
-  industry: string;
-  title: string;
-  abstract: string;
-  date: string;
+const RowActions = ({ row }: any) => {
+  const [show, setShow] = useState(false);
+  return (
+    <span>
+      <VerticalThreeDots
+        data-dropdown-toggle="dropdown"
+        onClick={() => {
+          setShow(!show);
+        }}
+        className="cursor-pointer"
+      />
+      <span
+        id="dropdown"
+        className={classNames(
+          show ? "" : "hidden",
+          "block border border-primary-900 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
+        )}
+      >
+        <ul
+          className="py-1 text-sm text-gray-700 dark:text-gray-200"
+          aria-labelledby="dropdownDefault"
+        >
+          <li>
+            <a
+              href="#"
+              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Settings
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Earnings
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              Sign out
+            </a>
+          </li>
+        </ul>
+      </span>
+    </span>
+  );
 };
 
-// const RowActions = ({ row }: any) => {
-//   const [show, setShow] = useState(false);
-//   return (
-//     <span>
-//       <VerticalThreeDots
-//         data-dropdown-toggle="dropdown"
-//         onClick={() => {
-//           setShow(!show);
-//         }}
-//         className="cursor-pointer"
-//       />
-//       <span
-//         id="dropdown"
-//         className={classNames(
-//           show ? "" : "hidden",
-//           "block border border-primary-900 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
-//         )}
-//       >
-//         <ul
-//           className="py-1 text-sm text-gray-700 dark:text-gray-200"
-//           aria-labelledby="dropdownDefault"
-//         >
-//           <li>
-//             <a
-//               href="#"
-//               className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-//             >
-//               Dashboard
-//             </a>
-//           </li>
-//           <li>
-//             <a
-//               href="#"
-//               className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-//             >
-//               Settings
-//             </a>
-//           </li>
-//           <li>
-//             <a
-//               href="#"
-//               className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-//             >
-//               Earnings
-//             </a>
-//           </li>
-//           <li>
-//             <a
-//               href="#"
-//               className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-//             >
-//               Sign out
-//             </a>
-//           </li>
-//         </ul>
-//       </span>
-//     </span>
-//   );
-// };
-
-// interface ILocationState {
-//   search?: IKeywordOption[];
-// }
+interface ILocationState {
+  search?: IKeywordOption[];
+}

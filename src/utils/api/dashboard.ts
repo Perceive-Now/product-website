@@ -125,14 +125,15 @@ interface IRelatedKeywordsResponse {
   data: string[];
 }
 
-interface IHighlight {
-  id: string;
-  name: string;
-  value: number;
-}
-
 interface IHighlightResponse {
-  data: IHighlight[];
+  data: {
+    academicExpertsCount: number;
+    academicPublicationsCount: number;
+    fundingAmount: number;
+    industryExpertsCount: number;
+    industryPublicationsCount: number;
+    patentsCount: number;
+  };
 }
 
 //

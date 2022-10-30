@@ -61,12 +61,12 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="text-center px-4 py-7">
+      {/* <div className="text-center px-4 py-7">
         <h6>10 new articles were published by your top competitor</h6>
         <p className="text-gray-600 mt-1">
           20% decrease in overall funding grants
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }

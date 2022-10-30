@@ -138,7 +138,7 @@ export default function FunderProfilePage() {
               {publicationData.associatedPublications.map(
                 (publicationData: IPublicationData) => (
                   <PublicationItem
-                    data={publicationData}
+                    data={{ abstract: "", doi: "", title: [] }}
                     key={publicationData.id}
                   />
                 )

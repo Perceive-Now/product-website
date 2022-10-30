@@ -18,7 +18,36 @@ export default function TodayHighlights(props: IHighlightsProps) {
     }
   );
 
-  const finalData = isLoading ? [] : data ?? [];
+  const finalData = isLoading
+    ? []
+    : [
+        { id: "patentsCount", name: "Patents", value: data?.patentsCount },
+        {
+          id: "industryPublicationsCount",
+          name: "Industry Publications",
+          value: data?.industryPublicationsCount,
+        },
+        {
+          id: "industryExpertsCount",
+          name: "Industry Experts",
+          value: data?.industryExpertsCount,
+        },
+        {
+          id: "fundingAmount",
+          name: "Funding Amount (USD)",
+          value: data?.fundingAmount,
+        },
+        {
+          id: "academicPublicationsCount",
+          name: "Academic Publications",
+          value: data?.academicPublicationsCount,
+        },
+        {
+          id: "academicExpertsCount",
+          name: "Academic Experts",
+          value: data?.academicExpertsCount,
+        },
+      ] ?? [];
 
   const getItemValue = (id: string, value: number) => {
     if (id === "pn-dashb-highlt-funding")
@@ -50,8 +79,8 @@ export default function TodayHighlights(props: IHighlightsProps) {
                 {item.name}
               </div>
 
-              <div className="text-center text-[28px] mb-2 text-success-500">
-                {getItemValue(item.id, item.value) ?? "-"}
+              <div className="text-center text-[28px] mb-2 text-gray-900">
+                {getItemValue(item.id, item.value ?? 0) ?? "-"}
               </div>
 
               <hr className="border-[#D9D9D9]" />
