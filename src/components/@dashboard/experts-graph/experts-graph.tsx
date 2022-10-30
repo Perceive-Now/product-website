@@ -24,14 +24,16 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     ["experts-count-graph", ...props.keywords],
     async () => {
       return await getExpertsCountGraph(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const { data: expertsCount } = useQuery(
     ["expert-count-for-chart", ...props.keywords],
     async () => {
       return await getExpertsCount(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //

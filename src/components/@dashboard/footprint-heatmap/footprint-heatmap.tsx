@@ -6,7 +6,9 @@ import WorldMap from "../../@product/world-map";
 import PageTitle from "../../reusable/page-title";
 
 //
+import countryISOMapping from "../../../utils/extra/country-codes";
 import { getPublicationsAndPatentsMap } from "../../../utils/api/map";
+import { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 /**
  *
@@ -21,8 +23,20 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     ["footprint-for-patents-and-publications", ...props.keywords],
     async () => {
       return await getPublicationsAndPatentsMap(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
+
+  const formattedData: IWorldMapDataItem[] = Object.entries(
+    data?.publications.sortedCount ?? {}
+  ).map(([key, value]) => ({
+    country: countryISOMapping[key],
+    publications: value,
+  }));
+
+  const finalData = isLoading ? [] : formattedData;
+
+  console.log(finalData);
 
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
@@ -76,7 +90,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          <WorldMap type={currentMode} data={isLoading ? [] : data} />
+          <WorldMap type={currentMode} data={finalData} />
         </div>
       </div>
     </div>

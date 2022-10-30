@@ -24,7 +24,8 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
     ["footprint-for-experts", ...props.keywords],
     async () => {
       return await getExpertsTable(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const _tableData = isLoading

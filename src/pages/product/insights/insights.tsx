@@ -21,7 +21,8 @@ export default function InsightsPage() {
     ["m-and-a-insight", ...searchkeywords.map((kwd) => kwd.value)],
     async () => {
       return await getMAInsights(searchkeywords.map((kwd) => kwd.value));
-    }
+    },
+    { enabled: !!searchkeywords?.length }
   );
 
   const handleKeywordChange = (value: IKeywordOption[]) => {

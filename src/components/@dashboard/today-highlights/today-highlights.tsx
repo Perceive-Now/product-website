@@ -11,43 +11,42 @@ import { getTodaysHighlight } from "../../../utils/api/dashboard";
  *
  **/
 export default function TodayHighlights(props: IHighlightsProps) {
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     ["dashboard-today-highlights", ...props.keywords],
     async () => {
       return await getTodaysHighlight(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
-  const finalData = isLoading
-    ? []
-    : [
-        { id: "patentsCount", name: "Patents", value: data?.patentsCount },
-        {
-          id: "industryPublicationsCount",
-          name: "Industry Publications",
-          value: data?.industryPublicationsCount,
-        },
-        {
-          id: "industryExpertsCount",
-          name: "Industry Experts",
-          value: data?.industryExpertsCount,
-        },
-        {
-          id: "fundingAmount",
-          name: "Funding Amount (USD)",
-          value: data?.fundingAmount,
-        },
-        {
-          id: "academicPublicationsCount",
-          name: "Academic Publications",
-          value: data?.academicPublicationsCount,
-        },
-        {
-          id: "academicExpertsCount",
-          name: "Academic Experts",
-          value: data?.academicExpertsCount,
-        },
-      ] ?? [];
+  const finalData = [
+    { id: "patentsCount", name: "Patents", value: data?.patentsCount },
+    {
+      id: "industryPublicationsCount",
+      name: "Industry Publications",
+      value: data?.industryPublicationsCount,
+    },
+    {
+      id: "industryExpertsCount",
+      name: "Industry Experts",
+      value: data?.industryExpertsCount,
+    },
+    {
+      id: "fundingAmount",
+      name: "Funding Amount (USD)",
+      value: data?.fundingAmount,
+    },
+    {
+      id: "academicPublicationsCount",
+      name: "Academic Publications",
+      value: data?.academicPublicationsCount,
+    },
+    {
+      id: "academicExpertsCount",
+      name: "Academic Experts",
+      value: data?.academicExpertsCount,
+    },
+  ];
 
   const getItemValue = (id: string, value: number) => {
     if (id === "pn-dashb-highlt-funding")

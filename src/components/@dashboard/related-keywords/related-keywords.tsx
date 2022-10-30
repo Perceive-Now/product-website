@@ -15,7 +15,8 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
     ["dashboard-most-related-keywords", ...props.keywords],
     async () => {
       return await getRelatedKeywords(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const allKeywords = data ?? [];

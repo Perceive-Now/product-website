@@ -37,7 +37,8 @@ export default function PublicationsPage() {
     ["advanced-search-publications", ...keywords],
     async () => {
       return await getPublications(keywords);
-    }
+    },
+    { enabled: !!searchedKeywords?.length }
   );
 
   const publicationsData = (

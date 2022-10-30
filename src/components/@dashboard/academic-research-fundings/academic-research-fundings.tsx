@@ -28,7 +28,8 @@ export default function AcademicResearchFundings(props: IFundingProps) {
     ["dashboard-academic-funding-chart", ...props.keywords],
     async () => {
       return await getAcademicResearchFundingChart(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
   let chartData = data?.chart ?? [];
 

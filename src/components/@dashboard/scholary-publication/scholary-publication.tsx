@@ -26,14 +26,16 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     ["scholary-publications", ...props.keywords],
     async () => {
       return await getScholaryPublications(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const { data: publicationCount } = useQuery(
     ["scholarly-publications-count-for-chart", ...props.keywords],
     async () => {
       return await getPublicationsCount(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //

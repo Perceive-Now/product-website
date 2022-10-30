@@ -26,7 +26,8 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     ["dashboard-academic-research-trend", ...props.keywords],
     async () => {
       return await getAcademicResearchTrends(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //

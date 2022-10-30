@@ -36,7 +36,8 @@ export default function PatentsPage() {
     ["advanced-search-patents", ...keywords],
     async () => {
       return await getPatents(keywords);
-    }
+    },
+    { enabled: !!searchKeywords?.length }
   );
 
   const patentsData = (isLoading ? [] : patentsDataRaw?.data?.resultsList ?? [])

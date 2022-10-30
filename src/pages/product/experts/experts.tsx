@@ -28,7 +28,8 @@ export default function ExpertsPage() {
     ["advanced-search-experts", ...keywords],
     async () => {
       return await getExperts(keywords);
-    }
+    },
+    { enabled: !!searchedKeywords?.length }
   );
 
   const expertsData = (isLoading ? [] : expertsDataRaw?.data?.resultsList ?? [])
