@@ -63,6 +63,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       <PageTitle
         title="Academic Research Funding"
         info={`This list was extracted from "X" total number of universities worldwide`}
+        titleClass="font-semibold"
       />
 
       {/* Controls */}

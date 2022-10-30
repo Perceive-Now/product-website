@@ -127,6 +127,10 @@ export default function TopFunderCharts(props: ITopFunderProps) {
               {activeChart === "scatter" && (
                 <ScatterChart data={finalScatterData} legendY="Fundings" />
               )}
+
+              <div className="text-primary-600 mt-4 cursor-pointer">
+                Read more
+              </div>
             </>
           )}
 
@@ -135,8 +139,6 @@ export default function TopFunderCharts(props: ITopFunderProps) {
               <LoadingIcon fontSize={56} />
             </div>
           )}
-
-          <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
         </>
       )}
 

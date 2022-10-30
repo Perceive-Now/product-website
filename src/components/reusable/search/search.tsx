@@ -9,7 +9,7 @@ import { SearchIcon } from "../../icons";
 //
 import "./search.css";
 
-const MAX_KEYWORD = 3;
+const MAX_KEYWORD = 1;
 
 /**
  *
@@ -190,7 +190,7 @@ interface IFilterOptionGroup {
 
 export const response = {
   data: [
-    "COVID-19",
+    "COVID19",
     "diagnosis",
     "public health",
     "virtual reality",
@@ -199,10 +199,10 @@ export const response = {
     "minimally invasive surgery",
     "pneumonia",
     "artificial intelligence",
-    "SARS-COV 2",
+    "SARSCOV 2",
     "haptic open glove",
     "human computer interaction",
-    "RT-PCR",
+    "RTPCR",
     "multibody dynamics",
     "Vaccines",
     "therapeutics",

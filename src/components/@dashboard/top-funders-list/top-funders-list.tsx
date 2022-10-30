@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 //
 import PageTitle from "../../reusable/page-title";
 import ReactTable from "../../reusable/ReactTable";
+import NoKeywordMessage from "../../reusable/no-keyword";
 
 //
 import { formatNumber } from "../../../utils/helpers";
@@ -53,21 +54,31 @@ export default function TopFundersList(props: ITopFundersListProps) {
       />
 
       <div className="mt-2">
-        {isLoading && (
-          <div className="h-[300px] flex items-center justify-center">
-            <LoadingIcon fontSize={42} />
-          </div>
-        )}
-
-        {!isLoading && (
+        {props.keywords.length > 0 && (
           <>
-            <ReactTable columnsData={columns} rowsData={data} size="medium" />
+            {isLoading && (
+              <div className="h-[300px] flex items-center justify-center">
+                <LoadingIcon fontSize={42} />
+              </div>
+            )}
 
-            <div className="text-primary-600 mt-4 cursor-pointer">
-              Read more
-            </div>
+            {!isLoading && (
+              <>
+                <ReactTable
+                  columnsData={columns}
+                  rowsData={data}
+                  size="medium"
+                />
+
+                <div className="text-primary-600 mt-4 cursor-pointer">
+                  Read more
+                </div>
+              </>
+            )}
           </>
         )}
+
+        {props.keywords.length < 1 && <NoKeywordMessage />}
       </div>
     </div>
   );
