@@ -71,12 +71,12 @@ interface ISinglePublicationResponse {
 }
 
 export interface IPatentItem {
-  abstract: string;
-  date: string;
   inventorName?: string;
   organizationName: string;
-  patentNumber: string;
   title: string;
+  abstract: string;
+  date: string;
+  patentNumber: string;
 }
 
 interface IPatentsResponse {

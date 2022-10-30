@@ -61,6 +61,7 @@ export default function PatentsPage() {
       header: "Inventor",
       accessorKey: "inventorName",
       accessorFn: (row) => row.inventorName ?? "-",
+      minSize: 100,
     },
     {
       header: "Company/University",
@@ -74,10 +75,12 @@ export default function PatentsPage() {
       header: "Abstract",
       id: "abstract",
       accessorFn: (row) => `View Abstract`,
+      minSize: 150,
     },
     {
       header: "Date (Y/M/D)",
       accessorKey: "date",
+      minSize: 150,
     },
     columnHelper.display({
       id: "actions",
@@ -170,7 +173,3 @@ const RowActions = ({ row }: any) => {
     </span>
   );
 };
-
-interface ILocationState {
-  search?: IKeywordOption[];
-}

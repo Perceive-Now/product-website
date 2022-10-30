@@ -43,15 +43,23 @@ export default function ReactTable(props: IReactTable) {
                   key={header.id}
                   colSpan={header.colSpan}
                   className="pb-2 text-left text-primary-900 font-semibold"
+                  {...{
+                    style: {
+                      minWidth: header.column.columnDef.minSize,
+                    },
+                  }}
                 >
-                  {header.isPlaceholder ? null : (
-                    <>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </>
-                  )}
+                  <>
+                    {console.log(header, "header")}
+                    {header.isPlaceholder ? null : (
+                      <>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </>
+                    )}
+                  </>
                 </th>
               ))}
             </tr>
