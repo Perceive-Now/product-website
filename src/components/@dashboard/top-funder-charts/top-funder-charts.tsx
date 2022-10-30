@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -8,11 +8,17 @@ import ScatterChart from "../../@product/scatter-chart";
 
 //
 import PageTitle from "../../reusable/page-title";
+import TimePeriod from "../../reusable/time-period";
+import NoKeywordMessage from "../../reusable/no-keyword";
 import { ChartType } from "../../reusable/chart-buttons";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 
 //
+import { getTimeperiod } from "../../../utils/helpers";
 import { getTopFundingChart } from "../../../utils/api/charts";
+
+//
+import { LoadingIcon } from "../../icons";
 
 //
 
@@ -22,25 +28,47 @@ import { getTopFundingChart } from "../../../utils/api/charts";
 export default function TopFunderCharts(props: ITopFunderProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
+  const [selectedTimeperiod, setSelectedTimeperiod] = useState("");
+
   //
   const { data, isLoading } = useQuery(
-    ["top-funder-charts", ...props.keywords],
+    ["top-funder-charts", ...props.keywords, selectedTimeperiod],
     async () => {
-      return await getTopFundingChart(props.keywords);
+      return await getTopFundingChart(props.keywords, selectedTimeperiod);
     },
     { enabled: !!props.keywords.length }
   );
 
+  const chartData = data?.fundings ?? [];
+
+  const dataStartYear = data?.startYear ?? "";
+  const dataEndYear = data?.lastYear ?? "";
+
+  const timeperiod = useMemo(
+    () => getTimeperiod(dataStartYear, dataEndYear),
+    [dataStartYear, dataEndYear]
+  );
+
+  useEffect(() => {
+    if (timeperiod) {
+      setSelectedTimeperiod(timeperiod[0].value);
+    }
+  }, [timeperiod]);
+
+  const handleTimePeriodChange = (value: any) => {
+    setSelectedTimeperiod(value.value);
+  };
+
   //
-  const finalBarData = isLoading ? [] : data ?? [];
+  const finalBarData = isLoading ? [] : chartData ?? [];
 
   //
   const finalPieData = isLoading
     ? []
-    : (data ?? []).map((item) => ({
+    : (chartData ?? []).map((item) => ({
         id: item.year,
         label: `${item.year}`,
-        value: item.value,
+        value: item.amount,
       }));
 
   //
@@ -49,9 +77,9 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     : [
         {
           id: "Years",
-          data: (data ?? []).map((item) => ({
+          data: (chartData ?? []).map((item) => ({
             x: item.year,
-            y: item.value,
+            y: item.amount,
           })),
         },
       ];
@@ -64,36 +92,55 @@ export default function TopFunderCharts(props: ITopFunderProps) {
         info={`This list was extracted from "X" total number of funders worldwide`}
       />
 
-      <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
-        <div className="flex items-center">
-          <ChartButtons
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
-          />
-        </div>
-      </div>
+      {props.keywords.length > 0 && (
+        <>
+          <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
+            <div>
+              <TimePeriod
+                timePeriods={timeperiod}
+                handleChange={handleTimePeriodChange}
+              />
+            </div>
 
-      {activeChart === "bar" && (
-        <BarChart
-          data={finalBarData ?? []}
-          keys={["value"]}
-          indexBy="year"
-          groupMode="stacked"
-          legendY="Funding Amount ($)"
-        />
+            <div className="flex items-center">
+              <ChartButtons
+                activeChart={activeChart}
+                setActiveChart={setActiveChart}
+              />
+            </div>
+          </div>
+
+          {!isLoading && (
+            <>
+              {activeChart === "bar" && (
+                <BarChart
+                  data={finalBarData ?? []}
+                  keys={["amount"]}
+                  indexBy="year"
+                  groupMode="stacked"
+                  legendY="Funding Amount (USD)"
+                />
+              )}
+
+              {activeChart === "donut" && <PieChart data={finalPieData} />}
+
+              {activeChart === "scatter" && (
+                <ScatterChart data={finalScatterData} legendY="Fundings" />
+              )}
+            </>
+          )}
+
+          {isLoading && (
+            <div className="h-[300px] flex items-center justify-center">
+              <LoadingIcon fontSize={56} />
+            </div>
+          )}
+
+          <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
+        </>
       )}
 
-      {activeChart === "donut" && <PieChart data={finalPieData} />}
-
-      {activeChart === "scatter" && (
-        <ScatterChart
-          data={finalScatterData}
-          legendX="Years"
-          legendY="Patents"
-        />
-      )}
-
-      <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
+      {props.keywords.length < 1 && <NoKeywordMessage />}
     </div>
   );
 }

@@ -9,7 +9,7 @@ import "./time-period.css";
 /*
  *
  **/
-export default function TimePeriod({ timePeriods }: ITimePeriod) {
+export default function TimePeriod({ timePeriods, handleChange }: ITimePeriod) {
   return (
     <ReactSelect
       className="time-period-select"
@@ -22,6 +22,7 @@ export default function TimePeriod({ timePeriods }: ITimePeriod) {
       name="time-period"
       options={timePeriods}
       isSearchable={false}
+      onChange={handleChange}
       styles={{
         option: (styles, { isFocused, isSelected, isDisabled }) => {
           return {
@@ -52,4 +53,5 @@ type timePeriodType = {
 
 interface ITimePeriod {
   timePeriods?: timePeriodType[];
+  handleChange?: (value: any) => void;
 }

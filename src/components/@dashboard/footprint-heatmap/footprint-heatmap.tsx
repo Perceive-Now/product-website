@@ -36,8 +36,6 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
 
   const finalData = isLoading ? [] : formattedData;
 
-  console.log(finalData);
-
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
       <PageTitle

@@ -43,12 +43,27 @@ export async function getAcademicResearchTrends(keywords: string[]) {
   return response.data.data;
 }
 
-export async function getTopFundingChart(keywords: string[]) {
+export async function getTopFundingChart(keywords: string[], timeperiod?: string) {
+  const query = keywords.join(',').replace(' ', '');
+
   const response = await axiosInstance.get<ITopFundingChartResponse>(
-    `/dashboard/funding/chart?q=${keywords.join(",")}`
+    `/dashboard/total_amount_of_funding_over_time?q=${query}`
   );
 
-  return response.data.data.chart;
+  let results = response.data.data;
+
+  let firstDataYear = results[0].year;
+  let lastDataYear = results[results.length - 1].year;
+
+  let startYear = timeperiod?.split('-')[0] ?? firstDataYear;
+  let endYear = timeperiod?.split('-')[1] ?? lastDataYear;
+
+  let fundings = results.filter(data => {
+    let year = data.year;
+    return year <= endYear && year >= startYear;
+  });
+
+  return { fundings: fundings, startYear: String(firstDataYear), lastYear: String(lastDataYear) };
 }
 
 /**
@@ -119,12 +134,10 @@ interface IAcademicResearchTrendResponse {
 }
 
 interface ITopFundingChart {
-  value: number;
+  amount: number;
   year: string;
 }
 
 interface ITopFundingChartResponse {
-  data: {
-    chart: ITopFundingChart[];
-  };
+  data: ITopFundingChart[]
 }
