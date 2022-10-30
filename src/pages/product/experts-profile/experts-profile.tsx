@@ -55,7 +55,7 @@ export default function ExpertsProfilePage() {
       <div className="grid grid-cols-12">
         <div className="col-span-9 max-w-[870px] text-appGray-900">
           <div className="mb-3">
-            <PageTitle title={expertsData.name} />
+            <PageTitle title={expertsData.name} titleClass="font-semibold" />
           </div>
 
           <div>

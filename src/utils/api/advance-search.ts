@@ -58,6 +58,7 @@ export interface IPublicationItem {
   abstract: string;
   doi: string;
   title: string[];
+  id?: string;
 }
 
 interface IPublicationResponse {
