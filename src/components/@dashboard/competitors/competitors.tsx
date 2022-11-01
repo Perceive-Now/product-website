@@ -15,8 +15,29 @@ export default function Competitors(props: ICompetitorProps) {
     ["dashboard-competitors-table", ...props.keywords],
     async () => {
       return await getCompetitors(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
+
+  const claimValues = Object.entries(data?.claimsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  const patensValues = Object.entries(data?.patentsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  const exptersValues = Object.entries(data?.expertsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  const publicationValues = Object.entries(data?.publicationsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
 
   const tempData = [
     {
@@ -67,7 +88,7 @@ export default function Competitors(props: ICompetitorProps) {
               </div>
             </div>
 
-            {tempData.map((itm, index) => (
+            {patensValues.map((itm, index) => (
               <ListItem
                 name={itm.name}
                 value={itm.value}
@@ -90,7 +111,7 @@ export default function Competitors(props: ICompetitorProps) {
               </div>
             </div>
 
-            {tempData.map((itm, index) => (
+            {claimValues.map((itm, index) => (
               <ListItem
                 name={itm.name}
                 value={itm.value}
@@ -117,7 +138,7 @@ export default function Competitors(props: ICompetitorProps) {
               </div>
             </div>
 
-            {tempData.map((itm, index) => (
+            {exptersValues.map((itm, index) => (
               <ListItem
                 name={itm.name}
                 value={itm.value}
@@ -140,7 +161,7 @@ export default function Competitors(props: ICompetitorProps) {
               </div>
             </div>
 
-            {tempData.map((itm, index) => (
+            {publicationValues.map((itm, index) => (
               <ListItem
                 name={itm.name}
                 value={itm.value}
