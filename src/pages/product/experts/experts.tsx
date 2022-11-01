@@ -32,9 +32,7 @@ export default function ExpertsPage() {
     { enabled: !!searchedKeywords?.length }
   );
 
-  const expertsData = (isLoading ? [] : expertsDataRaw?.data?.resultsList ?? [])
-    //
-    .slice(0, 10);
+  const expertsData = isLoading ? [] : expertsDataRaw?.data?.resultsList ?? [];
 
   //
   const handleSearch = (value: IKeywordOption[]) => {

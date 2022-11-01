@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 //
 import PageTitle from "../../reusable/page-title";
+import NoKeywordMessage from "../../reusable/no-keyword";
 import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
@@ -11,10 +13,11 @@ import RadialChart from "../../@product/radial-chart";
 import ScatterChart from "../../@product/scatter-chart";
 
 //
+import { LoadingIcon } from "../../icons";
+
+//
 import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
-import { LoadingIcon } from "../../icons";
-import NoKeywordMessage from "../../reusable/no-keyword";
 
 /**
  *
@@ -110,32 +113,6 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
       {props.keywords.length > 0 && (
         <>
-          <div className="pt-1 flex justify-between items-center h-5">
-            <div className="flex gap-x-3">
-              {activeChart === "bar" && (
-                <>
-                  <div className="flex gap-x-1 text-sm items-center">
-                    <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                    <span>Open</span>
-                  </div>
-
-                  <div className="flex gap-x-1 text-sm items-center">
-                    <div className="w-2 h-2 bg-primary-800 rounded-full" />
-                    <span>Closed</span>
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div className="flex items-center">
-              <ChartButtons
-                isMultiData={true}
-                activeChart={activeChart}
-                setActiveChart={setActiveChart}
-              />
-            </div>
-          </div>
-
           {isLoading && (
             <div className="h-[300px] flex justify-center items-center">
               <LoadingIcon fontSize={52} />
@@ -144,6 +121,32 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
           {!isLoading && (
             <>
+              <div className="pt-1 flex justify-between items-center h-5">
+                <div className="flex gap-x-3">
+                  {activeChart === "bar" && (
+                    <>
+                      <div className="flex gap-x-1 text-sm items-center">
+                        <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                        <span>Open</span>
+                      </div>
+
+                      <div className="flex gap-x-1 text-sm items-center">
+                        <div className="w-2 h-2 bg-primary-800 rounded-full" />
+                        <span>Closed</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="flex items-center">
+                  <ChartButtons
+                    isMultiData={true}
+                    activeChart={activeChart}
+                    setActiveChart={setActiveChart}
+                  />
+                </div>
+              </div>
+
               {activeChart === "bar" && (
                 <BarChart
                   keys={["openArticles", "closedArticles"]}
@@ -168,20 +171,8 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
                 />
               )}
 
-              <div className="mt-4 text-sm">
-                <span className="font-bold">
-                  "{publicationCount?.totalPublicationsCount ?? "-"}"
-                </span>
-                <span> </span>
-                <span>
-                  total number of publications was published in the past
-                </span>
-                <span> </span>
-                <span className="font-semibold">
-                  {publicationCount?.yearsElapsed}
-                </span>
-                <span> </span>
-                <span>years</span>
+              <div className="mt-4">
+                <Link to="/experts">Read more</Link>
               </div>
             </>
           )}

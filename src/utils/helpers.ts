@@ -42,10 +42,10 @@ interface IFormatNumberOptions {
 }
 
 export const getTimeperiod = (start?: string, end?: string) => {
-  const START_YEAR = String(start) || "1997";
+  const START_YEAR = start ? String(start) : "1997";
   const YEAR_DIFFERENCE = 4;
 
-  let finalYear = String(end) || dayjs().format("YYYY");
+  let finalYear = end ? String(end) : dayjs().format("YYYY");
 
   let timeperiodArray = [];
 

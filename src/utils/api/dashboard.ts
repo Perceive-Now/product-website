@@ -47,7 +47,6 @@ export async function getTodaysHighlight(keywords: string[]) {
   const response = await axiosInstance.get<IHighlightResponse>(
     `/dashboard/highlights?q=${keywords.join(",")}`
   );
-
   return response.data.data;
 }
 
@@ -69,7 +68,7 @@ export async function getTop5Funders(keywords: string[]) {
     `/dashboard/top_5_funders?q=${query}`
   );
 
-  return response.data.data;
+  return response.data.data.map((data, index) => ({ ...data, rank: index + 1 }));
 }
 
 export async function getExpertsTable(keywords: string[]) {

@@ -27,6 +27,10 @@ export default function TopFundersList(props: ITopFundersListProps) {
   const columns = useMemo<ColumnDef<ITopFunders>[]>(
     () => [
       {
+        header: "Rank",
+        accessorKey: "rank",
+      },
+      {
         header: "Funder",
         accessorKey: "funder_name",
       },
@@ -58,17 +62,19 @@ export default function TopFundersList(props: ITopFundersListProps) {
           <>
             {isLoading && (
               <div className="h-[300px] flex items-center justify-center">
-                <LoadingIcon fontSize={42} />
+                <LoadingIcon fontSize={56} />
               </div>
             )}
 
             {!isLoading && (
               <>
-                <ReactTable
-                  columnsData={columns}
-                  rowsData={data}
-                  size="medium"
-                />
+                <div className="h-[300px]">
+                  <ReactTable
+                    columnsData={columns}
+                    rowsData={data}
+                    size="medium"
+                  />
+                </div>
 
                 <div className="text-primary-600 mt-4 cursor-pointer">
                   Read more
