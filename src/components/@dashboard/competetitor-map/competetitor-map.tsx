@@ -79,20 +79,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
           {currentMode === "basicPublication" ? (
             <WorldMap type={currentMode} data={isLoading ? [] : data} />
           ) : (
-            <USMap
-              type="normal"
-              data={[
-                {
-                  location: "Hello",
-                  country: "CA",
-                  name: "Test",
-                  patents: 54,
-                  publications: 12,
-                  experts: 13,
-                  coordinate: [-99.79454737470444, 41.53800102904502],
-                },
-              ]}
-            />
+            <USMap type="normal" data={isLoading ? [] : data} />
           )}
         </div>
       </div>
