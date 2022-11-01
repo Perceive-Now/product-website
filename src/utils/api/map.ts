@@ -23,10 +23,14 @@ interface IPublicationAndPatensMapResponse {
       };
     };
     publications: {
-      doiLinksMaxCountry: string[];
+      doiLinksMaxCountry?: string[];
       sortedCount: {
         [x: string]: number;
       };
+      Country_wise_titles: {
+        Country: string;
+        Paper_titles: string[];
+      }[];
     };
   };
 }
