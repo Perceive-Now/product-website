@@ -19,6 +19,8 @@ import { getPatentsPieChart } from "../../../utils/api/charts";
 
 //
 import { ChartType } from "../../reusable/chart-buttons";
+import NoKeywordMessage from "../../reusable/no-keyword";
+import { LoadingIcon } from "../../icons";
 
 /**
  *
@@ -30,16 +32,19 @@ export default function Patents(props: IPatentsProps) {
 
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ["patents-pie-chart", ...props.keywords],
     async () => {
       return (await getPatentsPieChart(props.keywords))
         .sort((a, b) => +a.name - +b.name)
         .reverse()
-        .slice(0, 5);
+        .slice(0, 5)
+        .reverse();
     },
     { enabled: !!props.keywords.length }
   );
+
+  console.log(data, isLoading, isError, "from here pls");
 
   const { data: patentCount } = useQuery(
     ["patents-count-for-chart", ...props.keywords],
@@ -55,7 +60,7 @@ export default function Patents(props: IPatentsProps) {
     ? []
     : (data ?? []).map((item, idx) => ({
         id: item.name,
-        label: `${item.name} (${item.percentage}%)`,
+        label: `${item.name}`,
         value: item.value,
         color: colorsArray[idx],
       }));
@@ -85,53 +90,77 @@ export default function Patents(props: IPatentsProps) {
         info={`Stats in this graph are extracted from a total of "X" number of patents`}
       />
 
-      <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
-        <div>
-          <TimePeriod timePeriods={TIME_PERIODS} />
+      {props.keywords.length < 1 && (
+        <div className="h-[300px] flex justify-center items-center">
+          <NoKeywordMessage />
         </div>
-
-        <div className="flex items-center">
-          <ChartButtons
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
-          />
-        </div>
-      </div>
-
-      {activeChart === "bar" && (
-        <BarChart
-          data={finalBarData ?? []}
-          keys={["value"]}
-          indexBy="name"
-          groupMode="stacked"
-        />
       )}
 
-      {activeChart === "donut" && (
-        <PieChart
-          data={finalPieData}
-          colors={(bar) => bar.data.color}
-          onClick={handleArcClick}
-        />
-      )}
+      {props.keywords.length > 0 && (
+        <>
+          <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
+            <div>
+              <TimePeriod timePeriods={TIME_PERIODS} />
+            </div>
 
-      {activeChart === "scatter" && (
-        <ScatterChart
-          data={finalScatterData}
-          legendX="Years"
-          legendY="Patents"
-        />
-      )}
+            <div className="flex items-center">
+              <ChartButtons
+                activeChart={activeChart}
+                setActiveChart={setActiveChart}
+              />
+            </div>
+          </div>
 
-      <div className="mt-4 text-sm">
-        <span className="font-bold">"{patentCount?.patentCount ?? "-"}"</span>
-        <span> </span>
-        <span>total number of patents were filed in the past</span>
-        <span> </span>
-        <span className="font-semibold">{patentCount?.yearsElapsed}</span>
-        <span> </span>
-        <span>years</span>
-      </div>
+          {isLoading && (
+            <div className="h-[300px] flex justify-center items-center">
+              <LoadingIcon fontSize={52} />
+            </div>
+          )}
+
+          {!isLoading && (
+            <>
+              {activeChart === "bar" && (
+                <BarChart
+                  data={finalBarData ?? []}
+                  keys={["value"]}
+                  indexBy="name"
+                  groupMode="stacked"
+                />
+              )}
+
+              {activeChart === "donut" && (
+                <PieChart
+                  data={finalPieData}
+                  colors={(bar) => bar.data.color}
+                  onClick={handleArcClick}
+                />
+              )}
+
+              {activeChart === "scatter" && (
+                <ScatterChart
+                  data={finalScatterData}
+                  legendX="Years"
+                  legendY="Patents"
+                />
+              )}
+
+              <div className="mt-4 text-sm">
+                <span className="font-bold">
+                  "{patentCount?.patentCount ?? "-"}"
+                </span>
+                <span> </span>
+                <span>total number of patents were filed in the past</span>
+                <span> </span>
+                <span className="font-semibold">
+                  {patentCount?.yearsElapsed}
+                </span>
+                <span> </span>
+                <span>years</span>
+              </div>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

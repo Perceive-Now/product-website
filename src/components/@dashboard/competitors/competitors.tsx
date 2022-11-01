@@ -1,98 +1,48 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useMemo, useRef, useState } from "react";
-
-//
-import ReactTable from "../../reusable/ReactTable";
-import PageTitle from "../../reusable/page-title";
-import ExpandBtn from "../../reusable/expand-btn/expand-btn";
-
-//
-import { InfoIcon } from "../../icons";
 import { useQuery } from "@tanstack/react-query";
+
+//
+import ListItem from "../list-item";
+import PageTitle from "../../reusable/page-title";
+
+//
 import { getCompetitors } from "../../../utils/api/dashboard";
 
 /*
  *
  **/
 export default function Competitors(props: ICompetitorProps) {
-  const customRef = useRef<HTMLDivElement | null>(null);
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     ["dashboard-competitors-table", ...props.keywords],
     async () => {
       return await getCompetitors(props.keywords);
     }
   );
 
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [fetchedData, setFetchedData] = useState<CompetitorsType[]>([]);
-
-  const columns = useMemo<ColumnDef<CompetitorsType>[]>(
-    () => [
-      {
-        header: "",
-        accessorKey: "sn",
-      },
-      {
-        header: "Competitors",
-        accessorKey: "competitors",
-      },
-      {
-        header: "Patents",
-        accessorKey: "patents",
-      },
-      {
-        header: "Publications",
-        accessorKey: "publications",
-      },
-      {
-        header: "Experts",
-        accessorKey: "experts",
-      },
-      {
-        header: "Funding",
-        accessorKey: "funding",
-      },
-    ],
-    []
-  );
-
-  useEffect(() => {
-    if (data) {
-      try {
-        // API 
-        // let tempData = data.map((d, index) => {
-        //   let sn = ("0" + (index + 1)).slice(-2);
-        //   return {
-        //     ...d,
-        //     sn: sn,
-        //   };
-        // });
-
-        // setFetchedData(tempData);
-        setFetchedData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [data]);
-
-  const rowsData = useMemo(() => {
-    let displayRowCount = isExpanded ? 10 : 4;
-    return fetchedData.slice(0, displayRowCount);
-  }, [fetchedData, isExpanded]);
-
-  const handleExpandToggle = () => {
-    if (isExpanded) {
-      customRef.current?.scrollIntoView({ behavior: "auto" });
-    }
-    setIsExpanded((prev) => !prev);
-  };
+  const tempData = [
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+  ];
 
   return (
-    <div
-      className="mt-2 rounded-2xl border border-gray-200 shadow"
-      ref={customRef}
-    >
+    <div className="mt-2 rounded-2xl border border-gray-200 shadow">
       <div className="pt-4 px-3">
         <PageTitle
           title="Competitors"
@@ -102,30 +52,107 @@ export default function Competitors(props: ICompetitorProps) {
         />
       </div>
 
-      <div className="mt-9">
-        <div className="px-3">
-          <ReactTable columnsData={columns} rowsData={rowsData} />
+      <div className="mt-4 px-3">
+        <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Patents
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents Claim
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-5 font-semibold">Company Name</div>
+              <div className="col-span-3 text-right pr-1 font-semibold">
+                Patents Claims
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
         </div>
 
-        <div>
-          <ExpandBtn
-            isExpanded={isExpanded}
-            handleExpandToggle={handleExpandToggle}
-            secondaryButton="View More"
-          />
+        <div className="border-b border-gray-300 mb-6 pt-3" />
+
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Experts
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Experts
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Publications
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Publications
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
-}
-
-interface CompetitorsType {
-  sn: string;
-  competitors: string;
-  patents: string;
-  publications: string;
-  experts: string;
-  funding: string;
 }
 
 interface ICompetitorProps {

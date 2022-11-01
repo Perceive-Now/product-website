@@ -19,7 +19,7 @@ export async function getPublicationsCount(keywords: string[]) {
   return response.data.data;
 }
 
-export async function getTop3Universities(keywords: string[]) {
+export async function getTopUniversities(keywords: string[]) {
   const response = await axiosInstance.get<ITopUniversityResponse>(
     `/dashboard/academic/universities_top_3?q=${keywords.join(",")}`
   );
@@ -64,7 +64,7 @@ export async function getCompetitors(keywords: string[]) {
 }
 
 export async function getTop5Funders(keywords: string[]) {
-  let query = keywords.join(",").replace(' ', '');
+  let query = keywords.join(",").replace(" ", "");
   const response = await axiosInstance.get<ITopFunderResponse>(
     `/dashboard/top_5_funders?q=${query}`
   );

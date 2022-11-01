@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 //
+import ListItem from "../list-item";
 import PageTitle from "../../reusable/page-title";
 
 //
-import { formatNumber } from "../../../utils/helpers";
-import { getTop3Universities } from "../../../utils/api/dashboard";
+import { getTopUniversities } from "../../../utils/api/dashboard";
 
 /**
  *
@@ -14,61 +14,142 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
   const { data } = useQuery(
     ["dashboard-top-universities", ...props.keywords],
     async () => {
-      return await getTop3Universities(props.keywords);
+      return await getTopUniversities(props.keywords);
     },
     { enabled: !!props.keywords.length }
   );
 
   const finalData = data ?? [];
 
+  const tempData = [
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+  ];
+
   return (
     <div className="w-100 border bg-white rounded-lg p-3 shadow">
       <PageTitle
-        title="Top 3 Universities with Highest Research Footprint"
+        title="Top Universities with Highest Research Footprint"
         titleClass="font-bold"
         info={`This list was extracted from "X" total number of universities worldwide`}
       />
 
-      <div className="mt-3 grid grid-cols-3 gap-x-3">
-        {finalData.map((uniData, index) => (
-          <div key={index} className="border px-3 py-4 rounded-2xl shadow-sm">
-            <div>
-              <div className="text-primary-900 font-semibold text-xl">
-                {uniData.universityName}
-              </div>
+      <div className="mt-4 px-3">
+        <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents
+            </p>
 
-              <div className="text-gray-800 text-lg">
-                {uniData.locationText}
-              </div>
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-x-2">
-              <div className="border-b-2 border-b-gray-300 pb-0.5">
-                <div className="text-gray-800 text-2xl font-semibold">
-                  {uniData.publications}
-                </div>
-
-                <div className="text-gray-800">Publications</div>
-              </div>
-
-              <div className="border-b-2 border-b-gray-300 pb-0.5">
-                <div className="text-gray-800 text-2xl font-semibold">
-                  {uniData.patents}
-                </div>
-
-                <div className="text-gray-800">Patents</div>
-              </div>
-
-              <div className="border-b-2 border-b-gray-300 mt-3 pb-0.5">
-                <div className="text-gray-800 text-2xl font-semibold">
-                  {formatNumber(uniData.fundingReceived, { isCurrency: true })}
-                </div>
-
-                <div className="text-gray-800 mt-0.5">Funding Received</div>
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Patents
               </div>
             </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
           </div>
-        ))}
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents Claim
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-5 font-semibold">Company Name</div>
+              <div className="col-span-3 text-right pr-1 font-semibold">
+                Patents Claims
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="border-b border-gray-300 mb-6 pt-3" />
+
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Experts
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Experts
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Publications
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Publications
+              </div>
+            </div>
+
+            {tempData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ import PageTitle from "../../reusable/page-title";
 import countryISOMapping from "../../../utils/extra/country-codes";
 import { getPublicationsAndPatentsMap } from "../../../utils/api/map";
 import { IWorldMapDataItem } from "../../@product/world-map/world-map";
+import USMap from "../../@product/us-map";
 
 /**
  *
@@ -88,7 +89,11 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          <WorldMap type={currentMode} data={finalData} />
+          {currentMode === "publicationHeatmap" ? (
+            <WorldMap type={currentMode} data={finalData} />
+          ) : (
+            <USMap type="heatmap" data={[]} />
+          )}
         </div>
       </div>
     </div>

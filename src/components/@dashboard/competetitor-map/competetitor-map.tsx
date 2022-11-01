@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 //
 import WorldMap from "../../@product/world-map";
 import PageTitle from "../../reusable/page-title";
+import USMap from "../../@product/us-map";
 
 //
 // import { getPublicationsAndPatentsMap } from "../../../utils/api/map";
@@ -75,7 +76,24 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          <WorldMap type={currentMode} data={isLoading ? [] : data} />
+          {currentMode === "basicPublication" ? (
+            <WorldMap type={currentMode} data={isLoading ? [] : data} />
+          ) : (
+            <USMap
+              type="normal"
+              data={[
+                {
+                  location: "Hello",
+                  country: "CA",
+                  name: "Test",
+                  patents: 54,
+                  publications: 12,
+                  experts: 13,
+                  coordinate: [-99.79454737470444, 41.53800102904502],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
     </div>
