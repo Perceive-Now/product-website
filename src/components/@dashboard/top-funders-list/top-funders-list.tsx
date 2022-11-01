@@ -20,7 +20,8 @@ export default function TopFundersList(props: ITopFundersListProps) {
     ["top-5-funders", ...props.keywords],
     async () => {
       return await getTop5Funders(props.keywords);
-    }
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //
