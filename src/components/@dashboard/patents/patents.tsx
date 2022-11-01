@@ -32,7 +32,7 @@ export default function Patents(props: IPatentsProps) {
 
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading } = useQuery(
     ["patents-pie-chart", ...props.keywords],
     async () => {
       return (await getPatentsPieChart(props.keywords))
@@ -43,8 +43,6 @@ export default function Patents(props: IPatentsProps) {
     },
     { enabled: !!props.keywords.length }
   );
-
-  console.log(data, isLoading, isError, "from here pls");
 
   const { data: patentCount } = useQuery(
     ["patents-count-for-chart", ...props.keywords],
