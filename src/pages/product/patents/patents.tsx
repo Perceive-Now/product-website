@@ -41,9 +41,7 @@ export default function PatentsPage() {
     { enabled: !!searchKeywords?.length }
   );
 
-  const patentsData = (isLoading ? [] : patentsDataRaw?.data?.resultsList ?? [])
-    //
-    .slice(0, 10);
+  const patentsData = isLoading ? [] : patentsDataRaw?.data?.resultsList ?? [];
 
   //
   const handleSearch = (value: IKeywordOption[]) => {
