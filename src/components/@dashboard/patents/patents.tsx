@@ -10,16 +10,16 @@ import ScatterChart from "../../@product/scatter-chart";
 //
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
+import { ChartType } from "../../reusable/chart-buttons";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
+import NoKeywordMessage from "../../reusable/no-keyword";
 
 //
+import { getTimeperiod } from "../../../utils/helpers";
 import { getPatentsPieChart, IPatent } from "../../../utils/api/charts";
 
 //
-import { ChartType } from "../../reusable/chart-buttons";
-import NoKeywordMessage from "../../reusable/no-keyword";
 import { LoadingIcon } from "../../icons";
-import { getTimeperiod } from "../../../utils/helpers";
 
 /**
  *
@@ -63,7 +63,7 @@ export default function Patents(props: IPatentsProps) {
     ? []
     : (chartData ?? []).map((item, idx) => ({
         id: item.name,
-        label: `${item.name} (${item.percentage}%)`,
+        label: `${item.name}`,
         value: item.value,
         color: colorsArray[idx],
       }));

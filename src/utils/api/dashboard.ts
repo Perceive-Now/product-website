@@ -13,13 +13,13 @@ export async function getPatentsCount(keywords: string[]) {
 
 export async function getPublicationsCount(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationCountResponse>(
-    `/dashboard/publications/count?${keywords.join(",")}`
+    `/dashboard/publications/count?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTop3Universities(keywords: string[]) {
+export async function getTopUniversities(keywords: string[]) {
   const response = await axiosInstance.get<ITopUniversityResponse>(
     `/dashboard/academic/universities_top_3?q=${keywords.join(",")}`
   );
@@ -51,19 +51,15 @@ export async function getTodaysHighlight(keywords: string[]) {
 }
 
 export async function getCompetitors(keywords: string[]) {
-  /* API is not provided yet.
-   const response = await axiosInstance.get<ICompetitorResponse>(
-     `?q=${keywords.join(',')}`
-   )
+  const response = await axiosInstance.get<ICompetitorResponse>(
+    `/dashboard/competitors_feature?q=${keywords.join(",")}`
+  );
 
-   return response.data.data;
-  */
-
-  return [];
+  return response.data.data;
 }
 
 export async function getTop5Funders(keywords: string[]) {
-  let query = keywords.join(",").replace(' ', '');
+  let query = keywords.join(",").replace(" ", "");
   const response = await axiosInstance.get<ITopFunderResponse>(
     `/dashboard/top_5_funders?q=${query}`
   );
@@ -188,4 +184,22 @@ export interface ICompetitor {
   locationText: string;
   score: number;
   coordinate: [number, number];
+}
+
+//
+interface ICompetitorResponse {
+  data: {
+    claimsCount: {
+      [x: string]: number;
+    };
+    expertsCount: {
+      [x: string]: number;
+    };
+    patentsCount: {
+      [x: string]: number;
+    };
+    publicationsCount: {
+      [x: string]: number;
+    };
+  };
 }
