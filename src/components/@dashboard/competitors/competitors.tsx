@@ -1,109 +1,69 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 //
-import ReactTable from "../../reusable/ReactTable";
+import ListItem from "../list-item";
 import PageTitle from "../../reusable/page-title";
-import ExpandBtn from "../../reusable/expand-btn/expand-btn";
 
 //
-import { InfoIcon } from "../../icons";
+import { getCompetitors } from "../../../utils/api/dashboard";
 
 /*
  *
  **/
-export default function Competitors() {
-  const customRef = useRef<HTMLDivElement | null>(null);
-
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [fetchedData, setFetchedData] = useState<CompetitorsType[]>([]);
-
-  const columns = useMemo<ColumnDef<CompetitorsType>[]>(
-    () => [
-      {
-        header: "",
-        accessorKey: "sn",
-      },
-      {
-        header: "Competitors",
-        accessorKey: "competitors",
-      },
-      {
-        header: "Patents",
-        accessorKey: "patents",
-      },
-      {
-        header: "Publications",
-        accessorKey: "publications",
-      },
-      {
-        header: "Experts",
-        accessorKey: "experts",
-      },
-      {
-        header: "Funding",
-        accessorKey: "funding",
-      },
-      {
-        id: "actions",
-        cell: (props) => <RowActions {...props} />,
-      },
-    ],
-    []
+export default function Competitors(props: ICompetitorProps) {
+  const { data } = useQuery(
+    ["dashboard-competitors-table", ...props.keywords],
+    async () => {
+      return await getCompetitors(props.keywords);
+    },
+    { enabled: !!props.keywords.length }
   );
 
-  useEffect(() => {
-    try {
-      // api call to fetch data
-      const fetchCompetitorsData = (length = 10) => {
-        return {
-          data: Array(length)
-            .fill(null)
-            .map((slot) => {
-              return {
-                competitors: "Pharmaceutical",
-                patents: "1,025",
-                publications: "81,920",
-                experts: "8,392",
-                funding: "$60.2B",
-              };
-            }),
-        };
-      };
+  const claimValues = Object.entries(data?.claimsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
 
-      const response = fetchCompetitorsData();
+  const patensValues = Object.entries(data?.patentsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
 
-      let data = response.data.map((d, index) => {
-        let sn = ("0" + (index + 1)).slice(-2);
-        return {
-          ...d,
-          sn: sn,
-        };
-      });
+  const exptersValues = Object.entries(data?.expertsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
 
-      setFetchedData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const publicationValues = Object.entries(data?.publicationsCount ?? {})
+    .map(([key, value]) => ({ name: key, value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
 
-  const data = useMemo(() => {
-    let displayRowCount = isExpanded ? 10 : 4;
-    return fetchedData.slice(0, displayRowCount);
-  }, [fetchedData, isExpanded]);
-
-  const handleExpandToggle = () => {
-    if (isExpanded) {
-      customRef.current?.scrollIntoView({ behavior: "auto" });
-    }
-    setIsExpanded((prev) => !prev);
-  };
+  const tempData = [
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+    {
+      name: "Hello world",
+      value: 1234,
+    },
+  ];
 
   return (
-    <div
-      className="mt-2 rounded-2xl border border-gray-200 shadow"
-      ref={customRef}
-    >
+    <div className="mt-2 rounded-2xl border border-gray-200 shadow">
       <div className="pt-4 px-3">
         <PageTitle
           title="Competitors"
@@ -113,32 +73,109 @@ export default function Competitors() {
         />
       </div>
 
-      <div className="mt-9">
-        <div className="px-3">
-          <ReactTable columnsData={columns} rowsData={data} />
+      <div className="mt-4 px-3">
+        <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Patents
+              </div>
+            </div>
+
+            {patensValues.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents Claim
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-5 font-semibold">Company Name</div>
+              <div className="col-span-3 text-right pr-1 font-semibold">
+                Patents Claims
+              </div>
+            </div>
+
+            {claimValues.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
         </div>
 
-        <div>
-          <ExpandBtn
-            isExpanded={isExpanded}
-            handleExpandToggle={handleExpandToggle}
-            secondaryButton="View More"
-          />
+        <div className="border-b border-gray-300 mb-6 pt-3" />
+
+        <div className="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Experts
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Experts
+              </div>
+            </div>
+
+            {exptersValues.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Publications
+            </p>
+
+            <div className="grid grid-cols-9 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-2 text-right pr-1 font-semibold">
+                Publications
+              </div>
+            </div>
+
+            {publicationValues.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                value={itm.value}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-interface CompetitorsType {
-  sn: string;
-  competitors: string;
-  patents: string;
-  publications: string;
-  experts: string;
-  funding: string;
+interface ICompetitorProps {
+  keywords: string[];
 }
-
-const RowActions = ({ row }: any) => {
-  return <InfoIcon className="cursor-pointer" />;
-};

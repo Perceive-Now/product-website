@@ -8,9 +8,13 @@ export default function PatentsDisclosure({
   title,
   description,
 }: IPatentsDisclosureProps) {
+  const handleOnOpen = () => {
+    
+  }
+  
   return (
     <div className="shadow pt-2 pb-3 px-3 w-full rounded-2xl mb-3">
-      <Accordion title={title} description={description}>
+      <Accordion title={title} description={description} onOpen={handleOnOpen}>
         <div className="mx-3 py-4">
           <div className="mb-2 font-bold">
             Publication/Patent number:{" "}

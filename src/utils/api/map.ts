@@ -3,9 +3,9 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getPublicationsAndPatentsMap() {
+export async function getPublicationsAndPatentsMap(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationAndPatensMapResponse>(
-    "/dashboard/publications_and_patents_map"
+    `/dashboard/publications_and_patents_map?q=${keywords.join(",")}`
   );
 
   return response.data.data;
@@ -16,8 +16,21 @@ export async function getPublicationsAndPatentsMap() {
  */
 interface IPublicationAndPatensMapResponse {
   data: {
-    country: string;
-    patents: number;
-    publications: number;
-  }[];
+    patents: {
+      topStateTitle: string[];
+      sortedCount: {
+        [x: string]: number;
+      };
+    };
+    publications: {
+      doiLinksMaxCountry?: string[];
+      sortedCount: {
+        [x: string]: number;
+      };
+      Country_wise_titles: {
+        Country: string;
+        Paper_titles: string[];
+      }[];
+    };
+  };
 }

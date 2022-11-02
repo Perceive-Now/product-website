@@ -58,8 +58,8 @@ export type ChartType = "donut" | "scatter" | "bar";
 
 interface IChartButtons {
   activeChart: ChartType;
-  setActiveChart: (type: ChartType) => void;
   isMultiData?: boolean;
+  setActiveChart: (type: ChartType) => void;
 }
 
 interface IGraphButtonProps {

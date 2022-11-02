@@ -26,6 +26,7 @@ export default function LoadingIcon(props: SVGProps<SVGSVGElement>) {
           strokeDasharray="15"
           strokeDashoffset="15"
           d="M12 3C16.9706 3 21 7.02944 21 12"
+          stroke="#7F4BD8"
         >
           <animate
             fill="freeze"

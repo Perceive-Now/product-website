@@ -19,14 +19,15 @@ import { getAcademicResearchTrends } from "../../../utils/api/charts";
 /**
  *
  */
-export default function AcademicResearchTrends() {
+export default function AcademicResearchTrends(props: IResearchProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data, isLoading } = useQuery(
-    ["dashboard-academic-research-trend"],
+    ["dashboard-academic-research-trend", ...props.keywords],
     async () => {
-      return await getAcademicResearchTrends();
-    }
+      return await getAcademicResearchTrends(props.keywords);
+    },
+    { enabled: !!props.keywords.length }
   );
 
   //
@@ -107,8 +108,9 @@ export default function AcademicResearchTrends() {
   return (
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
-        title="Academic Research Trends"
+        title="Academic Research Trends in the USA (by Region)"
         info={`This list was extracted from "X" total number of universities worldwide`}
+        titleClass="font-semibold"
       />
 
       <div className="pt-1 flex justify-end items-center gap-x-3">
@@ -174,4 +176,8 @@ export default function AcademicResearchTrends() {
       </div>
     </div>
   );
+}
+
+interface IResearchProps {
+  keywords: string[];
 }

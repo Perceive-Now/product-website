@@ -8,12 +8,13 @@ export default function Accordion({
   title,
   description,
   children,
+  onOpen,
 }: PropsWithChildren<IAccordionProps>) {
   return (
     <Disclosure>
       {({ open, close }) => (
         <div>
-          <Disclosure.Button>
+          <Disclosure.Button onClick={() => !open && onOpen?.()}>
             <div className="flex text-start">
               <div className="mr-3">
                 <ChevronDown
@@ -34,16 +35,13 @@ export default function Accordion({
             </div>
           </Disclosure.Button>
 
-            <Disclosure.Panel className="text-appGray-900 border-t-2 border-appGray-300 mx-3 mt-4">
-              {children}
+          <Disclosure.Panel className="text-appGray-900 border-t-2 border-appGray-300 mx-3 mt-4">
+            {children}
 
-              <div>
-                <ExpandBtn
-                  isExpanded={true}
-                  handleExpandToggle={() => close()}
-                />
-              </div>
-            </Disclosure.Panel>
+            <div>
+              <ExpandBtn isExpanded={true} handleExpandToggle={() => close()} />
+            </div>
+          </Disclosure.Panel>
         </div>
       )}
     </Disclosure>
@@ -53,4 +51,5 @@ export default function Accordion({
 interface IAccordionProps {
   title: string;
   description: string;
+  onOpen?: () => void;
 }

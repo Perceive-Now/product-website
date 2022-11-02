@@ -5,40 +5,46 @@ import { ColumnDef } from "@tanstack/react-table";
 //
 import PageTitle from "../../reusable/page-title";
 import ReactTable from "../../reusable/ReactTable";
+import NoKeywordMessage from "../../reusable/no-keyword";
 
 //
 import { formatNumber } from "../../../utils/helpers";
 import { getTop5Funders } from "../../../utils/api/dashboard";
+import { LoadingIcon } from "../../icons";
 
 /*
  *
  **/
 export default function TopFundersList(props: ITopFundersListProps) {
-  const { data } = useQuery(["top-5-funders", ...props.keywords], async () => {
-    return await getTop5Funders();
-  });
+  const { data, isLoading } = useQuery(
+    ["top-5-funders", ...props.keywords],
+    async () => {
+      return await getTop5Funders(props.keywords);
+    },
+    { enabled: !!props.keywords.length }
+  );
 
   //
   const columns = useMemo<ColumnDef<ITopFunders>[]>(
     () => [
       {
-        header: "Funder",
-        accessorKey: "name",
+        header: "Rank",
+        accessorKey: "rank",
       },
       {
-        header: "Funding",
-        accessorKey: "fundingAmount",
+        header: "Funder",
+        accessorKey: "funder_name",
+      },
+      {
+        header: "Funding (USD)",
+        accessorKey: "total_funding",
         cell: (props) => (
           <span>
-            {formatNumber(props.row.original.fundingAmount, {
+            {formatNumber(props.row.original.total_funding, {
               isCurrency: true,
             })}
           </span>
         ),
-      },
-      {
-        header: "Date",
-        accessorKey: "date",
       },
     ],
     []
@@ -53,9 +59,33 @@ export default function TopFundersList(props: ITopFundersListProps) {
       />
 
       <div className="mt-2">
-        <ReactTable columnsData={columns} rowsData={data} size="medium" />
+        {props.keywords.length > 0 && (
+          <>
+            {isLoading && (
+              <div className="h-[300px] flex items-center justify-center">
+                <LoadingIcon fontSize={56} />
+              </div>
+            )}
 
-        <div className="text-primary-600 mt-4 cursor-pointer">Read more</div>
+            {!isLoading && (
+              <>
+                <div className="h-[300px]">
+                  <ReactTable
+                    columnsData={columns}
+                    rowsData={data}
+                    size="medium"
+                  />
+                </div>
+
+                <div className="text-primary-600 mt-4 cursor-pointer">
+                  Read more
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        {props.keywords.length < 1 && <NoKeywordMessage />}
       </div>
     </div>
   );
@@ -66,8 +96,6 @@ interface ITopFundersListProps {
 }
 
 interface ITopFunders {
-  rank: number;
-  name: string;
-  fundingAmount: number;
-  date: string;
+  funder_name: string;
+  total_funding: number;
 }

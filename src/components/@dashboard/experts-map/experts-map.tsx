@@ -22,19 +22,22 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   const { data, isLoading } = useQuery(
     ["footprint-for-experts", ...props.keywords],
     async () => {
-      return await getExpertsTable();
-    }
+      return await getExpertsTable(props.keywords);
+    },
+    { enabled: !!props.keywords.length }
   );
 
   const mapData = (
     (currentMode === "basicPublication" ? data?.industry : data?.academic) ?? []
-  )?.map((itm) => ({
-    name: [itm.firstName, itm.lastName].join(" "),
-    location: itm.locationText,
-    patents: itm.patentsCount,
-    publications: itm.pulicationsCount,
-    coordinate: itm.coordinates,
-  }));
+  )
+    ?.filter((itm) => itm.coordinates[0] !== 0 && itm.coordinates[1] !== 0)
+    ?.map((itm) => ({
+      name: [itm.firstName, itm.lastName].join(" "),
+      location: itm.locationText,
+      patents: itm.patentsCount,
+      publications: itm.publicationsCount,
+      coordinate: itm.coordinates,
+    }));
 
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">

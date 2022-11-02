@@ -21,7 +21,11 @@ import AWSConfig from "./utils/aws-config";
 Amplify.configure(AWSConfig);
 
 // React query client
-const queryclient = new QueryClient();
+const queryclient = new QueryClient({
+  defaultOptions: {
+    queries: { refetchOnWindowFocus: false },
+  },
+});
 
 /**
  *

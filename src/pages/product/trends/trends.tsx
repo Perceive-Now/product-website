@@ -11,13 +11,16 @@ import { getTechnologyTrends } from "../../../utils/api/trends";
  *
  */
 export default function TrendsPage() {
-  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
+  const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>([]);
 
   const { data } = useQuery(
-    ["technology-trends", searchKeywords],
+    ["technology-trends", ...searchKeywords.map((itm) => itm.value)],
     async () => {
-      return await getTechnologyTrends();
-    }
+      return await getTechnologyTrends(
+        searchKeywords?.map((kwd) => kwd.value) ?? []
+      );
+    },
+    { enabled: !!searchKeywords.length }
   );
 
   const handleSearch = (value: IKeywordOption[]) => {

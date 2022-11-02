@@ -2,7 +2,6 @@ import classNames from "classnames";
 import ReactTooltip from "react-tooltip";
 
 import { useState } from "react";
-import { scaleLinear } from "d3-scale";
 
 import {
   ComposableMap,
@@ -27,11 +26,22 @@ import topology from "./topology.json";
 import "./world-map.css";
 
 //
-const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const TEXT_GROUPS = [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, "500+"];
+const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const HEATMAP_SECTIONS = 9;
+
+const COLOR_RANGE_1 = [
+  "#FFEBA5",
+  "#FFCD6C",
+  "#FFB21E",
+  "#EE9207",
+  "#FF6B00",
+  "#F5470F",
+  "#D0350E",
+  "#A90808",
+  "#760000",
+];
 
 const HEATMAP_1_COLORS = [
-  "bg-[#D7D7D7]",
   "bg-[#FFEBA5]",
   "bg-[#FFCD6C]",
   "bg-[#FFB21E]",
@@ -41,19 +51,6 @@ const HEATMAP_1_COLORS = [
   "bg-[#D0350E]",
   "bg-[#A90808]",
   "bg-[#760000]",
-];
-
-const HEATMAP_2_COLORS = [
-  "bg-[#D7D7D7]",
-  "bg-[#EBF5FF]",
-  "bg-[#DEEBF7]",
-  "bg-[#C6DBEF]",
-  "bg-[#9ECAE1]",
-  "bg-[#6BAED6]",
-  "bg-[#4292C6]",
-  "bg-[#225EA8]",
-  "bg-[#08519C]",
-  "bg-[#08306B]",
 ];
 
 /**
@@ -68,7 +65,7 @@ export default function WorldMap(props: ISvgMapProps) {
   const [heatmapHoveredCountry, setHeatmapHoveredCountry] = useState<any>("");
 
   const [activeMarkerData, setActiveMarkerData] = useState<
-    IDataItem | undefined
+    IWorldMapDataItem | undefined
   >(undefined);
 
   // Miscs
@@ -77,6 +74,21 @@ export default function WorldMap(props: ISvgMapProps) {
     props.type
   );
 
+  //
+  const getRangeForPublications = (excludeZero = false) => {
+    const maxVal = 100;
+    const tempValue = maxVal / HEATMAP_SECTIONS;
+
+    const midValues = [];
+    for (let i = 1; i < HEATMAP_SECTIONS; i++) {
+      midValues.push(Math.floor(tempValue * i));
+    }
+
+    const values = [...midValues, maxVal];
+
+    return excludeZero ? values : [0, ...values];
+  };
+
   const getFillColor = (geo: any) => {
     switch (props.type) {
       case "basicPublication":
@@ -84,31 +96,26 @@ export default function WorldMap(props: ISvgMapProps) {
           ? "#FFA300"
           : "#442873";
 
-      case "basicPatents":
-        return geo.rsmKey === activeSelection && isZoomed
-          ? "#7A89CC"
-          : "#263680";
-
       case "publicationHeatmap":
-        // if (heatmapHoveredCountry && geo.id !== heatmapHoveredCountry.id)
-        //   return "#D7D7D7";
+        const currentCountryValue =
+          props.data?.find((itm) => itm.country === geo.id)?.publications ?? 0;
 
-        const colorScale1 = scaleLinear<string>()
-          .domain([0, 100])
-          .range(["#FFEBA5", "#D0350E"]);
+        let finalValueToReturn: string = "#D7D7D7";
+        if (currentCountryValue === 0) return finalValueToReturn;
 
-        return colorScale1(parseInt(geo.rsmKey.split("-")[1]));
+        const allValues = getRangeForPublications(true);
 
+        for (let i = 0; i < HEATMAP_SECTIONS; i++) {
+          if (currentCountryValue <= allValues[i]) {
+            finalValueToReturn = COLOR_RANGE_1[i];
+            break;
+          }
+        }
+
+        return finalValueToReturn;
+
+      case "basicPatents":
       case "patentsHeatmap":
-        // if (heatmapHoveredCountry && geo.id !== heatmapHoveredCountry.id)
-        //   return "#D7D7D7";
-
-        const colorScale2 = scaleLinear<string>()
-          .domain([0, 100])
-          .range(["#EBF5FF", "#08519C"]);
-
-        return colorScale2(parseInt(geo.rsmKey.split("-")[1]));
-
       default:
         return "#D7D7D7";
     }
@@ -122,8 +129,6 @@ export default function WorldMap(props: ISvgMapProps) {
         return "#E1D5F2";
 
       case "basicPatents":
-        return "#7A89CC";
-
       default:
         return "";
     }
@@ -197,11 +202,12 @@ export default function WorldMap(props: ISvgMapProps) {
             </p>
           </div>
 
-          <div className="mt-2 flex gap-x-2">
+          <div className="mt-2 flex justify-center gap-x-2">
             {props.type === "patentsHeatmap" && (
               <TooltipGroupItem
                 title="Patents"
                 value={activeMarkerData?.patents}
+                isPercentage
               />
             )}
 
@@ -209,13 +215,16 @@ export default function WorldMap(props: ISvgMapProps) {
               <TooltipGroupItem
                 title="Publications"
                 value={activeMarkerData?.publications}
+                isPercentage
               />
             )}
 
-            <TooltipGroupItem
-              title="Experts"
-              value={activeMarkerData?.experts}
-            />
+            {!["publicationHeatmap", "patentsHeatmap"].includes(props.type) && (
+              <TooltipGroupItem
+                title="Experts"
+                value={activeMarkerData?.experts}
+              />
+            )}
           </div>
         </ReactTooltip>
       )}
@@ -344,7 +353,7 @@ export default function WorldMap(props: ISvgMapProps) {
                   key={geo.rsmKey}
                   geography={geo}
                   stroke="white"
-                  strokeWidth={isZoomed ? 1 : 0.25}
+                  strokeWidth={isZoomed ? 1 : 0.5}
                   style={{ hover: { fill: getCountryHoverColor(geo) } }}
                   fill={getFillColor(geo)}
                   className="focus:outline-none drop-shadow-sm"
@@ -394,8 +403,8 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseEnter={() => setActiveMarkerData(marker)}
                   onMouseLeave={() => setActiveMarkerData(undefined)}
                 >
-                  <circle r={isZoomed ? 15 : 9} fill="red" />
-                  <circle r={isZoomed ? 13 : 7} fill="white" />
+                  <circle r={isZoomed ? 15 : 7} fill="red" />
+                  <circle r={isZoomed ? 13 : 5} fill="white" />
                 </Marker>
               ))}
         </ComposableMap>
@@ -405,9 +414,9 @@ export default function WorldMap(props: ISvgMapProps) {
         <div className="h-[80px] absolute inset-x-0 bottom-0 bg-gray-200 z-10 px-[60px] pt-3">
           {/* Heatmap range values */}
           <div className="flex justify-between text-sm">
-            {TEXT_GROUPS.map((grp) => (
-              <div key={grp} className="h-2 w-4 text-gray-700">
-                {grp}
+            {getRangeForPublications().map((grp) => (
+              <div key={grp} className="h-2 text-gray-700">
+                {grp}%
               </div>
             ))}
           </div>
@@ -418,10 +427,8 @@ export default function WorldMap(props: ISvgMapProps) {
               <div
                 key={grp}
                 className={classNames(
-                  "h-2 w-[10%]",
-                  props.type === "publicationHeatmap"
-                    ? HEATMAP_1_COLORS[grp]
-                    : HEATMAP_2_COLORS[grp]
+                  "h-2 w-[11.11%] shadow",
+                  HEATMAP_1_COLORS[grp]
                 )}
               ></div>
             ))}
@@ -435,7 +442,10 @@ export default function WorldMap(props: ISvgMapProps) {
 function TooltipGroupItem(props: ITooltipGroupItemProp) {
   return (
     <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow">
-      <p className="font-bold text-lg">{props.value ?? "-"}</p>
+      <p className="font-bold text-lg">
+        <span>{props.value ?? "-"}</span>
+        {props.isPercentage && props.value && "%"}
+      </p>
       <p>{props.title}</p>
     </div>
   );
@@ -445,9 +455,10 @@ function TooltipGroupItem(props: ITooltipGroupItemProp) {
 interface ITooltipGroupItemProp {
   title: string;
   value?: number;
+  isPercentage?: boolean;
 }
 
-interface IDataItem {
+export interface IWorldMapDataItem {
   name?: string;
   country?: string;
   location?: string;
@@ -471,5 +482,5 @@ interface ISvgMapProps {
     | "basicPublication"
     | "basicPatents";
   //
-  data?: IDataItem[];
+  data?: IWorldMapDataItem[];
 }

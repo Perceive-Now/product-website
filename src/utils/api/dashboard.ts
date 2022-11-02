@@ -3,65 +3,73 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getPatentsCount() {
+export async function getPatentsCount(keywords: string[]) {
   const response = await axiosInstance.get<IPatentsCountResponse>(
-    "/dashboard/patents/count"
+    `/dashboard/patents/count?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getPublicationsCount() {
+export async function getPublicationsCount(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationCountResponse>(
-    "/dashboard/publications/count"
+    `/dashboard/publications/count?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTop3Universities() {
+export async function getTopUniversities(keywords: string[]) {
   const response = await axiosInstance.get<ITopUniversityResponse>(
-    "/dashboard/academic/universities_top_3"
+    `/dashboard/academic/universities_top_3?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getExpertsCount() {
+export async function getExpertsCount(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    "/dashboard/experts/count"
+    `/dashboard/experts/count?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getRelatedKeywords() {
+export async function getRelatedKeywords(keywords: string[]) {
   const response = await axiosInstance.get<IRelatedKeywordsResponse>(
-    "/dashboard/related_keywords_list"
+    `/dashboard/related_keywords_list?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTodaysHighlight() {
+export async function getTodaysHighlight(keywords: string[]) {
   const response = await axiosInstance.get<IHighlightResponse>(
-    "/dashboard/highlights"
+    `/dashboard/highlights?q=${keywords.join(",")}`
+  );
+  return response.data.data;
+}
+
+export async function getCompetitors(keywords: string[]) {
+  const response = await axiosInstance.get<ICompetitorResponse>(
+    `/dashboard/competitors_feature?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTop5Funders() {
+export async function getTop5Funders(keywords: string[]) {
+  let query = keywords.join(",").replace(" ", "");
   const response = await axiosInstance.get<ITopFunderResponse>(
-    "/dashboard/funding/top_5"
+    `/dashboard/top_5_funders?q=${query}`
   );
 
-  return response.data.data;
+  return response.data.data.map((data, index) => ({ ...data, rank: index + 1 }));
 }
 
-export async function getExpertsTable() {
+export async function getExpertsTable(keywords: string[]) {
   const response = await axiosInstance.get<IExpertResponse>(
-    "/dashboard/experts_feature"
+    `/dashboard/experts_feature?q=${keywords.join(",")}`
   );
 
   return response.data.data;
@@ -125,14 +133,15 @@ interface IRelatedKeywordsResponse {
   data: string[];
 }
 
-interface IHighlight {
-  id: string;
-  name: string;
-  value: number;
-}
-
 interface IHighlightResponse {
-  data: IHighlight[];
+  data: {
+    academicExpertsCount: number;
+    academicPublicationsCount: number;
+    fundingAmount: number;
+    industryExpertsCount: number;
+    industryPublicationsCount: number;
+    patentsCount: number;
+  };
 }
 
 //
@@ -155,7 +164,7 @@ export interface IExpert {
   companyName: string;
   locationText: string;
   patentsCount: number;
-  pulicationsCount: number;
+  publicationsCount: number;
   score: number;
   coordinates: [number, number];
 }
@@ -175,4 +184,22 @@ export interface ICompetitor {
   locationText: string;
   score: number;
   coordinate: [number, number];
+}
+
+//
+interface ICompetitorResponse {
+  data: {
+    claimsCount: {
+      [x: string]: number;
+    };
+    expertsCount: {
+      [x: string]: number;
+    };
+    patentsCount: {
+      [x: string]: number;
+    };
+    publicationsCount: {
+      [x: string]: number;
+    };
+  };
 }

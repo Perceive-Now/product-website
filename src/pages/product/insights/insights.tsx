@@ -18,10 +18,11 @@ export default function InsightsPage() {
   const [searchkeywords, setSearchKeywords] = useState<IKeywordOption[]>([]);
 
   const { data } = useQuery(
-    ["m&a-insight", searchkeywords],
+    ["m-and-a-insight", ...searchkeywords.map((kwd) => kwd.value)],
     async () => {
-      return await getMAInsights();
-    }
+      return await getMAInsights(searchkeywords.map((kwd) => kwd.value));
+    },
+    { enabled: !!searchkeywords?.length }
   );
 
   const handleKeywordChange = (value: IKeywordOption[]) => {

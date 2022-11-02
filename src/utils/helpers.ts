@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /**
  *
  */
@@ -12,9 +14,9 @@ export const formatNumber = (
     maximumFractionDigits: maxFraction,
     ...(options?.isCurrency
       ? {
-          style: "currency",
-          currency: "USD",
-        }
+        style: "currency",
+        currency: "USD",
+      }
       : {}),
   }).format(number);
 };
@@ -38,3 +40,28 @@ interface IFormatNumberOptions {
   maxFraction?: number;
   isCurrency?: boolean;
 }
+
+export const getTimeperiod = (start?: string, end?: string) => {
+  const START_YEAR = start ? String(start) : "1990";
+  const YEAR_DIFFERENCE = 4;
+
+  let finalYear = end ? String(end) : "2021";
+
+  let timeperiodArray = [];
+
+  while (finalYear > START_YEAR) {
+    let endYear = dayjs(finalYear)
+      .subtract(YEAR_DIFFERENCE, "year")
+      .format("YYYY");
+    timeperiodArray.push({
+      label: `${endYear}-${finalYear}`,
+      value: `${endYear}-${finalYear}`,
+    });
+    finalYear = dayjs(endYear)
+      .subtract(1, "year")
+      .format("YYYY");
+  }
+
+  return timeperiodArray;
+};
+

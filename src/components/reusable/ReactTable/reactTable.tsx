@@ -1,18 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import classNames from "classnames";
+import { useEffect, useState } from "react";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-//
-import { makeData } from "./makeData";
-
-//
-import { PatentType } from "../../../pages/product/patents/patents";
-import classNames from "classnames";
 
 /*
  *
@@ -23,50 +16,16 @@ export default function ReactTable(props: IReactTable) {
   const size = props.size ?? "large";
 
   const [rowSelection, setRowSelection] = useState({});
-  const [data, setData] = useState(() => rowsData || makeData(10));
+  const [data, setData] = useState(rowsData ?? []);
 
   useEffect(() => {
     setData(rowsData);
   }, [rowsData]);
 
-  const defaultColumns = useMemo<ColumnDef<PatentType>[]>(
-    () => [
-      {
-        header: "Inventor",
-        accessorKey: "inventor",
-      },
-      {
-        header: "Inventor",
-        accessorKey: "inventor",
-      },
-      {
-        header: "Industry",
-        accessorKey: "industry",
-      },
-      {
-        header: "Title",
-        accessorKey: "title",
-      },
-      {
-        header: "Abstract",
-        accessorKey: "abstract",
-      },
-      {
-        header: "Date (Y/M/D)",
-        accessorKey: "date",
-      },
-    ],
-    []
-  );
-
-  const columns = columnsData || defaultColumns;
-
   const table = useReactTable({
     data,
-    columns,
-    state: {
-      rowSelection,
-    },
+    columns: columnsData,
+    state: { rowSelection },
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -84,15 +43,22 @@ export default function ReactTable(props: IReactTable) {
                   key={header.id}
                   colSpan={header.colSpan}
                   className="pb-2 text-left text-primary-900 font-semibold"
+                  {...{
+                    style: {
+                      minWidth: header.column.columnDef.minSize,
+                    },
+                  }}
                 >
-                  {header.isPlaceholder ? null : (
-                    <>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </>
-                  )}
+                  <>
+                    {header.isPlaceholder ? null : (
+                      <>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </>
+                    )}
+                  </>
                 </th>
               ))}
             </tr>

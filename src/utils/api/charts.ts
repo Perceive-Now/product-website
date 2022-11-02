@@ -3,54 +3,83 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getScholaryPublications() {
+export async function getScholaryPublications(keywords: string[]) {
   const response = await axiosInstance.get<IScholaryPublicationResponse>(
-    "/dashboard/scholarly_publications"
+    `/dashboard/scholarly_publications?q=${keywords.join(",")}`
   );
 
-  return response.data.data.chart;
+  return response.data.data.chart.sort((a, b) => a.year - b.year);
 }
 
-export async function getPatentsPieChart() {
-  const response = await axiosInstance.get<IPatentsPieResponse>(
-    "/dashboard/patents_pie_chart"
-  );
+export async function getPatentsPieChart(keywords: string[], timeperiod?: string) {
+  try {
+    const response = await axiosInstance.get<IPatentsPieResponse>(
+      `/dashboard/patents_pie_chart?q=${keywords.join(",")}`
+    );
 
-  return response.data.data.chart;
+    let results = response.data.data.chart;
+    results = results.sort((a, b) => a.name < b.name ? -1 : 1);
+
+    return {
+      patents: results,
+    }
+  }
+  catch (err) {
+    return {
+      patents: [],
+      startYear: '',
+      lastYear: ''
+    }
+  }
+
 }
 
-export async function getExpertsCountGraph() {
+export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    "/dashboard/experts_count_graph"
+    `/dashboard/experts_count_graph?q=${keywords.join(",")}`
   );
 
   return response.data.data.chart;
 }
 
-export async function getAcademicResearchFundingChart() {
+export async function getAcademicResearchFundingChart(keywords: string[]) {
   const response = await axiosInstance.get<IAcademicResearchFundingResponse>(
-    "/dashboard/academic/funding_chart"
+    `/dashboard/academic/funding_chart?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getAcademicResearchTrends() {
+export async function getAcademicResearchTrends(keywords: string[]) {
   const response = await axiosInstance.get<IAcademicResearchTrendResponse>(
-    "/dashboard/academic/usa_research_trends"
+    `/dashboard/academic/usa_research_trends?q=${keywords.join(",")}`
   );
 
   return response.data.data;
 }
 
-export async function getTopFundingChart() {
+export async function getTopFundingChart(keywords: string[], timeperiod?: string) {
+  const query = keywords.join(',').replace(' ', '');
+
   const response = await axiosInstance.get<ITopFundingChartResponse>(
-    "/dashboard/funding/chart"
+    `/dashboard/total_amount_of_funding_over_time?q=${query}`
   );
 
-  return response.data.data.chart;
-}
+  let results = response.data.data;
 
+  let firstDataYear = results[0].year;
+  let lastDataYear = results[results.length - 1].year;
+
+  let startYear = timeperiod?.split('-')[0] ?? firstDataYear;
+  let endYear = timeperiod?.split('-')[1] ?? lastDataYear;
+
+  let fundings = results.filter(data => {
+    let year = data.year;
+    return year <= endYear && year >= startYear;
+  });
+
+  return { fundings: fundings, startYear: String(firstDataYear), lastYear: String(lastDataYear) };
+}
 
 /**
  *
@@ -67,7 +96,7 @@ interface IScholaryPublicationResponse {
   };
 }
 
-interface IPatent {
+export interface IPatent {
   name: number;
   value: number;
   percentage: number;
@@ -120,12 +149,10 @@ interface IAcademicResearchTrendResponse {
 }
 
 interface ITopFundingChart {
-  value: number;
-  year: string
+  amount: number;
+  year: string;
 }
 
 interface ITopFundingChartResponse {
-  data: {
-    chart: ITopFundingChart[]
-  }
+  data: ITopFundingChart[]
 }

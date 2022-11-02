@@ -9,7 +9,7 @@ import { SearchIcon } from "../../icons";
 //
 import "./search.css";
 
-const MAX_KEYWORD = 3;
+const MAX_KEYWORD = 1;
 
 /**
  *
@@ -190,23 +190,32 @@ interface IFilterOptionGroup {
 
 export const response = {
   data: [
+    "Gene Therapy",
     "COVID-19",
-    "diagnosis",
-    "public health",
-    "virtual reality",
-    "pathology",
-    "asymptomatic contact",
-    "minimally invasive surgery",
-    "pneumonia",
-    "artificial intelligence",
-    "SARS-COV 2",
-    "haptic open glove",
-    "human computer interaction",
-    "RT-PCR",
-    "multibody dynamics",
-    "Vaccines",
-    "therapeutics",
-    "antibody tests",
+    "Artificial Intelligence",
+    "Augmented reality",
+    "Greenwashing",
+    "Acoustics",
+    "Diversity & Inclusion",
+    "Big data",
+    "Social Impact",
+    "Cancer biology",
+    "Global warming",
+    "Fluid mechanics",
+    "Guided missiles",
+    "Ground defense",
+    "Decarbonization",
+    "Cryptocurrency",
+    "Ceramics",
+    "Alloys",
+    "Heat transfer",
+    "Thermodynamics",
+    "Clean energy",
+    "Fermentation",
+    "Polymers",
+    "Wireless infrastructure",
+    "Titanium economy",
+    "M Commerce",
   ],
 };
 

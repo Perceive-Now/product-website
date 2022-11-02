@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
 //
-import { IPublicationData } from "../../../pages/product/publications/publications";
+import { IPublicationItem } from "../../../utils/api/advance-search";
 
 //
 import { BookmarkIcon, CitationIcon, ShareIcon } from "../../icons";
@@ -10,16 +10,18 @@ import { BookmarkIcon, CitationIcon, ShareIcon } from "../../icons";
 /*
  *
  **/
-function PublicationItem({ data }: IPublicationItem) {
+function PublicationItem(props: IPublicationItemProps) {
+  const title = props.data.title[0] ?? "";
+
   return (
-    <Link to={`${data.id}`}>
-      <div key={data.id} className="mb-4">
+    <Link to={encodeURIComponent(props.data.doi)}>
+      <div key={props.data.doi} className="mb-4">
         <div className="text-xl font-medium text-primary-900 truncate mb-1 cursor-pointer">
-          {data.title}
+          {title}
         </div>
 
         <div className="text-appGray-900 mb-1 line-clamp-2">
-          {data.description}
+          {props.data.abstract}
         </div>
 
         <div className="flex">
@@ -42,12 +44,6 @@ function PublicationItem({ data }: IPublicationItem) {
   );
 }
 
-export default PublicationItem;
-
-interface IPublicationItem {
-  data: IPublicationData;
-}
-
 export const ActionButton = ({ children }: PropsWithChildren) => {
   return (
     <div className="mr-4 flex items-center text-primary-900 font-medium cursor-pointer">
@@ -55,3 +51,9 @@ export const ActionButton = ({ children }: PropsWithChildren) => {
     </div>
   );
 };
+
+interface IPublicationItemProps {
+  data: IPublicationItem;
+}
+
+export default PublicationItem;

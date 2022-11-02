@@ -21,14 +21,15 @@ import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
 /**
  *
  */
-export default function AcademicResearchFundings() {
+export default function AcademicResearchFundings(props: IFundingProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const { data, isLoading } = useQuery(
-    ["dashboard-academic-funding-chart"],
+    ["dashboard-academic-funding-chart", ...props.keywords],
     async () => {
-      return await getAcademicResearchFundingChart();
-    }
+      return await getAcademicResearchFundingChart(props.keywords);
+    },
+    { enabled: !!props.keywords.length }
   );
   let chartData = data?.chart ?? [];
 
@@ -62,6 +63,7 @@ export default function AcademicResearchFundings() {
       <PageTitle
         title="Academic Research Funding"
         info={`This list was extracted from "X" total number of universities worldwide`}
+        titleClass="font-semibold"
       />
 
       {/* Controls */}
@@ -126,4 +128,8 @@ export default function AcademicResearchFundings() {
       </div>
     </div>
   );
+}
+
+interface IFundingProps {
+  keywords: string[];
 }

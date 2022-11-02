@@ -28,18 +28,23 @@ import HawkEyePublicationsSection from "./pages/product/hawk-eye/sections/public
 
 // Patents pages
 import PatentsPage from "./pages/product/patents";
-import PatentsProfile from "./pages/product/patents/profile";
+import PatentsProfilePage from "./pages/product/patents-profile";
 
 import SummaryPage from "./pages/product/summary";
 import PublicationsPage from "./pages/product/publications";
-import ExpertsPage from "./pages/product/experts";
-import FundersPage from "./pages/product/funders";
 import UniversitiesPage from "./pages/product/universities";
+import PublicationPage from "./pages/product/publication";
+
+//
+import ExpertsPage from "./pages/product/experts";
+import ExpertsProfilePage from "./pages/product/experts-profile";
+
+//
+import FundersPage from "./pages/product/funders";
+import FunderProfilePage from "./pages/product/funder-profile";
 
 //
 import PageNotFound404 from "./pages/404";
-import PublicationPage from "./pages/product/publication";
-import FunderProfilePage from "./pages/product/funder-profile";
 
 /**
  *
@@ -92,10 +97,18 @@ function App() {
 
             {/* Patents page section starts here */}
             <Route path="/patents" element={<PatentsPage />} />
-            <Route path="/patents/profile/:id" element={<PatentsProfile />} />
+            <Route
+              path="/patents/profile/:id"
+              element={<PatentsProfilePage />}
+            />
             {/* Patents page section end here */}
 
             <Route path="/experts" element={<ExpertsPage />} />
+            <Route
+              path="/experts/profile/:id"
+              element={<ExpertsProfilePage />}
+            />
+
             <Route path="/funders" element={<FundersPage />} />
             <Route
               path="/funders/profile/:id"
