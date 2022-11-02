@@ -16,7 +16,7 @@ import ScatterChart from "../../@product/scatter-chart";
 import { LoadingIcon } from "../../icons";
 
 //
-import { getPublicationsCount } from "../../../utils/api/dashboard";
+// import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
 
 /**
@@ -33,13 +33,13 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     { enabled: !!props.keywords.length }
   );
 
-  const { data: publicationCount } = useQuery(
-    ["scholarly-publications-count-for-chart", ...props.keywords],
-    async () => {
-      return await getPublicationsCount(props.keywords);
-    },
-    { enabled: !!props.keywords.length }
-  );
+  // const { data: publicationCount } = useQuery(
+  //   ["scholarly-publications-count-for-chart", ...props.keywords],
+  //   async () => {
+  //     return await getPublicationsCount(props.keywords);
+  //   },
+  //   { enabled: !!props.keywords.length }
+  // );
 
   //
   const finalPieData = isLoading ? [] : publicationChartData ?? [];
