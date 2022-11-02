@@ -44,6 +44,7 @@ export default function DashboardPage() {
     .map((kwd) => `"${kwd.value}"`)
     .join(", ");
 
+  const keywordValue = searchedKeywords.map((kwd) => kwd.value);
   return (
     <div>
       {searchedKeywords && (
@@ -135,9 +136,7 @@ export default function DashboardPage() {
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <TopFunderCharts
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
-          />
+          <TopFunderCharts keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">

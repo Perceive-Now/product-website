@@ -42,10 +42,10 @@ interface IFormatNumberOptions {
 }
 
 export const getTimeperiod = (start?: string, end?: string) => {
-  const START_YEAR = start ? String(start) : "1997";
+  const START_YEAR = start ? String(start) : "1990";
   const YEAR_DIFFERENCE = 4;
 
-  let finalYear = end ? String(end) : dayjs().format("YYYY");
+  let finalYear = end ? String(end) : "2021";
 
   let timeperiodArray = [];
 
@@ -57,7 +57,9 @@ export const getTimeperiod = (start?: string, end?: string) => {
       label: `${endYear}-${finalYear}`,
       value: `${endYear}-${finalYear}`,
     });
-    finalYear = endYear;
+    finalYear = dayjs(endYear)
+      .subtract(1, "year")
+      .format("YYYY");
   }
 
   return timeperiodArray;
