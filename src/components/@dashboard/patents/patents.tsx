@@ -20,6 +20,7 @@ import { getPatentsPieChart, IPatent } from "../../../utils/api/charts";
 
 //
 import { LoadingIcon } from "../../icons";
+import NoDataMessage from "../../reusable/no-data";
 
 /**
  *
@@ -32,6 +33,8 @@ export default function Patents(props: IPatentsProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
   const [selectedTimeperiod, setSelectedTimeperiod] = useState("");
 
+  let hasNoData = false;
+
   const { data, isLoading } = useQuery(
     ["patents-pie-chart", ...props.keywords],
     async () => {
@@ -42,6 +45,26 @@ export default function Patents(props: IPatentsProps) {
 
   const timeperiod = getTimeperiod();
 
+  const hasDataChecker = (patentsList: IPatent[]) => {
+    if (!patentsList) return (hasNoData = true);
+
+    if (patentsList.length < 1) return (hasNoData = true);
+
+    let hasNoDataFlag = true;
+
+    patentsList.forEach((cD) => {
+      if (cD.value > 0) {
+        hasNoDataFlag = false;
+      }
+    });
+
+    if (hasNoDataFlag) {
+      hasNoData = true;
+    } else {
+      hasNoData = false;
+    }
+  };
+
   const chartDataFormatHelper = (patents: IPatent[]) => {
     let startYear = selectedTimeperiod?.split("-")[0] || "2018";
     let endYear = selectedTimeperiod?.split("-")[1] || "2022";
@@ -50,6 +73,7 @@ export default function Patents(props: IPatentsProps) {
       let year = String(data.name);
       return year >= startYear && year <= endYear;
     });
+    hasDataChecker(patentsList);
     return patentsList;
   };
 
@@ -130,29 +154,39 @@ export default function Patents(props: IPatentsProps) {
                 </div>
               </div>
 
-              {activeChart === "bar" && (
-                <BarChart
-                  data={finalBarData ?? []}
-                  keys={["value"]}
-                  indexBy="name"
-                  groupMode="stacked"
-                />
+              {hasNoData && (
+                <div className="flex h-full justify-center items-center">
+                  <NoDataMessage years={selectedTimeperiod} />
+                </div>
               )}
 
-              {activeChart === "donut" && (
-                <PieChart
-                  data={finalPieData}
-                  colors={(bar) => bar.data.color}
-                  onClick={handleArcClick}
-                />
-              )}
+              {!hasNoData && (
+                <>
+                  {activeChart === "bar" && (
+                    <BarChart
+                      data={finalBarData ?? []}
+                      keys={["value"]}
+                      indexBy="name"
+                      groupMode="stacked"
+                    />
+                  )}
 
-              {activeChart === "scatter" && (
-                <ScatterChart
-                  data={finalScatterData}
-                  legendX="Years"
-                  legendY="Patents"
-                />
+                  {activeChart === "donut" && (
+                    <PieChart
+                      data={finalPieData}
+                      colors={(bar) => bar.data.color}
+                      onClick={handleArcClick}
+                    />
+                  )}
+
+                  {activeChart === "scatter" && (
+                    <ScatterChart
+                      data={finalScatterData}
+                      legendX="Years"
+                      legendY="Patents"
+                    />
+                  )}
+                </>
               )}
 
               <div className="mt-4">
