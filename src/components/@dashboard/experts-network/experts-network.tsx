@@ -1,15 +1,12 @@
+import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ColumnDef } from "@tanstack/react-table";
-import { useMemo, useRef, useState } from "react";
 
 //
 import PageTitle from "../../reusable/page-title";
-import ReactTable from "../../reusable/ReactTable";
 import RadioButtons from "../../reusable/radio-buttons";
-import ExpandBtn from "../../reusable/expand-btn/expand-btn";
 
 //
-import { getExpertsTable, IExpert } from "../../../utils/api/dashboard";
+import { getExpertsTable } from "../../../utils/api/dashboard";
 
 /*
  *
@@ -17,7 +14,6 @@ import { getExpertsTable, IExpert } from "../../../utils/api/dashboard";
 export default function ExpertsNetwork(props: IExpertsNetworkProps) {
   const customRef = useRef<HTMLDivElement | null>(null);
 
-  const [isExpanded, setIsExpanded] = useState(false);
   const [expertMode, setExpertMode] = useState("industryExperts");
 
   const { data, isLoading } = useQuery(
@@ -32,64 +28,6 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
     ? []
     : (expertMode === "industryExperts" ? data?.industry : data?.academic) ??
       [];
-
-  const tableData = _tableData.slice(0, isExpanded ? _tableData.length : 4);
-
-  const columns = useMemo<ColumnDef<IExpert>[]>(
-    () => [
-      {
-        header: "",
-        accessorKey: "sn",
-      },
-      {
-        header: "Name",
-        accessorKey: "name",
-        cell: (props) => {
-          const originalData = props.row.original;
-          return [originalData.firstName, originalData.lastName].join(" ");
-        },
-      },
-      {
-        header: "Company Name",
-        accessorKey: "companyName",
-        maxWidth: 400,
-        minWidth: 140,
-        width: 200,
-        cell: (props) => {
-          return props.row.original.companyName ?? "-";
-        },
-      },
-      {
-        header: "Location",
-        accessorKey: "locationText",
-        cell: (props) => {
-          return props.row.original.locationText ?? "-";
-        },
-      },
-      {
-        header: "Patents",
-        accessorKey: "patentsCount",
-        cell: (props) => {
-          return props.row.original.patentsCount ?? "-";
-        },
-      },
-      {
-        header: "Publications",
-        accessorKey: "publicationsCount",
-        cell: (props) => {
-          return props.row.original.publicationsCount ?? "-";
-        },
-      },
-    ],
-    []
-  );
-
-  const handleExpandToggle = () => {
-    if (isExpanded) {
-      customRef.current?.scrollIntoView({ behavior: "auto" });
-    }
-    setIsExpanded((prev) => !prev);
-  };
 
   const handleModeChange = (mode: string) => {
     setExpertMode(mode);
@@ -114,20 +52,56 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         />
       </div>
 
-      <div className="mt-9">
-        <div className="px-3">
-          <ReactTable columnsData={columns} rowsData={tableData} />
-        </div>
-
-        {tableData.length > 4 && (
+      <div className="mt-4 px-3">
+        <div className="grid gap-y-5 gap-x-4 mb-3">
           <div>
-            <ExpandBtn
-              isExpanded={isExpanded}
-              handleExpandToggle={handleExpandToggle}
-              secondaryButton="View More"
-            />
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Patents
+            </p>
+
+            <div className="grid grid-cols-11 mb-3">
+              <div className="col-span-5 font-semibold">Name</div>
+              <div className="col-span-5 font-semibold">Organization</div>
+              <div className="col-span-1 text-right pr-1 font-semibold">
+                Patents
+              </div>
+            </div>
+
+            {_tableData.map((itm, index) => (
+              <ListItem
+                name={[itm.firstName, itm.lastName].join(" ")}
+                organization={itm.companyName}
+                value={itm.patentsCount}
+                index={index}
+                key={index}
+              />
+            ))}
           </div>
-        )}
+
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">
+              Publications
+            </p>
+
+            <div className="grid grid-cols-11 mb-3">
+              <div className="col-span-5 font-semibold">Name</div>
+              <div className="col-span-5 font-semibold">Organization</div>
+              <div className="col-span-1 text-right pr-1 font-semibold">
+                Publications
+              </div>
+            </div>
+
+            {_tableData.map((itm, index) => (
+              <ListItem
+                name={[itm.firstName, itm.lastName].join(" ")}
+                organization={itm.companyName}
+                value={itm.publicationsCount}
+                index={index}
+                key={index}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -138,8 +112,8 @@ const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
     <div className="flex">
       <RadioButtons
         options={[
-          { label: "Industry Experts", value: "industryExperts" },
-          { label: "Academic Experts", value: "academicExperts" },
+          { label: "Industry", value: "industryExperts" },
+          { label: "Academic", value: "academicExperts" },
         ]}
         activeMode={activeMode}
         handleModeChange={onModeChange}
@@ -147,6 +121,25 @@ const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
     </div>
   );
 };
+
+function ListItem(props: IListItemProps) {
+  return (
+    <div className="grid grid-cols-11 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
+      <div className="col-span-5">{props.name}</div>
+      <div className="col-span-5">{props.organization ?? "-"}</div>
+      <div className="col-span-1 pr-1 flex items-center justify-center">
+        {props.value?.toLocaleString() ?? "-"}
+      </div>
+    </div>
+  );
+}
+
+interface IListItemProps {
+  name: string;
+  organization: string;
+  value: number;
+  index: number;
+}
 
 interface IExpertMode {
   activeMode: string;
