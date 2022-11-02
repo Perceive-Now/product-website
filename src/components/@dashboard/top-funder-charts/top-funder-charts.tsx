@@ -19,6 +19,7 @@ import { getTopFundingChart } from "../../../utils/api/charts";
 
 //
 import { LoadingIcon } from "../../icons";
+import NoDataMessage from "../../reusable/no-data";
 
 //
 
@@ -29,6 +30,8 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   const [selectedTimeperiod, setSelectedTimeperiod] = useState("");
+
+  let hasNoData = false;
 
   //
   const { data, isLoading } = useQuery(
@@ -41,19 +44,28 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
   const chartData = data?.fundings ?? [];
 
-  const dataStartYear = data?.startYear ?? "";
-  const dataEndYear = data?.lastYear ?? "";
+  const hasDataChecker = () => {
+    if (!chartData) return (hasNoData = true);
 
-  const timeperiod = useMemo(
-    () => getTimeperiod(dataStartYear, dataEndYear),
-    [dataStartYear, dataEndYear]
-  );
+    if (chartData.length < 1) return (hasNoData = true);
 
-  useEffect(() => {
-    if (timeperiod[0]) {
-      setSelectedTimeperiod(timeperiod[0].value);
+    let hasNoDataFlag = true;
+
+    chartData.forEach((cD) => {
+      if (cD.amount > 0) {
+        hasNoDataFlag = false;
+      }
+    });
+
+    if (hasNoDataFlag) {
+      hasNoData = true;
+    } else {
+      hasNoData = false;
     }
-  }, [timeperiod]);
+  };
+  hasDataChecker();
+
+  const timeperiod = useMemo(() => getTimeperiod(), []);
 
   const handleTimePeriodChange = (value: any) => {
     setSelectedTimeperiod(value.value);
@@ -112,25 +124,35 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
           {!isLoading && (
             <>
-              {activeChart === "bar" && (
-                <BarChart
-                  data={finalBarData ?? []}
-                  keys={["amount"]}
-                  indexBy="year"
-                  groupMode="stacked"
-                  legendY="Funding Amount (USD)"
-                />
+              {hasNoData && (
+                <div className="flex h-full justify-center items-center">
+                  <NoDataMessage years={selectedTimeperiod} />
+                </div>
               )}
 
-              {activeChart === "donut" && <PieChart data={finalPieData} />}
+              {!hasNoData && (
+                <>
+                  {activeChart === "bar" && (
+                    <BarChart
+                      data={finalBarData ?? []}
+                      keys={["amount"]}
+                      indexBy="year"
+                      groupMode="stacked"
+                      legendY="Funding Amount (USD)"
+                    />
+                  )}
 
-              {activeChart === "scatter" && (
-                <ScatterChart data={finalScatterData} legendY="Fundings" />
+                  {activeChart === "donut" && <PieChart data={finalPieData} />}
+
+                  {activeChart === "scatter" && (
+                    <ScatterChart data={finalScatterData} legendY="Fundings" />
+                  )}
+
+                  <div className="text-primary-600 mt-4 cursor-pointer">
+                    Read more
+                  </div>
+                </>
               )}
-
-              <div className="text-primary-600 mt-4 cursor-pointer">
-                Read more
-              </div>
             </>
           )}
 
