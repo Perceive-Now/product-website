@@ -36,10 +36,10 @@ export async function getPatentsPieChart(keywords: string[], timeperiod?: string
 
 export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    `/dashboard/experts_count_graph?q=${keywords.join(",")}`
+    `/dashboard/number_of_experts_and_researchers?q=${keywords.join(",")}`
   );
 
-  return response.data.data.chart;
+  return response.data.data;
 }
 
 export async function getAcademicResearchFundingChart(keywords: string[]) {
@@ -108,16 +108,14 @@ interface IPatentsPieResponse {
   };
 }
 
-interface IExpertCount {
+export interface IExpertCount {
   year: number;
-  closedExpertsCount: number;
-  openExpertsCount: number;
+  closed_doi_count: number;
+  open_doi_count: number;
 }
 
 interface IExpertCountResponse {
-  data: {
-    chart: IExpertCount[];
-  };
+  data: IExpertCount[];
 }
 
 interface IAcademicResearchFunding {
