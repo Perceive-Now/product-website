@@ -104,27 +104,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
 
       {/* Caption */}
       <div className="mt-4">
-        <span className="font-semibold">
-          "
-          {formatNumber(data?.captionText.fundingAmount ?? 0, {
-            isCurrency: true,
-          })}
-          "
-        </span>
-        <span> </span>
-        <span>
-          amount of funding was received by the top 5 universities with the
-          maximum amount of funding in the past
-        </span>
-        <span> </span>
-        <span>{data?.captionText.numberOfYears ?? "-"}</span>
-        <span> </span>
-        <span>
-          {(data?.captionText.numberOfYears ?? 0) > 1 ? "years" : "year"}
-        </span>
-        <span className="ml-1">
-          <Link to="#">Read More</Link>
-        </span>
+        <div className="mt-4">
+          <Link to="/funders">Read more</Link>
+        </div>
       </div>
     </div>
   );

@@ -166,13 +166,9 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       {activeChart === "donut" && <RadialChart data={radialData} />}
 
       <div className="mt-4">
-        <span>
-          A total of "X" number of publications and "Y" number of patents were
-          published in the past 5 years in academia
-        </span>
-        <span className="ml-1">
-          <Link to="#">Read More</Link>
-        </span>
+        <div className="mt-4">
+          <Link to="#">Read more</Link>
+        </div>
       </div>
     </div>
   );
