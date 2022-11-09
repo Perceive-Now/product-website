@@ -114,6 +114,7 @@ const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
         options={[
           { label: "Industry", value: "industryExperts" },
           { label: "Academic", value: "academicExperts" },
+          { label: "Federal", value: "federalExperts" },
         ]}
         activeMode={activeMode}
         handleModeChange={onModeChange}

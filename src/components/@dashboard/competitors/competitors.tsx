@@ -100,14 +100,14 @@ export default function Competitors(props: ICompetitorProps) {
 
           <div>
             <p className="text-lg font-semibold text-primary-900 mb-2">
-              Patents Claim
+              Patent Claims
             </p>
 
             <div className="grid grid-cols-9 mb-3">
               <div className="col-span-1" />
               <div className="col-span-5 font-semibold">Company Name</div>
               <div className="col-span-3 text-right pr-1 font-semibold">
-                Patents Claims
+                Patent Claims
               </div>
             </div>
 

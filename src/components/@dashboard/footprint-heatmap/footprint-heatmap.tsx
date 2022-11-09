@@ -51,7 +51,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const pubCountryList = data?.publications.Country_wise_titles ?? [];
 
   const filteredCountryList = pubCountryList.filter((itm) =>
-    countryNames[itm.Country].toLowerCase().includes(query.toLowerCase())
+    countryNames[itm.Country]?.toLowerCase()?.includes(query.toLowerCase())
   );
 
   const patentsListForCountry = (
