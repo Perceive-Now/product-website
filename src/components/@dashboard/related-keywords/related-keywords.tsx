@@ -23,7 +23,7 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
 
   return (
     <div className="border border-gray-200 rounded-lg shadow h-full w-full py-2 px-3 overflow-y-auto">
-      <PageTitle title="Most Related Keywords" />
+      <PageTitle title="Most Related Keywords" titleClass="font-bold" />
 
       <div className="flex flex-wrap gap-x-2 gap-y-1">
         {allKeywords.map((keyword, index) => (
