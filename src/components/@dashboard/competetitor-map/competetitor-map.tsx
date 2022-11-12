@@ -34,7 +34,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
         children={
           <div className="flex justify-between">
             <p className="text-sm">
-              World map with heat spots & icon for top competitors
+              Geolocation of companies working in your area of interest
             </p>
 
             <div className="flex gap-x-3 text-sm">
