@@ -41,10 +41,9 @@ export default function PublicationsPage() {
     { enabled: !!searchedKeywords?.length }
   );
 
-  const publicationsData = (
-    isLoading ? [] : publicationsDataRaw?.data?.resultsList ?? []
-  )
-    .filter((itm) => itm.abstract)
+  const publicationsData = ([] as any)
+    // (isLoading ? [] : publicationsDataRaw?.data?.resultsList ?? [])
+    // .filter((itm) => itm.abstract)
     .slice(0, 10);
   //
   //
@@ -83,7 +82,7 @@ export default function PublicationsPage() {
 
           <div className="grid grid-cols-12">
             <div className="col-span-9 mr-6">
-              {publicationsData?.map((publicationData) => (
+              {publicationsData?.map((publicationData: any) => (
                 <PublicationItem
                   data={publicationData}
                   key={publicationData.doi}

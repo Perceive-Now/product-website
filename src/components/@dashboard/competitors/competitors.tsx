@@ -39,29 +39,6 @@ export default function Competitors(props: ICompetitorProps) {
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  const tempData = [
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-  ];
-
   return (
     <div className="mt-2 rounded-2xl border border-gray-200 shadow">
       <div className="pt-4 px-3">
