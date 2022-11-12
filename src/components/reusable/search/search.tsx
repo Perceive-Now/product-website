@@ -44,7 +44,7 @@ export default function Search(props: ISearchProps) {
     filteredKeywords: string[]
   ): IFilterOptionGroup[] | [] => {
     let sortedFilteredKeywords = filteredKeywords.sort((a, b) =>
-      a.toLowerCase() < b.toLowerCase() ? -1 : 1
+      a?.toLowerCase() < b?.toLowerCase() ? -1 : 1
     );
 
     let groupedOptions: IGroupOptions = {};
@@ -83,7 +83,7 @@ export default function Search(props: ISearchProps) {
         return new Promise<IFilterOptionGroup[] | []>((resolve) => {
           setTimeout(() => {
             let filteredKeywords = response.data.filter((keyword) =>
-              keyword.toLowerCase().includes(inputValue.toLowerCase())
+              keyword?.toLowerCase().includes(inputValue?.toLowerCase())
             );
             resolve(generateOptionsGroup(filteredKeywords));
           }, 10);

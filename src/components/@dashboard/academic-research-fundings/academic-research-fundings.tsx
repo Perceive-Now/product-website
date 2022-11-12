@@ -15,7 +15,7 @@ import { ChartType } from "../../reusable/chart-buttons";
 
 //
 import { TIME_PERIODS } from "../../../utils/constants";
-import { abbreviateString, formatNumber } from "../../../utils/helpers";
+import { abbreviateString } from "../../../utils/helpers";
 import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
 
 /**
