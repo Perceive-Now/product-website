@@ -76,8 +76,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
         children={
           <div className="flex justify-between">
             <p className="text-sm">
-              <span>Heat map of publications related to </span>
-              <span className="font-semibold">{joinedKeywords}</span>
+              <span>Heat map of publications and patents</span>
             </p>
 
             <div className="flex gap-x-3 text-sm">

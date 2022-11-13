@@ -76,36 +76,20 @@ export default function Search(props: ISearchProps) {
     );
   };
 
-  const fetchOptions = (inputValue: string) => {
-    try {
-      const fetchKeywords = () => {
-        // add fetch api here
-        return new Promise<IFilterOptionGroup[] | []>((resolve) => {
-          setTimeout(() => {
-            let filteredKeywords = response.data.filter((keyword) =>
-              keyword?.toLowerCase().includes(inputValue?.toLowerCase())
-            );
-            resolve(generateOptionsGroup(filteredKeywords));
-          }, 10);
-        });
-      };
-      if (!hasKeywordReachedMaxLimit) {
-        return fetchKeywords();
-      } else {
-        return new Promise<IFilterOptionGroup[] | []>((resolve) => {
-          resolve([]);
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchOptions = async (inputValue: string) => {
+    if (hasKeywordReachedMaxLimit) return [];
+
+    const filteredKeywords = response.data.filter((keyword) =>
+      keyword?.toLowerCase().includes(inputValue?.toLowerCase())
+    );
+    return generateOptionsGroup(filteredKeywords);
   };
 
   const handleKeywordChange = (
     newValue: MultiValue<IKeywordOption>,
     actionMeta: ActionMeta<IKeywordOption>
   ) => {
-    let keywords: IKeywordOption[] = newValue.map((keyword) => {
+    const keywords: IKeywordOption[] = newValue.map((keyword) => {
       return {
         label: keyword.label,
         value: keyword.value || "",
@@ -125,6 +109,9 @@ export default function Search(props: ISearchProps) {
           formatCreateLabel={(inputValue: string) => inputValue}
           isMulti
           isOptionDisabled={() => hasKeywordReachedMaxLimit}
+          {...(selectedKeywords?.length
+            ? { isValidNewOption: () => !hasKeywordReachedMaxLimit }
+            : undefined)}
           components={{
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null,

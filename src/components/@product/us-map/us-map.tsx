@@ -51,11 +51,16 @@ export default function USMap(props: IUSMapProps) {
   >(undefined);
 
   const getFillColor = (geo?: any) => {
-    if (props.type === "normal") return "#263680";
+    switch (props.type) {
+      case "normal":
+        return "#263680";
 
-    console.log(geo);
+      case "federalExperts":
+        return "#5C1FC4";
 
-    return "red";
+      default:
+        return "#D7D7D7";
+    }
   };
 
   const getRangeForPatents = (excludeZero = false) => {
@@ -156,7 +161,7 @@ export default function USMap(props: IUSMapProps) {
 
 interface IUSMapProps {
   isExpertMap?: boolean;
-  type: "heatmap" | "normal";
+  type: "heatmap" | "normal" | "federalExperts";
   //
   data?: IWorldMapDataItem[];
 }

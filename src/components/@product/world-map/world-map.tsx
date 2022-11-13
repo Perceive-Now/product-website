@@ -96,6 +96,11 @@ export default function WorldMap(props: ISvgMapProps) {
           ? "#FFA300"
           : "#442873";
 
+      case "basicPatents":
+        return geo.rsmKey === activeSelection && isZoomed
+          ? "#7A89CC"
+          : "#263680";
+
       case "publicationHeatmap":
         const currentCountryValue =
           props.data?.find((itm) => itm.country === geo.id)?.publications ?? 0;
@@ -114,7 +119,6 @@ export default function WorldMap(props: ISvgMapProps) {
 
         return finalValueToReturn;
 
-      case "basicPatents":
       case "patentsHeatmap":
       default:
         return "#D7D7D7";
@@ -129,6 +133,8 @@ export default function WorldMap(props: ISvgMapProps) {
         return "#E1D5F2";
 
       case "basicPatents":
+        return "#7A89CC";
+
       default:
         return "";
     }
@@ -474,13 +480,15 @@ interface ISvgMapProps {
    * patentsHeatmap: Geographical footprint for patents
    * basicPublication: Geographical footprint of competetors for publications
    * basicPatents: Geographical footprint of competetors for patents
+   * federalExperts: Geographical footprint for expers federal
    */
   isExpertMap?: boolean;
   type:
     | "publicationHeatmap"
     | "patentsHeatmap"
     | "basicPublication"
-    | "basicPatents";
+    | "basicPatents"
+    | "federalExperts";
   //
   data?: IWorldMapDataItem[];
 }

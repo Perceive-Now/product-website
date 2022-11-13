@@ -49,7 +49,7 @@ export default function DashboardPage() {
     <div>
       {searchedKeywords && (
         <p className="mb-3">
-          <span>Searching for: </span>
+          <span>Showing results for: </span>
           <span className="font-semibold">{joinedKeywords}</span>
         </p>
       )}

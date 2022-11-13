@@ -73,7 +73,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
   const chartData = expertsChartData
     ? chartDataFormatHelper(expertsChartData) ?? []
     : [];
-    
+
   //
   const finalPieData = isLoading ? [] : chartData ?? [];
 
@@ -138,6 +138,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
         title="Number of Experts and Researchers"
+        titleClass="font-bold"
         info={`This list was extracted from "X" total number of experts and researchers worldwide`}
       />
 
@@ -157,23 +158,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
 
           {!isLoading && (
             <>
-              <div className="pt-1 flex justify-between items-center h-5">
-                <div className="flex gap-x-3">
-                  {activeChart === "bar" && (
-                    <>
-                      <div className="flex gap-x-1 text-sm items-center">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                        <span>Open</span>
-                      </div>
-
-                      <div className="flex gap-x-1 text-sm items-center">
-                        <div className="w-2 h-2 bg-primary-800 rounded-full" />
-                        <span>Closed</span>
-                      </div>
-                    </>
-                  )}
-                </div>
-
+              <div className="pt-1 flex justify-end items-center h-5">
                 <div className="flex items-center">
                   <TimePeriod
                     timePeriods={timeperiod}
@@ -186,6 +171,21 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
                     setActiveChart={setActiveChart}
                   />
                 </div>
+              </div>
+              <div className="flex justify-end mt-3 gap-x-3">
+                {activeChart === "bar" && (
+                  <>
+                    <div className="flex gap-x-1 text-sm items-center">
+                      <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                      <span>Open</span>
+                    </div>
+
+                    <div className="flex gap-x-1 text-sm items-center">
+                      <div className="w-2 h-2 bg-primary-800 rounded-full" />
+                      <span>Closed</span>
+                    </div>
+                  </>
+                )}
               </div>
               {!hasNoData && (
                 <>

@@ -48,6 +48,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
     <div className="w-100 border bg-white rounded-lg p-3 shadow">
       <PageTitle
         title="Top Universities with Highest Research Footprint"
+        subTitle='"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"'
         titleClass="font-bold"
         info={`This list was extracted from "X" total number of universities worldwide`}
       />
@@ -61,7 +62,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
 
             <div className="grid grid-cols-9 mb-3">
               <div className="col-span-1" />
-              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-6 font-semibold">University Name</div>
               <div className="col-span-2 text-right pr-1 font-semibold">
                 Patents
               </div>
@@ -84,7 +85,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
 
             <div className="grid grid-cols-9 mb-3">
               <div className="col-span-1" />
-              <div className="col-span-5 font-semibold">Company Name</div>
+              <div className="col-span-5 font-semibold">University Name</div>
               <div className="col-span-3 text-right pr-1 font-semibold">
                 Patents Claims
               </div>
@@ -111,7 +112,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
 
             <div className="grid grid-cols-9 mb-3">
               <div className="col-span-1" />
-              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-6 font-semibold">University Name</div>
               <div className="col-span-2 text-right pr-1 font-semibold">
                 Experts
               </div>
@@ -134,7 +135,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
 
             <div className="grid grid-cols-9 mb-3">
               <div className="col-span-1" />
-              <div className="col-span-6 font-semibold">Company Name</div>
+              <div className="col-span-6 font-semibold">University Name</div>
               <div className="col-span-2 text-right pr-1 font-semibold">
                 Publications
               </div>

@@ -9,6 +9,7 @@ import PageTitle from "../../reusable/page-title";
 
 //
 import { getExpertsTable } from "../../../utils/api/dashboard";
+import USMap from "../../@product/us-map";
 
 /**
  *
@@ -48,8 +49,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
         children={
           <div className="flex justify-between">
             <p className="text-sm">
-              <span>Location of experts working on </span>
-              <span className="font-semibold">{joinedKeywords}</span>
+              Network of experts and researchers working across the globe
             </p>
 
             <div className="flex gap-x-3 text-sm">
@@ -62,7 +62,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
                   onChange={() => setCurrentMode("basicPublication")}
                 />
                 <label htmlFor="industryExperts" className="cursor-pointer">
-                  Industry Experts
+                  Industry
                 </label>
               </div>
 
@@ -75,7 +75,20 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
                   onChange={() => setCurrentMode("basicPatents")}
                 />
                 <label htmlFor="academicExperts" className="cursor-pointer">
-                  Academic Experts
+                  Academic
+                </label>
+              </div>
+
+              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                <input
+                  type="radio"
+                  id="federalExperts"
+                  name="currentModeExpertMap"
+                  checked={currentMode === "federalExperts"}
+                  onChange={() => setCurrentMode("federalExperts")}
+                />
+                <label htmlFor="federalExperts" className="cursor-pointer">
+                  Federal
                 </label>
               </div>
             </div>
@@ -91,18 +104,18 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          <WorldMap
-            isExpertMap
-            type={currentMode}
-            data={isLoading ? [] : mapData}
-          />
+          {currentMode === "federalExperts" ? (
+            <USMap type="federalExperts" data={mapData ?? []} />
+          ) : (
+            <WorldMap type={currentMode} data={mapData ?? []} />
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-type availableModes = "basicPublication" | "basicPatents";
+type availableModes = "basicPublication" | "basicPatents" | "federalExperts";
 
 interface IFootprintHeatmapProps {
   keywords: string[];
