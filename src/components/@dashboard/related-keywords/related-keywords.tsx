@@ -25,8 +25,8 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
     <div className="border border-gray-200 rounded-lg shadow h-full w-full py-2 px-3 overflow-y-auto">
       <PageTitle title="Most Related Keywords" titleClass="font-bold" />
 
-      <div className="flex flex-wrap gap-x-2 gap-y-1">
-        {allKeywords.map((keyword, index) => (
+      <div className="flex flex-wrap gap-x-2 gap-y-1 mt-2">
+        {allKeywords.slice(0, 15).map((keyword, index) => (
           <RelatedKeyword keyword={keyword} key={index} />
         ))}
       </div>
