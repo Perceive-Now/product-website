@@ -64,15 +64,20 @@ export async function getTop5Funders(keywords: string[]) {
     `/dashboard/top_5_funders?q=${query}`
   );
 
-  return response.data.data.map((data, index) => ({ ...data, rank: index + 1 }));
+  return response.data.data.map((data, index) => ({
+    ...data,
+    rank: index + 1,
+  }));
 }
 
 export async function getExpertsTable(keywords: string[]) {
   const response = await axiosInstance.get<IExpertResponse>(
-    `/dashboard/experts_feature?q=${keywords.join(",")}`
+    `/dashboard/experts_network_patents?q=${keywords.join(",")}`
   );
 
-  return response.data.data;
+  console.log(response.data, "from function");
+
+  return response.data;
 }
 
 /**
@@ -158,22 +163,20 @@ interface ITopFunderResponse {
 
 //
 export interface IExpert {
-  rank: number;
-  firstName: string;
-  lastName: string;
-  companyName: string;
-  locationText: string;
-  patentsCount: number;
-  publicationsCount: number;
-  score: number;
-  coordinates: [number, number];
+  company: string;
+  name: string;
+  count: number;
+}
+
+export interface IExpertModeItem {
+  patents?: IExpert[];
+  publications?: IExpert[];
 }
 
 interface IExpertResponse {
-  data: {
-    academic: IExpert[];
-    industry: IExpert[];
-  };
+  academic: IExpertModeItem;
+  industry: IExpertModeItem;
+  federal: IExpertModeItem;
 }
 
 //
