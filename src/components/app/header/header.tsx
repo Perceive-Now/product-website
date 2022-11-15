@@ -4,8 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Search, { IKeywordOption } from "../../reusable/search";
 
 //
-import { useAppDispatch } from "../../../hooks/redux";
 import { setDashboardSearch } from "../../../stores/dashboard";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 //
 import UserIcon from "../userIcon";
@@ -19,6 +19,8 @@ const SPECIAL_PATHS = ["/feedback", "/help", "/faq"];
 export default function AppHeader() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search);
 
   const isMultiLevel =
     location.pathname.split("/").filter((itm) => itm).length > 1;
@@ -34,7 +36,6 @@ export default function AppHeader() {
     }
   };
 
-  const dispatch = useAppDispatch();
 
   //
   const handleSearch = (value: IKeywordOption[]) => {
@@ -51,6 +52,7 @@ export default function AppHeader() {
               size="large"
               className="w-full"
               onSubmit={handleSearch}
+              initialValue={searchedKeywords}
             />
           </div>
         ) : (
