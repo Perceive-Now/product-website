@@ -3,6 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
+import { VerticalThreeDots } from "../../../components/icons";
+import RelatedKeyword from "../../../components/@product/relatedKeyword";
+
+//
+import Tooltip from "../../../components/reusable/tooltip";
 import PageTitle from "../../../components/reusable/page-title";
 import ReactTable from "../../../components/reusable/ReactTable";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
@@ -12,9 +17,9 @@ import { setDashboardSearch } from "../../../stores/dashboard";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 //
-import { VerticalThreeDots } from "../../../components/icons";
 import { getPatents, IPatentItem } from "../../../utils/api/advance-search";
-import Tooltip from "../../../components/reusable/tooltip";
+import { getRelatedKeywords } from "../../../utils/api/dashboard";
+import Pagination from "../../../components/reusable/pagination";
 
 /**
  *
@@ -22,6 +27,9 @@ import Tooltip from "../../../components/reusable/tooltip";
 export default function PatentsPage() {
   const dispatch = useAppDispatch();
   const dashboardSearch = useAppSelector((state) => state.dashboard?.search);
+
+  //
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   //
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
@@ -43,8 +51,22 @@ export default function PatentsPage() {
   const patentsData = isLoading ? [] : patentsDataRaw?.data?.resultsList ?? [];
 
   //
+  const { data: relatedKeywords } = useQuery(
+    ["dashboard-most-related-keywords", ...keywords],
+    async () => {
+      return await getRelatedKeywords(keywords);
+    },
+    { enabled: !!keywords.length }
+  );
+
+  //
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
+  };
+
+  //
+  const gotoPage = (page: number) => {
+    setCurrentPage(page);
   };
 
   //
@@ -105,6 +127,26 @@ export default function PatentsPage() {
 
           <div>
             <ReactTable columnsData={columns} rowsData={patentsData} />
+          </div>
+
+          <div className="flex justify-center mt-7">
+            <Pagination
+              currentPage={currentPage}
+              totalCount={111}
+              gotoPage={gotoPage}
+            />
+          </div>
+
+          <div className="mt-5">
+            <div className="uppercase font-semibold text-primary-900 text-sm mb-2">
+              Related keywords
+            </div>
+
+            <div className="flex flex-wrap gap-x-2 gap-y-1 items-start">
+              {relatedKeywords?.slice(0, 15)?.map((keyword) => (
+                <RelatedKeyword keyword={keyword} key={keyword} />
+              ))}
+            </div>
           </div>
         </div>
       )}

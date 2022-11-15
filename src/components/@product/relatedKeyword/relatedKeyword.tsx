@@ -11,7 +11,9 @@ function RelatedKeyword({ keyword }: IRelatedKeyword) {
         // handleclick
       }}
     >
-      <SearchIcon />
+      <div className="flex-shrink-0">
+        <SearchIcon />
+      </div>
       <span className="block ml-[12px]">{keyword}</span>
     </div>
   );
