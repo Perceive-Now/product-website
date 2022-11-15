@@ -15,6 +15,7 @@ import countryISOMapping from "../../../utils/extra/country-codes";
 import { getPublicationsAndPatentsMap } from "../../../utils/api/map";
 import { ChevronDown } from "../../icons";
 import classNames from "classnames";
+import StatesCodes from "../../../utils/extra/us-states-codes";
 
 /**
  *
@@ -23,11 +24,8 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const [currentMode, setCurrentMode] =
     useState<availableModes>("publicationHeatmap");
 
-  const [selectedCountry, setSelectedCountry] = useState("");
   const [query, setQuery] = useState("");
-
-  //
-  const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   //
   const { data, isLoading } = useQuery(
@@ -38,6 +36,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     { enabled: !!props.keywords.length }
   );
 
+  //
   const formattedData: IWorldMapDataItem[] = Object.entries(
     data?.publications.sortedCount ?? {}
   ).map(([key, value]) => ({
@@ -45,7 +44,17 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     publications: value,
   }));
 
-  const finalData = isLoading ? [] : formattedData;
+  const finalWorldData = isLoading ? [] : formattedData;
+
+  //
+  const usFormatData: IWorldMapDataItem[] = Object.entries(
+    data?.patents?.sortedCount ?? {}
+  ).map(([key, value]) => ({
+    country: StatesCodes[key],
+    patents: value,
+  }));
+
+  const finalUsData = isLoading ? [] : usFormatData;
 
   //
   const pubCountryList = data?.publications.Country_wise_titles ?? [];
@@ -59,6 +68,8 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
       (itm) => itm.Country === selectedCountry
     )?.Paper_titles ?? []
   )?.slice(0, 10);
+
+  const patentsListForUs = (data?.patents?.topStateTitle ?? [])?.slice(0, 20);
 
   //
   useEffect(() => {
@@ -119,7 +130,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
                   <div className="relative mt-1">
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm border border-gray-300">
                       <Combobox.Input
-                        className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+                        className="w-full border-none py-2 pl-2 pr-5 text-sm leading-5 text-gray-900 focus:ring-0"
                         displayValue={(country: any) => countryNames[country]}
                         onChange={(event) => setQuery(event.target.value)}
                         placeholder="Select a country"
@@ -187,19 +198,35 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
                         index !== patentsListForCountry.length - 1,
                     })}
                   >
-                    <span>{itm}</span>
+                    <span className="line-clamp-4">{itm}</span>
                   </div>
                 ))}
               </div>
             </>
           )}
+
+          {currentMode === "patentsHeatmap" &&
+            patentsListForUs.map((itm, index) => (
+              <div
+                key={index}
+                className={classNames("mt-3", {
+                  "pb-3 border-b border-gray-300":
+                    index !== patentsListForUs.length - 1,
+                })}
+              >
+                <span className="text-lg mr-1 font-semibold text-primary-800">
+                  {index + 1}.
+                </span>
+                <span>{itm}</span>
+              </div>
+            ))}
         </div>
 
         <div className="col-span-9 bg-gray-200">
           {currentMode === "publicationHeatmap" ? (
-            <WorldMap type={currentMode} data={finalData} />
+            <WorldMap type={currentMode} data={finalWorldData} />
           ) : (
-            <USMap type="heatmap" data={[]} />
+            <USMap type="heatmap" data={finalUsData} />
           )}
         </div>
       </div>

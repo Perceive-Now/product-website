@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useState } from "react";
+import ReactTooltip from "react-tooltip";
 import {
   ComposableMap,
   Geographies,
@@ -8,7 +9,10 @@ import {
 } from "react-simple-maps";
 
 //
-import { IWorldMapDataItem } from "../world-map/world-map";
+import { LocationIcon } from "../../icons";
+
+//
+import { IWorldMapDataItem, TooltipGroupItem } from "../world-map/world-map";
 
 //
 import geoUrl from "./topology.json";
@@ -50,6 +54,10 @@ export default function USMap(props: IUSMapProps) {
     IWorldMapDataItem | undefined
   >(undefined);
 
+  //
+  const [heatmapHoveredState, setHeatmapHoveredState] = useState<string>("");
+
+  //
   const getFillColor = (geo?: any) => {
     switch (props.type) {
       case "normal":
@@ -57,6 +65,28 @@ export default function USMap(props: IUSMapProps) {
 
       case "federalExperts":
         return "#5C1FC4";
+
+      case "heatmap":
+        const currentStateValue =
+          props.data?.find(
+            (itm) =>
+              itm.country?.toLowerCase() ===
+              geo?.properties?.name?.toLowerCase()
+          )?.patents ?? 0;
+
+        let finalValueToReturn: string = "#D7D7D7";
+        if (currentStateValue === 0) return finalValueToReturn;
+
+        const allValues = getRangeForPatents(true);
+
+        for (let i = 0; i < HEATMAP_SECTIONS; i++) {
+          if (currentStateValue <= allValues[i]) {
+            finalValueToReturn = COLOR_RANGE[i];
+            break;
+          }
+        }
+
+        return finalValueToReturn;
 
       default:
         return "#D7D7D7";
@@ -80,6 +110,44 @@ export default function USMap(props: IUSMapProps) {
   //
   return (
     <div className="overflow-y-hidden h-[610px] relative">
+      {activeMarkerData && (
+        <ReactTooltip id="marker-details">
+          <div>
+            <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
+
+            <div className="flex gap-x-1 items-center">
+              <LocationIcon className="text-gray-400" />
+              <span>{activeMarkerData?.location ?? "-"}</span>
+            </div>
+
+            <div className="mt-2 flex">
+              <TooltipGroupItem
+                title="Patents"
+                value={activeMarkerData.patents}
+              />
+            </div>
+          </div>
+        </ReactTooltip>
+      )}
+
+      {props.type === "heatmap" && heatmapHoveredState && (
+        <ReactTooltip id="country-name">
+          <div className="flex items-center gap-x-0.5">
+            <LocationIcon className="text-gray-400" />
+
+            <p>{heatmapHoveredState}</p>
+          </div>
+
+          <div className="mt-2 flex justify-center gap-x-2">
+            <TooltipGroupItem
+              title="Patents"
+              value={activeMarkerData?.patents}
+              isPercentage
+            />
+          </div>
+        </ReactTooltip>
+      )}
+
       {/* Actual Map */}
       <div className="flex justify-center w-full object-cover">
         <ComposableMap
@@ -87,7 +155,7 @@ export default function USMap(props: IUSMapProps) {
           className="bg-gray-200 h-[610px]"
           projectionConfig={{ scale: 1000 }}
         >
-          <Geographies geography={geoUrl}>
+          <Geographies geography={geoUrl} data-tip="" data-for="country-name">
             {({ geographies }) => (
               <>
                 {geographies.map((geo) => (
@@ -101,6 +169,25 @@ export default function USMap(props: IUSMapProps) {
                         ? { hover: { fill: "#7A89CC" } }
                         : {}
                     }
+                    onMouseEnter={() => {
+                      if (props.type === "heatmap") {
+                        setHeatmapHoveredState(geo?.properties?.name);
+
+                        //
+                        const dataForCurrentState = props.data?.find(
+                          (itm) =>
+                            itm.country?.toLowerCase() ===
+                            geo?.properties?.name?.toLowerCase()
+                        );
+                        setActiveMarkerData(dataForCurrentState);
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      if (props.type === "heatmap") {
+                        setHeatmapHoveredState("");
+                        setActiveMarkerData(undefined);
+                      }
+                    }}
                     fill={getFillColor(geo)}
                     className="focus:outline-none drop-shadow-sm"
                   />
@@ -116,9 +203,17 @@ export default function USMap(props: IUSMapProps) {
                       return (
                         <g key={index + "-name"}>
                           {centroid[0] > -160 && centroid[0] < -67 && (
-                            <Marker coordinates={centroid}>
+                            <Marker
+                              coordinates={centroid}
+                              data-tip=""
+                              data-for="marker-details"
+                              onMouseEnter={() => setActiveMarkerData(marker)}
+                              onMouseLeave={() =>
+                                setActiveMarkerData(undefined)
+                              }
+                            >
                               <circle r={7} fill="red" />
-                              <circle r={5} fill="white" />
+                              <circle r={6} fill="white" />
                             </Marker>
                           )}
                         </g>
