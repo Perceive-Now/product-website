@@ -14,6 +14,38 @@ export async function getPublicationsAndPatentsMap(keywords: string[]) {
 /**
  *
  */
+export async function getCompetitorMapInfo(keywords: string[]) {
+  const response = await axiosInstance.get<ICompetitorMapResponse>(
+    `/dashboard/geo_footprint_patents?q=${keywords.join(",")}`
+  );
+
+  return response.data;
+}
+
+/**
+ *
+ */
+interface IPatentListItem {
+  abstract: string;
+  location: string;
+  title: string;
+}
+
+interface IPatentMapItem {
+  company: string;
+  coordinates: [number, number];
+  count: number;
+  location: string;
+}
+
+interface ICompetitorMapResponse {
+  patentsList: IPatentListItem[];
+  patentsMap: IPatentMapItem[];
+}
+
+/**
+ *
+ */
 interface IPublicationAndPatensMapResponse {
   data: {
     patents: {

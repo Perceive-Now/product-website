@@ -28,17 +28,18 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     { enabled: !!props.keywords.length }
   );
 
-  const mapData = (
-    (currentMode === "basicPublication" ? data?.industry : data?.academic) ?? []
-  )
-    ?.filter((itm) => itm.coordinates[0] !== 0 && itm.coordinates[1] !== 0)
-    ?.map((itm) => ({
-      name: [itm.firstName, itm.lastName].join(" "),
-      location: itm.locationText,
-      patents: itm.patentsCount,
-      publications: itm.publicationsCount,
-      coordinate: itm.coordinates,
-    }));
+  // const mapData = (
+  //   (currentMode === "basicPublication" ? data?.industry : data?.academic) ?? []
+  // )
+  //   ?.filter((itm) => itm.coordinates[0] !== 0 && itm.coordinates[1] !== 0)
+  //   ?.map((itm) => ({
+  //     name: [itm.firstName, itm.lastName].join(" "),
+  //     location: itm.locationText,
+  //     patents: itm.patentsCount,
+  //     publications: itm.publicationsCount,
+  //     coordinate: itm.coordinates,
+  //   }));
+  const mapData: any[] = [];
 
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">

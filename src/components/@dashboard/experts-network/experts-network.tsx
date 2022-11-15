@@ -6,7 +6,7 @@ import PageTitle from "../../reusable/page-title";
 import RadioButtons from "../../reusable/radio-buttons";
 
 //
-import { getExpertsTable } from "../../../utils/api/dashboard";
+import { getExpertsTable, IExpertModeItem } from "../../../utils/api/dashboard";
 
 /*
  *
@@ -19,15 +19,20 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
   const { data, isLoading } = useQuery(
     ["footprint-for-experts", ...props.keywords],
     async () => {
-      return await getExpertsTable(props.keywords);
+      const data = await getExpertsTable(props.keywords);
+      console.log(data, "inside react query");
+      return data;
     },
     { enabled: !!props.keywords.length }
   );
 
-  const _tableData = isLoading
-    ? []
-    : (expertMode === "industryExperts" ? data?.industry : data?.academic) ??
-      [];
+  const _tableData: IExpertModeItem = isLoading
+    ? {}
+    : (expertMode === "industryExperts"
+        ? data?.industry
+        : expertMode === "academicExperts"
+        ? data?.academic
+        : data?.federal) ?? {};
 
   const handleModeChange = (mode: string) => {
     setExpertMode(mode);
@@ -67,15 +72,18 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
               </div>
             </div>
 
-            {_tableData.map((itm, index) => (
-              <ListItem
-                name={[itm.firstName, itm.lastName].join(" ")}
-                organization={itm.companyName}
-                value={itm.patentsCount}
-                index={index}
-                key={index}
-              />
-            ))}
+            {_tableData?.patents
+              ?.sort((a, b) => b.count - a.count)
+              ?.slice(0, 5)
+              ?.map((itm, index) => (
+                <ListItem
+                  name={itm.name}
+                  organization={itm.company}
+                  value={itm.count}
+                  index={index}
+                  key={index}
+                />
+              ))}
           </div>
 
           <div>
@@ -91,15 +99,18 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
               </div>
             </div>
 
-            {_tableData.map((itm, index) => (
-              <ListItem
-                name={[itm.firstName, itm.lastName].join(" ")}
-                organization={itm.companyName}
-                value={itm.publicationsCount}
-                index={index}
-                key={index}
-              />
-            ))}
+            {_tableData?.publications
+              ?.sort((a, b) => b.count - a.count)
+              ?.slice(0, 5)
+              ?.map((itm, index) => (
+                <ListItem
+                  name={itm.name}
+                  organization={itm.company}
+                  value={itm.count}
+                  index={index}
+                  key={index}
+                />
+              ))}
           </div>
         </div>
       </div>
@@ -126,8 +137,12 @@ const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
 function ListItem(props: IListItemProps) {
   return (
     <div className="grid grid-cols-11 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
-      <div className="col-span-5">{props.name}</div>
-      <div className="col-span-5">{props.organization ?? "-"}</div>
+      <div className="col-span-5 flex items-center line-clamp-2">
+        {props.name ?? "-"}
+      </div>
+      <div className="col-span-5 flex items-center">
+        {props.organization ?? "-"}
+      </div>
       <div className="col-span-1 pr-1 flex items-center justify-center">
         {props.value?.toLocaleString() ?? "-"}
       </div>
