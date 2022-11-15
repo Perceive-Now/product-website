@@ -137,7 +137,9 @@ const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
 function ListItem(props: IListItemProps) {
   return (
     <div className="grid grid-cols-11 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
-      <div className="col-span-5 flex items-center">{props.name ?? "-"}</div>
+      <div className="col-span-5 flex items-center line-clamp-2">
+        {props.name ?? "-"}
+      </div>
       <div className="col-span-5 flex items-center">
         {props.organization ?? "-"}
       </div>

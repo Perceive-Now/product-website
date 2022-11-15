@@ -17,9 +17,9 @@ function ListItem(props: IListItemProps) {
       >
         0{props.index + 1}
       </div>
-      <div className="col-span-10">{props.name}</div>
-      <div className="col-span-1 pr-1 flex items-center justify-end">
-        {props.value.toLocaleString()}
+      <div className="col-span-9">{props.name}</div>
+      <div className="col-span-2 pr-1 flex items-center justify-end">
+        {props.value?.toLocaleString()}
       </div>
     </div>
   );
