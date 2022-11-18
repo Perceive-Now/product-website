@@ -1,6 +1,9 @@
 import ReactSelect from "react-select";
 
 //
+import { getTimeperiod } from "../../../utils/helpers";
+
+//
 import { ChevronDown } from "../../icons";
 
 //
@@ -10,9 +13,12 @@ import "./time-period.css";
  *
  **/
 export default function TimePeriod({
-  timePeriods,
+  startYear,
+  endYear,
   handleChange,
-}: ITimePeriod) {
+}: ITimePeriodProps) {
+  const timePeriods = getTimeperiod(startYear, endYear);
+
   return (
     <ReactSelect
       className="time-period-select"
@@ -49,12 +55,14 @@ export default function TimePeriod({
   );
 }
 
-type timePeriodType = {
+type TimePeriodType = {
   label: string;
   value: string;
 };
 
-interface ITimePeriod {
-  timePeriods?: timePeriodType[];
+interface ITimePeriodProps {
+  startYear?: number;
+  endYear?: number;
+  timePeriods?: TimePeriodType[];
   handleChange?: (value: any) => void;
 }
