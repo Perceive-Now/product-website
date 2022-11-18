@@ -58,12 +58,16 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 gap-x-3">
         <div className="col-span-1">
           <ScholaryPublication
+            key={joinedKeywords}
             keywords={searchedKeywords.map((kwd) => kwd.value)}
           />
         </div>
 
         <div className="col-span-1">
-          <Patents keywords={searchedKeywords.map((kwd) => kwd.value)} />
+          <Patents
+            key={joinedKeywords}
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
       </div>
 
@@ -98,7 +102,10 @@ export default function DashboardPage() {
       {/* 8th row; expert chart and related keywords */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <ExpertsGraph keywords={searchedKeywords.map((kwd) => kwd.value)} />
+          <ExpertsGraph
+            key={joinedKeywords}
+            keywords={searchedKeywords.map((kwd) => kwd.value)}
+          />
         </div>
 
         <div className="col-span-1">
@@ -119,12 +126,14 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
           <AcademicResearchTrends
+            key={joinedKeywords}
             keywords={searchedKeywords.map((kwd) => kwd.value)}
           />
         </div>
 
         <div className="col-span-1">
           <AcademicResearchFundings
+            key={joinedKeywords}
             keywords={searchedKeywords.map((kwd) => kwd.value)}
           />
         </div>
@@ -136,7 +145,9 @@ export default function DashboardPage() {
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <TopFunderCharts keywords={keywordValue} />
+          <TopFunderCharts 
+            key={joinedKeywords}
+            keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">
