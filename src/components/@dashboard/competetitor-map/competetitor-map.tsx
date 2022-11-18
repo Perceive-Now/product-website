@@ -29,7 +29,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
   const finalData: IWorldMapDataItem[] = isLoading
     ? []
     : data?.patentsMap?.map((itm) => ({
-        coordinate: [itm.coordinates[1], itm.coordinates[0]],
+        coordinate: itm.coordinates,
         name: itm.company,
         location: itm.location,
         patents: itm.count,

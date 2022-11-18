@@ -12,6 +12,7 @@ import {
 
 //
 import {
+  BriefcaseIcon,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -240,27 +241,34 @@ export default function WorldMap(props: ISvgMapProps) {
           <div>
             <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
 
+            {activeMarkerData?.employment && (
+              <div className="flex gap-x-1 items-center mb-[0.25rem]">
+                <BriefcaseIcon className="text-gray-400" />
+                <span>{activeMarkerData?.employment}</span>
+              </div>
+            )}
+
             <div className="flex gap-x-1 items-center">
               <LocationIcon className="text-gray-400" />
               <span>{activeMarkerData?.location ?? "-"}</span>
             </div>
 
             <div className="mt-2 flex gap-x-2">
-              {!props.isExpertMap && (
+              {activeMarkerData.experts && (
                 <TooltipGroupItem
                   title="Experts"
                   value={activeMarkerData.experts}
                 />
               )}
 
-              {(props.type === "basicPatents" || props.isExpertMap) && (
+              {activeMarkerData.patents && (
                 <TooltipGroupItem
                   title="Patents"
                   value={activeMarkerData.patents}
                 />
               )}
 
-              {(props.type === "basicPublication" || props.isExpertMap) && (
+              {activeMarkerData.publications && (
                 <TooltipGroupItem
                   title="Publications"
                   value={activeMarkerData.publications}
@@ -410,7 +418,7 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseLeave={() => setActiveMarkerData(undefined)}
                 >
                   <circle r={isZoomed ? 15 : 7} fill="red" />
-                  <circle r={isZoomed ? 13 : 5} fill="white" />
+                  <circle r={isZoomed ? 13 : 6} fill="white" />
                 </Marker>
               ))}
         </ComposableMap>
@@ -447,7 +455,7 @@ export default function WorldMap(props: ISvgMapProps) {
 
 export function TooltipGroupItem(props: ITooltipGroupItemProp) {
   return (
-    <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow">
+    <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow flex-grow">
       <p className="font-bold text-lg">
         <span>{props.value ?? "-"}</span>
         {props.isPercentage && props.value && "%"}
@@ -468,6 +476,7 @@ export interface IWorldMapDataItem {
   name?: string;
   country?: string;
   location?: string;
+  employment?: string;
   patents?: number;
   publications?: number;
   experts?: number;

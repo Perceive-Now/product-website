@@ -12,10 +12,11 @@ import PublicationItem from "../../../components/@product/publicationItem";
 
 //
 import { setDashboardSearch } from "../../../stores/dashboard";
-import { getPublications } from "../../../utils/api/advance-search";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 //
+import { getRelatedKeywords } from "../../../utils/api/dashboard";
+import { getPublications } from "../../../utils/api/advance-search";
 
 /**
  *
@@ -33,12 +34,20 @@ export default function PublicationsPage() {
   //
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data: publicationsDataRaw, isLoading } = useQuery(
+  const { data: publicationsDataRaw } = useQuery(
     ["advanced-search-publications", ...keywords],
     async () => {
       return await getPublications(keywords);
     },
-    { enabled: !!searchedKeywords?.length }
+    { enabled: !!keywords?.length }
+  );
+
+  const { data: relatedKeywords } = useQuery(
+    ["dashboard-most-related-keywords", ...keywords],
+    async () => {
+      return await getRelatedKeywords(keywords);
+    },
+    { enabled: !!keywords.length }
   );
 
   const publicationsData = ([] as any)
@@ -50,11 +59,6 @@ export default function PublicationsPage() {
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
   };
-
-  const [relatedKeywords] = useState<string[]>([
-    "sar-cov 2",
-    "minimally invasive surgery murgery",
-  ]);
 
   const gotoPage = (page: number) => {
     setCurrentPage(page);
@@ -103,8 +107,8 @@ export default function PublicationsPage() {
                 Related keywords
               </div>
 
-              <div className="flex items-start flex-col">
-                {relatedKeywords.map((keyword) => (
+              <div className="flex flex-wrap gap-x-2 gap-y-1 items-start">
+                {relatedKeywords?.slice(0, 10)?.map((keyword) => (
                   <RelatedKeyword keyword={keyword} key={keyword} />
                 ))}
               </div>
