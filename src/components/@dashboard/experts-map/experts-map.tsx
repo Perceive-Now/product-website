@@ -104,7 +104,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
 
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 overflow-y-scroll">
-          {mapData?.map((item, index) => (
+          {mapData?.slice(0, 100)?.map((item, index) => (
             <div
               key={index}
               className={classNames("border-b border-gray-300 mr-3", {
