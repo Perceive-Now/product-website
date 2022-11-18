@@ -1,5 +1,8 @@
 import dayjs from 'dayjs';
 
+//
+import { DEFAULT_TIME_PERIOD_END_YEAR, DEFAULT_TIME_PERIOD_START_YEAR, YEAR_DIFFERENCE } from './constants';
+
 /**
  *
  */
@@ -41,22 +44,23 @@ interface IFormatNumberOptions {
   isCurrency?: boolean;
 }
 
-export const getTimeperiod = (start?: string, end?: string) => {
-  const START_YEAR = start ? String(start) : "1990";
-  const YEAR_DIFFERENCE = 4;
+export const getTimeperiod = (start?: number, end?: number) => {
+  const START_YEAR = start ? String(start) : DEFAULT_TIME_PERIOD_START_YEAR;
 
-  let finalYear = end ? String(end) : "2021";
+  let finalYear = end ? String(end) : DEFAULT_TIME_PERIOD_END_YEAR;
 
   let timeperiodArray = [];
 
   while (finalYear > START_YEAR) {
-    let endYear = dayjs(finalYear)
+    const endYear = dayjs(finalYear)
       .subtract(YEAR_DIFFERENCE, "year")
       .format("YYYY");
+    const timeperiod = `${endYear}-${finalYear}`;
     timeperiodArray.push({
-      label: `${endYear}-${finalYear}`,
-      value: `${endYear}-${finalYear}`,
+      label: timeperiod,
+      value: timeperiod,
     });
+
     finalYear = dayjs(endYear)
       .subtract(1, "year")
       .format("YYYY");

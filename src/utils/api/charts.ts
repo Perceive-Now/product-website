@@ -1,4 +1,5 @@
 import axiosInstance from "../axios";
+import { DEFAULT_TIME_PERIOD_START_YEAR, DEFAULT_TIME_PERIOD_END_YEAR } from "../constants";
 
 /**
  *
@@ -11,7 +12,7 @@ export async function getScholaryPublications(keywords: string[]) {
   return response.data.data.chart.sort((a, b) => a.year - b.year);
 }
 
-export async function getPatentsPieChart(keywords: string[], timeperiod?: string) {
+export async function getPatentsPieChart(keywords: string[]) {
   try {
     const response = await axiosInstance.get<IPatentsPieResponse>(
       `/dashboard/patents_pie_chart?q=${keywords.join(",")}`
@@ -20,15 +21,20 @@ export async function getPatentsPieChart(keywords: string[], timeperiod?: string
     let results = response.data.data.chart;
     results = results.sort((a, b) => a.name < b.name ? -1 : 1);
 
+    const startYear = results.at(0)?.name;
+    const endYear = results.at(-1)?.name;
+
     return {
       patents: results,
+      startYear: startYear,
+      endYear: endYear
     }
   }
   catch (err) {
     return {
       patents: [],
-      startYear: '',
-      lastYear: ''
+      startYear: DEFAULT_TIME_PERIOD_START_YEAR,
+      lastYear: DEFAULT_TIME_PERIOD_END_YEAR
     }
   }
 

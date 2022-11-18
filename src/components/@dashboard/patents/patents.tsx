@@ -15,12 +15,15 @@ import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 import NoKeywordMessage from "../../reusable/no-keyword";
 
 //
-import { getTimeperiod } from "../../../utils/helpers";
 import { getPatentsPieChart, IPatent } from "../../../utils/api/charts";
 
 //
 import { LoadingIcon } from "../../icons";
 import NoDataMessage from "../../reusable/no-data";
+import {
+  DEFAULT_TIME_PERIOD_END_YEAR,
+  YEAR_DIFFERENCE,
+} from "../../../utils/constants";
 
 /**
  *
@@ -43,8 +46,6 @@ export default function Patents(props: IPatentsProps) {
     { enabled: !!props.keywords.length }
   );
 
-  const timeperiod = getTimeperiod();
-
   const hasDataChecker = (patentsList: IPatent[]) => {
     if (!patentsList) return (hasNoData = true);
 
@@ -66,13 +67,26 @@ export default function Patents(props: IPatentsProps) {
   };
 
   const chartDataFormatHelper = (patents: IPatent[]) => {
-    let startYear = selectedTimeperiod?.split("-")[0] || "2018";
-    let endYear = selectedTimeperiod?.split("-")[1] || "2022";
+    let startYear =
+      +selectedTimeperiod?.split("-")[0] ||
+      DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
+    let endYear =
+      +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
 
-    let patentsList = patents.filter((data) => {
-      let year = String(data.name);
-      return year >= startYear && year <= endYear;
-    });
+    let patentsList: IPatent[] = [];
+    for (let i = startYear; i <= endYear; i++) {
+      const patentData = patents.find((patent) => patent.name === i);
+      if (patentData) {
+        patentsList.push(patentData);
+      } else {
+        patentsList.push({
+          name: i,
+          percentage: 0,
+          value: 0,
+        });
+      }
+    }
+
     hasDataChecker(patentsList);
     return patentsList;
   };
@@ -141,7 +155,8 @@ export default function Patents(props: IPatentsProps) {
               <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
                 <div>
                   <TimePeriod
-                    timePeriods={timeperiod}
+                    startYear={data?.startYear}
+                    endYear={data?.endYear}
                     handleChange={handleSelectedTimeperiodChange}
                   />
                 </div>
