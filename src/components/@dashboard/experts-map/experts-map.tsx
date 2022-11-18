@@ -2,14 +2,17 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
-import WorldMap from "../../@product/world-map";
+import USMap from "../../@product/us-map";
+import WorldMap, {
+  IWorldMapDataItem,
+} from "../../@product/world-map/world-map";
 
 //
 import PageTitle from "../../reusable/page-title";
 
 //
-import { getExpertsTable } from "../../../utils/api/dashboard";
-import USMap from "../../@product/us-map";
+import { getExpertsMapInfo } from "../../../utils/api/map";
+import classNames from "classnames";
 
 /**
  *
@@ -18,28 +21,30 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   const [currentMode, setCurrentMode] =
     useState<availableModes>("basicPublication");
 
-  const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
+  // const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
 
-  const { data, isLoading } = useQuery(
-    ["footprint-for-experts", ...props.keywords],
+  const { data } = useQuery(
+    ["footprint-for-experts-map", ...props.keywords],
     async () => {
-      return await getExpertsTable(props.keywords);
+      return await getExpertsMapInfo(props.keywords);
     },
     { enabled: !!props.keywords.length }
   );
 
-  // const mapData = (
-  //   (currentMode === "basicPublication" ? data?.industry : data?.academic) ?? []
-  // )
-  //   ?.filter((itm) => itm.coordinates[0] !== 0 && itm.coordinates[1] !== 0)
-  //   ?.map((itm) => ({
-  //     name: [itm.firstName, itm.lastName].join(" "),
-  //     location: itm.locationText,
-  //     patents: itm.patentsCount,
-  //     publications: itm.publicationsCount,
-  //     coordinate: itm.coordinates,
-  //   }));
-  const mapData: any[] = [];
+  const mapData: IWorldMapDataItem[] =
+    (
+      (currentMode === "basicPatents"
+        ? data?.industryExpertMap
+        : currentMode === "basicPublication"
+        ? data?.academicExpertMap
+        : data?.federalExpertMap) ?? []
+    ).map((itm) => ({
+      name: itm.name,
+      location: itm.location,
+      patents: itm.patentcount,
+      coordinate: itm.coordinates,
+      employment: itm.employment,
+    })) ?? [];
 
   return (
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
@@ -99,16 +104,32 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
 
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 overflow-y-scroll">
-          <div style={{ height: 999 }}>
-            {/* Scrollable list goes here... need to display items here */}
-          </div>
+          {mapData?.map((item, index) => (
+            <div
+              key={index}
+              className={classNames("border-b border-gray-300 mr-3", {
+                "mt-2": index !== 0,
+              })}
+            >
+              <p>
+                <span className="font-semibold text-primary-800">
+                  {index + 1}.{" "}
+                </span>
+                <span className="font-semibold">{item.name}</span>
+              </p>
+              <div className="mt-1 mb-2 text-sm">
+                <p className="line-clamp-4">{item.employment}</p>
+                <p className="mt-[0.25rem]">{item.location}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="col-span-9 bg-gray-200">
           {currentMode === "federalExperts" ? (
-            <USMap type="federalExperts" data={mapData ?? []} />
+            <USMap type="federalExperts" data={mapData} />
           ) : (
-            <WorldMap type={currentMode} data={mapData ?? []} />
+            <WorldMap type={currentMode} data={mapData} />
           )}
         </div>
       </div>
