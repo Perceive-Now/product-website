@@ -28,7 +28,7 @@ import NoDataMessage from "../../reusable/no-data";
 export default function Patents(props: IPatentsProps) {
   const navigate = useNavigate();
 
-  const colorsArray = ["#B6A2D8", "#7F4BD8", "#442873"];
+  const colorsArray = ["#B6A2D8", "#7F4BD8", "#442873", "#d6d6d6", "#b5a2d8"];
 
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
   const [selectedTimeperiod, setSelectedTimeperiod] = useState("");

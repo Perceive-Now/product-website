@@ -9,7 +9,10 @@ import "./time-period.css";
 /*
  *
  **/
-export default function TimePeriod({ timePeriods, handleChange }: ITimePeriod) {
+export default function TimePeriod({
+  timePeriods,
+  handleChange,
+}: ITimePeriod) {
   return (
     <ReactSelect
       className="time-period-select"

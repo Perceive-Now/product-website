@@ -44,26 +44,23 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
   const chartData = data?.fundings ?? [];
 
-  const hasDataChecker = () => {
-    if (!chartData) return (hasNoData = true);
+  if (!chartData) hasNoData = true;
 
-    if (chartData.length < 1) return (hasNoData = true);
+  if (chartData.length < 1) hasNoData = true;
 
-    let hasNoDataFlag = true;
+  let hasNoDataFlag = true;
 
-    chartData.forEach((cD) => {
-      if (cD.amount > 0) {
-        hasNoDataFlag = false;
-      }
-    });
-
-    if (hasNoDataFlag) {
-      hasNoData = true;
-    } else {
-      hasNoData = false;
+  chartData.forEach((cD) => {
+    if (cD.amount > 0) {
+      hasNoDataFlag = false;
     }
-  };
-  hasDataChecker();
+  });
+
+  if (hasNoDataFlag) {
+    hasNoData = true;
+  } else {
+    hasNoData = false;
+  }
 
   const timeperiod = useMemo(() => getTimeperiod(), []);
 
