@@ -169,7 +169,7 @@ export default function USMap(props: IUSMapProps) {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    stroke="white"
+                    stroke="gray"
                     strokeWidth={0.25}
                     style={
                       props.type === "normal"

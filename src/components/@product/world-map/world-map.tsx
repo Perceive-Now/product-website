@@ -366,7 +366,7 @@ export default function WorldMap(props: ISvgMapProps) {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  stroke="white"
+                  stroke="gray"
                   strokeWidth={isZoomed ? 1 : 0.5}
                   style={{ hover: { fill: getCountryHoverColor(geo) } }}
                   fill={getFillColor(geo)}
