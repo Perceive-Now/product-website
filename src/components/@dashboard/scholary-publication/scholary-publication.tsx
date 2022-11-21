@@ -172,7 +172,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
               )}
 
               <div className="mt-4">
-                <Link to="/experts">Read more</Link>
+                <Link to="/publications">Read more</Link>
               </div>
             </>
           )}

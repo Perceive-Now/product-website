@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -20,31 +21,41 @@ export default function TodayHighlights(props: IHighlightsProps) {
   );
 
   const finalData = [
-    { id: "patentsCount", name: "Patents", value: data?.patentsCount },
+    {
+      id: "patentsCount",
+      name: "Patents",
+      value: data?.patentsCount,
+      link: "/patents",
+    },
     {
       id: "industryPublicationsCount",
       name: "Industry Publications",
       value: data?.industryPublicationsCount,
+      link: "/publications",
     },
     {
       id: "industryExpertsCount",
       name: "Industry Experts",
       value: data?.industryExpertsCount,
+      link: "/experts",
     },
     {
       id: "fundingAmount",
       name: "Funding Amount (USD)",
       value: data?.fundingAmount,
+      link: "/funders",
     },
     {
       id: "academicPublicationsCount",
       name: "Academic Publications",
       value: data?.academicPublicationsCount,
+      link: "/publications",
     },
     {
       id: "academicExpertsCount",
       name: "Academic Experts",
       value: data?.academicExpertsCount,
+      link: "/experts",
     },
   ];
 
@@ -85,7 +96,9 @@ export default function TodayHighlights(props: IHighlightsProps) {
               <hr className="border-[#D9D9D9]" />
 
               <div className="text-center pt-2">
-                <div className="cursor-pointer text-purple-600">View All</div>
+                <div className="cursor-pointer text-purple-600">
+                  <Link to={item.link}>View All</Link>
+                </div>
               </div>
             </div>
           </div>
