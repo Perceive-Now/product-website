@@ -54,7 +54,7 @@ export default function TopFundersList(props: ITopFundersListProps) {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
         title="List of top 5 funders"
-        titleClass="font-bold"
+        titleClass="font-semibold"
         info={`This list was extracted from "X" total number of funders worldwide`}
       />
 

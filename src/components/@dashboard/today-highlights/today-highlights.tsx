@@ -59,7 +59,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
     <div className="w-100 border bg-white rounded-lg p-3 mt-3 shadow">
       <PageTitle
         title="Today's Highlights"
-        titleClass="font-bold"
+        titleClass="font-semibold"
         info="Global Technology Trends shows a quick view of number of patents, publication, experts and funding in your area of interest"
       />
 

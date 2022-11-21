@@ -47,7 +47,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         <PageTitle
           title="Experts"
           subTitle={`Top list of experts with maximum number of publications and patents `}
-          titleClass="font-bold"
+          titleClass="font-semibold"
           sideTitleOption={
             <ExpertsMode
               activeMode={expertMode}

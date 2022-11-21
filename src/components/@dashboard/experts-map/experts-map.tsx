@@ -50,7 +50,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
       <PageTitle
         info={`This list was extracted from "X" total number of experts and researchers worldwide`}
-        titleClass="font-bold"
+        titleClass="font-semibold"
         title="Geographical footprint of experts"
         children={
           <div className="flex justify-between">
