@@ -366,7 +366,7 @@ export default function WorldMap(props: ISvgMapProps) {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  stroke="white"
+                  stroke="gray"
                   strokeWidth={isZoomed ? 1 : 0.5}
                   style={{ hover: { fill: getCountryHoverColor(geo) } }}
                   fill={getFillColor(geo)}
@@ -417,8 +417,8 @@ export default function WorldMap(props: ISvgMapProps) {
                   onMouseEnter={() => setActiveMarkerData(marker)}
                   onMouseLeave={() => setActiveMarkerData(undefined)}
                 >
-                  <circle r={isZoomed ? 15 : 7} fill="red" />
-                  <circle r={isZoomed ? 13 : 6} fill="white" />
+                  <circle r={isZoomed ? 10 : 7} fill="red" />
+                  <circle r={isZoomed ? 8 : 6} fill="white" />
                 </Marker>
               ))}
         </ComposableMap>

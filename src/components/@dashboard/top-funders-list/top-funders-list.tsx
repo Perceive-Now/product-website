@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -10,6 +11,8 @@ import NoKeywordMessage from "../../reusable/no-keyword";
 //
 import { formatNumber } from "../../../utils/helpers";
 import { getTop5Funders } from "../../../utils/api/dashboard";
+
+//
 import { LoadingIcon } from "../../icons";
 
 /*
@@ -54,11 +57,11 @@ export default function TopFundersList(props: ITopFundersListProps) {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
         title="List of top 5 funders"
-        titleClass="font-bold"
+        titleClass="font-semibold"
         info={`This list was extracted from "X" total number of funders worldwide`}
       />
 
-      <div className="mt-2">
+      <div>
         {props.keywords.length > 0 && (
           <>
             {isLoading && (
@@ -69,7 +72,7 @@ export default function TopFundersList(props: ITopFundersListProps) {
 
             {!isLoading && (
               <>
-                <div className="h-[300px]">
+                <div className="h-[300px] mt-5">
                   <ReactTable
                     columnsData={columns}
                     rowsData={data}
@@ -78,7 +81,7 @@ export default function TopFundersList(props: ITopFundersListProps) {
                 </div>
 
                 <div className="text-primary-600 mt-4 cursor-pointer">
-                  Read more
+                  <Link to="/">Read more</Link>
                 </div>
               </>
             )}

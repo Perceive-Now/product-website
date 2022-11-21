@@ -166,9 +166,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       {activeChart === "donut" && <RadialChart data={radialData} />}
 
       <div className="mt-4">
-        <div className="mt-4">
-          <Link to="#">Read more</Link>
-        </div>
+        <Link to="/publications">Read more</Link>
       </div>
     </div>
   );

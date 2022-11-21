@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -8,10 +9,12 @@ import ScatterChart from "../../@product/scatter-chart";
 
 //
 import PageTitle from "../../reusable/page-title";
+import NoDataMessage from "../../reusable/no-data";
 import TimePeriod from "../../reusable/time-period";
 import NoKeywordMessage from "../../reusable/no-keyword";
-import { ChartType } from "../../reusable/chart-buttons";
-import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
+import ChartButtons, {
+  ChartType,
+} from "../../reusable/chart-buttons/chart-buttons";
 
 //
 import { getTimeperiod } from "../../../utils/helpers";
@@ -19,9 +22,6 @@ import { getTopFundingChart } from "../../../utils/api/charts";
 
 //
 import { LoadingIcon } from "../../icons";
-import NoDataMessage from "../../reusable/no-data";
-
-//
 
 /**
  *
@@ -106,24 +106,24 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
       {props.keywords.length > 0 && (
         <>
-          <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
-            <div>
-              <TimePeriod
-                timePeriods={timeperiod}
-                handleChange={handleTimePeriodChange}
-              />
-            </div>
-
-            <div className="flex items-center">
-              <ChartButtons
-                activeChart={activeChart}
-                setActiveChart={setActiveChart}
-              />
-            </div>
-          </div>
-
           {!isLoading && (
             <>
+              <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
+                <div>
+                  <TimePeriod
+                    timePeriods={timeperiod}
+                    handleChange={handleTimePeriodChange}
+                  />
+                </div>
+
+                <div className="flex items-center">
+                  <ChartButtons
+                    activeChart={activeChart}
+                    setActiveChart={setActiveChart}
+                  />
+                </div>
+              </div>
+
               {hasNoData && (
                 <div className="flex h-full justify-center items-center">
                   <NoDataMessage years={selectedTimeperiod} />
@@ -147,12 +147,12 @@ export default function TopFunderCharts(props: ITopFunderProps) {
                   {activeChart === "scatter" && (
                     <ScatterChart data={finalScatterData} legendY="Fundings" />
                   )}
-
-                  <div className="text-primary-600 mt-4 cursor-pointer">
-                    Read more
-                  </div>
                 </>
               )}
+
+              <div className="text-primary-600 mt-4 cursor-pointer">
+                <Link to="/">Read more</Link>
+              </div>
             </>
           )}
 
