@@ -156,7 +156,6 @@ export default function Patents(props: IPatentsProps) {
                 <div>
                   <TimePeriod
                     startYear={data?.startYear}
-                    endYear={data?.endYear}
                     handleChange={handleSelectedTimeperiodChange}
                   />
                 </div>

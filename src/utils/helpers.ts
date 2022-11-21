@@ -44,10 +44,10 @@ interface IFormatNumberOptions {
   isCurrency?: boolean;
 }
 
-export const getTimeperiod = (start?: number, end?: number) => {
+export const getTimeperiod = (start?: number) => {
   const START_YEAR = start ? String(start) : DEFAULT_TIME_PERIOD_START_YEAR;
 
-  let finalYear = end ? String(end) : DEFAULT_TIME_PERIOD_END_YEAR;
+  let finalYear = `${DEFAULT_TIME_PERIOD_END_YEAR}`;
 
   let timeperiodArray = [];
 

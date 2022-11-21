@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -14,12 +14,18 @@ import { ChartType } from "../../reusable/chart-buttons";
 import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
 
 //
-import { getTimeperiod } from "../../../utils/helpers";
-import { getTopFundingChart } from "../../../utils/api/charts";
+import {
+  getTopFundingChart,
+  ITopFundingChart,
+} from "../../../utils/api/charts";
 
 //
 import { LoadingIcon } from "../../icons";
 import NoDataMessage from "../../reusable/no-data";
+import {
+  DEFAULT_TIME_PERIOD_END_YEAR,
+  YEAR_DIFFERENCE,
+} from "../../../utils/constants";
 
 //
 
@@ -37,12 +43,37 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   const { data, isLoading } = useQuery(
     ["top-funder-charts", ...props.keywords, selectedTimeperiod],
     async () => {
-      return await getTopFundingChart(props.keywords, selectedTimeperiod);
+      return await getTopFundingChart(props.keywords);
     },
     { enabled: !!props.keywords.length }
   );
 
-  const chartData = data?.fundings ?? [];
+  const chartDataFormatHelper = (funders: ITopFundingChart[]) => {
+    let startYear =
+      +selectedTimeperiod?.split("-")[0] ||
+      DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
+    let endYear =
+      +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
+
+    let funderList: ITopFundingChart[] = [];
+    for (let i = startYear; i <= endYear; i++) {
+      const funderData = funders.find((funder) => funder.year === i);
+      if (funderData) {
+        funderList.push(funderData);
+      } else {
+        funderList.push({
+          year: i,
+          amount: 0,
+        });
+      }
+    }
+
+    return funderList;
+  };
+
+  const chartData = data?.fundings
+    ? chartDataFormatHelper(data?.fundings) ?? []
+    : [];
 
   if (!chartData) hasNoData = true;
 
@@ -61,8 +92,6 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   } else {
     hasNoData = false;
   }
-
-  const timeperiod = useMemo(() => getTimeperiod(), []);
 
   const handleTimePeriodChange = (value: any) => {
     setSelectedTimeperiod(value.value);
@@ -106,7 +135,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
           <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
             <div>
               <TimePeriod
-                timePeriods={timeperiod}
+                startYear={data?.startYear}
                 handleChange={handleTimePeriodChange}
               />
             </div>

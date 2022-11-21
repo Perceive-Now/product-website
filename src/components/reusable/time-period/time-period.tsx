@@ -14,20 +14,19 @@ import "./time-period.css";
  **/
 export default function TimePeriod({
   startYear,
-  endYear,
   handleChange,
 }: ITimePeriodProps) {
-  const timePeriods = getTimeperiod(startYear, endYear);
+  const timePeriods = getTimeperiod(startYear);
 
   return (
     <ReactSelect
       className="time-period-select"
       classNamePrefix="select"
-      defaultValue={{ label: "View all periods", value: "" }}
       components={{
         DropdownIndicator: () => <ChevronDown className="text-primary-600" />,
         IndicatorSeparator: () => null,
       }}
+      defaultValue={timePeriods[0]}
       name="time-period"
       options={timePeriods}
       isSearchable={false}

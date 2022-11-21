@@ -70,8 +70,8 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     return expertsList;
   };
 
-  const chartData = expertsChartData
-    ? chartDataFormatHelper(expertsChartData) ?? []
+  const chartData = expertsChartData?.experts
+    ? chartDataFormatHelper(expertsChartData.experts) ?? []
     : [];
 
   //
@@ -161,7 +161,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
               <div className="pt-1 flex justify-end items-center h-5">
                 <div className="flex items-center">
                   <TimePeriod
-                    timePeriods={timeperiod}
+                    startYear={expertsChartData?.startYear}
                     handleChange={handleTimePeriodChange}
                   />
 
