@@ -9,7 +9,7 @@ import {
 } from "react-simple-maps";
 
 //
-import { LocationIcon } from "../../icons";
+import { BriefcaseIcon, LocationIcon } from "../../icons";
 
 //
 import { IWorldMapDataItem, TooltipGroupItem } from "../world-map/world-map";
@@ -115,6 +115,13 @@ export default function USMap(props: IUSMapProps) {
           <div>
             <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
 
+            {activeMarkerData?.employment && (
+              <div className="flex gap-x-1 items-center mb-[0.25rem]">
+                <BriefcaseIcon className="text-gray-400" />
+                <span>{activeMarkerData?.employment}</span>
+              </div>
+            )}
+
             <div className="flex gap-x-1 items-center">
               <LocationIcon className="text-gray-400" />
               <span>{activeMarkerData?.location ?? "-"}</span>
@@ -162,11 +169,13 @@ export default function USMap(props: IUSMapProps) {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    stroke="white"
+                    stroke="gray"
                     strokeWidth={0.25}
                     style={
                       props.type === "normal"
                         ? { hover: { fill: "#7A89CC" } }
+                        : props.type === "federalExperts"
+                        ? { hover: { fill: "#B6A2D8" } }
                         : {}
                     }
                     onMouseEnter={() => {
@@ -194,27 +203,33 @@ export default function USMap(props: IUSMapProps) {
                 ))}
 
                 {/* Markers */}
-                {props.type === "normal" &&
+                {props.type !== "heatmap" &&
                   props.data
                     ?.filter((item) => item.coordinate?.length)
                     ?.map((marker, index) => {
-                      const centroid = marker.coordinate ?? [0, 0];
+                      const _centroid = marker.coordinate ?? [0, 0];
+                      const centroid: [number, number] = [
+                        _centroid[1],
+                        _centroid[0],
+                      ];
 
                       return (
                         <g key={index + "-name"}>
                           {centroid[0] > -160 && centroid[0] < -67 && (
-                            <Marker
-                              coordinates={centroid}
-                              data-tip=""
-                              data-for="marker-details"
-                              onMouseEnter={() => setActiveMarkerData(marker)}
-                              onMouseLeave={() =>
-                                setActiveMarkerData(undefined)
-                              }
-                            >
-                              <circle r={7} fill="red" />
-                              <circle r={6} fill="white" />
-                            </Marker>
+                            <>
+                              <Marker
+                                coordinates={centroid}
+                                data-tip=""
+                                data-for="marker-details"
+                                onMouseEnter={() => setActiveMarkerData(marker)}
+                                onMouseLeave={() =>
+                                  setActiveMarkerData(undefined)
+                                }
+                              >
+                                <circle r={7} fill="red" />
+                                <circle r={6} fill="white" />
+                              </Marker>
+                            </>
                           )}
                         </g>
                       );

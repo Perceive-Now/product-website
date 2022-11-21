@@ -138,7 +138,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
       <PageTitle
         title="Number of Experts and Researchers"
-        titleClass="font-bold"
+        titleClass="font-semibold"
         info={`This list was extracted from "X" total number of experts and researchers worldwide`}
       />
 

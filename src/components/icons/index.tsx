@@ -41,6 +41,7 @@ import RadioOnIcon from "./miscs/radio-on";
 import CrossIcon from "./miscs/Cross";
 import ReportIcon from "./miscs/report";
 import MasterReportIcon from "./miscs/masterReport";
+import BriefcaseIcon from "./miscs/Briefcase";
 
 // Charts
 import BarIcon from "./charts/bar";
@@ -87,6 +88,7 @@ export {
   CrossIcon,
   ReportIcon,
   MasterReportIcon,
+  BriefcaseIcon,
   // used in tables
   VerticalThreeDots,
   // Chart icons

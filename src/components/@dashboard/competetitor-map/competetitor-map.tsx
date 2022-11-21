@@ -29,7 +29,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
   const finalData: IWorldMapDataItem[] = isLoading
     ? []
     : data?.patentsMap?.map((itm) => ({
-        coordinate: [itm.coordinates[1], itm.coordinates[0]],
+        coordinate: itm.coordinates,
         name: itm.company,
         location: itm.location,
         patents: itm.count,
@@ -41,7 +41,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
     <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
       <PageTitle
         info={`Geographical footprint of competitors working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
-        titleClass="font-bold"
+        titleClass="font-semibold"
         title="Geographical Footprint of Competitors"
         children={
           <div className="flex justify-between">
