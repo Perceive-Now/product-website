@@ -9,6 +9,10 @@ export const COLORS = [
   "#b5a2d8",
 ];
 
+export const YEAR_DIFFERENCE = 4;
+export const DEFAULT_TIME_PERIOD_END_YEAR = new Date().getFullYear();
+export const DEFAULT_TIME_PERIOD_START_YEAR = DEFAULT_TIME_PERIOD_END_YEAR - 5;
+
 export const TIME_PERIODS = [
   {
     label: "Past 10 years",

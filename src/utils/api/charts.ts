@@ -1,4 +1,5 @@
 import axiosInstance from "../axios";
+import { DEFAULT_TIME_PERIOD_START_YEAR } from "../constants";
 
 /**
  *
@@ -11,7 +12,7 @@ export async function getScholaryPublications(keywords: string[]) {
   return response.data.data.chart.sort((a, b) => a.year - b.year);
 }
 
-export async function getPatentsPieChart(keywords: string[], timeperiod?: string) {
+export async function getPatentsPieChart(keywords: string[]) {
   try {
     const response = await axiosInstance.get<IPatentsPieResponse>(
       `/dashboard/patents_pie_chart?q=${keywords.join(",")}`
@@ -20,26 +21,44 @@ export async function getPatentsPieChart(keywords: string[], timeperiod?: string
     let results = response.data.data.chart;
     results = results.sort((a, b) => a.name < b.name ? -1 : 1);
 
+    const startYear = results.at(0)?.name;
+
     return {
       patents: results,
+      startYear: startYear,
     }
   }
   catch (err) {
     return {
       patents: [],
-      startYear: '',
-      lastYear: ''
+      startYear: DEFAULT_TIME_PERIOD_START_YEAR,
     }
   }
 
 }
 
 export async function getExpertsCountGraph(keywords: string[]) {
-  const response = await axiosInstance.get<IExpertCountResponse>(
-    `/dashboard/number_of_experts_and_researchers?q=${keywords.join(",")}`
-  );
+  try {
+    const response = await axiosInstance.get<IExpertCountResponse>(
+      `/dashboard/number_of_experts_and_researchers?q=${keywords.join(",")}`
+    );
+    let results = response.data.data;
+    results = results.sort((a, b) => a.year < b.year ? -1 : 1);
 
-  return response.data.data;
+    const startYear = results.at(0)?.year;
+
+    return {
+      experts: results,
+      startYear: startYear,
+    }
+  }
+  catch (err) {
+    return {
+      experts: [],
+      startYear: DEFAULT_TIME_PERIOD_START_YEAR,
+
+    }
+  }
 }
 
 export async function getAcademicResearchFundingChart(keywords: string[]) {
@@ -58,27 +77,32 @@ export async function getAcademicResearchTrends(keywords: string[]) {
   return response.data.data;
 }
 
-export async function getTopFundingChart(keywords: string[], timeperiod?: string) {
+export async function getTopFundingChart(keywords: string[]) {
   const query = keywords.join(',').replace(' ', '');
 
-  const response = await axiosInstance.get<ITopFundingChartResponse>(
-    `/dashboard/total_amount_of_funding_over_time?q=${query}`
-  );
+  try {
+    const response = await axiosInstance.get<ITopFundingChartResponse>(
+      `/dashboard/total_amount_of_funding_over_time?q=${query}`
+    );
 
-  let results = response.data.data;
+    let results = response.data.data;
+    results = results.sort((a, b) => a.year < b.year ? -1 : 1);
 
-  let firstDataYear = results[0].year;
-  let lastDataYear = results[results.length - 1].year;
+    const startYear = +(results.at(0)?.year ?? DEFAULT_TIME_PERIOD_START_YEAR);
+    return {
+      fundings: results,
+      startYear: startYear
+    };
+  }
+  catch (err) {
+    return {
+      fundings: [],
+      startYear: +DEFAULT_TIME_PERIOD_START_YEAR,
+    }
 
-  let startYear = timeperiod?.split('-')[0] ?? firstDataYear;
-  let endYear = timeperiod?.split('-')[1] ?? lastDataYear;
+  }
 
-  let fundings = results.filter(data => {
-    let year = data.year;
-    return year <= endYear && year >= startYear;
-  });
 
-  return { fundings: fundings, startYear: String(firstDataYear), lastYear: String(lastDataYear) };
 }
 
 /**
@@ -146,9 +170,9 @@ interface IAcademicResearchTrendResponse {
   };
 }
 
-interface ITopFundingChart {
+export interface ITopFundingChart {
   amount: number;
-  year: string;
+  year: number;
 }
 
 interface ITopFundingChartResponse {

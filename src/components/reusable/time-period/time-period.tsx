@@ -1,6 +1,9 @@
 import ReactSelect from "react-select";
 
 //
+import { getTimeperiod } from "../../../utils/helpers";
+
+//
 import { ChevronDown } from "../../icons";
 
 //
@@ -9,16 +12,21 @@ import "./time-period.css";
 /*
  *
  **/
-export default function TimePeriod({ timePeriods, handleChange }: ITimePeriod) {
+export default function TimePeriod({
+  startYear,
+  handleChange,
+}: ITimePeriodProps) {
+  const timePeriods = getTimeperiod(startYear);
+
   return (
     <ReactSelect
       className="time-period-select"
       classNamePrefix="select"
-      defaultValue={{ label: "View all periods", value: "" }}
       components={{
         DropdownIndicator: () => <ChevronDown className="text-primary-600" />,
         IndicatorSeparator: () => null,
       }}
+      defaultValue={timePeriods[0]}
       name="time-period"
       options={timePeriods}
       isSearchable={false}
@@ -46,12 +54,14 @@ export default function TimePeriod({ timePeriods, handleChange }: ITimePeriod) {
   );
 }
 
-type timePeriodType = {
+type TimePeriodType = {
   label: string;
   value: string;
 };
 
-interface ITimePeriod {
-  timePeriods?: timePeriodType[];
+interface ITimePeriodProps {
+  startYear?: number;
+  endYear?: number;
+  timePeriods?: TimePeriodType[];
   handleChange?: (value: any) => void;
 }

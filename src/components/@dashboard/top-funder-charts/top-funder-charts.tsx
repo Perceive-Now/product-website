@@ -1,5 +1,5 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -17,11 +17,17 @@ import ChartButtons, {
 } from "../../reusable/chart-buttons/chart-buttons";
 
 //
-import { getTimeperiod } from "../../../utils/helpers";
-import { getTopFundingChart } from "../../../utils/api/charts";
+import {
+  getTopFundingChart,
+  ITopFundingChart,
+} from "../../../utils/api/charts";
 
 //
 import { LoadingIcon } from "../../icons";
+import {
+  DEFAULT_TIME_PERIOD_END_YEAR,
+  YEAR_DIFFERENCE,
+} from "../../../utils/constants";
 
 /**
  *
@@ -37,35 +43,55 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   const { data, isLoading } = useQuery(
     ["top-funder-charts", ...props.keywords, selectedTimeperiod],
     async () => {
-      return await getTopFundingChart(props.keywords, selectedTimeperiod);
+      return await getTopFundingChart(props.keywords);
     },
     { enabled: !!props.keywords.length }
   );
 
-  const chartData = data?.fundings ?? [];
+  const chartDataFormatHelper = (funders: ITopFundingChart[]) => {
+    let startYear =
+      +selectedTimeperiod?.split("-")[0] ||
+      DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
+    let endYear =
+      +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
 
-  const hasDataChecker = () => {
-    if (!chartData) return (hasNoData = true);
-
-    if (chartData.length < 1) return (hasNoData = true);
-
-    let hasNoDataFlag = true;
-
-    chartData.forEach((cD) => {
-      if (cD.amount > 0) {
-        hasNoDataFlag = false;
+    let funderList: ITopFundingChart[] = [];
+    for (let i = startYear; i <= endYear; i++) {
+      const funderData = funders.find((funder) => funder.year === i);
+      if (funderData) {
+        funderList.push(funderData);
+      } else {
+        funderList.push({
+          year: i,
+          amount: 0,
+        });
       }
-    });
-
-    if (hasNoDataFlag) {
-      hasNoData = true;
-    } else {
-      hasNoData = false;
     }
-  };
-  hasDataChecker();
 
-  const timeperiod = useMemo(() => getTimeperiod(), []);
+    return funderList;
+  };
+
+  const chartData = data?.fundings
+    ? chartDataFormatHelper(data?.fundings) ?? []
+    : [];
+
+  if (!chartData) hasNoData = true;
+
+  if (chartData.length < 1) hasNoData = true;
+
+  let hasNoDataFlag = true;
+
+  chartData.forEach((cD) => {
+    if (cD.amount > 0) {
+      hasNoDataFlag = false;
+    }
+  });
+
+  if (hasNoDataFlag) {
+    hasNoData = true;
+  } else {
+    hasNoData = false;
+  }
 
   const handleTimePeriodChange = (value: any) => {
     setSelectedTimeperiod(value.value);
@@ -106,12 +132,18 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
       {props.keywords.length > 0 && (
         <>
+          {isLoading && (
+            <div className="h-[300px] flex items-center justify-center">
+              <LoadingIcon fontSize={56} />
+            </div>
+          )}
+
           {!isLoading && (
             <>
               <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
                 <div>
                   <TimePeriod
-                    timePeriods={timeperiod}
+                    startYear={data?.startYear}
                     handleChange={handleTimePeriodChange}
                   />
                 </div>
@@ -151,15 +183,9 @@ export default function TopFunderCharts(props: ITopFunderProps) {
               )}
 
               <div className="text-primary-600 mt-4 cursor-pointer">
-                <Link to="/">Read more</Link>
+                <Link to="/funders">Read more</Link>
               </div>
             </>
-          )}
-
-          {isLoading && (
-            <div className="h-[300px] flex items-center justify-center">
-              <LoadingIcon fontSize={56} />
-            </div>
           )}
         </>
       )}
