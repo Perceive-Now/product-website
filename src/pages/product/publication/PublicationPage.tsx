@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { useState } from "react";
 import { ActionButton } from "../../../components/@product/publicationItem/publicationItem";
 import {
@@ -68,8 +69,8 @@ export default function PublicationPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-12">
-        <div className="col-span-9 max-w-[870px] text-appGray-900">
+      <div className="grid grid-cols-12 gap-x-5">
+        <div className="col-span-9 text-appGray-900">
           <div className="mb-3">
             <PageTitle
               title={publicationData.title}
@@ -78,75 +79,46 @@ export default function PublicationPage() {
           </div>
 
           <div>
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Published:
-              </span>
-              <span className="col-span-9">{publicationData.published}</span>
-            </div>
+            <ProfileProperty
+              title="Published"
+              value={publicationData.published}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">DOI:</span>
+            <ProfileProperty isLink title="DOI" value={publicationData.doi} />
 
-              <span className="col-span-9">
-                <a href={publicationData.doi} target="_blank" rel="noreferrer">
-                  {publicationData.doi}
-                </a>
-              </span>
-            </div>
+            <ProfileProperty
+              title="Journal name"
+              value={publicationData.journalName}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Journal name:
-              </span>
-              <span className="col-span-9">{publicationData.journalName}</span>
-            </div>
+            <ProfileProperty
+              title="Authors & Affiliation"
+              value={publicationData.authors_affiliation.join(", ")}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Authors & Affiliation:
-              </span>
-              <span className="col-span-9">
-                {publicationData.authors_affiliation}
-              </span>
-            </div>
+            <ProfileProperty
+              title="Abstract"
+              value={publicationData.abstract}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Abstract:
-              </span>
-              <span className="col-span-9">{publicationData.abstract}</span>
-            </div>
-
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Full Text of the paper:
-              </span>
-
-              <span className="col-span-9">
-                <a
-                  href={publicationData.fullTextOfPaper}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {publicationData.fullTextOfPaper}
-                </a>
-              </span>
-            </div>
+            <ProfileProperty
+              isLink
+              title="Full Text of the paper"
+              value={publicationData.fullTextOfPaper}
+            />
           </div>
         </div>
 
-        <div className="col-span-3 max-w-[200px]">
+        <div className="col-span-3">
           <span className="mb-3 w-full block">
-            {publicationData.isOpen ? (
-              <div className="w-full py-1 px-2 text-left  bg-green-600 text-white">
-                Open Access
-              </div>
-            ) : (
-              <div className="w-full py-1 px-2  text-left bg-[#d04700] text-white">
-                Closed Access
-              </div>
-            )}
+            <div
+              className={classNames(
+                "w-full py-1 px-2 text-left text-white",
+                publicationData.isOpen ? "bg-success-500" : "bg-danger-500"
+              )}
+            >
+              {publicationData.isOpen ? "Open Access" : "Closed Access"}
+            </div>
           </span>
 
           <div className="flex flex-col">
@@ -174,6 +146,30 @@ export default function PublicationPage() {
       </div>
     </div>
   );
+}
+
+function ProfileProperty(props: IProfilePropertyProps) {
+  return (
+    <div className="pb-2 grid grid-cols-12">
+      <span className="font-bold col-span-3 text-right pr-4">
+        {props.title}:
+      </span>
+
+      {props.isLink && (
+        <a href={props.value} target="_blank" rel="noreferrer">
+          {props.value}
+        </a>
+      )}
+
+      {!props.isLink && <span className="col-span-9">{props.value}</span>}
+    </div>
+  );
+}
+
+interface IProfilePropertyProps {
+  title: string;
+  value: string;
+  isLink?: boolean;
 }
 
 interface IPublicationData {

@@ -1,18 +1,15 @@
 import { useState } from "react";
-import { ActionButton } from "../../../components/@product/publicationItem/publicationItem";
-import {
-  BookmarkIcon,
-  CitationIcon,
-  InfoIcon,
-  ShareIcon,
-} from "../../../components/icons";
+
+import { InfoIcon } from "../../../components/icons";
 
 //
 import PageTitle from "../../../components/reusable/page-title";
 import ReportButtons from "../../../components/reusable/reports-buttons";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+
+//
 import { setDashboardSearch } from "../../../stores/dashboard";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 /**
  *
@@ -59,8 +56,8 @@ export default function PatentsProfilePage() {
         <PageTitle title={patentsData.title} titleClass="font-semibold" />
       </div>
 
-      <div className="grid grid-cols-12">
-        <div className="col-span-9 max-w-[900px] text-appGray-900">
+      <div className="grid grid-cols-12 gap-x-3">
+        <div className="col-span-9 text-appGray-900">
           <div className="mb-3">
             <div className="text-gray-800 mb-2 font-semibold text-xl">
               Patent link:

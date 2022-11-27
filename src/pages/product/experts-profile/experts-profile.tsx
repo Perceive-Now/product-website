@@ -26,8 +26,8 @@ export default function ExpertsProfilePage() {
     employment: "London's Global University",
     location: "London, England, UK",
     funding: "???",
-    number_of_patents: 32,
-    number_of_publications: 203,
+    numberOfPatents: 32,
+    numberOfPublications: 203,
     biography:
       "Riccardo Privolizzi is a researcher at University College London who specializes in gene therapy research. As a former research assistant, he is highly knowledgeable in AAV, lentiviral reproduction and iPS cells. Using his expertise, Riccardo Privolizzi has published multiple articles in journals such as Gene and Current Stem Cell Reproduction. His awards include the ASGCT Meritorious Abstract Travel Award and LMU Highest Overall Mark in Biomedical Sciences for 2013.",
   });
@@ -53,81 +53,71 @@ export default function ExpertsProfilePage() {
       </div>
 
       <div className="grid grid-cols-12">
-        <div className="col-span-9 max-w-[870px] text-appGray-900">
+        <div className="col-span-8 text-appGray-900">
           <div className="mb-3">
             <PageTitle title={expertsData.name} titleClass="font-semibold" />
           </div>
 
           <div>
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Affiliations:
-              </span>
+            <ProfileProperty
+              title="Affiliations"
+              value={expertsData.affiliations}
+            />
 
-              <span className="col-span-9">{expertsData.affiliations}</span>
-            </div>
+            <ProfileProperty
+              title="Distinctions"
+              value={expertsData.distictions}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Distictions:
-              </span>
+            <ProfileProperty
+              title="Employment"
+              value={expertsData.employment}
+            />
 
-              <span className="col-span-9">{expertsData.distictions}</span>
-            </div>
+            <ProfileProperty title="Location" value={expertsData.location} />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Employment:
-              </span>
-              <span className="col-span-9">{expertsData.employment}</span>
-            </div>
+            <ProfileProperty title="Funding" value={expertsData.funding} />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Location:
-              </span>
-              <span className="col-span-9">{expertsData.location}</span>
-            </div>
+            <ProfileProperty
+              title="No. of Patents"
+              value={expertsData.numberOfPatents.toString()}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Funding:
-              </span>
-              <span className="col-span-9">{expertsData.funding}</span>
-            </div>
+            <ProfileProperty
+              title="No. of Publications"
+              value={expertsData.numberOfPublications.toString()}
+            />
 
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                No. of Patents:
-              </span>
-
-              <span className="col-span-9">
-                {expertsData.number_of_patents}
-              </span>
-            </div>
-
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                No. of Publications:
-              </span>
-
-              <span className="col-span-9">
-                {expertsData.number_of_publications}
-              </span>
-            </div>
-
-            <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Biography:
-              </span>
-
-              <span className="col-span-9">{expertsData.biography}</span>
-            </div>
+            <ProfileProperty title="Biography" value={expertsData.biography} />
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function ProfileProperty(props: IProfilePropertyProps) {
+  return (
+    <div className="pb-2 grid grid-cols-12">
+      <span className="font-bold col-span-3 text-right pr-4">
+        {props.title}:
+      </span>
+
+      {props.isLink && (
+        <a href={props.value} target="_blank" rel="noreferrer">
+          {props.value}
+        </a>
+      )}
+
+      {!props.isLink && <span className="col-span-9">{props.value}</span>}
+    </div>
+  );
+}
+
+interface IProfilePropertyProps {
+  title: string;
+  value: string;
+  isLink?: boolean;
 }
 
 interface IExpertsData {
@@ -137,7 +127,7 @@ interface IExpertsData {
   employment: string;
   location: string;
   funding: string;
-  number_of_patents: number;
-  number_of_publications: number;
+  numberOfPatents: number;
+  numberOfPublications: number;
   biography: string;
 }
