@@ -32,11 +32,18 @@ import PageTitle from "../../../components/reusable/page-title";
 
 //
 import { useAppSelector } from "../../../hooks/redux";
+import Navigator from "../../../components/@dashboard/navigator";
+import { useRef } from "react";
 
 /**
  *
  */
 export default function DashboardPage() {
+  const competitiveLandscapeRef = useRef(null);
+  const expertsNetworkRef = useRef(null);
+  const researchRef = useRef(null);
+  const fundingsRef = useRef(null);
+
   const searchedKeywords =
     useAppSelector((state) => state.dashboard?.search) ?? [];
 
@@ -47,6 +54,13 @@ export default function DashboardPage() {
   const keywordValue = searchedKeywords.map((kwd) => kwd.value);
   return (
     <div>
+      <Navigator
+        competitiveLandscapeRef={competitiveLandscapeRef}
+        expertsNetworkRef={expertsNetworkRef}
+        researchRef={researchRef}
+        fundingsRef={fundingsRef}
+      />
+
       {searchedKeywords && (
         <p className="mb-3">
           <span>Showing results for: </span>
@@ -78,7 +92,7 @@ export default function DashboardPage() {
       <TodayHighlights keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 4th row  */}
-      <div className="pt-4">
+      <div className="pt-4" ref={competitiveLandscapeRef}>
         <PageTitle title="Competitive Landscape" titleClass="font-bold" />
       </div>
 
@@ -89,7 +103,7 @@ export default function DashboardPage() {
       <CompetetitorMap keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 6th row  */}
-      <div className="pt-4">
+      <div className="pt-4" ref={expertsNetworkRef}>
         <PageTitle title="Experts Network" titleClass="font-bold" />
       </div>
 
@@ -116,7 +130,7 @@ export default function DashboardPage() {
       </div>
 
       {/* 9th row */}
-      <div className="mt-4 mb-1">
+      <div className="mt-4 mb-1" ref={researchRef}>
         <PageTitle title="Academic R&D" titleClass="font-bold" />
       </div>
 
@@ -140,14 +154,12 @@ export default function DashboardPage() {
       </div>
 
       {/* 11th row */}
-      <div className="mt-4 mb-2">
+      <div className="mt-4 mb-2" ref={fundingsRef}>
         <PageTitle title="Funding" titleClass="font-bold" />
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <TopFunderCharts 
-            key={joinedKeywords}
-            keywords={keywordValue} />
+          <TopFunderCharts key={joinedKeywords} keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">
