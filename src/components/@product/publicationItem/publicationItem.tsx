@@ -26,17 +26,18 @@ function PublicationItem(props: IPublicationItemProps) {
 
         <div className="flex">
           <ActionButton>
-            <BookmarkIcon className="mr-1" /> Bookmark
+            <BookmarkIcon className="mr-1" />
+            <span>Bookmark</span>
           </ActionButton>
 
           <ActionButton>
             <CitationIcon className="mr-1" />
-            Generate citation
+            <span>Generate citation</span>
           </ActionButton>
 
           <ActionButton>
             <ShareIcon className="mr-1" />
-            Share
+            <span>Share</span>
           </ActionButton>
         </div>
       </div>

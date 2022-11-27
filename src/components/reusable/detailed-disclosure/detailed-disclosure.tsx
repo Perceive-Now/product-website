@@ -12,7 +12,7 @@ import PublicationItem from "../../@product/publicationItem";
 import { PatentType } from "../patent-table/patent-table";
 import { ExpertsType } from "../experts-table/experts-table";
 import { FundingType } from "../funding-table/funding-table";
-import { IPublicationData } from "../../../pages/product/publications/publications";
+import { IPublicationData } from "../../../pages/product/advanced-search/publications/publications";
 
 //
 import {
