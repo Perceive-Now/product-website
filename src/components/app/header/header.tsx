@@ -36,7 +36,6 @@ export default function AppHeader() {
     }
   };
 
-
   //
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
