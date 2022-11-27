@@ -9,7 +9,7 @@ import { SearchIcon } from "../../icons";
 //
 import "./search.css";
 
-const MAX_KEYWORD = 5;
+const MAX_KEYWORD = 3;
 
 /**
  *
