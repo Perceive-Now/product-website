@@ -14,34 +14,34 @@ import HelpPage from "./pages/miscs/help";
 import FeedbackPage from "./pages/miscs/feedback";
 
 import DashboardPage from "./pages/product/dashboard";
-import InsightsPage from "./pages/product/insights";
-import TrendsPage from "./pages/product/trends";
 
-// Hawk-eye pages
-import HawkEyePage from "./pages/product/hawk-eye";
-import HawkEyeHomeSection from "./pages/product/hawk-eye/home";
-import HawkEyeFundersSection from "./pages/product/hawk-eye/sections/funders";
-import HawkEyePatentsSection from "./pages/product/hawk-eye/sections/patents";
-import HawkEyeExpertsSection from "./pages/product/hawk-eye/sections/experts";
-import HawkEyeUniversitiesSection from "./pages/product/hawk-eye/sections/universities";
-import HawkEyePublicationsSection from "./pages/product/hawk-eye/sections/publications";
+// Innovate AI pages
+import TrendsPage from "./pages/product/innovate-ai/trends";
+import SummaryPage from "./pages/product/innovate-ai/summary";
+import InsightsPage from "./pages/product/innovate-ai/insights";
 
-// Patents pages
-import PatentsPage from "./pages/product/patents";
-import PatentsProfilePage from "./pages/product/patents-profile";
+import HawkEyePage from "./pages/product/innovate-ai/hawk-eye";
+import HawkEyeHomeSection from "./pages/product/innovate-ai/hawk-eye/home";
+import HawkEyeFundersSection from "./pages/product/innovate-ai/hawk-eye/sections/funders";
+import HawkEyePatentsSection from "./pages/product/innovate-ai/hawk-eye/sections/patents";
+import HawkEyeExpertsSection from "./pages/product/innovate-ai/hawk-eye/sections/experts";
+import HawkEyeUniversitiesSection from "./pages/product/innovate-ai/hawk-eye/sections/universities";
+import HawkEyePublicationsSection from "./pages/product/innovate-ai/hawk-eye/sections/publications";
 
-import SummaryPage from "./pages/product/summary";
-import PublicationsPage from "./pages/product/publications";
-import UniversitiesPage from "./pages/product/universities";
-import PublicationPage from "./pages/product/publication";
+// Advanced Search pages
+import PatentsPage from "./pages/product/advanced-search/patents";
+import PatentsProfilePage from "./pages/product/advanced-search/patents/profile";
 
-//
-import ExpertsPage from "./pages/product/experts";
-import ExpertsProfilePage from "./pages/product/experts-profile";
+import PublicationsPage from "./pages/product/advanced-search/publications";
+import PublicationProfilePage from "./pages/product/advanced-search/publications/profile";
 
-//
-import FundersPage from "./pages/product/funders";
-import FunderProfilePage from "./pages/product/funder-profile";
+import UniversitiesPage from "./pages/product/advanced-search/universities";
+
+import ExpertsPage from "./pages/product/advanced-search/experts";
+import ExpertsProfilePage from "./pages/product/advanced-search/experts/profile";
+
+import FundersPage from "./pages/product/advanced-search/funders";
+import FunderProfilePage from "./pages/product/advanced-search/funders/profile";
 
 //
 import PageNotFound404 from "./pages/404";
@@ -92,8 +92,12 @@ function App() {
             {/* Hawk eye page section end here */}
 
             <Route path="/summary" element={<SummaryPage />} />
+
             <Route path="/publications" element={<PublicationsPage />} />
-            <Route path="/publications/:id" element={<PublicationPage />} />
+            <Route
+              path="/publications/profile/:id"
+              element={<PublicationProfilePage />}
+            />
 
             {/* Patents page section starts here */}
             <Route path="/patents" element={<PatentsPage />} />
@@ -114,6 +118,7 @@ function App() {
               path="/funders/profile/:id"
               element={<FunderProfilePage />}
             />
+
             <Route path="/universities" element={<UniversitiesPage />} />
 
             <Route path="/feedback" element={<FeedbackPage />} />
