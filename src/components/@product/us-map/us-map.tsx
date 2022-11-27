@@ -226,8 +226,8 @@ export default function USMap(props: IUSMapProps) {
                                   setActiveMarkerData(undefined)
                                 }
                               >
-                                <circle r={7} fill="red" />
-                                <circle r={6} fill="white" />
+                                <circle r={3} fill="red" />
+                                <circle r={2} fill="white" />
                               </Marker>
                             </>
                           )}
