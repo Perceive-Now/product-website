@@ -48,6 +48,12 @@ import BarIcon from "./charts/bar";
 import PieIcon from "./charts/pie";
 import ScatterIcon from "./charts/scatter";
 
+//Dashboard
+import FundingIcon from "./dashboard/fundings";
+import EducationIcon from "./dashboard/education";
+import CompetitiveLandscapeIcon from "./dashboard/competitive_landscape";
+import ResearchIcon from "./dashboard/research";
+
 export {
   // Sidenav icons
   DashboardIcon,
@@ -95,4 +101,9 @@ export {
   BarIcon,
   PieIcon,
   ScatterIcon,
+  // Dashboard
+  FundingIcon,
+  EducationIcon,
+  ResearchIcon,
+  CompetitiveLandscapeIcon,
 };
