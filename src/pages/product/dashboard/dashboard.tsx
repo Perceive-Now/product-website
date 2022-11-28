@@ -92,7 +92,7 @@ export default function DashboardPage() {
       <TodayHighlights keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 4th row  */}
-      <div className="pt-4" ref={competitiveLandscapeRef}>
+      <div className="pt-15 -mt-12" ref={competitiveLandscapeRef}>
         <PageTitle title="Competitive Landscape" titleClass="font-bold" />
       </div>
 
@@ -103,7 +103,7 @@ export default function DashboardPage() {
       <CompetetitorMap keywords={searchedKeywords.map((kwd) => kwd.value)} />
 
       {/* 6th row  */}
-      <div className="pt-4" ref={expertsNetworkRef}>
+      <div className="pt-15 -mt-12" ref={expertsNetworkRef}>
         <PageTitle title="Experts Network" titleClass="font-bold" />
       </div>
 
@@ -130,7 +130,7 @@ export default function DashboardPage() {
       </div>
 
       {/* 9th row */}
-      <div className="mt-4 mb-1" ref={researchRef}>
+      <div className="pt-15 -mt-12 mb-1" ref={researchRef}>
         <PageTitle title="Academic R&D" titleClass="font-bold" />
       </div>
 
@@ -154,7 +154,7 @@ export default function DashboardPage() {
       </div>
 
       {/* 11th row */}
-      <div className="mt-4 mb-2" ref={fundingsRef}>
+      <div className="pt-15 -mt-12 mb-2" ref={fundingsRef}>
         <PageTitle title="Funding" titleClass="font-bold" />
       </div>
       <div className="grid grid-cols-2 gap-x-3 mt-3">
