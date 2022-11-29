@@ -82,6 +82,7 @@ export default function Search(props: ISearchProps) {
     const filteredKeywords = response.data.filter((keyword) =>
       keyword?.toLowerCase().includes(inputValue?.toLowerCase())
     );
+
     return generateOptionsGroup(filteredKeywords);
   };
 
