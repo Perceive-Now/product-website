@@ -15,6 +15,14 @@ import { getRelatedKeywords } from "../../../../utils/api/dashboard";
 //
 import { setDashboardSearch } from "../../../../stores/dashboard";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import Tooltip from "../../../../components/reusable/tooltip";
+import { VerticalThreeDots } from "../../../../components/icons";
+import ReactTable from "../../../../components/reusable/ReactTable";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import {
+  getUniversities,
+  IUniversityItem,
+} from "../../../../utils/api/advance-search";
 
 /**
  *
@@ -31,6 +39,17 @@ export default function UniversitiesPage() {
     .join(", ");
 
   const keywords = searchedKeywords?.map((kwd) => kwd.value) ?? [];
+
+  const { data, isLoading } = useQuery(
+    ["advanced-search-universities", ...keywords],
+    async () => {
+      return await getUniversities(keywords);
+    },
+    { enabled: !!searchedKeywords?.length }
+  );
+
+  const universitiesData = isLoading ? [] : data ?? [];
+  // const universitiesData = response.data.resultsList;
 
   //
   const handleSearch = (value: IKeywordOption[]) => {
@@ -50,6 +69,44 @@ export default function UniversitiesPage() {
   const gotoPage = (page: number) => {
     setCurrentPage(page);
   };
+
+  const columnHelper = createColumnHelper<IUniversityItem>();
+
+  const columns: ColumnDef<IUniversityItem>[] = [
+    {
+      header: "University",
+      accessorKey: "university",
+      accessorFn: (row) => row.university ?? "-",
+      size: 200,
+    },
+    {
+      header: "Location",
+      accessorKey: "location",
+      size: 200,
+    },
+    {
+      header: "Experts",
+      accessorKey: "experts",
+      size: 100,
+    },
+    {
+      header: "Title",
+      accessorKey: "title",
+      size: 300,
+    },
+    {
+      header: "Patents",
+      id: "patents",
+    },
+    {
+      header: "Fundings",
+      accessorKey: "fundings",
+    },
+    columnHelper.display({
+      id: "actions",
+      cell: (props) => <RowActions row={props.row} />,
+    }),
+  ];
 
   return (
     <div>
@@ -72,6 +129,10 @@ export default function UniversitiesPage() {
               subTitle="The top universities are located in Australia, Great Britain, Swizerland, and the United States. The top 3 leading universities are University College London, University of Southern California and Harvard Medical School."
               learnMore="Learn more"
             />
+          </div>
+
+          <div>
+            <ReactTable columnsData={columns} rowsData={universitiesData} />
           </div>
 
           <div className="flex justify-center mt-7">
@@ -98,3 +159,31 @@ export default function UniversitiesPage() {
     </div>
   );
 }
+
+//
+const RowActions = ({ row }: any) => {
+  return (
+    <Tooltip
+      isCustomPanel={true}
+      trigger={
+        <VerticalThreeDots
+          data-dropdown-toggle="dropdown"
+          className="cursor-pointer"
+        />
+      }
+      panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+    >
+      <ul id="dropdown">
+        <li className="mb-2 cursor-pointer">
+          <div>Bookmark</div>
+        </li>
+        <li className="mb-2 cursor-pointer">
+          <div>Generate Citation</div>
+        </li>
+        <li className="cursor-pointer">
+          <div>Share</div>
+        </li>
+      </ul>
+    </Tooltip>
+  );
+};

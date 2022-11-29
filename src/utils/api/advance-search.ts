@@ -51,6 +51,17 @@ export async function getSingleExpert(orcidId: string) {
   return response.data;
 }
 
+export async function getUniversities(keywords: string[]) {
+  const response = await axiosInstance.get<IUniversitiesResponse>(
+    `/advanced_search/experts?q=${keywords.join(",")}`
+  );
+
+  return response.data;
+}
+
+
+
+
 /**
  * Interfaces
  */
@@ -69,6 +80,14 @@ interface IPublicationResponse {
 
 interface ISinglePublicationResponse {
   // TODO
+}
+
+interface IUniversitiesResponse {
+
+}
+
+export interface IUniversityItem {
+  university: string;
 }
 
 export interface IPatentItem {
