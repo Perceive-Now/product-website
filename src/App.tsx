@@ -45,6 +45,7 @@ import FunderProfilePage from "./pages/product/advanced-search/funders/profile";
 
 //
 import PageNotFound404 from "./pages/404";
+import UniversityPage from "./pages/product/advanced-search/universities/profile";
 
 /**
  *
@@ -120,6 +121,10 @@ function App() {
             />
 
             <Route path="/universities" element={<UniversitiesPage />} />
+            <Route
+              path="/universities/profile/:id"
+              element={<UniversityPage />}
+            />
 
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />
