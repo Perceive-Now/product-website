@@ -111,7 +111,13 @@ export default function Search(props: ISearchProps) {
           isMulti
           isOptionDisabled={() => hasKeywordReachedMaxLimit}
           {...(selectedKeywords?.length
-            ? { isValidNewOption: () => !hasKeywordReachedMaxLimit }
+            ? {
+                isValidNewOption: (inputValue: string) => {
+                  return (
+                    Boolean(inputValue.length) && !hasKeywordReachedMaxLimit
+                  );
+                },
+              }
             : undefined)}
           components={{
             DropdownIndicator: () => null,
