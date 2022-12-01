@@ -59,23 +59,40 @@ export default function UniversityPage() {
             <h1 className="text-primary-900 text-2xl mb-2">
               {universityData.title}
             </h1>
+
             <p className="text-gray-600 mb-2">{universityData.location}</p>
-            <p>
-              <span className="text-primary-900 underline cursor-pointer">
-                {universityData.link}
-              </span>
+
+            <p className="text-primary-900 underline cursor-pointer">
+              {universityData.link}
             </p>
           </div>
         </div>
 
-        <div className="flex mt-6 space-x-4">
-          <Card title="Number of Patents" value={universityData.patentCount} />
-          <Card
-            title="Number of Publications"
-            value={universityData.publicationCount}
-          />
-          <Card title="Number of Experts" value={universityData.expertsCount} />
-          <Card title="Funding" value={universityData.fundingCount} />
+        <div className="mt-6 grid grid-cols-4 gap-x-2">
+          <div className="col-span-1">
+            <Card
+              title="Number of Patents"
+              value={universityData.patentCount}
+            />
+          </div>
+
+          <div className="col-span-1">
+            <Card
+              title="Number of Publications"
+              value={universityData.publicationCount}
+            />
+          </div>
+
+          <div className="col-span-1">
+            <Card
+              title="Number of Experts"
+              value={universityData.expertsCount}
+            />
+          </div>
+
+          <div className="col-span-1">
+            <Card title="Funding" value={universityData.fundingCount} />
+          </div>
         </div>
       </div>
     </div>
@@ -84,10 +101,13 @@ export default function UniversityPage() {
 
 function Card({ title, value }: ICardProps) {
   return (
-    <div className="p-2 text-center flex-grow bg-slate-100">
-      <div className="mb-2">{title}</div>
-
-      <div className="font-bold">{value}</div>
+    <div className="p-2 text-center bg-slate-100 shadow">
+      <div className="mb-2">
+        <span>{title}</span>
+      </div>
+      <div className="font-bold">
+        <span>{value}</span>
+      </div>
     </div>
   );
 }
@@ -96,6 +116,7 @@ interface ICardProps {
   title: string;
   value: number | string;
 }
+
 interface IUniversityData {
   title: string;
   location: string;
