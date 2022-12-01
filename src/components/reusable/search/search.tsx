@@ -29,7 +29,7 @@ export default function Search(props: ISearchProps) {
     }
   }, [props.initialValue]);
 
-  const hasKeywordReachedMaxLimit = Boolean(
+  const hasKeywordReachedMaxLimit = !!(
     (selectedKeywords?.length || 0) >= MAX_KEYWORD
   );
 
@@ -82,6 +82,7 @@ export default function Search(props: ISearchProps) {
     const filteredKeywords = response.data.filter((keyword) =>
       keyword?.toLowerCase().includes(inputValue?.toLowerCase())
     );
+
     return generateOptionsGroup(filteredKeywords);
   };
 
@@ -110,7 +111,13 @@ export default function Search(props: ISearchProps) {
           isMulti
           isOptionDisabled={() => hasKeywordReachedMaxLimit}
           {...(selectedKeywords?.length
-            ? { isValidNewOption: () => !hasKeywordReachedMaxLimit }
+            ? {
+                isValidNewOption: (inputValue: string) => {
+                  return (
+                    !!(inputValue.length) && !hasKeywordReachedMaxLimit
+                  );
+                },
+              }
             : undefined)}
           components={{
             DropdownIndicator: () => null,
