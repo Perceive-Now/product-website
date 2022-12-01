@@ -75,8 +75,6 @@ export async function getExpertsTable(keywords: string[]) {
     `/dashboard/experts_network_patents?q=${keywords.join(",")}`
   );
 
-  console.log(response.data, "from function");
-
   return response.data;
 }
 

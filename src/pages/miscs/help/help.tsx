@@ -29,8 +29,6 @@ export default function HelpPage() {
   const { errors, isValid } = formState;
 
   const handleHelpFormSubmit = (values: IHelpPageFormValues) => {
-    console.log(values, "values");
-
     // TODO:: Make API call for submit
   };
 
