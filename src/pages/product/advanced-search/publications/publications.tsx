@@ -84,34 +84,32 @@ export default function PublicationsPage() {
             <PageTitle title="Publications" learnMore="Learn more" />
           </div>
 
-          <div className="grid grid-cols-12">
-            <div className="col-span-9 mr-6">
-              {publicationsData?.map((publicationData: any) => (
-                <PublicationItem
-                  data={publicationData}
-                  key={publicationData.doi}
-                />
-              ))}
+          <div>
+            {publicationsData?.map((publicationData: any) => (
+              <PublicationItem
+                data={publicationData}
+                key={publicationData.doi}
+              />
+            ))}
 
-              <div className="flex justify-center mt-7">
-                <Pagination
-                  currentPage={currentPage}
-                  totalCount={111}
-                  gotoPage={gotoPage}
-                />
-              </div>
+            <div className="flex justify-center mt-7">
+              <Pagination
+                currentPage={currentPage}
+                totalCount={111}
+                gotoPage={gotoPage}
+              />
+            </div>
+          </div>
+
+          <div className="mt-5">
+            <div className="uppercase font-semibold text-primary-900 text-sm mb-2">
+              Related keywords
             </div>
 
-            <div className="col-span-3">
-              <div className="uppercase font-semibold text-primary-900 text-sm mb-2">
-                Related keywords
-              </div>
-
-              <div className="flex flex-wrap gap-x-2 gap-y-1 items-start">
-                {relatedKeywords?.slice(0, 10)?.map((keyword) => (
-                  <RelatedKeyword keyword={keyword} key={keyword} />
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-x-2 gap-y-1 items-start">
+              {relatedKeywords?.slice(0, 10)?.map((keyword) => (
+                <RelatedKeyword keyword={keyword} key={keyword} />
+              ))}
             </div>
           </div>
         </div>
