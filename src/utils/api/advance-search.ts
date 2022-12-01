@@ -61,6 +61,16 @@ export async function getUniversities(keywords: string[]) {
 
 
 
+export async function getSingleUniversity(id: string) {
+  const response = await axiosInstance.get<ISingleUniversityResponse>(
+    `/advanced_search/universities/${id}`
+  );
+
+  return response.data;
+}
+
+
+
 
 /**
  * Interfaces
@@ -126,4 +136,8 @@ interface IExpertsResponse {
 
 interface ISingleExpertResponse {
   // TODO
+}
+
+interface ISingleUniversityResponse {
+  //TODO
 }

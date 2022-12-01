@@ -29,7 +29,7 @@ export default function Search(props: ISearchProps) {
     }
   }, [props.initialValue]);
 
-  const hasKeywordReachedMaxLimit = Boolean(
+  const hasKeywordReachedMaxLimit = !!(
     (selectedKeywords?.length || 0) >= MAX_KEYWORD
   );
 
@@ -114,7 +114,7 @@ export default function Search(props: ISearchProps) {
             ? {
                 isValidNewOption: (inputValue: string) => {
                   return (
-                    Boolean(inputValue.length) && !hasKeywordReachedMaxLimit
+                    !!(inputValue.length) && !hasKeywordReachedMaxLimit
                   );
                 },
               }

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { InfoIcon } from "../../../../components/icons";
 import ReportButtons from "../../../../components/reusable/reports-buttons";
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
@@ -17,6 +18,16 @@ export default function UniversityPage() {
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
   };
+
+  const [universityData] = useState<IUniversityData>({
+    name: "University College London",
+    location: "London, Great Britain",
+    link: "ucl.ac.uk",
+    patentCount: 108,
+    publicationCount: "XXX",
+    expertsCount: 57,
+    fundingCount: "XXX",
+  });
 
   return (
     <div>
@@ -42,22 +53,25 @@ export default function UniversityPage() {
 
           <div className="ml-3">
             <h1 className="text-primary-900 text-2xl mb-2">
-              University College London
+              {universityData.name}
             </h1>
-            <p className="text-gray-600 mb-2">London, Great Britain</p>
+            <p className="text-gray-600 mb-2">{universityData.location}</p>
             <p>
               <span className="text-primary-900 underline cursor-pointer">
-                ucl.ac.uk
+                {universityData.link}
               </span>
             </p>
           </div>
         </div>
 
         <div className="flex mt-6 space-x-4">
-          <Card title="Number of Patents" value={108} />
-          <Card title="Number of Publications" value={"XXX"} />
-          <Card title="Number of Experts" value={57} />
-          <Card title="Funding" value={"XXX"} />
+          <Card title="Number of Patents" value={universityData.patentCount} />
+          <Card
+            title="Number of Publications"
+            value={universityData.publicationCount}
+          />
+          <Card title="Number of Experts" value={universityData.expertsCount} />
+          <Card title="Funding" value={universityData.fundingCount} />
         </div>
       </div>
     </div>
@@ -77,4 +91,13 @@ function Card({ title, value }: ICardProps) {
 interface ICardProps {
   title: string;
   value: number | string;
+}
+interface IUniversityData {
+  name: string;
+  location: string;
+  link: string;
+  patentCount: number | string;
+  publicationCount: number | string;
+  expertsCount: number | string;
+  fundingCount: number | string;
 }
