@@ -18,7 +18,7 @@ export default function UniversityPage() {
   };
 
   const [universityData] = useState<IUniversityData>({
-    name: "University College London",
+    title: "University College London",
     location: "London, Great Britain",
     link: "ucl.ac.uk",
     image:
@@ -57,7 +57,7 @@ export default function UniversityPage() {
 
           <div className="ml-3">
             <h1 className="text-primary-900 text-2xl mb-2">
-              {universityData.name}
+              {universityData.title}
             </h1>
             <p className="text-gray-600 mb-2">{universityData.location}</p>
             <p>
@@ -97,7 +97,7 @@ interface ICardProps {
   value: number | string;
 }
 interface IUniversityData {
-  name: string;
+  title: string;
   location: string;
   link: string;
   image: string;
