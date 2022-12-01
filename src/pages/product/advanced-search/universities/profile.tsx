@@ -5,8 +5,6 @@ import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setDashboardSearch } from "../../../../stores/dashboard";
 
-import UCLImg from "./ucl.png";
-
 /**
  *
  */
@@ -23,6 +21,8 @@ export default function UniversityPage() {
     name: "University College London",
     location: "London, Great Britain",
     link: "ucl.ac.uk",
+    image:
+      "https://www.perceivenow.ai/static/media/xenamed.bb80d998fc36a063b261.png",
     patentCount: 108,
     publicationCount: "XXX",
     expertsCount: 57,
@@ -48,7 +48,11 @@ export default function UniversityPage() {
       <div>
         <div className="flex items-center">
           <div className="w-[167px] h-[167px]">
-            <img src={UCLImg} alt="university" className="w-100" />
+            <img
+              src={universityData.image}
+              alt="university"
+              className="w-100"
+            />
           </div>
 
           <div className="ml-3">
@@ -96,6 +100,7 @@ interface IUniversityData {
   name: string;
   location: string;
   link: string;
+  image: string;
   patentCount: number | string;
   publicationCount: number | string;
   expertsCount: number | string;
