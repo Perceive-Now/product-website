@@ -30,7 +30,7 @@ export default function InsightsPage() {
   };
 
   const handleSearch = () => {
-    console.log(searchkeywords);
+    // TODO
   };
 
   return (

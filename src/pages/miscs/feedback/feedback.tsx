@@ -31,7 +31,6 @@ export default function FeedbackPage() {
 
   const handleSubmit = () => {
     // TODO: submit feedback
-    console.log(feedbackNumber, feedback);
   };
 
   return (

@@ -47,8 +47,6 @@ export default function ForgotPasswordPage() {
   const { errors } = formState;
 
   const handleForgotPassword = (values: ILoginFormValues) => {
-    console.log(values, "values");
-
     // TODO:: Make API call for forgot password initiation
 
     //
