@@ -13,7 +13,7 @@ import { BriefcaseIcon, LocationIcon } from "../../icons";
 import { IWorldMapDataItem, TooltipGroupItem } from "../world-map/world-map";
 
 //
-// import "../world-map/world-map.css";
+import { GOOGLE_API_KEY } from "../../../utils/constants";
 
 //
 const WORLD_CENTER = {
@@ -62,7 +62,7 @@ function GoogleMaps(props: IGoogleMapProps) {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDZgbj3X6Tik0bP4aQBgm5Fa29Hvd68GJY",
+    googleMapsApiKey: GOOGLE_API_KEY,
   });
 
   console.log(activeMarkerData, "activeMarkerData");
