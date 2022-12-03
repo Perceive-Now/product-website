@@ -1,15 +1,16 @@
 // import { useState } from "react";
+import classNames from "classnames";
 import { useQuery } from "@tanstack/react-query";
 
 //
-// import WorldMap from "../../@product/world-map";
 import PageTitle from "../../reusable/page-title";
-import USMap from "../../@product/us-map";
+
+//
+import GoogleMaps from "../../@product/google-map";
+import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 //
 import { getCompetitorMapInfo } from "../../../utils/api/map";
-import { IWorldMapDataItem } from "../../@product/world-map/world-map";
-import classNames from "classnames";
 
 /**
  *
@@ -108,11 +109,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          {/* {currentMode === "basicPublication" ? (
-            <WorldMap type={currentMode} data={[]} />
-          ) : ( */}
-          <USMap type="normal" data={finalData} />
-          {/* )} */}
+          <GoogleMaps isWorldMap={false} data={finalData} />
         </div>
       </div>
     </div>

@@ -21,6 +21,14 @@ const WORLD_CENTER = {
   lng: 8.523,
 };
 
+const US_CENTER = {
+  lat: 37.8283,
+  lng: -97.5795,
+};
+
+const WORLD_ZOOM = 2;
+const US_ZOOM = 4.2;
+
 //
 const mapStyle = [
   {
@@ -71,8 +79,8 @@ function GoogleMaps(props: IGoogleMapProps) {
       {isLoaded ? (
         <GoogleMap
           mapContainerClassName="w-full h-full z-10"
-          center={WORLD_CENTER}
-          zoom={2}
+          center={props.isWorldMap ? WORLD_CENTER : US_CENTER}
+          zoom={props.isWorldMap ? WORLD_ZOOM : US_ZOOM}
           options={{
             fullscreenControl: false,
             streetViewControl: false,
@@ -91,15 +99,8 @@ function GoogleMaps(props: IGoogleMapProps) {
                       lat: marker.coordinate?.[0] ?? 0,
                       lng: marker.coordinate?.[1] ?? 0,
                     }}
-                    // icon={{
-                    //   path: google.maps.SymbolPath.CIRCLE,
-                    //   scale: 4,
-                    //   strokeColor: "red",
-                    //   fillColor: "yellow",
-                    // }}
                     onMouseOver={() => setActiveMarkerData(marker)}
                     onMouseOut={() => setActiveMarkerData(null)}
-                    // options={circleOptions}
                   >
                     {activeMarkerData &&
                       activeMarkerData.location === marker.location && (
@@ -159,8 +160,7 @@ function GoogleMaps(props: IGoogleMapProps) {
 }
 
 interface IGoogleMapProps {
-  isExpertMap?: boolean;
-  //
+  isWorldMap: boolean;
   data?: IWorldMapDataItem[];
 }
 
