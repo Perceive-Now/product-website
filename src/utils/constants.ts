@@ -1,4 +1,5 @@
 export const WEBSITE_URL = process.env.REACT_APP_WEBSITE_URL;
+export const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY ?? "";
 
 export const COLORS = [
   "#B6A2D8",

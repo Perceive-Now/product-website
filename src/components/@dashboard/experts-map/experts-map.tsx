@@ -2,10 +2,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
-import USMap from "../../@product/us-map";
-import WorldMap, {
-  IWorldMapDataItem,
-} from "../../@product/world-map/world-map";
+import GoogleMaps from "../../@product/google-map";
+import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 //
 import PageTitle from "../../reusable/page-title";
@@ -127,9 +125,9 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
 
         <div className="col-span-9 bg-gray-200">
           {currentMode === "federalExperts" ? (
-            <USMap type="federalExperts" data={mapData} />
+            <GoogleMaps isWorldMap={false} data={mapData} />
           ) : (
-            <WorldMap type={currentMode} data={mapData} />
+            <GoogleMaps isWorldMap={true} data={mapData} />
           )}
         </div>
       </div>

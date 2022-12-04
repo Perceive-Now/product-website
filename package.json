@@ -17,6 +17,7 @@
     "@nivo/line": "^0.80.0",
     "@nivo/pie": "^0.80.0",
     "@nivo/radial-bar": "^0.80.0",
+    "@react-google-maps/api": "^2.17.0",
     "@reduxjs/toolkit": "^1.8.4",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tanstack/react-query": "^4.2.3",
