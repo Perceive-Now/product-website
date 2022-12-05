@@ -110,7 +110,7 @@ export default function Patents(props: IPatentsProps) {
     ? []
     : [
         {
-          id: "Years",
+          id: "Patents",
           data: (chartData ?? []).map((item) => ({
             x: item.name,
             y: item.percentage,
