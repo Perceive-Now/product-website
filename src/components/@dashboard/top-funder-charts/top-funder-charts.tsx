@@ -114,7 +114,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     ? []
     : [
         {
-          id: "Fundings(USD)",
+          id: "Fundings (USD)",
           data: (chartData ?? []).map((item) => ({
             x: item.year,
             y: item.amount,
