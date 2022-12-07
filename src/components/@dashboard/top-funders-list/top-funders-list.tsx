@@ -81,7 +81,7 @@ export default function TopFundersList(props: ITopFundersListProps) {
                 </div>
 
                 <div className="text-primary-600 mt-4 cursor-pointer">
-                  <Link to="/">Read more</Link>
+                  <Link to="/funders">Read more</Link>
                 </div>
               </>
             )}
