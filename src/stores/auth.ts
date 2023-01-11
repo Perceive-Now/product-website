@@ -3,7 +3,15 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
 import { Auth } from "aws-amplify";
+import axios from "axios";
+import Cookie from 'js-cookie';
 
+const baseURL = process.env.REACT_APP_API_URL;
+const axiosConfig = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+}
 /**
  *
  */
@@ -17,15 +25,20 @@ export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const response = await Auth.signIn({
-        username: payload.email,
+      const response = await axios.post<ILoginResponse>(`${baseURL}/api/v1/user/login/`, {
+        email: payload.email,
         password: payload.password,
-      });
+      }, axiosConfig);
+      console.log(response, 'response')
+      // const { data } = response;
+      // const {access_token, refresh_token} = data;
+      // sessionStorage.setItem('pn_access', data.access_token);
+      // Cookie.set('pn_refresh', refresh_token)
 
       return {
         success: true,
         message: "Successfully logged in!",
-        data: response.attributes,
+        data: {},
       };
     } catch (err: any) {
       return {
@@ -41,6 +54,10 @@ export const logoutUser = createAsyncThunk(
   async (): Promise<IResponse> => {
     try {
       await Auth.signOut();
+      // api remaining
+
+      //Cookie.remove('pn_refresh');
+      // sessionStorage.removeItem('pn_access');
 
       return {
         success: true,
@@ -59,10 +76,45 @@ export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
     try {
-      const response = await Auth.currentSession();
-      if (!response.isValid) throw new Error("Current session is invalid!");
+      let token = '';
+      let accessToken = sessionStorage.getItem('pn_access');
 
-      const token = response.getAccessToken().getJwtToken();
+      if (accessToken) {
+        token = accessToken;
+      }
+      else {
+        let refreshToken = Cookie.get('pn_refresh');
+        if (refreshToken) {
+
+          try {
+            const response = await axios.post<IRefreshResponse>(`${baseURL}/user/refresh-token/`, {
+              refresh_token: refreshToken
+            }, axiosConfig);
+            console.log(response, 'response')
+            // const { access_token } = response;
+            // token = access_token;
+            // if (!token) {
+            //   return {
+            //     success: false,
+            //     message: 'Session is expired'
+            //   }
+            // }
+            // sessionStorage.setItem('pn_access', access_token);
+          }
+          catch (error) {
+            //   return {
+            //     success: false,
+            //     message: 'Session is expired'
+            //   }
+          }
+        }
+        else {
+          return {
+            success: false,
+            message: 'Current session is terminated!'
+          }
+        }
+      }
 
       return {
         success: true,
@@ -147,4 +199,25 @@ interface AuthState {
 interface ILoginParams {
   email: string;
   password: string;
+}
+
+//
+type TLoginData = {
+  access_token: string;
+  refresh_token: string;
+}
+
+//
+interface ILoginResponse {
+  status: string;
+  message: string;
+  data: TLoginData,
+  errors: string;
+}
+
+interface IRefreshResponse {
+  status: string;
+  message: string;
+  access_token: string,
+  errors: string;
 }
