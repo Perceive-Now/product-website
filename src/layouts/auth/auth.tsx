@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import PageLoading from "../../components/app/pageLoading";
 
 //
-import { getCurrentSession } from "../../stores/auth";
+import { getCurrentSession, getUserDetails } from "../../stores/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 /**
@@ -33,8 +33,13 @@ export default function AuthLayout() {
     setIsLoading(false);
   };
 
+  const getUserDetail = async() => {
+    await dispatch(getUserDetails()).unwrap();
+  }
+
   useEffect(() => {
     getSession();
+    getUserDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
