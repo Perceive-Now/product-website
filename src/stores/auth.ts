@@ -44,7 +44,7 @@ export const loginUser = createAsyncThunk(
       return {
         success: true,
         message: "Successfully logged in!",
-        data: { token: access_token },
+        data: { token: data.data.access_token },
       };
     } catch (err: any) {
       return {
