@@ -25,20 +25,20 @@ export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const response = await axios.post<ILoginResponse>(`${baseURL}/api/v1/user/login/`, {
+      const response = await axios.post(`${baseURL}/api/v1/user/login/`, {
         email: payload.email,
         password: payload.password,
       }, axiosConfig);
-      console.log(response, 'response')
-      // const { data } = response;
-      // const {access_token, refresh_token} = data;
-      // sessionStorage.setItem('pn_access', data.access_token);
-      // Cookie.set('pn_refresh', refresh_token)
+
+      const data: ILoginResponse = response.data;
+      const { access_token, refresh_token } = data.data;
+      sessionStorage.setItem('pn_access', access_token);
+      Cookie.set('pn_refresh', refresh_token)
 
       return {
         success: true,
         message: "Successfully logged in!",
-        data: {},
+        data: { token: access_token },
       };
     } catch (err: any) {
       return {
@@ -56,8 +56,8 @@ export const logoutUser = createAsyncThunk(
       await Auth.signOut();
       // api remaining
 
-      //Cookie.remove('pn_refresh');
-      // sessionStorage.removeItem('pn_access');
+      Cookie.remove('pn_refresh');
+      sessionStorage.removeItem('pn_access');
 
       return {
         success: true,
@@ -72,6 +72,28 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promise<IResponse> => {
+  try {
+    const response = await axios.get(`${baseURL}/api/v1/user/get-user/`, axiosConfig);
+    const responseData = response.data;
+
+    const user: IAuthuser = {
+      email: responseData.email
+    }
+    return {
+      success: true,
+      message: 'User details',
+      data: user
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+})
+
+
 export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
@@ -84,34 +106,36 @@ export const getCurrentSession = createAsyncThunk(
       }
       else {
         let refreshToken = Cookie.get('pn_refresh');
-        if (refreshToken) {
-
-          try {
-            const response = await axios.post<IRefreshResponse>(`${baseURL}/user/refresh-token/`, {
-              refresh_token: refreshToken
-            }, axiosConfig);
-            console.log(response, 'response')
-            // const { access_token } = response;
-            // token = access_token;
-            // if (!token) {
-            //   return {
-            //     success: false,
-            //     message: 'Session is expired'
-            //   }
-            // }
-            // sessionStorage.setItem('pn_access', access_token);
-          }
-          catch (error) {
-            //   return {
-            //     success: false,
-            //     message: 'Session is expired'
-            //   }
-          }
-        }
-        else {
+        if (!refreshToken) {
           return {
             success: false,
             message: 'Current session is terminated!'
+          }
+        }
+
+        try {
+          const response = await axios.post(`${baseURL}/api/v1/refresh-token/`, {
+            refresh_token: refreshToken
+          }, axiosConfig);
+          const data: IRefreshResponse = response.data;
+
+          const { access_token } = data;
+          token = access_token;
+
+
+          if (!token) {
+            return {
+              success: false,
+              message: 'Session is expired'
+            }
+          }
+
+          sessionStorage.setItem('pn_access', access_token);
+        }
+        catch (error) {
+          return {
+            success: false,
+            message: 'Session is expired'
           }
         }
       }
@@ -152,15 +176,16 @@ export const AuthSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       const payloadAttributes = action.payload.data;
 
-      state.user = {
-        email: payloadAttributes?.email,
-        firstName: payloadAttributes?.firstName ?? "",
-        lastName: payloadAttributes?.lastName ?? "",
-      };
+      state.token = payloadAttributes?.token;
     });
+
+    builder.addCase(getUserDetails.fulfilled, (state, action) => {
+      state.user = action.payload.data;
+    })
 
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.user = undefined;
+      state.token = undefined;
     });
 
     builder.addCase(getCurrentSession.fulfilled, (state, action) => {
@@ -185,9 +210,9 @@ interface IResponse<T = any> {
 }
 
 interface IAuthuser {
-  firstName: string;
-  lastName: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 interface AuthState {
@@ -202,7 +227,7 @@ interface ILoginParams {
 }
 
 //
-type TLoginData = {
+interface ILoginData {
   access_token: string;
   refresh_token: string;
 }
@@ -211,7 +236,7 @@ type TLoginData = {
 interface ILoginResponse {
   status: string;
   message: string;
-  data: TLoginData,
+  data: ILoginData,
   errors: string;
 }
 

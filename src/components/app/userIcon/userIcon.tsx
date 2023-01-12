@@ -6,9 +6,9 @@ import { useAppSelector } from "../../../hooks/redux";
 export default function UserIcon() {
   const authUser = useAppSelector((state) => state.auth.user);
 
-  const username = authUser
-    ? [authUser.firstName, authUser.lastName].join(" ")
-    : "Jenifer Wells";
+  const username = (authUser?.firstName || authUser?.lastName) ? 
+    [authUser?.firstName, authUser?.lastName].join(" ")
+    : "";
 
   return (
     <div className="flex items-center">
