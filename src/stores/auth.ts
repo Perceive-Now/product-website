@@ -124,7 +124,7 @@ export const getCurrentSession = createAsyncThunk(
 
         try {
           const response = await axios.post(
-            `${baseURL}/api/v1/refresh-token/`,
+            `${baseURL}/api/v1/user/refresh-token/`,
             {
               refresh_token: refreshToken,
             },
