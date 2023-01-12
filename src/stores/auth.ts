@@ -1,17 +1,17 @@
+import axios from "axios";
+import Cookie from "js-cookie";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
-import { Auth } from "aws-amplify";
-import axios from "axios";
-import Cookie from 'js-cookie';
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 const baseURL = process.env.REACT_APP_API_URL;
+
 const axiosConfig = {
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
-}
+};
 /**
  *
  */
@@ -25,16 +25,22 @@ export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const response = await axios.post(`${baseURL}/api/v1/user/login/`, {
-        email: payload.email,
-        password: payload.password,
-      }, axiosConfig);
+      const response = await axios.post(
+        `${baseURL}/api/v1/user/login/`,
+        {
+          email: payload.email,
+          password: payload.password,
+        },
+        axiosConfig
+      );
 
       const data: ILoginResponse = response.data;
-      const { access_token, refresh_token } = data.data;
-      sessionStorage.setItem('pn_access', access_token);
-      Cookie.set('pn_refresh', refresh_token)
 
+      //
+      sessionStorage.setItem("pn_access", data.data.access_token);
+      Cookie.set("pn_refresh", data.data.refresh_token);
+
+      //
       return {
         success: true,
         message: "Successfully logged in!",
@@ -53,11 +59,8 @@ export const logoutUser = createAsyncThunk(
   "logout",
   async (): Promise<IResponse> => {
     try {
-      await Auth.signOut();
-      // api remaining
-
-      Cookie.remove('pn_refresh');
-      sessionStorage.removeItem('pn_access');
+      Cookie.remove("pn_refresh");
+      sessionStorage.removeItem("pn_access");
 
       return {
         success: true,
@@ -72,71 +75,79 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promise<IResponse> => {
-  try {
-    const response = await axios.get(`${baseURL}/api/v1/user/get-user/`, axiosConfig);
-    const responseData = response.data;
+export const getUserDetails = createAsyncThunk(
+  "getUserDetails",
+  async (): Promise<IResponse> => {
+    try {
+      const response = await axios.get(
+        `${baseURL}/api/v1/user/get-user/`,
+        axiosConfig
+      );
+      const responseData = response.data;
 
-    const user: IAuthuser = {
-      email: responseData.email
+      const user: IAuthuser = {
+        email: responseData.email,
+      };
+
+      //
+      return {
+        success: true,
+        message: "User details",
+        data: user,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message,
+      };
     }
-    return {
-      success: true,
-      message: 'User details',
-      data: user
-    }
-  } catch (error: any) {
-    return {
-      success: false,
-      message: error.message,
-    };
   }
-})
-
+);
 
 export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
     try {
-      let token = '';
-      let accessToken = sessionStorage.getItem('pn_access');
+      let token = "";
+      let accessToken = sessionStorage.getItem("pn_access");
 
       if (accessToken) {
         token = accessToken;
-      }
-      else {
-        let refreshToken = Cookie.get('pn_refresh');
+      } else {
+        let refreshToken = Cookie.get("pn_refresh");
         if (!refreshToken) {
           return {
             success: false,
-            message: 'Current session is terminated!'
-          }
+            message: "Current session is terminated!",
+          };
         }
 
         try {
-          const response = await axios.post(`${baseURL}/api/v1/refresh-token/`, {
-            refresh_token: refreshToken
-          }, axiosConfig);
+          const response = await axios.post(
+            `${baseURL}/api/v1/refresh-token/`,
+            {
+              refresh_token: refreshToken,
+            },
+            axiosConfig
+          );
           const data: IRefreshResponse = response.data;
 
           const { access_token } = data;
           token = access_token;
 
-
           if (!token) {
             return {
               success: false,
-              message: 'Session is expired'
-            }
+              message: "Session is expired",
+            };
           }
 
-          sessionStorage.setItem('pn_access', access_token);
-        }
-        catch (error) {
+          sessionStorage.setItem("pn_access", access_token);
+        } catch (error) {
           return {
             success: false,
-            message: 'Session is expired'
-          }
+            message: "Session is expired",
+          };
         }
       }
 
@@ -181,7 +192,7 @@ export const AuthSlice = createSlice({
 
     builder.addCase(getUserDetails.fulfilled, (state, action) => {
       state.user = action.payload.data;
-    })
+    });
 
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.user = undefined;
@@ -236,13 +247,13 @@ interface ILoginData {
 interface ILoginResponse {
   status: string;
   message: string;
-  data: ILoginData,
+  data: ILoginData;
   errors: string;
 }
 
 interface IRefreshResponse {
   status: string;
   message: string;
-  access_token: string,
+  access_token: string;
   errors: string;
 }
