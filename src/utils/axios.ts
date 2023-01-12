@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     //
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const refreshToken = sessionStorage.getItem("pn_refresh");
@@ -48,7 +48,6 @@ axiosInstance.interceptors.response.use(
       //
       if (res.status === 201) {
         sessionStorage.setItem("pn_access", res.data.access_token);
-
         axios.defaults.headers.common["Authorization"] =
           "Bearer " + res.data.access_token;
 
