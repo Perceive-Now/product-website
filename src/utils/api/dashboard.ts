@@ -37,10 +37,10 @@ export async function getExpertsCount(keywords: string[]) {
 
 export async function getRelatedKeywords(keywords: string[]) {
   const response = await axiosInstance.get<IRelatedKeywordsResponse>(
-    `/dashboard/related_keywords_list?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/related-keywords/?q=${keywords.join(",")}`
   );
 
-  return response.data.data;
+  return response.data.data.related_keywords;
 }
 
 export async function getTodaysHighlight(keywords: string[]) {
@@ -133,7 +133,9 @@ interface IExpertCountResponse {
 
 //
 interface IRelatedKeywordsResponse {
-  data: string[];
+  data: {
+    related_keywords: string[];
+  };
 }
 
 interface IHighlightResponse {
