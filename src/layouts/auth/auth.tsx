@@ -6,8 +6,7 @@ import PageLoading from "../../components/app/pageLoading";
 
 //
 import { getUserDetails } from "../../utils/api/user";
-import { getCurrentSession
- } from "../../stores/auth";
+import { getCurrentSession } from "../../stores/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 /**
