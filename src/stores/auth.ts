@@ -75,91 +75,38 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const getUserDetails = createAsyncThunk(
-  "getUserDetails",
-  async (): Promise<IResponse> => {
-    try {
-      const response = await axios.get(
-        `${baseURL}/api/v1/user/get-user/`,
-        axiosConfig
-      );
-      const responseData = response.data;
-
-      const user: IAuthuser = {
-        email: responseData.email,
-      };
-
-      //
-      return {
-        success: true,
-        message: "User details",
-        data: user,
-      };
-    } catch (error: any) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
-  }
-);
-
 export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
+    let accessToken = sessionStorage.getItem("pn_access");
+    if (accessToken) return {
+      success: true,
+      message: "Current session obtained",
+    }
+
+    let refreshToken = Cookie.get('pn_refresh');
+    if (!refreshToken) return {
+      success: false,
+      message: "Current session is terminated!"
+    }
+
     try {
-      let token = "";
-      let accessToken = sessionStorage.getItem("pn_access");
-
-      if (accessToken) {
-        token = accessToken;
-      } else {
-        let refreshToken = Cookie.get("pn_refresh");
-        if (!refreshToken) {
-          return {
-            success: false,
-            message: "Current session is terminated!",
-          };
-        }
-
-        try {
-          const response = await axios.post(
-            `${baseURL}/api/v1/refresh-token/`,
-            {
-              refresh_token: refreshToken,
-            },
-            axiosConfig
-          );
-          const data: IRefreshResponse = response.data;
-
-          const { access_token } = data;
-          token = access_token;
-
-          if (!token) {
-            return {
-              success: false,
-              message: "Session is expired",
-            };
-          }
-
-          sessionStorage.setItem("pn_access", access_token);
-        } catch (error) {
-          return {
-            success: false,
-            message: "Session is expired",
-          };
-        }
-      }
+      const response = await axios.post(`${baseURL}/api/v1/user/refresh-token/`, {
+        refresh_token: refreshToken
+      }, axiosConfig);
+      const data: IRefreshResponse = response.data;
+      const { access_token } = data;
 
       return {
         success: true,
         message: "Current session obtained",
-        data: { token },
+        data: { token: access_token },
       };
-    } catch (err: any) {
+    }
+    catch (error) {
       return {
         success: false,
-        message: err.message,
+        message: 'Current session expired',
       };
     }
   }
@@ -172,8 +119,11 @@ export const AuthSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setuser: (state, action: PayloadAction<IAuthuser>) => {
+    setUser: (state, action: PayloadAction<IAuthuser>) => {
       state.user = action.payload;
+    },
+    setAuth: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
     },
     removeUser: (state) => {
       state.user = undefined;
@@ -190,17 +140,15 @@ export const AuthSlice = createSlice({
       state.token = payloadAttributes?.token;
     });
 
-    builder.addCase(getUserDetails.fulfilled, (state, action) => {
-      state.user = action.payload.data;
-    });
-
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.user = undefined;
       state.token = undefined;
     });
 
     builder.addCase(getCurrentSession.fulfilled, (state, action) => {
-      state.token = action.payload.data?.token;
+      if (action.payload.data?.token) {
+        state.token = action.payload.data?.token;
+      }
     });
   },
 });
@@ -208,8 +156,9 @@ export const AuthSlice = createSlice({
 /**
  * Action creators are generated for each case reducer function
  */
-export const { setuser, removeUser } = AuthSlice.actions;
+export const { setUser, setAuth, removeUser } = AuthSlice.actions;
 export default AuthSlice.reducer;
+
 
 /**
  * Interfaces
@@ -219,7 +168,6 @@ interface IResponse<T = any> {
   message: string;
   data?: T;
 }
-
 interface IAuthuser {
   email: string;
   firstName?: string;

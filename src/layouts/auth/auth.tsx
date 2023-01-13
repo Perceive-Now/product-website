@@ -5,7 +5,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import PageLoading from "../../components/app/pageLoading";
 
 //
-import { getCurrentSession, getUserDetails } from "../../stores/auth";
+import { getUserDetails } from "../../utils/api/user";
+import { getCurrentSession } from "../../stores/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 /**
@@ -34,7 +35,7 @@ export default function AuthLayout() {
   };
 
   const getUserDetail = async() => {
-    await dispatch(getUserDetails()).unwrap();
+    await dispatch(getUserDetails());
   }
 
   useEffect(() => {
