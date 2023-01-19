@@ -59,11 +59,13 @@ export default function TodayHighlights(props: IHighlightsProps) {
     },
   ];
 
-  const getItemValue = (id: string, value: number) => {
-    if (id === "fundingAmount")
-      return formatNumber(value, { isCurrency: true });
+  const getItemValue = (id: string, value?: number) => {
+    if (!value) return null;
 
-    return value.toLocaleString();
+    //
+    return id === "fundingAmount"
+      ? formatNumber(value, { isCurrency: true })
+      : value.toLocaleString();
   };
 
   return (
@@ -90,7 +92,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
               </div>
 
               <div className="text-center text-[28px] mb-2 text-gray-900">
-                {getItemValue(item.id, item.value ?? 0) ?? "-"}
+                {getItemValue(item.id, item.value) ?? "-"}
               </div>
 
               <hr className="border-[#D9D9D9]" />
