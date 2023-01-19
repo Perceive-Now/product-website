@@ -5,7 +5,7 @@ import axiosInstance from "../axios";
  */
 export async function getMAInsights(keywords: string[]) {
   const response = await axiosInstance.get<IMAInsightsResponse>(
-    `/ma/results?q=${keywords.join(",")}`
+    `/ma/results?q=${keywords.join(",")}`,
   );
 
   return response.data.data;

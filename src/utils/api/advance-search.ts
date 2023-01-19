@@ -5,72 +5,57 @@ import axiosInstance from "../axios";
  */
 export async function getPublications(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationResponse>(
-    `/advanced_search/publications?q=${keywords.join(",")}`
+    `/advanced_search/publications?q=${keywords.join(",")}`,
   );
 
   return response.data;
 }
 
 export async function getSinglePublication(doi: string) {
-  const response = await axiosInstance.get<ISinglePublicationResponse>(
-    `/advanced_search/publications/individual?doi=${doi}`
-  );
+  const response = await axiosInstance.get(`/advanced_search/publications/individual?doi=${doi}`);
 
   return response.data;
 }
 
 export async function getPatents(keywords: string[]) {
   const response = await axiosInstance.get<IPatentsResponse>(
-    `/advanced_search/patents?q=${keywords.join(",")}`
+    `/advanced_search/patents?q=${keywords.join(",")}`,
   );
 
   return response.data;
 }
 
 export async function getSinglePatent(patentNumber: string) {
-  const response = await axiosInstance.get<ISinglePatentResponse>(
-    `/advanced_search/patents/${patentNumber}`
-  );
+  const response = await axiosInstance.get(`/advanced_search/patents/${patentNumber}`);
 
   return response.data;
 }
 
 export async function getExperts(keywords: string[]) {
   const response = await axiosInstance.get<IExpertsResponse>(
-    `/advanced_search/experts?q=${keywords.join(",")}`
+    `/advanced_search/experts?q=${keywords.join(",")}`,
   );
 
   return response.data;
 }
 
 export async function getSingleExpert(orcidId: string) {
-  const response = await axiosInstance.get<ISingleExpertResponse>(
-    `/advanced_search/experts/${orcidId}`
-  );
+  const response = await axiosInstance.get(`/advanced_search/experts/${orcidId}`);
 
   return response.data;
 }
 
 export async function getUniversities(keywords: string[]) {
-  const response = await axiosInstance.get<IUniversitiesResponse>(
-    `/advanced_search/experts?q=${keywords.join(",")}`
-  );
+  const response = await axiosInstance.get(`/advanced_search/experts?q=${keywords.join(",")}`);
 
   return response.data;
 }
-
-
 
 export async function getSingleUniversity(id: string) {
-  const response = await axiosInstance.get<ISingleUniversityResponse>(
-    `/advanced_search/universities/${id}`
-  );
+  const response = await axiosInstance.get(`/advanced_search/universities/${id}`);
 
   return response.data;
 }
-
-
-
 
 /**
  * Interfaces
@@ -88,13 +73,9 @@ interface IPublicationResponse {
   };
 }
 
-interface ISinglePublicationResponse {
-  // TODO
-}
+// interface ISinglePublicationResponse {}
 
-interface IUniversitiesResponse {
-
-}
+// interface IUniversitiesResponse {}
 
 export interface IUniversityItem {
   university: string;
@@ -115,9 +96,7 @@ interface IPatentsResponse {
   };
 }
 
-interface ISinglePatentResponse {
-  // TODO
-}
+// interface ISinglePatentResponse {}
 
 export interface IExpertItem {
   affiliationName: string;
@@ -134,10 +113,6 @@ interface IExpertsResponse {
   };
 }
 
-interface ISingleExpertResponse {
-  // TODO
-}
+// interface ISingleExpertResponse {}
 
-interface ISingleUniversityResponse {
-  //TODO
-}
+// interface ISingleUniversityResponse {}

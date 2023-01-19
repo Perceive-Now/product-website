@@ -26,8 +26,7 @@ export const DashboardSlice = createSlice({
 });
 
 //
-export const { setDashboardSearch, clearDashboardSearch } =
-  DashboardSlice.actions;
+export const { setDashboardSearch, clearDashboardSearch } = DashboardSlice.actions;
 export default DashboardSlice.reducer;
 
 //

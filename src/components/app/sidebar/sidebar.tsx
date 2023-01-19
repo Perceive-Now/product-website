@@ -24,7 +24,7 @@ export default function AppSidebar() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    sidebarItems.map((itm) => itm.key)
+    sidebarItems.map((itm) => itm.key),
   );
 
   const [expandedSubGroups, setExpandedSubGrups] = useState<string[]>([]);
@@ -98,19 +98,15 @@ export default function AppSidebar() {
                                 onClick={() => updateActiveSubGroup(child.key)}
                               >
                                 <div className="mr-1">
-                                  {expandedSubGroups.includes(child.key) && (
-                                    <ChevronUp />
-                                  )}
-                                  {!expandedSubGroups.includes(child.key) && (
-                                    <ChevronDown />
-                                  )}
+                                  {expandedSubGroups.includes(child.key) && <ChevronUp />}
+                                  {!expandedSubGroups.includes(child.key) && <ChevronDown />}
                                 </div>
                                 <span>{child.title}</span>
                               </div>
 
                               {expandedSubGroups.includes(child.key) &&
                                 child.children.map((subChild, kndex) => (
-                                  <div className="ml-3">
+                                  <div className="ml-3" key={kndex}>
                                     <NavLinkItem
                                       key={`sub-content-${kndex}`}
                                       to={subChild.to}
@@ -155,10 +151,7 @@ export default function AppSidebar() {
 
       {/* Logout */}
       <div className="pb-3 text-gray-900">
-        <div
-          className="px-2 py-2 flex items-center cursor-pointer"
-          onClick={() => handleLogout()}
-        >
+        <div className="px-2 py-2 flex items-center cursor-pointer" onClick={() => handleLogout()}>
           <div className="mr-2">
             <LogoutIcon />
           </div>
@@ -177,7 +170,7 @@ function NavLinkItem(props: INavLinkItemProps) {
           className={classNames(
             "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
             props.isTopLevel ? "pl-2" : "pl-4",
-            { "bg-appGray-200": isActive }
+            { "bg-appGray-200": isActive },
           )}
         >
           {props.icon && (

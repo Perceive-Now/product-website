@@ -85,32 +85,23 @@ export default function FunderProfilePage() {
       <div className="grid grid-cols-12">
         <div className="col-span-9 max-w-[870px] text-appGray-900">
           <div className="mb-3">
-            <PageTitle
-              title={publicationData.title}
-              titleClass="font-semibold"
-            />
+            <PageTitle title={publicationData.title} titleClass="font-semibold" />
           </div>
 
           <div>
             <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Location:
-              </span>
+              <span className="font-bold col-span-3 text-right pr-4">Location:</span>
               <span className="col-span-9">{publicationData.location}</span>
             </div>
 
             <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Total funding:
-              </span>
+              <span className="font-bold col-span-3 text-right pr-4">Total funding:</span>
 
               <span className="col-span-9">{publicationData.totalFunding}</span>
             </div>
 
             <div className="pb-2 grid grid-cols-12">
-              <span className="font-bold col-span-3 text-right pr-4">
-                Expertise:
-              </span>
+              <span className="font-bold col-span-3 text-right pr-4">Expertise:</span>
               <span className="col-span-9">{publicationData.expertise}</span>
             </div>
           </div>
@@ -121,21 +112,12 @@ export default function FunderProfilePage() {
             </div>
 
             <div>
-              {publicationData.associatedPublications.map(
-                (publicationData: IPublicationItem) => (
-                  <PublicationItem
-                    data={publicationData}
-                    key={publicationData.id}
-                  />
-                )
-              )}
+              {publicationData.associatedPublications.map((publicationData: IPublicationItem) => (
+                <PublicationItem data={publicationData} key={publicationData.id} />
+              ))}
 
               <div className="flex justify-center mt-7">
-                <Pagination
-                  currentPage={currentPage}
-                  totalCount={111}
-                  gotoPage={gotoPage}
-                />
+                <Pagination currentPage={currentPage} totalCount={111} gotoPage={gotoPage} />
               </div>
             </div>
           </div>

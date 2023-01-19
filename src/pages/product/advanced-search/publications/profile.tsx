@@ -1,12 +1,7 @@
 import classNames from "classnames";
 import { useState } from "react";
 import { ActionButton } from "../../../../components/@product/publicationItem/publicationItem";
-import {
-  BookmarkIcon,
-  CitationIcon,
-  InfoIcon,
-  ShareIcon,
-} from "../../../../components/icons";
+import { BookmarkIcon, CitationIcon, InfoIcon, ShareIcon } from "../../../../components/icons";
 
 //
 import PageTitle from "../../../../components/reusable/page-title";
@@ -45,8 +40,7 @@ export default function PublicationPage() {
       "David Navarro",
     ],
     abstract: `We evaluated the Panbio™ COVID-19 AG Rapid Test Device (RAD) for the diagnosis of COVID-19 in symptomatic patients attended in primary healthcare centers (n=412). Overall specificity and sensitivity of RAD was 100% and 79.6%, respectively, taking RT-PCR as the reference. SARS-CoV-2 could not be cultured from specimens yielding RT-PCR+/RAD- results.`,
-    fullTextOfPaper:
-      "https://www.sciencedirect.com/science/article/pii/S1198743X20306972",
+    fullTextOfPaper: "https://www.sciencedirect.com/science/article/pii/S1198743X20306972",
   });
 
   //
@@ -72,34 +66,22 @@ export default function PublicationPage() {
       <div className="grid grid-cols-12 gap-x-5">
         <div className="col-span-9 text-appGray-900">
           <div className="mb-3">
-            <PageTitle
-              title={publicationData.title}
-              titleClass="font-semibold"
-            />
+            <PageTitle title={publicationData.title} titleClass="font-semibold" />
           </div>
 
           <div>
-            <ProfileProperty
-              title="Published"
-              value={publicationData.published}
-            />
+            <ProfileProperty title="Published" value={publicationData.published} />
 
             <ProfileProperty isLink title="DOI" value={publicationData.doi} />
 
-            <ProfileProperty
-              title="Journal name"
-              value={publicationData.journalName}
-            />
+            <ProfileProperty title="Journal name" value={publicationData.journalName} />
 
             <ProfileProperty
               title="Authors & Affiliation"
               value={publicationData.authors_affiliation.join(", ")}
             />
 
-            <ProfileProperty
-              title="Abstract"
-              value={publicationData.abstract}
-            />
+            <ProfileProperty title="Abstract" value={publicationData.abstract} />
 
             <ProfileProperty
               isLink
@@ -114,7 +96,7 @@ export default function PublicationPage() {
             <div
               className={classNames(
                 "w-full py-1 px-2 text-left text-white",
-                publicationData.isOpen ? "bg-success-500" : "bg-danger-500"
+                publicationData.isOpen ? "bg-success-500" : "bg-danger-500",
               )}
             >
               {publicationData.isOpen ? "Open Access" : "Closed Access"}
@@ -151,9 +133,7 @@ export default function PublicationPage() {
 function ProfileProperty(props: IProfilePropertyProps) {
   return (
     <div className="pb-2 grid grid-cols-12">
-      <span className="font-bold col-span-3 text-right pr-4">
-        {props.title}:
-      </span>
+      <span className="font-bold col-span-3 text-right pr-4">{props.title}:</span>
 
       {props.isLink && (
         <a href={props.value} target="_blank" rel="noreferrer">

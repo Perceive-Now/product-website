@@ -28,6 +28,7 @@ export default function HelpPage() {
 
   const { errors, isValid } = formState;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleHelpFormSubmit = (values: IHelpPageFormValues) => {
     // TODO:: Make API call for submit
   };
@@ -37,15 +38,11 @@ export default function HelpPage() {
       <div className="font-semibold text-2xl mb-2">Help</div>
 
       <div className="max-w-[548px]">
-        Thank you for your interest in Perceive Now, Inc. Please feel free to
-        reach out to us with any questions, comments or interest in getting
-        involved.
+        Thank you for your interest in Perceive Now, Inc. Please feel free to reach out to us with
+        any questions, comments or interest in getting involved.
       </div>
 
-      <form
-        onSubmit={handleSubmit(handleHelpFormSubmit)}
-        className="mt-7 max-w-[480px]"
-      >
+      <form onSubmit={handleSubmit(handleHelpFormSubmit)} className="mt-7 max-w-[480px]">
         <div className="mb-4">
           <Input
             register={register}

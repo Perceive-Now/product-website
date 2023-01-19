@@ -26,8 +26,7 @@ import { ChevronDown } from "../../icons";
  *
  */
 export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
-  const [currentMode, setCurrentMode] =
-    useState<availableModes>("publicationHeatmap");
+  const [currentMode, setCurrentMode] = useState<availableModes>("publicationHeatmap");
 
   const [query, setQuery] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -38,12 +37,12 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     async () => {
       return await getPublicationsAndPatentsMap(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
   const formattedData: IWorldMapDataItem[] = Object.entries(
-    data?.publications.sortedCount ?? {}
+    data?.publications.sortedCount ?? {},
   ).map(([key, value]) => ({
     country: countryISOMapping[key],
     publications: value,
@@ -52,12 +51,12 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const finalWorldData = isLoading ? [] : formattedData;
 
   //
-  const usFormatData: IWorldMapDataItem[] = Object.entries(
-    data?.patents?.sortedCount ?? {}
-  ).map(([key, value]) => ({
-    country: StatesCodes[key],
-    patents: value,
-  }));
+  const usFormatData: IWorldMapDataItem[] = Object.entries(data?.patents?.sortedCount ?? {}).map(
+    ([key, value]) => ({
+      country: StatesCodes[key],
+      patents: value,
+    }),
+  );
 
   const finalUsData = isLoading ? [] : usFormatData;
 
@@ -65,13 +64,12 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const pubCountryList = data?.publications.Country_wise_titles ?? [];
 
   const filteredCountryList = pubCountryList.filter((itm) =>
-    countryNames[itm.Country]?.toLowerCase()?.includes(query?.toLowerCase())
+    countryNames[itm.Country]?.toLowerCase()?.includes(query?.toLowerCase()),
   );
 
   const patentsListForCountry = (
-    data?.publications.Country_wise_titles.find(
-      (itm) => itm.Country === selectedCountry
-    )?.Paper_titles ?? []
+    data?.publications.Country_wise_titles.find((itm) => itm.Country === selectedCountry)
+      ?.Paper_titles ?? []
   )?.slice(0, 10);
 
   const patentsListForUs = (data?.patents?.topStateTitle ?? [])?.slice(0, 20);
@@ -94,45 +92,41 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
           info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-semibold"
           title="Geographical Footprint of Publications and Patents"
-          children={
-            <div className="flex justify-between">
-              <p className="text-sm">
-                <span>Heat map of publications and patents</span>
-              </p>
+        >
+          <div className="flex justify-between">
+            <p className="text-sm">
+              <span>Heat map of publications and patents</span>
+            </p>
 
-              <div className="flex gap-x-3 text-sm">
-                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                  <input
-                    type="radio"
-                    id="publicationHeatmap"
-                    name="currentModeHeatmap"
-                    checked={currentMode === "publicationHeatmap"}
-                    onChange={() => setCurrentMode("publicationHeatmap")}
-                  />
-                  <label
-                    htmlFor="publicationHeatmap"
-                    className="cursor-pointer"
-                  >
-                    Publications
-                  </label>
-                </div>
+            <div className="flex gap-x-3 text-sm">
+              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                <input
+                  type="radio"
+                  id="publicationHeatmap"
+                  name="currentModeHeatmap"
+                  checked={currentMode === "publicationHeatmap"}
+                  onChange={() => setCurrentMode("publicationHeatmap")}
+                />
+                <label htmlFor="publicationHeatmap" className="cursor-pointer">
+                  Publications
+                </label>
+              </div>
 
-                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                  <input
-                    type="radio"
-                    id="patentsHeatmap"
-                    name="currentModeHeatmap"
-                    checked={currentMode === "patentsHeatmap"}
-                    onChange={() => setCurrentMode("patentsHeatmap")}
-                  />
-                  <label htmlFor="patentsHeatmap" className="cursor-pointer">
-                    Patents
-                  </label>
-                </div>
+              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                <input
+                  type="radio"
+                  id="patentsHeatmap"
+                  name="currentModeHeatmap"
+                  checked={currentMode === "patentsHeatmap"}
+                  onChange={() => setCurrentMode("patentsHeatmap")}
+                />
+                <label htmlFor="patentsHeatmap" className="cursor-pointer">
+                  Patents
+                </label>
               </div>
             </div>
-          }
-        />
+          </div>
+        </PageTitle>
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
@@ -151,10 +145,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
                       />
 
                       <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-1">
-                        <ChevronDown
-                          className="h-3 w-3 text-gray-500"
-                          aria-hidden="true"
-                        />
+                        <ChevronDown className="h-3 w-3 text-gray-500" aria-hidden="true" />
                       </Combobox.Button>
                     </div>
 
@@ -176,9 +167,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
                               key={country.Country}
                               className={({ active }) =>
                                 `relative cursor-default select-none py-2 px-2 ${
-                                  active
-                                    ? "bg-primary-100 text-white"
-                                    : "text-gray-900"
+                                  active ? "bg-primary-100 text-white" : "text-gray-900"
                                 }`
                               }
                               value={country.Country}
@@ -186,9 +175,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
                               {({ selected }) => (
                                 <span
                                   className={`block truncate ${
-                                    selected
-                                      ? "font-semibold text-primary-600"
-                                      : "font-normal"
+                                    selected ? "font-semibold text-primary-600" : "font-normal"
                                   }`}
                                 >
                                   {countryNames[country.Country]}
@@ -208,8 +195,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
                   <div
                     key={index}
                     className={classNames("mt-3", {
-                      "pb-3 border-b border-gray-300":
-                        index !== patentsListForCountry.length - 1,
+                      "pb-3 border-b border-gray-300": index !== patentsListForCountry.length - 1,
                     })}
                   >
                     <span className="line-clamp-4">{itm}</span>
@@ -224,13 +210,10 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
               <div
                 key={index}
                 className={classNames("mt-3", {
-                  "pb-3 border-b border-gray-300":
-                    index !== patentsListForUs.length - 1,
+                  "pb-3 border-b border-gray-300": index !== patentsListForUs.length - 1,
                 })}
               >
-                <span className="text-lg mr-1 font-semibold text-primary-800">
-                  {index + 1}.
-                </span>
+                <span className="text-lg mr-1 font-semibold text-primary-800">{index + 1}.</span>
                 <span>{itm}</span>
               </div>
             ))}

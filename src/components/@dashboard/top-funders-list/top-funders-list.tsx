@@ -21,7 +21,7 @@ export default function TopFundersList(props: ITopFundersListProps) {
     async () => {
       return await getTop5Funders(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
@@ -38,16 +38,16 @@ export default function TopFundersList(props: ITopFundersListProps) {
       {
         header: "Funding (USD)",
         accessorKey: "total_funding",
-        cell: (props) => (
+        cell: (item) => (
           <span>
-            {formatNumber(props.row.original.total_funding, {
+            {formatNumber(item.row.original.total_funding, {
               isCurrency: true,
             })}
           </span>
         ),
       },
     ],
-    []
+    [],
   );
 
   return (

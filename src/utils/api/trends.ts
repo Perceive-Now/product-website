@@ -5,7 +5,7 @@ import axiosInstance from "../axios";
  */
 export async function getTechnologyTrends(keywords: string[]) {
   const response = await axiosInstance.get<ITrendResponse>(
-    `/trends/results?q=${keywords.join(",")}`
+    `/trends/results?q=${keywords.join(",")}`,
   );
 
   return response.data;

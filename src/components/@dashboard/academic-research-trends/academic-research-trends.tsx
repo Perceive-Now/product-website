@@ -28,7 +28,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     async () => {
       return await getAcademicResearchTrends(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
@@ -42,8 +42,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     .map((itm) => {
       const data = finalPieData.find((it) => it.locationName === itm)!;
 
-      const total =
-        data.openArticlesCount + data.closedArticlesCount + data.patentsCount;
+      const total = data.openArticlesCount + data.closedArticlesCount + data.patentsCount;
       const openPercentage = (data.openArticlesCount / total) * 100;
       const closedPercentage = (data.closedArticlesCount / total) * 100;
       const patentsPercentage = (data.patentsCount / total) * 100;
@@ -73,9 +72,9 @@ export default function AcademicResearchTrends(props: IResearchProps) {
   const finalScatterDataFormatHelper = (data: any) => {
     if (!data) return [];
 
-    let patentsObj = { id: "Patents", data: [] };
-    let openArticlesObj = { id: "Open Articles", data: [] };
-    let closedArticlesObj = { id: "Closed Articles", data: [] };
+    const patentsObj = { id: "Patents", data: [] };
+    const openArticlesObj = { id: "Open Articles", data: [] };
+    const closedArticlesObj = { id: "Closed Articles", data: [] };
 
     let patentsData: any = [];
     let openArticlesData: any = [];
@@ -84,15 +83,9 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     data.forEach((d: any) => {
       patentsData = [...patentsData, { x: d.locationName, y: d.patentsCount }];
 
-      openArticlesData = [
-        ...openArticlesData,
-        { x: d.locationName, y: d.openArticlesCount },
-      ];
+      openArticlesData = [...openArticlesData, { x: d.locationName, y: d.openArticlesCount }];
 
-      closedArticlesData = [
-        ...closedArticlesData,
-        { x: d.locationName, y: d.closedArticlesCount },
-      ];
+      closedArticlesData = [...closedArticlesData, { x: d.locationName, y: d.closedArticlesCount }];
     });
 
     patentsObj.data = patentsData;
@@ -102,9 +95,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     return [patentsObj, openArticlesObj, closedArticlesObj];
   };
 
-  const finalScatterData = isLoading
-    ? []
-    : finalScatterDataFormatHelper(data?.chart) ?? [];
+  const finalScatterData = isLoading ? [] : finalScatterDataFormatHelper(data?.chart) ?? [];
 
   //
   return (
@@ -164,11 +155,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       )}
 
       {activeChart === "scatter" && (
-        <ScatterChart
-          data={finalScatterData}
-          legendX="Location"
-          legendY="Articles"
-        />
+        <ScatterChart data={finalScatterData} legendX="Location" legendY="Articles" />
       )}
 
       {activeChart === "donut" && <RadialChart data={radialData} />}

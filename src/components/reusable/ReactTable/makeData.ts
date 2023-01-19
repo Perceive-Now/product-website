@@ -19,7 +19,7 @@ const newPatent = (): any => {
 export function makeData(...lens: number[]) {
   const makeDataLevel = (depth = 0): any[] => {
     const len = lens[depth]!;
-    return range(len).map((d): any => {
+    return range(len).map((): any => {
       return {
         ...newPatent(),
       };

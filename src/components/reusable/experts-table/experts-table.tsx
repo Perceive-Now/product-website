@@ -34,7 +34,7 @@ export default function ExpertsTable({ data }: IExpertsTableProps) {
     },
     columnHelper.display({
       id: "actions",
-      cell: (props) => <RowActions row={props.row} />,
+      cell: () => <RowActions />,
     }),
   ];
 
@@ -54,16 +54,11 @@ interface IExpertsTableProps {
   data: ExpertsType[];
 }
 
-const RowActions = ({ row }: any) => {
+const RowActions = () => {
   return (
     <Tooltip
       isCustomPanel={true}
-      trigger={
-        <VerticalThreeDots
-          data-dropdown-toggle="dropdown"
-          className="cursor-pointer"
-        />
-      }
+      trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
       panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
     >
       <ul id="dropdown">

@@ -46,6 +46,7 @@ export default function ForgotPasswordPage() {
 
   const { errors } = formState;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleForgotPassword = (values: ILoginFormValues) => {
     // TODO:: Make API call for forgot password initiation
 
@@ -64,7 +65,6 @@ export default function ForgotPasswordPage() {
 
   useEffect(() => {
     getSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Do not show login page content on initial load
@@ -81,10 +81,7 @@ export default function ForgotPasswordPage() {
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit(handleForgotPassword)}
-        className="w-full md:w-[480px] py-10"
-      >
+      <form onSubmit={handleSubmit(handleForgotPassword)} className="w-full md:w-[480px] py-10">
         <div className="flex flex-col items-center">
           <img
             src={Logo}
@@ -96,16 +93,12 @@ export default function ForgotPasswordPage() {
 
           <div className="mt-5 text-sm text-center max-w-[320px]">
             {!isSubmitted && (
-              <p>
-                Enter your email and we will send you a link to reset your
-                password!
-              </p>
+              <p>Enter your email and we will send you a link to reset your password!</p>
             )}
 
             {isSubmitted && (
               <p className="pb-15">
-                Please check your email and follow the instrustions to reset
-                your password!
+                Please check your email and follow the instrustions to reset your password!
               </p>
             )}
           </div>
@@ -131,16 +124,14 @@ export default function ForgotPasswordPage() {
                       "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                       errors.email
                         ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                     )}
                     placeholder="Enter your email address"
                   />
                 </div>
 
                 {errors.email?.message && (
-                  <div className="mt-1 text-xs text-danger-500">
-                    {errors.email?.message}
-                  </div>
+                  <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
                 )}
               </fieldset>
             </div>

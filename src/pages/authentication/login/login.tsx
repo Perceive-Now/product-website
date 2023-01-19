@@ -82,7 +82,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     getSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Do not show login page content on initial load
@@ -90,10 +89,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center min-h-screen px-2">
-      <form
-        onSubmit={handleSubmit(handleLogin)}
-        className="w-full md:w-[480px] py-10"
-      >
+      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[480px] py-10">
         <div className="flex flex-col items-center">
           <img
             src={Logo}
@@ -108,10 +104,7 @@ export default function LoginPage() {
 
         <div>
           <fieldset className="mt-3">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
+            <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
               Email
             </label>
 
@@ -124,24 +117,19 @@ export default function LoginPage() {
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                   errors.email
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Enter your email address"
               />
             </div>
 
             {errors.email?.message && (
-              <div className="mt-1 text-xs text-danger-500">
-                {errors.email?.message}
-              </div>
+              <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
             )}
           </fieldset>
 
           <fieldset className="mt-2">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium leading-5 text-gray-700"
-            >
+            <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">
               Password
             </label>
 
@@ -154,7 +142,7 @@ export default function LoginPage() {
                   "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                   errors.password
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Enter your password"
               />
@@ -170,9 +158,7 @@ export default function LoginPage() {
             </div>
 
             {errors.password?.message && (
-              <div className="mt-1 text-xs text-danger-500">
-                {errors.password?.message}
-              </div>
+              <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
             )}
           </fieldset>
 
@@ -182,11 +168,7 @@ export default function LoginPage() {
         </div>
 
         <div className="flex justify-center mt-3">
-          <Button
-            htmlType="submit"
-            disabled={!emailValue || !passwordValue}
-            loading={isSubmitting}
-          >
+          <Button htmlType="submit" disabled={!emailValue || !passwordValue} loading={isSubmitting}>
             Login
           </Button>
         </div>

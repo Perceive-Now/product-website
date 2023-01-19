@@ -19,7 +19,7 @@ export default function Competitors(props: ICompetitorProps) {
     async () => {
       return await getCompetitors(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
@@ -66,41 +66,25 @@ export default function Competitors(props: ICompetitorProps) {
           <div className="grid grid-cols-9 mb-3">
             <div className="col-span-1" />
             <div className="col-span-6 font-semibold">Company Name</div>
-            <div className="col-span-2 text-right pr-1 font-semibold">
-              Patents
-            </div>
+            <div className="col-span-2 text-right pr-1 font-semibold">Patents</div>
           </div>
 
           {patensValues.map((itm, index) => (
-            <ListItem
-              name={itm.title}
-              value={itm.value}
-              index={index}
-              key={index}
-            />
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
 
         <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">
-            Patent Claims
-          </p>
+          <p className="text-lg font-semibold text-primary-900 mb-2">Patent Claims</p>
 
           <div className="grid grid-cols-9 mb-3">
             <div className="col-span-1" />
             <div className="col-span-5 font-semibold">Company Name</div>
-            <div className="col-span-3 text-right pr-1 font-semibold">
-              Patent Claims
-            </div>
+            <div className="col-span-3 text-right pr-1 font-semibold">Patent Claims</div>
           </div>
 
           {claimValues.map((itm, index) => (
-            <ListItem
-              name={itm.title}
-              value={itm.value}
-              index={index}
-              key={index}
-            />
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
       </div>
@@ -114,41 +98,25 @@ export default function Competitors(props: ICompetitorProps) {
           <div className="grid grid-cols-9 mb-3">
             <div className="col-span-1" />
             <div className="col-span-6 font-semibold">Company Name</div>
-            <div className="col-span-2 text-right pr-1 font-semibold">
-              Experts
-            </div>
+            <div className="col-span-2 text-right pr-1 font-semibold">Experts</div>
           </div>
 
           {exptersValues.map((itm, index) => (
-            <ListItem
-              name={itm.title}
-              value={itm.value}
-              index={index}
-              key={index}
-            />
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
 
         <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">
-            Publications
-          </p>
+          <p className="text-lg font-semibold text-primary-900 mb-2">Publications</p>
 
           <div className="grid grid-cols-9 mb-3">
             <div className="col-span-1" />
             <div className="col-span-6 font-semibold">Company Name</div>
-            <div className="col-span-2 text-right pr-1 font-semibold">
-              Publications
-            </div>
+            <div className="col-span-2 text-right pr-1 font-semibold">Publications</div>
           </div>
 
           {publicationValues.map((itm, index) => (
-            <ListItem
-              name={itm.title}
-              value={itm.value}
-              index={index}
-              key={index}
-            />
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
       </div>

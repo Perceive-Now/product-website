@@ -14,21 +14,13 @@ import TimePeriod from "../../reusable/time-period";
 import DataSection from "../../reusable/data-section";
 
 //
-import ChartButtons, {
-  ChartType,
-} from "../../reusable/chart-buttons/chart-buttons";
+import ChartButtons, { ChartType } from "../../reusable/chart-buttons/chart-buttons";
 
 //
-import {
-  getTopFundingChart,
-  ITopFundingChart,
-} from "../../../utils/api/charts";
+import { getTopFundingChart, ITopFundingChart } from "../../../utils/api/charts";
 
 //
-import {
-  DEFAULT_TIME_PERIOD_END_YEAR,
-  YEAR_DIFFERENCE,
-} from "../../../utils/constants";
+import { DEFAULT_TIME_PERIOD_END_YEAR, YEAR_DIFFERENCE } from "../../../utils/constants";
 
 /**
  *
@@ -46,17 +38,15 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     async () => {
       return await getTopFundingChart(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   const chartDataFormatHelper = (funders: ITopFundingChart[]) => {
-    let startYear =
-      +selectedTimeperiod?.split("-")[0] ||
-      DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
-    let endYear =
-      +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
+    const startYear =
+      +selectedTimeperiod?.split("-")[0] || DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
+    const endYear = +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
 
-    let funderList: ITopFundingChart[] = [];
+    const funderList: ITopFundingChart[] = [];
     for (let i = startYear; i <= endYear; i++) {
       const funderData = funders.find((funder) => funder.year === i);
       if (funderData) {
@@ -72,9 +62,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     return funderList;
   };
 
-  const chartData = data?.fundings
-    ? chartDataFormatHelper(data?.fundings) ?? []
-    : [];
+  const chartData = data?.fundings ? chartDataFormatHelper(data?.fundings) ?? [] : [];
 
   if (!chartData) hasNoData = true;
 
@@ -140,17 +128,11 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     >
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
-          <TimePeriod
-            startYear={data?.startYear}
-            handleChange={handleTimePeriodChange}
-          />
+          <TimePeriod startYear={data?.startYear} handleChange={handleTimePeriodChange} />
         </div>
 
         <div className="flex items-center">
-          <ChartButtons
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
-          />
+          <ChartButtons activeChart={activeChart} setActiveChart={setActiveChart} />
         </div>
       </div>
 
@@ -175,10 +157,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
           {activeChart === "donut" && <PieChart data={finalPieData} />}
 
           {activeChart === "scatter" && (
-            <ScatterChart
-              data={finalScatterData}
-              legendY="Funding Amount (USD)"
-            />
+            <ScatterChart data={finalScatterData} legendY="Funding Amount (USD)" />
           )}
         </>
       )}

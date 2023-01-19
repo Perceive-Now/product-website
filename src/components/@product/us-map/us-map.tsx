@@ -1,12 +1,8 @@
+/* eslint-disable no-case-declarations */
 import classNames from "classnames";
 import { useState } from "react";
 import ReactTooltip from "react-tooltip";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-} from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 
 //
 import { BriefcaseIcon, LocationIcon } from "../../icons";
@@ -50,9 +46,9 @@ const HEATMAP_COLORS = [
  *
  */
 export default function USMap(props: IUSMapProps) {
-  const [activeMarkerData, setActiveMarkerData] = useState<
-    IWorldMapDataItem | undefined
-  >(undefined);
+  const [activeMarkerData, setActiveMarkerData] = useState<IWorldMapDataItem | undefined>(
+    undefined,
+  );
 
   //
   const [heatmapHoveredState, setHeatmapHoveredState] = useState<string>("");
@@ -69,12 +65,10 @@ export default function USMap(props: IUSMapProps) {
       case "heatmap":
         const currentStateValue =
           props.data?.find(
-            (itm) =>
-              itm.country?.toLowerCase() ===
-              geo?.properties?.name?.toLowerCase()
+            (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
 
-        let finalValueToReturn: string = "#D7D7D7";
+        let finalValueToReturn = "#D7D7D7";
         if (currentStateValue === 0) return finalValueToReturn;
 
         const allValues = getRangeForPatents(true);
@@ -128,10 +122,7 @@ export default function USMap(props: IUSMapProps) {
             </div>
 
             <div className="mt-2 flex">
-              <TooltipGroupItem
-                title="Patents"
-                value={activeMarkerData.patents}
-              />
+              <TooltipGroupItem title="Patents" value={activeMarkerData.patents} />
             </div>
           </div>
         </ReactTooltip>
@@ -146,11 +137,7 @@ export default function USMap(props: IUSMapProps) {
           </div>
 
           <div className="mt-2 flex justify-center gap-x-2">
-            <TooltipGroupItem
-              title="Patents"
-              value={activeMarkerData?.patents}
-              isPercentage
-            />
+            <TooltipGroupItem title="Patents" value={activeMarkerData?.patents} isPercentage />
           </div>
         </ReactTooltip>
       )}
@@ -185,8 +172,7 @@ export default function USMap(props: IUSMapProps) {
                         //
                         const dataForCurrentState = props.data?.find(
                           (itm) =>
-                            itm.country?.toLowerCase() ===
-                            geo?.properties?.name?.toLowerCase()
+                            itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
                         );
                         setActiveMarkerData(dataForCurrentState);
                       }
@@ -208,10 +194,7 @@ export default function USMap(props: IUSMapProps) {
                     ?.filter((item) => item.coordinate?.length)
                     ?.map((marker, index) => {
                       const _centroid = marker.coordinate ?? [0, 0];
-                      const centroid: [number, number] = [
-                        _centroid[1],
-                        _centroid[0],
-                      ];
+                      const centroid: [number, number] = [_centroid[1], _centroid[0]];
 
                       return (
                         <g key={index + "-name"}>
@@ -222,9 +205,7 @@ export default function USMap(props: IUSMapProps) {
                                 data-tip=""
                                 data-for="marker-details"
                                 onMouseEnter={() => setActiveMarkerData(marker)}
-                                onMouseLeave={() =>
-                                  setActiveMarkerData(undefined)
-                                }
+                                onMouseLeave={() => setActiveMarkerData(undefined)}
                               >
                                 <circle r={3} fill="red" />
                                 <circle r={2} fill="white" />
@@ -254,13 +235,7 @@ export default function USMap(props: IUSMapProps) {
           {/* Heatmap color indicators */}
           <div className="flex justify-between mt-1">
             {COLOR_GROUPS.map((grp) => (
-              <div
-                key={grp}
-                className={classNames(
-                  "h-2 w-[11.11%] shadow",
-                  HEATMAP_COLORS[grp]
-                )}
-              />
+              <div key={grp} className={classNames("h-2 w-[11.11%] shadow", HEATMAP_COLORS[grp])} />
             ))}
           </div>
         </div>

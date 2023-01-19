@@ -19,10 +19,7 @@ import Tooltip from "../../../../components/reusable/tooltip";
 import { VerticalThreeDots } from "../../../../components/icons";
 import ReactTable from "../../../../components/reusable/ReactTable";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
-import {
-  getUniversities,
-  IUniversityItem,
-} from "../../../../utils/api/advance-search";
+import { getUniversities, IUniversityItem } from "../../../../utils/api/advance-search";
 
 /**
  *
@@ -34,9 +31,7 @@ export default function UniversitiesPage() {
   //
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const joinedKeywords = searchedKeywords
-    ?.map((kwd) => `"${kwd.value}"`)
-    .join(", ");
+  const joinedKeywords = searchedKeywords?.map((kwd) => `"${kwd.value}"`).join(", ");
 
   const keywords = searchedKeywords?.map((kwd) => kwd.value) ?? [];
 
@@ -45,7 +40,7 @@ export default function UniversitiesPage() {
     async () => {
       return await getUniversities(keywords);
     },
-    { enabled: !!searchedKeywords?.length }
+    { enabled: !!searchedKeywords?.length },
   );
 
   const universitiesData = isLoading ? [] : data ?? [];
@@ -62,7 +57,7 @@ export default function UniversitiesPage() {
     async () => {
       return await getRelatedKeywords(keywords);
     },
-    { enabled: !!keywords.length }
+    { enabled: !!keywords.length },
   );
 
   //
@@ -104,7 +99,7 @@ export default function UniversitiesPage() {
     },
     columnHelper.display({
       id: "actions",
-      cell: (props) => <RowActions row={props.row} />,
+      cell: () => <RowActions />,
     }),
   ];
 
@@ -117,9 +112,7 @@ export default function UniversitiesPage() {
       {searchedKeywords && searchedKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
-            <span className="text-gray-700">
-              Showing top universities trends for:
-            </span>
+            <span className="text-gray-700">Showing top universities trends for:</span>
             <span className="font-semibold ml-1">{joinedKeywords}</span>
           </p>
 
@@ -136,11 +129,7 @@ export default function UniversitiesPage() {
           </div>
 
           <div className="flex justify-center mt-7">
-            <Pagination
-              currentPage={currentPage}
-              totalCount={111}
-              gotoPage={gotoPage}
-            />
+            <Pagination currentPage={currentPage} totalCount={111} gotoPage={gotoPage} />
           </div>
 
           <div className="mt-5">
@@ -161,16 +150,11 @@ export default function UniversitiesPage() {
 }
 
 //
-const RowActions = ({ row }: any) => {
+const RowActions = () => {
   return (
     <Tooltip
       isCustomPanel={true}
-      trigger={
-        <VerticalThreeDots
-          data-dropdown-toggle="dropdown"
-          className="cursor-pointer"
-        />
-      }
+      trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
       panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
     >
       <ul id="dropdown">

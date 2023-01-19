@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 //
 import { getRelatedKeywords } from "../../../../utils/api/dashboard";
-import { getPublications } from "../../../../utils/api/advance-search";
 
 /**
  *
@@ -25,29 +24,19 @@ export default function PublicationsPage() {
   const dispatch = useAppDispatch();
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search);
 
-  const joinedKeywords = searchedKeywords
-    ?.map((kwd) => `"${kwd.value}"`)
-    .join(", ");
+  const joinedKeywords = searchedKeywords?.map((kwd) => `"${kwd.value}"`).join(", ");
 
   const keywords = searchedKeywords?.map((kwd) => kwd.value) ?? [];
 
   //
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data: publicationsDataRaw } = useQuery(
-    ["advanced-search-publications", ...keywords],
-    async () => {
-      return await getPublications(keywords);
-    },
-    { enabled: !!keywords?.length }
-  );
-
   const { data: relatedKeywords } = useQuery(
     ["dashboard-most-related-keywords", ...keywords],
     async () => {
       return await getRelatedKeywords(keywords);
     },
-    { enabled: !!keywords.length }
+    { enabled: !!keywords.length },
   );
 
   const publicationsData = ([] as any)
@@ -74,9 +63,7 @@ export default function PublicationsPage() {
       {searchedKeywords && searchedKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
-            <span className="text-gray-700">
-              Showing trending publications for:
-            </span>
+            <span className="text-gray-700">Showing trending publications for:</span>
             <span className="font-semibold ml-1">{joinedKeywords}</span>
           </p>
 
@@ -86,18 +73,11 @@ export default function PublicationsPage() {
 
           <div>
             {publicationsData?.map((publicationData: any) => (
-              <PublicationItem
-                data={publicationData}
-                key={publicationData.doi}
-              />
+              <PublicationItem data={publicationData} key={publicationData.doi} />
             ))}
 
             <div className="flex justify-center mt-7">
-              <Pagination
-                currentPage={currentPage}
-                totalCount={111}
-                gotoPage={gotoPage}
-              />
+              <Pagination currentPage={currentPage} totalCount={111} gotoPage={gotoPage} />
             </div>
           </div>
 

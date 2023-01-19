@@ -18,12 +18,7 @@ export default function InfoIcon(props: SVGProps<SVGSVGElement>) {
       </g>
       <defs>
         <clipPath id="clip0_1607_32341">
-          <rect
-            width="24"
-            height="24"
-            fill="white"
-            transform="translate(0.5)"
-          />
+          <rect width="24" height="24" fill="white" transform="translate(0.5)" />
         </clipPath>
       </defs>
     </svg>

@@ -18,7 +18,7 @@ export default function HawkEyeExpertsSection() {
         <p className="text-sm text-gray-700 my-3">
           <span>{count?.experts}</span>
           <span> experts were found for:</span>
-          <span> "</span>
+          <span> &quot;</span>
           <span className="font-semibold text-gray-900">
             {searchKeywords.map((keyword, index) => {
               let comma = "";
@@ -28,7 +28,7 @@ export default function HawkEyeExpertsSection() {
               return `${keyword.value}${comma}`;
             })}
           </span>
-          <span>"</span>
+          <span>&quot;</span>
         </p>
       )}
 

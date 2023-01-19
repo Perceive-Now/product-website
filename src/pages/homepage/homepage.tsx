@@ -44,12 +44,7 @@ export default function HomePage() {
 
           <div className="min-w-[612px]">
             <div className="mt-3">
-              <Search
-                required
-                size="large"
-                className="w-full"
-                onSubmit={handleSearch}
-              />
+              <Search required size="large" className="w-full" onSubmit={handleSearch} />
             </div>
 
             <div className="text-right text-sm text-gray-600 mt-2">

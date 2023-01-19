@@ -29,7 +29,7 @@ export default function PatentTable({ data }: IPatentTableProps) {
     {
       header: "Abstract",
       id: "abstract",
-      accessorFn: (row) => `View abstract`,
+      accessorFn: () => `View abstract`,
     },
     {
       header: "Date (Y/M/D)",
@@ -37,37 +37,32 @@ export default function PatentTable({ data }: IPatentTableProps) {
     },
     columnHelper.display({
       id: "actions",
-      cell: (props) => <RowActions row={props.row} />,
+      cell: () => <RowActions />,
     }),
   ];
 
   return <ReactTable columnsData={columns} rowsData={data} />;
 }
 
-const RowActions = ({ row }: any) => {
+const RowActions = () => {
   return (
-      <Tooltip
-        isCustomPanel={true}
-        trigger={
-          <VerticalThreeDots
-            data-dropdown-toggle="dropdown"
-            className="cursor-pointer"
-          />
-        }
-        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
-      >
-        <ul id="dropdown">
-          <li className="mb-2 cursor-pointer">
-            <div>Bookmark</div>
-          </li>
-          <li className="mb-2 cursor-pointer">
-            <div>Generate Citation</div>
-          </li>
-          <li className="cursor-pointer">
-            <div>Share</div>
-          </li>
-        </ul>
-      </Tooltip>
+    <Tooltip
+      isCustomPanel={true}
+      trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
+      panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+    >
+      <ul id="dropdown">
+        <li className="mb-2 cursor-pointer">
+          <div>Bookmark</div>
+        </li>
+        <li className="mb-2 cursor-pointer">
+          <div>Generate Citation</div>
+        </li>
+        <li className="cursor-pointer">
+          <div>Share</div>
+        </li>
+      </ul>
+    </Tooltip>
   );
 };
 

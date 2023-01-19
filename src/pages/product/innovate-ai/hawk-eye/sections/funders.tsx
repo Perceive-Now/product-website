@@ -18,13 +18,13 @@ export default function HawkEyeFundersSection() {
         <p className="text-sm text-gray-700 my-3">
           <span>{count?.funders}</span>
           <span> funders were found for:</span>
-          <span> "</span>
+          <span> &quot;</span>
           <span className="font-semibold text-gray-900">
             {searchKeywords.map((keywords) => {
               return <span key={keywords.value}> {keywords.value}</span>;
             })}
           </span>
-          <span>"</span>
+          <span>&quot;</span>
         </p>
       )}
 

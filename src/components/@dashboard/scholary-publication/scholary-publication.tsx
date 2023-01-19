@@ -32,7 +32,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     async () => {
       return await getScholaryPublications(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
@@ -63,21 +63,15 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
   const finalScatterDataFormatHelper = (data: any) => {
     if (!data) return [];
 
-    let closedArticlesObj = { id: "Closed Articles", data: [] };
-    let openArticlesObj = { id: "Open Articles", data: [] };
+    const closedArticlesObj = { id: "Closed Articles", data: [] };
+    const openArticlesObj = { id: "Open Articles", data: [] };
 
     let closedArticlesData: any = [];
     let openArticlesData: any = [];
 
     data.forEach((d: IScholaryPublicationData) => {
-      closedArticlesData = [
-        ...closedArticlesData,
-        { x: d.year, y: d.closedArticles },
-      ];
-      openArticlesData = [
-        ...openArticlesData,
-        { x: d.year, y: d.openArticles },
-      ];
+      closedArticlesData = [...closedArticlesData, { x: d.year, y: d.closedArticles }];
+      openArticlesData = [...openArticlesData, { x: d.year, y: d.openArticles }];
     });
 
     closedArticlesObj.data = closedArticlesData;
@@ -141,16 +135,10 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
       )}
 
       {activeChart === "scatter" && (
-        <ScatterChart
-          data={finalScatterData}
-          legendX="Year"
-          legendY="Publications"
-        />
+        <ScatterChart data={finalScatterData} legendX="Year" legendY="Publications" />
       )}
 
-      {activeChart === "donut" && (
-        <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />
-      )}
+      {activeChart === "donut" && <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />}
 
       <div className="mt-4">
         <Link to="/publications">Read more</Link>

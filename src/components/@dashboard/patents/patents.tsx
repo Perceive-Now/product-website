@@ -18,10 +18,7 @@ import { getPatentsPieChart, IPatent } from "../../../utils/api/charts";
 
 //
 import NoDataMessage from "../../reusable/no-data";
-import {
-  DEFAULT_TIME_PERIOD_END_YEAR,
-  YEAR_DIFFERENCE,
-} from "../../../utils/constants";
+import { DEFAULT_TIME_PERIOD_END_YEAR, YEAR_DIFFERENCE } from "../../../utils/constants";
 
 /**
  *
@@ -41,7 +38,7 @@ export default function Patents(props: IPatentsProps) {
     async () => {
       return await getPatentsPieChart(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   const hasDataChecker = (patentsList: IPatent[]) => {
@@ -65,13 +62,11 @@ export default function Patents(props: IPatentsProps) {
   };
 
   const chartDataFormatHelper = (patents: IPatent[]) => {
-    let startYear =
-      +selectedTimeperiod?.split("-")[0] ||
-      DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
-    let endYear =
-      +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
+    const startYear =
+      +selectedTimeperiod?.split("-")[0] || DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
+    const endYear = +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
 
-    let patentsList: IPatent[] = [];
+    const patentsList: IPatent[] = [];
     for (let i = startYear; i <= endYear; i++) {
       const patentData = patents.find((patent) => patent.name === i);
       if (patentData) {
@@ -89,9 +84,7 @@ export default function Patents(props: IPatentsProps) {
     return patentsList;
   };
 
-  const chartData = data?.patents
-    ? chartDataFormatHelper(data?.patents) ?? []
-    : [];
+  const chartData = data?.patents ? chartDataFormatHelper(data?.patents) ?? [] : [];
 
   const finalBarData = isLoading ? [] : chartData ?? [];
 
@@ -143,17 +136,11 @@ export default function Patents(props: IPatentsProps) {
     >
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
-          <TimePeriod
-            startYear={data?.startYear}
-            handleChange={handleSelectedTimeperiodChange}
-          />
+          <TimePeriod startYear={data?.startYear} handleChange={handleSelectedTimeperiodChange} />
         </div>
 
         <div className="flex items-center">
-          <ChartButtons
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
-          />
+          <ChartButtons activeChart={activeChart} setActiveChart={setActiveChart} />
         </div>
       </div>
 
@@ -183,11 +170,7 @@ export default function Patents(props: IPatentsProps) {
           )}
 
           {activeChart === "scatter" && (
-            <ScatterChart
-              data={finalScatterData}
-              legendX="Years"
-              legendY="Patents"
-            />
+            <ScatterChart data={finalScatterData} legendX="Years" legendY="Patents" />
           )}
         </>
       )}

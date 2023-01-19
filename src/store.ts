@@ -8,7 +8,7 @@ import DashboardReducer from "./stores/dashboard";
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
-    dashboard: DashboardReducer
+    dashboard: DashboardReducer,
   },
 });
 

@@ -15,21 +15,12 @@ import { FundingType } from "../funding-table/funding-table";
 import { IPublicationData } from "../../../pages/product/advanced-search/publications/publications";
 
 //
-import {
-  expertsAPIData,
-  fundingAPIData,
-  patentsPortfolioData,
-  publicationsAPIData,
-} from "./_data";
+import { expertsAPIData, fundingAPIData, patentsPortfolioData, publicationsAPIData } from "./_data";
 
 /**
  *
  */
-export default function DetailedDisclosure({
-  id,
-  title,
-  description,
-}: IDetailedDisclosure) {
+export default function DetailedDisclosure({ title, description }: IDetailedDisclosure) {
   const options = [
     { id: 1, label: "Patent Portfolio" },
     { id: 2, label: "Publication Portfolio" },
@@ -42,9 +33,7 @@ export default function DetailedDisclosure({
   const [fundingsData, setFundingsData] = useState<FundingType[]>([]);
   const [expertsData, setExpertsData] = useState<ExpertsType[]>([]);
   const [patentsData, setPatentsData] = useState<PatentType[]>([]);
-  const [publicationsData, setPublicationsData] = useState<IPublicationData[]>(
-    []
-  );
+  const [publicationsData, setPublicationsData] = useState<IPublicationData[]>([]);
 
   //
   useEffect(() => {
@@ -77,9 +66,7 @@ export default function DetailedDisclosure({
           </div>
 
           <div className="mb-2">
-            {activeLabel === "Patent Portfolio" && (
-              <PatentTable data={patentsData} />
-            )}
+            {activeLabel === "Patent Portfolio" && <PatentTable data={patentsData} />}
 
             {activeLabel === "Publication Portfolio" && (
               <div>
@@ -94,9 +81,7 @@ export default function DetailedDisclosure({
 
             {activeLabel === "Funding" && <FundingTable data={fundingsData} />}
 
-            {activeLabel === "Expert Portfolio" && (
-              <ExpertsTable data={expertsData} />
-            )}
+            {activeLabel === "Expert Portfolio" && <ExpertsTable data={expertsData} />}
           </div>
         </div>
       </Accordion>

@@ -2,12 +2,7 @@ import { SVGProps } from "react";
 
 export default function MapMarkerIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 30 31"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg viewBox="0 0 30 31" fill="currentColor" xmlns="http://www.w3.org/2000/svg" {...props}>
       <mask
         id="path-1-outside-1_1299_7706"
         maskUnits="userSpaceOnUse"
@@ -17,13 +12,7 @@ export default function MapMarkerIcon(props: SVGProps<SVGSVGElement>) {
         height="30"
         fill="black"
       >
-        <rect
-          fill="currentColor"
-          x="0.666992"
-          y="0.666626"
-          width="29"
-          height="30"
-        />
+        <rect fill="currentColor" x="0.666992" y="0.666626" width="29" height="30" />
         <path
           fillRule="evenodd"
           clipRule="evenodd"

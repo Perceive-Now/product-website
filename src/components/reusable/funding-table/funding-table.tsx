@@ -33,7 +33,7 @@ export default function FundingTable({ data }: IFundingTableProps) {
     },
     columnHelper.display({
       id: "actions",
-      cell: (props) => <Button type="secondary">Track</Button>,
+      cell: () => <Button type="secondary">Track</Button>,
     }),
   ];
 

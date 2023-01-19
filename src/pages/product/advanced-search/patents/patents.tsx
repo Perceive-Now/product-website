@@ -34,9 +34,7 @@ export default function PatentsPage() {
   //
   const [searchKeywords, setSearchKeywords] = useState<IKeywordOption[]>();
 
-  const joinedKeywords = searchKeywords
-    ?.map((kwd) => `"${kwd.value}"`)
-    .join(", ");
+  const joinedKeywords = searchKeywords?.map((kwd) => `"${kwd.value}"`).join(", ");
 
   const keywords = searchKeywords?.map((kwd) => kwd.value) ?? [];
 
@@ -45,7 +43,7 @@ export default function PatentsPage() {
     async () => {
       return await getPatents(keywords);
     },
-    { enabled: !!searchKeywords?.length }
+    { enabled: !!searchKeywords?.length },
   );
 
   const patentsData = isLoading ? [] : patentsDataRaw?.data?.resultsList ?? [];
@@ -56,7 +54,7 @@ export default function PatentsPage() {
     async () => {
       return await getRelatedKeywords(keywords);
     },
-    { enabled: !!keywords.length }
+    { enabled: !!keywords.length },
   );
 
   //
@@ -94,7 +92,7 @@ export default function PatentsPage() {
     {
       header: "Abstract",
       id: "abstract",
-      accessorFn: (row) => `View Abstract`,
+      accessorFn: () => `View Abstract`,
       minSize: 150,
     },
     {
@@ -104,7 +102,7 @@ export default function PatentsPage() {
     },
     columnHelper.display({
       id: "actions",
-      cell: (props) => <RowActions row={props.row} />,
+      cell: () => <RowActions />,
     }),
   ];
 
@@ -130,11 +128,7 @@ export default function PatentsPage() {
           </div>
 
           <div className="flex justify-center mt-7">
-            <Pagination
-              currentPage={currentPage}
-              totalCount={111}
-              gotoPage={gotoPage}
-            />
+            <Pagination currentPage={currentPage} totalCount={111} gotoPage={gotoPage} />
           </div>
 
           <div className="mt-5">
@@ -154,16 +148,11 @@ export default function PatentsPage() {
   );
 }
 //
-const RowActions = ({ row }: any) => {
+const RowActions = () => {
   return (
     <Tooltip
       isCustomPanel={true}
-      trigger={
-        <VerticalThreeDots
-          data-dropdown-toggle="dropdown"
-          className="cursor-pointer"
-        />
-      }
+      trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
       panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
     >
       <ul id="dropdown">

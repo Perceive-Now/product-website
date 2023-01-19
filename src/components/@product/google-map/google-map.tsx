@@ -1,10 +1,5 @@
 import { useState, memo } from "react";
-import {
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-  InfoBox,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader, InfoBox } from "@react-google-maps/api";
 
 //
 import { BriefcaseIcon, LocationIcon } from "../../icons";
@@ -57,8 +52,7 @@ const mapStyle = [
 
 //
 function GoogleMaps(props: IGoogleMapProps) {
-  const [activeMarkerData, setActiveMarkerData] =
-    useState<IWorldMapDataItem | null>(null);
+  const [activeMarkerData, setActiveMarkerData] = useState<IWorldMapDataItem | null>(null);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -90,7 +84,7 @@ function GoogleMaps(props: IGoogleMapProps) {
             {/* Markers */}
             {props.data
               ?.filter((item) => item.coordinate)
-              ?.map((marker, index) => (
+              ?.map((marker) => (
                 <>
                   <Marker
                     position={{
@@ -100,51 +94,42 @@ function GoogleMaps(props: IGoogleMapProps) {
                     onMouseOver={() => setActiveMarkerData(marker)}
                     onMouseOut={() => setActiveMarkerData(null)}
                   >
-                    {activeMarkerData &&
-                      activeMarkerData.location === marker.location && (
-                        <InfoBox options={{ closeBoxURL: "" }}>
-                          <div className="bg-white text-gray-700 border border-gray-200 opacity-100 p-2 shadow-lg rounded-2xl">
-                            <p className="text-lg mb-1">
-                              {activeMarkerData?.name ?? "-"}
-                            </p>
+                    {activeMarkerData && activeMarkerData.location === marker.location && (
+                      <InfoBox options={{ closeBoxURL: "" }}>
+                        <div className="bg-white text-gray-700 border border-gray-200 opacity-100 p-2 shadow-lg rounded-2xl">
+                          <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
 
-                            {activeMarkerData?.employment && (
-                              <div className="flex gap-x-[4px] items-center mb-[0.25rem]">
-                                <BriefcaseIcon className="text-gray-400" />
-                                <span>{activeMarkerData?.employment}</span>
-                              </div>
+                          {activeMarkerData?.employment && (
+                            <div className="flex gap-x-[4px] items-center mb-[0.25rem]">
+                              <BriefcaseIcon className="text-gray-400" />
+                              <span>{activeMarkerData?.employment}</span>
+                            </div>
+                          )}
+
+                          <div className="flex gap-x-[4px] items-center">
+                            <LocationIcon className="text-gray-400" />
+                            <span>{activeMarkerData?.location ?? "-"}</span>
+                          </div>
+
+                          <div className="mt-2 flex gap-x-2">
+                            {activeMarkerData.experts && (
+                              <TooltipGroupItem title="Experts" value={activeMarkerData.experts} />
                             )}
 
-                            <div className="flex gap-x-[4px] items-center">
-                              <LocationIcon className="text-gray-400" />
-                              <span>{activeMarkerData?.location ?? "-"}</span>
-                            </div>
+                            {activeMarkerData.patents && (
+                              <TooltipGroupItem title="Patents" value={activeMarkerData.patents} />
+                            )}
 
-                            <div className="mt-2 flex gap-x-2">
-                              {activeMarkerData.experts && (
-                                <TooltipGroupItem
-                                  title="Experts"
-                                  value={activeMarkerData.experts}
-                                />
-                              )}
-
-                              {activeMarkerData.patents && (
-                                <TooltipGroupItem
-                                  title="Patents"
-                                  value={activeMarkerData.patents}
-                                />
-                              )}
-
-                              {activeMarkerData.publications && (
-                                <TooltipGroupItem
-                                  title="Publications"
-                                  value={activeMarkerData.publications}
-                                />
-                              )}
-                            </div>
+                            {activeMarkerData.publications && (
+                              <TooltipGroupItem
+                                title="Publications"
+                                value={activeMarkerData.publications}
+                              />
+                            )}
                           </div>
-                        </InfoBox>
-                      )}
+                        </div>
+                      </InfoBox>
+                    )}
                   </Marker>
                 </>
               ))}

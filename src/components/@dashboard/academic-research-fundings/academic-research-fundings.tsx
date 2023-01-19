@@ -30,9 +30,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
     async () => {
       return await getAcademicResearchFundingChart(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
-  let chartData = data?.chart ?? [];
+  const chartData = data?.chart ?? [];
 
   const finalBarChartData = chartData.map((data) => ({
     university: abbreviateString(data.name),
@@ -80,10 +80,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
         </div>
 
         <div className="flex items-center">
-          <ChartButtons
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
-          />
+          <ChartButtons activeChart={activeChart} setActiveChart={setActiveChart} />
         </div>
       </div>
 

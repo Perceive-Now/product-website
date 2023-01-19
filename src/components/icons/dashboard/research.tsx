@@ -26,12 +26,7 @@ export default function ResearchIcon(props: SVGProps<SVGSVGElement>) {
       </g>
       <defs>
         <clipPath id="clip0_3617_10962">
-          <rect
-            width="32"
-            height="32"
-            fill="white"
-            transform="translate(0.5)"
-          />
+          <rect width="32" height="32" fill="white" transform="translate(0.5)" />
         </clipPath>
       </defs>
     </svg>

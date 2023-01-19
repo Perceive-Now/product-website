@@ -8,18 +8,11 @@ import { ChevronLeft, ChevronRight } from "../../icons";
  *
  */
 export default function Pagination(props: IPagination) {
-  const {
-    currentPage,
-    visiblePageNumbers = 10,
-    totalCount,
-    pageSize = 10,
-    gotoPage,
-  } = props;
+  const { currentPage, visiblePageNumbers = 10, totalCount, pageSize = 10, gotoPage } = props;
 
   const pageCountArray = useMemo(
-    () =>
-      Array.from({ length: Math.ceil(totalCount / pageSize) }, (v, i) => i + 1),
-    [pageSize, totalCount]
+    () => Array.from({ length: Math.ceil(totalCount / pageSize) }, (v, i) => i + 1),
+    [pageSize, totalCount],
   );
 
   const isPageNumInVisibleRange = currentPage < visiblePageNumbers;
@@ -27,7 +20,7 @@ export default function Pagination(props: IPagination) {
 
   let NeighbourRange = 0;
   let lowerNeighbourPageArray: number[] = [];
-  let higherNeighbourPageArray: number[] = [];
+  const higherNeighbourPageArray: number[] = [];
 
   if (!isPageNumInVisibleRange) {
     NeighbourRange = Math.ceil(visiblePageNumbers / 2);
@@ -48,8 +41,7 @@ export default function Pagination(props: IPagination) {
   }
 
   const hasLowerPages = lowerNeighbourPageArray[0] > 1;
-  const hasHigherPages =
-    higherNeighbourPageArray[higherNeighbourPageArray.length - 1] < totalPages;
+  const hasHigherPages = higherNeighbourPageArray[higherNeighbourPageArray.length - 1] < totalPages;
 
   const disablePrev = currentPage === 1;
   const disableNext = currentPage === totalPages;
@@ -59,7 +51,7 @@ export default function Pagination(props: IPagination) {
       <div
         className={classNames(
           "mr-2",
-          disablePrev ? "cursor-not-allowed text-primary-50" : "cursor-pointer"
+          disablePrev ? "cursor-not-allowed text-primary-50" : "cursor-pointer",
         )}
         onClick={() => {
           if (disablePrev) return;
@@ -78,7 +70,7 @@ export default function Pagination(props: IPagination) {
                 key={count}
                 className={classNames(
                   "mr-2 cursor-pointer",
-                  count === currentPage ? "font-bold" : "text-gray-500"
+                  count === currentPage ? "font-bold" : "text-gray-500",
                 )}
                 onClick={() => gotoPage(count)}
               >
@@ -127,7 +119,7 @@ export default function Pagination(props: IPagination) {
       <div
         className={classNames(
           "mr-2",
-          disableNext ? "cursor-not-allowed text-primary-50" : "cursor-pointer"
+          disableNext ? "cursor-not-allowed text-primary-50" : "cursor-pointer",
         )}
         onClick={() => {
           if (disableNext) return;

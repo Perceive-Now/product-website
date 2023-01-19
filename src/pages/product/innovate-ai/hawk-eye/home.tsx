@@ -28,7 +28,7 @@ export default function HawkEyeHomeSection() {
         <div className="mt-3">
           <p className="text-sm">
             <span className="text-gray-700">Showing result for:</span>
-            <span> "</span>
+            <span> &quot;</span>
             <span className="font-semibold">
               {searchKeywords.map((keyword, index) => {
                 let comma = "";
@@ -38,7 +38,7 @@ export default function HawkEyeHomeSection() {
                 return `${keyword.value}${comma}`;
               })}
             </span>
-            <span>"</span>
+            <span>&quot;</span>
           </p>
 
           <div className="my-3">

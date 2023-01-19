@@ -29,9 +29,7 @@ export default function ExpertsPage() {
   //
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const joinedKeywords = searchedKeywords
-    ?.map((kwd) => `"${kwd.value}"`)
-    .join(", ");
+  const joinedKeywords = searchedKeywords?.map((kwd) => `"${kwd.value}"`).join(", ");
 
   const keywords = searchedKeywords?.map((kwd) => kwd.value) ?? [];
 
@@ -40,7 +38,7 @@ export default function ExpertsPage() {
     async () => {
       return await getExperts(keywords);
     },
-    { enabled: !!searchedKeywords?.length }
+    { enabled: !!searchedKeywords?.length },
   );
 
   const expertsData = isLoading ? [] : expertsDataRaw?.data?.resultsList ?? [];
@@ -51,7 +49,7 @@ export default function ExpertsPage() {
     async () => {
       return await getRelatedKeywords(keywords);
     },
-    { enabled: !!keywords.length }
+    { enabled: !!keywords.length },
   );
 
   //
@@ -118,11 +116,7 @@ export default function ExpertsPage() {
           </div>
 
           <div className="flex justify-center mt-7">
-            <Pagination
-              currentPage={currentPage}
-              totalCount={111}
-              gotoPage={gotoPage}
-            />
+            <Pagination currentPage={currentPage} totalCount={111} gotoPage={gotoPage} />
           </div>
 
           <div className="mt-5">

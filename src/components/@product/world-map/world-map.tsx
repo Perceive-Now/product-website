@@ -1,14 +1,10 @@
+/* eslint-disable no-case-declarations */
 import classNames from "classnames";
 import ReactTooltip from "react-tooltip";
 
 import { useState } from "react";
 
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-} from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 
 //
 import {
@@ -65,15 +61,13 @@ export default function WorldMap(props: ISvgMapProps) {
   const [hoveredCountry, setHoveredCountry] = useState("");
   const [heatmapHoveredCountry, setHeatmapHoveredCountry] = useState<any>("");
 
-  const [activeMarkerData, setActiveMarkerData] = useState<
-    IWorldMapDataItem | undefined
-  >(undefined);
+  const [activeMarkerData, setActiveMarkerData] = useState<IWorldMapDataItem | undefined>(
+    undefined,
+  );
 
   // Miscs
   const isZoomed = scale > 125;
-  const isHeatmap = ["publicationHeatmap", "patentsHeatmap"].includes(
-    props.type
-  );
+  const isHeatmap = ["publicationHeatmap", "patentsHeatmap"].includes(props.type);
 
   //
   const getRangeForPublications = (excludeZero = false) => {
@@ -93,20 +87,16 @@ export default function WorldMap(props: ISvgMapProps) {
   const getFillColor = (geo: any) => {
     switch (props.type) {
       case "basicPublication":
-        return geo.rsmKey === activeSelection && isZoomed
-          ? "#FFA300"
-          : "#442873";
+        return geo.rsmKey === activeSelection && isZoomed ? "#FFA300" : "#442873";
 
       case "basicPatents":
-        return geo.rsmKey === activeSelection && isZoomed
-          ? "#7A89CC"
-          : "#263680";
+        return geo.rsmKey === activeSelection && isZoomed ? "#7A89CC" : "#263680";
 
       case "publicationHeatmap":
         const currentCountryValue =
           props.data?.find((itm) => itm.country === geo.id)?.publications ?? 0;
 
-        let finalValueToReturn: string = "#D7D7D7";
+        let finalValueToReturn = "#D7D7D7";
         if (currentCountryValue === 0) return finalValueToReturn;
 
         const allValues = getRangeForPublications(true);
@@ -194,28 +184,19 @@ export default function WorldMap(props: ISvgMapProps) {
   return (
     <div className="overflow-y-hidden h-[610px] relative">
       {/* Tooltip with just country name */}
-      {!isHeatmap && (
-        <ReactTooltip id="country-name">{hoveredCountry}</ReactTooltip>
-      )}
+      {!isHeatmap && <ReactTooltip id="country-name">{hoveredCountry}</ReactTooltip>}
 
       {isHeatmap && heatmapHoveredCountry && (
         <ReactTooltip id="country-name">
           <div className="flex items-center gap-x-0.5">
             <LocationIcon className="text-gray-400" />
 
-            <p>
-              {activeMarkerData?.location ??
-                heatmapHoveredCountry?.properties?.name}
-            </p>
+            <p>{activeMarkerData?.location ?? heatmapHoveredCountry?.properties?.name}</p>
           </div>
 
           <div className="mt-2 flex justify-center gap-x-2">
             {props.type === "patentsHeatmap" && (
-              <TooltipGroupItem
-                title="Patents"
-                value={activeMarkerData?.patents}
-                isPercentage
-              />
+              <TooltipGroupItem title="Patents" value={activeMarkerData?.patents} isPercentage />
             )}
 
             {props.type === "publicationHeatmap" && (
@@ -227,10 +208,7 @@ export default function WorldMap(props: ISvgMapProps) {
             )}
 
             {!["publicationHeatmap", "patentsHeatmap"].includes(props.type) && (
-              <TooltipGroupItem
-                title="Experts"
-                value={activeMarkerData?.experts}
-              />
+              <TooltipGroupItem title="Experts" value={activeMarkerData?.experts} />
             )}
           </div>
         </ReactTooltip>
@@ -255,24 +233,15 @@ export default function WorldMap(props: ISvgMapProps) {
 
             <div className="mt-2 flex gap-x-2">
               {activeMarkerData.experts && (
-                <TooltipGroupItem
-                  title="Experts"
-                  value={activeMarkerData.experts}
-                />
+                <TooltipGroupItem title="Experts" value={activeMarkerData.experts} />
               )}
 
               {activeMarkerData.patents && (
-                <TooltipGroupItem
-                  title="Patents"
-                  value={activeMarkerData.patents}
-                />
+                <TooltipGroupItem title="Patents" value={activeMarkerData.patents} />
               )}
 
               {activeMarkerData.publications && (
-                <TooltipGroupItem
-                  title="Publications"
-                  value={activeMarkerData.publications}
-                />
+                <TooltipGroupItem title="Publications" value={activeMarkerData.publications} />
               )}
             </div>
           </div>
@@ -314,13 +283,13 @@ export default function WorldMap(props: ISvgMapProps) {
           className={classNames(
             "absolute top-1 right-1 w-4 text-center",
             "bg-white border border-gray-300 shadow rounded",
-            "flex flex-col justify-around"
+            "flex flex-col justify-around",
           )}
         >
           <div
             className={classNames(
               "w-full h-4 cursor-pointer flex items-center justify-center text-xl font-bold",
-              { "cursor-not-allowed bg-gray-200": scale >= 2000 }
+              { "cursor-not-allowed bg-gray-200": scale >= 2000 },
             )}
             onClick={increaseScale}
           >
@@ -332,7 +301,7 @@ export default function WorldMap(props: ISvgMapProps) {
           <div
             className={classNames(
               "w-full h-4 cursor-pointer flex items-center justify-center text-xl font-bold",
-              { "cursor-not-allowed bg-gray-200": scale <= 125 }
+              { "cursor-not-allowed bg-gray-200": scale <= 125 },
             )}
             onClick={decreaseScale}
           >
@@ -342,11 +311,7 @@ export default function WorldMap(props: ISvgMapProps) {
       </div>
 
       {/* Actual Map */}
-      <div
-        className="flex justify-center w-full object-cover"
-        data-tip=""
-        data-for="country-name"
-      >
+      <div className="flex justify-center w-full object-cover" data-tip="" data-for="country-name">
         <ComposableMap
           projection="geoMercator"
           className="bg-gray-200 h-[610px]"
@@ -356,11 +321,7 @@ export default function WorldMap(props: ISvgMapProps) {
           }}
         >
           {/* Maps */}
-          <Geographies
-            geography={topology}
-            id="hello-world"
-            className="cursor-pointer"
-          >
+          <Geographies geography={topology} id="hello-world" className="cursor-pointer">
             {({ geographies, projection, path }) =>
               geographies.map((geo) => (
                 <Geography
@@ -377,7 +338,7 @@ export default function WorldMap(props: ISvgMapProps) {
                       setHeatmapHoveredCountry(geo);
 
                       const dataForCurrentCountry = props.data?.find(
-                        (itm) => itm.country === geo.id
+                        (itm) => itm.country === geo.id,
                       );
                       setActiveMarkerData(dataForCurrentCountry);
                     } else {
@@ -410,7 +371,7 @@ export default function WorldMap(props: ISvgMapProps) {
                   ]}
                   className={classNames(
                     "focus:outline-none cursor-pointer",
-                    isZoomed ? "text-white" : "text-[#FFA300]"
+                    isZoomed ? "text-white" : "text-[#FFA300]",
                   )}
                   data-tip=""
                   data-for="marker-details"
@@ -440,10 +401,7 @@ export default function WorldMap(props: ISvgMapProps) {
             {COLOR_GROUPS.map((grp) => (
               <div
                 key={grp}
-                className={classNames(
-                  "h-2 w-[11.11%] shadow",
-                  HEATMAP_1_COLORS[grp]
-                )}
+                className={classNames("h-2 w-[11.11%] shadow", HEATMAP_1_COLORS[grp])}
               ></div>
             ))}
           </div>

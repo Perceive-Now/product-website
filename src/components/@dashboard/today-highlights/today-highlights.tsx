@@ -18,7 +18,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
     async () => {
       return await getTodaysHighlight(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
@@ -86,20 +86,13 @@ export default function TodayHighlights(props: IHighlightsProps) {
         />
       }
     >
-      <div className="text-gray-800 text-lg font-medium">
-        Global Technology Trends
-      </div>
+      <div className="text-gray-800 text-lg font-medium">Global Technology Trends</div>
 
       <div className="mt-3 grid grid-cols-3 gap-x-3  gap-y-3">
         {finalData.map((item, index) => (
-          <div
-            key={index}
-            className="px-6 py-3 rounded-2xl flex items-center justify-center"
-          >
+          <div key={index} className="px-6 py-3 rounded-2xl flex items-center justify-center">
             <div className="max-w-[240px] w-full">
-              <div className="text-center text-md mb-2 capitalize">
-                {item.name}
-              </div>
+              <div className="text-center text-md mb-2 capitalize">{item.name}</div>
 
               <div className="text-center text-[28px] mb-2 text-gray-900">
                 {getItemValue(item.id, item.value) ?? "-"}

@@ -22,7 +22,7 @@ export default function InsightsPage() {
     async () => {
       return await getMAInsights(searchkeywords.map((kwd) => kwd.value));
     },
-    { enabled: !!searchkeywords?.length }
+    { enabled: !!searchkeywords?.length },
   );
 
   const handleKeywordChange = (value: IKeywordOption[]) => {
@@ -55,9 +55,7 @@ export default function InsightsPage() {
                 Top 5 patents for IP portfolio expansion
               </div>
 
-              <div className="text-lg text-gray-900 mb-4">
-                {data?.patentsTop5?.respText}
-              </div>
+              <div className="text-lg text-gray-900 mb-4">{data?.patentsTop5?.respText}</div>
 
               <div>
                 {data?.patentsTop5?.rankedList.map((listItem) => (
@@ -76,9 +74,7 @@ export default function InsightsPage() {
                 Top 5 Companies to Consider for M&A
               </div>
 
-              <div className="text-lg text-gray-900 mb-4">
-                {data?.companiesTop5?.respText}
-              </div>
+              <div className="text-lg text-gray-900 mb-4">{data?.companiesTop5?.respText}</div>
 
               <div>
                 {data?.companiesTop5?.rankedList.map((listItem) => (
@@ -97,9 +93,7 @@ export default function InsightsPage() {
                 Top 5 Universities for Collaboration
               </div>
 
-              <div className="text-lg text-gray-900 mb-4">
-                {data?.universitiesTop5?.respText}
-              </div>
+              <div className="text-lg text-gray-900 mb-4">{data?.universitiesTop5?.respText}</div>
 
               <div>
                 {data?.universitiesTop5?.rankedList.map((listItem) => (

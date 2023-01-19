@@ -79,62 +79,32 @@ function App() {
             {/* Hawk eye page section starts here */}
             <Route path="/hawk-eye-view" element={<HawkEyePage />}>
               <Route path="/hawk-eye-view" element={<HawkEyeHomeSection />} />
-              <Route
-                path="/hawk-eye-view/publications"
-                element={<HawkEyePublicationsSection />}
-              />
-              <Route
-                path="/hawk-eye-view/patents"
-                element={<HawkEyePatentsSection />}
-              />
-              <Route
-                path="/hawk-eye-view/experts"
-                element={<HawkEyeExpertsSection />}
-              />
-              <Route
-                path="/hawk-eye-view/universities"
-                element={<HawkEyeUniversitiesSection />}
-              />
-              <Route
-                path="/hawk-eye-view/funders"
-                element={<HawkEyeFundersSection />}
-              />
+              <Route path="/hawk-eye-view/publications" element={<HawkEyePublicationsSection />} />
+              <Route path="/hawk-eye-view/patents" element={<HawkEyePatentsSection />} />
+              <Route path="/hawk-eye-view/experts" element={<HawkEyeExpertsSection />} />
+              <Route path="/hawk-eye-view/universities" element={<HawkEyeUniversitiesSection />} />
+              <Route path="/hawk-eye-view/funders" element={<HawkEyeFundersSection />} />
             </Route>
             {/* Hawk eye page section end here */}
 
             <Route path="/summary" element={<SummaryPage />} />
 
             <Route path="/publications" element={<PublicationsPage />} />
-            <Route
-              path="/publications/profile/:id"
-              element={<PublicationProfilePage />}
-            />
+            <Route path="/publications/profile/:id" element={<PublicationProfilePage />} />
 
             {/* Patents page section starts here */}
             <Route path="/patents" element={<PatentsPage />} />
-            <Route
-              path="/patents/profile/:id"
-              element={<PatentsProfilePage />}
-            />
+            <Route path="/patents/profile/:id" element={<PatentsProfilePage />} />
             {/* Patents page section end here */}
 
             <Route path="/experts" element={<ExpertsPage />} />
-            <Route
-              path="/experts/profile/:id"
-              element={<ExpertsProfilePage />}
-            />
+            <Route path="/experts/profile/:id" element={<ExpertsProfilePage />} />
 
             <Route path="/funders" element={<FundersPage />} />
-            <Route
-              path="/funders/profile/:id"
-              element={<FunderProfilePage />}
-            />
+            <Route path="/funders/profile/:id" element={<FunderProfilePage />} />
 
             <Route path="/universities" element={<UniversitiesPage />} />
-            <Route
-              path="/universities/profile/:id"
-              element={<UniversityPage />}
-            />
+            <Route path="/universities/profile/:id" element={<UniversityPage />} />
 
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />

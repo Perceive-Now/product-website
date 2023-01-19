@@ -11,13 +11,11 @@ export default function PageNotFound404() {
       </div>
 
       <div className="text-center">
-        <h1 className="text-4xl text-gray-700 font-semibold">
-          404 - Page not found
-        </h1>
+        <h1 className="text-4xl text-gray-700 font-semibold">404 - Page not found</h1>
 
         <p className="mt-4 max-w-[440px]">
-          The page you are looking for might have been removed, had its name
-          changed or is temporary unavailable.
+          The page you are looking for might have been removed, had its name changed or is temporary
+          unavailable.
         </p>
 
         <div className="flex gap-2 justify-center mt-4">

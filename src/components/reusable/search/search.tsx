@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import classNames from "classnames";
+import { MultiValue } from "react-select";
+import { useEffect, useState } from "react";
 import AsyncCreateableSelect from "react-select/async-creatable";
-import { ActionMeta, MultiValue } from "react-select";
 
 //
 import { SearchIcon } from "../../icons";
@@ -18,9 +18,7 @@ export default function Search(props: ISearchProps) {
   // const inputSize = props.size ?? "small";
   // const isRequired = props.required ?? false;
 
-  const [selectedKeywords, setSelectedKeywords] = useState(
-    props.initialValue ?? null
-  );
+  const [selectedKeywords, setSelectedKeywords] = useState(props.initialValue ?? null);
 
   //
   useEffect(() => {
@@ -29,9 +27,7 @@ export default function Search(props: ISearchProps) {
     }
   }, [props.initialValue]);
 
-  const hasKeywordReachedMaxLimit = !!(
-    (selectedKeywords?.length || 0) >= MAX_KEYWORD
-  );
+  const hasKeywordReachedMaxLimit = !!((selectedKeywords?.length || 0) >= MAX_KEYWORD);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -40,18 +36,16 @@ export default function Search(props: ISearchProps) {
     }
   };
 
-  const generateOptionsGroup = (
-    filteredKeywords: string[]
-  ): IFilterOptionGroup[] | [] => {
-    let sortedFilteredKeywords = filteredKeywords.sort((a, b) =>
-      a?.toLowerCase() < b?.toLowerCase() ? -1 : 1
+  const generateOptionsGroup = (filteredKeywords: string[]): IFilterOptionGroup[] | [] => {
+    const sortedFilteredKeywords = filteredKeywords.sort((a, b) =>
+      a?.toLowerCase() < b?.toLowerCase() ? -1 : 1,
     );
 
-    let groupedOptions: IGroupOptions = {};
+    const groupedOptions: IGroupOptions = {};
 
     sortedFilteredKeywords.forEach((keyword: string) => {
       let firstCharacter = keyword[0];
-      let isFirstCharacterAlphabet = /^[A-Za-z]$/.test(firstCharacter);
+      const isFirstCharacterAlphabet = /^[A-Za-z]$/.test(firstCharacter);
 
       if (isFirstCharacterAlphabet) {
         firstCharacter = firstCharacter.toUpperCase();
@@ -68,28 +62,23 @@ export default function Search(props: ISearchProps) {
       }
     });
 
-    return Object.entries(groupedOptions).map(
-      (group: [string, IKeywordOption[]]) => {
-        let [label, options] = group;
-        return { label: label, options: options };
-      }
-    );
+    return Object.entries(groupedOptions).map((group: [string, IKeywordOption[]]) => {
+      const [label, options] = group;
+      return { label: label, options: options };
+    });
   };
 
   const fetchOptions = async (inputValue: string) => {
     if (hasKeywordReachedMaxLimit) return [];
 
     const filteredKeywords = response.data.filter((keyword) =>
-      keyword?.toLowerCase().includes(inputValue?.toLowerCase())
+      keyword?.toLowerCase().includes(inputValue?.toLowerCase()),
     );
 
     return generateOptionsGroup(filteredKeywords);
   };
 
-  const handleKeywordChange = (
-    newValue: MultiValue<IKeywordOption>,
-    actionMeta: ActionMeta<IKeywordOption>
-  ) => {
+  const handleKeywordChange = (newValue: MultiValue<IKeywordOption>) => {
     const keywords: IKeywordOption[] = newValue.map((keyword) => {
       return {
         label: keyword.label,
@@ -113,9 +102,7 @@ export default function Search(props: ISearchProps) {
           {...(selectedKeywords?.length
             ? {
                 isValidNewOption: (inputValue: string) => {
-                  return (
-                    !!(inputValue.length) && !hasKeywordReachedMaxLimit
-                  );
+                  return !!inputValue.length && !hasKeywordReachedMaxLimit;
                 },
               }
             : undefined)}
@@ -138,10 +125,7 @@ export default function Search(props: ISearchProps) {
           onChange={handleKeywordChange}
         />
 
-        <div
-          className="absolute top-0 right-0 h-full cursor-pointer"
-          onClick={handleSubmit}
-        >
+        <div className="absolute top-0 right-0 h-full cursor-pointer" onClick={handleSubmit}>
           <div className="flex h-full items-center mx-2">
             <SearchIcon className="text-gray-600" />
           </div>

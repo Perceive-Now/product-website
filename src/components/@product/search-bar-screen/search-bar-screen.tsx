@@ -1,14 +1,10 @@
 // import Button from "../../reusable/button";
-import Search, { IKeywordOption } from "../../reusable/search";
+import Search from "../../reusable/search";
 
 /**
  *
  */
-export default function SearchBarScreen({
-  searchKeywords,
-  handleKeywordChange,
-  handleSearch,
-}: ISearchBarScreenProps) {
+export default function SearchBarScreen() {
   // Commented because the design is not fixed
   // const isDisabled = searchKeywords?.length < 1;
 
@@ -33,10 +29,4 @@ export default function SearchBarScreen({
       </div>
     </div>
   );
-}
-
-interface ISearchBarScreenProps {
-  searchKeywords: IKeywordOption[];
-  handleKeywordChange: (value: IKeywordOption[]) => void;
-  handleSearch: () => void;
 }

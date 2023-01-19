@@ -40,7 +40,6 @@ export default function AuthLayout() {
 
   useEffect(() => {
     getSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Do not show the content initially

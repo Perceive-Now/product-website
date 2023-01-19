@@ -41,28 +41,25 @@ export const loginUser = createAsyncThunk(
         message: err.message,
       };
     }
-  }
+  },
 );
 
-export const logoutUser = createAsyncThunk(
-  "logout",
-  async (): Promise<IResponse> => {
-    try {
-      jsCookie.remove("pn_refresh");
-      sessionStorage.removeItem("pn_access");
+export const logoutUser = createAsyncThunk("logout", async (): Promise<IResponse> => {
+  try {
+    jsCookie.remove("pn_refresh");
+    sessionStorage.removeItem("pn_access");
 
-      return {
-        success: true,
-        message: "Successfully logged out!",
-      };
-    } catch (err: any) {
-      return {
-        success: false,
-        message: err.message,
-      };
-    }
+    return {
+      success: true,
+      message: "Successfully logged out!",
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.message,
+    };
   }
-);
+});
 
 export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
@@ -85,10 +82,9 @@ export const getCurrentSession = createAsyncThunk(
 
     //
     try {
-      const response = await axiosInstance.post<IRefreshResponse>(
-        "/api/v1/user/refresh-token/",
-        { refresh: refreshToken }
-      );
+      const response = await axiosInstance.post<IRefreshResponse>("/api/v1/user/refresh-token/", {
+        refresh: refreshToken,
+      });
 
       return {
         success: true,
@@ -101,37 +97,32 @@ export const getCurrentSession = createAsyncThunk(
         message: "Current session expired",
       };
     }
-  }
+  },
 );
 
-export const getUserDetails = createAsyncThunk(
-  "getUserDetails",
-  async (): Promise<IResponse> => {
-    try {
-      // TODO:: Make an API call to get user profile
-      // After that add user's name and image to the response object
-      const [userResponse] = await Promise.all([
-        axiosInstance.get("/api/v1/user/me/"),
-      ]);
+export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promise<IResponse> => {
+  try {
+    // TODO:: Make an API call to get user profile
+    // After that add user's name and image to the response object
+    const [userResponse] = await Promise.all([axiosInstance.get("/api/v1/user/me/")]);
 
-      return {
-        success: true,
-        message: "Successfully fetched user details",
-        data: {
-          email: userResponse.data.email,
-          username: userResponse.data.username,
-          name: userResponse.data.username,
-          image: undefined,
-        },
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: "Unable to fetch user details",
-      };
-    }
+    return {
+      success: true,
+      message: "Successfully fetched user details",
+      data: {
+        email: userResponse.data.email,
+        username: userResponse.data.username,
+        name: userResponse.data.username,
+        image: undefined,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Unable to fetch user details",
+    };
   }
-);
+});
 
 /**
  *

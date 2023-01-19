@@ -43,7 +43,7 @@ function ChartButton(props: IGraphButtonProps) {
         "ml-2 cursor-pointer chart-button rounded-md",
         `chart-${type}`,
         active ? `chart-button-active` : "",
-        className
+        className,
       )}
       onClick={handleActiveGraph}
     >

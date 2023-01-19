@@ -68,9 +68,7 @@ axiosInstance.interceptors.response.use(
         sessionStorage.setItem("pn_access", token);
 
         // IDK
-        axiosInstance.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${token}`;
+        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         return axiosInstance(originalRequest);
       }
@@ -84,7 +82,7 @@ axiosInstance.interceptors.response.use(
 
     //
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

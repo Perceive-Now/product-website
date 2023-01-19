@@ -8,9 +8,7 @@ import ApiErrorMessage from "../api-error";
 import NoKeywordMessage from "../no-keyword";
 
 //
-export default function DataSection(
-  props: PropsWithChildren<IDataSectionProps>
-) {
+export default function DataSection(props: PropsWithChildren<IDataSectionProps>) {
   //
   const isEmpty = props.keywords.length === 0;
   const isLoading = !isEmpty && props.isLoading;

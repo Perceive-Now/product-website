@@ -48,12 +48,9 @@ export default function DashboardPage() {
   const fundingsRef = useRef(null);
 
   //
-  const searchedKeywords =
-    useAppSelector((state) => state.dashboard?.search) ?? [];
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
 
-  const joinedKeywords = searchedKeywords
-    .map((kwd) => `"${kwd.value}"`)
-    .join(", ");
+  const joinedKeywords = searchedKeywords.map((kwd) => `"${kwd.value}"`).join(", ");
 
   const keywordValue = searchedKeywords.map((kwd) => kwd.value);
 
@@ -146,17 +143,11 @@ export default function DashboardPage() {
       {/* Charts for Academinc R&D */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <AcademicResearchTrends
-            key={joinedKeywords}
-            keywords={keywordValue}
-          />
+          <AcademicResearchTrends key={joinedKeywords} keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">
-          <AcademicResearchFundings
-            key={joinedKeywords}
-            keywords={keywordValue}
-          />
+          <AcademicResearchFundings key={joinedKeywords} keywords={keywordValue} />
         </div>
       </div>
 

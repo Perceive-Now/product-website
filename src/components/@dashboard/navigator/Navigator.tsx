@@ -1,20 +1,10 @@
-import {
-  CompetitiveLandscapeIcon,
-  EducationIcon,
-  FundingIcon,
-  ResearchIcon,
-} from "../../icons";
+import { CompetitiveLandscapeIcon, EducationIcon, FundingIcon, ResearchIcon } from "../../icons";
 
 /**
  *
  */
 export default function Navigator(props: any) {
-  const {
-    competitiveLandscapeRef,
-    expertsNetworkRef,
-    researchRef,
-    fundingsRef,
-  } = props;
+  const { competitiveLandscapeRef, expertsNetworkRef, researchRef, fundingsRef } = props;
 
   //
   const scrollToTargetAdjusted = (element: HTMLDivElement) => {
@@ -25,9 +15,7 @@ export default function Navigator(props: any) {
   return (
     <div>
       <div className="mb-2">
-        <h3 className="text-[20px] text-primary-900 font-semibold">
-          Navigate to
-        </h3>
+        <h3 className="text-[20px] text-primary-900 font-semibold">Navigate to</h3>
       </div>
 
       <div className="grid grid-cols-12 gap-x-2 mb-3">

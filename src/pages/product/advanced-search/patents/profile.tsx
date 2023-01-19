@@ -59,9 +59,7 @@ export default function PatentsProfilePage() {
       <div className="grid grid-cols-12 gap-x-3">
         <div className="col-span-9 text-appGray-900">
           <div className="mb-3">
-            <div className="text-gray-800 mb-2 font-semibold text-xl">
-              Patent link:
-            </div>
+            <div className="text-gray-800 mb-2 font-semibold text-xl">Patent link:</div>
 
             <span>
               <a href={patentsData.patentLink} target="_blank" rel="noreferrer">
@@ -71,56 +69,42 @@ export default function PatentsProfilePage() {
           </div>
 
           <div className="mb-3">
-            <div className="text-gray-800 mb-2 font-semibold text-xl">
-              Abstract:
-            </div>
+            <div className="text-gray-800 mb-2 font-semibold text-xl">Abstract:</div>
 
             <span>{patentsData.abstract}</span>
           </div>
         </div>
 
         <div className="col-span-3">
-          <div className="text-gray-800 mb-3 font-semibold text-xl">
-            Details:
-          </div>
+          <div className="text-gray-800 mb-3 font-semibold text-xl">Details:</div>
 
           <div className="flex flex-col">
             <div className="flex mb-2">
-              <div className="text-gray-800 text-md font-semibold mr-2">
-                Patent number:
-              </div>
+              <div className="text-gray-800 text-md font-semibold mr-2">Patent number:</div>
 
               <div>[{patentsData.details.patentNumber}]</div>
             </div>
 
             <div className="flex mb-2">
-              <div className="text-gray-800 text-md font-semibold mr-2">
-                Patent date:
-              </div>
+              <div className="text-gray-800 text-md font-semibold mr-2">Patent date:</div>
 
               <div>{patentsData.details.patentDate}</div>
             </div>
 
             <div className="flex mb-2">
-              <div className="text-gray-800 text-md font-semibold mr-2">
-                Patent kind:
-              </div>
+              <div className="text-gray-800 text-md font-semibold mr-2">Patent kind:</div>
 
               <div>{patentsData.details.patentKind}</div>
             </div>
 
             <div className="flex mb-2">
-              <div className="text-gray-800 text-md font-semibold mr-2">
-                Patent type:
-              </div>
+              <div className="text-gray-800 text-md font-semibold mr-2">Patent type:</div>
 
               <div>{patentsData.details.patentType}</div>
             </div>
 
             <div className="flex mb-2">
-              <div className="text-gray-800 text-md font-semibold mr-2">
-                Patent year:
-              </div>
+              <div className="text-gray-800 text-md font-semibold mr-2">Patent year:</div>
 
               <div>{patentsData.details.patentYear}</div>
             </div>

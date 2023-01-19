@@ -21,7 +21,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
       const data = await getExpertsTable(props.keywords);
       return data;
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   const _tableData: IExpertModeItem = isLoading
@@ -47,12 +47,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           title="Experts"
           subTitle={`Top list of experts with maximum number of publications and patents `}
           titleClass="font-semibold"
-          sideTitleOption={
-            <ExpertsMode
-              activeMode={expertMode}
-              onModeChange={handleModeChange}
-            />
-          }
+          sideTitleOption={<ExpertsMode activeMode={expertMode} onModeChange={handleModeChange} />}
         />
       }
     >
@@ -63,9 +58,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           <div className="grid grid-cols-11 mb-3">
             <div className="col-span-5 font-semibold">Name</div>
             <div className="col-span-5 font-semibold">Organization</div>
-            <div className="col-span-1 text-right pr-1 font-semibold">
-              Patents
-            </div>
+            <div className="col-span-1 text-right pr-1 font-semibold">Patents</div>
           </div>
 
           {_tableData?.patents
@@ -83,16 +76,12 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         </div>
 
         <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">
-            Publications
-          </p>
+          <p className="text-lg font-semibold text-primary-900 mb-2">Publications</p>
 
           <div className="grid grid-cols-11 mb-3">
             <div className="col-span-5 font-semibold">Name</div>
             <div className="col-span-5 font-semibold">Organization</div>
-            <div className="col-span-1 text-right pr-1 font-semibold">
-              Publications
-            </div>
+            <div className="col-span-1 text-right pr-1 font-semibold">Publications</div>
           </div>
 
           {_tableData?.publications
@@ -135,9 +124,7 @@ function ListItem(props: IListItemProps) {
       <div className="col-span-5 flex items-center">
         <p className="line-clamp-2">{props.name ?? "-"}</p>
       </div>
-      <div className="col-span-5 flex items-center">
-        {props.organization ?? "-"}
-      </div>
+      <div className="col-span-5 flex items-center">{props.organization ?? "-"}</div>
       <div className="col-span-1 pr-1 flex items-center justify-center">
         {props.value?.toLocaleString() ?? "-"}
       </div>

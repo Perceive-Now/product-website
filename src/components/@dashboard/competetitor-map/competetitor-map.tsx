@@ -25,7 +25,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
     async () => {
       return await getCompetitorMapInfo(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   const finalData: IWorldMapDataItem[] = isLoading
@@ -51,13 +51,11 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
           info={`Geographical footprint of competitors working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
           titleClass="font-semibold"
           title="Geographical Footprint of Competitors"
-          children={
-            <div className="flex justify-between">
-              <p className="text-sm">
-                Geolocation of companies working in your area of interest
-              </p>
+        >
+          <div className="flex justify-between">
+            <p className="text-sm">Geolocation of companies working in your area of interest</p>
 
-              {/* <div className="flex gap-x-3 text-sm">
+            {/* <div className="flex gap-x-3 text-sm">
               <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
                 <input
                   type="radio"
@@ -84,9 +82,8 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
                 </label>
               </div>
             </div> */}
-            </div>
-          }
-        />
+          </div>
+        </PageTitle>
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
@@ -96,14 +93,11 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
               <div
                 key={index}
                 className={classNames("mt-3", {
-                  "pb-3 border-b border-gray-300":
-                    index !== allPatentList?.length - 1,
+                  "pb-3 border-b border-gray-300": index !== allPatentList?.length - 1,
                 })}
               >
                 <p className="text-lg leading-tight">
-                  <span className="mr-1 font-semibold text-primary-800">
-                    {index + 1}.
-                  </span>
+                  <span className="mr-1 font-semibold text-primary-800">{index + 1}.</span>
                   <span>{itm.title}</span>
                 </p>
 

@@ -20,9 +20,7 @@ function PublicationItem(props: IPublicationItemProps) {
           {title}
         </div>
 
-        <div className="text-appGray-900 mb-1 line-clamp-2">
-          {props.data.abstract}
-        </div>
+        <div className="text-appGray-900 mb-1 line-clamp-2">{props.data.abstract}</div>
 
         <div className="flex">
           <ActionButton>

@@ -43,10 +43,7 @@ export default function FeedbackPage() {
             How satisfied are you with the overall experience?
           </div>
 
-          <FeedbackInput
-            activeNumber={feedbackNumber}
-            handleChange={handleFeedbackNumberChange}
-          />
+          <FeedbackInput activeNumber={feedbackNumber} handleChange={handleFeedbackNumberChange} />
         </div>
 
         <div className="mb-5 max-w-[580px]">
@@ -84,7 +81,7 @@ function FeedbackInput({ activeNumber, handleChange }: IFeedbackInput) {
               {
                 "border-primary-900 bg-primary-900 text-white cursor-default hover:bg-primary-900 hover:text-white":
                   activeNumber === feedbackNumber,
-              }
+              },
             )}
             onClick={() => handleChange(feedbackNumber)}
           >

@@ -12,10 +12,7 @@ import "./time-period.css";
 /*
  *
  **/
-export default function TimePeriod({
-  startYear,
-  handleChange,
-}: ITimePeriodProps) {
+export default function TimePeriod({ startYear, handleChange }: ITimePeriodProps) {
   const timePeriods = getTimeperiod(startYear);
 
   return (
@@ -35,8 +32,7 @@ export default function TimePeriod({
         option: (styles, { isFocused, isSelected, isDisabled }) => {
           return {
             ...styles,
-            backgroundColor:
-              isFocused || isSelected ? "rgb(225,213,242)" : "#fff",
+            backgroundColor: isFocused || isSelected ? "rgb(225,213,242)" : "#fff",
             color: "rgb(68 40 115)",
             cursor: "pointer",
             ":active": {

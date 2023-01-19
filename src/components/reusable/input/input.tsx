@@ -65,15 +65,11 @@ export default function Input(props: IInput) {
 
   return (
     <div>
-      {label && (
-        <div className="text-appGray-900 mb-0.5 font-semibold">{label}</div>
-      )}
+      {label && <div className="text-appGray-900 mb-0.5 font-semibold">{label}</div>}
 
       {inputRender}
 
-      {error?.message && (
-        <div className="mt-1 text-xs text-danger-500">{error.message}</div>
-      )}
+      {error?.message && <div className="mt-1 text-xs text-danger-500">{error.message}</div>}
     </div>
   );
 }

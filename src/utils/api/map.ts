@@ -5,7 +5,7 @@ import axiosInstance from "../axios";
  */
 export async function getPublicationsAndPatentsMap(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationAndPatensMapResponse>(
-    `/dashboard/publications_and_patents_map?q=${keywords.join(",")}`
+    `/dashboard/publications_and_patents_map?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -16,7 +16,7 @@ export async function getPublicationsAndPatentsMap(keywords: string[]) {
  */
 export async function getCompetitorMapInfo(keywords: string[]) {
   const response = await axiosInstance.get<ICompetitorMapResponse>(
-    `/dashboard/geo_footprint_patents?q=${keywords.join(",")}`
+    `/dashboard/geo_footprint_patents?q=${keywords.join(",")}`,
   );
 
   return response.data;
@@ -27,7 +27,7 @@ export async function getCompetitorMapInfo(keywords: string[]) {
  */
 export async function getExpertsMapInfo(keywords: string[]) {
   const response = await axiosInstance.get<IExpertMapResponse>(
-    `/dashboard/geo_footprint_experts?q=${keywords.join(",")}`
+    `/dashboard/geo_footprint_experts?q=${keywords.join(",")}`,
   );
 
   return response.data;

@@ -23,14 +23,12 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
           "secondary-button": buttonType === "secondary",
           "full-width": isFullWidth,
         },
-        props.classname
+        props.classname,
       )}
       onClick={() => props.handleClick?.()}
     >
       <div className="flex">
-        {props.loading && (
-          <LoadingIcon width={24} height={24} className="mr-1" />
-        )}
+        {props.loading && <LoadingIcon width={24} height={24} className="mr-1" />}
 
         <div>{props.children}</div>
 

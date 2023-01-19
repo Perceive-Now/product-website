@@ -18,17 +18,12 @@ export default function Accordion({
             <div className="flex text-start">
               <div className="mr-3">
                 <ChevronDown
-                  className={classNames(
-                    "text-primary-900",
-                    open ? "rotate-180 transform" : ""
-                  )}
+                  className={classNames("text-primary-900", open ? "rotate-180 transform" : "")}
                 />
               </div>
 
               <div>
-                <div className="text-primary-900 font-medium text-xl mb-1">
-                  {title}
-                </div>
+                <div className="text-primary-900 font-medium text-xl mb-1">{title}</div>
 
                 <div>{description}</div>
               </div>

@@ -16,11 +16,9 @@ export default function TrendsPage() {
   const { data } = useQuery(
     ["technology-trends", ...searchKeywords.map((itm) => itm.value)],
     async () => {
-      return await getTechnologyTrends(
-        searchKeywords?.map((kwd) => kwd.value) ?? []
-      );
+      return await getTechnologyTrends(searchKeywords?.map((kwd) => kwd.value) ?? []);
     },
-    { enabled: !!searchKeywords.length }
+    { enabled: !!searchKeywords.length },
   );
 
   const handleSearch = (value: IKeywordOption[]) => {
@@ -36,10 +34,7 @@ export default function TrendsPage() {
       {searchKeywords && searchKeywords.length > 0 && (
         <div className="my-3">
           <p className="text-sm">
-            <span className="text-gray-700">
-              Showing technology trends for:
-            </span>
-            “
+            <span className="text-gray-700">Showing technology trends for:</span>“
             {searchKeywords.map((keywords) => (
               <span key={keywords.value}> {keywords.value}</span>
             ))}

@@ -36,7 +36,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     async () => {
       return await getExpertsCountGraph(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   //
@@ -62,11 +62,11 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
 
   //
   const chartDataFormatHelper = (patents: IExpertCount[]) => {
-    let startYear = selectedTimeperiod?.split("-")[0] || "2018";
-    let endYear = selectedTimeperiod?.split("-")[1] || "2022";
+    const startYear = selectedTimeperiod?.split("-")[0] || "2018";
+    const endYear = selectedTimeperiod?.split("-")[1] || "2022";
 
-    let expertsList = patents.filter((data) => {
-      let year = String(data.year);
+    const expertsList = patents.filter((data) => {
+      const year = String(data.year);
       return year >= startYear && year <= endYear;
     });
     hasDataChecker(expertsList);
@@ -106,22 +106,16 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
   const finalScatterDataFormatHelper = (data: any) => {
     if (!data) return [];
 
-    let openExpertsObj = { id: "Open Experts", data: [] };
-    let closedExpertsObj = { id: "Closed Experts", data: [] };
+    const openExpertsObj = { id: "Open Experts", data: [] };
+    const closedExpertsObj = { id: "Closed Experts", data: [] };
 
     let openExpertsData: any = [];
     let closedExpertsData: any = [];
 
     data.forEach((d: any) => {
-      openExpertsData = [
-        ...openExpertsData,
-        { x: d.year, y: d.openExpertsCount },
-      ];
+      openExpertsData = [...openExpertsData, { x: d.year, y: d.openExpertsCount }];
 
-      closedExpertsData = [
-        ...closedExpertsData,
-        { x: d.year, y: d.closedExpertsCount },
-      ];
+      closedExpertsData = [...closedExpertsData, { x: d.year, y: d.closedExpertsCount }];
     });
 
     openExpertsObj.data = openExpertsData;
@@ -134,9 +128,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     setSelectedTimeperiod(value.value);
   };
 
-  const finalScatterData = isLoading
-    ? []
-    : finalScatterDataFormatHelper(chartData) ?? [];
+  const finalScatterData = isLoading ? [] : finalScatterDataFormatHelper(chartData) ?? [];
 
   //
   return (

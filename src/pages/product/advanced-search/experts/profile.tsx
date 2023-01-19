@@ -19,10 +19,8 @@ export default function ExpertsProfilePage() {
 
   const [expertsData] = useState<IExpertsData>({
     name: "Riccardo Privolizzi",
-    affiliations:
-      "University College London, Asklepios BioPharmaceutical, Inc.",
-    distictions:
-      "Honorary Research Fellow ASGCT Meritorious Abstract Travel Award",
+    affiliations: "University College London, Asklepios BioPharmaceutical, Inc.",
+    distictions: "Honorary Research Fellow ASGCT Meritorious Abstract Travel Award",
     employment: "London's Global University",
     location: "London, England, UK",
     funding: "???",
@@ -59,20 +57,11 @@ export default function ExpertsProfilePage() {
           </div>
 
           <div>
-            <ProfileProperty
-              title="Affiliations"
-              value={expertsData.affiliations}
-            />
+            <ProfileProperty title="Affiliations" value={expertsData.affiliations} />
 
-            <ProfileProperty
-              title="Distinctions"
-              value={expertsData.distictions}
-            />
+            <ProfileProperty title="Distinctions" value={expertsData.distictions} />
 
-            <ProfileProperty
-              title="Employment"
-              value={expertsData.employment}
-            />
+            <ProfileProperty title="Employment" value={expertsData.employment} />
 
             <ProfileProperty title="Location" value={expertsData.location} />
 
@@ -99,9 +88,7 @@ export default function ExpertsProfilePage() {
 function ProfileProperty(props: IProfilePropertyProps) {
   return (
     <div className="pb-2 grid grid-cols-12">
-      <span className="font-bold col-span-3 text-right pr-4">
-        {props.title}:
-      </span>
+      <span className="font-bold col-span-3 text-right pr-4">{props.title}:</span>
 
       {props.isLink && (
         <a href={props.value} target="_blank" rel="noreferrer">

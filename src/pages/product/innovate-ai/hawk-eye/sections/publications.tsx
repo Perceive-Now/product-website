@@ -18,9 +18,9 @@ export default function HawkEyePublicationsSection() {
         <p className="text-sm text-gray-700 my-3">
           <span>{count?.publications}</span>
           <span> publications were found for:</span>
-          <span> "</span>
+          <span> &quot;</span>
           <span className="font-semibold text-gray-900"></span>
-          <span>"</span>
+          <span>&quot;</span>
         </p>
       )}
       <PageTitle title="Publications" learnMore="Learn more" />
