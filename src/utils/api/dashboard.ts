@@ -52,7 +52,7 @@ export async function getTodaysHighlight(keywords: string[]) {
 
 export async function getCompetitors(keywords: string[]) {
   const response = await axiosInstance.get<ICompetitorResponse>(
-    `/dashboard/competitors_feature?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/companywise-patent/?q=${keywords.join(",")}`
   );
 
   return response.data.data;
@@ -192,17 +192,21 @@ export interface ICompetitor {
 //
 interface ICompetitorResponse {
   data: {
-    claimsCount: {
-      [x: string]: number;
-    };
-    expertsCount: {
-      [x: string]: number;
-    };
-    patentsCount: {
-      [x: string]: number;
-    };
-    publicationsCount: {
-      [x: string]: number;
-    };
+    patents: {
+      key: string;
+      doc_count: number;
+    }[];
+    Patent_claims: {
+      company: string;
+      claim_sum: number;
+    }[];
+    Inventors: {
+      company: string;
+      inventor_count: number;
+    }[];
+    Publications: {
+      key: string;
+      doc_count: number;
+    }[];
   };
 }

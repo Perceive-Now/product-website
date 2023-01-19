@@ -19,23 +19,23 @@ export default function Competitors(props: ICompetitorProps) {
     { enabled: !!props.keywords.length }
   );
 
-  const claimValues = Object.entries(data?.claimsCount ?? {})
-    .map(([key, value]) => ({ name: key, value }))
+  const claimValues = (data?.Patent_claims ?? [])
+    .map((item) => ({ title: item.company, value: item.claim_sum }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  const patensValues = Object.entries(data?.patentsCount ?? {})
-    .map(([key, value]) => ({ name: key, value }))
+  const patensValues = (data?.patents ?? [])
+    .map((item) => ({ title: item.key, value: item.doc_count }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  const exptersValues = Object.entries(data?.expertsCount ?? {})
-    .map(([key, value]) => ({ name: key, value }))
+  const exptersValues = (data?.Inventors ?? [])
+    .map((item) => ({ title: item.company, value: item.inventor_count }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  const publicationValues = Object.entries(data?.publicationsCount ?? {})
-    .map(([key, value]) => ({ name: key, value }))
+  const publicationValues = (data?.Publications ?? [])
+    .map((item) => ({ title: item.key, value: item.doc_count }))
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
@@ -67,7 +67,7 @@ export default function Competitors(props: ICompetitorProps) {
 
             {patensValues.map((itm, index) => (
               <ListItem
-                name={itm.name}
+                name={itm.title}
                 value={itm.value}
                 index={index}
                 key={index}
@@ -90,7 +90,7 @@ export default function Competitors(props: ICompetitorProps) {
 
             {claimValues.map((itm, index) => (
               <ListItem
-                name={itm.name}
+                name={itm.title}
                 value={itm.value}
                 index={index}
                 key={index}
@@ -117,7 +117,7 @@ export default function Competitors(props: ICompetitorProps) {
 
             {exptersValues.map((itm, index) => (
               <ListItem
-                name={itm.name}
+                name={itm.title}
                 value={itm.value}
                 index={index}
                 key={index}
@@ -140,7 +140,7 @@ export default function Competitors(props: ICompetitorProps) {
 
             {publicationValues.map((itm, index) => (
               <ListItem
-                name={itm.name}
+                name={itm.title}
                 value={itm.value}
                 index={index}
                 key={index}
