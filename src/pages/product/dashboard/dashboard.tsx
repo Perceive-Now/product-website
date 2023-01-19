@@ -67,7 +67,7 @@ export default function DashboardPage() {
         fundingsRef={fundingsRef}
       />
 
-      {searchedKeywords && (
+      {searchedKeywords.length > 0 && (
         <p className="mb-3">
           <span>Showing results for: </span>
           <span className="font-semibold">{joinedKeywords}</span>
