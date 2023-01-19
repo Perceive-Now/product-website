@@ -14,15 +14,13 @@ import { getTopUniversities } from "../../../utils/api/dashboard";
  *
  */
 export default function TopUniversities(props: ITopUniversitiesProps) {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-top-universities", ...props.keywords],
     async () => {
       return await getTopUniversities(props.keywords);
     },
     { enabled: !!props.keywords.length }
   );
-
-  const finalData = data ?? [];
 
   const tempData = [
     {
@@ -52,6 +50,8 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Top Universities with Highest Research Footprint"

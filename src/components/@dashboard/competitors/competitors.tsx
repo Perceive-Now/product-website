@@ -14,7 +14,7 @@ import { getCompetitors } from "../../../utils/api/dashboard";
  *
  **/
 export default function Competitors(props: ICompetitorProps) {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-competitors-table", ...props.keywords],
     async () => {
       return await getCompetitors(props.keywords);
@@ -48,6 +48,8 @@ export default function Competitors(props: ICompetitorProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Competitors"

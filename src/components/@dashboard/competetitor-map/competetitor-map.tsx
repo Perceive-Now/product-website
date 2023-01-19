@@ -20,7 +20,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
   // const [currentMode, setCurrentMode] =
   //   useState<availableModes>("basicPublication");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-competetitors", ...props.keywords],
     async () => {
       return await getCompetitorMapInfo(props.keywords);
@@ -44,6 +44,8 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           info={`Geographical footprint of competitors working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}

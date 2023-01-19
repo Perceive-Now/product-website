@@ -33,7 +33,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const [selectedCountry, setSelectedCountry] = useState("");
 
   //
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-patents-and-publications", ...props.keywords],
     async () => {
       return await getPublicationsAndPatentsMap(props.keywords);
@@ -87,6 +87,8 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}

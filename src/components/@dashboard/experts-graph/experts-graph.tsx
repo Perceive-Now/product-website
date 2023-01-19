@@ -26,7 +26,12 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
 
   let hasNoData = false;
 
-  const { data: expertsChartData, isLoading } = useQuery(
+  const {
+    data: expertsChartData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
     ["experts-count-graph", ...props.keywords],
     async () => {
       return await getExpertsCountGraph(props.keywords);
@@ -138,6 +143,8 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Number of Experts and Researchers"

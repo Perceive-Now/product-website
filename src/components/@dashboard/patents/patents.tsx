@@ -36,7 +36,7 @@ export default function Patents(props: IPatentsProps) {
 
   let hasNoData = false;
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["patents-pie-chart", ...props.keywords],
     async () => {
       return await getPatentsPieChart(props.keywords);
@@ -126,11 +126,15 @@ export default function Patents(props: IPatentsProps) {
     setSelectedTimeperiod(value.value);
   };
 
+  console.log({ isLoading, isError, error });
+
   //
   return (
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Patents"

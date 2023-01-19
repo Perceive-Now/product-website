@@ -22,7 +22,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
 
   // const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-experts-map", ...props.keywords],
     async () => {
       return await getExpertsMapInfo(props.keywords);
@@ -50,6 +50,8 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           info={`This list was extracted from "X" total number of experts and researchers worldwide`}

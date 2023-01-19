@@ -41,7 +41,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   let hasNoData = false;
 
   //
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["top-funder-charts", ...props.keywords, selectedTimeperiod],
     async () => {
       return await getTopFundingChart(props.keywords);
@@ -128,6 +128,8 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Total Amount of Funding over time"

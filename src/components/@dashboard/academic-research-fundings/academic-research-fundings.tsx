@@ -25,7 +25,7 @@ import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
 export default function AcademicResearchFundings(props: IFundingProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-academic-funding-chart", ...props.keywords],
     async () => {
       return await getAcademicResearchFundingChart(props.keywords);
@@ -63,6 +63,8 @@ export default function AcademicResearchFundings(props: IFundingProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Academic Patent Landscape"

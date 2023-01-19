@@ -13,7 +13,7 @@ import { getTodaysHighlight } from "../../../utils/api/dashboard";
  *
  **/
 export default function TodayHighlights(props: IHighlightsProps) {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-today-highlights", ...props.keywords],
     async () => {
       return await getTodaysHighlight(props.keywords);
@@ -76,6 +76,8 @@ export default function TodayHighlights(props: IHighlightsProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Today's Highlights"

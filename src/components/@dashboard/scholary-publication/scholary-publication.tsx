@@ -22,7 +22,12 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
   // Fetching data
-  const { data: publicationChartData, isLoading } = useQuery(
+  const {
+    data: publicationChartData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
     ["scholary-publications", ...props.keywords],
     async () => {
       return await getScholaryPublications(props.keywords);
@@ -90,6 +95,8 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Scholarly Publications"

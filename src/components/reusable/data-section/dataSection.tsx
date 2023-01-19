@@ -2,6 +2,7 @@ import { PropsWithChildren, ReactElement } from "react";
 
 //
 import { LoadingIcon } from "../../icons";
+import ApiErrorMessage from "../api-error";
 
 //
 import NoKeywordMessage from "../no-keyword";
@@ -13,6 +14,7 @@ export default function DataSection(
   //
   const isEmpty = props.keywords.length === 0;
   const isLoading = !isEmpty && props.isLoading;
+  const isErrorState = !isLoading && props.isError;
 
   //
   return (
@@ -34,8 +36,15 @@ export default function DataSection(
         </div>
       )}
 
+      {/* Error state */}
+      {isErrorState && (
+        <div className="h-[300px] flex justify-center items-center">
+          <ApiErrorMessage messgae={props.error?.message} />
+        </div>
+      )}
+
       {/* Actual data element */}
-      {props.keywords.length > 0 && !props.isLoading && <>{props.children}</>}
+      {!isEmpty && !isLoading && !isErrorState && <>{props.children}</>}
     </div>
   );
 }
@@ -45,5 +54,6 @@ interface IDataSectionProps {
   title: ReactElement;
   keywords: string[];
   isLoading: boolean;
-  // TODO:: Take error data in props
+  isError: boolean;
+  error?: any;
 }

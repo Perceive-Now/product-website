@@ -14,7 +14,7 @@ import { getRelatedKeywords } from "../../../utils/api/dashboard";
  *
  */
 export default function RelatedKeywords(props: IRelatedKeywordsProps) {
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-most-related-keywords", ...props.keywords],
     async () => {
       return await getRelatedKeywords(props.keywords);
@@ -29,6 +29,8 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle title="Most Related Keywords" titleClass="font-semibold" />
       }

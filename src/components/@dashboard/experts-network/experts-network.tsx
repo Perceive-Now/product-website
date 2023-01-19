@@ -15,7 +15,7 @@ import { getExpertsTable, IExpertModeItem } from "../../../utils/api/dashboard";
 export default function ExpertsNetwork(props: IExpertsNetworkProps) {
   const [expertMode, setExpertMode] = useState("industryExperts");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-experts", ...props.keywords],
     async () => {
       const data = await getExpertsTable(props.keywords);
@@ -40,6 +40,8 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Experts"

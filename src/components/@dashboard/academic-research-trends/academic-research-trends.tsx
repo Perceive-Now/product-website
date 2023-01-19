@@ -23,7 +23,7 @@ import { getAcademicResearchTrends } from "../../../utils/api/charts";
 export default function AcademicResearchTrends(props: IResearchProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-academic-research-trend", ...props.keywords],
     async () => {
       return await getAcademicResearchTrends(props.keywords);
@@ -111,6 +111,8 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     <DataSection
       keywords={props.keywords}
       isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={
         <PageTitle
           title="Academic Research Trends in the USA"
