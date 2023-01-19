@@ -4,79 +4,125 @@ import type { ReactElement } from "react";
 import {
   ExpertsIcon,
   FundersIcon,
-  MediationIcon,
   PatentsIcon,
-  PreviewIcon,
   PublicationsIcon,
-  SummaryIcon,
-  TrendsIcon,
   UniversitiesIcon,
   DashboardIcon,
+  //
+  TechnologyIcon,
+  CompaniesIcon,
+  Universities2Icon,
 } from "../../icons";
-
-const topItems: ISidebarItem[] = [
-  {
-    title: "Dashboard",
-    icon: <DashboardIcon />,
-    to: "/dashboard",
-  },
-];
 
 const sidebarItems: ISidebarListItem[] = [
   {
-    title: "Innovate AI",
-    key: "innovate-ai",
+    title: "Dashboard",
+    key: "dashboard",
+    icon: <DashboardIcon />,
+    to: "/dashboard",
+  },
+  {
+    title: "Deep Search",
+    key: "deep-search",
     children: [
       {
-        title: "M&A Insignts",
-        icon: <MediationIcon />,
-        to: "/insights",
+        title: "Emerging technology",
+        key: "emerging-technology",
+        icon: <TechnologyIcon />,
+        to: "/",
       },
       {
-        title: "Technology Trends",
-        icon: <TrendsIcon />,
-        to: "/trends",
+        title: "Publications",
+        key: "publications",
+        icon: <PublicationsIcon />,
+        to: "/",
       },
       {
-        title: "Hawk-eye view",
-        icon: <PreviewIcon />,
-        to: "/hawk-eye-view",
+        title: "Patents",
+        key: "patents",
+        icon: <PatentsIcon />,
+        to: "/",
       },
       {
-        title: "Summarize",
-        icon: <SummaryIcon />,
-        to: "/summary",
+        title: "Companies",
+        key: "companies",
+        icon: <CompaniesIcon />,
+        to: "/",
+      },
+      {
+        title: "Inventors",
+        key: "inventors",
+        icon: <ExpertsIcon />,
+        to: "/",
+      },
+      {
+        title: "Universities",
+        key: "universities",
+        icon: <UniversitiesIcon />,
+        to: "/",
+      },
+      {
+        title: "Funders",
+        key: "funders",
+        icon: <FundersIcon />,
+        to: "/",
       },
     ],
   },
   {
-    title: "Advance Search",
-    key: "advance-search",
+    title: "Diligence 360°",
+    key: "dilligence-360",
     children: [
       {
-        title: "Publications",
-        icon: <PublicationsIcon />,
-        to: "/publications",
+        title: "Connected trends",
+        key: "connected-trends",
+        children: [
+          {
+            title: "Companies",
+            key: "connected-trend-companies",
+            icon: <CompaniesIcon />,
+            to: "/",
+          },
+          {
+            title: "Universities",
+            key: "connected-trend-universities",
+            icon: <Universities2Icon />,
+            to: "/",
+          },
+        ],
       },
       {
-        title: "Patents",
-        icon: <PatentsIcon />,
-        to: "/patents",
+        title: "M&A Insights",
+        key: "ma-insights",
+        children: [
+          {
+            title: "Companies",
+            key: "ma-insights-companies",
+            icon: <CompaniesIcon />,
+            to: "/",
+          },
+          {
+            title: "Universities",
+            key: "ma-insights-universities",
+            icon: <Universities2Icon />,
+            to: "/",
+          },
+        ],
       },
       {
-        title: "Experts",
-        icon: <ExpertsIcon />,
-        to: "/experts",
+        title: "Summarize",
+        key: "summarize",
+        to: "/",
       },
       {
-        title: "Funders",
-        icon: <FundersIcon />,
-        to: "/funders",
+        title: "Similarity check",
+        key: "similarity-check",
+        to: "/",
       },
       {
-        title: "Universities",
-        icon: <UniversitiesIcon />,
-        to: "/universities",
+        title: "Ask our AI mascot",
+        key: "ask-our-ai-mascot",
+        to: "/",
       },
     ],
   },
@@ -91,7 +137,9 @@ export interface ISidebarItem {
 export interface ISidebarListItem {
   title: string;
   key: string;
-  children: ISidebarItem[];
+  icon?: ReactElement;
+  to?: string;
+  children?: ISidebarListItem[];
 }
 
-export { topItems, sidebarItems };
+export { sidebarItems };
