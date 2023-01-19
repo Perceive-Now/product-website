@@ -10,7 +10,7 @@ export default function EducationIcon(props: SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clip-path="url(#clip0_3617_10956)">
+      <g clipPath="url(#clip0_3617_10956)">
         <path
           d="M7.16732 17.5733V22.9067L16.5007 28L25.834 22.9067V17.5733L16.5007 22.6667L7.16732 17.5733ZM16.5007 4L1.83398 12L16.5007 20L28.5006 13.4533V22.6667H31.1673V12L16.5007 4Z"
           fill="#7F4BD8"
