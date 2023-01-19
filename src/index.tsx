@@ -15,7 +15,6 @@ import App from "./App";
 //
 import reportWebVitals from "./reportWebVitals";
 
-
 // React query client
 const queryclient = new QueryClient({
   defaultOptions: {

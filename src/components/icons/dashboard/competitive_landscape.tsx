@@ -1,6 +1,8 @@
 import { SVGProps } from "react";
 
-export default function CompetitiveLandscapeIcon(props: SVGProps<SVGSVGElement>) {
+export default function CompetitiveLandscapeIcon(
+  props: SVGProps<SVGSVGElement>
+) {
   return (
     <svg
       width="32"

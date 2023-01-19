@@ -1,28 +1,12 @@
-//
 import axios from "axios";
-import Cookies from "js-cookie";
+import jsCookie from "js-cookie";
 
 //
 import { store } from "../store";
-
-//
-import { setAuthToken } from "./api/user";
-
-//
-store.subscribe(listener);
-const { dispatch } = store;
+import { setAuthToken } from "../stores/auth";
 
 //
 const API_URL = process.env.REACT_APP_API_URL;
-
-//
-function listener() {
-  const token =
-    store.getState().auth.token || sessionStorage.getItem("pn_access");
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }
-}
 
 /**
  *
@@ -34,6 +18,19 @@ const axiosInstance = axios.create({
   },
 });
 
+// Adding Auhorization header to every request if token is available
+axiosInstance.interceptors.request.use((config) => {
+  const token = store.getState().auth.token;
+
+  //
+  if (config.headers && token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+// Intercepting API response
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -41,17 +38,23 @@ axiosInstance.interceptors.response.use(
   async function (error) {
     const originalRequest = error.config;
 
-    if (originalRequest.url.includes('/user/refresh-token/')) {
+    // If the API call fails while trying to get refresh token, there is nothing we can do about it!
+    if (originalRequest.url.includes("/user/refresh-token/")) {
       return Promise.reject(error);
     }
-    //
+
+    // We are just trying to get refresh token please
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const refreshToken = Cookies.get("pn_refresh");
+      // Getting refresh token saved in cookie
+      const refreshToken = jsCookie.get("pn_refresh");
 
-      if (!refreshToken) return Promise.reject(error);
+      if (!refreshToken) {
+        return Promise.reject(error);
+      }
 
+      // Making API call to get new set of tokens
       const res = await axiosInstance.post("/api/v1/user/refresh-token/", {
         refresh: refreshToken,
       });
@@ -60,13 +63,23 @@ axiosInstance.interceptors.response.use(
       if (res.status === 200) {
         const token = res.data.access;
 
+        // Setting token values
+        store.dispatch(setAuthToken(token));
         sessionStorage.setItem("pn_access", token);
-        dispatch(setAuthToken(token));
-        axiosInstance.defaults.headers.common["Authorization"] =
-          "Bearer " + token;
+
+        // IDK
+        axiosInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${token}`;
 
         return axiosInstance(originalRequest);
       }
+
+      // deleting access and refresh tokens
+      store.dispatch(setAuthToken(undefined));
+
+      jsCookie.remove("pn_refresh");
+      sessionStorage.removeItem("pn_access");
     }
 
     //

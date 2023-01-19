@@ -6,10 +6,9 @@ import { useAppSelector } from "../../../hooks/redux";
 export default function UserIcon() {
   const authUser = useAppSelector((state) => state.auth.user);
 
-  const username = (authUser?.firstName || authUser?.lastName) ? 
-    [authUser?.firstName, authUser?.lastName].join(" ")
-    : "";
+  const username = authUser?.name;
 
+  //
   return (
     <div className="flex items-center">
       <p className="text-primary-900 text-xl">{username}</p>
