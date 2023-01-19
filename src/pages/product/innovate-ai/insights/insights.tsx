@@ -2,9 +2,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
-import SearchBarScreen from "../../../../components/@product/search-bar-screen";
-
-//
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import { getMAInsights } from "../../../../utils/api/ma-insights";
 import PatentsDisclosure from "../../../../components/reusable/patents-disclosure";
@@ -15,7 +12,7 @@ import DetailedDisclosure from "../../../../components/reusable/detailed-disclos
  *
  */
 export default function InsightsPage() {
-  const [searchkeywords, setSearchKeywords] = useState<IKeywordOption[]>([]);
+  const [searchkeywords] = useState<IKeywordOption[]>([]);
 
   const { data } = useQuery(
     ["m-and-a-insight", ...searchkeywords.map((kwd) => kwd.value)],
@@ -25,24 +22,8 @@ export default function InsightsPage() {
     { enabled: !!searchkeywords?.length },
   );
 
-  const handleKeywordChange = (value: IKeywordOption[]) => {
-    setSearchKeywords(value);
-  };
-
-  const handleSearch = () => {
-    // TODO
-  };
-
   return (
     <div>
-      {!searchkeywords && (
-        <SearchBarScreen
-          searchKeywords={searchkeywords}
-          handleKeywordChange={handleKeywordChange}
-          handleSearch={handleSearch}
-        />
-      )}
-
       {searchkeywords && (
         <div>
           <div className="w-1/2">
@@ -58,7 +39,7 @@ export default function InsightsPage() {
               <div className="text-lg text-gray-900 mb-4">{data?.patentsTop5?.respText}</div>
 
               <div>
-                {data?.patentsTop5?.rankedList.map((listItem) => (
+                {data?.patentsTop5?.rankedList.map((listItem: any) => (
                   <PatentsDisclosure
                     key={listItem.uuid}
                     title={listItem.name}
@@ -77,7 +58,7 @@ export default function InsightsPage() {
               <div className="text-lg text-gray-900 mb-4">{data?.companiesTop5?.respText}</div>
 
               <div>
-                {data?.companiesTop5?.rankedList.map((listItem) => (
+                {data?.companiesTop5?.rankedList.map((listItem: any) => (
                   <DetailedDisclosure
                     key={listItem.uuid}
                     title={listItem.name}
@@ -96,7 +77,7 @@ export default function InsightsPage() {
               <div className="text-lg text-gray-900 mb-4">{data?.universitiesTop5?.respText}</div>
 
               <div>
-                {data?.universitiesTop5?.rankedList.map((listItem) => (
+                {data?.universitiesTop5?.rankedList.map((listItem: any) => (
                   <DetailedDisclosure
                     key={listItem.uuid}
                     title={listItem.name}
