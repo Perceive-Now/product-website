@@ -11,7 +11,8 @@
     "lint:check": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx}\"",
     "format:check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "format:write": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\""
+    "format:write": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.1",
@@ -65,7 +66,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.1",
-    "husky": "^8.0.1",
+    "husky": "^8.0.3",
     "lint-staged": "^13.0.3",
     "postcss": "^8.4.16",
     "prettier": "^2.8.3",
