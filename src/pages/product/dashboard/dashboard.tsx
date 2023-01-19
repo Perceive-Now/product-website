@@ -1,3 +1,8 @@
+import { useRef } from "react";
+
+//
+import Navigator from "../../../components/@dashboard/navigator";
+
 //
 import Patents from "../../../components/@dashboard/patents";
 import ScholaryPublication from "../../../components/@dashboard/scholary-publication";
@@ -32,17 +37,11 @@ import PageTitle from "../../../components/reusable/page-title";
 
 //
 import { useAppSelector } from "../../../hooks/redux";
-import Navigator from "../../../components/@dashboard/navigator";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 /**
  *
  */
 export default function DashboardPage() {
-  const navigate = useNavigate();
-
-  //
   const competitiveLandscapeRef = useRef(null);
   const expertsNetworkRef = useRef(null);
   const researchRef = useRef(null);
@@ -59,11 +58,6 @@ export default function DashboardPage() {
   const keywordValue = searchedKeywords.map((kwd) => kwd.value);
 
   //
-  if (!searchedKeywords.length) {
-    navigate("/");
-  }
-
-  //
   return (
     <div>
       <Navigator
@@ -73,7 +67,7 @@ export default function DashboardPage() {
         fundingsRef={fundingsRef}
       />
 
-      {searchedKeywords && (
+      {searchedKeywords.length > 0 && (
         <p className="mb-3">
           <span>Showing results for: </span>
           <span className="font-semibold">{joinedKeywords}</span>
@@ -83,99 +77,101 @@ export default function DashboardPage() {
       {/* 1st row charts */}
       <div className="grid grid-cols-2 gap-x-3">
         <div className="col-span-1">
-          <ScholaryPublication
-            key={joinedKeywords}
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
-          />
+          <ScholaryPublication key={joinedKeywords} keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">
-          <Patents
-            key={joinedKeywords}
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
-          />
+          <Patents key={joinedKeywords} keywords={keywordValue} />
         </div>
       </div>
 
       {/* 2nd row map */}
-      <FootprintHeatmap keywords={searchedKeywords.map((kwd) => kwd.value)} />
+      <div className="mt-3">
+        <FootprintHeatmap keywords={keywordValue} />
+      </div>
 
       {/* 3rd row map */}
-      <TodayHighlights keywords={searchedKeywords.map((kwd) => kwd.value)} />
+      <div className="mt-3">
+        <TodayHighlights keywords={keywordValue} />
+      </div>
 
       {/* 4th row  */}
       <div className="pt-15 -mt-12" ref={competitiveLandscapeRef}>
         <PageTitle title="Competitive Landscape" titleClass="font-bold" />
+
+        <div className="mt-1">
+          <Competitors keywords={keywordValue} />
+        </div>
       </div>
 
-      <Competitors keywords={searchedKeywords.map((kwd) => kwd.value)} />
-      {/* 4th row end */}
-
       {/* 5th row map */}
-      <CompetetitorMap keywords={searchedKeywords.map((kwd) => kwd.value)} />
+      <div className="mt-3">
+        <CompetetitorMap keywords={keywordValue} />
+      </div>
 
       {/* 6th row  */}
       <div className="pt-15 -mt-12" ref={expertsNetworkRef}>
         <PageTitle title="Experts Network" titleClass="font-bold" />
+
+        <div className="mt-1">
+          <ExpertsNetwork keywords={keywordValue} />
+        </div>
       </div>
 
-      <ExpertsNetwork keywords={searchedKeywords.map((kwd) => kwd.value)} />
-      {/* 6th row end */}
-
       {/* 7th row map */}
-      <ExpertsMap keywords={searchedKeywords.map((kwd) => kwd.value)} />
+      <div className="mt-3">
+        <ExpertsMap keywords={keywordValue} />
+      </div>
 
       {/* 8th row; expert chart and related keywords */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
-          <ExpertsGraph
-            key={joinedKeywords}
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
-          />
+          <ExpertsGraph key={joinedKeywords} keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">
-          <RelatedKeywords
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
-          />
+          <RelatedKeywords keywords={keywordValue} />
         </div>
       </div>
 
       {/* 9th row */}
-      <div className="pt-15 -mt-12 mb-1" ref={researchRef}>
+      <div className="pt-15 -mt-12" ref={researchRef}>
         <PageTitle title="Academic R&D" titleClass="font-bold" />
-      </div>
 
-      <TopUniversities keywords={searchedKeywords.map((kwd) => kwd.value)} />
+        <div className="mt-1">
+          <TopUniversities keywords={keywordValue} />
+        </div>
+      </div>
 
       {/* Charts for Academinc R&D */}
       <div className="grid grid-cols-2 gap-x-3 mt-3">
         <div className="col-span-1">
           <AcademicResearchTrends
             key={joinedKeywords}
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
+            keywords={keywordValue}
           />
         </div>
 
         <div className="col-span-1">
           <AcademicResearchFundings
             key={joinedKeywords}
-            keywords={searchedKeywords.map((kwd) => kwd.value)}
+            keywords={keywordValue}
           />
         </div>
       </div>
 
       {/* 11th row */}
-      <div className="pt-15 -mt-12 mb-2" ref={fundingsRef}>
+      <div className="pt-15 -mt-12" ref={fundingsRef}>
         <PageTitle title="Funding" titleClass="font-bold" />
       </div>
-      <div className="grid grid-cols-2 gap-x-3 mt-3">
+
+      <div className="grid grid-cols-2 gap-x-3 mt-1">
         <div className="col-span-1">
           <TopFunderCharts key={joinedKeywords} keywords={keywordValue} />
         </div>
 
         <div className="col-span-1">
-          <TopFundersList keywords={searchedKeywords.map((kwd) => kwd.value)} />
+          <TopFundersList keywords={keywordValue} />
         </div>
       </div>
     </div>

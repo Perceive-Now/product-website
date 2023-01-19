@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -7,10 +8,10 @@ import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 //
 import PageTitle from "../../reusable/page-title";
+import DataSection from "../../reusable/data-section";
 
 //
 import { getExpertsMapInfo } from "../../../utils/api/map";
-import classNames from "classnames";
 
 /**
  *
@@ -21,7 +22,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
 
   // const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
 
-  const { data } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-experts-map", ...props.keywords],
     async () => {
       return await getExpertsMapInfo(props.keywords);
@@ -44,62 +45,69 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
       employment: itm.employment,
     })) ?? [];
 
+  //
   return (
-    <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
-      <PageTitle
-        info={`This list was extracted from "X" total number of experts and researchers worldwide`}
-        titleClass="font-semibold"
-        title="Geographical footprint of experts"
-        children={
-          <div className="flex justify-between">
-            <p className="text-sm">
-              Network of experts and researchers working across the globe
-            </p>
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          info={`This list was extracted from "X" total number of experts and researchers worldwide`}
+          titleClass="font-semibold"
+          title="Geographical footprint of experts"
+          children={
+            <div className="flex justify-between">
+              <p className="text-sm">
+                Network of experts and researchers working across the globe
+              </p>
 
-            <div className="flex gap-x-3 text-sm">
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="industryExperts"
-                  name="currentModeExpertMap"
-                  checked={currentMode === "basicPublication"}
-                  onChange={() => setCurrentMode("basicPublication")}
-                />
-                <label htmlFor="industryExperts" className="cursor-pointer">
-                  Industry
-                </label>
-              </div>
+              <div className="flex gap-x-3 text-sm">
+                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                  <input
+                    type="radio"
+                    id="industryExperts"
+                    name="currentModeExpertMap"
+                    checked={currentMode === "basicPublication"}
+                    onChange={() => setCurrentMode("basicPublication")}
+                  />
+                  <label htmlFor="industryExperts" className="cursor-pointer">
+                    Industry
+                  </label>
+                </div>
 
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="academicExperts"
-                  name="currentModeExpertMap"
-                  checked={currentMode === "basicPatents"}
-                  onChange={() => setCurrentMode("basicPatents")}
-                />
-                <label htmlFor="academicExperts" className="cursor-pointer">
-                  Academic
-                </label>
-              </div>
+                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                  <input
+                    type="radio"
+                    id="academicExperts"
+                    name="currentModeExpertMap"
+                    checked={currentMode === "basicPatents"}
+                    onChange={() => setCurrentMode("basicPatents")}
+                  />
+                  <label htmlFor="academicExperts" className="cursor-pointer">
+                    Academic
+                  </label>
+                </div>
 
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="federalExperts"
-                  name="currentModeExpertMap"
-                  checked={currentMode === "federalExperts"}
-                  onChange={() => setCurrentMode("federalExperts")}
-                />
-                <label htmlFor="federalExperts" className="cursor-pointer">
-                  Federal
-                </label>
+                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                  <input
+                    type="radio"
+                    id="federalExperts"
+                    name="currentModeExpertMap"
+                    checked={currentMode === "federalExperts"}
+                    onChange={() => setCurrentMode("federalExperts")}
+                  />
+                  <label htmlFor="federalExperts" className="cursor-pointer">
+                    Federal
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-        }
-      />
-
+          }
+        />
+      }
+    >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 overflow-y-scroll">
           {mapData?.slice(0, 100)?.map((item, index) => (
@@ -131,7 +139,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
           )}
         </div>
       </div>
-    </div>
+    </DataSection>
   );
 }
 

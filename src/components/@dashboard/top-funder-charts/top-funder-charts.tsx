@@ -11,7 +11,9 @@ import ScatterChart from "../../@product/scatter-chart";
 import PageTitle from "../../reusable/page-title";
 import NoDataMessage from "../../reusable/no-data";
 import TimePeriod from "../../reusable/time-period";
-import NoKeywordMessage from "../../reusable/no-keyword";
+import DataSection from "../../reusable/data-section";
+
+//
 import ChartButtons, {
   ChartType,
 } from "../../reusable/chart-buttons/chart-buttons";
@@ -23,7 +25,6 @@ import {
 } from "../../../utils/api/charts";
 
 //
-import { LoadingIcon } from "../../icons";
 import {
   DEFAULT_TIME_PERIOD_END_YEAR,
   YEAR_DIFFERENCE,
@@ -40,7 +41,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   let hasNoData = false;
 
   //
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["top-funder-charts", ...props.keywords, selectedTimeperiod],
     async () => {
       return await getTopFundingChart(props.keywords);
@@ -122,79 +123,70 @@ export default function TopFunderCharts(props: ITopFunderProps) {
         },
       ];
 
+  //
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle
-        title="Total Amount of Funding over time"
-        info={`This list was extracted from "X" total number of funders worldwide`}
-        titleClass="font-semibold"
-      />
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          title="Total Amount of Funding over time"
+          info={`This list was extracted from "X" total number of funders worldwide`}
+          titleClass="font-semibold"
+        />
+      }
+    >
+      <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
+        <div>
+          <TimePeriod
+            startYear={data?.startYear}
+            handleChange={handleTimePeriodChange}
+          />
+        </div>
 
-      {props.keywords.length > 0 && (
+        <div className="flex items-center">
+          <ChartButtons
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
+      </div>
+
+      {hasNoData && (
+        <div className="flex h-full justify-center items-center">
+          <NoDataMessage years={selectedTimeperiod} />
+        </div>
+      )}
+
+      {!hasNoData && (
         <>
-          {isLoading && (
-            <div className="h-[300px] flex items-center justify-center">
-              <LoadingIcon fontSize={56} />
-            </div>
+          {activeChart === "bar" && (
+            <BarChart
+              data={finalBarData ?? []}
+              keys={["amount"]}
+              indexBy="year"
+              groupMode="stacked"
+              legendY="Funding Amount (USD)"
+            />
           )}
 
-          {!isLoading && (
-            <>
-              <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
-                <div>
-                  <TimePeriod
-                    startYear={data?.startYear}
-                    handleChange={handleTimePeriodChange}
-                  />
-                </div>
+          {activeChart === "donut" && <PieChart data={finalPieData} />}
 
-                <div className="flex items-center">
-                  <ChartButtons
-                    activeChart={activeChart}
-                    setActiveChart={setActiveChart}
-                  />
-                </div>
-              </div>
-
-              {hasNoData && (
-                <div className="flex h-full justify-center items-center">
-                  <NoDataMessage years={selectedTimeperiod} />
-                </div>
-              )}
-
-              {!hasNoData && (
-                <>
-                  {activeChart === "bar" && (
-                    <BarChart
-                      data={finalBarData ?? []}
-                      keys={["amount"]}
-                      indexBy="year"
-                      groupMode="stacked"
-                      legendY="Funding Amount (USD)"
-                    />
-                  )}
-
-                  {activeChart === "donut" && <PieChart data={finalPieData} />}
-
-                  {activeChart === "scatter" && (
-                    <ScatterChart
-                      data={finalScatterData}
-                      legendY="Funding Amount (USD)"
-                    />
-                  )}
-                </>
-              )}
-
-              <div className="text-primary-600 mt-4 cursor-pointer">
-                <Link to="/funders">Read more</Link>
-              </div>
-            </>
+          {activeChart === "scatter" && (
+            <ScatterChart
+              data={finalScatterData}
+              legendY="Funding Amount (USD)"
+            />
           )}
         </>
       )}
 
-      {props.keywords.length < 1 && <NoKeywordMessage />}
-    </div>
+      <div className="text-primary-600 mt-4 cursor-pointer">
+        <Link to="/funders">Read more</Link>
+      </div>
+    </DataSection>
   );
 }
 

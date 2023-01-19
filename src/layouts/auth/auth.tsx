@@ -5,9 +5,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import PageLoading from "../../components/app/pageLoading";
 
 //
-import { getUserDetails } from "../../utils/api/user";
-import { getCurrentSession } from "../../stores/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { getCurrentSession, getUserDetails } from "../../stores/auth";
 
 /**
  *
@@ -16,31 +15,31 @@ export default function AuthLayout() {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const userToken = useAppSelector((state) => state.auth?.token);
+  const authStore = useAppSelector((state) => state.auth);
 
   //
   const [isLoading, setIsLoading] = useState(true);
 
   //
   const getSession = async () => {
-    if (userToken) {
+    if (authStore.token) {
       setIsLoading(false);
       return;
     }
 
+    // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
     if (!session.success) navigate("/login");
 
+    // Getting user details
+    await dispatch(getUserDetails());
+
+    // Stop loading
     setIsLoading(false);
   };
 
-  const getUserDetail = async() => {
-    await dispatch(getUserDetails());
-  }
-
   useEffect(() => {
     getSession();
-    getUserDetail();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,7 +48,6 @@ export default function AuthLayout() {
 
   return (
     <div>
-      {/* Maybe add some loading animation initially when fetching and validating the data?? */}
       <Outlet />
     </div>
   );

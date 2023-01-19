@@ -1,17 +1,12 @@
-import axios from "axios";
-import Cookie from "js-cookie";
+import jsCookie from "js-cookie";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 //
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-const baseURL = process.env.REACT_APP_API_URL;
+//
+import axiosInstance from "../utils/axios";
 
-const axiosConfig = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
 /**
  *
  */
@@ -25,20 +20,14 @@ export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const response = await axios.post(
-        `${baseURL}/api/v1/user/login/`,
-        {
-          email: payload.email,
-          password: payload.password,
-        },
-        axiosConfig
-      );
-
-      const data = response.data;
+      const { data } = await axiosInstance.post("/api/v1/user/login/", {
+        email: payload.email,
+        password: payload.password,
+      });
 
       //
+      jsCookie.set("pn_refresh", data.refresh);
       sessionStorage.setItem("pn_access", data.access);
-      Cookie.set("pn_refresh", data.refresh);
 
       //
       return {
@@ -59,7 +48,7 @@ export const logoutUser = createAsyncThunk(
   "logout",
   async (): Promise<IResponse> => {
     try {
-      Cookie.remove("pn_refresh");
+      jsCookie.remove("pn_refresh");
       sessionStorage.removeItem("pn_access");
 
       return {
@@ -78,35 +67,67 @@ export const logoutUser = createAsyncThunk(
 export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
-    let accessToken = sessionStorage.getItem("pn_access");
-    if (accessToken) return {
-      success: true,
-      message: "Current session obtained",
-    }
+    const accessToken = sessionStorage.getItem("pn_access");
+    if (accessToken)
+      return {
+        success: true,
+        message: "Current session obtained",
+        data: { token: accessToken },
+      };
 
-    let refreshToken = Cookie.get('pn_refresh');
-    if (!refreshToken) return {
-      success: false,
-      message: "Current session is terminated!"
-    }
+    //
+    const refreshToken = jsCookie.get("pn_refresh");
+    if (!refreshToken)
+      return {
+        success: false,
+        message: "Current session is terminated!",
+      };
 
+    //
     try {
-      const response = await axios.post(`${baseURL}/api/v1/user/refresh-token/`, {
-        refresh: refreshToken
-      }, axiosConfig);
-      const data: IRefreshResponse = response.data;
-      const { access } = data;
+      const response = await axiosInstance.post<IRefreshResponse>(
+        "/api/v1/user/refresh-token/",
+        { refresh: refreshToken }
+      );
 
       return {
         success: true,
         message: "Current session obtained",
-        data: { token: access },
+        data: { token: response.data.access },
       };
-    }
-    catch (error) {
+    } catch (error) {
       return {
         success: false,
-        message: 'Current session expired',
+        message: "Current session expired",
+      };
+    }
+  }
+);
+
+export const getUserDetails = createAsyncThunk(
+  "getUserDetails",
+  async (): Promise<IResponse> => {
+    try {
+      // TODO:: Make an API call to get user profile
+      // After that add user's name and image to the response object
+      const [userResponse] = await Promise.all([
+        axiosInstance.get("/api/v1/user/me/"),
+      ]);
+
+      return {
+        success: true,
+        message: "Successfully fetched user details",
+        data: {
+          email: userResponse.data.email,
+          username: userResponse.data.username,
+          name: userResponse.data.username,
+          image: undefined,
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Unable to fetch user details",
       };
     }
   }
@@ -122,7 +143,7 @@ export const AuthSlice = createSlice({
     setUser: (state, action: PayloadAction<IAuthuser>) => {
       state.user = action.payload;
     },
-    setAuth: (state, action: PayloadAction<string>) => {
+    setAuthToken: (state, action: PayloadAction<string | undefined>) => {
       state.token = action.payload;
     },
     removeUser: (state) => {
@@ -140,15 +161,24 @@ export const AuthSlice = createSlice({
       state.token = payloadAttributes?.token;
     });
 
+    //
     builder.addCase(logoutUser.fulfilled, (state) => {
       state.user = undefined;
       state.token = undefined;
     });
 
+    //
     builder.addCase(getCurrentSession.fulfilled, (state, action) => {
-      if (action.payload.data?.token) {
-        state.token = action.payload.data?.token;
+      if (!state.token && action.payload.success && action.payload.data) {
+        state.token = action.payload.data.token;
       }
+    });
+
+    //
+    builder.addCase(getUserDetails.fulfilled, (state, action) => {
+      const payloadAttributes = action.payload.data;
+
+      state.user = payloadAttributes;
     });
   },
 });
@@ -156,9 +186,8 @@ export const AuthSlice = createSlice({
 /**
  * Action creators are generated for each case reducer function
  */
-export const { setUser, setAuth, removeUser } = AuthSlice.actions;
+export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
 export default AuthSlice.reducer;
-
 
 /**
  * Interfaces
@@ -168,12 +197,16 @@ interface IResponse<T = any> {
   message: string;
   data?: T;
 }
+
+//
 interface IAuthuser {
   email: string;
-  firstName?: string;
-  lastName?: string;
+  username: string;
+  name: string;
+  image?: string;
 }
 
+//
 interface AuthState {
   user?: IAuthuser;
   token?: string;
@@ -185,6 +218,7 @@ interface ILoginParams {
   password: string;
 }
 
+//
 interface IRefreshResponse {
   status: string;
   message: string;

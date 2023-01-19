@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
 import PageTitle from "../../reusable/page-title";
+import DataSection from "../../reusable/data-section";
 import RadioButtons from "../../reusable/radio-buttons";
 
 //
@@ -12,11 +13,9 @@ import { getExpertsTable, IExpertModeItem } from "../../../utils/api/dashboard";
  *
  **/
 export default function ExpertsNetwork(props: IExpertsNetworkProps) {
-  const customRef = useRef<HTMLDivElement | null>(null);
-
   const [expertMode, setExpertMode] = useState("industryExperts");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-experts", ...props.keywords],
     async () => {
       const data = await getExpertsTable(props.keywords);
@@ -38,11 +37,12 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
   };
 
   return (
-    <div
-      className="mt-1 rounded-2xl border border-gray-200 shadow"
-      ref={customRef}
-    >
-      <div className="pt-4 px-3">
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
         <PageTitle
           title="Experts"
           subTitle={`Top list of experts with maximum number of publications and patents `}
@@ -54,66 +54,62 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
             />
           }
         />
-      </div>
+      }
+    >
+      <div className="grid gap-y-5 gap-x-4 my-3">
+        <div>
+          <p className="text-lg font-semibold text-primary-900 mb-2">Patents</p>
 
-      <div className="mt-4 px-3">
-        <div className="grid gap-y-5 gap-x-4 mb-3">
-          <div>
-            <p className="text-lg font-semibold text-primary-900 mb-2">
+          <div className="grid grid-cols-11 mb-3">
+            <div className="col-span-5 font-semibold">Name</div>
+            <div className="col-span-5 font-semibold">Organization</div>
+            <div className="col-span-1 text-right pr-1 font-semibold">
               Patents
-            </p>
-
-            <div className="grid grid-cols-11 mb-3">
-              <div className="col-span-5 font-semibold">Name</div>
-              <div className="col-span-5 font-semibold">Organization</div>
-              <div className="col-span-1 text-right pr-1 font-semibold">
-                Patents
-              </div>
             </div>
-
-            {_tableData?.patents
-              ?.sort((a, b) => b.count - a.count)
-              ?.slice(0, 5)
-              ?.map((itm, index) => (
-                <ListItem
-                  name={itm.name}
-                  organization={itm.company}
-                  value={itm.count}
-                  index={index}
-                  key={index}
-                />
-              ))}
           </div>
 
-          <div>
-            <p className="text-lg font-semibold text-primary-900 mb-2">
+          {_tableData?.patents
+            ?.sort((a, b) => b.count - a.count)
+            ?.slice(0, 5)
+            ?.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                organization={itm.company}
+                value={itm.count}
+                index={index}
+                key={index}
+              />
+            ))}
+        </div>
+
+        <div>
+          <p className="text-lg font-semibold text-primary-900 mb-2">
+            Publications
+          </p>
+
+          <div className="grid grid-cols-11 mb-3">
+            <div className="col-span-5 font-semibold">Name</div>
+            <div className="col-span-5 font-semibold">Organization</div>
+            <div className="col-span-1 text-right pr-1 font-semibold">
               Publications
-            </p>
-
-            <div className="grid grid-cols-11 mb-3">
-              <div className="col-span-5 font-semibold">Name</div>
-              <div className="col-span-5 font-semibold">Organization</div>
-              <div className="col-span-1 text-right pr-1 font-semibold">
-                Publications
-              </div>
             </div>
-
-            {_tableData?.publications
-              ?.sort((a, b) => b.count - a.count)
-              ?.slice(0, 5)
-              ?.map((itm, index) => (
-                <ListItem
-                  name={itm.name}
-                  organization={itm.company}
-                  value={itm.count}
-                  index={index}
-                  key={index}
-                />
-              ))}
           </div>
+
+          {_tableData?.publications
+            ?.sort((a, b) => b.count - a.count)
+            ?.slice(0, 5)
+            ?.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                organization={itm.company}
+                value={itm.count}
+                index={index}
+                key={index}
+              />
+            ))}
         </div>
       </div>
-    </div>
+    </DataSection>
   );
 }
 

@@ -10,6 +10,7 @@ import ScatterChart from "../../@product/scatter-chart";
 //
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
+import DataSection from "../../reusable/data-section";
 import ChartButtons from "../../reusable/chart-buttons";
 import { ChartType } from "../../reusable/chart-buttons";
 
@@ -24,7 +25,7 @@ import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
 export default function AcademicResearchFundings(props: IFundingProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-academic-funding-chart", ...props.keywords],
     async () => {
       return await getAcademicResearchFundingChart(props.keywords);
@@ -59,13 +60,19 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       ];
 
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle
-        title="Academic Patent Landscape"
-        info={`This list was extracted from "X" total number of universities worldwide`}
-        titleClass="font-semibold"
-      />
-
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          title="Academic Patent Landscape"
+          info={`This list was extracted from "X" total number of universities worldwide`}
+          titleClass="font-semibold"
+        />
+      }
+    >
       {/* Controls */}
       <div className="pt-1 flex justify-end gap-x-3">
         <div>
@@ -104,11 +111,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
 
       {/* Caption */}
       <div className="mt-4">
-        <div className="mt-4">
-          <Link to="/funders">Read more</Link>
-        </div>
+        <Link to="/funders">Read more</Link>
       </div>
-    </div>
+    </DataSection>
   );
 }
 

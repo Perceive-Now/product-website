@@ -17,7 +17,7 @@ export default function DefaultLayout() {
 
       <div className="w-full h-screen overflow-y-auto flex flex-col">
         <div className="sticky top-0 w-full bg-white z-10">
-          <div className="py-3 px-4 shadow">
+          <div className="px-4 shadow">
             <AppHeader />
           </div>
         </div>

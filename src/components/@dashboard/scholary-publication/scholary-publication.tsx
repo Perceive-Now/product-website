@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 //
 import PageTitle from "../../reusable/page-title";
-import NoKeywordMessage from "../../reusable/no-keyword";
+import DataSection from "../../reusable/data-section";
 import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
@@ -12,10 +12,6 @@ import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
 import ScatterChart from "../../@product/scatter-chart";
 
-//
-import { LoadingIcon } from "../../icons";
-
-//
 // import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
 
@@ -25,21 +21,19 @@ import { getScholaryPublications } from "../../../utils/api/charts";
 export default function ScholaryPublication(props: IScholaryPublicationProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data: publicationChartData, isLoading } = useQuery(
+  // Fetching data
+  const {
+    data: publicationChartData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(
     ["scholary-publications", ...props.keywords],
     async () => {
       return await getScholaryPublications(props.keywords);
     },
     { enabled: !!props.keywords.length }
   );
-
-  // const { data: publicationCount } = useQuery(
-  //   ["scholarly-publications-count-for-chart", ...props.keywords],
-  //   async () => {
-  //     return await getPublicationsCount(props.keywords);
-  //   },
-  //   { enabled: !!props.keywords.length }
-  // );
 
   //
   const finalPieData = isLoading ? [] : publicationChartData ?? [];
@@ -98,87 +92,70 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
   //
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle
-        title="Scholarly Publications"
-        info={`Stats in this graph are extracted from a total of "X" number of open access publications and "Y" number of closed access publications`}
-        titleClass="font-semibold"
-      />
-
-      {props.keywords.length < 1 && (
-        <div className="h-[300px] flex justify-center items-center">
-          <NoKeywordMessage />
-        </div>
-      )}
-
-      {props.keywords.length > 0 && (
-        <>
-          {isLoading && (
-            <div className="h-[300px] flex justify-center items-center">
-              <LoadingIcon fontSize={52} />
-            </div>
-          )}
-
-          {!isLoading && (
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          title="Scholarly Publications"
+          info={`Stats in this graph are extracted from a total of "X" number of open access publications and "Y" number of closed access publications`}
+          titleClass="font-semibold"
+        />
+      }
+    >
+      <div className="pt-1 flex justify-between items-center h-5">
+        <div className="flex gap-x-3">
+          {activeChart === "bar" && (
             <>
-              <div className="pt-1 flex justify-between items-center h-5">
-                <div className="flex gap-x-3">
-                  {activeChart === "bar" && (
-                    <>
-                      <div className="flex gap-x-1 text-sm items-center">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                        <span>Open</span>
-                      </div>
-
-                      <div className="flex gap-x-1 text-sm items-center">
-                        <div className="w-2 h-2 bg-primary-800 rounded-full" />
-                        <span>Closed</span>
-                      </div>
-                    </>
-                  )}
-                </div>
-
-                <div className="flex items-center">
-                  <ChartButtons
-                    isMultiData={true}
-                    activeChart={activeChart}
-                    setActiveChart={setActiveChart}
-                  />
-                </div>
+              <div className="flex gap-x-1 text-sm items-center">
+                <div className="w-2 h-2 bg-primary-500 rounded-full" />
+                <span>Open</span>
               </div>
 
-              {activeChart === "bar" && (
-                <BarChart
-                  keys={["openArticles", "closedArticles"]}
-                  indexBy="year"
-                  legendY="Number of Publications"
-                  data={(isLoading ? [] : publicationChartData) ?? []}
-                />
-              )}
-
-              {activeChart === "scatter" && (
-                <ScatterChart
-                  data={finalScatterData}
-                  legendX="Year"
-                  legendY="Publications"
-                />
-              )}
-
-              {activeChart === "donut" && (
-                <RadialChart
-                  data={radialData}
-                  colors={["#7F4BD8", "#442873"]}
-                />
-              )}
-
-              <div className="mt-4">
-                <Link to="/publications">Read more</Link>
+              <div className="flex gap-x-1 text-sm items-center">
+                <div className="w-2 h-2 bg-primary-800 rounded-full" />
+                <span>Closed</span>
               </div>
             </>
           )}
-        </>
+        </div>
+
+        <div className="flex items-center">
+          <ChartButtons
+            isMultiData={true}
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
+      </div>
+
+      {activeChart === "bar" && (
+        <BarChart
+          keys={["openArticles", "closedArticles"]}
+          indexBy="year"
+          legendY="Number of Publications"
+          data={(isLoading ? [] : publicationChartData) ?? []}
+        />
       )}
-    </div>
+
+      {activeChart === "scatter" && (
+        <ScatterChart
+          data={finalScatterData}
+          legendX="Year"
+          legendY="Publications"
+        />
+      )}
+
+      {activeChart === "donut" && (
+        <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />
+      )}
+
+      <div className="mt-4">
+        <Link to="/publications">Read more</Link>
+      </div>
+    </DataSection>
   );
 }
 

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 //
 import PageTitle from "../../reusable/page-title";
+import DataSection from "../../reusable/data-section";
 
 //
 import GoogleMaps from "../../@product/google-map";
@@ -19,7 +20,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
   // const [currentMode, setCurrentMode] =
   //   useState<availableModes>("basicPublication");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-competetitors", ...props.keywords],
     async () => {
       return await getCompetitorMapInfo(props.keywords);
@@ -38,19 +39,25 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
 
   const allPatentList = (isLoading ? [] : data?.patentsList) ?? [];
 
+  //
   return (
-    <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
-      <PageTitle
-        info={`Geographical footprint of competitors working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
-        titleClass="font-semibold"
-        title="Geographical Footprint of Competitors"
-        children={
-          <div className="flex justify-between">
-            <p className="text-sm">
-              Geolocation of companies working in your area of interest
-            </p>
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          info={`Geographical footprint of competitors working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
+          titleClass="font-semibold"
+          title="Geographical Footprint of Competitors"
+          children={
+            <div className="flex justify-between">
+              <p className="text-sm">
+                Geolocation of companies working in your area of interest
+              </p>
 
-            {/* <div className="flex gap-x-3 text-sm">
+              {/* <div className="flex gap-x-3 text-sm">
               <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
                 <input
                   type="radio"
@@ -77,10 +84,11 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
                 </label>
               </div>
             </div> */}
-          </div>
-        }
-      />
-
+            </div>
+          }
+        />
+      }
+    >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 overflow-y-scroll pr-2">
           <div>
@@ -112,7 +120,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
           <GoogleMaps isWorldMap={false} data={finalData} />
         </div>
       </div>
-    </div>
+    </DataSection>
   );
 }
 

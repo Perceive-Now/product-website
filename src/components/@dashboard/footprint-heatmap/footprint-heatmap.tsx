@@ -1,21 +1,26 @@
+import classNames from "classnames";
 import { Fragment, useEffect, useState } from "react";
+
 import { useQuery } from "@tanstack/react-query";
 import { Combobox, Transition } from "@headlessui/react";
 
 //
 import USMap from "../../@product/us-map";
 import WorldMap from "../../@product/world-map";
-import { IWorldMapDataItem } from "../../@product/world-map/world-map";
-
-import PageTitle from "../../reusable/page-title";
+import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 //
+import PageTitle from "../../reusable/page-title";
+import DataSection from "../../reusable/data-section";
+
+//
+import StatesCodes from "../../../utils/extra/us-states-codes";
 import countryNames from "../../../utils/extra/country-2-names";
 import countryISOMapping from "../../../utils/extra/country-codes";
 import { getPublicationsAndPatentsMap } from "../../../utils/api/map";
+
+//
 import { ChevronDown } from "../../icons";
-import classNames from "classnames";
-import StatesCodes from "../../../utils/extra/us-states-codes";
 
 /**
  *
@@ -28,7 +33,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
   const [selectedCountry, setSelectedCountry] = useState("");
 
   //
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-patents-and-publications", ...props.keywords],
     async () => {
       return await getPublicationsAndPatentsMap(props.keywords);
@@ -79,48 +84,57 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
 
   //
   return (
-    <div className="mt-3 p-3 rounded-lg border border-gray-200 shadow">
-      <PageTitle
-        info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-        titleClass="font-semibold"
-        title="Geographical Footprint of Publications and Patents"
-        children={
-          <div className="flex justify-between">
-            <p className="text-sm">
-              <span>Heat map of publications and patents</span>
-            </p>
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
+          titleClass="font-semibold"
+          title="Geographical Footprint of Publications and Patents"
+          children={
+            <div className="flex justify-between">
+              <p className="text-sm">
+                <span>Heat map of publications and patents</span>
+              </p>
 
-            <div className="flex gap-x-3 text-sm">
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="publicationHeatmap"
-                  name="currentModeHeatmap"
-                  checked={currentMode === "publicationHeatmap"}
-                  onChange={() => setCurrentMode("publicationHeatmap")}
-                />
-                <label htmlFor="publicationHeatmap" className="cursor-pointer">
-                  Publications
-                </label>
-              </div>
+              <div className="flex gap-x-3 text-sm">
+                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                  <input
+                    type="radio"
+                    id="publicationHeatmap"
+                    name="currentModeHeatmap"
+                    checked={currentMode === "publicationHeatmap"}
+                    onChange={() => setCurrentMode("publicationHeatmap")}
+                  />
+                  <label
+                    htmlFor="publicationHeatmap"
+                    className="cursor-pointer"
+                  >
+                    Publications
+                  </label>
+                </div>
 
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="patentsHeatmap"
-                  name="currentModeHeatmap"
-                  checked={currentMode === "patentsHeatmap"}
-                  onChange={() => setCurrentMode("patentsHeatmap")}
-                />
-                <label htmlFor="patentsHeatmap" className="cursor-pointer">
-                  Patents
-                </label>
+                <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
+                  <input
+                    type="radio"
+                    id="patentsHeatmap"
+                    name="currentModeHeatmap"
+                    checked={currentMode === "patentsHeatmap"}
+                    onChange={() => setCurrentMode("patentsHeatmap")}
+                  />
+                  <label htmlFor="patentsHeatmap" className="cursor-pointer">
+                    Patents
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-        }
-      />
-
+          }
+        />
+      }
+    >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 overflow-y-scroll pr-2">
           {currentMode === "publicationHeatmap" && (
@@ -230,7 +244,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
           )}
         </div>
       </div>
-    </div>
+    </DataSection>
   );
 }
 

@@ -10,6 +10,7 @@ import ScatterChart from "../../@product/scatter-chart";
 //
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
+import DataSection from "../../reusable/data-section";
 import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
@@ -22,7 +23,7 @@ import { getAcademicResearchTrends } from "../../../utils/api/charts";
 export default function AcademicResearchTrends(props: IResearchProps) {
   const [activeChart, setActiveChart] = useState<ChartType>("bar");
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-academic-research-trend", ...props.keywords],
     async () => {
       return await getAcademicResearchTrends(props.keywords);
@@ -105,14 +106,21 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     ? []
     : finalScatterDataFormatHelper(data?.chart) ?? [];
 
+  //
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle
-        title="Academic Research Trends in the USA"
-        info={`This list was extracted from "X" total number of universities worldwide`}
-        titleClass="font-semibold"
-      />
-
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          title="Academic Research Trends in the USA"
+          info={`This list was extracted from "X" total number of universities worldwide`}
+          titleClass="font-semibold"
+        />
+      }
+    >
       <div className="pt-1 flex justify-end items-center gap-x-3">
         <div>
           <TimePeriod timePeriods={TIME_PERIODS} />
@@ -168,7 +176,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       <div className="mt-4">
         <Link to="/publications">Read more</Link>
       </div>
-    </div>
+    </DataSection>
   );
 }
 

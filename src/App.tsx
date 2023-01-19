@@ -44,6 +44,10 @@ import FundersPage from "./pages/product/advanced-search/funders";
 import FunderProfilePage from "./pages/product/advanced-search/funders/profile";
 
 //
+import ConfirmSignup from "./pages/signup/confirm";
+import CompleteSignup from "./pages/signup/complete";
+
+//
 import PageNotFound404 from "./pages/404";
 import UniversityPage from "./pages/product/advanced-search/universities/profile";
 
@@ -57,10 +61,16 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
+        <Route path="/signup/confirm" element={<ConfirmSignup />} />
+
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
           <Route path="/" element={<HomePage />} />
 
+          {/* Need to ask for profile details before allowing to use */}
+          <Route path="/signup/complete" element={<CompleteSignup />} />
+
+          {/* Actual product pages */}
           <Route element={<DefaultLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/insights" element={<InsightsPage />} />

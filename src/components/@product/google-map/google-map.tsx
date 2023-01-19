@@ -65,8 +65,6 @@ function GoogleMaps(props: IGoogleMapProps) {
     googleMapsApiKey: GOOGLE_API_KEY,
   });
 
-  console.log(activeMarkerData, "activeMarkerData");
-
   //
   return (
     <div className="w-full h-full relative">

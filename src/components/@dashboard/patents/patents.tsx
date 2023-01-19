@@ -10,15 +10,13 @@ import ScatterChart from "../../@product/scatter-chart";
 //
 import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
-import { ChartType } from "../../reusable/chart-buttons";
-import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
-import NoKeywordMessage from "../../reusable/no-keyword";
+import DataSection from "../../reusable/data-section";
+import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
 import { getPatentsPieChart, IPatent } from "../../../utils/api/charts";
 
 //
-import { LoadingIcon } from "../../icons";
 import NoDataMessage from "../../reusable/no-data";
 import {
   DEFAULT_TIME_PERIOD_END_YEAR,
@@ -38,7 +36,7 @@ export default function Patents(props: IPatentsProps) {
 
   let hasNoData = false;
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["patents-pie-chart", ...props.keywords],
     async () => {
       return await getPatentsPieChart(props.keywords);
@@ -128,89 +126,76 @@ export default function Patents(props: IPatentsProps) {
     setSelectedTimeperiod(value.value);
   };
 
+  //
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle
-        title="Patents"
-        info={`Stats in this graph are extracted from a total of "X" number of patents`}
-        titleClass="font-semibold"
-      />
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle
+          title="Patents"
+          info={`Stats in this graph are extracted from a total of "X" number of patents`}
+          titleClass="font-semibold"
+        />
+      }
+    >
+      <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
+        <div>
+          <TimePeriod
+            startYear={data?.startYear}
+            handleChange={handleSelectedTimeperiodChange}
+          />
+        </div>
 
-      {props.keywords.length < 1 && (
-        <div className="h-[300px] flex justify-center items-center">
-          <NoKeywordMessage />
+        <div className="flex items-center">
+          <ChartButtons
+            activeChart={activeChart}
+            setActiveChart={setActiveChart}
+          />
+        </div>
+      </div>
+
+      {hasNoData && (
+        <div className="flex h-full justify-center items-center">
+          <NoDataMessage years={selectedTimeperiod} />
         </div>
       )}
 
-      {props.keywords.length > 0 && (
+      {!hasNoData && (
         <>
-          {isLoading && (
-            <div className="h-[300px] flex justify-center items-center">
-              <LoadingIcon fontSize={52} />
-            </div>
+          {activeChart === "bar" && (
+            <BarChart
+              data={finalBarData ?? []}
+              keys={["value"]}
+              indexBy="name"
+              groupMode="stacked"
+            />
           )}
 
-          {!isLoading && (
-            <>
-              <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
-                <div>
-                  <TimePeriod
-                    startYear={data?.startYear}
-                    handleChange={handleSelectedTimeperiodChange}
-                  />
-                </div>
+          {activeChart === "donut" && (
+            <PieChart
+              data={finalPieData}
+              colors={(bar) => bar.data.color}
+              onClick={handleArcClick}
+            />
+          )}
 
-                <div className="flex items-center">
-                  <ChartButtons
-                    activeChart={activeChart}
-                    setActiveChart={setActiveChart}
-                  />
-                </div>
-              </div>
-
-              {hasNoData && (
-                <div className="flex h-full justify-center items-center">
-                  <NoDataMessage years={selectedTimeperiod} />
-                </div>
-              )}
-
-              {!hasNoData && (
-                <>
-                  {activeChart === "bar" && (
-                    <BarChart
-                      data={finalBarData ?? []}
-                      keys={["value"]}
-                      indexBy="name"
-                      groupMode="stacked"
-                    />
-                  )}
-
-                  {activeChart === "donut" && (
-                    <PieChart
-                      data={finalPieData}
-                      colors={(bar) => bar.data.color}
-                      onClick={handleArcClick}
-                    />
-                  )}
-
-                  {activeChart === "scatter" && (
-                    <ScatterChart
-                      data={finalScatterData}
-                      legendX="Years"
-                      legendY="Patents"
-                    />
-                  )}
-                </>
-              )}
-
-              <div className="mt-4">
-                <Link to="/patents">Read more</Link>
-              </div>
-            </>
+          {activeChart === "scatter" && (
+            <ScatterChart
+              data={finalScatterData}
+              legendX="Years"
+              legendY="Patents"
+            />
           )}
         </>
       )}
-    </div>
+
+      <div className="mt-4">
+        <Link to="/patents">Read more</Link>
+      </div>
+    </DataSection>
   );
 }
 
