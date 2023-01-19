@@ -45,7 +45,7 @@ export async function getRelatedKeywords(keywords: string[]) {
 
 export async function getTodaysHighlight(keywords: string[]) {
   const response = await axiosInstance.get<IHighlightResponse>(
-    `/dashboard/highlights?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/global-tech-trends/?q=${keywords.join(",")}`
   );
   return response.data.data;
 }

@@ -25,45 +25,45 @@ export default function TodayHighlights(props: IHighlightsProps) {
       id: "patentsCount",
       name: "Patents",
       value: data?.patentsCount,
-      link: "/patents",
+      link: "/",
     },
     {
       id: "industryPublicationsCount",
       name: "Industry Publications",
       value: data?.industryPublicationsCount,
-      link: "/publications",
+      link: "/",
     },
     {
       id: "industryExpertsCount",
-      name: "Industry Experts",
+      name: "Industry Inventors",
       value: data?.industryExpertsCount,
-      link: "/experts",
+      link: "/",
     },
     {
       id: "fundingAmount",
       name: "Funding Amount (USD)",
       value: data?.fundingAmount,
-      link: "/funders",
+      link: "/",
     },
     {
       id: "academicPublicationsCount",
       name: "Academic Publications",
       value: data?.academicPublicationsCount,
-      link: "/publications",
+      link: "/",
     },
     {
       id: "academicExpertsCount",
-      name: "Academic Experts",
+      name: "Academic Inventors",
       value: data?.academicExpertsCount,
-      link: "/experts",
+      link: "/",
     },
   ];
 
   const getItemValue = (id: string, value: number) => {
-    if (id === "pn-dashb-highlt-funding")
+    if (id === "fundingAmount")
       return formatNumber(value, { isCurrency: true });
 
-    return value;
+    return value.toLocaleString();
   };
 
   return (
