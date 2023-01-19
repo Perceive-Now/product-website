@@ -4,7 +4,7 @@ import { setAuth, setUser } from "../../stores/auth";
 export const getUserDetails = () => async (dispatch: any) => {
     try {
         const response = await axiosInstance.get(
-            `/api/v1/user/get-user/`
+            `/api/v1/user/me/`
         );
         const responseData = response.data;
 

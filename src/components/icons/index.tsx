@@ -11,6 +11,9 @@ import FundersIcon from "./sidenav/funders";
 import UniversitiesIcon from "./sidenav/universities";
 import SettingsIcon from "./sidenav/settings";
 import LogoutIcon from "./sidenav/logout";
+import TechnologyIcon from "./sidenav/technology";
+import CompaniesIcon from "./sidenav/companies";
+import Universities2Icon from "./sidenav/universities2";
 
 // Chevron
 import ChevronUp from "./chevron/up";
@@ -68,6 +71,9 @@ export {
   UniversitiesIcon,
   SettingsIcon,
   LogoutIcon,
+  TechnologyIcon,
+  CompaniesIcon,
+  Universities2Icon,
   // Chevron icons
   ChevronUp,
   ChevronRight,

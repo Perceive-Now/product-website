@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
@@ -8,7 +8,7 @@ import PerceiveLogo from "../../../assets/images/logo.svg";
 
 //
 import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
-import { topItems, sidebarItems, ISidebarItem } from "./_data";
+import { sidebarItems, ISidebarListItem } from "./_data";
 
 // Redux
 import { logoutUser } from "../../../stores/auth";
@@ -27,11 +27,23 @@ export default function AppSidebar() {
     sidebarItems.map((itm) => itm.key)
   );
 
+  const [expandedSubGroups, setExpandedSubGrups] = useState<string[]>([]);
+
+  //
   const updateActiveGroup = (group: string) => {
     if (expandedGroups.includes(group)) {
       setExpandedGroups(expandedGroups.filter((g) => g !== group));
     } else {
       setExpandedGroups([...expandedGroups, group]);
+    }
+  };
+
+  //
+  const updateActiveSubGroup = (group: string) => {
+    if (expandedSubGroups.includes(group)) {
+      setExpandedSubGrups(expandedSubGroups.filter((g) => g !== group));
+    } else {
+      setExpandedSubGrups([...expandedSubGroups, group]);
     }
   };
 
@@ -60,43 +72,81 @@ export default function AppSidebar() {
         </div>
 
         <div>
-          {/* Level 0 items before expandable group */}
-          {topItems.map((item, index) => (
-            <NavLinkItem
-              key={`top-${index}`}
-              to={item.to}
-              icon={item.icon}
-              title={item.title}
-              isTopLevel={true}
-            />
-          ))}
-
-          {/* Expandable groups */}
           {sidebarItems.map((item, index) => (
             <div key={index}>
-              <div
-                className="px-3 py-2 flex items-center text-primary-600 cursor-pointer"
-                onClick={() => updateActiveGroup(item.key)}
-              >
-                <div className="mr-1">
-                  {expandedGroups.includes(item.key) && <ChevronUp />}
-                  {!expandedGroups.includes(item.key) && <ChevronDown />}
-                </div>
-                <span>{item.title}</span>
-              </div>
+              {item.children && (
+                <Fragment>
+                  <div
+                    className="px-2 py-2 flex items-center text-primary-600 cursor-pointer"
+                    onClick={() => updateActiveGroup(item.key)}
+                  >
+                    <div className="mr-1">
+                      {expandedGroups.includes(item.key) && <ChevronUp />}
+                      {!expandedGroups.includes(item.key) && <ChevronDown />}
+                    </div>
+                    <span>{item.title}</span>
+                  </div>
 
-              {expandedGroups.includes(item.key) && (
-                <div>
-                  {item.children.map((child, jndex) => (
-                    <NavLinkItem
-                      key={`main-content-${jndex}`}
-                      to={child.to}
-                      icon={child.icon}
-                      title={child.title}
-                      isTopLevel={false}
-                    />
-                  ))}
-                </div>
+                  {expandedGroups.includes(item.key) && (
+                    <div>
+                      {item.children?.map((child, jndex) => (
+                        <div key={jndex} className="">
+                          {child.children && (
+                            <Fragment>
+                              <div
+                                className="px-2 py-2 flex items-center cursor-pointer ml-2"
+                                onClick={() => updateActiveSubGroup(child.key)}
+                              >
+                                <div className="mr-1">
+                                  {expandedSubGroups.includes(child.key) && (
+                                    <ChevronUp />
+                                  )}
+                                  {!expandedSubGroups.includes(child.key) && (
+                                    <ChevronDown />
+                                  )}
+                                </div>
+                                <span>{child.title}</span>
+                              </div>
+
+                              {expandedSubGroups.includes(child.key) &&
+                                child.children.map((subChild, kndex) => (
+                                  <div className="ml-3">
+                                    <NavLinkItem
+                                      key={`sub-content-${kndex}`}
+                                      to={subChild.to}
+                                      icon={subChild.icon}
+                                      title={subChild.title}
+                                      isTopLevel={false}
+                                    />
+                                  </div>
+                                ))}
+                            </Fragment>
+                          )}
+
+                          {!child.children && (
+                            <NavLinkItem
+                              key={`main-content-${jndex}`}
+                              to={child.to}
+                              icon={child.icon}
+                              title={child.title}
+                              isTopLevel={false}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Fragment>
+              )}
+
+              {!item.children && (
+                <NavLinkItem
+                  key={`top-${index}`}
+                  to={item.to}
+                  icon={item.icon}
+                  title={item.title}
+                  isTopLevel={true}
+                />
               )}
             </div>
           ))}
@@ -106,7 +156,7 @@ export default function AppSidebar() {
       {/* Logout */}
       <div className="pb-3 text-gray-900">
         <div
-          className="px-3 py-2 flex items-center cursor-pointer"
+          className="px-2 py-2 flex items-center cursor-pointer"
           onClick={() => handleLogout()}
         >
           <div className="mr-2">
@@ -121,16 +171,24 @@ export default function AppSidebar() {
 
 function NavLinkItem(props: INavLinkItemProps) {
   return (
-    <NavLink to={props.to}>
+    <NavLink to={props.to ?? ""}>
       {({ isActive }) => (
         <div
           className={classNames(
             "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
-            props.isTopLevel ? "pl-3" : "pl-6",
+            props.isTopLevel ? "pl-2" : "pl-4",
             { "bg-appGray-200": isActive }
           )}
         >
-          <div className="mr-1">{props.icon}</div>
+          {props.icon && (
+            <div
+              className={classNames("mr-1", {
+                "text-[#87888C]": !props.isTopLevel,
+              })}
+            >
+              {props.icon}
+            </div>
+          )}
           <span className="h-4 flex items-center">{props.title}</span>
         </div>
       )}
@@ -138,6 +196,6 @@ function NavLinkItem(props: INavLinkItemProps) {
   );
 }
 
-interface INavLinkItemProps extends ISidebarItem {
+interface INavLinkItemProps extends ISidebarListItem {
   isTopLevel: boolean;
 }

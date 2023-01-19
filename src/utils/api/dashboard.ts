@@ -37,22 +37,22 @@ export async function getExpertsCount(keywords: string[]) {
 
 export async function getRelatedKeywords(keywords: string[]) {
   const response = await axiosInstance.get<IRelatedKeywordsResponse>(
-    `/dashboard/related_keywords_list?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/related-keywords/?q=${keywords.join(",")}`
   );
 
-  return response.data.data;
+  return response.data.data.related_keywords;
 }
 
 export async function getTodaysHighlight(keywords: string[]) {
   const response = await axiosInstance.get<IHighlightResponse>(
-    `/dashboard/highlights?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/global-tech-trends/?q=${keywords.join(",")}`
   );
   return response.data.data;
 }
 
 export async function getCompetitors(keywords: string[]) {
   const response = await axiosInstance.get<ICompetitorResponse>(
-    `/dashboard/competitors_feature?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/companywise-patent/?q=${keywords.join(",")}`
   );
 
   return response.data.data;
@@ -133,7 +133,9 @@ interface IExpertCountResponse {
 
 //
 interface IRelatedKeywordsResponse {
-  data: string[];
+  data: {
+    related_keywords: string[];
+  };
 }
 
 interface IHighlightResponse {
@@ -190,17 +192,21 @@ export interface ICompetitor {
 //
 interface ICompetitorResponse {
   data: {
-    claimsCount: {
-      [x: string]: number;
-    };
-    expertsCount: {
-      [x: string]: number;
-    };
-    patentsCount: {
-      [x: string]: number;
-    };
-    publicationsCount: {
-      [x: string]: number;
-    };
+    patents: {
+      key: string;
+      doc_count: number;
+    }[];
+    Patent_claims: {
+      company: string;
+      claim_sum: number;
+    }[];
+    Inventors: {
+      company: string;
+      inventor_count: number;
+    }[];
+    Publications: {
+      key: string;
+      doc_count: number;
+    }[];
   };
 }

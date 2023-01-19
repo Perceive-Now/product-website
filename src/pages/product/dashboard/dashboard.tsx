@@ -34,16 +34,21 @@ import PageTitle from "../../../components/reusable/page-title";
 import { useAppSelector } from "../../../hooks/redux";
 import Navigator from "../../../components/@dashboard/navigator";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  *
  */
 export default function DashboardPage() {
+  const navigate = useNavigate();
+
+  //
   const competitiveLandscapeRef = useRef(null);
   const expertsNetworkRef = useRef(null);
   const researchRef = useRef(null);
   const fundingsRef = useRef(null);
 
+  //
   const searchedKeywords =
     useAppSelector((state) => state.dashboard?.search) ?? [];
 
@@ -52,6 +57,13 @@ export default function DashboardPage() {
     .join(", ");
 
   const keywordValue = searchedKeywords.map((kwd) => kwd.value);
+
+  //
+  if (!searchedKeywords.length) {
+    navigate("/");
+  }
+
+  //
   return (
     <div>
       <Navigator
