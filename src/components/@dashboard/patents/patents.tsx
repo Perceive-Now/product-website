@@ -126,8 +126,6 @@ export default function Patents(props: IPatentsProps) {
     setSelectedTimeperiod(value.value);
   };
 
-  console.log({ isLoading, isError, error });
-
   //
   return (
     <DataSection
