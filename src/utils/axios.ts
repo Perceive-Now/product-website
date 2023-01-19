@@ -53,12 +53,12 @@ axiosInstance.interceptors.response.use(
       if (!refreshToken) return Promise.reject(error);
 
       const res = await axiosInstance.post("/api/v1/user/refresh-token/", {
-        refresh_token: refreshToken,
+        refresh: refreshToken,
       });
 
       //
       if (res.status === 200) {
-        const token = res.data.access_token;
+        const token = res.data.access;
 
         sessionStorage.setItem("pn_access", token);
         dispatch(setAuthToken(token));

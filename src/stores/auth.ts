@@ -34,17 +34,17 @@ export const loginUser = createAsyncThunk(
         axiosConfig
       );
 
-      const data: ILoginResponse = response.data;
+      const data = response.data;
 
       //
-      sessionStorage.setItem("pn_access", data.data.access_token);
-      Cookie.set("pn_refresh", data.data.refresh_token);
+      sessionStorage.setItem("pn_access", data.access);
+      Cookie.set("pn_refresh", data.refresh);
 
       //
       return {
         success: true,
         message: "Successfully logged in!",
-        data: { token: data.data.access_token },
+        data: { token: data.access },
       };
     } catch (err: any) {
       return {
@@ -92,15 +92,15 @@ export const getCurrentSession = createAsyncThunk(
 
     try {
       const response = await axios.post(`${baseURL}/api/v1/user/refresh-token/`, {
-        refresh_token: refreshToken
+        refresh: refreshToken
       }, axiosConfig);
       const data: IRefreshResponse = response.data;
-      const { access_token } = data;
+      const { access } = data;
 
       return {
         success: true,
         message: "Current session obtained",
-        data: { token: access_token },
+        data: { token: access },
       };
     }
     catch (error) {
@@ -185,23 +185,9 @@ interface ILoginParams {
   password: string;
 }
 
-//
-interface ILoginData {
-  access_token: string;
-  refresh_token: string;
-}
-
-//
-interface ILoginResponse {
-  status: string;
-  message: string;
-  data: ILoginData;
-  errors: string;
-}
-
 interface IRefreshResponse {
   status: string;
   message: string;
-  access_token: string;
+  access: string;
   errors: string;
 }

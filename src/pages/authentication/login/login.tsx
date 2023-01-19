@@ -61,7 +61,6 @@ export default function LoginPage() {
 
     // Login user
     const response = await dispatch(loginUser(values)).unwrap();
-
     if (response.success) {
       navigate("/");
     } else {
