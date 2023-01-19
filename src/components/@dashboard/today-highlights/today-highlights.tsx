@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 //
 import PageTitle from "../../reusable/page-title";
+import DataSection from "../../reusable/data-section";
 
 //
 import { formatNumber } from "../../../utils/helpers";
@@ -12,7 +13,7 @@ import { getTodaysHighlight } from "../../../utils/api/dashboard";
  *
  **/
 export default function TodayHighlights(props: IHighlightsProps) {
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["dashboard-today-highlights", ...props.keywords],
     async () => {
       return await getTodaysHighlight(props.keywords);
@@ -20,6 +21,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
     { enabled: !!props.keywords.length }
   );
 
+  //
   const finalData = [
     {
       id: "patentsCount",
@@ -59,6 +61,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
     },
   ];
 
+  //
   const getItemValue = (id: string, value?: number) => {
     if (!value) return null;
 
@@ -68,14 +71,19 @@ export default function TodayHighlights(props: IHighlightsProps) {
       : value.toLocaleString();
   };
 
+  //
   return (
-    <div className="w-100 border bg-white rounded-lg p-3 mt-3 shadow">
-      <PageTitle
-        title="Today's Highlights"
-        titleClass="font-semibold"
-        info="Global Technology Trends shows a quick view of number of patents, publication, experts and funding in your area of interest"
-      />
-
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      title={
+        <PageTitle
+          title="Today's Highlights"
+          titleClass="font-semibold"
+          info="Global Technology Trends shows a quick view of number of patents, publication, experts and funding in your area of interest"
+        />
+      }
+    >
       <div className="text-gray-800 text-lg font-medium">
         Global Technology Trends
       </div>
@@ -106,7 +114,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
           </div>
         ))}
       </div>
-    </div>
+    </DataSection>
   );
 }
 

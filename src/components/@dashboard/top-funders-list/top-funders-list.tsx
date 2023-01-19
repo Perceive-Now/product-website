@@ -6,14 +6,11 @@ import { ColumnDef } from "@tanstack/react-table";
 //
 import PageTitle from "../../reusable/page-title";
 import ReactTable from "../../reusable/ReactTable";
-import NoKeywordMessage from "../../reusable/no-keyword";
+import DataSection from "../../reusable/data-section";
 
 //
 import { formatNumber } from "../../../utils/helpers";
 import { getTop5Funders } from "../../../utils/api/dashboard";
-
-//
-import { LoadingIcon } from "../../icons";
 
 /*
  *
@@ -54,43 +51,25 @@ export default function TopFundersList(props: ITopFundersListProps) {
   );
 
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
-      <PageTitle
-        title="List of top 5 funders"
-        titleClass="font-semibold"
-        info={`This list was extracted from "X" total number of funders worldwide`}
-      />
-
-      <div>
-        {props.keywords.length > 0 && (
-          <>
-            {isLoading && (
-              <div className="h-[300px] flex items-center justify-center">
-                <LoadingIcon fontSize={56} />
-              </div>
-            )}
-
-            {!isLoading && (
-              <>
-                <div className="h-[300px] mt-5">
-                  <ReactTable
-                    columnsData={columns}
-                    rowsData={data}
-                    size="medium"
-                  />
-                </div>
-
-                <div className="text-primary-600 mt-4 cursor-pointer">
-                  <Link to="/funders">Read more</Link>
-                </div>
-              </>
-            )}
-          </>
-        )}
-
-        {props.keywords.length < 1 && <NoKeywordMessage />}
+    <DataSection
+      keywords={props.keywords}
+      isLoading={isLoading}
+      title={
+        <PageTitle
+          title="List of top 5 funders"
+          titleClass="font-semibold"
+          info={`This list was extracted from "X" total number of funders worldwide`}
+        />
+      }
+    >
+      <div className="h-[300px] mt-5">
+        <ReactTable columnsData={columns} rowsData={data} size="medium" />
       </div>
-    </div>
+
+      <div className="text-primary-600 mt-4 cursor-pointer">
+        <Link to="/funders">Read more</Link>
+      </div>
+    </DataSection>
   );
 }
 
