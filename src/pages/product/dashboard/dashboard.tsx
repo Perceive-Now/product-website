@@ -42,10 +42,10 @@ import { useAppSelector } from "../../../hooks/redux";
  *
  */
 export default function DashboardPage() {
-  const competitiveLandscapeRef = useRef(null);
-  const expertsNetworkRef = useRef(null);
-  const researchRef = useRef(null);
-  const fundingsRef = useRef(null);
+  const researchRef = useRef<HTMLDivElement>(null);
+  const fundingsRef = useRef<HTMLDivElement>(null);
+  const expertsNetworkRef = useRef<HTMLDivElement>(null);
+  const competitiveLandscapeRef = useRef<HTMLDivElement>(null);
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];

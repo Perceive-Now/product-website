@@ -1,13 +1,18 @@
+import type { ReactElement, RefObject } from "react";
+
+//
 import { CompetitiveLandscapeIcon, EducationIcon, FundingIcon, ResearchIcon } from "../../icons";
 
 /**
  *
  */
-export default function Navigator(props: any) {
+export default function Navigator(props: INavigatorProps) {
   const { competitiveLandscapeRef, expertsNetworkRef, researchRef, fundingsRef } = props;
 
   //
-  const scrollToTargetAdjusted = (element: HTMLDivElement) => {
+  const scrollToTargetAdjusted = (element?: HTMLDivElement | null) => {
+    if (!element) return;
+
     element.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -21,40 +26,40 @@ export default function Navigator(props: any) {
       <div className="grid grid-cols-12 gap-x-2 mb-3">
         <div className="col-span-3">
           <NavigatorButton
-            Icon={CompetitiveLandscapeIcon}
+            icon={<CompetitiveLandscapeIcon />}
             label={"Competitive Landscape"}
             handleClick={() => {
-              scrollToTargetAdjusted(competitiveLandscapeRef.current);
+              scrollToTargetAdjusted(competitiveLandscapeRef?.current);
             }}
           />
         </div>
 
         <div className="col-span-3">
           <NavigatorButton
-            Icon={EducationIcon}
-            label={"Experts Network"}
+            icon={<EducationIcon />}
+            label={"Inventors"}
             handleClick={() => {
-              scrollToTargetAdjusted(expertsNetworkRef.current);
+              scrollToTargetAdjusted(expertsNetworkRef?.current);
             }}
           />
         </div>
 
         <div className="col-span-3">
           <NavigatorButton
-            Icon={ResearchIcon}
+            icon={<ResearchIcon />}
             label={"Academic R&D"}
             handleClick={() => {
-              scrollToTargetAdjusted(researchRef.current);
+              scrollToTargetAdjusted(researchRef?.current);
             }}
           />
         </div>
 
         <div className="col-span-3">
           <NavigatorButton
-            Icon={FundingIcon}
+            icon={<FundingIcon />}
             label={"Funding"}
             handleClick={() => {
-              scrollToTargetAdjusted(fundingsRef.current);
+              scrollToTargetAdjusted(fundingsRef?.current);
             }}
           />
         </div>
@@ -63,22 +68,32 @@ export default function Navigator(props: any) {
   );
 }
 
+//
 const NavigatorButton = (props: INavigatorButtonProps) => {
-  const { Icon, label, handleClick } = props;
+  const { icon, label, handleClick } = props;
 
   return (
     <div
       className="flex items-center gap-x-2 p-2 rounded-2xl cursor-pointer hover:bg-primary-50 shadow-md border border-gray-200"
       onClick={handleClick}
     >
-      <Icon />
+      {icon}
       <span>{label}</span>
     </div>
   );
 };
 
+//
 interface INavigatorButtonProps {
-  Icon: any;
+  icon: ReactElement;
   label: string;
   handleClick: () => void;
+}
+
+//
+interface INavigatorProps {
+  researchRef: RefObject<HTMLDivElement> | null;
+  fundingsRef: RefObject<HTMLDivElement> | null;
+  expertsNetworkRef: RefObject<HTMLDivElement> | null;
+  competitiveLandscapeRef: RefObject<HTMLDivElement> | null;
 }
