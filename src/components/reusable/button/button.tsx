@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import { PropsWithChildren, ReactElement } from "react";
+
+//
 import { LoadingIcon } from "../../icons";
 
 //
@@ -21,6 +23,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
         {
           "primary-button": buttonType === "primary",
           "secondary-button": buttonType === "secondary",
+          "optional-button": buttonType === "optional",
           "full-width": isFullWidth,
         },
         props.classname,
@@ -44,7 +47,7 @@ interface IButtonProps {
   htmlType?: "button" | "submit" | "reset";
   classname?: string;
   // Custom
-  type?: "primary" | "secondary";
+  type?: "primary" | "secondary" | "optional";
   icon?: ReactElement;
   loading?: boolean;
   fullWidth?: boolean;
