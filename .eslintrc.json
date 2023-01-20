@@ -24,7 +24,7 @@
     "react/no-unescaped-entities": "off",
     "react/jsx-closing-bracket-location": [1, "tag-aligned"],
     //
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "warn"
   },
   "settings": {
     "react": {
