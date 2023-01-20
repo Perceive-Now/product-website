@@ -22,7 +22,9 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
     { enabled: !!props.keywords.length },
   );
 
-  const allKeywords = data ?? [];
+  const keywords = Object.entries(data?.cloud_weights ?? {})
+    ?.sort((a, b) => b[1] - a[1])
+    ?.map((item) => item[0]);
 
   //
   return (
@@ -34,7 +36,7 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
       title={<PageTitle title="Most Related Keywords" titleClass="font-semibold" />}
     >
       <div className="flex flex-wrap gap-x-2 gap-y-1 mt-2">
-        {allKeywords.slice(0, 15).map((keyword, index) => (
+        {keywords?.slice(0, 15).map((keyword, index) => (
           <RelatedKeyword keyword={keyword} key={index} />
         ))}
       </div>
