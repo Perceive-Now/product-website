@@ -40,7 +40,7 @@ export async function getRelatedKeywords(keywords: string[]) {
     `/api/v1/ds-api/dashboard/related-keywords/?q=${keywords.join(",")}`,
   );
 
-  return response.data.data.related_keywords;
+  return response.data.data;
 }
 
 export async function getTodaysHighlight(keywords: string[]) {
@@ -135,6 +135,9 @@ interface IExpertCountResponse {
 interface IRelatedKeywordsResponse {
   data: {
     related_keywords: string[];
+    cloud_weights: {
+      [x: string]: number;
+    };
   };
 }
 

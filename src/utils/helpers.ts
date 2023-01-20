@@ -1,11 +1,10 @@
 import dayjs from "dayjs";
 
 //
-import {
-  DEFAULT_TIME_PERIOD_END_YEAR,
-  DEFAULT_TIME_PERIOD_START_YEAR,
-  YEAR_DIFFERENCE,
-} from "./constants";
+interface IFormatNumberOptions {
+  maxFraction?: number;
+  isCurrency?: boolean;
+}
 
 /**
  *
@@ -39,28 +38,30 @@ export const abbreviateString = (inputString: string, maxLength?: number) => {
     .slice(0, maxLn);
 };
 
-//
-interface IFormatNumberOptions {
-  maxFraction?: number;
-  isCurrency?: boolean;
-}
+/**
+ *
+ */
+export const getTimeperiod = (end?: number | string) => {
+  const YEAR_DIFFERENCE = 4;
 
-export const getTimeperiod = (start?: number) => {
-  const START_YEAR = start ? String(start) : DEFAULT_TIME_PERIOD_START_YEAR;
+  const currentYear = new Date().getFullYear();
 
-  let finalYear = `${DEFAULT_TIME_PERIOD_END_YEAR}`;
+  //
+  let startYear = currentYear.toString();
+  const MIN_YEAR = end ?? (currentYear - 4).toString();
 
   const timeperiodArray = [];
 
-  while (finalYear > START_YEAR) {
-    const endYear = dayjs(finalYear).subtract(YEAR_DIFFERENCE, "year").format("YYYY");
-    const timeperiod = `${endYear}-${finalYear}`;
+  //
+  while (startYear >= MIN_YEAR) {
+    const endYear = dayjs(startYear).subtract(YEAR_DIFFERENCE, "year").format("YYYY");
+
     timeperiodArray.push({
-      label: timeperiod,
-      value: timeperiod,
+      label: `${endYear}-${startYear}`,
+      value: `${endYear}-${startYear}`,
     });
 
-    finalYear = dayjs(endYear).subtract(1, "year").format("YYYY");
+    startYear = dayjs(endYear).subtract(1, "year").format("YYYY");
   }
 
   return timeperiodArray;

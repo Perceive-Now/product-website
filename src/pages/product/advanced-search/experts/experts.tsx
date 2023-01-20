@@ -125,7 +125,7 @@ export default function ExpertsPage() {
             </div>
 
             <div className="flex flex-wrap gap-x-2 gap-y-1 items-start">
-              {relatedKeywords?.slice(0, 15)?.map((keyword) => (
+              {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword) => (
                 <RelatedKeyword keyword={keyword} key={keyword} />
               ))}
             </div>

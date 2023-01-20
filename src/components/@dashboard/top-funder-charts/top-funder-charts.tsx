@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -8,108 +8,110 @@ import PieChart from "../../@product/pie-chart";
 import ScatterChart from "../../@product/scatter-chart";
 
 //
+import NoData from "../../reusable/no-data";
 import PageTitle from "../../reusable/page-title";
-import NoDataMessage from "../../reusable/no-data";
 import TimePeriod from "../../reusable/time-period";
 import DataSection from "../../reusable/data-section";
 
 //
-import ChartButtons, { ChartType } from "../../reusable/chart-buttons/chart-buttons";
+import ChartButtons from "../../reusable/chart-buttons/chart-buttons";
+import type { ChartType } from "../../reusable/chart-buttons/chart-buttons";
 
 //
-import { getTopFundingChart, ITopFundingChart } from "../../../utils/api/charts";
+import { getTimeperiod } from "../../../utils/helpers";
 
-//
-import { DEFAULT_TIME_PERIOD_END_YEAR, YEAR_DIFFERENCE } from "../../../utils/constants";
+import { getTopFundingChart } from "../../../utils/api/charts";
+import type { ITopFundingItem } from "../../../utils/api/charts";
 
 /**
  *
  */
 export default function TopFunderCharts(props: ITopFunderProps) {
-  const [activeChart, setActiveChart] = useState<ChartType>("bar");
-
-  const [selectedTimeperiod, setSelectedTimeperiod] = useState("");
-
-  let hasNoData = false;
+  //
+  const [activeGraph, setActiveGraph] = useState<ChartType>("bar");
 
   //
+  const [timeperiods, setTimeperiods] = useState<ITimePeriodItem[]>([]);
+  const [selectedTimeperiod, setSelectedTimeperiod] = useState<ITimePeriodItem | null>(null);
+
+  //
+  const [activeData, setActiveData] = useState<ITopFundingItem[]>([]);
+  const [hasActiveData, setHasActiveData] = useState(true);
+
+  // Fetching data from the API
   const { data, isLoading, isError, error } = useQuery(
-    ["top-funder-charts", ...props.keywords, selectedTimeperiod],
+    ["dashboard-top-funder-charts", ...props.keywords],
     async () => {
       return await getTopFundingChart(props.keywords);
     },
     { enabled: !!props.keywords.length },
   );
 
-  const chartDataFormatHelper = (funders: ITopFundingChart[]) => {
-    const startYear =
-      +selectedTimeperiod?.split("-")[0] || DEFAULT_TIME_PERIOD_END_YEAR - YEAR_DIFFERENCE;
-    const endYear = +selectedTimeperiod?.split("-")[1] || DEFAULT_TIME_PERIOD_END_YEAR;
+  // Fetching time period
+  useEffect(() => {
+    if (!data) return;
 
-    const funderList: ITopFundingChart[] = [];
-    for (let i = startYear; i <= endYear; i++) {
-      const funderData = funders.find((funder) => funder.year === i);
-      if (funderData) {
-        funderList.push(funderData);
-      } else {
-        funderList.push({
-          year: i,
-          amount: 0,
-        });
-      }
+    //
+    const sortedData = data.sort((a, b) => (a.year > b.year ? 1 : -1));
+    const endPatentYear = sortedData[0].year;
+
+    const timePeriods = getTimeperiod(endPatentYear);
+
+    //
+    setTimeperiods(timePeriods);
+    setSelectedTimeperiod(timePeriods[0]);
+  }, [data]);
+
+  // Fetching data for selected time period
+  useEffect(() => {
+    if (!data) return;
+    if (!selectedTimeperiod?.value) return;
+
+    //
+    const [startYear, endYear] = selectedTimeperiod.value.split("-");
+
+    //
+    const selectedData: ITopFundingItem[] = [];
+
+    //
+    for (let i = +startYear; i <= +endYear; i++) {
+      const item = data.find((item) => +item.year === i);
+
+      selectedData.push({
+        year: i,
+        amount: item?.amount ?? 0,
+      });
     }
 
-    return funderList;
-  };
+    //
+    const totalAmount = selectedData.reduce((prev, curr) => (prev += curr.amount), 0);
 
-  const chartData = data?.fundings ? chartDataFormatHelper(data?.fundings) ?? [] : [];
+    setHasActiveData(totalAmount > 0);
 
-  if (!chartData) hasNoData = true;
-
-  if (chartData.length < 1) hasNoData = true;
-
-  let hasNoDataFlag = true;
-
-  chartData.forEach((cD) => {
-    if (cD.amount > 0) {
-      hasNoDataFlag = false;
-    }
-  });
-
-  if (hasNoDataFlag) {
-    hasNoData = true;
-  } else {
-    hasNoData = false;
-  }
-
-  const handleTimePeriodChange = (value: any) => {
-    setSelectedTimeperiod(value.value);
-  };
+    //
+    setActiveData(selectedData);
+  }, [selectedTimeperiod, data]);
 
   //
-  const finalBarData = isLoading ? [] : chartData ?? [];
+  const barChartData = activeData ?? [];
 
   //
-  const finalPieData = isLoading
-    ? []
-    : (chartData ?? []).map((item) => ({
-        id: item.year,
-        label: `${item.year}`,
-        value: item.amount,
-      }));
+  const pieChartData = (activeData ?? []).map((item) => ({
+    id: item.year,
+    label: item.year,
+    value: item.amount,
+  }));
 
   //
-  const finalScatterData = isLoading
-    ? []
-    : [
-        {
-          id: "Fundings (USD)",
-          data: (chartData ?? []).map((item) => ({
-            x: item.year,
-            y: item.amount,
-          })),
-        },
-      ];
+  const scatterChartData = [
+    {
+      id: "Fundings (USD)",
+      data: (activeData ?? []).map((item) => ({
+        x: item.year,
+        y: item.amount,
+      })),
+    },
+  ];
 
   //
   return (
@@ -120,7 +122,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
       error={error}
       title={
         <PageTitle
-          title="Total Amount of Funding over time"
+          title="Federal Funding Trends"
           info={`This list was extracted from "X" total number of funders worldwide`}
           titleClass="font-semibold"
         />
@@ -128,25 +130,29 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     >
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
-          <TimePeriod startYear={data?.startYear} handleChange={handleTimePeriodChange} />
+          <TimePeriod
+            onChange={(item) => setSelectedTimeperiod(item)}
+            value={selectedTimeperiod}
+            timePeriods={timeperiods}
+          />
         </div>
 
         <div className="flex items-center">
-          <ChartButtons activeChart={activeChart} setActiveChart={setActiveChart} />
+          <ChartButtons activeChart={activeGraph} setActiveChart={setActiveGraph} />
         </div>
       </div>
 
-      {hasNoData && (
+      {!hasActiveData && (
         <div className="flex h-full justify-center items-center">
-          <NoDataMessage years={selectedTimeperiod} />
+          <NoData years={selectedTimeperiod?.value} />
         </div>
       )}
 
-      {!hasNoData && (
+      {hasActiveData && (
         <>
-          {activeChart === "bar" && (
+          {activeGraph === "bar" && (
             <BarChart
-              data={finalBarData ?? []}
+              data={barChartData ?? []}
               keys={["amount"]}
               indexBy="year"
               groupMode="stacked"
@@ -154,15 +160,15 @@ export default function TopFunderCharts(props: ITopFunderProps) {
             />
           )}
 
-          {activeChart === "donut" && <PieChart data={finalPieData} />}
+          {activeGraph === "donut" && <PieChart data={pieChartData} />}
 
-          {activeChart === "scatter" && (
-            <ScatterChart data={finalScatterData} legendY="Funding Amount (USD)" />
+          {activeGraph === "scatter" && (
+            <ScatterChart data={scatterChartData} legendY="Funding Amount (USD)" />
           )}
         </>
       )}
 
-      <div className="text-primary-600 mt-4 cursor-pointer">
+      <div className="text-primary-600 mt-2 cursor-pointer">
         <Link to="/funders">Read more</Link>
       </div>
     </DataSection>

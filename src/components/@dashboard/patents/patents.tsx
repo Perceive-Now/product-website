@@ -136,7 +136,7 @@ export default function Patents(props: IPatentsProps) {
     >
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
-          <TimePeriod startYear={data?.startYear} handleChange={handleSelectedTimeperiodChange} />
+          {/* <TimePeriod startYear={data?.startYear} handleChange={handleSelectedTimeperiodChange} /> */}
         </div>
 
         <div className="flex items-center">
