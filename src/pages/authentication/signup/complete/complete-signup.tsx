@@ -1,5 +1,5 @@
 //
-import PerceiveLogo from "../../../assets/images/logo.svg";
+import PerceiveLogo from "../../../../assets/images/logo.svg";
 
 //
 export default function CompleteSignup() {
