@@ -1,11 +1,11 @@
 import { PropsWithChildren, ReactElement } from "react";
 
 //
-import { LoadingIcon } from "../../icons";
 import ApiErrorMessage from "../api-error";
+import NoKeywordMessage from "../no-keyword";
 
 //
-import NoKeywordMessage from "../no-keyword";
+import { LoadingIcon } from "../../icons";
 
 //
 export default function DataSection(props: PropsWithChildren<IDataSectionProps>) {
@@ -29,7 +29,7 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
 
       {/* Loading animation */}
       {isLoading && (
-        <div className="h-[300px] flex justify-center items-center">
+        <div className="h-[300px] flex justify-center items-center text-primary-600">
           <LoadingIcon fontSize={52} />
         </div>
       )}
@@ -53,5 +53,6 @@ interface IDataSectionProps {
   keywords: string[];
   isLoading: boolean;
   isError: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
 }
