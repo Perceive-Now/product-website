@@ -122,7 +122,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
       error={error}
       title={
         <PageTitle
-          title="Total Amount of Funding over time"
+          title="Federal Funding Trends"
           info={`This list was extracted from "X" total number of funders worldwide`}
           titleClass="font-semibold"
         />
