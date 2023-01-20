@@ -172,97 +172,6 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
   const scatterChartData = finalScatterDataFormatHelper(activeData ?? []);
 
   //
-  // const hasDataChecker = (expertsList: IExpertCount[]) => {
-  //   if (!expertsList) return (hasNoData = true);
-
-  //   if (expertsList.length < 1) return (hasNoData = true);
-
-  //   let hasNoDataFlag = true;
-
-  //   expertsList.forEach((cD) => {
-  //     if (cD.closed_doi_count + cD.open_doi_count > 0) {
-  //       hasNoDataFlag = false;
-  //     }
-  //   });
-
-  //   if (hasNoDataFlag) {
-  //     hasNoData = true;
-  //   } else {
-  //     hasNoData = false;
-  //   }
-  // };
-
-  //
-  // const chartDataFormatHelper = (patents: IExpertCount[]) => {
-  //   const startYear = selectedTimeperiod?.split("-")[0] || "2018";
-  //   const endYear = selectedTimeperiod?.split("-")[1] || "2022";
-
-  //   const expertsList = patents.filter((data) => {
-  //     const year = String(data.year);
-  //     return year >= startYear && year <= endYear;
-  //   });
-  //   hasDataChecker(expertsList);
-  //   return expertsList;
-  // };
-
-  //
-  // const chartData = data?.experts ? chartDataFormatHelper(data.experts) ?? [] : [];
-
-  //
-  // const finalPieData = isLoading ? [] : chartData ?? [];
-  // const finalPieData = [];
-  // const radialData = [];
-
-  // const radialData = finalPieData
-  //   .map((itm) => itm.year)
-  //   .map((itm) => {
-  //     const data = finalPieData.find((it) => it.year === itm)!;
-
-  //     const total = data.open_doi_count + data.closed_doi_count;
-  //     const openPercentage = (data.open_doi_count / total) * 100;
-  //     const closedPercentage = (data.closed_doi_count / total) * 100;
-
-  //     return {
-  //       id: itm,
-  //       data: [
-  //         { x: "Open", y: openPercentage, value: data.open_doi_count },
-  //         {
-  //           x: "Closed",
-  //           y: closedPercentage,
-  //           value: data.closed_doi_count,
-  //         },
-  //       ],
-  //     };
-  //   });
-
-  // const finalScatterDataFormatHelper = (data: any) => {
-  //   if (!data) return [];
-
-  //   const openExpertsObj = { id: "Open Experts", data: [] };
-  //   const closedExpertsObj = { id: "Closed Experts", data: [] };
-
-  //   let openExpertsData: any = [];
-  //   let closedExpertsData: any = [];
-
-  //   data.forEach((d: any) => {
-  //     openExpertsData = [...openExpertsData, { x: d.year, y: d.openExpertsCount }];
-
-  //     closedExpertsData = [...closedExpertsData, { x: d.year, y: d.closedExpertsCount }];
-  //   });
-
-  //   openExpertsObj.data = openExpertsData;
-  //   closedExpertsObj.data = closedExpertsData;
-
-  //   return [openExpertsObj, closedExpertsObj];
-  // };
-
-  // const handleTimePeriodChange = (value: any) => {
-  //   setSelectedTimeperiod(value.value);
-  // };
-
-  // const finalScatterData = isLoading ? [] : finalScatterDataFormatHelper(chartData) ?? [];
-
-  //
   return (
     <DataSection
       keywords={props.keywords}
@@ -321,31 +230,6 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
           )}
         </Fragment>
       )}
-      {/* {!hasNoData && (
-        <>
-          {activeChart === "bar" && (
-            <BarChart
-              keys={["open_doi_count", "closed_doi_count"]}
-              indexBy="year"
-              legendY="Number of Experts"
-              data={(isLoading ? [] : chartData) ?? []}
-            />
-          )}
-
-          {activeChart === "scatter" && (
-            <ScatterChart
-              data={finalScatterData}
-              legendX="Year"
-              legendY="Experts"
-              colors={["#7F4BD8", "#442873"]}
-            />
-          )}
-
-          {activeChart === "donut" && (
-            <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />
-          )}
-        </>
-      )} */}
       <div className="mt-4">
         <Link to="/experts">Read more</Link>
       </div>{" "}
