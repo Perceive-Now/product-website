@@ -47,6 +47,7 @@ import MasterReportIcon from "./miscs/masterReport";
 import BriefcaseIcon from "./miscs/Briefcase";
 import ErrorIcon from "./miscs/Error";
 import WarningIcon from "./miscs/Warning";
+import CheckIcon from "./miscs/Check";
 
 // Charts
 import BarIcon from "./charts/bar";
@@ -105,6 +106,7 @@ export {
   BriefcaseIcon,
   ErrorIcon,
   WarningIcon,
+  CheckIcon,
   // used in tables
   VerticalThreeDots,
   // Chart icons
