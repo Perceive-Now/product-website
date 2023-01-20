@@ -20,6 +20,7 @@ import ChevronUp from "./chevron/up";
 import ChevronRight from "./chevron/right";
 import ChevronDown from "./chevron/down";
 import ChevronLeft from "./chevron/left";
+import ChevronUpDown from "./chevron/updown";
 
 // Social
 import TwitterIcon from "./social/twitter";
@@ -82,6 +83,7 @@ export {
   ChevronRight,
   ChevronDown,
   ChevronLeft,
+  ChevronUpDown,
   // Social icons
   TwitterIcon,
   FacebookIcon,
