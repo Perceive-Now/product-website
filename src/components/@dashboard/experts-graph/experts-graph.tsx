@@ -32,7 +32,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
   const [selectedTimeperiod, setSelectedTimeperiod] = useState<ITimePeriodItem | null>(null);
 
   //
-  const [activeData, setActiveData] = useState<any[]>([]);
+  const [activeData, setActiveData] = useState<IExpertItem[]>([]);
   const [hasActiveData, setHasActiveData] = useState(true);
 
   //
@@ -88,7 +88,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     const [startYear, endYear] = selectedTimeperiod.value.split("-");
 
     //
-    const selectedData: any[] = [];
+    const selectedData: IExpertItem[] = [];
 
     //
     for (let i = +startYear; i <= +endYear; i++) {
@@ -113,8 +113,6 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     //
     setActiveData(selectedData);
   }, [selectedTimeperiod, data]);
-
-  //
 
   //
   const barChartData = activeData ?? [];
@@ -146,14 +144,14 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
     });
 
   //
-  const finalScatterDataFormatHelper = (data: any[]) => {
+  const finalScatterDataFormatHelper = (data: IExpertItem[]) => {
     if (!data) return [];
 
-    const patentExpertsCountObj = { id: "Patents", data: [] };
-    const publicationExpertsCountObj = { id: "Publications", data: [] };
+    const patentExpertsCountObj: IScatterList = { id: "Patents", data: [] };
+    const publicationExpertsCountObj: IScatterList = { id: "Publications", data: [] };
 
-    const patentExpertsData: any = [];
-    const publicationExpertsData: any = [];
+    const patentExpertsData: IScatterItem[] = [];
+    const publicationExpertsData: IScatterItem[] = [];
 
     //
     data.forEach((d) => {
@@ -236,13 +234,31 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
           )}
         </Fragment>
       )}
-      <div className="mt-4">
+      <div className="mt-2">
         <Link to="/experts">Read more</Link>
       </div>{" "}
     </DataSection>
   );
 }
 
+//
 interface IExpertsGraphProps {
   keywords: string[];
+}
+
+//
+interface IExpertItem {
+  year: string;
+  patent: number;
+  publication: number;
+}
+
+interface IScatterItem {
+  x: string;
+  y: number;
+}
+
+interface IScatterList {
+  id: string;
+  data: IScatterItem[];
 }

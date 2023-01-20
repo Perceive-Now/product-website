@@ -1,5 +1,4 @@
 import axiosInstance from "../axios";
-import { DEFAULT_TIME_PERIOD_START_YEAR } from "../constants";
 
 /**
  *
@@ -28,6 +27,9 @@ export async function getPatentsPieChart(keywords: string[]) {
   };
 }
 
+/**
+ *
+ */
 export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
     `/api/v1/ds-api/dashboard/experts-trend/?q=${keywords.join(",")}`,
@@ -52,21 +54,15 @@ export async function getAcademicResearchTrends(keywords: string[]) {
   return response.data.data;
 }
 
+/**
+ *
+ */
 export async function getTopFundingChart(keywords: string[]) {
-  const query = keywords.join(",").replace(" ", "");
-
   const response = await axiosInstance.get<ITopFundingChartResponse>(
-    `/dashboard/total_amount_of_funding_over_time?q=${query}`,
+    `/api/v1/ds-api/dashboard/funding-trend/?q=${keywords.join(",")}`,
   );
 
-  let results = response.data.data;
-  results = results.sort((a, b) => (a.year < b.year ? -1 : 1));
-
-  const startYear = +(results.at(0)?.year ?? DEFAULT_TIME_PERIOD_START_YEAR);
-  return {
-    fundings: results,
-    startYear: startYear,
-  };
+  return response.data.data;
 }
 
 /**
@@ -101,11 +97,13 @@ export interface IExpertCountItem {
   count: number;
 }
 
+export interface IExpertCountData {
+  patent: IExpertCountItem[];
+  publication: IExpertCountItem[];
+}
+
 interface IExpertCountResponse {
-  data: {
-    patent: IExpertCountItem[];
-    publication: IExpertCountItem[];
-  };
+  data: IExpertCountData;
 }
 
 interface IAcademicResearchFunding {
@@ -136,11 +134,12 @@ interface IAcademicResearchTrendResponse {
   };
 }
 
-export interface ITopFundingChart {
-  amount: number;
+//
+export interface ITopFundingItem {
   year: number;
+  amount: number;
 }
 
 interface ITopFundingChartResponse {
-  data: ITopFundingChart[];
+  data: ITopFundingItem[];
 }

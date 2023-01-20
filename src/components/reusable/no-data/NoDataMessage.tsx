@@ -8,8 +8,9 @@ export default function NoDataMessage(props: INoDataMessageProps) {
       <InfoIcon fontSize={52} className="mb-3" />
 
       <p className="description">
-        <span>No data available for the selected time period </span>
-        <span className="font-semibold">({props.years})</span>
+        <span>No data available for the selected time period</span>
+
+        {props.years ? <span className="font-semibold"> ({props.years})</span> : "!"}
       </p>
     </div>
   );
@@ -17,5 +18,5 @@ export default function NoDataMessage(props: INoDataMessageProps) {
 
 //
 interface INoDataMessageProps {
-  years: string;
+  years?: string;
 }
