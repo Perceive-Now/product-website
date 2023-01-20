@@ -44,8 +44,8 @@ import FundersPage from "./pages/product/advanced-search/funders";
 import FunderProfilePage from "./pages/product/advanced-search/funders/profile";
 
 //
-import ConfirmSignup from "./pages/signup/confirm";
-import CompleteSignup from "./pages/signup/complete";
+import ConfirmSignup from "./pages/authentication/signup/confirm";
+import CompleteSignup from "./pages/authentication/signup/complete";
 
 //
 import PageNotFound404 from "./pages/404";
