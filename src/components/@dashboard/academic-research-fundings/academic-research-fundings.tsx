@@ -75,9 +75,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
     >
       {/* Controls */}
       <div className="pt-1 flex justify-end gap-x-3">
-        <div>
-          <TimePeriod timePeriods={TIME_PERIODS} />
-        </div>
+        <div>{/* <TimePeriod timePeriods={TIME_PERIODS} /> */}</div>
 
         <div className="flex items-center">
           <ChartButtons activeChart={activeChart} setActiveChart={setActiveChart} />

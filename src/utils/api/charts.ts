@@ -30,17 +30,10 @@ export async function getPatentsPieChart(keywords: string[]) {
 
 export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    `/dashboard/number_of_experts_and_researchers?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/experts-trend/?q=${keywords.join(",")}`,
   );
-  let results = response.data.data;
-  results = results.sort((a, b) => (a.year < b.year ? -1 : 1));
 
-  const startYear = results.at(0)?.year;
-
-  return {
-    experts: results,
-    startYear: startYear,
-  };
+  return response.data.data;
 }
 
 export async function getAcademicResearchFundingChart(keywords: string[]) {
@@ -103,14 +96,16 @@ interface IPatentsPieResponse {
   };
 }
 
-export interface IExpertCount {
+export interface IExpertCountItem {
   year: number;
-  closed_doi_count: number;
-  open_doi_count: number;
+  count: number;
 }
 
 interface IExpertCountResponse {
-  data: IExpertCount[];
+  data: {
+    patent: IExpertCountItem[];
+    publication: IExpertCountItem[];
+  };
 }
 
 interface IAcademicResearchFunding {

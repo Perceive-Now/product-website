@@ -113,9 +113,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       }
     >
       <div className="pt-1 flex justify-end items-center gap-x-3">
-        <div>
-          <TimePeriod timePeriods={TIME_PERIODS} />
-        </div>
+        <div>{/* <TimePeriod timePeriods={TIME_PERIODS} /> */}</div>
 
         <div className="flex items-center">
           <ChartButtons

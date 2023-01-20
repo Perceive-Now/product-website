@@ -63,6 +63,7 @@ export default function BarChart(props: IBarChartProps) {
             legendOffset: -50,
           },
         })}
+        legends={props.legends}
         enableLabel={false}
         labelSkipWidth={12}
         labelSkipHeight={12}
@@ -92,6 +93,7 @@ interface IBarChartProps {
   indexBy: string;
   legendY?: string;
   legendX?: string;
+  legends?: any;
   groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
 }

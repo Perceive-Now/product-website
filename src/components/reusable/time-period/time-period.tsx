@@ -1,9 +1,6 @@
 import ReactSelect from "react-select";
 
 //
-import { getTimeperiod } from "../../../utils/helpers";
-
-//
 import { ChevronDown } from "../../icons";
 
 //
@@ -12,9 +9,16 @@ import "./time-period.css";
 /*
  *
  **/
-export default function TimePeriod({ startYear, handleChange }: ITimePeriodProps) {
-  const timePeriods = getTimeperiod(startYear);
+export default function TimePeriod(props: ITimePeriodProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (item: any) => {
+    props.onChange(item);
+  };
 
+  //
+  const defaultValue = { label: "Select a period", value: "" };
+
+  //
   return (
     <ReactSelect
       className="time-period-select"
@@ -23,9 +27,10 @@ export default function TimePeriod({ startYear, handleChange }: ITimePeriodProps
         DropdownIndicator: () => <ChevronDown className="text-primary-600" />,
         IndicatorSeparator: () => null,
       }}
-      defaultValue={timePeriods[0]}
       name="time-period"
-      options={timePeriods}
+      options={props.timePeriods}
+      defaultValue={defaultValue}
+      value={props.value ?? defaultValue}
       isSearchable={false}
       onChange={handleChange}
       styles={{
@@ -50,14 +55,9 @@ export default function TimePeriod({ startYear, handleChange }: ITimePeriodProps
   );
 }
 
-type TimePeriodType = {
-  label: string;
-  value: string;
-};
-
+//
 interface ITimePeriodProps {
-  startYear?: number;
-  endYear?: number;
-  timePeriods?: TimePeriodType[];
-  handleChange?: (value: any) => void;
+  value: ITimePeriodItem | null;
+  timePeriods: ITimePeriodItem[];
+  onChange: (value: ITimePeriodItem) => void;
 }

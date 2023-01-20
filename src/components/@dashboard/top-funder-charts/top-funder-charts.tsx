@@ -128,7 +128,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     >
       <div className="pt-1 flex items-center justify-end gap-x-3 h-5">
         <div>
-          <TimePeriod startYear={data?.startYear} handleChange={handleTimePeriodChange} />
+          {/* <TimePeriod startYear={data?.startYear} handleChange={handleTimePeriodChange} /> */}
         </div>
 
         <div className="flex items-center">
