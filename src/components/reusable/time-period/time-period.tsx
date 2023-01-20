@@ -1,4 +1,5 @@
 import ReactSelect from "react-select";
+import type { SingleValue } from "react-select";
 
 //
 import { ChevronDown } from "../../icons";
@@ -10,8 +11,7 @@ import "./time-period.css";
  *
  **/
 export default function TimePeriod(props: ITimePeriodProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (item: any) => {
+  const handleChange = (item: SingleValue<ITimePeriodItem>) => {
     props.onChange(item);
   };
 
@@ -59,5 +59,5 @@ export default function TimePeriod(props: ITimePeriodProps) {
 interface ITimePeriodProps {
   value: ITimePeriodItem | null;
   timePeriods: ITimePeriodItem[];
-  onChange: (value: ITimePeriodItem) => void;
+  onChange: (value: ITimePeriodItem | null) => void;
 }
