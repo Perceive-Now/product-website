@@ -15,6 +15,15 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
   const roundValue = props.rounded ?? "medium";
   const isFullWidth = props.fullWidth ?? false;
 
+  //
+  const handleSubmit = () => {
+    if (props.disabled || props.loading) return;
+    if (!props.handleClick) return;
+
+    props.handleClick();
+  };
+
+  //
   return (
     <button
       disabled={props.disabled || props.loading}
@@ -34,7 +43,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
         },
         props.classname,
       )}
-      onClick={() => props.handleClick?.()}
+      onClick={handleSubmit}
     >
       <div className="flex">
         {props.loading && <LoadingIcon width={24} height={24} className="mr-1" />}
