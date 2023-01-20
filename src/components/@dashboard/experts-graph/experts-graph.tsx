@@ -7,6 +7,7 @@ import PageTitle from "../../reusable/page-title";
 import TimePeriod from "../../reusable/time-period";
 
 import DataSection from "../../reusable/data-section";
+import NoDataMessage from "../../reusable/no-data";
 import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
@@ -201,6 +202,11 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
           />
         </div>
       </div>
+      {!hasActiveData && (
+        <div className="flex h-full justify-center items-center">
+          <NoDataMessage years={selectedTimeperiod?.value ?? ""} />
+        </div>
+      )}
       {hasActiveData && (
         <Fragment>
           {activeGraph === "bar" && (
