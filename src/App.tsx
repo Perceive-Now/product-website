@@ -50,6 +50,7 @@ import CompleteSignup from "./pages/authentication/signup/complete";
 //
 import PageNotFound404 from "./pages/404";
 import UniversityPage from "./pages/product/advanced-search/universities/profile";
+import PasswordResetConfirmPage from "./pages/authentication/password-reset-confirm";
 
 /**
  *
@@ -62,6 +63,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
+        <Route path="/password/reset/confirm/:uid/:token" element={<PasswordResetConfirmPage />} />
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
