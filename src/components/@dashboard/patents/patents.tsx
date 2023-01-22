@@ -9,6 +9,7 @@ import ScatterChart from "../../@product/scatter-chart";
 
 //
 import PageTitle from "../../reusable/page-title";
+import NoDataMessage from "../../reusable/no-data";
 import TimePeriod from "../../reusable/time-period";
 import DataSection from "../../reusable/data-section";
 import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
@@ -17,7 +18,6 @@ import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 import { getPatentsPieChart, IPatent } from "../../../utils/api/charts";
 
 //
-import NoDataMessage from "../../reusable/no-data";
 import { getTimeperiod } from "../../../utils/helpers";
 
 /**
