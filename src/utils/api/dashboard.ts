@@ -72,10 +72,10 @@ export async function getTop5Funders(keywords: string[]) {
 
 export async function getExpertsTable(keywords: string[]) {
   const response = await axiosInstance.get<IExpertResponse>(
-    `/dashboard/experts_network_patents?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/experts-list/?q=${keywords.join(",")}`,
   );
 
-  return response.data;
+  return response.data.data;
 }
 
 /**
@@ -172,14 +172,15 @@ export interface IExpert {
 }
 
 export interface IExpertModeItem {
-  patents?: IExpert[];
-  publications?: IExpert[];
+  Academic: IExpert[];
+  Industry?: IExpert[];
 }
 
 interface IExpertResponse {
-  academic: IExpertModeItem;
-  industry: IExpertModeItem;
-  federal: IExpertModeItem;
+  data: {
+    patent: IExpertModeItem;
+    publication: IExpertModeItem;
+  };
 }
 
 //

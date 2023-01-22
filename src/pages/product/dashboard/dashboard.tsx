@@ -109,7 +109,7 @@ export default function DashboardPage() {
 
       {/* Expert network section */}
       <div className="pt-11 -mt-8" ref={expertsNetworkRef}>
-        <PageTitle title="Experts Network" titleClass="font-bold" />
+        <PageTitle title="Inventors Network" titleClass="font-bold" />
 
         {/* 6th row  */}
         <div className="mt-1">
