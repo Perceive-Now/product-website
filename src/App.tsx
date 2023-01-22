@@ -34,12 +34,13 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<PasswordResetConfirmPage />} />
 
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
         {/* Need to properly configure these by talking with BE team */}
-        <Route path="/password/reset/confirm/:uid/:token" element={<PasswordResetConfirmPage />} />
         <Route path="/activate/:uid/:token" element={<ActivationPage />} />
 
         {/* All the routes below are protected */}

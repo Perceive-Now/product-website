@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+//
 import classNames from "classnames";
-import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 //
 import * as yup from "yup";
@@ -12,13 +15,29 @@ import Button from "../../../components/reusable/button";
 import { EyeClosedIcon, EyeIcon, LoadingIcon } from "../../../components/icons";
 
 //
-import { passwordResetConfirm } from "../../../utils/api/auth";
-
-//
 import Logo from "../../../assets/images/logo-small.svg";
 
+//
+import axiosInstance from "../../../utils/axios";
+
+//
+const formSchema = yup.object().shape({
+  password: yup
+    .string()
+    .required("Password is required")
+    .matches(/[a-z]/)
+    .matches(/[A-Z]/)
+    .matches(/[0-9]/)
+    .matches(/[!@#$%^&*]/)
+    .min(8),
+});
+
+//
 function PasswordResetConfirmPage() {
-  const { uid, token } = useParams();
+  const [searchParams] = useSearchParams();
+  const [uid, token] = [searchParams.get("uid"), searchParams.get("token")];
+
+  //
   const navigate = useNavigate();
 
   //
@@ -27,28 +46,15 @@ function PasswordResetConfirmPage() {
   //
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const formResolver = yup.object().shape({
-    password: yup
-      .string()
-      .required("Password is required")
-      .matches(/[a-z]/)
-      .matches(/[A-Z]/)
-      .matches(/[0-9]/)
-      .matches(/[!@#$%^&*]/),
-  });
-
-  const formInitialValue: IPasswordResetFormValues = {
-    password: "",
-  };
-
+  //
   const {
     watch,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isValid },
   } = useForm({
-    defaultValues: formInitialValue,
-    resolver: yupResolver(formResolver),
+    defaultValues: { password: "" },
+    resolver: yupResolver(formSchema),
     mode: "onChange",
   });
 
@@ -56,25 +62,45 @@ function PasswordResetConfirmPage() {
 
   //
   const handleResetConfirm = async (values: IPasswordResetFormValues) => {
-    if (!(uid && token && values.password)) return;
+    if (!uid || !token) return;
+
+    //
     setIsLoading(true);
 
-    const response = await passwordResetConfirm({
-      uid: uid,
-      token: token,
-      new_password: values.password,
-      re_new_password: values.password,
-    });
-    setIsLoading(false);
+    try {
+      await axiosInstance.post("/api/v1/user/reset_password_confirm/", {
+        uid,
+        token,
+        new_password: values.password,
+        re_new_password: values.password,
+      });
 
-    if (response.success) {
+      //
+      toast.success("Password reset successful!");
+
+      //
       navigate("/login");
-    } else {
-      alert(response.message);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errorObj = error?.response?.data;
+      const errorMessage = (Object.values(errorObj) ?? []).flat()[0] as string;
+
+      //
+      toast.error(errorMessage);
+
+      //
+      setIsLoading(false);
     }
   };
 
-  const hasError = Object.keys(errors ?? {}).length > 0;
+  useEffect(() => {
+    if (!uid || !token) {
+      navigate("/login");
+    }
+  }, []);
+
+  if (!uid || !token) return <></>;
 
   //
   return (
@@ -124,8 +150,9 @@ function PasswordResetConfirmPage() {
               </div>
             </fieldset>
 
+            {/* Password strength meter */}
             <div className="text-sm text-gray-800">
-              <div className="mb-1">Password must contain:</div>
+              <div className="mb-1 font-semibold">Password must contain:</div>
 
               <MessageRule
                 message={"Minimum 8 characters"}
@@ -150,8 +177,12 @@ function PasswordResetConfirmPage() {
             </div>
 
             <div className="flex justify-center mt-3">
-              <Button htmlType="submit" disabled={!passwordValue || isLoading || hasError}>
-                {isLoading ? <LoadingIcon height={16} width={16} /> : "Reset Password"}
+              <Button
+                htmlType="submit"
+                disabled={isLoading || !isValid}
+                classname="min-w-[10rem] flex justify-center"
+              >
+                {isLoading ? <LoadingIcon height={24} width={24} /> : "Reset Password"}
               </Button>
             </div>
           </div>
@@ -161,21 +192,22 @@ function PasswordResetConfirmPage() {
   );
 }
 
-export default PasswordResetConfirmPage;
-
+//
 interface IPasswordResetFormValues {
   password: string;
 }
 
+//
 const MessageRule = ({ message, isFullfiled }: IMessageRule) => {
   return (
-    <div className="flex items-center mb-1">
+    <div className="flex items-center mb-1 gap-x-1">
       <div
-        className={`w-[10px] h-[10px] rounded-full ${
-          isFullfiled ? "bg-green-600" : "bg-gray-300"
-        }  mr-1`}
-      />{" "}
-      {message}
+        className={classNames(
+          "w-[10px] h-[10px] rounded-full",
+          isFullfiled ? "bg-green-600" : "bg-gray-300",
+        )}
+      />
+      <span>{message}</span>
     </div>
   );
 };
@@ -184,3 +216,5 @@ interface IMessageRule {
   message: string;
   isFullfiled: boolean;
 }
+
+export default PasswordResetConfirmPage;
