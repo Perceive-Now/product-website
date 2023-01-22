@@ -22,7 +22,7 @@ export default function RadioButtons(props: IRadioButtons) {
             )}
           </span>
 
-          <span className="capitalize text-gray-600">{mode.label}</span>
+          <span className="text-gray-600">{mode.label}</span>
         </div>
       ))}
     </div>
