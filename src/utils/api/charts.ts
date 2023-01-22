@@ -5,7 +5,7 @@ import axiosInstance from "../axios";
  */
 export async function getScholaryPublications(keywords: string[]) {
   const response = await axiosInstance.get<IScholaryPublicationResponse>(
-    `/api/v1/ds-api/dashboard/scholarly-publications/?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/scholarly-publications/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -13,7 +13,7 @@ export async function getScholaryPublications(keywords: string[]) {
 
 export async function getPatentsPieChart(keywords: string[]) {
   const response = await axiosInstance.get<IPatentsPieResponse>(
-    `/dashboard/patents_pie_chart?q=${keywords.join(",")}`
+    `/dashboard/patents_pie_chart?q=${keywords.join(",")}`,
   );
 
   let results = response.data.data.chart;
@@ -23,7 +23,7 @@ export async function getPatentsPieChart(keywords: string[]) {
 
   return {
     patents: results,
-    startYear: startYear
+    startYear: startYear,
   };
 }
 
@@ -32,7 +32,7 @@ export async function getPatentsPieChart(keywords: string[]) {
  */
 export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
-    `/api/v1/ds-api/dashboard/experts-trend/?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/experts-trend/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -40,7 +40,7 @@ export async function getExpertsCountGraph(keywords: string[]) {
 
 export async function getAcademicResearchFundingChart(keywords: string[]) {
   const response = await axiosInstance.get<IAcademicResearchFundingResponse>(
-    `/dashboard/academic/funding_chart?q=${keywords.join(",")}`
+    `/dashboard/academic/funding_chart?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -48,7 +48,7 @@ export async function getAcademicResearchFundingChart(keywords: string[]) {
 
 export async function getAcademicResearchTrends(keywords: string[]) {
   const response = await axiosInstance.get<IAcademicResearchTrendResponse>(
-    `/dashboard/academic/usa_research_trends?q=${keywords.join(",")}`
+    `/dashboard/academic/usa_research_trends?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -59,7 +59,7 @@ export async function getAcademicResearchTrends(keywords: string[]) {
  */
 export async function getTopFundingChart(keywords: string[]) {
   const response = await axiosInstance.get<ITopFundingChartResponse>(
-    `/api/v1/ds-api/dashboard/funding-trend/?q=${keywords.join(",")}`
+    `/api/v1/ds-api/dashboard/funding-trend/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;

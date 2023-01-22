@@ -26,8 +26,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
   const [activeGraph, setActiveGraph] = useState<ChartType>("bar");
   //
   const [timeperiods, setTimeperiods] = useState<ITimePeriodItem[]>([]);
-  const [selectedTimeperiod, setSelectedTimeperiod] =
-    useState<ITimePeriodItem | null>(null);
+  const [selectedTimeperiod, setSelectedTimeperiod] = useState<ITimePeriodItem | null>(null);
 
   //
   const [activeData, setActiveData] = useState<IScholaryPublicationData[]>([]);
@@ -38,13 +37,13 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     data: publicationChartData,
     isLoading,
     isError,
-    error
+    error,
   } = useQuery(
     ["scholary-publications", ...props.keywords],
     async () => {
       return await getScholaryPublications(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   // Fetching time period
@@ -52,9 +51,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     if (!publicationChartData) return;
 
     //
-    const sortedData = publicationChartData.sort((a, b) =>
-      a.year > b.year ? 1 : -1
-    );
+    const sortedData = publicationChartData.sort((a, b) => (a.year > b.year ? 1 : -1));
     const endYear = sortedData[0].year;
 
     const timePeriods = getTimeperiod(endYear);
@@ -82,14 +79,14 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
       selectedData.push({
         year: i,
         closed_source: item?.closed_source ?? 0,
-        open_source: item?.open_source ?? 0
+        open_source: item?.open_source ?? 0,
       });
     }
 
     //
     const totalAmount = selectedData.reduce(
       (prev, curr) => (prev += curr.open_source + curr.closed_source),
-      0
+      0,
     );
 
     setHasActiveData(totalAmount > 0);
@@ -107,12 +104,8 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     .map((item) => {
       const total = item.open_source + item.closed_source;
 
-      const openSourcePercentage = item.open_source
-        ? (item.open_source / total) * 100
-        : 0;
-      const closedSourcePercentage = item.closed_source
-        ? (item.closed_source / total) * 100
-        : 0;
+      const openSourcePercentage = item.open_source ? (item.open_source / total) * 100 : 0;
+      const closedSourcePercentage = item.closed_source ? (item.closed_source / total) * 100 : 0;
 
       return {
         id: item.year,
@@ -120,14 +113,14 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
           {
             x: "Open access",
             y: openSourcePercentage,
-            value: item.open_source
+            value: item.open_source,
           },
           {
             x: "Closed access",
             y: closedSourcePercentage,
-            value: item.closed_source
-          }
-        ]
+            value: item.closed_source,
+          },
+        ],
       };
     });
 
@@ -138,7 +131,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
     const openAccessCountObj: IScatterList = { id: "Open access", data: [] };
     const closedAccessCountObj: IScatterList = {
       id: "Closed access",
-      data: []
+      data: [],
     };
 
     const openAccessData: IScatterItem[] = [];
@@ -208,7 +201,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
               data={barChartData.map((data) => ({
                 Open_Articles: data.open_source,
                 Closed_Articles: data.closed_source,
-                year: data.year
+                year: data.year,
               }))}
               legends={[barChartLegendOptions]}
             />
