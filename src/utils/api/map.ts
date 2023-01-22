@@ -3,12 +3,12 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getPublicationsAndPatentsMap(keywords: string[]) {
+export async function getPatentHeatmap(keywords: string[]) {
   const response = await axiosInstance.get<IPublicationAndPatensMapResponse>(
-    `/dashboard/publications_and_patents_map?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/patent-heatmap/?q=${keywords.join(",")}`,
   );
 
-  return response.data.data;
+  return response.data;
 }
 
 /**
@@ -74,23 +74,23 @@ interface IExpertMapResponse {
 /**
  *
  */
+interface IPatentHeatmapCountryCount {
+  country: string;
+  count: number;
+}
+
+interface IPatentStateTitle {
+  state: string;
+  patent_title: string;
+}
+
 interface IPublicationAndPatensMapResponse {
-  data: {
-    patents: {
-      topStateTitle: string[];
-      sortedCount: {
-        [x: string]: number;
-      };
-    };
-    publications: {
-      doiLinksMaxCountry?: string[];
-      sortedCount: {
-        [x: string]: number;
-      };
-      Country_wise_titles: {
-        Country: string;
-        Paper_titles: string[];
-      }[];
-    };
+  Industries: {
+    count: IPatentHeatmapCountryCount[];
+    titles: IPatentStateTitle[];
+  };
+  Universities: {
+    count: IPatentHeatmapCountryCount[];
+    titles: IPatentStateTitle[];
   };
 }
