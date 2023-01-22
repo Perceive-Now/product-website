@@ -40,9 +40,6 @@ function App() {
 
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
-        {/* Need to properly configure these by talking with BE team */}
-        <Route path="/activate/:uid/:token" element={<ActivationPage />} />
-
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
           <Route path="/" element={<HomePage />} />
