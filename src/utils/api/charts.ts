@@ -12,19 +12,11 @@ export async function getScholaryPublications(keywords: string[]) {
 }
 
 export async function getPatentsPieChart(keywords: string[]) {
-  const response = await axiosInstance.get<IPatentsPieResponse>(
-    `/dashboard/patents_pie_chart?q=${keywords.join(",")}`,
+  const response = await axiosInstance.get<IPatent[]>(
+    `/api/v1/ds-api/dashboard/patent-yearly-count/?q=${keywords.join(",")}`,
   );
 
-  let results = response.data.data.chart;
-  results = results.sort((a, b) => (a.name < b.name ? -1 : 1));
-
-  const startYear = results.at(0)?.name;
-
-  return {
-    patents: results,
-    startYear: startYear,
-  };
+  return response.data;
 }
 
 /**
@@ -79,15 +71,8 @@ interface IScholaryPublicationResponse {
 }
 
 export interface IPatent {
-  name: number;
-  value: number;
-  percentage: number;
-}
-
-interface IPatentsPieResponse {
-  data: {
-    chart: IPatent[];
-  };
+  year: string;
+  count: string;
 }
 
 export interface IExpertCountItem {

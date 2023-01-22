@@ -139,8 +139,8 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
     //
     data.forEach((d) => {
-      openAccessData.push({ x: String(d.year), y: d.open_source });
-      closedAccessData.push({ x: String(d.year), y: d.closed_source });
+      openAccessData.push({ x: d.year.toString(), y: d.open_source });
+      closedAccessData.push({ x: d.year.toString(), y: d.closed_source });
     });
 
     //
