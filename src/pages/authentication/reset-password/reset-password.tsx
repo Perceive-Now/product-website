@@ -33,7 +33,7 @@ const formSchema = yup.object().shape({
 });
 
 //
-function PasswordResetConfirmPage() {
+export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
   const [uid, token] = [searchParams.get("uid"), searchParams.get("token")];
 
@@ -216,5 +216,3 @@ interface IMessageRule {
   message: string;
   isFullfiled: boolean;
 }
-
-export default PasswordResetConfirmPage;

@@ -8,23 +8,23 @@ import DefaultLayout from "./layouts/default";
 import HomePage from "./pages/homepage";
 
 import LoginPage from "./pages/authentication/login";
+
+// Password
+import ResetPasswordPage from "./pages/authentication/reset-password";
 import ForgotPasswordPage from "./pages/authentication/forgot-password";
 
+// Signup confirmation and profile completion
+import ConfirmSignup from "./pages/authentication/signup/confirm";
+import CompleteSignup from "./pages/authentication/signup/complete";
+
+//
 import HelpPage from "./pages/miscs/help";
 import FeedbackPage from "./pages/miscs/feedback";
 
 import DashboardPage from "./pages/product/dashboard";
 
 //
-import ConfirmSignup from "./pages/authentication/signup/confirm";
-import CompleteSignup from "./pages/authentication/signup/complete";
-
-//
 import PageNotFound404 from "./pages/404";
-
-// TODO:: Properly configure these
-import PasswordResetConfirmPage from "./pages/authentication/password-reset-confirm";
-import ActivationPage from "./pages/authentication/signup/activation";
 
 /**
  *
@@ -36,7 +36,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<PasswordResetConfirmPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
