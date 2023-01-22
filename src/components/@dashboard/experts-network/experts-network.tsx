@@ -104,17 +104,15 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
 
 const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
   return (
-    <div className="flex">
-      <RadioButtons
-        options={[
-          { label: "Industry", value: "industryExperts" },
-          { label: "Academic", value: "academicExperts" },
-          { label: "Federal", value: "federalExperts" },
-        ]}
-        activeMode={activeMode}
-        handleModeChange={onModeChange}
-      />
-    </div>
+    <RadioButtons
+      options={[
+        { label: "Industry", value: "industryExperts" },
+        { label: "Academic", value: "academicExperts" },
+        { label: "Federal", value: "federalExperts" },
+      ]}
+      activeMode={activeMode}
+      handleModeChange={onModeChange}
+    />
   );
 };
 

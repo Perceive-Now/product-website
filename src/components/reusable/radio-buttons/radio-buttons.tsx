@@ -7,10 +7,10 @@ export default function RadioButtons(props: IRadioButtons) {
   const { options, activeMode, handleModeChange } = props;
 
   return (
-    <div className="flex">
+    <div className="flex gap-x-3">
       {options.map((mode) => (
         <div
-          className="flex items-center ml-3 cursor-pointer group"
+          className="flex items-center cursor-pointer group"
           key={mode.value}
           onClick={() => handleModeChange(mode.value)}
         >
