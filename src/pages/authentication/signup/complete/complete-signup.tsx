@@ -108,10 +108,10 @@ export default function CompleteSignup() {
                 <div className="border-2 border-white rounded-full z-20">
                   <div
                     className={classNames(
-                      "w-4 h-4 border-2 rounded-full text-white font-semibold flex justify-center items-center",
-                      { "bg-green-600 border-green-600": activeStep > index },
-                      { "bg-primary-900 border-primary-900": activeStep === index },
-                      { "bg-white border-gray-400 text-gray-800": activeStep < index },
+                      "w-4 h-4 border-2 rounded-full font-semibold flex justify-center items-center",
+                      { "bg-green-600 border-green-600 text-white": activeStep > index },
+                      { "bg-primary-900 border-primary-900 text-white": activeStep === index },
+                      { "bg-white border-gray-400 text-gray-700": activeStep < index },
                     )}
                   >
                     {activeStep > index ? <CheckIcon width={32} height={32} /> : index + 1}
