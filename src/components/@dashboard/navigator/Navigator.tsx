@@ -23,7 +23,7 @@ export default function Navigator(props: INavigatorProps) {
         <h3 className="text-[20px] text-primary-900 font-semibold">Navigate to</h3>
       </div>
 
-      <div className="grid grid-cols-12 gap-x-2 mb-3">
+      <div className="grid grid-cols-6 lg:grid-cols-12 gap-2 mb-3">
         <div className="col-span-3">
           <NavigatorButton
             icon={<CompetitiveLandscapeIcon />}
@@ -74,10 +74,10 @@ const NavigatorButton = (props: INavigatorButtonProps) => {
 
   return (
     <div
-      className="flex items-center gap-x-2 p-2 rounded-2xl cursor-pointer hover:bg-primary-50 shadow-md border border-gray-200"
+      className="flex items-center gap-x-2 p-2 rounded-2xl cursor-pointer bg-white hover:bg-primary-50 shadow-md border border-gray-200"
       onClick={handleClick}
     >
-      {icon}
+      <div className="flex-shrink-0">{icon}</div>
       <span>{label}</span>
     </div>
   );
