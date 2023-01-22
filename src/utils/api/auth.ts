@@ -2,18 +2,6 @@ import axiosInstance from "../axios";
 import { errorMessageHandler } from "../helpers";
 
 //
-export async function forgotPassword(email: string) {
-  try {
-    await axiosInstance.post(`/api/v1/user/reset_password/`, {
-      email: email,
-    });
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
-//
 export async function passwordResetConfirm(passwordResetBody: IPasswordResetBody) {
   try {
     await axiosInstance.post(`/api/v1/user/reset_password_confirm/`, passwordResetBody);

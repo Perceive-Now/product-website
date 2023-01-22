@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 //
-import * as yup from "yup";
 import classNames from "classnames";
+import { toast } from "react-hot-toast";
+
+//
+import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 //
-import Button from "../../../components/reusable/button";
 import { BackIcon } from "../../../components/icons";
+import Button from "../../../components/reusable/button";
 
 //
 import Logo from "../../../assets/images/logo-small.svg";
@@ -17,7 +20,17 @@ import Logo from "../../../assets/images/logo-small.svg";
 //
 import { useAppDispatch } from "../../../hooks/redux";
 import { getCurrentSession } from "../../../stores/auth";
-import { forgotPassword } from "../../../utils/api/auth";
+
+//
+import axiosInstance from "../../../utils/axios";
+
+//
+const formSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter a valid email address")
+    .required("Email address is required"),
+});
 
 /**
  *
@@ -29,34 +42,37 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const formInitialValue: IForgotPasswordFormValues = {
-    email: "",
-  };
-
-  const formResolver = yup.object().shape({
-    email: yup
-      .string()
-      .email("Please enter a valid email address")
-      .required("Email address is required"),
+  //
+  const {
+    watch,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+    },
+    resolver: yupResolver(formSchema),
   });
 
-  const { watch, register, formState, handleSubmit } = useForm({
-    defaultValues: formInitialValue,
-    resolver: yupResolver(formResolver),
-  });
+  //
+  const emailValue = watch("email");
 
-  const { errors } = formState;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //
   const handleForgotPassword = async (values: IForgotPasswordFormValues) => {
-    const success: boolean = await forgotPassword(values.email);
-    if (success) {
+    try {
+      await axiosInstance.post("/api/v1/user/reset_password/", {
+        email: values.email,
+      });
+
       setIsSubmitted(true);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error("Unable to proceed with your reqeust!");
     }
   };
 
-  const emailValue = watch("email");
-
+  //
   const getSession = async () => {
     const session = await dispatch(getCurrentSession()).unwrap();
     if (session.success) navigate("/");
@@ -64,6 +80,7 @@ export default function ForgotPasswordPage() {
     setIsLoading(false);
   };
 
+  //
   useEffect(() => {
     getSession();
   }, []);
