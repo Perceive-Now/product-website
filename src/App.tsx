@@ -51,6 +51,7 @@ import CompleteSignup from "./pages/authentication/signup/complete";
 import PageNotFound404 from "./pages/404";
 import UniversityPage from "./pages/product/advanced-search/universities/profile";
 import PasswordResetConfirmPage from "./pages/authentication/password-reset-confirm";
+import ActivationPage from "./pages/authentication/signup/activation";
 
 /**
  *
@@ -64,6 +65,7 @@ function App() {
 
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
         <Route path="/password/reset/confirm/:uid/:token" element={<PasswordResetConfirmPage />} />
+        <Route path="/activate/:uid/:token" element={<ActivationPage />} />
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>

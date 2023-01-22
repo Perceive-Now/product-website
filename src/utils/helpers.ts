@@ -66,3 +66,17 @@ export const getTimeperiod = (end?: number | string) => {
 
   return timeperiodArray;
 };
+
+/**
+ *
+ */
+export const errorMessageHandler = (errors: IErrorMessage) => {
+  const errorValues = Object.entries(errors);
+  errorValues.forEach(([key, values]) => {
+    alert(`${key}: ${values}`);
+  });
+};
+
+interface IErrorMessage {
+  [key: string]: string[];
+}
