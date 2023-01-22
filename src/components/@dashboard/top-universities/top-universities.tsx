@@ -14,7 +14,7 @@ import { getTopUniversities } from "../../../utils/api/dashboard";
  *
  */
 export default function TopUniversities(props: ITopUniversitiesProps) {
-  const { isLoading, isError, error } = useQuery(
+  const { data, isLoading, isError, error } = useQuery(
     ["dashboard-top-universities", ...props.keywords],
     async () => {
       return await getTopUniversities(props.keywords);
@@ -22,28 +22,26 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
     { enabled: !!props.keywords.length },
   );
 
-  const tempData = [
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-    {
-      name: "Hello world",
-      value: 1234,
-    },
-  ];
+  //
+  const claimValues = (data?.Patent_claims ?? [])
+    .map((item) => ({ title: item.company, value: item.claim_sum }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  const patensValues = (data?.patents ?? [])
+    .map((item) => ({ title: item.key, value: item.doc_count }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  const expertsValues = (data?.Inventors ?? [])
+    .map((item) => ({ title: item.company, value: item.inventor_count }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
+
+  const publicationValues = (data?.Publications ?? [])
+    .map((item) => ({ title: item.key, value: item.doc_count }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 5);
 
   //
   return (
@@ -61,7 +59,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
         />
       }
     >
-      <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+      <div className="grid grid-cols-2 gap-y-3 gap-x-4 my-3">
         <div>
           <p className="text-lg font-semibold text-primary-900 mb-2">Patents</p>
 
@@ -71,8 +69,8 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
             <div className="col-span-2 text-right pr-1 font-semibold">Patents</div>
           </div>
 
-          {tempData.map((itm, index) => (
-            <ListItem name={itm.name} value={itm.value} index={index} key={index} />
+          {patensValues.map((itm, index) => (
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
 
@@ -85,26 +83,26 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
             <div className="col-span-3 text-right pr-1 font-semibold">Patents Claims</div>
           </div>
 
-          {tempData.map((itm, index) => (
-            <ListItem name={itm.name} value={itm.value} index={index} key={index} />
+          {claimValues.map((itm, index) => (
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
       </div>
 
       <div className="border-b border-gray-300 mb-6 pt-3" />
 
-      <div className="grid grid-cols-2 gap-3 mb-3">
+      <div className="grid grid-cols-2 gap-3">
         <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">Experts</p>
+          <p className="text-lg font-semibold text-primary-900 mb-2">Inventors</p>
 
           <div className="grid grid-cols-9 mb-3">
             <div className="col-span-1" />
             <div className="col-span-6 font-semibold">University Name</div>
-            <div className="col-span-2 text-right pr-1 font-semibold">Experts</div>
+            <div className="col-span-2 text-right pr-1 font-semibold">Inventors</div>
           </div>
 
-          {tempData.map((itm, index) => (
-            <ListItem name={itm.name} value={itm.value} index={index} key={index} />
+          {expertsValues.map((itm, index) => (
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
 
@@ -117,8 +115,8 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
             <div className="col-span-2 text-right pr-1 font-semibold">Publications</div>
           </div>
 
-          {tempData.map((itm, index) => (
-            <ListItem name={itm.name} value={itm.value} index={index} key={index} />
+          {publicationValues.map((itm, index) => (
+            <ListItem name={itm.title} value={itm.value} index={index} key={index} />
           ))}
         </div>
       </div>

@@ -135,7 +135,7 @@ export default function DashboardPage() {
 
       {/* Academic R&D Section */}
       <div className="pt-11 -mt-8" ref={researchRef}>
-        <PageTitle title="Academic R&D" titleClass="font-bold" />
+        <PageTitle title="Universities" titleClass="font-bold" />
 
         {/* 9th row */}
         <div className="mt-1">

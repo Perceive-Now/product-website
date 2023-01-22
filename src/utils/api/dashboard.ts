@@ -21,10 +21,10 @@ export async function getPublicationsCount(keywords: string[]) {
 
 export async function getTopUniversities(keywords: string[]) {
   const response = await axiosInstance.get<ITopUniversityResponse>(
-    `/dashboard/academic/universities_top_3?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/patent-uni-ranked/?q=${keywords.join(",")}`,
   );
 
-  return response.data.data;
+  return response.data.data.data;
 }
 
 export async function getExpertsCount(keywords: string[]) {
@@ -107,16 +107,8 @@ interface IPublicationCountResponse {
 }
 
 //
-interface ITopUniversity {
-  universityName: string;
-  locationText: string;
-  publications: number;
-  patents: number;
-  fundingReceived: number;
-}
-
 interface ITopUniversityResponse {
-  data: ITopUniversity[];
+  data: ICompetitorResponse;
 }
 
 //
