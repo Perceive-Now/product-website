@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -14,75 +14,152 @@ import ScatterChart from "../../@product/scatter-chart";
 
 // import { getPublicationsCount } from "../../../utils/api/dashboard";
 import { getScholaryPublications } from "../../../utils/api/charts";
+import { getTimeperiod } from "../../../utils/helpers";
+import { barChartLegendOptions } from "../../../utils/data/barchartLegend";
+import NoDataMessage from "../../reusable/no-data";
+import TimePeriod from "../../reusable/time-period";
 
 /**
  *
  */
 export default function ScholaryPublication(props: IScholaryPublicationProps) {
-  const [activeChart, setActiveChart] = useState<ChartType>("bar");
+  const [activeGraph, setActiveGraph] = useState<ChartType>("bar");
+  //
+  const [timeperiods, setTimeperiods] = useState<ITimePeriodItem[]>([]);
+  const [selectedTimeperiod, setSelectedTimeperiod] =
+    useState<ITimePeriodItem | null>(null);
+
+  //
+  const [activeData, setActiveData] = useState<IScholaryPublicationData[]>([]);
+  const [hasActiveData, setHasActiveData] = useState(true);
 
   // Fetching data
   const {
     data: publicationChartData,
     isLoading,
     isError,
-    error,
+    error
   } = useQuery(
     ["scholary-publications", ...props.keywords],
     async () => {
       return await getScholaryPublications(props.keywords);
     },
-    { enabled: !!props.keywords.length },
+    { enabled: !!props.keywords.length }
   );
 
+  // Fetching time period
+  useEffect(() => {
+    if (!publicationChartData) return;
+
+    //
+    const sortedData = publicationChartData.sort((a, b) =>
+      a.year > b.year ? 1 : -1
+    );
+    const endYear = sortedData[0].year;
+
+    const timePeriods = getTimeperiod(endYear);
+
+    //
+    setTimeperiods(timePeriods);
+    setSelectedTimeperiod(timePeriods[0]);
+  }, [publicationChartData]);
+
+  // Fetching publicationChartData for selected time period
+  useEffect(() => {
+    if (!publicationChartData) return;
+    if (!selectedTimeperiod?.value) return;
+
+    //
+    const [startYear, endYear] = selectedTimeperiod.value.split("-");
+
+    //
+    const selectedData: IScholaryPublicationData[] = [];
+
+    //
+    for (let i = +startYear; i <= +endYear; i++) {
+      const item = publicationChartData.find((item) => +item.year === i);
+
+      selectedData.push({
+        year: i,
+        closed_source: item?.closed_source ?? 0,
+        open_source: item?.open_source ?? 0
+      });
+    }
+
+    //
+    const totalAmount = selectedData.reduce(
+      (prev, curr) => (prev += curr.open_source + curr.closed_source),
+      0
+    );
+
+    setHasActiveData(totalAmount > 0);
+
+    //
+    setActiveData(selectedData);
+  }, [selectedTimeperiod, publicationChartData]);
+
   //
-  const finalPieData = isLoading ? [] : publicationChartData ?? [];
+  const barChartData = activeData ?? [];
 
-  const radialData = finalPieData
-    .map((itm) => itm.year)
-    .map((itm) => {
-      const data = finalPieData.find((it) => it.year === itm)!;
+  //
+  const pieChartData = (activeData ?? [])
+    .filter((item) => item.open_source + item.closed_source > 0)
+    .map((item) => {
+      const total = item.open_source + item.closed_source;
 
-      const total = data.openArticles + data.closedArticles;
-      const openPercentage = (data.openArticles / total) * 100;
-      const closedPercentage = (data.closedArticles / total) * 100;
+      const openSourcePercentage = item.open_source
+        ? (item.open_source / total) * 100
+        : 0;
+      const closedSourcePercentage = item.closed_source
+        ? (item.closed_source / total) * 100
+        : 0;
 
       return {
-        id: itm,
+        id: item.year,
         data: [
-          { x: "Open Articles", y: openPercentage, value: data.openArticles },
           {
-            x: "Closed Articles",
-            y: closedPercentage,
-            value: data.closedArticles,
+            x: "Open access",
+            y: openSourcePercentage,
+            value: item.open_source
           },
-        ],
+          {
+            x: "Closed access",
+            y: closedSourcePercentage,
+            value: item.closed_source
+          }
+        ]
       };
     });
 
-  const finalScatterDataFormatHelper = (data: any) => {
+  //
+  const finalScatterDataFormatHelper = (data: IScholaryPublicationData[]) => {
     if (!data) return [];
 
-    const closedArticlesObj = { id: "Closed Articles", data: [] };
-    const openArticlesObj = { id: "Open Articles", data: [] };
+    const openAccessCountObj: IScatterList = { id: "Open access", data: [] };
+    const closedAccessCountObj: IScatterList = {
+      id: "Closed access",
+      data: []
+    };
 
-    let closedArticlesData: any = [];
-    let openArticlesData: any = [];
+    const openAccessData: IScatterItem[] = [];
+    const closedAccessData: IScatterItem[] = [];
 
-    data.forEach((d: IScholaryPublicationData) => {
-      closedArticlesData = [...closedArticlesData, { x: d.year, y: d.closedArticles }];
-      openArticlesData = [...openArticlesData, { x: d.year, y: d.openArticles }];
+    //
+    data.forEach((d) => {
+      openAccessData.push({ x: String(d.year), y: d.open_source });
+      closedAccessData.push({ x: String(d.year), y: d.closed_source });
     });
 
-    closedArticlesObj.data = closedArticlesData;
-    openArticlesObj.data = openArticlesData;
+    //
+    openAccessCountObj.data = openAccessData;
+    closedAccessCountObj.data = closedAccessData;
 
-    return [closedArticlesObj, openArticlesObj];
+    //
+    return [openAccessCountObj, closedAccessCountObj];
   };
 
-  const finalScatterData = isLoading
-    ? []
-    : finalScatterDataFormatHelper(publicationChartData) ?? [];
+  //
+  const scatterChartData = finalScatterDataFormatHelper(activeData ?? []);
 
   //
   return (
@@ -99,47 +176,56 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
         />
       }
     >
-      <div className="pt-1 flex justify-between items-center h-5">
-        <div className="flex gap-x-3">
-          {activeChart === "bar" && (
-            <>
-              <div className="flex gap-x-1 text-sm items-center">
-                <div className="w-2 h-2 bg-primary-500 rounded-full" />
-                <span>Open</span>
-              </div>
-
-              <div className="flex gap-x-1 text-sm items-center">
-                <div className="w-2 h-2 bg-primary-800 rounded-full" />
-                <span>Closed</span>
-              </div>
-            </>
-          )}
-        </div>
-
+      <div className="pt-1 flex justify-end items-center h-5">
         <div className="flex items-center">
+          <TimePeriod
+            onChange={(item) => setSelectedTimeperiod(item)}
+            value={selectedTimeperiod}
+            timePeriods={timeperiods}
+          />
+
           <ChartButtons
             isMultiData={true}
-            activeChart={activeChart}
-            setActiveChart={setActiveChart}
+            activeChart={activeGraph}
+            setActiveChart={setActiveGraph}
           />
         </div>
       </div>
 
-      {activeChart === "bar" && (
-        <BarChart
-          keys={["openArticles", "closedArticles"]}
-          indexBy="year"
-          legendY="Number of Publications"
-          data={(isLoading ? [] : publicationChartData) ?? []}
-        />
+      {!hasActiveData && (
+        <div className="flex h-full justify-center items-center">
+          <NoDataMessage years={selectedTimeperiod?.value ?? ""} />
+        </div>
       )}
 
-      {activeChart === "scatter" && (
-        <ScatterChart data={finalScatterData} legendX="Year" legendY="Publications" />
+      {hasActiveData && (
+        <>
+          {activeGraph === "bar" && (
+            <BarChart
+              keys={["Open_Articles", "Closed_Articles"]}
+              indexBy="year"
+              legendY="Number of Publications"
+              data={barChartData.map((data) => ({
+                Open_Articles: data.open_source,
+                Closed_Articles: data.closed_source,
+                year: data.year
+              }))}
+              legends={[barChartLegendOptions]}
+            />
+          )}
+          {activeGraph === "scatter" && (
+            <ScatterChart
+              data={scatterChartData}
+              legendX="Year"
+              legendY="Publications"
+              abbreviateLegendX={true}
+            />
+          )}
+          {activeGraph === "donut" && (
+            <RadialChart data={pieChartData} colors={["#7F4BD8", "#442873"]} />
+          )}
+        </>
       )}
-
-      {activeChart === "donut" && <RadialChart data={radialData} colors={["#7F4BD8", "#442873"]} />}
-
       <div className="mt-4">
         <Link to="/publications">Read more</Link>
       </div>
@@ -152,7 +238,17 @@ interface IScholaryPublicationProps {
 }
 
 interface IScholaryPublicationData {
-  closedArticles: string;
-  openArticles: string;
-  year: string;
+  closed_source: number;
+  open_source: number;
+  year: number;
+}
+
+interface IScatterItem {
+  x: string;
+  y: number;
+}
+
+interface IScatterList {
+  id: string;
+  data: IScatterItem[];
 }
