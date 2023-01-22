@@ -44,7 +44,7 @@ axiosInstance.interceptors.response.use(
     }
 
     // We are just trying to get refresh token please
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       // Getting refresh token saved in cookie
@@ -67,7 +67,6 @@ axiosInstance.interceptors.response.use(
         store.dispatch(setAuthToken(token));
         sessionStorage.setItem("pn_access", token);
 
-        // IDK
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         return axiosInstance(originalRequest);

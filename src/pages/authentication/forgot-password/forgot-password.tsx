@@ -17,6 +17,7 @@ import Logo from "../../../assets/images/logo-small.svg";
 //
 import { useAppDispatch } from "../../../hooks/redux";
 import { getCurrentSession } from "../../../stores/auth";
+import { forgotPassword } from "../../../utils/api/auth";
 
 /**
  *
@@ -28,7 +29,7 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const formInitialValue: ILoginFormValues = {
+  const formInitialValue: IForgotPasswordFormValues = {
     email: "",
   };
 
@@ -47,11 +48,11 @@ export default function ForgotPasswordPage() {
   const { errors } = formState;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleForgotPassword = (values: ILoginFormValues) => {
-    // TODO:: Make API call for forgot password initiation
-
-    //
-    setIsSubmitted(true);
+  const handleForgotPassword = async (values: IForgotPasswordFormValues) => {
+    const success: boolean = await forgotPassword(values.email);
+    if (success) {
+      setIsSubmitted(true);
+    }
   };
 
   const emailValue = watch("email");
@@ -148,6 +149,6 @@ export default function ForgotPasswordPage() {
   );
 }
 
-interface ILoginFormValues {
+interface IForgotPasswordFormValues {
   email: string;
 }

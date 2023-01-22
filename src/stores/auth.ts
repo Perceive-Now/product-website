@@ -90,6 +90,7 @@ export const getCurrentSession = createAsyncThunk(
         refresh: refreshToken,
       });
 
+      sessionStorage.setItem("pn_access", response.data.access);
       return {
         success: true,
         message: "Current session obtained",
