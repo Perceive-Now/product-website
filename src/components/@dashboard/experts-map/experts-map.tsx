@@ -12,15 +12,18 @@ import DataSection from "../../reusable/data-section";
 
 //
 import { getExpertsMapInfo } from "../../../utils/api/map";
+import RadioButtons from "../../reusable/radio-buttons";
 
 /**
  *
  */
 export default function ExpertsMap(props: IFootprintHeatmapProps) {
-  const [currentMode, setCurrentMode] = useState<availableModes>("basicPublication");
+  const [currentMode, setCurrentMode] = useState<availableModes>("publications");
+  const [industryMode, setIndustryMode] = useState<industryModes>("industry");
 
   // const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
 
+  //
   const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-experts-map", ...props.keywords],
     async () => {
@@ -29,20 +32,31 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     { enabled: !!props.keywords.length },
   );
 
-  const mapData: IWorldMapDataItem[] =
-    (
-      (currentMode === "basicPatents"
-        ? data?.industryExpertMap
-        : currentMode === "basicPublication"
-        ? data?.academicExpertMap
-        : data?.federalExpertMap) ?? []
-    ).map((itm) => ({
-      name: itm.name,
-      location: itm.location,
-      patents: itm.patentcount,
-      coordinate: itm.coordinates,
-      employment: itm.employment,
-    })) ?? [];
+  //
+  const toggleCurrentMode = (mode: availableModes) => {
+    setCurrentMode(mode);
+  };
+
+  const toggleIndustryMode = (mode: string) => {
+    setIndustryMode(mode as industryModes);
+  };
+
+  // const mapData: IWorldMapDataItem[] =
+  //   (
+  //     (currentMode === "basicPatents"
+  //       ? data?.industryExpertMap
+  //       : currentMode === "basicPublication"
+  //       ? data?.academicExpertMap
+  //       : data?.federalExpertMap) ?? []
+  //   ).map((itm) => ({
+  //     name: itm.name,
+  //     location: itm.location,
+  //     patents: itm.patentcount,
+  //     coordinate: itm.coordinates,
+  //     employment: itm.employment,
+  //   })) ?? [];
+
+  const mapData: any[] = [];
 
   //
   return (
@@ -52,56 +66,47 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
       isError={isError}
       error={error}
       title={
-        <PageTitle
-          info={`This list was extracted from "X" total number of experts and researchers worldwide`}
-          titleClass="font-semibold"
-          title="Geographical footprint of experts"
-        >
-          <div className="flex justify-between">
-            <p className="text-sm">Network of experts and researchers working across the globe</p>
-
-            <div className="flex gap-x-3 text-sm">
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="industryExperts"
-                  name="currentModeExpertMap"
-                  checked={currentMode === "basicPublication"}
-                  onChange={() => setCurrentMode("basicPublication")}
-                />
-                <label htmlFor="industryExperts" className="cursor-pointer">
-                  Industry
-                </label>
-              </div>
-
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="academicExperts"
-                  name="currentModeExpertMap"
-                  checked={currentMode === "basicPatents"}
-                  onChange={() => setCurrentMode("basicPatents")}
-                />
-                <label htmlFor="academicExperts" className="cursor-pointer">
-                  Academic
-                </label>
-              </div>
-
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="federalExperts"
-                  name="currentModeExpertMap"
-                  checked={currentMode === "federalExperts"}
-                  onChange={() => setCurrentMode("federalExperts")}
-                />
-                <label htmlFor="federalExperts" className="cursor-pointer">
-                  Federal
-                </label>
-              </div>
-            </div>
+        <div className="grid grid-cols-2">
+          <div className="col-span-1">
+            <PageTitle
+              titleClass="font-semibold"
+              title="Geographical footprint of inventors"
+              subTitle="Network of experts and researchers working across the globe"
+            />
           </div>
-        </PageTitle>
+
+          <div className="col-span-1 flex flex-col justify-center items-end">
+            <div className="flex mb-1">
+              <button
+                className={classNames(
+                  "rounded-l border px-1 py-[4px] border-gray-300",
+                  currentMode === "publications" ? "bg-gray-300" : "bg-gray-100",
+                )}
+                onClick={() => toggleCurrentMode("publications")}
+              >
+                Publications
+              </button>
+              <button
+                className={classNames(
+                  "rounded-r border px-1 py-[4px] border-gray-300",
+                  currentMode === "patents" ? "bg-gray-300" : "bg-gray-100",
+                )}
+                onClick={() => toggleCurrentMode("patents")}
+              >
+                Patents
+              </button>
+            </div>
+
+            <RadioButtons
+              activeMode={industryMode}
+              handleModeChange={toggleIndustryMode}
+              options={[
+                { label: "Industry authors", value: "industry" },
+                { label: "Academic authors", value: "academic" },
+              ]}
+            />
+          </div>
+        </div>
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
@@ -126,7 +131,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          {currentMode === "federalExperts" ? (
+          {currentMode === "patents" ? (
             <GoogleMaps isWorldMap={false} data={mapData} />
           ) : (
             <GoogleMaps isWorldMap={true} data={mapData} />
@@ -137,8 +142,11 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   );
 }
 
-type availableModes = "basicPublication" | "basicPatents" | "federalExperts";
+//
+type industryModes = "industry" | "academic";
+type availableModes = "publications" | "patents";
 
+//
 interface IFootprintHeatmapProps {
   keywords: string[];
 }
