@@ -97,7 +97,14 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
               render={({ field }) => (
                 <Listbox {...field}>
                   <div className="relative mt-1">
-                    <Listbox.Button className="w-full rounded-lg py-1 pl-3 pr-10 text-left border border-gray-400 focus:outline-primary-500">
+                    <Listbox.Button
+                      className={classNames(
+                        "w-full rounded-lg py-1 pl-3 pr-10 text-left border bg-gray-100",
+                        errors.user_company?.tech_sector
+                          ? "border-red-400 outline-red-500"
+                          : "border-gray-400 focus:outline-primary-500",
+                      )}
+                    >
                       <span className="block truncate">
                         {techSector ? techSector : "Select a technology sector"}
                       </span>
@@ -164,8 +171,8 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
             className={classNames(
               "py-1 px-[1.25rem] w-full my-1 rounded-lg border bg-gray-100 focus:bg-white",
               errors.user_company?.team_number
-                ? "outline-red-500 border-red-500"
-                : "focus:ring-primary-500 border-gray-400",
+                ? "!ring-red-500  !border-red-500"
+                : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
             )}
             {...register("user_company.team_number")}
           />
