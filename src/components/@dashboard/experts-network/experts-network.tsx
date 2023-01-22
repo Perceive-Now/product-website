@@ -47,7 +47,17 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           title="Experts"
           subTitle={`Top list of experts with maximum number of publications and patents `}
           titleClass="font-semibold"
-          sideTitleOption={<ExpertsMode activeMode={expertMode} onModeChange={handleModeChange} />}
+          sideTitleOption={
+            <RadioButtons
+              options={[
+                { label: "Industry", value: "industryExperts" },
+                { label: "Academic", value: "academicExperts" },
+                { label: "Federal", value: "federalExperts" },
+              ]}
+              activeMode={expertMode}
+              handleModeChange={handleModeChange}
+            />
+          }
         />
       }
     >
@@ -102,20 +112,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
   );
 }
 
-const ExpertsMode = ({ activeMode, onModeChange }: IExpertMode) => {
-  return (
-    <RadioButtons
-      options={[
-        { label: "Industry", value: "industryExperts" },
-        { label: "Academic", value: "academicExperts" },
-        { label: "Federal", value: "federalExperts" },
-      ]}
-      activeMode={activeMode}
-      handleModeChange={onModeChange}
-    />
-  );
-};
-
+//
 function ListItem(props: IListItemProps) {
   return (
     <div className="grid grid-cols-11 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
@@ -130,16 +127,12 @@ function ListItem(props: IListItemProps) {
   );
 }
 
+//
 interface IListItemProps {
   name: string;
   organization: string;
   value: number;
   index: number;
-}
-
-interface IExpertMode {
-  activeMode: string;
-  onModeChange: (mode: string) => void;
 }
 
 interface IExpertsNetworkProps {
