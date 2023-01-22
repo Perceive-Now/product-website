@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ResponsiveBar } from "@nivo/bar";
 import { useEffect, useState } from "react";
 
