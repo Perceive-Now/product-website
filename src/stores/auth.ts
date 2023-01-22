@@ -35,10 +35,13 @@ export const loginUser = createAsyncThunk(
         message: "Successfully logged in!",
         data: { token: data.access },
       };
-    } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail ?? error.message;
+
       return {
         success: false,
-        message: err.message,
+        message: errorMessage,
       };
     }
   },
@@ -53,10 +56,11 @@ export const logoutUser = createAsyncThunk("logout", async (): Promise<IResponse
       success: true,
       message: "Successfully logged out!",
     };
-  } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     return {
       success: false,
-      message: err.message,
+      message: error.message,
     };
   }
 });
@@ -184,6 +188,7 @@ export default AuthSlice.reducer;
 /**
  * Interfaces
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface IResponse<T = any> {
   success: boolean;
   message: string;

@@ -1,3 +1,4 @@
+import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -64,7 +65,7 @@ export default function LoginPage() {
     if (response.success) {
       navigate("/");
     } else {
-      alert(response.message);
+      toast.error(response.message);
     }
 
     setIsSubmitting(false);

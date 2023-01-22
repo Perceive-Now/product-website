@@ -42,10 +42,10 @@ import { useAppSelector } from "../../../hooks/redux";
  *
  */
 export default function DashboardPage() {
-  const competitiveLandscapeRef = useRef(null);
-  const expertsNetworkRef = useRef(null);
-  const researchRef = useRef(null);
-  const fundingsRef = useRef(null);
+  const researchRef = useRef<HTMLDivElement>(null);
+  const fundingsRef = useRef<HTMLDivElement>(null);
+  const expertsNetworkRef = useRef<HTMLDivElement>(null);
+  const competitiveLandscapeRef = useRef<HTMLDivElement>(null);
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -92,77 +92,81 @@ export default function DashboardPage() {
         <TodayHighlights keywords={keywordValue} />
       </div>
 
-      {/* 4th row  */}
-      <div className="pt-15 -mt-12" ref={competitiveLandscapeRef}>
+      {/* Competitor section */}
+      <div className="pt-11 -mt-8" ref={competitiveLandscapeRef}>
         <PageTitle title="Competitive Landscape" titleClass="font-bold" />
 
+        {/* 4th row  */}
         <div className="mt-1">
           <Competitors keywords={keywordValue} />
         </div>
+
+        {/* 5th row map */}
+        <div className="mt-3">
+          <CompetetitorMap keywords={keywordValue} />
+        </div>
       </div>
 
-      {/* 5th row map */}
-      <div className="mt-3">
-        <CompetetitorMap keywords={keywordValue} />
-      </div>
-
-      {/* 6th row  */}
-      <div className="pt-15 -mt-12" ref={expertsNetworkRef}>
+      {/* Expert network section */}
+      <div className="pt-11 -mt-8" ref={expertsNetworkRef}>
         <PageTitle title="Experts Network" titleClass="font-bold" />
 
+        {/* 6th row  */}
         <div className="mt-1">
           <ExpertsNetwork keywords={keywordValue} />
         </div>
-      </div>
 
-      {/* 7th row map */}
-      <div className="mt-3">
-        <ExpertsMap keywords={keywordValue} />
-      </div>
-
-      {/* 8th row; expert chart and related keywords */}
-      <div className="grid grid-cols-2 gap-x-3 mt-3">
-        <div className="col-span-1">
-          <ExpertsGraph key={joinedKeywords} keywords={keywordValue} />
+        {/* 7th row map */}
+        <div className="mt-3">
+          <ExpertsMap keywords={keywordValue} />
         </div>
 
-        <div className="col-span-1">
-          <RelatedKeywords keywords={keywordValue} />
+        {/* 8th row; expert chart and related keywords */}
+        <div className="grid grid-cols-2 gap-x-3 mt-3">
+          <div className="col-span-1">
+            <ExpertsGraph key={joinedKeywords} keywords={keywordValue} />
+          </div>
+
+          <div className="col-span-1">
+            <RelatedKeywords keywords={keywordValue} />
+          </div>
         </div>
       </div>
 
-      {/* 9th row */}
-      <div className="pt-15 -mt-12" ref={researchRef}>
+      {/* Academic R&D Section */}
+      <div className="pt-11 -mt-8" ref={researchRef}>
         <PageTitle title="Academic R&D" titleClass="font-bold" />
 
+        {/* 9th row */}
         <div className="mt-1">
           <TopUniversities keywords={keywordValue} />
         </div>
+
+        {/* Charts for Academinc R&D */}
+        <div className="grid grid-cols-2 gap-x-3 mt-3">
+          <div className="col-span-1">
+            <AcademicResearchTrends key={joinedKeywords} keywords={keywordValue} />
+          </div>
+
+          <div className="col-span-1">
+            <AcademicResearchFundings key={joinedKeywords} keywords={keywordValue} />
+          </div>
+        </div>
       </div>
 
-      {/* Charts for Academinc R&D */}
-      <div className="grid grid-cols-2 gap-x-3 mt-3">
-        <div className="col-span-1">
-          <AcademicResearchTrends key={joinedKeywords} keywords={keywordValue} />
-        </div>
-
-        <div className="col-span-1">
-          <AcademicResearchFundings key={joinedKeywords} keywords={keywordValue} />
-        </div>
-      </div>
-
-      {/* 11th row */}
-      <div className="pt-15 -mt-12" ref={fundingsRef}>
+      {/* Fundign Section */}
+      <div className="pt-11 -mt-8" ref={fundingsRef}>
         <PageTitle title="Funding" titleClass="font-bold" />
-      </div>
 
-      <div className="grid grid-cols-2 gap-x-3 mt-1">
-        <div className="col-span-1">
-          <TopFunderCharts key={joinedKeywords} keywords={keywordValue} />
-        </div>
+        {/* 11th row */}
+        <div className="grid grid-cols-2 gap-x-3 mt-1">
+          <div className="col-span-1">
+            <TopFunderCharts key={joinedKeywords} keywords={keywordValue} />
+          </div>
 
-        <div className="col-span-1">
-          <TopFundersList keywords={keywordValue} />
+          <div className="col-span-1">
+            <TopFundersList keywords={keywordValue} />
+          </div>
         </div>
       </div>
     </div>

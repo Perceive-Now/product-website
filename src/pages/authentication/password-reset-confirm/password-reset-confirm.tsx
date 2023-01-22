@@ -1,13 +1,21 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Logo from "../../../assets/images/logo-small.svg";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import classNames from "classnames";
-import { EyeClosedIcon, EyeIcon, LoadingIcon } from "../../../components/icons";
+import { useNavigate, useParams } from "react-router-dom";
+
+//
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+//
 import Button from "../../../components/reusable/button";
+import { EyeClosedIcon, EyeIcon, LoadingIcon } from "../../../components/icons";
+
+//
 import { passwordResetConfirm } from "../../../utils/api/auth";
+
+//
+import Logo from "../../../assets/images/logo-small.svg";
 
 function PasswordResetConfirmPage() {
   const { uid, token } = useParams();
@@ -46,6 +54,7 @@ function PasswordResetConfirmPage() {
 
   const passwordValue = watch("password");
 
+  //
   const handleResetConfirm = async (values: IPasswordResetFormValues) => {
     if (!(uid && token && values.password)) return;
     setIsLoading(true);
@@ -67,6 +76,7 @@ function PasswordResetConfirmPage() {
 
   const hasError = Object.keys(errors ?? {}).length > 0;
 
+  //
   return (
     <div className="flex justify-center items-center min-h-screen px-2">
       <div className="flex flex-col w-full max-w-[480px]">

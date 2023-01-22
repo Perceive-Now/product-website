@@ -51,13 +51,8 @@ export default function AppSidebar() {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
 
-    const response = await dispath(logoutUser()).unwrap();
-
-    if (response.success) {
-      navigate("/login");
-    } else {
-      alert(response.message);
-    }
+    await dispath(logoutUser()).unwrap();
+    navigate("/login");
 
     setIsLoggingOut(false);
   };

@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
-import classNames from "classnames";
 import { useState } from "react";
+import classNames from "classnames";
 import ReactTooltip from "react-tooltip";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 
@@ -54,6 +54,7 @@ export default function USMap(props: IUSMapProps) {
   const [heatmapHoveredState, setHeatmapHoveredState] = useState<string>("");
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getFillColor = (geo?: any) => {
     switch (props.type) {
       case "normal":

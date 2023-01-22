@@ -50,6 +50,8 @@ import CompleteSignup from "./pages/authentication/signup/complete";
 //
 import PageNotFound404 from "./pages/404";
 import UniversityPage from "./pages/product/advanced-search/universities/profile";
+
+// TODO:: Properly configure these
 import PasswordResetConfirmPage from "./pages/authentication/password-reset-confirm";
 import ActivationPage from "./pages/authentication/signup/activation";
 
@@ -64,6 +66,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
+
+        {/* Need to properly configure these by talking with BE team */}
         <Route path="/password/reset/confirm/:uid/:token" element={<PasswordResetConfirmPage />} />
         <Route path="/activate/:uid/:token" element={<ActivationPage />} />
 

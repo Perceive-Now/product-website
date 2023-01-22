@@ -20,6 +20,7 @@ import ChevronUp from "./chevron/up";
 import ChevronRight from "./chevron/right";
 import ChevronDown from "./chevron/down";
 import ChevronLeft from "./chevron/left";
+import ChevronUpDown from "./chevron/updown";
 
 // Social
 import TwitterIcon from "./social/twitter";
@@ -47,6 +48,7 @@ import MasterReportIcon from "./miscs/masterReport";
 import BriefcaseIcon from "./miscs/Briefcase";
 import ErrorIcon from "./miscs/Error";
 import WarningIcon from "./miscs/Warning";
+import CheckIcon from "./miscs/Check";
 
 // Charts
 import BarIcon from "./charts/bar";
@@ -81,6 +83,7 @@ export {
   ChevronRight,
   ChevronDown,
   ChevronLeft,
+  ChevronUpDown,
   // Social icons
   TwitterIcon,
   FacebookIcon,
@@ -105,6 +108,7 @@ export {
   BriefcaseIcon,
   ErrorIcon,
   WarningIcon,
+  CheckIcon,
   // used in tables
   VerticalThreeDots,
   // Chart icons
