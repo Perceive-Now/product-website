@@ -12,7 +12,6 @@ import PublicationItem from "../../@product/publicationItem";
 import { PatentType } from "../patent-table/patent-table";
 import { ExpertsType } from "../experts-table/experts-table";
 import { FundingType } from "../funding-table/funding-table";
-import { IPublicationData } from "../../../pages/product/advanced-search/publications/publications";
 
 //
 import { expertsAPIData, fundingAPIData, patentsPortfolioData, publicationsAPIData } from "./_data";
@@ -33,7 +32,9 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
   const [fundingsData, setFundingsData] = useState<FundingType[]>([]);
   const [expertsData, setExpertsData] = useState<ExpertsType[]>([]);
   const [patentsData, setPatentsData] = useState<PatentType[]>([]);
-  const [publicationsData, setPublicationsData] = useState<IPublicationData[]>([]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [publicationsData, setPublicationsData] = useState<any[]>([]);
 
   //
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
 
             {activeLabel === "Publication Portfolio" && (
               <div>
-                {publicationsData.map((publicationData: IPublicationData) => (
+                {publicationsData.map((publicationData) => (
                   <PublicationItem
                     data={{ abstract: "", doi: "", title: [] }}
                     key={publicationData.id}

@@ -83,7 +83,9 @@ export default function ReactTable(props: IReactTable) {
   );
 }
 interface IReactTable {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columnsData?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowsData?: any;
   size?: "small" | "medium" | "large";
 }

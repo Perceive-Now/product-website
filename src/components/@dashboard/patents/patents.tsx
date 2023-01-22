@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
 
 //
 import BarChart from "../../@product/bar-chart";

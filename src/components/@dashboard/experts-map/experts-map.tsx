@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 //
 import GoogleMaps from "../../@product/google-map";
-import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
+// import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 //
 import PageTitle from "../../reusable/page-title";
@@ -24,7 +24,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   // const joinedKeywords = props.keywords.map((kwd) => `"${kwd}"`).join(", ");
 
   //
-  const { data, isLoading, isError, error } = useQuery(
+  const { isLoading, isError, error } = useQuery(
     ["footprint-for-experts-map", ...props.keywords],
     async () => {
       return await getExpertsMapInfo(props.keywords);
@@ -56,6 +56,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
   //     employment: itm.employment,
   //   })) ?? [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapData: any[] = [];
 
   //

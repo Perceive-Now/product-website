@@ -14,6 +14,7 @@ export default function Input(props: IInput) {
   const error = props.error;
   const handleChange = props.handleChange;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleInputChange = (event: any) => {
     if (register) {
       register(name).onChange(event);
@@ -82,6 +83,8 @@ interface IInput {
   placeholder?: string;
   value?: string;
   handleChange?: (e: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
 }

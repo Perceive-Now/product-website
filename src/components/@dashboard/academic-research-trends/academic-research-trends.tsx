@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -9,12 +10,10 @@ import ScatterChart from "../../@product/scatter-chart";
 
 //
 import PageTitle from "../../reusable/page-title";
-import TimePeriod from "../../reusable/time-period";
 import DataSection from "../../reusable/data-section";
 import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
-import { TIME_PERIODS } from "../../../utils/constants";
 import { getAcademicResearchTrends } from "../../../utils/api/charts";
 
 /**
@@ -40,6 +39,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
   const radialData = finalPieData
     .map((itm) => itm.locationName)
     .map((itm) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const data = finalPieData.find((it) => it.locationName === itm)!;
 
       const total = data.openArticlesCount + data.closedArticlesCount + data.patentsCount;

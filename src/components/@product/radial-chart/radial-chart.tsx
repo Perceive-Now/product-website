@@ -43,6 +43,7 @@ export default function RadialChart(props: IRadialChartProps) {
           <div className="px-2 py-1 bg-white border border-gray-300 shadow rounded-lg">
             <p className="font-semibold">{data.bar.groupId}</p>
             <p className="text-sm">
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               {((data.bar.data as any).value ?? data.bar.data.y ?? "").toLocaleString()}
             </p>
           </div>
@@ -54,6 +55,7 @@ export default function RadialChart(props: IRadialChartProps) {
 }
 
 interface IRadialChartProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   colors?: string[];
 }

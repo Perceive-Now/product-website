@@ -2,9 +2,6 @@ import { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
 //
-import { IPublicationItem } from "../../../utils/api/advance-search";
-
-//
 import { BookmarkIcon, CitationIcon, ShareIcon } from "../../icons";
 
 /*
@@ -52,7 +49,8 @@ export const ActionButton = ({ children }: PropsWithChildren) => {
 };
 
 interface IPublicationItemProps {
-  data: IPublicationItem;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
 }
 
 export default PublicationItem;

@@ -29,6 +29,7 @@ export default function Search(props: ISearchProps) {
 
   const hasKeywordReachedMaxLimit = !!((selectedKeywords?.length || 0) >= MAX_KEYWORD);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (selectedKeywords) {
@@ -221,6 +222,7 @@ export const response = {
   ],
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatGroupLabel = (data: any) => (
   <div>
     <span>{data.label}</span>

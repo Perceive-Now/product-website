@@ -9,13 +9,11 @@ import ScatterChart from "../../@product/scatter-chart";
 
 //
 import PageTitle from "../../reusable/page-title";
-import TimePeriod from "../../reusable/time-period";
 import DataSection from "../../reusable/data-section";
 import ChartButtons from "../../reusable/chart-buttons";
 import { ChartType } from "../../reusable/chart-buttons";
 
 //
-import { TIME_PERIODS } from "../../../utils/constants";
 import { abbreviateString } from "../../../utils/helpers";
 import { getAcademicResearchFundingChart } from "../../../utils/api/charts";
 

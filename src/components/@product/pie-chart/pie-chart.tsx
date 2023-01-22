@@ -72,7 +72,10 @@ export default function PieChart(props: IPieChartProps) {
 }
 
 interface IPieChartProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   colors?: string[] | ((bar: any) => string);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick?: (data: any) => void;
 }

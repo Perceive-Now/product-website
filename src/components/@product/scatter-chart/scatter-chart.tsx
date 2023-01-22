@@ -107,6 +107,7 @@ export default function ScatterChart(props: IScatterChartProps) {
 }
 
 interface IScatterChartProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   colors?: string[];
   legendY?: string;

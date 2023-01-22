@@ -72,6 +72,9 @@ export const getTimeperiod = (end?: number | string) => {
  */
 export const errorMessageHandler = (errors: IErrorMessage) => {
   const errorValues = Object.entries(errors);
+
+  // TODO:: Refactor
+  // We should show only 1 error and not multiple alerts 😶
   errorValues.forEach(([key, values]) => {
     alert(`${key}: ${values}`);
   });

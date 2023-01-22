@@ -59,6 +59,7 @@ export default function WorldMap(props: ISvgMapProps) {
   const [activeSelection, setActiveSelection] = useState<string | null>(null);
 
   const [hoveredCountry, setHoveredCountry] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [heatmapHoveredCountry, setHeatmapHoveredCountry] = useState<any>("");
 
   const [activeMarkerData, setActiveMarkerData] = useState<IWorldMapDataItem | undefined>(
@@ -84,6 +85,7 @@ export default function WorldMap(props: ISvgMapProps) {
     return excludeZero ? values : [0, ...values];
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getFillColor = (geo: any) => {
     switch (props.type) {
       case "basicPublication":
@@ -116,6 +118,7 @@ export default function WorldMap(props: ISvgMapProps) {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getCountryHoverColor = (geo: any) => {
     if (geo.rsmKey === activeSelection) return;
 
@@ -131,6 +134,7 @@ export default function WorldMap(props: ISvgMapProps) {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleGeographyClick = (geography: any, projection: any, path: any) => {
     if (activeSelection === geography.rsmKey) {
       setActiveSelection(null);
