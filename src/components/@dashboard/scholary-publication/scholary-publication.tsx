@@ -14,7 +14,7 @@ import BarChart from "../../@product/bar-chart";
 import RadialChart from "../../@product/radial-chart";
 import ScatterChart from "../../@product/scatter-chart";
 
-// 
+//
 import { getTimeperiod } from "../../../utils/helpers";
 import { getScholaryPublications } from "../../../utils/api/charts";
 import { barChartLegendOptions } from "../../../utils/data/barchartLegend";
@@ -195,12 +195,12 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
         <>
           {activeGraph === "bar" && (
             <BarChart
-              keys={["Open_Articles", "Closed_Articles"]}
+              keys={["Open Articles", "Closed Articles"]}
               indexBy="year"
               legendY="Number of Publications"
               data={barChartData.map((data) => ({
-                Open_Articles: data.open_source,
-                Closed_Articles: data.closed_source,
+                "Open Articles": data.open_source,
+                "Closed Articles": data.closed_source,
                 year: data.year,
               }))}
               legends={[barChartLegendOptions]}
