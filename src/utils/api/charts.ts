@@ -39,8 +39,8 @@ export async function getAcademicResearchFundingChart(keywords: string[]) {
 }
 
 export async function getAcademicResearchTrends(keywords: string[]) {
-  const response = await axiosInstance.get<IAcademicResearchTrendResponse>(
-    `/dashboard/academic/usa_research_trends?q=${keywords.join(",")}`,
+  const response = await axiosInstance.get<IUniversityResearchTrendResponse>(
+    `/api/v1/ds-api/dashboard/uni-research-trend/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -104,17 +104,14 @@ interface IAcademicResearchFundingResponse {
   };
 }
 
-interface IAcademicResearchTrend {
-  locationName: string;
-  patentsCount: number;
-  openArticlesCount: number;
-  closedArticlesCount: number;
+export interface IUniverityItem {
+  year: number;
+  open_source: number;
+  closed_source: number;
+  patent: number;
 }
-
-interface IAcademicResearchTrendResponse {
-  data: {
-    chart: IAcademicResearchTrend[];
-  };
+export interface IUniversityResearchTrendResponse {
+  data: IUniverityItem[];
 }
 
 //
