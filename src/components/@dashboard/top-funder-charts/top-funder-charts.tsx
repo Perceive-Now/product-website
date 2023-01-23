@@ -32,7 +32,8 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
   //
   const [timeperiods, setTimeperiods] = useState<ITimePeriodItem[]>([]);
-  const [selectedTimeperiod, setSelectedTimeperiod] = useState<ITimePeriodItem | null>(null);
+  const [selectedTimeperiod, setSelectedTimeperiod] =
+    useState<ITimePeriodItem | null>(null);
 
   //
   const [activeData, setActiveData] = useState<ITopFundingItem[]>([]);
@@ -44,7 +45,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
     async () => {
       return await getTopFundingChart(props.keywords);
     },
-    { enabled: !!props.keywords.length },
+    { enabled: !!props.keywords.length }
   );
 
   // Fetching time period
@@ -79,12 +80,15 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
       selectedData.push({
         year: i,
-        amount: item?.amount ?? 0,
+        amount: item?.amount ?? 0
       });
     }
 
     //
-    const totalAmount = selectedData.reduce((prev, curr) => (prev += curr.amount), 0);
+    const totalAmount = selectedData.reduce(
+      (prev, curr) => (prev += curr.amount),
+      0
+    );
 
     setHasActiveData(totalAmount > 0);
 
@@ -99,7 +103,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
   const pieChartData = (activeData ?? []).map((item) => ({
     id: item.year,
     label: item.year,
-    value: item.amount,
+    value: item.amount
   }));
 
   //
@@ -108,9 +112,9 @@ export default function TopFunderCharts(props: ITopFunderProps) {
       id: "Fundings (USD)",
       data: (activeData ?? []).map((item) => ({
         x: item.year,
-        y: item.amount,
-      })),
-    },
+        y: item.amount
+      }))
+    }
   ];
 
   //
@@ -138,7 +142,10 @@ export default function TopFunderCharts(props: ITopFunderProps) {
         </div>
 
         <div className="flex items-center">
-          <ChartButtons activeChart={activeGraph} setActiveChart={setActiveGraph} />
+          <ChartButtons
+            activeChart={activeGraph}
+            setActiveChart={setActiveGraph}
+          />
         </div>
       </div>
 
@@ -163,7 +170,10 @@ export default function TopFunderCharts(props: ITopFunderProps) {
           {activeGraph === "donut" && <PieChart data={pieChartData} />}
 
           {activeGraph === "scatter" && (
-            <ScatterChart data={scatterChartData} legendY="Funding Amount (USD)" />
+            <ScatterChart
+              data={scatterChartData}
+              legendY="Funding Amount (USD)"
+            />
           )}
         </>
       )}
