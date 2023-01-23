@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { US_STATES } from "./constants";
 
 //
 interface IFormatNumberOptions {
@@ -83,3 +84,7 @@ export const errorMessageHandler = (errors: IErrorMessage) => {
 interface IErrorMessage {
   [key: string]: string[];
 }
+
+export const getStateFullName = (code: string) => {
+  return US_STATES[code];
+};

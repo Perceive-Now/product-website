@@ -31,16 +31,16 @@ export async function getExpertsCountGraph(keywords: string[]) {
 }
 
 export async function getAcademicResearchFundingChart(keywords: string[]) {
-  const response = await axiosInstance.get<IAcademicResearchFundingResponse>(
-    `/dashboard/academic/funding_chart?q=${keywords.join(",")}`,
+  const response = await axiosInstance.get<IUniversityResearchFundingResponse>(
+    `/api/v1/ds-api/dashboard/uni-state-landscape/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
 }
 
 export async function getAcademicResearchTrends(keywords: string[]) {
-  const response = await axiosInstance.get<IAcademicResearchTrendResponse>(
-    `/dashboard/academic/usa_research_trends?q=${keywords.join(",")}`,
+  const response = await axiosInstance.get<IUniversityResearchTrendResponse>(
+    `/api/v1/ds-api/dashboard/uni-research-trend/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -89,32 +89,27 @@ interface IExpertCountResponse {
   data: IExpertCountData;
 }
 
-interface IAcademicResearchFunding {
-  name: string;
-  percentage: number;
+export interface IUniversityResearchFunding {
+  key: string;
+  value: number;
 }
 
-interface IAcademicResearchFundingResponse {
-  data: {
-    chart: IAcademicResearchFunding[];
-    captionText: {
-      fundingAmount: number;
-      numberOfYears: number;
-    };
+interface IUniversityResearchFundingResponse {
+  data: IUniversityResearchFunding[];
+  captionText?: {
+    fundingAmount: number;
+    numberOfYears: number;
   };
 }
 
-interface IAcademicResearchTrend {
-  locationName: string;
-  patentsCount: number;
-  openArticlesCount: number;
-  closedArticlesCount: number;
+export interface IUniverityItem {
+  year: number;
+  open_source: number;
+  closed_source: number;
+  patent: number;
 }
-
-interface IAcademicResearchTrendResponse {
-  data: {
-    chart: IAcademicResearchTrend[];
-  };
+export interface IUniversityResearchTrendResponse {
+  data: IUniverityItem[];
 }
 
 //
