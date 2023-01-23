@@ -4,7 +4,7 @@ import ReactTooltip from "react-tooltip";
 
 import { useState } from "react";
 
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 //
 import {
@@ -361,31 +361,6 @@ export default function WorldMap(props: ISvgMapProps) {
               ))
             }
           </Geographies>
-
-          {/* Markers */}
-          {!isHeatmap &&
-            props.data
-              ?.filter((item) => item.coordinate)
-              ?.map((marker, index) => (
-                <Marker
-                  key={index}
-                  coordinates={[
-                    (marker.coordinate?.[1] ?? 0) - 10 - 0.25,
-                    (marker.coordinate?.[0] ?? 0) + 0.25,
-                  ]}
-                  className={classNames(
-                    "focus:outline-none cursor-pointer",
-                    isZoomed ? "text-white" : "text-[#FFA300]",
-                  )}
-                  data-tip=""
-                  data-for="marker-details"
-                  onMouseEnter={() => setActiveMarkerData(marker)}
-                  onMouseLeave={() => setActiveMarkerData(undefined)}
-                >
-                  <circle r={isZoomed ? 3 : 4} fill="red" />
-                  <circle r={isZoomed ? 2 : 3} fill="white" />
-                </Marker>
-              ))}
         </ComposableMap>
       </div>
 
@@ -441,8 +416,11 @@ export interface IWorldMapDataItem {
   employment?: string;
   patents?: number;
   publications?: number;
+  city?: string;
+  state?: string;
   experts?: number;
-  coordinate?: [number, number];
+  lat?: string;
+  lng?: string;
 }
 
 interface ISvgMapProps {

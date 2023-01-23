@@ -16,7 +16,7 @@ export async function getPatentHeatmap(keywords: string[]) {
  */
 export async function getCompetitorMapInfo(keywords: string[]) {
   const response = await axiosInstance.get<ICompetitorMapResponse>(
-    `/dashboard/geo_footprint_patents?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/geo-footprint-patent/?q=${keywords.join(",")}`,
   );
 
   return response.data;
@@ -27,48 +27,45 @@ export async function getCompetitorMapInfo(keywords: string[]) {
  */
 export async function getExpertsMapInfo(keywords: string[]) {
   const response = await axiosInstance.get<IExpertMapResponse>(
-    `/dashboard/geo_footprint_experts?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/experts-footprint/?q=${keywords.join(",")}`,
   );
 
-  return response.data;
+  return response.data.data;
 }
 
 /**
  *
  */
-interface IPatentListItem {
-  abstract: string;
-  location: string;
-  title: string;
-}
-
 interface IPatentMapItem {
   company: string;
-  coordinates: [number, number];
+  coordiantes: [string, string];
   count: number;
   location: string;
 }
 
 interface ICompetitorMapResponse {
-  patentsList: IPatentListItem[];
-  patentsMap: IPatentMapItem[];
+  patentInfo: IPatentMapItem[];
+  publicationInfo: IPatentMapItem[];
 }
 
 /**
  *
  */
 interface IExpertMapItem {
-  coordinates: [number, number];
-  employment: string;
-  location: string;
   name: string;
-  patentcount: number;
+  org: string;
+  lat: string;
+  lon: string;
+  city: string;
+  state: string;
+  count: number;
 }
 
 interface IExpertMapResponse {
-  academicExpertMap: IExpertMapItem[];
-  federalExpertMap: IExpertMapItem[];
-  industryExpertMap: IExpertMapItem[];
+  data: {
+    Academic_patent_experts: IExpertMapItem[];
+    Industry_patent_experts: IExpertMapItem[];
+  };
 }
 
 /**

@@ -17,9 +17,6 @@ import { getCompetitorMapInfo } from "../../../utils/api/map";
  *
  */
 export default function CompetetitorMap(props: IFootprintHeatmapProps) {
-  // const [currentMode, setCurrentMode] =
-  //   useState<availableModes>("basicPublication");
-
   const { data, isLoading, isError, error } = useQuery(
     ["footprint-for-competetitors", ...props.keywords],
     async () => {
@@ -28,16 +25,19 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
     { enabled: !!props.keywords.length },
   );
 
+  //
   const finalData: IWorldMapDataItem[] = isLoading
     ? []
-    : data?.patentsMap?.map((itm) => ({
-        coordinate: itm.coordinates,
-        name: itm.company,
-        location: itm.location,
-        patents: itm.count,
+    : data?.patentInfo?.map((item) => ({
+        name: item.company,
+        location: item.location,
+        patents: item.count,
+        lat: item.coordiantes?.[0],
+        lng: item.coordiantes?.[1],
       })) ?? [];
 
-  const allPatentList = (isLoading ? [] : data?.patentsList) ?? [];
+  //
+  const allPatentList = (isLoading ? [] : data?.patentInfo) ?? [];
 
   //
   return (
@@ -54,56 +54,28 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
         >
           <div className="flex justify-between">
             <p className="text-sm">Geolocation of companies working in your area of interest</p>
-
-            {/* <div className="flex gap-x-3 text-sm">
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="basicPublication"
-                  name="currentModeCompetetitorMap"
-                  checked={currentMode === "basicPublication"}
-                  onChange={() => setCurrentMode("basicPublication")}
-                />
-                <label htmlFor="basicPublication" className="cursor-pointer">
-                  Publications
-                </label>
-              </div>
-
-              <div className="flex h-full items-center gap-x-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  id="basicPatents"
-                  name="currentModeCompetetitorMap"
-                  checked={currentMode === "basicPatents"}
-                  onChange={() => setCurrentMode("basicPatents")}
-                />
-                <label htmlFor="basicPatents" className="cursor-pointer">
-                  Patents
-                </label>
-              </div>
-            </div> */}
           </div>
         </PageTitle>
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
-        <div className="col-span-3 overflow-y-scroll pr-2">
+        <div className="col-span-3 h-[610px] overflow-hidden pr-2">
           <div>
-            {allPatentList?.slice(0, 50)?.map((itm, index) => (
+            {allPatentList?.slice(0, 5)?.map((itm, index) => (
               <div
                 key={index}
                 className={classNames("mt-3", {
                   "pb-3 border-b border-gray-300": index !== allPatentList?.length - 1,
                 })}
               >
-                <p className="text-lg leading-tight">
+                <p className="text-lg leading-tight line-clamp-1">
                   <span className="mr-1 font-semibold text-primary-800">{index + 1}.</span>
-                  <span>{itm.title}</span>
+                  <span>{itm.company}</span>
                 </p>
 
-                <p className="my-[12px] text-sm line-clamp-4">{itm.abstract}</p>
+                {/* <p className="my-[12px] text-sm line-clamp-4">{itm.abstract}</p> */}
 
-                <p>{itm.location}</p>
+                <p className="text-sm">{itm.location}</p>
               </div>
             ))}
             {/* Scrollable list goes here... need to display items here */}
@@ -118,8 +90,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
   );
 }
 
-// type availableModes = "basicPublication" | "basicPatents";
-
+//
 interface IFootprintHeatmapProps {
   keywords: string[];
 }

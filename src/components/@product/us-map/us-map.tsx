@@ -2,7 +2,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import ReactTooltip from "react-tooltip";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 //
 import { BriefcaseIcon, LocationIcon } from "../../icons";
@@ -188,34 +188,6 @@ export default function USMap(props: IUSMapProps) {
                     className="focus:outline-none drop-shadow-sm"
                   />
                 ))}
-
-                {/* Markers */}
-                {props.type !== "heatmap" &&
-                  props.data
-                    ?.filter((item) => item.coordinate?.length)
-                    ?.map((marker, index) => {
-                      const _centroid = marker.coordinate ?? [0, 0];
-                      const centroid: [number, number] = [_centroid[1], _centroid[0]];
-
-                      return (
-                        <g key={index + "-name"}>
-                          {centroid[0] > -160 && centroid[0] < -67 && (
-                            <>
-                              <Marker
-                                coordinates={centroid}
-                                data-tip=""
-                                data-for="marker-details"
-                                onMouseEnter={() => setActiveMarkerData(marker)}
-                                onMouseLeave={() => setActiveMarkerData(undefined)}
-                              >
-                                <circle r={3} fill="red" />
-                                <circle r={2} fill="white" />
-                              </Marker>
-                            </>
-                          )}
-                        </g>
-                      );
-                    })}
               </>
             )}
           </Geographies>
