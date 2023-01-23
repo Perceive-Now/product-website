@@ -1,14 +1,7 @@
 export const WEBSITE_URL = process.env.REACT_APP_WEBSITE_URL;
 export const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY ?? "";
 
-export const COLORS = [
-  "#B6A2D8",
-  "#7F4BD8",
-  "#442873",
-  "#d6d6d6",
-  "#e0d4f2",
-  "#b5a2d8"
-];
+export const COLORS = ["#B6A2D8", "#7F4BD8", "#442873", "#d6d6d6", "#e0d4f2", "#b5a2d8"];
 
 export const YEAR_DIFFERENCE = 4;
 export const DEFAULT_TIME_PERIOD_END_YEAR = new Date().getFullYear();
@@ -17,20 +10,20 @@ export const DEFAULT_TIME_PERIOD_START_YEAR = DEFAULT_TIME_PERIOD_END_YEAR - 5;
 export const TIME_PERIODS = [
   {
     label: "Past 10 years",
-    value: "10yrs"
+    value: "10yrs",
   },
   {
     label: "Past 5 years",
-    value: "5yrs"
+    value: "5yrs",
   },
   {
     label: "Past 3 years",
-    value: "3yrs"
+    value: "3yrs",
   },
   {
     label: "Past 12 months",
-    value: "12mth"
-  }
+    value: "12mth",
+  },
 ];
 
 export const US_STATES: IState = {
@@ -84,7 +77,7 @@ export const US_STATES: IState = {
   WA: "Washington",
   WV: "West Virginia",
   WI: "Wisconsin",
-  WY: "Wyoming"
+  WY: "Wyoming",
 };
 interface IState {
   [key: string]: string;

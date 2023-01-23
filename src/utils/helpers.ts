@@ -10,10 +10,7 @@ interface IFormatNumberOptions {
 /**
  *
  */
-export const formatNumber = (
-  number: number,
-  options?: IFormatNumberOptions
-) => {
+export const formatNumber = (number: number, options?: IFormatNumberOptions) => {
   const maxFraction = options?.maxFraction ?? 1;
 
   return Intl.NumberFormat("en-US", {
@@ -22,9 +19,9 @@ export const formatNumber = (
     ...(options?.isCurrency
       ? {
           style: "currency",
-          currency: "USD"
+          currency: "USD",
         }
-      : {})
+      : {}),
   }).format(number);
 };
 
@@ -58,13 +55,11 @@ export const getTimeperiod = (end?: number | string) => {
 
   //
   while (startYear >= MIN_YEAR) {
-    const endYear = dayjs(startYear)
-      .subtract(YEAR_DIFFERENCE, "year")
-      .format("YYYY");
+    const endYear = dayjs(startYear).subtract(YEAR_DIFFERENCE, "year").format("YYYY");
 
     timeperiodArray.push({
       label: `${endYear}-${startYear}`,
-      value: `${endYear}-${startYear}`
+      value: `${endYear}-${startYear}`,
     });
 
     startYear = dayjs(endYear).subtract(1, "year").format("YYYY");

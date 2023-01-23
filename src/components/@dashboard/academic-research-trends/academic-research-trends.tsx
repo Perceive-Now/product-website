@@ -17,10 +17,7 @@ import ChartButtons, { ChartType } from "../../reusable/chart-buttons";
 
 //
 import { getTimeperiod } from "../../../utils/helpers";
-import {
-  getAcademicResearchTrends,
-  IUniverityItem,
-} from "../../../utils/api/charts";
+import { getAcademicResearchTrends, IUniverityItem } from "../../../utils/api/charts";
 import { barChartLegendOptions } from "../../../utils/data/barchartLegend";
 
 /**
@@ -31,8 +28,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
 
   //
   const [timeperiods, setTimeperiods] = useState<ITimePeriodItem[]>([]);
-  const [selectedTimeperiod, setSelectedTimeperiod] =
-    useState<ITimePeriodItem | null>(null);
+  const [selectedTimeperiod, setSelectedTimeperiod] = useState<ITimePeriodItem | null>(null);
 
   //
   const [activeData, setActiveData] = useState<IUniverityItem[]>([]);
@@ -43,7 +39,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     async () => {
       return await getAcademicResearchTrends(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   // Fetching time period
@@ -51,9 +47,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
     if (!data) return;
 
     //
-    const sortedUniversityData = (data ?? [])?.sort((a, b) =>
-      a.year > b.year ? 1 : -1
-    );
+    const sortedUniversityData = (data ?? [])?.sort((a, b) => (a.year > b.year ? 1 : -1));
 
     //
     const endUniversityYear = sortedUniversityData[0]?.year;
@@ -101,9 +95,8 @@ export default function AcademicResearchTrends(props: IResearchProps) {
 
     //
     const totalAmount = selectedData.reduce(
-      (prev, curr) =>
-        (prev += curr.open_source + curr.closed_source + curr.patent),
-      0
+      (prev, curr) => (prev += curr.open_source + curr.closed_source + curr.patent),
+      0,
     );
 
     setHasActiveData(totalAmount > 0);
@@ -163,10 +156,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
 
       openArticlesData = [...openArticlesData, { x: d.year, y: d.open_source }];
 
-      closedArticlesData = [
-        ...closedArticlesData,
-        { x: d.year, y: d.closed_source },
-      ];
+      closedArticlesData = [...closedArticlesData, { x: d.year, y: d.closed_source }];
     });
 
     patentsObj.data = patentsData;
@@ -233,18 +223,11 @@ export default function AcademicResearchTrends(props: IResearchProps) {
           )}
 
           {activeGraph === "scatter" && (
-            <ScatterChart
-              data={finalScatterData}
-              legendX="Location"
-              legendY="Articles"
-            />
+            <ScatterChart data={finalScatterData} legendX="Location" legendY="Articles" />
           )}
 
           {activeGraph === "donut" && (
-            <RadialChart
-              data={radialData}
-              colors={["#B6A2D8", "#7F4BD8", "#442873"]}
-            />
+            <RadialChart data={radialData} colors={["#B6A2D8", "#7F4BD8", "#442873"]} />
           )}
         </Fragment>
       )}

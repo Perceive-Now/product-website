@@ -17,7 +17,7 @@ import { ChartType } from "../../reusable/chart-buttons";
 import { getStateFullName } from "../../../utils/helpers";
 import {
   getAcademicResearchFundingChart,
-  IUniversityResearchFunding
+  IUniversityResearchFunding,
 } from "../../../utils/api/charts";
 import NoDataMessage from "../../reusable/no-data";
 
@@ -29,9 +29,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
   const [activeGraph, setActiveGraph] = useState<ChartType>("bar");
 
   //
-  const [activeData, setActiveData] = useState<IUniversityResearchFunding[]>(
-    []
-  );
+  const [activeData, setActiveData] = useState<IUniversityResearchFunding[]>([]);
   const [hasActiveData, setHasActiveData] = useState(true);
 
   const { data, isLoading, isError, error } = useQuery(
@@ -39,7 +37,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
     async () => {
       return await getAcademicResearchFundingChart(props.keywords);
     },
-    { enabled: !!props.keywords.length }
+    { enabled: !!props.keywords.length },
   );
 
   // Fetching data for selected time period
@@ -51,7 +49,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
 
     const selectedData = data.map((item) => ({
       key: getStateFullName(item.key),
-      value: item.value
+      value: item.value,
     }));
 
     setHasActiveData(totalAmount > 0);
@@ -65,7 +63,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
   const finalPieValue = (activeData ?? []).map((item) => ({
     id: item.key,
     label: item.key,
-    value: item.value
+    value: item.value,
   }));
 
   //
@@ -74,9 +72,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       id: "States",
       data: (activeData ?? []).map((item) => ({
         x: item.key,
-        y: item.value
-      }))
-    }
+        y: item.value,
+      })),
+    },
   ];
 
   return (
@@ -96,10 +94,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       {/* Controls */}
       <div className="pt-1 flex justify-end gap-x-3">
         <div className="flex items-center">
-          <ChartButtons
-            activeChart={activeGraph}
-            setActiveChart={setActiveGraph}
-          />
+          <ChartButtons activeChart={activeGraph} setActiveChart={setActiveGraph} />
         </div>
       </div>
 
@@ -125,11 +120,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
           {activeGraph === "donut" && <PieChart data={finalPieValue} />}
 
           {activeGraph === "scatter" && (
-            <ScatterChart
-              data={scatterChartData}
-              legendX="States"
-              legendY="Patents"
-            />
+            <ScatterChart data={scatterChartData} legendX="States" legendY="Patents" />
           )}
         </>
       )}
