@@ -12,6 +12,9 @@ import DataSection from "../../reusable/data-section";
 import { formatNumber } from "../../../utils/helpers";
 import { getTop5Funders } from "../../../utils/api/dashboard";
 
+//
+import type { ITopFunder } from "../../../utils/api/dashboard";
+
 /*
  *
  **/
@@ -25,26 +28,32 @@ export default function TopFundersList(props: ITopFundersListProps) {
   );
 
   //
-  const columns = useMemo<ColumnDef<ITopFunders>[]>(
+  const formattedData = (data ?? []).sort((a, b) => b.award_amount - a.award_amount).slice(0, 5);
+
+  //
+  const columns = useMemo<ColumnDef<ITopFunder>[]>(
     () => [
       {
-        header: "Rank",
-        accessorKey: "rank",
+        header: "Project title",
+        accessorKey: "project_title",
+        cell: (item) => <p className="line-clamp-1">{item.row.original.project_title}</p>,
       },
       {
-        header: "Funder",
-        accessorKey: "funder_name",
-      },
-      {
-        header: "Funding (USD)",
-        accessorKey: "total_funding",
+        header: "Funding",
+        accessorKey: "award_amount",
+        minSize: 80,
         cell: (item) => (
           <span>
-            {formatNumber(item.row.original.total_funding, {
+            {formatNumber(item.row.original.award_amount, {
               isCurrency: true,
             })}
           </span>
         ),
+      },
+      {
+        header: "Principal Investigator",
+        accessorKey: "lead_investigator_given",
+        minSize: 170,
       },
     ],
     [],
@@ -64,8 +73,8 @@ export default function TopFundersList(props: ITopFundersListProps) {
         />
       }
     >
-      <div className="h-[300px] mt-5">
-        <ReactTable columnsData={columns} rowsData={data} size="medium" />
+      <div className="min-h-[300px] mt-5">
+        <ReactTable columnsData={columns} rowsData={formattedData} size="medium" />
       </div>
 
       <div className="text-primary-600 mt-4 cursor-pointer">
@@ -77,9 +86,4 @@ export default function TopFundersList(props: ITopFundersListProps) {
 
 interface ITopFundersListProps {
   keywords: string[];
-}
-
-interface ITopFunders {
-  funder_name: string;
-  total_funding: number;
 }

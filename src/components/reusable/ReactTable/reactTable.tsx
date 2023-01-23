@@ -42,7 +42,7 @@ export default function ReactTable(props: IReactTable) {
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  className="pb-2 text-left text-primary-900 font-semibold"
+                  className="pb-2 px-[4px] text-left text-primary-900 font-semibold text-base"
                   {...{
                     style: {
                       minWidth: header.column.columnDef.minSize,
@@ -62,7 +62,7 @@ export default function ReactTable(props: IReactTable) {
 
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t-[1px] border-t-gray-200 text-gray-800">
+            <tr key={row.id} className="border-t-[1px] px-[4px] border-t-gray-200 text-gray-800">
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}

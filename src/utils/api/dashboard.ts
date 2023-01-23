@@ -59,15 +59,11 @@ export async function getCompetitors(keywords: string[]) {
 }
 
 export async function getTop5Funders(keywords: string[]) {
-  const query = keywords.join(",").replace(" ", "");
   const response = await axiosInstance.get<ITopFunderResponse>(
-    `/dashboard/top_5_funders?q=${query}`,
+    `/api/v1/ds-api/dashboard/top-five-lambda/?q=${keywords.join(",")}`,
   );
 
-  return response.data.data.map((data, index) => ({
-    ...data,
-    rank: index + 1,
-  }));
+  return response.data.data;
 }
 
 export async function getExpertsTable(keywords: string[]) {
@@ -145,11 +141,10 @@ interface IHighlightResponse {
 }
 
 //
-interface ITopFunder {
-  rank: number;
-  name: string;
-  fundingAmount: number;
-  date: string;
+export interface ITopFunder {
+  project_title: string;
+  award_amount: number;
+  lead_investigator_given: string;
 }
 
 interface ITopFunderResponse {
