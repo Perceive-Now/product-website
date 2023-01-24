@@ -45,7 +45,7 @@ export const abbreviateString = (inputString: string, maxLength?: number) => {
 export const getTimeperiod = (end?: number | string) => {
   const YEAR_DIFFERENCE = 4;
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear() - 1;
 
   //
   let startYear = currentYear.toString();
