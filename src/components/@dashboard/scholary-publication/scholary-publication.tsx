@@ -52,7 +52,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
     //
     const sortedData = publicationChartData.sort((a, b) => (a.year > b.year ? 1 : -1));
-    const endYear = sortedData[0].year;
+    const endYear = sortedData[0]?.year;
 
     const timePeriods = getTimeperiod(endYear);
 

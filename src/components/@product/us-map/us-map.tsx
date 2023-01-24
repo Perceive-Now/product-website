@@ -125,6 +125,8 @@ export default function USMap(props: IUSMapProps) {
   };
 
   const getRangeForPatents = (data?: IWorldMapDataItem[]) => {
+    if (!data?.length) return [];
+
     const maxVal = (data ?? []).sort((a, b) => (b.patents ?? 0) - (a.patents ?? 0))[0].patents ?? 0;
     const maxValue = Math.ceil(maxVal / 100) * 100;
 

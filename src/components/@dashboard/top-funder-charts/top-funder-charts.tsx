@@ -53,7 +53,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
 
     //
     const sortedData = data.sort((a, b) => (a.year > b.year ? 1 : -1));
-    const endPatentYear = sortedData[0].year;
+    const endPatentYear = sortedData[0]?.year;
 
     const timePeriods = getTimeperiod(endPatentYear);
 
