@@ -394,7 +394,7 @@ export function TooltipGroupItem(props: ITooltipGroupItemProp) {
   return (
     <div className="min-w-[80px] h-9 px-[6px] py-2 bg-gray-100 text-center text-xs shadow flex-grow">
       <p className="font-bold text-lg">
-        <span>{props.value ?? "-"}</span>
+        <span>{props.value?.toLocaleString() ?? "-"}</span>
         {props.isPercentage && props.value && "%"}
       </p>
       <p>{props.title}</p>

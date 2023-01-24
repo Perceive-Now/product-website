@@ -86,7 +86,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          <USMap type="heatmap" data={mapData} />
+          <USMap type="heatmap_industry" data={mapData} />
         </div>
       </div>
     </DataSection>
