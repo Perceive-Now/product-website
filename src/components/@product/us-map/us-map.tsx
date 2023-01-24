@@ -32,13 +32,13 @@ const COLOR_RANGE = [
 
 const HEATMAP_COLORS = [
   "bg-[#D7D7D7]",
-  "bg-[#5c1fc4e6]",
   "bg-[#5c1fc433]",
-  "bg-[#5c1fc4e6]",
-  "bg-[#442873e6]",
-  "bg-[#B6A2D8]",
+  "bg-[#5c1fc44d]",
+  "bg-[#5c1fc466]",
+  "bg-[#7f4bd8cc]",
   "bg-[#7F4BD8]",
-  "bg-[#5C1FC4]",
+  "bg-[#5c1fc4e6]",
+  "bg-[#533f73e6]",
   "bg-[#533F73]",
   "bg-[#442873]",
 ];
