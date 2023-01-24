@@ -93,7 +93,8 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
         </div>
 
         <div className="col-span-9 bg-gray-200">
-          <GoogleMaps isWorldMap={true} data={mapData} />
+          {industryMode === "industry" && <GoogleMaps isWorldMap={true} data={mapData} />}
+          {industryMode === "academic" && <GoogleMaps isWorldMap={true} data={mapData} />}
         </div>
       </div>
     </DataSection>
