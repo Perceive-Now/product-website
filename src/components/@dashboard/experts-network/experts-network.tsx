@@ -69,8 +69,8 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           <p className="text-lg font-semibold text-primary-900 mb-2">Based on patents</p>
 
           <div className="grid grid-cols-11 mb-3">
-            <div className="col-span-5 font-semibold">Name</div>
-            <div className="col-span-5 font-semibold">Company</div>
+            <div className="col-span-4 font-semibold">Name</div>
+            <div className="col-span-6 font-semibold">Company</div>
             <div className="col-span-1 text-left pr-1 font-semibold">Patents</div>
           </div>
 
@@ -89,8 +89,8 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           <p className="text-lg font-semibold text-primary-900 mb-2">Based on publications</p>
 
           <div className="grid grid-cols-11 mb-3">
-            <div className="col-span-5 font-semibold">University Name</div>
-            <div className="col-span-5 font-semibold">Company</div>
+            <div className="col-span-4 font-semibold">University Name</div>
+            <div className="col-span-6 font-semibold">Company</div>
             <div className="col-span-1 text-left pr-1 font-semibold">Publications</div>
           </div>
 
@@ -113,11 +113,11 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
 function ListItem(props: IListItemProps) {
   return (
     <div className="grid grid-cols-11 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
-      <div className="col-span-5 flex items-center">
+      <div className="col-span-4 flex items-center">
         <p className="line-clamp-2">{props.name ?? "-"}</p>
       </div>
-      <div className="col-span-5 flex items-center">{props.organization ?? "-"}</div>
-      <div className="col-span-1 pr-1 flex items-center justify-start">
+      <div className="col-span-6 flex items-center line-clamp-1">{props.organization ?? "-"}</div>
+      <div className="col-span-1 pr-1 flex items-center justify-start line-clamp-1">
         {props.value?.toLocaleString() ?? "-"}
       </div>
     </div>
