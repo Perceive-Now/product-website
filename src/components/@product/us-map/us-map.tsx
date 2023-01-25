@@ -173,7 +173,7 @@ export default function USMap(props: IUSMapProps) {
         </ReactTooltip>
       )}
 
-      {props.type === "heatmap_industry" && heatmapHoveredState && (
+      {heatmapHoveredState && (
         <ReactTooltip id="country-name">
           <div className="flex items-center gap-x-0.5">
             <LocationIcon className="text-gray-400" />
@@ -208,22 +208,18 @@ export default function USMap(props: IUSMapProps) {
                     stroke="gray"
                     strokeWidth={0.25}
                     onMouseEnter={() => {
-                      if (props.type === "heatmap_industry") {
-                        setHeatmapHoveredState(geo?.properties?.name);
+                      setHeatmapHoveredState(geo?.properties?.name);
 
-                        //
-                        const dataForCurrentState = props.data?.find(
-                          (itm) =>
-                            itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
-                        );
-                        setActiveMarkerData(dataForCurrentState);
-                      }
+                      //
+                      const dataForCurrentState = props.data?.find(
+                        (itm) =>
+                          itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
+                      );
+                      setActiveMarkerData(dataForCurrentState);
                     }}
                     onMouseLeave={() => {
-                      if (props.type === "heatmap_industry") {
-                        setHeatmapHoveredState("");
-                        setActiveMarkerData(undefined);
-                      }
+                      setHeatmapHoveredState("");
+                      setActiveMarkerData(undefined);
                     }}
                     fill={getFillColor(geo)}
                     className="focus:outline-none drop-shadow-sm"
