@@ -81,16 +81,7 @@ export default function PatentListPage() {
     {
       header: "Inventor",
       accessorKey: "inventor",
-      cell: (data) => {
-        const inventors = data.row.original.inventor;
-
-        return (
-          <div>
-            <p className="line-clamp-1">{inventors[0].name || "-"}</p>
-            {inventors.length > 1 && <p className="text-xs">+{inventors.length - 1} more</p>}
-          </div>
-        );
-      },
+      cell: (data) => <p className="line-clamp-1">{data.row.original.inventor || "-"}</p>,
       minSize: 200,
       maxSize: 200,
     },

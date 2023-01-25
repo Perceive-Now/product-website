@@ -29,10 +29,7 @@ export interface IDeepSearchPatentListItem {
   title: string;
   date: string;
   company: string;
-  inventor: {
-    name: string;
-    id: string;
-  }[];
+  inventor: string;
 }
 
 interface IDeepSearchPatentListResponse {
