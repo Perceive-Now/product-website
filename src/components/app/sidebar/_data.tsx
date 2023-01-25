@@ -35,13 +35,13 @@ const sidebarItems: ISidebarListItem[] = [
         title: "Publications",
         key: "publications",
         icon: <PublicationsIcon />,
-        to: "/",
+        to: "/deep-search/publications",
       },
       {
         title: "Patents",
         key: "patents",
         icon: <PatentsIcon />,
-        to: "/",
+        to: "/deep-search/patents",
       },
       {
         title: "Companies",

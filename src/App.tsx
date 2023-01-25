@@ -21,7 +21,14 @@ import CompleteSignup from "./pages/authentication/signup/complete";
 import HelpPage from "./pages/miscs/help";
 import FeedbackPage from "./pages/miscs/feedback";
 
+// Product dashboard
 import DashboardPage from "./pages/product/dashboard";
+
+// Deep search - Patent
+import PatentListPage from "./pages/product/deep-search/patents";
+
+// Deep search - Publication
+import PublicationListPage from "./pages/product/deep-search/publications";
 
 //
 import PageNotFound404 from "./pages/404";
@@ -51,6 +58,12 @@ function App() {
           <Route element={<DefaultLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
 
+            {/* Deep Search pages */}
+            <Route path="/deep-search/patents" element={<PatentListPage />} />
+
+            <Route path="/deep-search/publications" element={<PublicationListPage />} />
+
+            {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />
           </Route>

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+
 import {
   flexRender,
   getCoreRowModel,
@@ -7,31 +8,30 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
+import type { ColumnDef } from "@tanstack/react-table";
+
 /*
  *
  **/
 export default function ReactTable(props: IReactTable) {
-  const { columnsData, rowsData } = props;
+  const [rowSelection, setRowSelection] = useState({});
 
+  //
   const size = props.size ?? "large";
 
-  const [rowSelection, setRowSelection] = useState({});
-  const [data, setData] = useState(rowsData ?? []);
-
-  useEffect(() => {
-    setData(rowsData);
-  }, [rowsData]);
-
+  //
   const table = useReactTable({
-    data,
-    columns: columnsData,
+    data: props.rowsData ?? [],
+    columns: props.columnsData ?? [],
     state: { rowSelection },
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
     debugTable: process.env.NODE_ENV === "development",
   });
 
+  //
   return (
     <div className="mt-1 w-full">
       <table className="w-full">
@@ -66,7 +66,7 @@ export default function ReactTable(props: IReactTable) {
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className={classNames({
+                  className={classNames("pr-2", {
                     "py-1": size === "small",
                     "py-2": size === "medium",
                     "py-4": size === "large",
@@ -84,7 +84,7 @@ export default function ReactTable(props: IReactTable) {
 }
 interface IReactTable {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columnsData?: any;
+  columnsData?: ColumnDef<any>[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowsData?: any;
   size?: "small" | "medium" | "large";
