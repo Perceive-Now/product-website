@@ -74,12 +74,12 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
 
     //
     for (let i = +startYear; i <= +endYear; i++) {
-      const item = publicationChartData.find((item) => +item.year === i);
+      const scholarlyItem = publicationChartData.find((item) => +item.year === i);
 
       selectedData.push({
         year: i,
-        closed_source: item?.closed_source ?? 0,
-        open_source: item?.open_source ?? 0,
+        closed_source: scholarlyItem?.closed_source ?? 0,
+        open_source: scholarlyItem?.open_source ?? 0,
       });
     }
 

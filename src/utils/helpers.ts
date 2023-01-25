@@ -49,7 +49,7 @@ export const getTimeperiod = (end?: number | string) => {
 
   //
   let startYear = currentYear.toString();
-  const MIN_YEAR = end ?? (currentYear - 4).toString();
+  const MIN_YEAR = end || (currentYear - 4).toString();
 
   const timeperiodArray = [];
 
