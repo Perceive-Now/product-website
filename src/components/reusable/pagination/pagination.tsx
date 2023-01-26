@@ -1,141 +1,82 @@
+/**
+ * CREDITS: https://mantine.dev
+ * Code has been directly copied from mantine's Github repo and adapted to the project as necessary
+ */
 import classNames from "classnames";
-import { Fragment, useMemo } from "react";
 
 //
+import { usePagination } from "../../../hooks/usePagination";
 import { ChevronLeft, ChevronRight } from "../../icons";
 
-/**
- *
- */
-export default function Pagination(props: IPagination) {
-  const { currentPage, visiblePageNumbers = 10, totalCount, pageSize = 10, gotoPage } = props;
+export interface PaginationProps {
+  /** Active initial page for uncontrolled component */
+  initialPage?: number;
 
-  const pageCountArray = useMemo(
-    () => Array.from({ length: Math.ceil(totalCount / pageSize) }, (v, i) => i + 1),
-    [pageSize, totalCount],
-  );
+  /** Controlled active page number */
+  page?: number;
 
-  const isPageNumInVisibleRange = currentPage < visiblePageNumbers;
-  const totalPages = pageCountArray.length;
+  /** Total amount of pages */
+  total: number;
 
-  let NeighbourRange = 0;
-  let lowerNeighbourPageArray: number[] = [];
-  const higherNeighbourPageArray: number[] = [];
+  /** Siblings amount on left/right side of selected page */
+  siblings?: number;
 
-  if (!isPageNumInVisibleRange) {
-    NeighbourRange = Math.ceil(visiblePageNumbers / 2);
+  /** Amount of elements visible on left/right edges */
+  boundaries?: number;
 
-    for (let i = 1; i <= NeighbourRange; i++) {
-      const lowerNeighbourPage = currentPage - i;
-      const higherNeighbourPage = currentPage + i;
+  /** Callback fired after change of each page */
+  onChange?: (page: number) => void;
 
-      if (lowerNeighbourPage >= 1) {
-        lowerNeighbourPageArray.push(lowerNeighbourPage);
-      }
-
-      if (higherNeighbourPage <= totalPages) {
-        higherNeighbourPageArray.push(higherNeighbourPage);
-      }
-    }
-    lowerNeighbourPageArray = lowerNeighbourPageArray.reverse();
-  }
-
-  const hasLowerPages = lowerNeighbourPageArray[0] > 1;
-  const hasHigherPages = higherNeighbourPageArray[higherNeighbourPageArray.length - 1] < totalPages;
-
-  const disablePrev = currentPage === 1;
-  const disableNext = currentPage === totalPages;
-
-  return (
-    <div className="flex items-center text-primary-900">
-      <div
-        className={classNames(
-          "mr-2",
-          disablePrev ? "cursor-not-allowed text-primary-50" : "cursor-pointer",
-        )}
-        onClick={() => {
-          if (disablePrev) return;
-          gotoPage(currentPage - 1);
-        }}
-      >
-        <ChevronLeft />
-      </div>
-
-      {isPageNumInVisibleRange && (
-        <Fragment>
-          {pageCountArray
-            .filter((_, index) => index < visiblePageNumbers)
-            .map((count) => (
-              <div
-                key={count}
-                className={classNames(
-                  "mr-2 cursor-pointer",
-                  count === currentPage ? "font-bold" : "text-gray-500",
-                )}
-                onClick={() => gotoPage(count)}
-              >
-                {count}
-              </div>
-            ))}
-          {totalPages > visiblePageNumbers && (
-            <div className="mr-2 cursor-pointer text-gray-500">...</div>
-          )}
-        </Fragment>
-      )}
-
-      {!isPageNumInVisibleRange && (
-        <Fragment>
-          {hasLowerPages && <div className="mr-2 cursor-pointer text-gray-500">...</div>}
-
-          {/* Lower page numbers */}
-          {lowerNeighbourPageArray.map((lowerNeighbourPage) => (
-            <div
-              key={lowerNeighbourPage}
-              className="mr-2 cursor-pointer text-gray-500"
-              onClick={() => gotoPage(lowerNeighbourPage)}
-            >
-              {lowerNeighbourPage}
-            </div>
-          ))}
-
-          {/* active page number */}
-          <div className={"mr-2 cursor-pointer font-bold"}>{currentPage}</div>
-
-          {/* Higher page numbers */}
-          {higherNeighbourPageArray.map((higherNeighbourPage) => (
-            <div
-              key={higherNeighbourPage}
-              className="mr-2 cursor-pointer text-gray-500"
-              onClick={() => gotoPage(higherNeighbourPage)}
-            >
-              {higherNeighbourPage}
-            </div>
-          ))}
-
-          {hasHigherPages && <div className="mr-2 cursor-pointer text-gray-500">...</div>}
-        </Fragment>
-      )}
-
-      <div
-        className={classNames(
-          "mr-2",
-          disableNext ? "cursor-not-allowed text-primary-50" : "cursor-pointer",
-        )}
-        onClick={() => {
-          if (disableNext) return;
-          gotoPage(currentPage + 1);
-        }}
-      >
-        <ChevronRight />
-      </div>
-    </div>
-  );
+  /** Determines whether all controls should be disabled */
+  disabled?: boolean;
 }
 
-interface IPagination {
-  currentPage: number; // current page number
-  visiblePageNumbers?: number; // number that is visible in pagination if 5 then 1 to max 5 will be visible in pagination
-  totalCount: number; // total number of items
-  pageSize?: number; // total number of items to show
-  gotoPage: (page: number) => void;
+export default function Pagination(props: PaginationProps) {
+  const { page, total, onChange, disabled } = props;
+
+  const siblings = props.siblings ?? 1;
+  const boundaries = props.boundaries ?? 2;
+  const initialPage = props.initialPage ?? 1;
+
+  const { range, setPage, next, previous, active } = usePagination({
+    page,
+    siblings,
+    total,
+    onChange,
+    initialPage,
+    boundaries,
+  });
+
+  if (total <= 0) {
+    return null;
+  }
+
+  const items = range.map((pageNumber, index) => (
+    <button
+      className={classNames(
+        "w-3",
+        pageNumber === page ? "font-bold text-primary-600" : "text-gray-500",
+      )}
+      key={index}
+      disabled={disabled}
+      onClick={pageNumber !== "dots" ? () => setPage(pageNumber) : undefined}
+    >
+      {pageNumber === "dots" ? "..." : pageNumber}
+    </button>
+  ));
+
+  //
+  return (
+    <div className="flex gap-x-1">
+      <button disabled={active === 1 || disabled} onClick={previous}>
+        <ChevronLeft />
+      </button>
+
+      {items}
+
+      <button disabled={active === total || disabled} onClick={next}>
+        <ChevronRight />
+      </button>
+    </div>
+  );
 }
