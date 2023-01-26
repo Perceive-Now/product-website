@@ -25,7 +25,8 @@ import FeedbackPage from "./pages/miscs/feedback";
 import DashboardPage from "./pages/product/dashboard";
 
 // Deep search - Patent
-import PatentListPage from "./pages/product/deep-search/patents";
+import PatentListPage from "./pages/product/deep-search/patents/list";
+import PatentDetailPage from "./pages/product/deep-search/patents/detail";
 
 // Deep search - Publication
 import PublicationListPage from "./pages/product/deep-search/publications";
@@ -60,6 +61,7 @@ function App() {
 
             {/* Deep Search pages */}
             <Route path="/deep-search/patents" element={<PatentListPage />} />
+            <Route path="/deep-search/patents/:id" element={<PatentDetailPage />} />
 
             <Route path="/deep-search/publications" element={<PublicationListPage />} />
 
