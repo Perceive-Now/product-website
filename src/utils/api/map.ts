@@ -16,7 +16,7 @@ export async function getPatentHeatmap(keywords: string[]) {
  */
 export async function getCompetitorMapInfo(keywords: string[]) {
   const response = await axiosInstance.get<ICompetitorMapResponse>(
-    `/api/v1/ds-api/dashboard/geo-footprint-patent/?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/geo-footprint-patents/?q=${keywords.join(",")}`,
   );
 
   return response.data;

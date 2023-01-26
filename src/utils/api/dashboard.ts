@@ -20,8 +20,8 @@ export async function getPublicationsCount(keywords: string[]) {
 }
 
 export async function getTopUniversities(keywords: string[]) {
-  const response = await axiosInstance.get<ITopUniversityResponse>(
-    `/api/v1/ds-api/dashboard/patent-uni-ranked/?q=${keywords.join(",")}`,
+  const response = await axiosInstance.get<ICompetitorResponse>(
+    `/api/v1/ds-api/dashboard/patent-university-ranked/?q=${keywords.join(",")}`,
   );
 
   return response.data.data.data;
@@ -52,15 +52,15 @@ export async function getTodaysHighlight(keywords: string[]) {
 
 export async function getCompetitors(keywords: string[]) {
   const response = await axiosInstance.get<ICompetitorResponse>(
-    `/api/v1/ds-api/dashboard/companywise-patent/?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/companywise-patents/?q=${keywords.join(",")}`,
   );
 
-  return response.data.data;
+  return response.data.data.data;
 }
 
 export async function getTop5Funders(keywords: string[]) {
   const response = await axiosInstance.get<ITopFunderResponse>(
-    `/api/v1/ds-api/dashboard/top-five-lambda/?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/top-five-projects/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -68,7 +68,7 @@ export async function getTop5Funders(keywords: string[]) {
 
 export async function getExpertsTable(keywords: string[]) {
   const response = await axiosInstance.get<IExpertResponse>(
-    `/api/v1/ds-api/dashboard/experts-list/?q=${keywords.join(",")}`,
+    `/api/v1/ds-api/dashboard/get-expert-list/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;
@@ -100,11 +100,6 @@ interface IPublicationCount {
 
 interface IPublicationCountResponse {
   data: IPublicationCount;
-}
-
-//
-interface ITopUniversityResponse {
-  data: ICompetitorResponse;
 }
 
 //
@@ -183,21 +178,23 @@ export interface ICompetitor {
 //
 interface ICompetitorResponse {
   data: {
-    patents: {
-      key: string;
-      doc_count: number;
-    }[];
-    Patent_claims: {
-      company: string;
-      claim_sum: number;
-    }[];
-    Inventors: {
-      company: string;
-      inventor_count: number;
-    }[];
-    Publications: {
-      key: string;
-      doc_count: number;
-    }[];
+    data: {
+      patents: {
+        key: string;
+        doc_count: number;
+      }[];
+      Patent_claims: {
+        company: string;
+        claim_sum: number;
+      }[];
+      Inventors: {
+        company: string;
+        inventor_count: number;
+      }[];
+      Publications: {
+        key: string;
+        doc_count: number;
+      }[];
+    };
   };
 }
