@@ -33,7 +33,7 @@ export default function ReactTable(props: IReactTable) {
 
   //
   return (
-    <div className="mt-1 w-full">
+    <div className="mt-1 w-full overflow-x-auto">
       <table className="w-full">
         <thead className="border-b-[2px] border-gray-400">
           {table.getHeaderGroups().map((headerGroup) => (
