@@ -5,8 +5,10 @@
 import classNames from "classnames";
 
 //
-import { usePagination } from "../../../hooks/usePagination";
 import { ChevronLeft, ChevronRight } from "../../icons";
+
+//
+import { usePagination } from "../../../hooks/usePagination";
 
 export interface PaginationProps {
   /** Active initial page for uncontrolled component */
@@ -68,13 +70,21 @@ export default function Pagination(props: PaginationProps) {
   //
   return (
     <div className="flex gap-x-1">
-      <button disabled={active === 1 || disabled} onClick={previous}>
+      <button
+        disabled={active === 1 || disabled}
+        onClick={previous}
+        className={active === 1 ? "cursor-not-allowed" : "cursor-pointer"}
+      >
         <ChevronLeft />
       </button>
 
       {items}
 
-      <button disabled={active === total || disabled} onClick={next}>
+      <button
+        disabled={active === total || disabled}
+        onClick={next}
+        className={active === total ? "cursor-not-allowed" : "cursor-pointer"}
+      >
         <ChevronRight />
       </button>
     </div>
