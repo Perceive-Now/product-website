@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
 //
-import RelatedKeyword from "../../../../components/@product/relatedKeyword";
+import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 
 //
-import { useAppSelector } from "../../../../hooks/redux";
+import { useAppSelector } from "../../../../../hooks/redux";
 
 //
-import { getRelatedKeywords } from "../../../../utils/api/dashboard";
+import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 
 //
 export default function PublicationListPage() {
@@ -26,7 +26,7 @@ export default function PublicationListPage() {
   //
   return (
     <div>
-      {keywords.length && (
+      {!!keywords.length && (
         <div className="mt-5">
           <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
 

@@ -29,7 +29,8 @@ import PatentListPage from "./pages/product/deep-search/patents/list";
 import PatentDetailPage from "./pages/product/deep-search/patents/detail";
 
 // Deep search - Publication
-import PublicationListPage from "./pages/product/deep-search/publications";
+import PublicationListPage from "./pages/product/deep-search/publications/list";
+import PublicationDetailPage from "./pages/product/deep-search/publications/detail";
 
 //
 import PageNotFound404 from "./pages/404";
@@ -64,6 +65,7 @@ function App() {
             <Route path="/deep-search/patents/:id" element={<PatentDetailPage />} />
 
             <Route path="/deep-search/publications" element={<PublicationListPage />} />
+            <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
