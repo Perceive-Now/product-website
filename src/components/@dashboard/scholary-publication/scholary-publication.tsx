@@ -194,12 +194,12 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
         <>
           {activeGraph === "bar" && (
             <BarChart
-              keys={["Open Articles", "Closed Articles"]}
+              keys={["Open access", "Closed access"]}
               indexBy="year"
               legendY="Number of Publications"
               data={barChartData.map((data) => ({
-                "Open Articles": data.open_source,
-                "Closed Articles": data.closed_source,
+                "Open access": data.open_source,
+                "Closed access": data.closed_source,
                 year: data.year,
               }))}
               legends={[barChartLegendOptions]}
@@ -211,6 +211,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
               legendX="Year"
               legendY="Publications"
               abbreviateLegendX={true}
+              colors={["#7F4BD8", "#442873"]}
             />
           )}
           {activeGraph === "donut" && (
