@@ -5,7 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
-  useReactTable
+  useReactTable,
 } from "@tanstack/react-table";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -28,7 +28,7 @@ export default function ReactTable(props: IReactTable) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
-    debugTable: process.env.NODE_ENV === "development"
+    debugTable: process.env.NODE_ENV === "development",
   });
 
   //
@@ -45,18 +45,13 @@ export default function ReactTable(props: IReactTable) {
                   className="pb-2 px-[4px] text-left text-primary-900 font-semibold text-base"
                   {...{
                     style: {
-                      minWidth: header.column.columnDef.minSize
-                    }
+                      minWidth: header.column.columnDef.minSize,
+                    },
                   }}
                 >
                   <>
                     {header.isPlaceholder ? null : (
-                      <>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </>
+                      <>{flexRender(header.column.columnDef.header, header.getContext())}</>
                     )}
                   </>
                 </th>
@@ -71,7 +66,7 @@ export default function ReactTable(props: IReactTable) {
               key={row.id}
               className={classNames(
                 "px-[4px] text-gray-800",
-                props.noTopBorder ? "" : "border-t-[1px] border-t-gray-200"
+                props.noTopBorder ? "" : "border-t-[1px] border-t-gray-200",
               )}
             >
               {row.getVisibleCells().map((cell) => (
@@ -80,7 +75,7 @@ export default function ReactTable(props: IReactTable) {
                   className={classNames("pr-2", {
                     "py-1": size === "small",
                     "py-2": size === "medium",
-                    "py-4": size === "large"
+                    "py-4": size === "large",
                   })}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
