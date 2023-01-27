@@ -52,8 +52,8 @@ export default function Competitors(props: ICompetitorProps) {
       error={error}
       title={
         <PageTitle
-          title="Competitors"
-          info={`This list of top competitors was extracted from "X" no of publications and "Y" no of patents`}
+          title="Companies"
+          info={`This list of top companies was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-semibold"
           subTitle={`"Company name 1" has the largest number of patents. The leading inventor in "company name 1" is "inventor name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
         />

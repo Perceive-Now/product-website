@@ -5,7 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -28,7 +28,7 @@ export default function ReactTable(props: IReactTable) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
-    debugTable: process.env.NODE_ENV === "development",
+    debugTable: process.env.NODE_ENV === "development"
   });
 
   //
@@ -45,13 +45,18 @@ export default function ReactTable(props: IReactTable) {
                   className="pb-2 px-[4px] text-left text-primary-900 font-semibold text-base"
                   {...{
                     style: {
-                      minWidth: header.column.columnDef.minSize,
-                    },
+                      minWidth: header.column.columnDef.minSize
+                    }
                   }}
                 >
                   <>
                     {header.isPlaceholder ? null : (
-                      <>{flexRender(header.column.columnDef.header, header.getContext())}</>
+                      <>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </>
                     )}
                   </>
                 </th>
@@ -62,14 +67,20 @@ export default function ReactTable(props: IReactTable) {
 
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t-[1px] px-[4px] border-t-gray-200 text-gray-800">
+            <tr
+              key={row.id}
+              className={classNames(
+                "px-[4px] text-gray-800",
+                props.noTopBorder ? "" : "border-t-[1px] border-t-gray-200"
+              )}
+            >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
                   className={classNames("pr-2", {
                     "py-1": size === "small",
                     "py-2": size === "medium",
-                    "py-4": size === "large",
+                    "py-4": size === "large"
                   })}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -88,4 +99,5 @@ interface IReactTable {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowsData?: any;
   size?: "small" | "medium" | "large";
+  noTopBorder?: boolean;
 }
