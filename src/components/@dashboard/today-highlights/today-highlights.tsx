@@ -82,7 +82,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
         <PageTitle
           title="Today's Highlights"
           titleClass="font-semibold"
-          info="Global Technology Trends shows a quick view of number of patents, publication, experts and funding in your area of interest"
+          info="Global Technology Trends shows a quick view of number of patents, publication, inventors and funding in your area of interest"
         />
       }
     >

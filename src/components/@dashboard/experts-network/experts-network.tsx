@@ -50,7 +50,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
       title={
         <PageTitle
           title="Inventors"
-          subTitle="Top list of experts with maximum number of publications and patents "
+          subTitle="Top list of inventors with maximum number of publications and patents "
           sideTitleOption={
             <RadioButtons
               options={[

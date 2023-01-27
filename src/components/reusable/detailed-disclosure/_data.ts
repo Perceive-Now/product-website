@@ -67,7 +67,7 @@ export const fundingAPIData = [
 export const expertsAPIData = [
   {
     id: "1",
-    expert: "Riccardo Privolizzi",
+    inventor: "Riccardo Privolizzi",
     affiliation: "University College London",
     location: "Washington, D.C., US",
     patents: "32 ",
@@ -75,7 +75,7 @@ export const expertsAPIData = [
   },
   {
     id: "2",
-    expert: "Riccardo Privolizzi",
+    inventor: "Riccardo Privolizzi",
     affiliation: "University College London",
     location: "Washington, D.C., US",
     patents: "32 ",
@@ -83,7 +83,7 @@ export const expertsAPIData = [
   },
   {
     id: "3",
-    expert: "Riccardo Privolizzi",
+    inventor: "Riccardo Privolizzi",
     affiliation: "University College London",
     location: "Washington, D.C., US",
     patents: "32 ",
@@ -91,7 +91,7 @@ export const expertsAPIData = [
   },
   {
     id: "4",
-    expert: "Riccardo Privolizzi",
+    inventor: "Riccardo Privolizzi",
     affiliation: "University College London",
     location: "Washington, D.C., US",
     patents: "32 ",

@@ -180,7 +180,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
         <PageTitle
           title="Inventor’s Trend"
           titleClass="font-semibold"
-          info={`This list was extracted from "X" total number of experts and researchers worldwide`}
+          info={`This list was extracted from "X" total number of inventors and researchers worldwide`}
         />
       }
     >

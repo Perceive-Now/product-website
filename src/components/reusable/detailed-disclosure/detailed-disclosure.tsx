@@ -24,7 +24,7 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
     { id: 1, label: "Patent Portfolio" },
     { id: 2, label: "Publication Portfolio" },
     { id: 3, label: "Funding" },
-    { id: 4, label: "Expert Portfolio" },
+    { id: 4, label: "Inventor Portfolio" },
   ];
 
   const [activeLabel, setActiveLabel] = useState("Patent Portfolio");
@@ -44,7 +44,7 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
       setPublicationsData(publicationsAPIData);
     } else if (activeLabel === "Funding") {
       setFundingsData(fundingAPIData);
-    } else if (activeLabel === "Expert Portfolio") {
+    } else if (activeLabel === "Inventor Portfolio") {
       setExpertsData(expertsAPIData);
     }
   }, [activeLabel]);
@@ -82,7 +82,7 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
 
             {activeLabel === "Funding" && <FundingTable data={fundingsData} />}
 
-            {activeLabel === "Expert Portfolio" && <ExpertsTable data={expertsData} />}
+            {activeLabel === "Inventor Portfolio" && <ExpertsTable data={expertsData} />}
           </div>
         </div>
       </Accordion>
