@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -67,19 +66,19 @@ export default function TopFundersList(props: ITopFundersListProps) {
       error={error}
       title={
         <PageTitle
-          title="List of top 5 funders"
+          title="Top 5 Federal Funders"
           titleClass="font-semibold"
           info={`This list was extracted from "X" total number of funders worldwide`}
         />
       }
     >
       <div className="min-h-[300px] mt-5">
-        <ReactTable columnsData={columns} rowsData={formattedData} size="medium" />
+        <ReactTable columnsData={columns} rowsData={formattedData} size="medium" noTopBorder />
       </div>
 
-      <div className="text-primary-600 mt-4 cursor-pointer">
+      {/* <div className="text-primary-600 mt-4 cursor-pointer">
         <Link to="/funders">Read more</Link>
-      </div>
+      </div> */}
     </DataSection>
   );
 }

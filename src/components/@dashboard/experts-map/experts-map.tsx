@@ -57,7 +57,7 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
         <PageTitle
           titleClass="font-semibold"
           title="Geographical footprint of inventors"
-          subTitle="Network of experts and researchers working across the globe"
+          subTitle="Network of inventors and researchers working across the globe"
           sideTitleOption={
             <RadioButtons
               activeMode={industryMode}

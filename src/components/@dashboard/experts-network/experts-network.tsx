@@ -50,7 +50,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
       title={
         <PageTitle
           title="Inventors"
-          subTitle="Top list of experts with maximum number of publications and patents "
+          subTitle="Top list of inventors with maximum number of publications and patents "
           sideTitleOption={
             <RadioButtons
               options={[
@@ -69,7 +69,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           <p className="text-lg font-semibold text-primary-900 mb-2">Based on patents</p>
 
           <div className="grid grid-cols-11 mb-3">
-            <div className="col-span-4 font-semibold">Name</div>
+            <div className="col-span-4 font-semibold ml-2">Name</div>
             <div className="col-span-6 font-semibold">Company</div>
             <div className="col-span-1 text-left pr-1 font-semibold">Patents</div>
           </div>
@@ -89,7 +89,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
           <p className="text-lg font-semibold text-primary-900 mb-2">Based on publications</p>
 
           <div className="grid grid-cols-11 mb-3">
-            <div className="col-span-4 font-semibold">University Name</div>
+            <div className="col-span-4 font-semibold ml-2">University Name</div>
             <div className="col-span-6 font-semibold">Company</div>
             <div className="col-span-1 text-left pr-1 font-semibold">Publications</div>
           </div>

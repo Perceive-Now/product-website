@@ -27,7 +27,7 @@ export default function Navigator(props: INavigatorProps) {
         <div className="col-span-3">
           <NavigatorButton
             icon={<CompetitiveLandscapeIcon />}
-            label={"Competitive Landscape"}
+            label={"Companies IP"}
             handleClick={() => {
               scrollToTargetAdjusted(competitiveLandscapeRef?.current);
             }}

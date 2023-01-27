@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -168,9 +167,9 @@ export default function TopFunderCharts(props: ITopFunderProps) {
         </>
       )}
 
-      <div className="text-primary-600 mt-2 cursor-pointer">
+      {/* <div className="text-primary-600 mt-2 cursor-pointer">
         <Link to="/funders">Read more</Link>
-      </div>
+      </div> */}
     </DataSection>
   );
 }

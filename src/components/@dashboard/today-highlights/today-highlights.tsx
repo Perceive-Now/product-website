@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -82,7 +81,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
         <PageTitle
           title="Today's Highlights"
           titleClass="font-semibold"
-          info="Global Technology Trends shows a quick view of number of patents, publication, experts and funding in your area of interest"
+          info="Global Technology Trends shows a quick view of number of patents, publication, inventors and funding in your area of interest"
         />
       }
     >
@@ -98,12 +97,12 @@ export default function TodayHighlights(props: IHighlightsProps) {
                 {getItemValue(item.id, item.value) ?? "-"}
               </div>
 
-              <hr className="border-[#D9D9D9]" />
+              {/* <hr className="border-[#D9D9D9]" /> */}
 
               <div className="text-center pt-2">
-                <div className="cursor-pointer text-purple-600">
+                {/* <div className="cursor-pointer text-purple-600">
                   <Link to={item.link}>View All</Link>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

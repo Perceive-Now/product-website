@@ -52,10 +52,10 @@ export default function Competitors(props: ICompetitorProps) {
       error={error}
       title={
         <PageTitle
-          title="Competitors"
-          info={`This list of top competitors was extracted from "X" no of publications and "Y" no of patents`}
+          title="Companies"
+          info={`This list of top companies was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-semibold"
-          subTitle={`"Company name 1" has the largest number of patents. The leading expert in "company name 1" is "expert name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
+          subTitle={`"Company name 1" has the largest number of patents. The leading inventor in "company name 1" is "inventor name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"`}
         />
       }
     >
@@ -93,12 +93,12 @@ export default function Competitors(props: ICompetitorProps) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">Experts</p>
+          <p className="text-lg font-semibold text-primary-900 mb-2">Inventors</p>
 
           <div className="grid grid-cols-9 mb-3">
             <div className="col-span-1" />
             <div className="col-span-6 font-semibold">Company Name</div>
-            <div className="col-span-2 text-right pr-1 font-semibold">Experts</div>
+            <div className="col-span-2 text-right pr-1 font-semibold">Inventors</div>
           </div>
 
           {exptersValues.map((itm, index) => (

@@ -94,7 +94,7 @@ export default function DashboardPage() {
 
       {/* Competitor section */}
       <div className="pt-11 -mt-8" ref={competitiveLandscapeRef}>
-        <PageTitle title="Competitive Landscape" titleClass="font-bold" />
+        <PageTitle title="Companies IP" titleClass="font-bold" />
 
         {/* 4th row  */}
         <div className="mt-1">

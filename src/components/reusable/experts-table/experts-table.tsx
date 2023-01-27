@@ -13,8 +13,8 @@ export default function ExpertsTable({ data }: IExpertsTableProps) {
 
   const columns: ColumnDef<ExpertsType>[] = [
     {
-      header: "Expert",
-      accessorKey: "expert",
+      header: "Inventor",
+      accessorKey: "inventor",
     },
     {
       header: "Affiliation",
@@ -43,7 +43,7 @@ export default function ExpertsTable({ data }: IExpertsTableProps) {
 
 export type ExpertsType = {
   id: string;
-  expert: string;
+  inventor: string;
   affiliation: string;
   location: string;
   patents: string;

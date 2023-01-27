@@ -62,7 +62,13 @@ export default function ReactTable(props: IReactTable) {
 
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t-[1px] px-[4px] border-t-gray-200 text-gray-800">
+            <tr
+              key={row.id}
+              className={classNames(
+                "px-[4px] text-gray-800",
+                props.noTopBorder ? "" : "border-t-[1px] border-t-gray-200",
+              )}
+            >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
@@ -88,4 +94,5 @@ interface IReactTable {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowsData?: any;
   size?: "small" | "medium" | "large";
+  noTopBorder?: boolean;
 }
