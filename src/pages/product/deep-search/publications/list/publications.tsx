@@ -8,9 +8,7 @@ import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import { LoadingIcon } from "../../../../../components/icons";
 import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
-import Search, {
-  IKeywordOption
-} from "../../../../../components/reusable/search";
+import Search, { IKeywordOption } from "../../../../../components/reusable/search";
 
 //
 import { useAppSelector } from "../../../../../hooks/redux";
@@ -28,14 +26,12 @@ const PAGE_SIZE = 10;
  */
 export default function PublicationListPage() {
   const dispatch = useDispatch();
-  const searchedKeywords =
-    useAppSelector((state) => state.dashboard?.search) ?? [];
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");
 
   //
-  const [classification, setClassification] =
-    useState<classificationMode>("Industry");
+  const [classification, setClassification] = useState<classificationMode>("Industry");
   //
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +42,7 @@ export default function PublicationListPage() {
     async () => {
       return await getRelatedKeywords(keywords);
     },
-    { enabled: !!keywords.length }
+    { enabled: !!keywords.length },
   );
 
   // Getting publication list
@@ -58,7 +54,7 @@ export default function PublicationListPage() {
         year: new Date().getFullYear() - 1,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
-        classification
+        classification,
       });
 
       //
@@ -67,7 +63,7 @@ export default function PublicationListPage() {
       //
       return response?.data ?? [];
     },
-    enabled: !!keywords.length
+    enabled: !!keywords.length,
   });
 
   console.log(publicationsList, "publicationsList");
@@ -117,7 +113,7 @@ export default function PublicationListPage() {
           options={[
             { label: "Industry closed access", value: "Industry" },
             { label: "Academic closed access", value: "Academic" },
-            { label: "Open access", value: "Open" }
+            { label: "Open access", value: "Open" },
           ]}
         />
       </div>
@@ -159,16 +155,12 @@ export default function PublicationListPage() {
 
       {!!keywords.length && (
         <div className="mt-5">
-          <p className="mb-2 uppercase text-sm text-primary-900">
-            Related Keywords
-          </p>
+          <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
 
           <div className="flex flex-wrap gap-1">
-            {relatedKeywords?.related_keywords
-              ?.slice(0, 15)
-              ?.map((keyword, index) => (
-                <RelatedKeyword keyword={keyword} key={index} />
-              ))}
+            {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
+              <RelatedKeyword keyword={keyword} key={index} />
+            ))}
           </div>
         </div>
       )}

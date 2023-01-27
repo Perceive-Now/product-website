@@ -16,9 +16,7 @@ export default function PublicationItem(props: IPublicationItemProps) {
         </div>
 
         {props.abstract && (
-          <div className="text-appGray-900 mb-1 line-clamp-2">
-            {props.abstract}
-          </div>
+          <div className="text-appGray-900 mb-1 line-clamp-2">{props.abstract}</div>
         )}
 
         <div className="flex">

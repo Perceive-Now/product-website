@@ -3,9 +3,7 @@ import axiosInstance from "../../axios";
 /**
  *
  */
-export async function getDeepSearchPublicationList(
-  options: IGetPublicationListOptions
-) {
+export async function getDeepSearchPublicationList(options: IGetPublicationListOptions) {
   const queryParams = new URLSearchParams();
   queryParams.append("q", options.keywords.join(","));
   queryParams.append("year", options.year.toString());
@@ -19,7 +17,7 @@ export async function getDeepSearchPublicationList(
   }
 
   const response = await axiosInstance.get<IDeepSearchPublicationListResponse>(
-    `/api/v1/ds-api/deepsearch/publication-search/?${queryParams.toString()}`
+    `/api/v1/ds-api/deepsearch/publication-search/?${queryParams.toString()}`,
   );
 
   return response.data.data;
