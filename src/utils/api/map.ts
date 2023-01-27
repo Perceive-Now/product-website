@@ -79,6 +79,7 @@ interface IPatentHeatmapCountryCount {
 interface IPatentStateTitle {
   state: string;
   patent_title: string;
+  patent_abstract: string;
 }
 
 interface IPublicationAndPatensMapResponse {
