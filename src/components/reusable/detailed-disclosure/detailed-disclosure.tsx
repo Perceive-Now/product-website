@@ -14,17 +14,25 @@ import { ExpertsType } from "../experts-table/experts-table";
 import { FundingType } from "../funding-table/funding-table";
 
 //
-import { expertsAPIData, fundingAPIData, patentsPortfolioData, publicationsAPIData } from "./_data";
+import {
+  expertsAPIData,
+  fundingAPIData,
+  patentsPortfolioData,
+  publicationsAPIData
+} from "./_data";
 
 /**
  *
  */
-export default function DetailedDisclosure({ title, description }: IDetailedDisclosure) {
+export default function DetailedDisclosure({
+  title,
+  description
+}: IDetailedDisclosure) {
   const options = [
     { id: 1, label: "Patent Portfolio" },
     { id: 2, label: "Publication Portfolio" },
     { id: 3, label: "Funding" },
-    { id: 4, label: "Inventor Portfolio" },
+    { id: 4, label: "Inventor Portfolio" }
   ];
 
   const [activeLabel, setActiveLabel] = useState("Patent Portfolio");
@@ -67,13 +75,18 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
           </div>
 
           <div className="mb-2">
-            {activeLabel === "Patent Portfolio" && <PatentTable data={patentsData} />}
+            {activeLabel === "Patent Portfolio" && (
+              <PatentTable data={patentsData} />
+            )}
 
             {activeLabel === "Publication Portfolio" && (
               <div>
                 {publicationsData.map((publicationData) => (
                   <PublicationItem
-                    data={{ abstract: "", doi: "", title: [] }}
+                    id=""
+                    abstract=""
+                    doiUrl=""
+                    title=""
                     key={publicationData.id}
                   />
                 ))}
@@ -82,7 +95,9 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
 
             {activeLabel === "Funding" && <FundingTable data={fundingsData} />}
 
-            {activeLabel === "Inventor Portfolio" && <ExpertsTable data={expertsData} />}
+            {activeLabel === "Inventor Portfolio" && (
+              <ExpertsTable data={expertsData} />
+            )}
           </div>
         </div>
       </Accordion>

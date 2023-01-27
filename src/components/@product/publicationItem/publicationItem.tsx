@@ -7,17 +7,19 @@ import { BookmarkIcon, CitationIcon, ShareIcon } from "../../icons";
 /*
  *
  **/
-function PublicationItem(props: IPublicationItemProps) {
-  const title = props.data.title[0] ?? "";
-
+export default function PublicationItem(props: IPublicationItemProps) {
   return (
-    <Link to={encodeURIComponent(props.data.doi)}>
-      <div key={props.data.doi} className="mb-4">
+    <Link to={`/deep-search/publications/${encodeURIComponent(props.id)}`}>
+      <div key={props.id} className="mb-4">
         <div className="text-xl font-medium text-primary-900 truncate mb-1 cursor-pointer">
-          {title}
+          {props.title}
         </div>
 
-        <div className="text-appGray-900 mb-1 line-clamp-2">{props.data.abstract}</div>
+        {props.abstract && (
+          <div className="text-appGray-900 mb-1 line-clamp-2">
+            {props.abstract}
+          </div>
+        )}
 
         <div className="flex">
           <ActionButton>
@@ -49,8 +51,8 @@ export const ActionButton = ({ children }: PropsWithChildren) => {
 };
 
 interface IPublicationItemProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  title: string;
+  abstract?: string;
+  doiUrl: string;
+  id: string;
 }
-
-export default PublicationItem;
