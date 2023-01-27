@@ -97,7 +97,7 @@ export default function TodayHighlights(props: IHighlightsProps) {
                 {getItemValue(item.id, item.value) ?? "-"}
               </div>
 
-              {/* <hr className="border-[#D9D9D9]" /> */}
+              <hr className="border-[#D9D9D9]" />
 
               <div className="text-center pt-2">
                 {/* <div className="cursor-pointer text-purple-600">
