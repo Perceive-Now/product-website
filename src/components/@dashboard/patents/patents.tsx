@@ -163,9 +163,9 @@ export default function Patents(props: IPatentsProps) {
         </>
       )}
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <Link to="/patents">Read more</Link>
-      </div>
+      </div> */}
     </DataSection>
   );
 }

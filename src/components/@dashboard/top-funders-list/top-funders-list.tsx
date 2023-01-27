@@ -77,9 +77,9 @@ export default function TopFundersList(props: ITopFundersListProps) {
         <ReactTable columnsData={columns} rowsData={formattedData} size="medium" />
       </div>
 
-      <div className="text-primary-600 mt-4 cursor-pointer">
+      {/* <div className="text-primary-600 mt-4 cursor-pointer">
         <Link to="/funders">Read more</Link>
-      </div>
+      </div> */}
     </DataSection>
   );
 }

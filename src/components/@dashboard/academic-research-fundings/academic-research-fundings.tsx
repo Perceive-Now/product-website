@@ -126,9 +126,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       )}
 
       {/* Caption */}
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <Link to="/funders">Read more</Link>
-      </div>
+      </div> */}
     </DataSection>
   );
 }

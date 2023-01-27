@@ -234,9 +234,9 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
           )}
         </Fragment>
       )}
-      <div className="mt-2">
+      {/* <div className="mt-2">
         <Link to="/experts">Read more</Link>
-      </div>{" "}
+      </div>{" "} */}
     </DataSection>
   );
 }
