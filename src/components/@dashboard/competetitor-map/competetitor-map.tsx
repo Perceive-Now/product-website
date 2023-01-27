@@ -12,6 +12,7 @@ import type { IWorldMapDataItem } from "../../@product/world-map/world-map";
 
 //
 import { getCompetitorMapInfo } from "../../../utils/api/map";
+import { LocationIcon } from "../../icons";
 
 /**
  *
@@ -61,24 +62,26 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 h-[610px] overflow-hidden pr-2">
           <div>
-            {allPatentList?.slice(0, 5)?.map((itm, index) => (
+            {allPatentList?.slice(0, 7)?.map((itm, index) => (
               <div
                 key={index}
-                className={classNames("mt-3", {
-                  "pb-3 border-b border-gray-300": index !== allPatentList?.length - 1,
+                className={classNames({
+                  "pb-2 mb-2 border-b border-gray-300": index !== 6,
                 })}
               >
-                <p className="text-lg leading-tight line-clamp-1">
-                  <span className="mr-1 font-semibold text-primary-800">{index + 1}.</span>
-                  <span>{itm.company}</span>
+                <p className="text-xl leading-tight line-clamp-1">
+                  <span className="mr-1 font-semibold text-primary-800">0{index + 1}.</span>
+                  <span className="text-gray-700">{itm.company}</span>
                 </p>
 
                 {/* <p className="my-[12px] text-sm line-clamp-4">{itm.abstract}</p> */}
 
-                <p className="text-sm">{itm.location}</p>
+                <div className="flex items-center gap-[4px] text-gray-600 mt-1">
+                  <LocationIcon width={16} height={16} />
+                  <p className="text-sm">{itm.location}</p>
+                </div>
               </div>
             ))}
-            {/* Scrollable list goes here... need to display items here */}
           </div>
         </div>
 
