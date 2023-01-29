@@ -17,7 +17,7 @@ export default function ReactTable(props: IReactTable) {
   const [rowSelection, setRowSelection] = useState({});
 
   //
-  const size = props.size ?? "large";
+  const size = props.size ?? "medium";
   const isStripeed = props.striped ?? true;
 
   //
