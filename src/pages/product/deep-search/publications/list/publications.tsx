@@ -12,6 +12,8 @@ import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Search, { IKeywordOption } from "../../../../../components/reusable/search";
+import TableYearSelect from "../../../../../components/reusable/table-year-select";
+import { IYearItem } from "../../../../../components/reusable/table-year-select/table-year-select";
 
 //
 import { useAppSelector } from "../../../../../hooks/redux";
@@ -27,6 +29,21 @@ import {
 //
 const PAGE_SIZE = 10;
 
+const publishYearsOptions = () => {
+  const currentYear = new Date().getFullYear();
+  const yearsToInclude = 50;
+  const endYear = currentYear - yearsToInclude;
+
+  const years = [];
+  for (let i = currentYear; i >= endYear; i--) {
+    years.push({
+      label: i.toString(),
+      value: i,
+    });
+  }
+  return years;
+};
+
 /**
  *
  */
@@ -36,6 +53,7 @@ export default function PublicationListPage() {
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");
 
+  const [selectedPublishedYear, setSelectedPublishedYear] = useState<IYearItem | null>(null);
   //
   const [classification, setClassification] = useState<classificationMode>("Industry");
   //
@@ -53,11 +71,13 @@ export default function PublicationListPage() {
 
   // Getting publication list
   const { data: publicationsList, isLoading } = useQuery({
-    queryKey: [...keywords, classification, currentPage],
+    queryKey: [...keywords, classification, selectedPublishedYear?.value, currentPage],
     queryFn: async () => {
       const response = await getDeepSearchPublicationList({
         keywords,
-        year: new Date().getFullYear() - 1,
+        year: selectedPublishedYear?.value
+          ? selectedPublishedYear.value
+          : new Date().getFullYear() - 1,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
         classification,
@@ -238,7 +258,15 @@ export default function PublicationListPage() {
       </div>
 
       {/* Filter section */}
-      <div className="mb-5">Filter by</div>
+      <div className="mb-5 flex items-center">
+        <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
+        <TableYearSelect
+          placeholder="Publication Date"
+          onChange={(item) => setSelectedPublishedYear(item)}
+          value={selectedPublishedYear}
+          options={publishYearsOptions()}
+        />
+      </div>
 
       {/* Main content */}
       <div>
