@@ -47,7 +47,7 @@ const sidebarItems: ISidebarListItem[] = [
         title: "Companies",
         key: "companies",
         icon: <CompaniesIcon />,
-        to: "/",
+        to: "/deep-search/companies",
       },
       {
         title: "Inventors",
