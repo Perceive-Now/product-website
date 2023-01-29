@@ -49,7 +49,7 @@ export default function Accordion(props: PropsWithChildren<IAccordionProps>) {
 //
 interface IAccordionProps {
   title: string;
-  description: string;
+  description?: string;
   showCollapse?: boolean;
   onOpen?: () => void;
 }
