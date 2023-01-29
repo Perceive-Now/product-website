@@ -53,7 +53,7 @@ export default function Competitors(props: ICompetitorProps) {
       title={
         <PageTitle
           title="Companies"
-          info={`This list of top companies was extracted from "X" no of publications and "Y" no of patents`}
+          // info={`This list of top companies was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-semibold"
         />
       }

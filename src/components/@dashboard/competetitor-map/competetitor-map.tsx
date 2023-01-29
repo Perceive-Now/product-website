@@ -49,7 +49,7 @@ export default function CompetetitorMap(props: IFootprintHeatmapProps) {
       error={error}
       title={
         <PageTitle
-          info={`Geographical footprint of companies working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
+          // info={`Geographical footprint of companies working in your area of interest is extracted from "X" total number of companies worldwide with technology research footprint`}
           titleClass="font-semibold"
           title="Geographical Footprint of Companies"
         >

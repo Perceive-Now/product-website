@@ -55,7 +55,7 @@ export default function TopUniversities(props: ITopUniversitiesProps) {
           title="Top Universities with Highest Research Footprint"
           subTitle='"Company name 1" has the largest number of patents. The leading inventor in "company name 1" is "inventor name 1". The most recent patent filed by them was titled “Title of the most recent patent published by company name 1"'
           titleClass="font-semibold"
-          info={`This list was extracted from "X" total number of universities worldwide`}
+          // info={`This list was extracted from "X" total number of universities worldwide`}
         />
       }
     >

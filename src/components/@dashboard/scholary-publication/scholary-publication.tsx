@@ -163,7 +163,7 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
       title={
         <PageTitle
           title="Scholarly Publications"
-          info={`Stats in this graph are extracted from a total of "X" number of open access publications and "Y" number of closed access publications`}
+          // info={`Stats in this graph are extracted from a total of "X" number of open access publications and "Y" number of closed access publications`}
           titleClass="font-semibold"
         />
       }

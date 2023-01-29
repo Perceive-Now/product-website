@@ -69,7 +69,7 @@ export default function TopFundersList(props: ITopFundersListProps) {
         <PageTitle
           title="Top 5 Federal Funders"
           titleClass="font-semibold"
-          info={`This list was extracted from "X" total number of funders worldwide`}
+          // info={`This list was extracted from "X" total number of funders worldwide`}
         />
       }
     >

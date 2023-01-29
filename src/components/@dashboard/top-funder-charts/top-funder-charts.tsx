@@ -122,7 +122,7 @@ export default function TopFunderCharts(props: ITopFunderProps) {
       title={
         <PageTitle
           title="Federal Funding Trends"
-          info={`This list was extracted from "X" total number of funders worldwide`}
+          // info={`This list was extracted from "X" total number of funders worldwide`}
           titleClass="font-semibold"
         />
       }
