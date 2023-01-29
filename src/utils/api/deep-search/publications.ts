@@ -23,6 +23,24 @@ export async function getDeepSearchPublicationList(options: IGetPublicationListO
   return response.data.data;
 }
 
+/**
+ *
+ */
+export async function getDeepSearchPublicationItemDetail(source: string, id: string) {
+  const response = await axiosInstance.get<IDeepSearchItemDetailResponse>(
+    `/api/v1/ds-api/deepsearch/search-publication-search/?id=${id}&source=${
+      source === "Open" ? "open" : "closed"
+    }`,
+  );
+  const data = response.data.data;
+
+  return {
+    ...data,
+    doi_url: data.doi_url || data.URL,
+    authors: data.authors || data.author,
+  };
+}
+
 //
 interface IGetPublicationListOptions {
   keywords: string[];
@@ -34,7 +52,8 @@ interface IGetPublicationListOptions {
 
 export interface IDeepSearchPublicationListItem {
   title: string;
-  doi_url: string;
+  doi_url?: string;
+  URL?: string;
   _id: string;
   abstract?: string;
 }
@@ -44,4 +63,20 @@ interface IDeepSearchPublicationListResponse {
     count: number;
     data: IDeepSearchPublicationListItem[];
   };
+}
+
+export interface IDeepSearchPublicationDetailItem {
+  title: string;
+  doi_url?: string;
+  URL?: string;
+  journal_name?: string;
+  authors?: string[];
+  author?: string[];
+  published_date: string;
+  abstract?: string;
+}
+
+//
+interface IDeepSearchItemDetailResponse {
+  data: IDeepSearchPublicationDetailItem;
 }

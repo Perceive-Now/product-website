@@ -46,6 +46,7 @@ export default function ReactTable(props: IReactTable) {
                   {...{
                     style: {
                       minWidth: header.column.columnDef.minSize,
+                      maxWidth: header.column.columnDef.maxSize,
                     },
                   }}
                 >

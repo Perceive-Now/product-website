@@ -9,8 +9,8 @@ import { BookmarkIcon, CitationIcon, ShareIcon } from "../../icons";
  **/
 export default function PublicationItem(props: IPublicationItemProps) {
   return (
-    <Link to={`/deep-search/publications/${encodeURIComponent(props.id)}`}>
-      <div key={props.id} className="mb-4">
+    <Link to={`/deep-search/publications/${props.path}`}>
+      <div className="mb-4">
         <div className="text-xl font-medium text-primary-900 truncate mb-1 cursor-pointer">
           {props.title}
         </div>
@@ -40,9 +40,13 @@ export default function PublicationItem(props: IPublicationItemProps) {
   );
 }
 
-export const ActionButton = ({ children }: PropsWithChildren) => {
+export const ActionButton = ({ className, children }: PropsWithChildren<IActionButtonProps>) => {
   return (
-    <div className="mr-4 flex items-center text-primary-900 font-medium cursor-pointer">
+    <div
+      className={`mr-4 flex items-center text-primary-900 font-medium cursor-pointer ${
+        className ?? ""
+      }`}
+    >
       {children}
     </div>
   );
@@ -53,4 +57,9 @@ interface IPublicationItemProps {
   abstract?: string;
   doiUrl: string;
   id: string;
+  path: string;
+}
+
+interface IActionButtonProps {
+  className?: string;
 }

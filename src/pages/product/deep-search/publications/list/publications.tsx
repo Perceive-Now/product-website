@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import PublicationItem from "../../../../../components/@product/publicationItem";
+import { Link } from "react-router-dom";
 
 //
 import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import { LoadingIcon } from "../../../../../components/icons";
+import Button from "../../../../../components/reusable/button";
 import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
+import ReactTable from "../../../../../components/reusable/ReactTable";
 import Search, { IKeywordOption } from "../../../../../components/reusable/search";
 
 //
@@ -16,7 +19,10 @@ import { setDashboardSearch } from "../../../../../stores/dashboard";
 
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
-import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
+import {
+  getDeepSearchPublicationList,
+  IDeepSearchPublicationListItem,
+} from "../../../../../utils/api/deep-search/publications";
 
 //
 const PAGE_SIZE = 10;
@@ -66,7 +72,120 @@ export default function PublicationListPage() {
     enabled: !!keywords.length,
   });
 
-  console.log(publicationsList, "publicationsList");
+  const finalPublicationList = publicationsList ?? [];
+
+  const columnData: ColumnDef<IDeepSearchPublicationListItem>[] = useMemo(() => {
+    if (classification === "Open") {
+      return [
+        {
+          header: "Publication Name",
+          accessorKey: "title",
+          cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+          minSize: 160,
+          maxSize: 160,
+        },
+        {
+          header: "Journel Name",
+          accessorKey: "journel_name",
+          cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+          minSize: 130,
+          maxSize: 130,
+        },
+        {
+          header: "DOI",
+          accessorKey: "doi_url",
+          cell: (data) => (
+            <a
+              href={data.row.original.doi_url || "#"}
+              className="line-clamp-1"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {data.row.original.doi_url || "-"}
+            </a>
+          ),
+          minSize: 130,
+          maxSize: 130,
+        },
+        {
+          header: "Citation",
+          cell: (data) => (
+            <Link
+              to={`/deep-search/publications/${classification}/${encodeURIComponent(
+                data.row.original._id,
+              )}`}
+              className="text-gray-700 underline"
+            >
+              Generate Citation
+            </Link>
+          ),
+          minSize: 130,
+          maxSize: 130,
+        },
+        {
+          header: " ",
+          cell: () => (
+            <p>
+              <Button type="secondary">Share</Button>
+            </p>
+          ),
+          minSize: 200,
+          maxSize: 200,
+        },
+      ];
+    } else {
+      return [
+        {
+          header: "Publication Name",
+          accessorKey: "title",
+          cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+          minSize: 160,
+          maxSize: 160,
+        },
+        {
+          header: "Abstract",
+          accessorKey: "abstract",
+          cell: (data) => (
+            <Link
+              to={`/deep-search/publications/${classification}/${encodeURIComponent(
+                data.row.original._id,
+              )}`}
+              className="text-gray-700 underline"
+            >
+              View Abstract
+            </Link>
+          ),
+          minSize: 130,
+          maxSize: 130,
+        },
+        {
+          header: "Citation",
+          cell: (data) => (
+            <Link
+              to={`/deep-search/publications/${classification}/${encodeURIComponent(
+                data.row.original._id,
+              )}`}
+              className="text-gray-700 underline"
+            >
+              Generate Citation
+            </Link>
+          ),
+          minSize: 130,
+          maxSize: 130,
+        },
+        {
+          header: " ",
+          cell: () => (
+            <p>
+              <Button type="secondary">Share</Button>
+            </p>
+          ),
+          minSize: 200,
+          maxSize: 200,
+        },
+      ];
+    }
+  }, [classification]);
 
   //
   const handleSearch = (value: IKeywordOption[]) => {
@@ -125,17 +244,8 @@ export default function PublicationListPage() {
       <div>
         <p className="text-primary-900 text-[22px] mb-4">Publications</p>
 
-        {publicationsList?.map((publication) => (
-          <PublicationItem
-            key={publication._id}
-            id={publication._id}
-            title={publication.title}
-            doiUrl={publication.doi_url}
-            abstract={publication.abstract}
-          />
-        ))}
-
         <div className="my-4">
+          <ReactTable columnsData={columnData} rowsData={finalPublicationList} size="medium" />
           {!!keywords.length && isLoading && (
             <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
               <LoadingIcon width={40} height={40} />
