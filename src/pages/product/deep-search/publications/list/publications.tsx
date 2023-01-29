@@ -273,11 +273,12 @@ export default function PublicationListPage() {
         <p className="text-primary-900 text-[22px] mb-4">Publications</p>
 
         <div className="my-4">
-          <ReactTable columnsData={columnData} rowsData={finalPublicationList} size="medium" />
-          {!!keywords.length && isLoading && (
+          {!!keywords.length && isLoading ? (
             <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
               <LoadingIcon width={40} height={40} />
             </div>
+          ) : (
+            <ReactTable columnsData={columnData} rowsData={finalPublicationList} size="medium" />
           )}
         </div>
 

@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import { InfoIcon } from "../../icons";
 
 /*
  *
@@ -63,28 +64,46 @@ export default function ReactTable(props: IReactTable) {
         </thead>
 
         <tbody>
-          {table.getRowModel().rows.map((row, index) => (
-            <tr
-              key={row.id}
-              className={classNames("text-gray-800 hover:bg-gray-200", {
-                "bg-gray-100": isStripeed && index % 2 === 1,
-                "border-t-[1px] border-t-gray-300": !props.noTopBorder,
-              })}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className={classNames("px-1", {
-                    "py-1": size === "small",
-                    "py-2": size === "medium",
-                    "py-4": size === "large",
-                  })}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
+          {!table.getRowModel().rows.length ? (
+            <tr>
+              <td
+                className={classNames("px-1", {
+                  "py-1": size === "small",
+                  "py-2": size === "medium",
+                  "py-4": size === "large",
+                })}
+                colSpan={props.columnsData?.length}
+              >
+                <span className="flex flex-col justify-center items-center mt-4">
+                  <InfoIcon width={48} height={48} className="mb-2" />
+                  No data Available
+                </span>
+              </td>
             </tr>
-          ))}
+          ) : (
+            table.getRowModel().rows.map((row, index) => (
+              <tr
+                key={row.id}
+                className={classNames("text-gray-800 hover:bg-gray-200", {
+                  "bg-gray-100": isStripeed && index % 2 === 1,
+                  "border-t-[1px] border-t-gray-300": !props.noTopBorder,
+                })}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className={classNames("px-1", {
+                      "py-1": size === "small",
+                      "py-2": size === "medium",
+                      "py-4": size === "large",
+                    })}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
