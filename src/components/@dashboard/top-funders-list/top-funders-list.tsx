@@ -52,7 +52,8 @@ export default function TopFundersList(props: ITopFundersListProps) {
       {
         header: "Principal Investigator",
         accessorKey: "lead_investigator_given",
-        minSize: 170,
+        minSize: 180,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.lead_investigator_given}</p>,
       },
     ],
     [],
@@ -68,11 +69,11 @@ export default function TopFundersList(props: ITopFundersListProps) {
         <PageTitle
           title="Top 5 Federal Funders"
           titleClass="font-semibold"
-          info={`This list was extracted from "X" total number of funders worldwide`}
+          // info={`This list was extracted from "X" total number of funders worldwide`}
         />
       }
     >
-      <div className="min-h-[300px] mt-5">
+      <div className="min-h-[300px] mt-2">
         <ReactTable columnsData={columns} rowsData={formattedData} size="medium" noTopBorder />
       </div>
 

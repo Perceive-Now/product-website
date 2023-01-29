@@ -62,22 +62,24 @@ function GoogleMaps(props: IGoogleMapProps) {
   //
   return (
     <div className="w-full h-full relative">
-      <div className="w-0 h-0">
-        <BriefcaseIcon />
-        <LocationIcon />
-      </div>
-
-      {/*  */}
       {isLoaded ? (
         <GoogleMap
           mapContainerClassName="w-full h-full z-10"
           center={props.isWorldMap ? WORLD_CENTER : US_CENTER}
           zoom={props.isWorldMap ? WORLD_ZOOM : US_ZOOM}
           options={{
-            fullscreenControl: false,
+            minZoom: 2,
             streetViewControl: false,
             mapTypeControl: false,
             styles: mapStyle,
+            restriction: {
+              latLngBounds: {
+                north: 85,
+                south: -85,
+                west: -180,
+                east: 180,
+              },
+            },
           }}
         >
           <>

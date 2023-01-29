@@ -11,6 +11,7 @@ import "./button.css";
  *
  */
 export default function Button(props: PropsWithChildren<IButtonProps>) {
+  const buttonSize = props.size ?? "medium";
   const buttonType = props.type ?? "primary";
   const roundValue = props.rounded ?? "medium";
   const isFullWidth = props.fullWidth ?? false;
@@ -29,7 +30,10 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
       disabled={props.disabled || props.loading}
       type={props.htmlType}
       className={classNames(
-        "py-[12px] px-[24px]",
+        {
+          "py-1 px-2": buttonSize === "small",
+          "py-[12px] px-[24px]": buttonSize === "medium",
+        },
         {
           "rounded-md": roundValue === "small",
           "rounded-2xl": roundValue === "medium",
@@ -60,6 +64,7 @@ interface IButtonProps {
   // Built in
   disabled?: boolean;
   htmlType?: "button" | "submit" | "reset";
+  size?: "small" | "medium";
   classname?: string;
   // Custom
   rounded?: "small" | "medium" | "full";

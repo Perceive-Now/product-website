@@ -17,7 +17,8 @@ export default function ReactTable(props: IReactTable) {
   const [rowSelection, setRowSelection] = useState({});
 
   //
-  const size = props.size ?? "large";
+  const size = props.size ?? "medium";
+  const isStripeed = props.striped ?? true;
 
   //
   const table = useReactTable({
@@ -42,7 +43,7 @@ export default function ReactTable(props: IReactTable) {
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  className="pb-2 px-[4px] text-left text-primary-900 font-semibold text-base"
+                  className="pb-2 px-1 text-left text-primary-900 font-semibold text-base"
                   {...{
                     style: {
                       minWidth: header.column.columnDef.minSize,
@@ -62,18 +63,18 @@ export default function ReactTable(props: IReactTable) {
         </thead>
 
         <tbody>
-          {table.getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.map((row, index) => (
             <tr
               key={row.id}
-              className={classNames(
-                "px-[4px] text-gray-800",
-                props.noTopBorder ? "" : "border-t-[1px] border-t-gray-200",
-              )}
+              className={classNames("text-gray-800 hover:bg-gray-200", {
+                "bg-gray-100": isStripeed && index % 2 === 1,
+                "border-t-[1px] border-t-gray-300": !props.noTopBorder,
+              })}
             >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className={classNames("pr-2", {
+                  className={classNames("px-1", {
                     "py-1": size === "small",
                     "py-2": size === "medium",
                     "py-4": size === "large",
@@ -89,11 +90,14 @@ export default function ReactTable(props: IReactTable) {
     </div>
   );
 }
+
+//
 interface IReactTable {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columnsData?: ColumnDef<any>[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowsData?: any;
   size?: "small" | "medium" | "large";
+  striped?: boolean;
   noTopBorder?: boolean;
 }

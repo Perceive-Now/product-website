@@ -6,6 +6,7 @@ import NoKeywordMessage from "../no-keyword";
 
 //
 import { LoadingIcon } from "../../icons";
+import { AxiosError } from "axios";
 
 //
 export default function DataSection(props: PropsWithChildren<IDataSectionProps>) {
@@ -13,6 +14,13 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
   const isEmpty = props.keywords.length === 0;
   const isLoading = !isEmpty && props.isLoading;
   const isErrorState = !isLoading && props.isError;
+
+  //
+  const errorMessage = props.error
+    ? props.error instanceof AxiosError && (props.error.response?.status ?? 200) >= 400
+      ? "API did not respond!"
+      : props.error.message
+    : "";
 
   //
   return (
@@ -37,7 +45,7 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
       {/* Error state */}
       {isErrorState && (
         <div className="h-[300px] flex justify-center items-center">
-          <ApiErrorMessage messgae={props.error?.message} />
+          <ApiErrorMessage messgae={errorMessage} />
         </div>
       )}
 

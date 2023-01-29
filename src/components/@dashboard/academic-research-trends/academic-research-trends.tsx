@@ -177,7 +177,7 @@ export default function AcademicResearchTrends(props: IResearchProps) {
       title={
         <PageTitle
           title="University Research Trends in the USA"
-          info={`This list was extracted from "X" total number of universities worldwide`}
+          // info={`This list was extracted from "X" total number of universities worldwide`}
           titleClass="font-semibold"
         />
       }

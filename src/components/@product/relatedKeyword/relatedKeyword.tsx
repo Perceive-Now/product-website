@@ -15,7 +15,7 @@ function RelatedKeyword({ keyword }: IRelatedKeyword) {
 
   return (
     <div
-      className="bg-gray-200 px-2 py-[12px] mb-1 rounded-[48px] flex items-center text-primary-900 cursor-pointer capitalize"
+      className="bg-gray-200 px-2 py-[12px] mb-1 rounded-full flex items-center text-primary-900 cursor-pointer capitalize hover:shadow-md hover:scale-105"
       onClick={setActiveKeyword}
     >
       <div className="flex-shrink-0">

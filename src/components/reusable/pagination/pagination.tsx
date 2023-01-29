@@ -58,6 +58,7 @@ export default function Pagination(props: PaginationProps) {
       className={classNames(
         "w-3",
         pageNumber === page ? "font-bold text-primary-600" : "text-gray-500",
+        pageNumber === "dots" ? "cursor-default" : "cursor-pointer",
       )}
       key={index}
       disabled={disabled}

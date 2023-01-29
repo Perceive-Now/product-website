@@ -14,6 +14,8 @@ import StatesCodes from "../../../utils/extra/us-states-codes";
 
 //
 import { getPatentHeatmap } from "../../../utils/api/map";
+import classNames from "classnames";
+import { LocationIcon } from "../../icons";
 
 /**
  *
@@ -55,7 +57,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
       error={error}
       title={
         <PageTitle
-          info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
+          // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-semibold"
           title="Geographical Footprint of Patents"
           subTitle="Heat map of patents location in USA"
@@ -73,16 +75,33 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
-        <div className="col-span-3 overflow-y-scroll pr-2">
+        <div className="col-span-3 overflow-y-hidden pr-2">
           <p className="text-xl text-primary-900">Most Recent Patents</p>
 
-          {/* TODO:: Handle layout */}
-          {titleList.slice(0, 3).map((itm, index) => (
-            <div key={index} className={"mt-3"}>
-              <span className="text-lg mr-1 font-semibold text-primary-800">{index + 1}.</span>
-              <span>{itm.patent_title}</span>
-            </div>
-          ))}
+          <div className="mt-2">
+            {titleList.slice(0, 4).map((itm, index) => (
+              <div
+                key={index}
+                className={classNames({
+                  "border-b border-gray-300 mb-2 pb-2": index !== 3,
+                })}
+              >
+                <div className="line-clamp-1 text-xl text-gray-700">
+                  <span className="text-lg mr-1 font-semibold text-primary-800">0{index + 1}.</span>
+                  <span>{itm.patent_title}</span>
+                </div>
+
+                <div className="line-clamp-2 mt-1 text-gray-600">
+                  <span>{itm.patent_abstract}</span>
+                </div>
+
+                <div className="mt-1 flex items-center gap-1 text-sm text-gray-700">
+                  <LocationIcon width={16} height={16} />
+                  <span>{StatesCodes[itm.state] ?? itm.state}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="col-span-9 bg-gray-200">
