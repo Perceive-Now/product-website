@@ -239,11 +239,11 @@ export default function DeepSearchCompaniesListPage() {
 
         <div className="my-4">
           {category === "patents" && (
-            <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="medium" />
+            <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
           )}
 
           {category === "publications" && (
-            <ReactTable columnsData={publicationColumns} rowsData={[]} size="medium" />
+            <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
           )}
 
           {!!keywords.length && isLoading && (
