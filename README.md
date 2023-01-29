@@ -1,5 +1,14 @@
 # Getting Started with Create React App
 
+## Production push
+
+In this current version, there has been direct commit to main branch.
+In future push from develop branch with force tag
+
+```bash
+git push origin develop:main --force
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
