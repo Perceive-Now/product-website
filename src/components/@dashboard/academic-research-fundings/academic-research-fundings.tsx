@@ -85,13 +85,13 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       title={
         <PageTitle
           title="University Patent Landscape"
-          info={`This list was extracted from "X" total number of universities worldwide`}
+          // info={`This list was extracted from "X" total number of universities worldwide`}
           titleClass="font-semibold"
         />
       }
     >
       {/* Controls */}
-      <div className="pt-1 flex justify-end gap-x-3">
+      <div className="pt-[20px] flex justify-end gap-x-3">
         <div className="flex items-center">
           <ChartButtons activeChart={activeGraph} setActiveChart={setActiveGraph} />
         </div>

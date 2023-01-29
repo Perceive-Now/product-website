@@ -13,6 +13,7 @@ import RadioButtons from "../../reusable/radio-buttons";
 
 //
 import { getExpertsMapInfo } from "../../../utils/api/map";
+import { LocationIcon } from "../../icons";
 
 /**
  *
@@ -72,21 +73,26 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
-        <div className="col-span-3 h-[610px] overflow-y-hidden">
-          {mapData?.slice(0, 4)?.map((item, index) => (
+        <div className="col-span-3 h-[610px] overflow-y-hidden pr-2">
+          {mapData?.slice(0, 5)?.map((item, index) => (
             <div
               key={index}
-              className={classNames("border-b border-gray-300 mr-3", {
-                "mt-2": index !== 0,
+              className={classNames({
+                "pb-2 mb-2 border-b border-gray-300": index !== 4,
               })}
             >
-              <p className="line-clamp-1">
+              <p className="line-clamp-1 text-xl leading-6">
                 <span className="font-semibold text-primary-800">{index + 1}. </span>
-                <span className="font-semibold">{item.name}</span>
+                <span className="font-semibold text-gray-700">{item.name}</span>
               </p>
-              <div className="mt-1 mb-2 text-sm">
-                <p className="line-clamp-4">{item.employment}</p>
-                <p className="mt-[0.25rem]">{item.location}</p>
+
+              <div className="mt-1 text-gray-600 line-clamp-1">
+                <p>{item.employment}</p>
+              </div>
+
+              <div className="flex items-center gap-[4px] text-gray-600 mt-1">
+                <LocationIcon height={16} width={16} />
+                <p className="text-sm">{item.location}</p>
               </div>
             </div>
           ))}

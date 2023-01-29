@@ -57,7 +57,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
       error={error}
       title={
         <PageTitle
-          info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
+          // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
           titleClass="font-semibold"
           title="Geographical Footprint of Patents"
           subTitle="Heat map of patents location in USA"
