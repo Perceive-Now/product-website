@@ -20,7 +20,7 @@ export default function Accordion(props: PropsWithChildren<IAccordionProps>) {
     <Disclosure>
       {({ open, close }) => (
         <div>
-          <Disclosure.Button onClick={() => !open && props.onOpen?.()}>
+          <Disclosure.Button onClick={() => !open && props.onOpen?.()} className="w-full">
             <div className="flex text-start items-center">
               <div className="mr-2 text-primary-900">
                 <ChevronDown className={classNames({ "rotate-180 transform": open })} />
