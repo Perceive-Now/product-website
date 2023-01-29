@@ -23,9 +23,7 @@ export default function AppSidebar() {
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    sidebarItems.map((itm) => itm.key),
-  );
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
 
   const [expandedSubGroups, setExpandedSubGrups] = useState<string[]>([]);
 
@@ -158,29 +156,53 @@ export default function AppSidebar() {
 }
 
 function NavLinkItem(props: INavLinkItemProps) {
+  const isDashboard = props.to === "/dashboard";
+
+  if (isDashboard) {
+    return (
+      <NavLink to={props.to ?? ""}>
+        {({ isActive }) => (
+          <div
+            className={classNames(
+              "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
+              props.isTopLevel ? "pl-2" : "pl-4",
+              { "bg-appGray-200": isActive },
+            )}
+          >
+            {props.icon && (
+              <div
+                className={classNames("mr-1", {
+                  "text-[#87888C]": !props.isTopLevel,
+                })}
+              >
+                {props.icon}
+              </div>
+            )}
+            <span className="h-4 flex items-center">{props.title}</span>
+          </div>
+        )}
+      </NavLink>
+    );
+  }
+
   return (
-    <NavLink to={props.to ?? ""}>
-      {({ isActive }) => (
+    <div
+      className={classNames(
+        "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2 cursor-not-allowed",
+        props.isTopLevel ? "pl-2" : "pl-4",
+      )}
+    >
+      {props.icon && (
         <div
-          className={classNames(
-            "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
-            props.isTopLevel ? "pl-2" : "pl-4",
-            { "bg-appGray-200": isActive },
-          )}
+          className={classNames("mr-1", {
+            "text-[#87888C]": !props.isTopLevel,
+          })}
         >
-          {props.icon && (
-            <div
-              className={classNames("mr-1", {
-                "text-[#87888C]": !props.isTopLevel,
-              })}
-            >
-              {props.icon}
-            </div>
-          )}
-          <span className="h-4 flex items-center">{props.title}</span>
+          {props.icon}
         </div>
       )}
-    </NavLink>
+      <span className="h-4 flex items-center">{props.title}</span>
+    </div>
   );
 }
 
