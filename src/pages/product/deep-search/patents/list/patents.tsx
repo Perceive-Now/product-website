@@ -39,7 +39,7 @@ export default function PatentListPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [classification, setClassification] = useState<classificationMode>("Academic");
+  const [classification, setClassification] = useState<classificationMode>("Industry");
 
   //
   const { data: relatedKeywords } = useQuery({
@@ -161,8 +161,8 @@ export default function PatentListPage() {
           activeMode={classification}
           handleModeChange={changeClassificationMode}
           options={[
-            { label: "Academic", value: "Academic" },
             { label: "Industry", value: "Industry" },
+            { label: "Academic", value: "Academic" },
           ]}
         />
       </div>
