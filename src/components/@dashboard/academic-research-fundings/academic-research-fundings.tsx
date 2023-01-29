@@ -91,7 +91,7 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       }
     >
       {/* Controls */}
-      <div className="pt-1 flex justify-end gap-x-3">
+      <div className="pt-[20px] flex justify-end gap-x-3">
         <div className="flex items-center">
           <ChartButtons activeChart={activeGraph} setActiveChart={setActiveGraph} />
         </div>
