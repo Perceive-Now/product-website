@@ -23,8 +23,6 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPatentList } from "../../../../../utils/api/deep-search/patents";
 
-import type { IDeepSearchPatentListItem } from "../../../../../utils/api/deep-search/patents";
-
 //
 const PAGE_SIZE = 10;
 

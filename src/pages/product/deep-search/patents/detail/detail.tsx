@@ -2,10 +2,25 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 //
+import Accordion from "../../../../../components/reusable/accordion";
+import ReactTable from "../../../../../components/reusable/ReactTable";
+
 import { LoadingIcon } from "../../../../../components/icons";
 
 //
 import { getDeepSearchPatentItemDetail } from "../../../../../utils/api/deep-search/patents";
+
+//
+import {
+  applicantColumnData,
+  assigneeColumnData,
+  attorneyColumnData,
+  cpcColumnData,
+  examinerColumnData,
+  foreignCitationColumnData,
+  usPatentCitationColumnData,
+  wipoColumnData,
+} from "./columns";
 
 /**
  *
@@ -56,6 +71,79 @@ export default function PatentDetailPage() {
             <DetailItem title="Number of claims:" value={patentData?.num_claims} />
             <DetailItem title="Withdrawn:" value={patentData?.withdrawn} />
           </div>
+        </div>
+      </div>
+
+      {/* Different tables */}
+      <div className="mt-10 flex flex-col gap-5">
+        {/* Attorney list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="Attorney">
+            <ReactTable columnsData={attorneyColumnData} rowsData={patentData?.attorney ?? []} />
+          </Accordion>
+        </div>
+
+        {/* Examier list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="Examiner">
+            <ReactTable columnsData={examinerColumnData} rowsData={patentData?.examiner ?? []} />
+          </Accordion>
+        </div>
+
+        {/* Foreign Citation list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="Foreign citation">
+            <ReactTable
+              columnsData={foreignCitationColumnData}
+              rowsData={patentData?.foreign_citation ?? []}
+            />
+          </Accordion>
+        </div>
+
+        {/* CPC list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="CPC">
+            <ReactTable columnsData={cpcColumnData} rowsData={patentData?.cpc ?? []} size="small" />
+          </Accordion>
+        </div>
+
+        {/* Assignee list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="Assignee">
+            <ReactTable
+              columnsData={assigneeColumnData}
+              rowsData={patentData?.assignee ?? []}
+              size="small"
+            />
+          </Accordion>
+        </div>
+
+        {/* Applicant list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="Applicant">
+            <ReactTable
+              columnsData={applicantColumnData}
+              rowsData={patentData?.applicant ?? []}
+              size="small"
+            />
+          </Accordion>
+        </div>
+
+        {/* WIPO list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="WIPO">
+            <ReactTable columnsData={wipoColumnData} rowsData={patentData?.wipo ?? []} />
+          </Accordion>
+        </div>
+
+        {/* US Patent Citation list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="US patent citation">
+            <ReactTable
+              columnsData={usPatentCitationColumnData}
+              rowsData={patentData?.us_patent_citation ?? []}
+            />
+          </Accordion>
         </div>
       </div>
     </div>
