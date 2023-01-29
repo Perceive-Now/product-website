@@ -14,7 +14,7 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
 //
 import Logo from "../../../assets/images/logo-small.svg";
-import { WEBSITE_URL } from "../../../utils/constants";
+// import { WEBSITE_URL } from "../../../utils/constants";
 
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
@@ -174,14 +174,14 @@ export default function LoginPage() {
           </Button>
         </div>
 
-        <hr className="mt-6 mb-3 border-gray-300" />
+        {/* <hr className="mt-6 mb-3 border-gray-300" />
 
         <p className="text-center">
           <span>Don't have an account?</span>
           <a href={`${WEBSITE_URL}/signup`} className="ml-2">
             Create a free account
           </a>
-        </p>
+        </p> */}
       </form>
     </div>
   );
