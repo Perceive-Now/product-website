@@ -30,12 +30,12 @@ import {
 const PAGE_SIZE = 10;
 
 const publishYearsOptions = () => {
-  const currentYear = new Date().getFullYear();
+  const startYear = new Date().getFullYear() - 1;
   const yearsToInclude = 50;
-  const endYear = currentYear - yearsToInclude;
+  const endYear = startYear - yearsToInclude;
 
   const years = [];
-  for (let i = currentYear; i >= endYear; i--) {
+  for (let i = startYear; i >= endYear; i--) {
     years.push({
       label: i.toString(),
       value: i,
