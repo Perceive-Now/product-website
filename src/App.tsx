@@ -35,6 +35,9 @@ import PublicationDetailPage from "./pages/product/deep-search/publications/deta
 // Deep search - Companies
 import DeepSearchCompaniesListPage from "./pages/product/deep-search/companies/list";
 
+// Deep search - Inventors
+import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/list";
+
 //
 import PageNotFound404 from "./pages/404";
 
@@ -71,6 +74,8 @@ function App() {
             <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
 
             <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
+
+            <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
