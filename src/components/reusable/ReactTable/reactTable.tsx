@@ -19,6 +19,7 @@ export default function ReactTable(props: IReactTable) {
 
   //
   const size = props.size ?? "medium";
+  const errorMessage = props.errorMesssage ?? "No data Available";
   const isStripeed = props.striped ?? true;
 
   //
@@ -76,7 +77,7 @@ export default function ReactTable(props: IReactTable) {
               >
                 <span className="flex flex-col justify-center items-center mt-4">
                   <InfoIcon width={48} height={48} className="mb-2" />
-                  No data Available
+                  {errorMessage}
                 </span>
               </td>
             </tr>
@@ -119,4 +120,5 @@ interface IReactTable {
   size?: "small" | "medium" | "large";
   striped?: boolean;
   noTopBorder?: boolean;
+  errorMesssage?: string;
 }
