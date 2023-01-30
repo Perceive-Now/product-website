@@ -75,11 +75,14 @@ export default function PatentListPage() {
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
-    queryKey: [...keywords, classification, currentPage],
+    queryKey: [...keywords, classification, currentPage, publishedYear],
     queryFn: async () => {
+      const lastYearValue = new Date().getFullYear() - 1;
+
+      //
       const response = await getDeepSearchPatentList({
         keywords,
-        year: new Date().getFullYear() - 1,
+        year: publishedYear?.value ?? lastYearValue,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
         classification,
