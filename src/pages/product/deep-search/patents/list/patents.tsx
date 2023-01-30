@@ -172,11 +172,12 @@ export default function PatentListPage() {
         <p className="text-primary-900 text-[22px]">Patents</p>
 
         <div className="my-4">
-          <ReactTable columnsData={columnData} rowsData={finalPatentList} size="medium" />
-          {!!keywords.length && isLoading && (
+          {!!keywords.length && isLoading ? (
             <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
               <LoadingIcon width={40} height={40} />
             </div>
+          ) : (
+            <ReactTable columnsData={columnData} rowsData={finalPatentList} size="medium" />
           )}
         </div>
 
