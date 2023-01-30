@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { ActionButton } from "../../../../../components/@product/publicationItem/publicationItem";
 import {
   BookmarkIcon,
@@ -14,7 +14,9 @@ import { getDeepSearchPublicationItemDetail } from "../../../../../utils/api/dee
  *
  */
 export default function PublicationDetailPage() {
-  const { id, source } = useParams();
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const source = searchParams.get("source");
   const decodedId = decodeURIComponent(id ?? "");
 
   // Getting publication detail

@@ -131,9 +131,9 @@ export default function PublicationListPage() {
           header: "Citation",
           cell: (data) => (
             <Link
-              to={`/deep-search/publications/${classification}/${encodeURIComponent(
+              to={`/deep-search/publications/${encodeURIComponent(
                 data.row.original._id,
-              )}`}
+              )}?source=${classification}`}
               className="text-gray-700 underline"
             >
               Generate Citation
@@ -158,7 +158,16 @@ export default function PublicationListPage() {
         {
           header: "Publication Name",
           accessorKey: "title",
-          cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+          cell: (data) => (
+            <Link
+              to={`/deep-search/publications/${encodeURIComponent(
+                data.row.original._id,
+              )}?source=${classification}`}
+              className="text-gray-700 line-clamp-1"
+            >
+              {data.row.original.title || "-"}
+            </Link>
+          ),
           minSize: 160,
           maxSize: 160,
         },
@@ -167,9 +176,9 @@ export default function PublicationListPage() {
           accessorKey: "abstract",
           cell: (data) => (
             <Link
-              to={`/deep-search/publications/${classification}/${encodeURIComponent(
+              to={`/deep-search/publications/${encodeURIComponent(
                 data.row.original._id,
-              )}`}
+              )}?source=${classification}`}
               className="text-gray-700 underline"
             >
               View Abstract
@@ -180,16 +189,7 @@ export default function PublicationListPage() {
         },
         {
           header: "Citation",
-          cell: (data) => (
-            <Link
-              to={`/deep-search/publications/${classification}/${encodeURIComponent(
-                data.row.original._id,
-              )}`}
-              className="text-gray-700 underline"
-            >
-              Generate Citation
-            </Link>
-          ),
+          cell: () => <span>Generate Citation</span>,
           minSize: 130,
           maxSize: 130,
         },
