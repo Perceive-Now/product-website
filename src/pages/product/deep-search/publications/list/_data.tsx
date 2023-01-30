@@ -12,7 +12,14 @@ export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
   {
     header: "Publication Name",
     accessorKey: "title",
-    cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+    cell: (data) => (
+      <Link
+        to={`/deep-search/publications/${encodeURIComponent(data.row.original._id)}?source=open`}
+        className="text-primary-600 hover:underline line-clamp-1"
+      >
+        {data.row.original.title}
+      </Link>
+    ),
     minSize: 160,
     maxSize: 160,
   },
@@ -41,14 +48,7 @@ export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
   },
   {
     header: "Citation",
-    cell: (data) => (
-      <Link
-        to={`/deep-search/publications/${encodeURIComponent(data.row.original._id)}?source=open`}
-        className="text-gray-700 underline"
-      >
-        Generate Citation
-      </Link>
-    ),
+    cell: () => <p>Generate Citation</p>,
     minSize: 150,
     maxSize: 150,
   },
@@ -71,7 +71,7 @@ export const closedColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
     cell: (data) => (
       <Link
         to={`/deep-search/publications/${encodeURIComponent(data.row.original._id)}?source=closed`}
-        className="text-gray-700 line-clamp-1"
+        className="text-primary-600 hover:underline line-clamp-1"
       >
         {data.row.original.title || "-"}
       </Link>
