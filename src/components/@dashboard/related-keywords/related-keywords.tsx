@@ -35,10 +35,12 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
       error={error}
       title={<PageTitle title="Most Related Keywords" titleClass="font-semibold" />}
     >
-      <div className="flex flex-wrap gap-x-2 gap-y-1 mt-2 min-h-[324px]">
-        {keywords?.slice(0, 15).map((keyword, index) => (
-          <RelatedKeyword keyword={keyword} key={index} />
-        ))}
+      <div className="mt-2 min-h-[324px]">
+        <div className="flex flex-wrap gap-x-2 gap-y-1">
+          {keywords?.slice(0, 15).map((keyword, index) => (
+            <RelatedKeyword keyword={keyword} key={index} />
+          ))}
+        </div>
       </div>
     </DataSection>
   );

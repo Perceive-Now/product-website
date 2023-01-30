@@ -73,7 +73,11 @@ export default function DetailedDisclosure({ title, description }: IDetailedDisc
               <div>
                 {publicationsData.map((publicationData) => (
                   <PublicationItem
-                    data={{ abstract: "", doi: "", title: [] }}
+                    id=""
+                    abstract=""
+                    doiUrl=""
+                    title=""
+                    path=""
                     key={publicationData.id}
                   />
                 ))}
