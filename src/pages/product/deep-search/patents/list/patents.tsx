@@ -12,8 +12,10 @@ import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
 import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
+import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
+import type { IYearItem } from "../../../../../components/reusable/table-year-select/table-year-select";
 
 //
 import { setDashboardSearch } from "../../../../../stores/dashboard";
@@ -25,6 +27,22 @@ import { getDeepSearchPatentList } from "../../../../../utils/api/deep-search/pa
 
 //
 const PAGE_SIZE = 10;
+
+const publishYearsOptions = () => {
+  const startYear = new Date().getFullYear() - 1;
+  const yearsToInclude = 50;
+  const endYear = startYear - yearsToInclude;
+
+  const years = [];
+  for (let i = startYear; i >= endYear; i--) {
+    years.push({
+      label: i.toString(),
+      value: i,
+    });
+  }
+
+  return years;
+};
 
 //
 export default function PatentListPage() {
@@ -40,6 +58,11 @@ export default function PatentListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [classification, setClassification] = useState<classificationMode>("Industry");
+
+  const [publishedYear, setPublishedYear] = useState<IYearItem | null>({
+    label: "2022",
+    value: 2022,
+  });
 
   //
   const { data: relatedKeywords } = useQuery({
@@ -78,7 +101,14 @@ export default function PatentListPage() {
     {
       header: "Title",
       accessorKey: "title",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+      cell: (data) => (
+        <Link
+          className="line-clamp-1 text-primary-600 hover:underline"
+          to={`/deep-search/patents/${data.row.original._id}`}
+        >
+          {data.row.original.title}
+        </Link>
+      ),
       minSize: 330,
       maxSize: 330,
     },
@@ -98,14 +128,7 @@ export default function PatentListPage() {
     },
     {
       header: "Abstract",
-      cell: (data) => (
-        <Link
-          to={`/deep-search/patents/${data.row.original._id}`}
-          className="text-gray-700 underline"
-        >
-          View Abstract
-        </Link>
-      ),
+      cell: () => <p className="text-gray-700 underline">View Abstract</p>,
       minSize: 130,
       maxSize: 130,
     },
@@ -164,6 +187,17 @@ export default function PatentListPage() {
             { label: "Industry", value: "Industry" },
             { label: "Academic", value: "Academic" },
           ]}
+        />
+      </div>
+
+      {/* Filter section */}
+      <div className="mb-5 flex items-center">
+        <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
+        <TableYearSelect
+          placeholder="Publication Date"
+          onChange={(item) => setPublishedYear(item)}
+          value={publishedYear}
+          options={publishYearsOptions()}
         />
       </div>
 
