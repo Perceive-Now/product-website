@@ -37,7 +37,7 @@ export default function Navigator(props: INavigatorProps) {
         <div className="col-span-3">
           <NavigatorButton
             icon={<EducationIcon />}
-            label={"Inventors"}
+            label={"Inventors Network"}
             handleClick={() => {
               scrollToTargetAdjusted(expertsNetworkRef?.current);
             }}
@@ -46,8 +46,8 @@ export default function Navigator(props: INavigatorProps) {
 
         <div className="col-span-3">
           <NavigatorButton
-            icon={<ResearchIcon />}
-            label={"Academic R&D"}
+            icon={<ResearchIcon className="text-primary-500" width={32} height={32} />}
+            label={"Universities"}
             handleClick={() => {
               scrollToTargetAdjusted(researchRef?.current);
             }}

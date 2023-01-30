@@ -56,7 +56,12 @@ export default function Pagination(props: PaginationProps) {
   const items = range.map((pageNumber, index) => (
     <button
       className={classNames(
-        "w-3",
+        {
+          "w-2": pageNumber < 10,
+          "w-3": pageNumber < 100,
+          "w-4": pageNumber < 1000,
+          "w-5": pageNumber > 9999,
+        },
         pageNumber === page ? "font-bold text-primary-600" : "text-gray-500",
         pageNumber === "dots" ? "cursor-default" : "cursor-pointer",
       )}

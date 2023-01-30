@@ -18,7 +18,7 @@ const HEATMAP_SECTIONS = 10;
 
 //
 const COLOR_RANGE = [
-  "#D7D7D7",
+  "#5c1fc41a",
   "#5c1fc4e6",
   "#5c1fc433",
   "#5c1fc4e6",
@@ -31,7 +31,7 @@ const COLOR_RANGE = [
 ];
 
 const HEATMAP_COLORS = [
-  "bg-[#D7D7D7]",
+  "bg-[#5c1fc41a]",
   "bg-[#5c1fc433]",
   "bg-[#5c1fc44d]",
   "bg-[#5c1fc466]",
@@ -45,7 +45,6 @@ const HEATMAP_COLORS = [
 
 //
 const COLOR_RANGE2 = [
-  "#D7D7D7",
   "#EBF5FF",
   "#DEEBF7",
   "#C6DBEF",
@@ -53,12 +52,12 @@ const COLOR_RANGE2 = [
   "#6BAED6",
   "#4292C6",
   "#225EA8",
-  "#08519C",
-  "#08306B",
+  "#08529C",
+  "#113B8F",
+  "#032454",
 ];
 
 const HEATMAP_COLORS2 = [
-  "bg-[#D7D7D7]",
   "bg-[#EBF5FF]",
   "bg-[#DEEBF7]",
   "bg-[#C6DBEF]",
@@ -66,8 +65,9 @@ const HEATMAP_COLORS2 = [
   "bg-[#6BAED6]",
   "bg-[#4292C6]",
   "bg-[#225EA8]",
-  "bg-[#08519C]",
-  "bg-[#08306B]",
+  "bg-[#08529C]",
+  "bg-[#113B8F]",
+  "bg-[#032454]",
 ];
 
 /**
@@ -95,6 +95,8 @@ export default function USMap(props: IUSMapProps) {
             (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
 
+        if (currentStateValue === 0) return "#d7d7d7";
+
         //
         for (let i = 1; i <= COLOR_RANGE.length; i++) {
           if (currentStateValue < allValues[i]) {
@@ -109,6 +111,8 @@ export default function USMap(props: IUSMapProps) {
           props.data?.find(
             (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
+
+        if (currentStateValue === 0) return "#d7d7d7";
 
         //
         for (let i = 1; i <= COLOR_RANGE2.length; i++) {

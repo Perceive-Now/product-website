@@ -238,18 +238,20 @@ export default function DeepSearchCompaniesListPage() {
         <p className="text-primary-900 text-[22px]">Companies</p>
 
         <div className="my-4">
-          {category === "patents" && (
-            <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
-          )}
-
-          {category === "publications" && (
-            <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
-          )}
-
-          {!!keywords.length && isLoading && (
+          {!!keywords.length && isLoading ? (
             <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
               <LoadingIcon width={40} height={40} />
             </div>
+          ) : (
+            <>
+              {category === "patents" && (
+                <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
+              )}
+
+              {category === "publications" && (
+                <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
+              )}
+            </>
           )}
         </div>
 

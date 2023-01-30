@@ -1,12 +1,28 @@
 // import { Link } from "react-router-dom";
 
 //
-import { FacebookIcon, InstagramIcon, TwitterIcon } from "../../icons";
+const footerLinks: IFooterLink[] = [
+  {
+    title: "Privacy Statement",
+    url: "/privacy-policy",
+  },
+  {
+    title: "Software License Agreement",
+    url: "/sla",
+  },
+  {
+    title: "Terms of use",
+    url: "/terms-of-use",
+  },
+];
 
 /**
  *
  */
 export default function AppFooter() {
+  const websiteUrl = process.env.REACT_APP_WEBSITE_URL ?? "";
+
+  //
   return (
     <div className="pt-8 pb-4 px-4 flex justify-between items-center">
       <div className="flex gap-x-4 font-normal text-sm">
@@ -22,33 +38,26 @@ export default function AppFooter() {
       </div>
 
       <div className="flex gap-x-3">
-        <a
-          href="https://www.facebook.com/perceivenow/"
-          target="_blank"
-          rel="noreferrer"
-          className="text-primary-900"
-        >
-          <FacebookIcon />
-        </a>
+        <p>&copy; 2022</p>
 
-        <a
-          href="https://www.instagram.com/perceivenow/?hl=en"
-          target="_blank"
-          rel="noreferrer"
-          className="text-primary-900"
-        >
-          <InstagramIcon />
-        </a>
-
-        <a
-          href="https://twitter.com/perceivenow"
-          target="_blank"
-          rel="noreferrer"
-          className="text-primary-900"
-        >
-          <TwitterIcon />
-        </a>
+        {footerLinks.map((item, index) => (
+          <a
+            key={index}
+            href={`${websiteUrl}${item.url}`}
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary-900 hover:underline"
+          >
+            {item.title}
+          </a>
+        ))}
       </div>
     </div>
   );
+}
+
+//
+interface IFooterLink {
+  title: string;
+  url: string;
 }
