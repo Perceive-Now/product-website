@@ -54,7 +54,10 @@ export default function PublicationListPage() {
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");
 
-  const [selectedPublishedYear, setSelectedPublishedYear] = useState<IYearItem | null>(null);
+  const [selectedPublishedYear, setSelectedPublishedYear] = useState<IYearItem | null>({
+    label: "2022",
+    value: 2022,
+  });
   //
   const [classification, setClassification] = useState<classificationMode>("Industry");
   //
