@@ -6,6 +6,7 @@ import Button from "../../../../../components/reusable/button";
 
 //
 import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/deep-search/publications";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
 
 //
 export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
@@ -82,7 +83,17 @@ export const closedColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
   {
     header: "Abstract",
     accessorKey: "abstract",
-    cell: () => <p className="text-gray-700 underline">View Abstract</p>,
+    cell: ({ row }) => (
+      <AbstractModal
+        data={{
+          title: row.original.title,
+          abstract: row.original.abstract,
+          id: row.original._id,
+        }}
+        viewPath={`/deep-search/publications/${encodeURIComponent(row.original._id)}?source=Closed`}
+        type="Publication"
+      />
+    ),
     minSize: 130,
     maxSize: 130,
   },
