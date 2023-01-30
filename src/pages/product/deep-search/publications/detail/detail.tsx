@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import classNames from "classnames";
 import dayjs from "dayjs";
 import { useParams, useSearchParams } from "react-router-dom";
 import { ActionButton } from "../../../../../components/@product/publicationItem/publicationItem";
@@ -41,7 +42,7 @@ export default function PublicationDetailPage() {
   }
 
   return (
-    <div className="grid grid-cols-11 gap-x-5">
+    <div className="grid grid-cols-12 gap-x-5">
       <div className="col-span-9">
         <p className="text-2xl text-primary-900 font-semibold">{publicationData?.title}</p>
 
@@ -77,28 +78,31 @@ export default function PublicationDetailPage() {
         </div>
       </div>
 
-      <div className="col-span-2">
-        <div className="mb-4 max-w-[168px]">
-          {source === "Open" ? (
-            <div className="px-2 py-1 bg-success-500 text-white">Open Access</div>
-          ) : (
-            <div className="px-2 py-1 bg-danger-500 text-white">Closed Access</div>
-          )}
+      <div className="col-span-3">
+        <div className="mb-4">
+          <div
+            className={classNames(
+              "px-2 py-1 text-white",
+              source === "Open" ? "bg-success-500" : "bg-danger-500",
+            )}
+          >
+            {source} Access
+          </div>
         </div>
 
         <div>
           <ActionButton className="mb-3">
-            <BookmarkIcon className="mr-1" />
+            <BookmarkIcon className="mr-1 flex-shrink-0" />
             <span>Bookmark</span>
           </ActionButton>
 
           <ActionButton className="mb-3">
-            <CitationIcon className="mr-1" />
+            <CitationIcon className="mr-1 flex-shrink-0" />
             <span>Generate citation</span>
           </ActionButton>
 
           <ActionButton className="mb-3">
-            <ShareIcon className="mr-1" />
+            <ShareIcon className="mr-1 flex-shrink-0" />
             <span>Share</span>
           </ActionButton>
         </div>
