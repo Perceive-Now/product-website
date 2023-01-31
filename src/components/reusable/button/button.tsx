@@ -49,7 +49,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
       )}
       onClick={handleSubmit}
     >
-      <div className="flex">
+      <div className="flex justify-center">
         {props.loading && <LoadingIcon width={24} height={24} className="mr-1" />}
 
         <div>{props.children}</div>

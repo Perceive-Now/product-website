@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -11,6 +12,7 @@ import Search from "../../../../../components/reusable/search";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
 import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
@@ -105,12 +107,14 @@ export default function PatentListPage() {
       header: "Title",
       accessorKey: "title",
       cell: (data) => (
-        <Link
-          className="line-clamp-1 text-primary-600 hover:underline"
-          to={`/deep-search/patents/${data.row.original._id}`}
-        >
-          {data.row.original.title}
-        </Link>
+        <TooltipWrapper content={data.row.original.title}>
+          <Link
+            className="line-clamp-1 text-primary-600 hover:underline"
+            to={`/deep-search/patents/${data.row.original._id}`}
+          >
+            {data.row.original.title}
+          </Link>
+        </TooltipWrapper>
       ),
       minSize: 330,
       maxSize: 330,
@@ -118,20 +122,42 @@ export default function PatentListPage() {
     {
       header: "Organization",
       accessorKey: "company",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.company || "-"}</p>,
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.company}>
+          <p className="line-clamp-1">{data.row.original.company || "-"}</p>
+        </TooltipWrapper>
+      ),
       minSize: 200,
       maxSize: 200,
     },
     {
       header: "Inventor",
       accessorKey: "inventor",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.inventor || "-"}</p>,
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.inventor}>
+          <p className="line-clamp-1">{data.row.original.inventor || "-"}</p>
+        </TooltipWrapper>
+      ),
       minSize: 200,
       maxSize: 200,
     },
     {
       header: "Abstract",
-      cell: () => <p className="text-gray-700 underline">View Abstract</p>,
+      cell: (data) => {
+        const originalData = data.row.original;
+
+        return (
+          <AbstractModal
+            type="Patent"
+            data={{
+              id: originalData._id,
+              title: originalData.title,
+              abstract: originalData.abstract,
+            }}
+            viewPath={`/deep-search/patents/${originalData._id}`}
+          />
+        );
+      },
       minSize: 130,
       maxSize: 130,
     },
@@ -208,15 +234,19 @@ export default function PatentListPage() {
       <div>
         <p className="text-primary-900 text-[22px]">Patents</p>
 
-        <div className="my-4">
-          {!!keywords.length && isLoading ? (
-            <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-              <LoadingIcon width={40} height={40} />
-            </div>
-          ) : (
-            <ReactTable columnsData={columnData} rowsData={finalPatentList} size="medium" />
-          )}
-        </div>
+        <TooltipProvider>
+          <div className="my-4">
+            {!!keywords.length && isLoading ? (
+              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                <LoadingIcon width={40} height={40} />
+              </div>
+            ) : (
+              <ReactTable columnsData={columnData} rowsData={finalPatentList} size="medium" />
+            )}
+          </div>
+
+          <Tooltip className="tooltip" float />
+        </TooltipProvider>
 
         <div className="flex justify-center">
           <Pagination
