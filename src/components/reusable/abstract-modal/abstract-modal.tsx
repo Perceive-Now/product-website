@@ -43,7 +43,7 @@ export default function AbstractModal(props: IAbstractModalProps) {
 
             <span className="mb-1">
               <span className="text-appGray-900 font-bold text-lg">{props.type} number:</span>
-              <span className="text-lg ml-1">[${props.data.id}]</span>
+              <span className="text-lg ml-1">[{props.data.id}]</span>
             </span>
 
             <Dialog.Description className="mt-2 pr-2 max-h-[333px] overflow-auto scroll-smooth">
