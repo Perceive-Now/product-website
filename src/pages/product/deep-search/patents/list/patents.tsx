@@ -12,6 +12,7 @@ import Search from "../../../../../components/reusable/search";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
 import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
@@ -142,7 +143,21 @@ export default function PatentListPage() {
     },
     {
       header: "Abstract",
-      cell: () => <p className="text-gray-700 underline">View Abstract</p>,
+      cell: (data) => {
+        const originalData = data.row.original;
+
+        return (
+          <AbstractModal
+            type="Patent"
+            data={{
+              id: originalData._id,
+              title: originalData.title,
+              abstract: originalData.abstract,
+            }}
+            viewPath={`/deep-search/patents/${originalData._id}`}
+          />
+        );
+      },
       minSize: 130,
       maxSize: 130,
     },

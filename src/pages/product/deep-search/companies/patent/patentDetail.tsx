@@ -10,6 +10,7 @@ import { LoadingIcon } from "../../../../../components/icons";
 
 import Pagination from "../../../../../components/reusable/pagination";
 import ReactTable from "../../../../../components/reusable/ReactTable";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
 
 //
 import { getDeepSearchComapniesPatentItem } from "../../../../../utils/api/deep-search/companies";
@@ -113,7 +114,21 @@ export default function DeepSearchCompanyPatent() {
     },
     {
       header: "Abstract",
-      cell: () => <p className="text-underline">View Abstract</p>,
+      cell: (data) => {
+        const originalData = data.row.original;
+
+        return (
+          <AbstractModal
+            type="Patent"
+            data={{
+              id: originalData._id,
+              title: originalData.title,
+              abstract: originalData.abstract,
+            }}
+            viewPath={`/deep-search/patents/${originalData._id}`}
+          />
+        );
+      },
       minSize: 130,
       maxSize: 130,
     },
