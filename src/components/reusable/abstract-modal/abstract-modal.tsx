@@ -1,9 +1,12 @@
-import { Dialog } from "@headlessui/react";
 import { useState } from "react";
+import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import { CrossIcon } from "../../icons";
-import Button from "../button";
 
+//
+import Button from "../button";
+import { CrossIcon } from "../../icons";
+
+//
 export default function AbstractModal(props: IAbstractModalProps) {
   const navigate = useNavigate();
 
@@ -18,7 +21,7 @@ export default function AbstractModal(props: IAbstractModalProps) {
   return (
     <p>
       <span className="underline cursor-pointer" onClick={() => setIsOpen(true)}>
-        Abstract
+        View Abstract
       </span>
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
@@ -43,13 +46,17 @@ export default function AbstractModal(props: IAbstractModalProps) {
               <span className="text-lg ml-1">[${props.data.id}]</span>
             </span>
 
-            <Dialog.Description className="mb-3 max-h-[500px] overflow-auto scroll-smooth">
+            <Dialog.Description className="mt-2 pr-2 max-h-[333px] overflow-auto scroll-smooth">
               {props.data.abstract || (
                 <span className="text-appGray-800 pt-2 block">No abstract available</span>
               )}
             </Dialog.Description>
 
-            <Button handleClick={handleViewSource} type="secondary" classname="w-full text-center">
+            <Button
+              handleClick={handleViewSource}
+              type="secondary"
+              classname="w-full text-center mt-3"
+            >
               View {props.type}
             </Button>
           </Dialog.Panel>
@@ -59,6 +66,7 @@ export default function AbstractModal(props: IAbstractModalProps) {
   );
 }
 
+//
 interface IAbstractModalData {
   title: string;
   abstract?: string;

@@ -3,10 +3,10 @@ import { ColumnDef } from "@tanstack/react-table";
 
 //
 import Button from "../../../../../components/reusable/button";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
 
 //
 import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/deep-search/publications";
-import AbstractModal from "../../../../../components/reusable/abstract-modal";
 
 //
 export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
