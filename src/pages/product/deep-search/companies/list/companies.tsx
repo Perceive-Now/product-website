@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -6,6 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 //
 import { LoadingIcon } from "../../../../../components/icons";
 
+import Button from "../../../../../components/reusable/button";
 import Search from "../../../../../components/reusable/search";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
@@ -23,13 +25,13 @@ import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-search/companies";
 
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
-import Button from "../../../../../components/reusable/button";
 
 //
 const PAGE_SIZE = 10;
 
 //
 export default function DeepSearchCompaniesListPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   //
@@ -51,6 +53,20 @@ export default function DeepSearchCompaniesListPage() {
     },
     enabled: !!keywords.length,
   });
+
+  // Navigate to company patent list
+  const navigateToPatentList = (
+    name: string,
+    patents: number,
+    patentClaims: number,
+    inventors: number,
+  ) => {
+    navigate(
+      `/deep-search/companies/patent?name=${encodeURIComponent(
+        name,
+      )}&p=${patents}&pc=${patentClaims}&i=${inventors}`,
+    );
+  };
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
@@ -117,11 +133,26 @@ export default function DeepSearchCompaniesListPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
-          Track
-        </Button>
-      ),
+      cell: (data) => {
+        const dataValues = data.row.original;
+
+        return (
+          <Button
+            type="secondary"
+            size="small"
+            handleClick={() =>
+              navigateToPatentList(
+                dataValues.key,
+                dataValues.count,
+                dataValues.claim_sum,
+                dataValues.inv_count,
+              )
+            }
+          >
+            Track
+          </Button>
+        );
+      },
       minSize: 120,
       maxSize: 120,
     },
