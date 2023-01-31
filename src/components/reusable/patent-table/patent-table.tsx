@@ -1,7 +1,7 @@
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
-import Tooltip from "../tooltip";
+import Tooltip from "../popover";
 import ReactTable from "../ReactTable";
 
 //

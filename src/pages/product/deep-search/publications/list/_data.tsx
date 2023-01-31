@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { TooltipWrapper } from "react-tooltip";
 import { ColumnDef } from "@tanstack/react-table";
 
 //
@@ -14,12 +15,14 @@ export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
     header: "Publication Name",
     accessorKey: "title",
     cell: (data) => (
-      <Link
-        to={`/deep-search/publications/${encodeURIComponent(data.row.original._id)}?source=Open`}
-        className="text-primary-600 hover:underline line-clamp-1"
-      >
-        {data.row.original.title}
-      </Link>
+      <TooltipWrapper content={data.row.original.title}>
+        <Link
+          to={`/deep-search/publications/${encodeURIComponent(data.row.original._id)}?source=Open`}
+          className="text-primary-600 hover:underline line-clamp-1"
+        >
+          {data.row.original.title}
+        </Link>
+      </TooltipWrapper>
     ),
     minSize: 160,
     maxSize: 160,
@@ -27,7 +30,11 @@ export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
   {
     header: "Journel Name",
     accessorKey: "journel_name",
-    cell: (data) => <p className="line-clamp-1">{data.row.original.title || "-"}</p>,
+    cell: (data) => (
+      <TooltipWrapper content={data.row.original.title}>
+        <p className="line-clamp-1">{data.row.original.title || "-"}</p>
+      </TooltipWrapper>
+    ),
     minSize: 130,
     maxSize: 130,
   },
@@ -70,12 +77,16 @@ export const closedColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
     header: "Publication Name",
     accessorKey: "title",
     cell: (data) => (
-      <Link
-        to={`/deep-search/publications/${encodeURIComponent(data.row.original._id)}?source=Closed`}
-        className="text-primary-600 hover:underline line-clamp-1"
-      >
-        {data.row.original.title || "-"}
-      </Link>
+      <TooltipWrapper content={data.row.original.title}>
+        <Link
+          to={`/deep-search/publications/${encodeURIComponent(
+            data.row.original._id,
+          )}?source=Closed`}
+          className="text-primary-600 hover:underline line-clamp-1"
+        >
+          {data.row.original.title || "-"}
+        </Link>
+      </TooltipWrapper>
     ),
     minSize: 160,
     maxSize: 160,

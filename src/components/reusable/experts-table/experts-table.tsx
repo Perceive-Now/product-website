@@ -1,8 +1,9 @@
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 
 //
+import Tooltip from "../popover";
 import ReactTable from "../ReactTable";
-import Tooltip from "../tooltip";
+
 import { VerticalThreeDots } from "../../icons";
 
 /**

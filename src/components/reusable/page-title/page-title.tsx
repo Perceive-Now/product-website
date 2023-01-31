@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { PropsWithChildren, ReactNode } from "react";
 
 //
-import Tooltip from "../tooltip";
+import Tooltip from "../popover";
 import { InfoIcon } from "../../icons";
 
 /**
