@@ -38,7 +38,7 @@ export default function AppFooter() {
       </div>
 
       <div className="flex gap-x-3">
-        <p>&copy; 2022</p>
+        <p>&copy; 2020</p>
 
         {footerLinks.map((item, index) => (
           <a
