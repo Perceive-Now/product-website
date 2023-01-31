@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 //
 import PageTitle from "../../reusable/page-title";
@@ -35,7 +36,11 @@ export default function TopFundersList(props: ITopFundersListProps) {
       {
         header: "Project title",
         accessorKey: "project_title",
-        cell: (item) => <p className="line-clamp-1">{item.row.original.project_title}</p>,
+        cell: (item) => (
+          <TooltipWrapper content={item.row.original.project_title}>
+            <p className="line-clamp-1">{item.row.original.project_title}</p>
+          </TooltipWrapper>
+        ),
       },
       {
         header: "Funding",
@@ -53,7 +58,11 @@ export default function TopFundersList(props: ITopFundersListProps) {
         header: "Principal Investigator",
         accessorKey: "lead_investigator_given",
         minSize: 180,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.lead_investigator_given}</p>,
+        cell: (item) => (
+          <TooltipWrapper content={item.row.original.lead_investigator_given}>
+            <p className="line-clamp-1">{item.row.original.lead_investigator_given}</p>
+          </TooltipWrapper>
+        ),
       },
     ],
     [],
@@ -73,10 +82,13 @@ export default function TopFundersList(props: ITopFundersListProps) {
         />
       }
     >
-      <div className="min-h-[300px] mt-2">
-        <ReactTable columnsData={columns} rowsData={formattedData} size="medium" noTopBorder />
-      </div>
+      <TooltipProvider>
+        <div className="min-h-[300px] mt-2">
+          <ReactTable columnsData={columns} rowsData={formattedData} size="medium" noTopBorder />
+        </div>
 
+        <Tooltip className="tooltip" float />
+      </TooltipProvider>
       {/* <div className="text-primary-600 mt-4 cursor-pointer">
         <Link to="/funders">Read more</Link>
       </div> */}

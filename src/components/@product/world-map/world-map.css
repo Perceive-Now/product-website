@@ -13,3 +13,7 @@
 .map-tooltip::after {
   @apply border-t-white border-b-white;
 }
+
+.tooltip {
+  @apply z-30 max-w-md;
+}

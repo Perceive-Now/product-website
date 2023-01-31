@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 //
 import GoogleMaps from "../../@product/google-map";
@@ -74,28 +75,36 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
         <div className="col-span-3 h-[610px] overflow-y-hidden pr-2">
-          {mapData?.slice(0, 5)?.map((item, index) => (
-            <div
-              key={index}
-              className={classNames({
-                "pb-2 mb-2 border-b border-gray-300": index !== 4,
-              })}
-            >
-              <p className="line-clamp-1 text-xl leading-6">
-                <span className="font-semibold text-primary-800">{index + 1}. </span>
-                <span className="font-semibold text-gray-700">{item.name}</span>
-              </p>
+          <TooltipProvider>
+            {mapData?.slice(0, 5)?.map((item, index) => (
+              <div
+                key={index}
+                className={classNames({
+                  "pb-2 mb-2 border-b border-gray-300": index !== 4,
+                })}
+              >
+                <TooltipWrapper content={item.name}>
+                  <p className="line-clamp-1 text-xl leading-6">
+                    <span className="font-semibold text-primary-800">{index + 1}. </span>
+                    <span className="font-semibold text-gray-700">{item.name}</span>
+                  </p>
+                </TooltipWrapper>
 
-              <div className="mt-1 text-gray-600 line-clamp-1">
-                <p>{item.employment}</p>
-              </div>
+                <div className="mt-1 text-gray-600 line-clamp-1">
+                  <TooltipWrapper content={item.employment}>
+                    <p>{item.employment}</p>
+                  </TooltipWrapper>
+                </div>
 
-              <div className="flex items-center gap-[4px] text-gray-600 mt-1">
-                <LocationIcon height={16} width={16} />
-                <p className="text-sm">{item.location}</p>
+                <div className="flex items-center gap-[4px] text-gray-600 mt-1">
+                  <LocationIcon height={16} width={16} />
+                  <p className="text-sm">{item.location}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+
+            <Tooltip className="tooltip" float />
+          </TooltipProvider>
         </div>
 
         <div className="col-span-9 bg-gray-200">
