@@ -149,96 +149,101 @@ export default function USMap(props: IUSMapProps) {
 
   //
   return (
-    <div className="overflow-y-hidden h-[610px] relative">
-      {/* {heatmapHoveredState && ( */}
-      <Tooltip anchorId="tooltip-country-name" className="map-tooltip">
-        <div className="flex items-center gap-x-0.5">
-          <LocationIcon className="text-gray-400" />
+    <>
+      <div className="overflow-y-hidden h-[610px] relative">
+        {/* Actual Map */}
+        <div className="flex justify-center w-full object-cover" id="us-map">
+          <ComposableMap
+            projection="geoAlbersUsa"
+            className="bg-gray-200 h-[610px]"
+            projectionConfig={{ scale: 1000 }}
+          >
+            <Geographies geography={geoUrl}>
+              {({ geographies }) => (
+                <>
+                  {geographies.map((geo) => (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      stroke="gray"
+                      strokeWidth={0.25}
+                      onMouseEnter={() => {
+                        setHeatmapHoveredState(geo?.properties?.name);
 
-          <p>{heatmapHoveredState}</p>
-        </div>
-
-        <div className="mt-2 flex justify-center gap-x-2">
-          <TooltipGroupItem
-            title="Patents"
-            value={activeMarkerData?.patents}
-            isPercentage={false}
-          />
-        </div>
-      </Tooltip>
-      {/* )} */}
-
-      {/* Actual Map */}
-      <div className="flex justify-center w-full object-cover" id="tooltip-country-name">
-        <ComposableMap
-          projection="geoAlbersUsa"
-          className="bg-gray-200 h-[610px]"
-          projectionConfig={{ scale: 1000 }}
-        >
-          <Geographies geography={geoUrl}>
-            {({ geographies }) => (
-              <>
-                {geographies.map((geo) => (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    stroke="gray"
-                    strokeWidth={0.25}
-                    onMouseEnter={() => {
-                      setHeatmapHoveredState(geo?.properties?.name);
-
-                      //
-                      const dataForCurrentState = props.data?.find(
-                        (itm) =>
-                          itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
-                      );
-                      setActiveMarkerData(dataForCurrentState);
-                    }}
-                    onMouseLeave={() => {
-                      setHeatmapHoveredState("");
-                      setActiveMarkerData(undefined);
-                    }}
-                    fill={getFillColor(geo)}
-                    className="focus:outline-none drop-shadow-sm"
-                  />
-                ))}
-              </>
-            )}
-          </Geographies>
-        </ComposableMap>
-      </div>
-
-      <div className="h-[80px] absolute inset-x-0 bottom-0  z-10 px-[60px] pt-3">
-        {/* Heatmap range values */}
-        <div className="flex justify-between text-sm">
-          {getRangeForPatents(props.data).map((grp, index) => (
-            <div
-              key={grp}
-              className={classNames("h-2 text-gray-700", {
-                "-mr-1": index > 0,
-                "-mr-[12px]": index > 6,
-              })}
-            >
-              <span>{grp}</span>
-              {index === 10 && <span>+</span>}
-            </div>
-          ))}
-        </div>
-
-        {/* Heatmap color indicators */}
-        <div className="flex justify-between mt-1">
-          {COLOR_GROUPS.map((grp) => (
-            <div
-              key={grp}
-              className={classNames(
-                "h-2 w-[11.11%] shadow",
-                props.type === "heatmap_industry" ? HEATMAP_COLORS[grp] : HEATMAP_COLORS2[grp],
+                        //
+                        const dataForCurrentState = props.data?.find(
+                          (itm) =>
+                            itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
+                        );
+                        setActiveMarkerData(dataForCurrentState);
+                      }}
+                      onMouseLeave={() => {
+                        setHeatmapHoveredState("");
+                        setActiveMarkerData(undefined);
+                      }}
+                      fill={getFillColor(geo)}
+                      className="focus:outline-none drop-shadow-sm"
+                    />
+                  ))}
+                </>
               )}
-            />
-          ))}
+            </Geographies>
+          </ComposableMap>
+        </div>
+
+        <div className="h-[80px] absolute inset-x-0 bottom-0  z-10 px-[60px] pt-3">
+          {/* Heatmap range values */}
+          <div className="flex justify-between text-sm">
+            {getRangeForPatents(props.data).map((grp, index) => (
+              <div
+                key={grp}
+                className={classNames("h-2 text-gray-700", {
+                  "-mr-1": index > 0,
+                  "-mr-[12px]": index > 6,
+                })}
+              >
+                <span>{grp}</span>
+                {index === 10 && <span>+</span>}
+              </div>
+            ))}
+          </div>
+
+          {/* Heatmap color indicators */}
+          <div className="flex justify-between mt-1">
+            {COLOR_GROUPS.map((grp) => (
+              <div
+                key={grp}
+                className={classNames(
+                  "h-2 w-[11.11%] shadow",
+                  props.type === "heatmap_industry" ? HEATMAP_COLORS[grp] : HEATMAP_COLORS2[grp],
+                )}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Tooltip */}
+      <Tooltip anchorId="us-map" className="map-tooltip" float>
+        {heatmapHoveredState && (
+          <>
+            <div className="flex items-center gap-x-0.5">
+              <LocationIcon className="text-gray-400" />
+
+              <p>{heatmapHoveredState}</p>
+            </div>
+
+            <div className="mt-2 flex justify-center gap-x-2">
+              <TooltipGroupItem
+                title="Patents"
+                value={activeMarkerData?.patents}
+                isPercentage={false}
+              />
+            </div>
+          </>
+        )}
+      </Tooltip>
+    </>
   );
 }
 
