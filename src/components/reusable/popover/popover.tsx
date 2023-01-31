@@ -1,5 +1,5 @@
-import { Popover } from "@headlessui/react";
 import classNames from "classnames";
+import { Popover } from "@headlessui/react";
 import { Fragment, PropsWithChildren, ReactElement } from "react";
 
 //
@@ -43,6 +43,7 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
   );
 }
 
+//
 interface ITooltipProps {
   trigger: ReactElement;
   isCustomPanel?: boolean;
