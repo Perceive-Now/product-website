@@ -44,7 +44,9 @@ export default function AbstractModal(props: IAbstractModalProps) {
             </span>
 
             <Dialog.Description className="mb-3 max-h-[500px] overflow-auto scroll-smooth">
-              {props.data.abstract}
+              {props.data.abstract || (
+                <span className="text-appGray-800 pt-2 block">No abstract available</span>
+              )}
             </Dialog.Description>
 
             <Button handleClick={handleViewSource} type="secondary" classname="w-full text-center">
