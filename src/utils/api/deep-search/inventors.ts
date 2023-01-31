@@ -33,4 +33,5 @@ export interface IDeepSearchInventorsPatentItem {
   last_name: string;
   patent_count: number;
   claim_sum: number;
+  company_name: string;
 }
