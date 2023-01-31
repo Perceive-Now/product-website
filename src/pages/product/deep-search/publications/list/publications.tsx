@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider } from "react-tooltip";
 
 //
 import Search from "../../../../../components/reusable/search";
@@ -158,19 +159,23 @@ export default function PublicationListPage() {
       <div>
         <p className="text-primary-900 text-[22px] mb-4">Publications</p>
 
-        <div className="my-4">
-          {!!keywords.length && isLoading ? (
-            <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-              <LoadingIcon width={40} height={40} />
-            </div>
-          ) : (
-            <ReactTable
-              size="small"
-              rowsData={finalPublicationList}
-              columnsData={classification === "Open" ? openColumnData : closedColumnData}
-            />
-          )}
-        </div>
+        <TooltipProvider>
+          <div className="my-4">
+            {!!keywords.length && isLoading ? (
+              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                <LoadingIcon width={40} height={40} />
+              </div>
+            ) : (
+              <ReactTable
+                size="small"
+                rowsData={finalPublicationList}
+                columnsData={classification === "Open" ? openColumnData : closedColumnData}
+              />
+            )}
+          </div>
+
+          <Tooltip className="tooltip" float />
+        </TooltipProvider>
 
         <div className="flex justify-center">
           <Pagination
