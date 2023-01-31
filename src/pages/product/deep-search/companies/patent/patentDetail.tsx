@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -89,14 +90,26 @@ export default function DeepSearchCompanyPatent() {
       accessorKey: "title",
       minSize: 400,
       maxSize: 400,
-      cell: (data) => <p className="line-clamp-1">{data.row.original.title}</p>,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.title}>
+            {data.row.original.title}
+          </TooltipWrapper>
+        </p>
+      ),
     },
     {
       header: "Owner",
       accessorKey: "company",
       minSize: 330,
       maxSize: 330,
-      cell: (data) => <p className="line-clamp-1">{data.row.original.company}</p>,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
     },
     {
       header: "Abstract",
@@ -134,15 +147,19 @@ export default function DeepSearchCompanyPatent() {
       <div>
         <p className="text-[22px] text-primary-900">Patents</p>
 
-        <div className="my-4">
-          {!!keywords.length && isLoading ? (
-            <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-              <LoadingIcon width={40} height={40} />
-            </div>
-          ) : (
-            <ReactTable columnsData={columnsData} rowsData={finalData} />
-          )}
-        </div>
+        <TooltipProvider>
+          <div className="my-4">
+            {!!keywords.length && isLoading ? (
+              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                <LoadingIcon width={40} height={40} />
+              </div>
+            ) : (
+              <ReactTable columnsData={columnsData} rowsData={finalData} />
+            )}
+          </div>
+
+          <Tooltip className="tooltip" float />
+        </TooltipProvider>
 
         <div className="flex justify-center">
           <Pagination

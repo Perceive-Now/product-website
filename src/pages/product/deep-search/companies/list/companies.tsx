@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -94,7 +95,13 @@ export default function DeepSearchCompaniesListPage() {
     {
       header: "Company Name",
       accessorKey: "company_name",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.key || "-"}</p>,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.key}>
+            {data.row.original.key || "-"}
+          </TooltipWrapper>
+        </p>
+      ),
       minSize: 350,
       maxSize: 350,
     },
@@ -163,7 +170,11 @@ export default function DeepSearchCompaniesListPage() {
     {
       header: "Company Name",
       accessorKey: "company_name",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.key || "-"}</p>,
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.key}>
+          <p className="line-clamp-1">{data.row.original.key || "-"}</p>
+        </TooltipWrapper>
+      ),
       minSize: 350,
       maxSize: 350,
     },
@@ -268,23 +279,27 @@ export default function DeepSearchCompaniesListPage() {
       <div>
         <p className="text-primary-900 text-[22px]">Companies</p>
 
-        <div className="my-4">
-          {!!keywords.length && isLoading ? (
-            <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-              <LoadingIcon width={40} height={40} />
-            </div>
-          ) : (
-            <>
-              {category === "patents" && (
-                <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
-              )}
+        <TooltipProvider>
+          <div className="my-4">
+            {!!keywords.length && isLoading ? (
+              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                <LoadingIcon width={40} height={40} />
+              </div>
+            ) : (
+              <>
+                {category === "patents" && (
+                  <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
+                )}
 
-              {category === "publications" && (
-                <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
-              )}
-            </>
-          )}
-        </div>
+                {category === "publications" && (
+                  <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
+                )}
+              </>
+            )}
+          </div>
+
+          <Tooltip className="tooltip" float />
+        </TooltipProvider>
 
         <div className="flex justify-center">
           <Pagination
