@@ -1,10 +1,11 @@
-import { useState } from "react";
 import classNames from "classnames";
-import ReactTooltip from "react-tooltip";
+
+import { useState } from "react";
+import { Tooltip } from "react-tooltip";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 //
-import { BriefcaseIcon, LocationIcon } from "../../icons";
+import { LocationIcon } from "../../icons";
 
 //
 import { IWorldMapDataItem, TooltipGroupItem } from "../world-map/world-map";
@@ -149,60 +150,32 @@ export default function USMap(props: IUSMapProps) {
   //
   return (
     <div className="overflow-y-hidden h-[610px] relative">
-      {activeMarkerData && (
-        <ReactTooltip id="marker-details">
-          <div>
-            <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
+      {/* {heatmapHoveredState && ( */}
+      <Tooltip anchorId="tooltip-country-name" className="map-tooltip">
+        <div className="flex items-center gap-x-0.5">
+          <LocationIcon className="text-gray-400" />
 
-            {activeMarkerData?.employment && (
-              <div className="flex gap-x-1 items-center mb-[0.25rem]">
-                <BriefcaseIcon className="text-gray-400" />
-                <span>{activeMarkerData?.employment}</span>
-              </div>
-            )}
+          <p>{heatmapHoveredState}</p>
+        </div>
 
-            <div className="flex gap-x-1 items-center">
-              <LocationIcon className="text-gray-400" />
-              <span>{activeMarkerData?.location ?? "-"}</span>
-            </div>
-
-            <div className="mt-2 flex">
-              <TooltipGroupItem
-                title="Patents"
-                value={activeMarkerData.patents}
-                isPercentage={false}
-              />
-            </div>
-          </div>
-        </ReactTooltip>
-      )}
-
-      {heatmapHoveredState && (
-        <ReactTooltip id="country-name">
-          <div className="flex items-center gap-x-0.5">
-            <LocationIcon className="text-gray-400" />
-
-            <p>{heatmapHoveredState}</p>
-          </div>
-
-          <div className="mt-2 flex justify-center gap-x-2">
-            <TooltipGroupItem
-              title="Patents"
-              value={activeMarkerData?.patents}
-              isPercentage={false}
-            />
-          </div>
-        </ReactTooltip>
-      )}
+        <div className="mt-2 flex justify-center gap-x-2">
+          <TooltipGroupItem
+            title="Patents"
+            value={activeMarkerData?.patents}
+            isPercentage={false}
+          />
+        </div>
+      </Tooltip>
+      {/* )} */}
 
       {/* Actual Map */}
-      <div className="flex justify-center w-full object-cover">
+      <div className="flex justify-center w-full object-cover" id="tooltip-country-name">
         <ComposableMap
           projection="geoAlbersUsa"
           className="bg-gray-200 h-[610px]"
           projectionConfig={{ scale: 1000 }}
         >
-          <Geographies geography={geoUrl} data-tip="" data-for="country-name">
+          <Geographies geography={geoUrl}>
             {({ geographies }) => (
               <>
                 {geographies.map((geo) => (

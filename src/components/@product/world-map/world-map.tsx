@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import classNames from "classnames";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 
 import { useState } from "react";
 
@@ -188,10 +188,10 @@ export default function WorldMap(props: ISvgMapProps) {
   return (
     <div className="overflow-y-hidden h-[610px] relative">
       {/* Tooltip with just country name */}
-      {!isHeatmap && <ReactTooltip id="country-name">{hoveredCountry}</ReactTooltip>}
+      {!isHeatmap && <Tooltip anchorId="country-name">{hoveredCountry}</Tooltip>}
 
       {isHeatmap && heatmapHoveredCountry && (
-        <ReactTooltip id="country-name">
+        <Tooltip anchorId="country-name">
           <div className="flex items-center gap-x-0.5">
             <LocationIcon className="text-gray-400" />
 
@@ -215,11 +215,11 @@ export default function WorldMap(props: ISvgMapProps) {
               <TooltipGroupItem title="Experts" value={activeMarkerData?.experts} />
             )}
           </div>
-        </ReactTooltip>
+        </Tooltip>
       )}
 
       {!isHeatmap && activeMarkerData && (
-        <ReactTooltip id="marker-details">
+        <Tooltip id="marker-details">
           <div>
             <p className="text-lg mb-1">{activeMarkerData?.name ?? "-"}</p>
 
@@ -249,7 +249,7 @@ export default function WorldMap(props: ISvgMapProps) {
               )}
             </div>
           </div>
-        </ReactTooltip>
+        </Tooltip>
       )}
 
       {/* Direction Controls */}
@@ -315,7 +315,7 @@ export default function WorldMap(props: ISvgMapProps) {
       </div>
 
       {/* Actual Map */}
-      <div className="flex justify-center w-full object-cover" data-tip="" data-for="country-name">
+      <div className="flex justify-center w-full object-cover" id="country-name">
         <ComposableMap
           projection="geoMercator"
           className="bg-gray-200 h-[610px]"
@@ -325,7 +325,7 @@ export default function WorldMap(props: ISvgMapProps) {
           }}
         >
           {/* Maps */}
-          <Geographies geography={topology} id="hello-world" className="cursor-pointer">
+          <Geographies geography={topology} className="cursor-pointer">
             {({ geographies, projection, path }) =>
               geographies.map((geo) => (
                 <Geography
