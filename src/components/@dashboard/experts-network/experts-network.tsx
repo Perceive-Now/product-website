@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import classNames from "classnames";
 
@@ -116,26 +117,39 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
 //
 function ListItem(props: IListItemProps) {
   return (
-    <div className="grid grid-cols-12 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
-      <div
-        className={classNames("col-span-1 font-bold flex items-center font-sans", {
-          "text-primary-100": props.index === 0,
-          "text-primary-500": props.index === 1,
-          "text-primary-600": props.index === 2,
-          "text-primary-800": props.index === 3,
-          "text-primary-900": props.index === 4,
-        })}
-      >
-        0{props.index + 1}
+    <TooltipProvider>
+      <div className="grid grid-cols-12 gap-x-2 border rounded-full shadow-md mb-2 px-2 py-1">
+        <div
+          className={classNames("col-span-1 font-bold flex items-center font-sans", {
+            "text-primary-100": props.index === 0,
+            "text-primary-500": props.index === 1,
+            "text-primary-600": props.index === 2,
+            "text-primary-800": props.index === 3,
+            "text-primary-900": props.index === 4,
+          })}
+        >
+          0{props.index + 1}
+        </div>
+
+        <div className="col-span-4 flex items-center">
+          <TooltipWrapper content={props.name}>
+            <p className="line-clamp-2">{props.name ?? "-"}</p>
+          </TooltipWrapper>
+        </div>
+
+        <div className="col-span-6 flex items-center">
+          <TooltipWrapper content={props.organization}>
+            <p className="line-clamp-1">{props.organization ?? "-"}</p>
+          </TooltipWrapper>
+        </div>
+
+        <div className="col-span-1 pr-1 flex items-center justify-start line-clamp-1">
+          {props.value?.toLocaleString() ?? "-"}
+        </div>
       </div>
-      <div className="col-span-4 flex items-center">
-        <p className="line-clamp-2">{props.name ?? "-"}</p>
-      </div>
-      <div className="col-span-6 flex items-center line-clamp-1">{props.organization ?? "-"}</div>
-      <div className="col-span-1 pr-1 flex items-center justify-start line-clamp-1">
-        {props.value?.toLocaleString() ?? "-"}
-      </div>
-    </div>
+
+      <Tooltip className="tooltip" float />
+    </TooltipProvider>
   );
 }
 

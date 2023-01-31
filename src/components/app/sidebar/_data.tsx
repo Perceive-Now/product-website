@@ -12,6 +12,9 @@ import {
   TechnologyIcon,
   CompaniesIcon,
   Universities2Icon,
+  SummaryIcon,
+  SimilarityIcon,
+  MascotIcon,
 } from "../../icons";
 
 const sidebarItems: ISidebarListItem[] = [
@@ -112,16 +115,19 @@ const sidebarItems: ISidebarListItem[] = [
       {
         title: "Summarize",
         key: "summarize",
+        icon: <SummaryIcon />,
         to: "/",
       },
       {
         title: "Similarity check",
         key: "similarity-check",
+        icon: <SimilarityIcon />,
         to: "/",
       },
       {
         title: "Ask our AI mascot",
         key: "ask-our-ai-mascot",
+        icon: <MascotIcon />,
         to: "/",
       },
     ],

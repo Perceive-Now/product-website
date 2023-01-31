@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
 //
 import { LoadingIcon } from "../../../../../components/icons";
 
+import Button from "../../../../../components/reusable/button";
 import Search from "../../../../../components/reusable/search";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
@@ -23,13 +26,13 @@ import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-search/companies";
 
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
-import Button from "../../../../../components/reusable/button";
 
 //
 const PAGE_SIZE = 10;
 
 //
 export default function DeepSearchCompaniesListPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   //
@@ -51,6 +54,20 @@ export default function DeepSearchCompaniesListPage() {
     },
     enabled: !!keywords.length,
   });
+
+  // Navigate to company patent list
+  const navigateToPatentList = (
+    name: string,
+    patents: number,
+    patentClaims: number,
+    inventors: number,
+  ) => {
+    navigate(
+      `/deep-search/companies/patent?name=${encodeURIComponent(
+        name,
+      )}&p=${patents}&pc=${patentClaims}&i=${inventors}`,
+    );
+  };
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
@@ -78,7 +95,13 @@ export default function DeepSearchCompaniesListPage() {
     {
       header: "Company Name",
       accessorKey: "company_name",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.key || "-"}</p>,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.key}>
+            {data.row.original.key || "-"}
+          </TooltipWrapper>
+        </p>
+      ),
       minSize: 350,
       maxSize: 350,
     },
@@ -117,11 +140,26 @@ export default function DeepSearchCompaniesListPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
-          Track
-        </Button>
-      ),
+      cell: (data) => {
+        const dataValues = data.row.original;
+
+        return (
+          <Button
+            type="secondary"
+            size="small"
+            handleClick={() =>
+              navigateToPatentList(
+                dataValues.key,
+                dataValues.count,
+                dataValues.claim_sum,
+                dataValues.inv_count,
+              )
+            }
+          >
+            Track
+          </Button>
+        );
+      },
       minSize: 120,
       maxSize: 120,
     },
@@ -132,7 +170,11 @@ export default function DeepSearchCompaniesListPage() {
     {
       header: "Company Name",
       accessorKey: "company_name",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.key || "-"}</p>,
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.key}>
+          <p className="line-clamp-1">{data.row.original.key || "-"}</p>
+        </TooltipWrapper>
+      ),
       minSize: 350,
       maxSize: 350,
     },
@@ -237,23 +279,27 @@ export default function DeepSearchCompaniesListPage() {
       <div>
         <p className="text-primary-900 text-[22px]">Companies</p>
 
-        <div className="my-4">
-          {!!keywords.length && isLoading ? (
-            <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-              <LoadingIcon width={40} height={40} />
-            </div>
-          ) : (
-            <>
-              {category === "patents" && (
-                <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
-              )}
+        <TooltipProvider>
+          <div className="my-4">
+            {!!keywords.length && isLoading ? (
+              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                <LoadingIcon width={40} height={40} />
+              </div>
+            ) : (
+              <>
+                {category === "patents" && (
+                  <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
+                )}
 
-              {category === "publications" && (
-                <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
-              )}
-            </>
-          )}
-        </div>
+                {category === "publications" && (
+                  <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
+                )}
+              </>
+            )}
+          </div>
+
+          <Tooltip className="tooltip" float />
+        </TooltipProvider>
 
         <div className="flex justify-center">
           <Pagination

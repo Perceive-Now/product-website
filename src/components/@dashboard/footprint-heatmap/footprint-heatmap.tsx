@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
+
+import classNames from "classnames";
 
 //
 import USMap from "../../@product/us-map";
@@ -10,11 +13,10 @@ import DataSection from "../../reusable/data-section";
 import RadioButtons from "../../reusable/radio-buttons";
 
 //
+import { getPatentHeatmap } from "../../../utils/api/map";
 import StatesCodes from "../../../utils/extra/us-states-codes";
 
 //
-import { getPatentHeatmap } from "../../../utils/api/map";
-import classNames from "classnames";
 import { LocationIcon } from "../../icons";
 
 /**
@@ -75,34 +77,44 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
       }
     >
       <div className="grid grid-cols-12 mt-2 h-[610px]">
-        <div className="col-span-3 overflow-y-hidden pr-2">
-          <p className="text-xl text-primary-900">Most Recent Patents</p>
+        <TooltipProvider>
+          <div className="col-span-3 overflow-y-hidden pr-2">
+            <p className="text-xl text-primary-900">Most Recent Patents</p>
 
-          <div className="mt-2">
-            {titleList.slice(0, 4).map((itm, index) => (
-              <div
-                key={index}
-                className={classNames({
-                  "border-b border-gray-300 mb-2 pb-2": index !== 3,
-                })}
-              >
-                <div className="line-clamp-1 text-xl text-gray-700">
-                  <span className="text-lg mr-1 font-semibold text-primary-800">0{index + 1}.</span>
-                  <span>{itm.patent_title}</span>
-                </div>
+            <div className="mt-2">
+              {titleList.slice(0, 4).map((itm, index) => (
+                <div
+                  key={index}
+                  className={classNames({
+                    "border-b border-gray-300 mb-2 pb-2": index !== 3,
+                  })}
+                >
+                  <div className="line-clamp-1 text-xl text-gray-700">
+                    <TooltipWrapper content={itm.patent_title}>
+                      <span className="text-lg mr-1 font-semibold text-primary-800">
+                        0{index + 1}.
+                      </span>
+                      <span>{itm.patent_title}</span>
+                    </TooltipWrapper>
+                  </div>
 
-                <div className="line-clamp-2 mt-1 text-gray-600">
-                  <span>{itm.patent_abstract}</span>
-                </div>
+                  <div className="line-clamp-2 mt-1 text-gray-600">
+                    <TooltipWrapper content={itm.patent_abstract}>
+                      <p>{itm.patent_abstract}</p>
+                    </TooltipWrapper>
+                  </div>
 
-                <div className="mt-1 flex items-center gap-1 text-sm text-gray-700">
-                  <LocationIcon width={16} height={16} />
-                  <span>{StatesCodes[itm.state] ?? itm.state}</span>
+                  <div className="mt-1 flex items-center gap-1 text-sm text-gray-700">
+                    <LocationIcon width={16} height={16} />
+                    <span>{StatesCodes[itm.state] ?? itm.state}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+
+          <Tooltip className="tooltip" float />
+        </TooltipProvider>
 
         <div className="col-span-9 bg-gray-200">
           <USMap

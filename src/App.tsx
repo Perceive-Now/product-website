@@ -34,6 +34,7 @@ import PublicationDetailPage from "./pages/product/deep-search/publications/deta
 
 // Deep search - Companies
 import DeepSearchCompaniesListPage from "./pages/product/deep-search/companies/list";
+import DeepSearchCompanyPatenPage from "./pages/product/deep-search/companies/patent";
 
 // Deep search - Inventors
 import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/list";
@@ -74,6 +75,7 @@ function App() {
             <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
 
             <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
+            <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
 
             <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
 

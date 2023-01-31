@@ -1,5 +1,5 @@
-import { Popover } from "@headlessui/react";
 import classNames from "classnames";
+import { Popover as RawPopover } from "@headlessui/react";
 import { Fragment, PropsWithChildren, ReactElement } from "react";
 
 //
@@ -8,26 +8,26 @@ import { CrossIcon } from "../../icons";
 /**
  *
  */
-export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
+export default function Popover(props: PropsWithChildren<ITooltipProps>) {
   return (
-    <Popover className="relative">
-      <Popover.Button className="focus:outline-none flex items-center">
+    <RawPopover className="relative">
+      <RawPopover.Button className="focus:outline-none flex items-center">
         {props.trigger}
-      </Popover.Button>
+      </RawPopover.Button>
 
       {props.isCustomPanel && (
-        <Popover.Panel
+        <RawPopover.Panel
           className={classNames(
             "absolute z-20 bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default",
             props.panelClassName,
           )}
         >
           {props.children}
-        </Popover.Panel>
+        </RawPopover.Panel>
       )}
 
       {!props.isCustomPanel && (
-        <Popover.Panel className="absolute z-20 rounded-2xl pl-6 pr-8 py-5 min-w-[420px] bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default">
+        <RawPopover.Panel className="absolute z-20 rounded-2xl pl-6 pr-8 py-5 min-w-[420px] bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default">
           {({ close }) => (
             <Fragment>
               <div className="absolute top-2 right-2 cursor-pointer" onClick={() => close()}>
@@ -37,12 +37,13 @@ export default function Tooltip(props: PropsWithChildren<ITooltipProps>) {
               <div className="text-gray-800">{props.children}</div>
             </Fragment>
           )}
-        </Popover.Panel>
+        </RawPopover.Panel>
       )}
-    </Popover>
+    </RawPopover>
   );
 }
 
+//
 interface ITooltipProps {
   trigger: ReactElement;
   isCustomPanel?: boolean;

@@ -105,6 +105,7 @@ interface IDeepSearchPatentDetailItem {
 interface IDeepSearchPatentListItem {
   title: string;
   date: string;
+  abstract: string;
   company: string;
   inventor: string;
   _id: string;

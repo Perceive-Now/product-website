@@ -9,8 +9,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 //
 import { store } from "./store";
 
-//
+// App's global style
 import "./index.css";
+
+// Tooltip styles
+import "react-tooltip/dist/react-tooltip.css";
+
+// App
 import App from "./App";
 
 //
