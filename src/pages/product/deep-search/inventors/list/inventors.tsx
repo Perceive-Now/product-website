@@ -29,6 +29,7 @@ import {
   getDeepSearchInventorsPatentList,
   IDeepSearchInventorsPatentItem,
 } from "../../../../../utils/api/deep-search/inventors";
+import { useNavigate } from "react-router-dom";
 
 //
 const PAGE_SIZE = 10;
@@ -52,6 +53,7 @@ const publishYearsOptions = () => {
 //
 export default function DeepSearchInventorsListPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -149,8 +151,16 @@ export default function DeepSearchInventorsListPage() {
 
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
+      cell: ({ row }) => (
+        <Button
+          type="secondary"
+          size="small"
+          handleClick={() =>
+            navigate(
+              `/deep-search/inventor/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}`,
+            )
+          }
+        >
           Track
         </Button>
       ),
@@ -200,8 +210,16 @@ export default function DeepSearchInventorsListPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
+      cell: ({ row }) => (
+        <Button
+          type="secondary"
+          size="small"
+          handleClick={() =>
+            navigate(
+              `/deep-search/inventor/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}`,
+            )
+          }
+        >
           Track
         </Button>
       ),

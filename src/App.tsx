@@ -41,6 +41,7 @@ import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/l
 
 //
 import PageNotFound404 from "./pages/404";
+import DeepSearchInventorPage from "./pages/product/deep-search/inventors/detail";
 
 /**
  *
@@ -78,6 +79,7 @@ function App() {
             <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
 
             <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
+            <Route path="/deep-search/inventor/:type" element={<DeepSearchInventorPage />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
