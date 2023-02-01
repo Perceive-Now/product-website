@@ -44,8 +44,6 @@ export default function DeepSearchInventorPage() {
     );
   }
 
-  console.log(data, "data");
-
   //
   return (
     <div>
