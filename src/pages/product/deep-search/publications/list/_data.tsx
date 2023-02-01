@@ -8,6 +8,7 @@ import AbstractModal from "../../../../../components/reusable/abstract-modal";
 
 //
 import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/deep-search/publications";
+import CitationModal from "../../../../../components/reusable/citation-modal";
 
 //
 export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
@@ -56,7 +57,7 @@ export const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
   },
   {
     header: "Citation",
-    cell: () => <p>Generate Citation</p>,
+    cell: () => <CitationModal />,
     minSize: 150,
     maxSize: 150,
   },
@@ -110,7 +111,7 @@ export const closedColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
   },
   {
     header: "Citation",
-    cell: () => <span>Generate Citation</span>,
+    cell: () => <CitationModal />,
     minSize: 150,
     maxSize: 150,
   },
