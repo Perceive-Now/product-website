@@ -36,8 +36,12 @@ import PublicationDetailPage from "./pages/product/deep-search/publications/deta
 import DeepSearchCompaniesListPage from "./pages/product/deep-search/companies/list";
 import DeepSearchCompanyPatenPage from "./pages/product/deep-search/companies/patent";
 
+// Deep search - Inventors
+import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/list";
+
 //
 import PageNotFound404 from "./pages/404";
+import DeepSearchInventorPage from "./pages/product/deep-search/inventors/detail";
 
 /**
  *
@@ -73,6 +77,9 @@ function App() {
 
             <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
             <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
+
+            <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
+            <Route path="/deep-search/inventor/:type" element={<DeepSearchInventorPage />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />

@@ -119,7 +119,7 @@ export default function PublicationListPage() {
 
           {keywords.length > 0 ? (
             <p className="mt-[4px]">
-              <span>Showing patents for: </span>
+              <span>Showing publications for: </span>
               <span className="font-semibold">"{joinedkeywords}"</span>
             </p>
           ) : (

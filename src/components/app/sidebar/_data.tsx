@@ -56,7 +56,7 @@ const sidebarItems: ISidebarListItem[] = [
         title: "Inventors",
         key: "inventors",
         icon: <ExpertsIcon />,
-        to: "/",
+        to: "/deep-search/inventors",
       },
       {
         title: "Universities",
