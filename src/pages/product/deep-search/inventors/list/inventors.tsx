@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -22,9 +22,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 
 import Button from "../../../../../components/reusable/button";
-import TableYearSelect, {
-  IYearItem,
-} from "../../../../../components/reusable/table-year-select/table-year-select";
+import TableYearSelect from "../../../../../components/reusable/table-year-select/table-year-select";
 import {
   getDeepSearchPatentInventorsList,
   IDeepSearchInventorsPatentItem,
@@ -33,22 +31,6 @@ import { useNavigate } from "react-router-dom";
 
 //
 const PAGE_SIZE = 10;
-
-const publishYearsOptions = () => {
-  const startYear = new Date().getFullYear() - 1;
-  const yearsToInclude = 50;
-  const endYear = startYear - yearsToInclude;
-
-  const years = [];
-  for (let i = startYear; i >= endYear; i--) {
-    years.push({
-      label: i.toString(),
-      value: i,
-    });
-  }
-
-  return years;
-};
 
 //
 export default function DeepSearchInventorsListPage() {
@@ -66,10 +48,23 @@ export default function DeepSearchInventorsListPage() {
 
   const [category, setCategory] = useState<CategoryType>("patents");
 
-  const [publishedYear, setPublishedYear] = useState<IYearItem | null>({
-    label: "2022",
-    value: 2022,
-  });
+  const [publishedYear, setPublishedYear] = useState<number>(2022);
+
+  const publishYearsOptions = useMemo(() => {
+    const startYear = new Date().getFullYear() - 1;
+    const yearsToInclude = 50;
+    const endYear = startYear - yearsToInclude;
+
+    const years = [];
+    for (let i = startYear; i >= endYear; i--) {
+      years.push({
+        label: i.toString(),
+        value: i,
+      });
+    }
+
+    return years;
+  }, []);
 
   //
   const { data: relatedKeywords } = useQuery({
@@ -285,13 +280,14 @@ export default function DeepSearchInventorsListPage() {
           </div>
 
           {/* Filter section */}
-          <div className="mb-5 flex items-center">
+          <div className="mb-5 flex items-start">
             <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
             <TableYearSelect
+              label="Publication Date"
               placeholder="Publication Date"
               onChange={(item) => setPublishedYear(item)}
               value={publishedYear}
-              options={publishYearsOptions()}
+              options={publishYearsOptions}
             />
           </div>
           {/* Main content */}
