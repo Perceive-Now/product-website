@@ -78,6 +78,7 @@ axiosInstance.interceptors.response.use(
 
       jsCookie.remove("pn_refresh");
       sessionStorage.removeItem("pn_access");
+      //TODO search if we logout the user for somewhere else natra we can redirect the user form here using window.location
     }
 
     //
