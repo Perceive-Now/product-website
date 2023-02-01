@@ -3,7 +3,7 @@ import axiosInstance from "../../axios";
 /**
  *
  */
-export async function getDeepSearchInventorsPatentList(options: IGetDeepSearchOptions) {
+export async function getDeepSearchPatentInventorsList(options: IGetDeepSearchOptions) {
   const queryParams = new URLSearchParams();
   if (options.limit) queryParams.append("limit", options.limit.toString());
   if (options.offset) queryParams.append("offset", options.offset.toString());
@@ -39,18 +39,17 @@ export interface IDeepSearchInventorsPatentItem {
 /**
  *
  */
-export async function getDeepSearchInventorPatent(options: IGetDeepSearchInventorOptions) {
+export async function getDeepSearchPatentInventor(options: IGetDeepSearchInventorOptions) {
   const queryParams = new URLSearchParams();
   if (options.firstName) queryParams.append("first_name", options.firstName);
   if (options.lastName) queryParams.append("last_name", options.lastName);
 
   queryParams.append("q", options.keywords.join(","));
 
-  const response = await axiosInstance.get<IDeepSearchInventorsPatentListResponse>(
-    `/api/v1/ds-api/deepsearch/patent-inventor-list/?${queryParams.toString()}`,
+  const response = await axiosInstance.get<IDeepSearchInventorPatentListResponse>(
+    `/api/v1/ds-api/deepsearch/inventor-list/?${queryParams.toString()}`,
   );
-
-  return response.data.data;
+  return response.data;
 }
 
 //
@@ -60,12 +59,15 @@ interface IGetDeepSearchInventorOptions {
   keywords: string[];
 }
 
-interface IDeepSearchInventorsPatentListResponse {
+interface IDeepSearchInventorPatentResponseData {
   count: number;
-  data: IDeepSearchInventorsPatentItem[];
+  data: IDeepSearchInventorPatentItem[];
+}
+interface IDeepSearchInventorPatentListResponse {
+  data: IDeepSearchInventorPatentResponseData;
 }
 
-export interface IDeepSearchInventorsPatentItem {
+export interface IDeepSearchInventorPatentItem {
   _id: string;
   title: string;
   abstract: string;

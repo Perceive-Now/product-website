@@ -26,7 +26,7 @@ import TableYearSelect, {
   IYearItem,
 } from "../../../../../components/reusable/table-year-select/table-year-select";
 import {
-  getDeepSearchInventorsPatentList,
+  getDeepSearchPatentInventorsList,
   IDeepSearchInventorsPatentItem,
 } from "../../../../../utils/api/deep-search/inventors";
 import { useNavigate } from "react-router-dom";
@@ -85,7 +85,7 @@ export default function DeepSearchInventorsListPage() {
     queryKey: [...keywords, currentPage],
     queryFn: async () => {
       //
-      const response = await getDeepSearchInventorsPatentList({
+      const response = await getDeepSearchPatentInventorsList({
         keywords,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
@@ -157,7 +157,7 @@ export default function DeepSearchInventorsListPage() {
           size="small"
           handleClick={() =>
             navigate(
-              `/deep-search/inventor/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}`,
+              `/deep-search/inventor/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}&keywords=${joinedkeywords}`,
             )
           }
         >
