@@ -66,6 +66,7 @@ axiosInstance.interceptors.response.use(
         // Setting token values
         store.dispatch(setAuthToken(token));
         sessionStorage.setItem("pn_access", token);
+        jsCookie.set("pn_refresh", res.data.refresh);
 
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
