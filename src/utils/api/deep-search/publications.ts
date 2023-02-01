@@ -56,6 +56,7 @@ export interface IDeepSearchPublicationListItem {
   URL?: string;
   _id: string;
   abstract?: string;
+  journal_name?: string;
 }
 
 interface IDeepSearchPublicationListResponse {

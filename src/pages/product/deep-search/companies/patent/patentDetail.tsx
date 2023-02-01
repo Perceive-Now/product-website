@@ -91,11 +91,12 @@ export default function DeepSearchCompanyPatent() {
       accessorKey: "title",
       minSize: 400,
       maxSize: 400,
-      cell: (data) => (
-        <p className="line-clamp-1">
-          <TooltipWrapper content={data.row.original.title}>
-            {data.row.original.title}
-          </TooltipWrapper>
+      cell: ({ row }) => (
+        <p className="line-clamp-1 flex">
+          <span className="mr-1">
+            {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
+          </span>
+          <TooltipWrapper content={row.original.title}>{row.original.title}</TooltipWrapper>
         </p>
       ),
     },

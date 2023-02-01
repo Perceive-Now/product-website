@@ -71,7 +71,7 @@ export default function DeepSearchCompaniesListPage() {
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
-    queryKey: [...keywords, currentPage],
+    queryKey: ["deep-search-companies-patent", ...keywords, currentPage],
     queryFn: async () => {
       const response = await getDeepSearchCompaniesPatentList({
         keywords,
@@ -95,11 +95,13 @@ export default function DeepSearchCompaniesListPage() {
     {
       header: "Company Name",
       accessorKey: "company_name",
-      cell: (data) => (
+      cell: ({ row }) => (
         <p className="line-clamp-1">
-          <TooltipWrapper content={data.row.original.key}>
-            {data.row.original.key || "-"}
-          </TooltipWrapper>
+          {" "}
+          <span className="mr-1">
+            {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
+          </span>
+          <TooltipWrapper content={row.original.key}>{row.original.key || "-"}</TooltipWrapper>
         </p>
       ),
       minSize: 350,

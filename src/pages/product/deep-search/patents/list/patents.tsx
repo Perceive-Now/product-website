@@ -102,14 +102,19 @@ export default function PatentListPage() {
     {
       header: "Title",
       accessorKey: "title",
-      cell: (data) => (
-        <TooltipWrapper content={data.row.original.title}>
-          <Link
-            className="line-clamp-1 text-primary-600 hover:underline"
-            to={`/deep-search/patents/${data.row.original._id}`}
-          >
-            {data.row.original.title}
-          </Link>
+      cell: ({ row }) => (
+        <TooltipWrapper content={row.original.title}>
+          <span className="flex">
+            <span className="mr-1">
+              {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
+            </span>
+            <Link
+              className="line-clamp-1 text-primary-600 hover:underline"
+              to={`/deep-search/patents/${row.original._id}`}
+            >
+              {row.original.title}
+            </Link>
+          </span>
         </TooltipWrapper>
       ),
       minSize: 330,
