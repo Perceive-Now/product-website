@@ -90,7 +90,10 @@ export const getCurrentSession = createAsyncThunk(
         refresh: refreshToken,
       });
 
+      //
+      jsCookie.set("pn_refresh", response.data.refresh);
       sessionStorage.setItem("pn_access", response.data.access);
+
       return {
         success: true,
         message: "Current session obtained",
@@ -217,8 +220,6 @@ interface ILoginParams {
 
 //
 interface IRefreshResponse {
-  status: string;
-  message: string;
   access: string;
-  errors: string;
+  refresh: string;
 }
