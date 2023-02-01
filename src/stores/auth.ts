@@ -1,3 +1,4 @@
+import axios from "axios";
 import jsCookie from "js-cookie";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -6,7 +7,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
 import axiosInstance from "../utils/axios";
-import axios from "axios";
 
 /**
  *
@@ -16,12 +16,15 @@ const initialState: AuthState = {
   user: undefined,
 };
 
+//
+const API_URL = process.env.REACT_APP_API_URL;
+
 // Cognitor Auth functions
 export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const { data } = await axios.post("/api/v1/user/login/", {
+      const { data } = await axios.post(`${API_URL}/api/v1/user/login/`, {
         email: payload.email,
         password: payload.password,
       });
@@ -87,7 +90,7 @@ export const getCurrentSession = createAsyncThunk(
 
     //
     try {
-      const response = await axios.post<IRefreshResponse>("/api/v1/user/refresh-token/", {
+      const response = await axios.post<IRefreshResponse>(`${API_URL}/api/v1/user/refresh-token/`, {
         refresh: refreshToken,
       });
 
