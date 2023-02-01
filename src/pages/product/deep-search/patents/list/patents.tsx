@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
@@ -17,7 +17,6 @@ import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
-import type { IYearItem } from "../../../../../components/reusable/table-year-select/table-year-select";
 
 //
 import { setDashboardSearch } from "../../../../../stores/dashboard";
@@ -29,22 +28,6 @@ import { getDeepSearchPatentList } from "../../../../../utils/api/deep-search/pa
 
 //
 const PAGE_SIZE = 10;
-
-const publishYearsOptions = () => {
-  const startYear = new Date().getFullYear() - 1;
-  const yearsToInclude = 50;
-  const endYear = startYear - yearsToInclude;
-
-  const years = [];
-  for (let i = startYear; i >= endYear; i--) {
-    years.push({
-      label: i.toString(),
-      value: i,
-    });
-  }
-
-  return years;
-};
 
 //
 export default function PatentListPage() {
@@ -61,10 +44,23 @@ export default function PatentListPage() {
 
   const [classification, setClassification] = useState<classificationMode>("Industry");
 
-  const [publishedYear, setPublishedYear] = useState<IYearItem | null>({
-    label: "2022",
-    value: 2022,
-  });
+  const [publishedYear, setPublishedYear] = useState<number>(2022);
+
+  const publishYearsOptions = useMemo(() => {
+    const startYear = new Date().getFullYear() - 1;
+    const yearsToInclude = 50;
+    const endYear = startYear - yearsToInclude;
+
+    const years = [];
+    for (let i = startYear; i >= endYear; i--) {
+      years.push({
+        label: i.toString(),
+        value: i,
+      });
+    }
+
+    return years;
+  }, []);
 
   //
   const { data: relatedKeywords } = useQuery({
@@ -84,7 +80,7 @@ export default function PatentListPage() {
       //
       const response = await getDeepSearchPatentList({
         keywords,
-        year: publishedYear?.value ?? lastYearValue,
+        year: publishedYear ?? lastYearValue,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
         classification,
@@ -220,13 +216,14 @@ export default function PatentListPage() {
       </div>
 
       {/* Filter section */}
-      <div className="mb-5 flex items-center">
+      <div className="mb-5 flex items-start">
         <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
         <TableYearSelect
+          label="Publication Date"
           placeholder="Publication Date"
-          onChange={(item) => setPublishedYear(item)}
+          onChange={(year) => setPublishedYear(year)}
           value={publishedYear}
-          options={publishYearsOptions()}
+          options={publishYearsOptions}
         />
       </div>
 

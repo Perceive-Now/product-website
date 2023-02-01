@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider } from "react-tooltip";
@@ -12,7 +12,6 @@ import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
-import type { IYearItem } from "../../../../../components/reusable/table-year-select/table-year-select";
 
 //
 import { LoadingIcon } from "../../../../../components/icons";
@@ -31,21 +30,6 @@ import { closedColumnData, openColumnData } from "./_data";
 //
 const PAGE_SIZE = 10;
 
-const publishYearsOptions = () => {
-  const startYear = new Date().getFullYear() - 1;
-  const yearsToInclude = 50;
-  const endYear = startYear - yearsToInclude;
-
-  const years = [];
-  for (let i = startYear; i >= endYear; i--) {
-    years.push({
-      label: i.toString(),
-      value: i,
-    });
-  }
-  return years;
-};
-
 /**
  *
  */
@@ -55,10 +39,7 @@ export default function PublicationListPage() {
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");
 
-  const [selectedPublishedYear, setSelectedPublishedYear] = useState<IYearItem | null>({
-    label: "2022",
-    value: 2022,
-  });
+  const [selectedPublishedYear, setSelectedPublishedYear] = useState<number>(2022);
   //
   const [classification, setClassification] = useState<classificationMode>("Industry");
   //
@@ -74,15 +55,28 @@ export default function PublicationListPage() {
     { enabled: !!keywords.length },
   );
 
+  const publishYearsOptions = useMemo(() => {
+    const startYear = new Date().getFullYear() - 1;
+    const yearsToInclude = 50;
+    const endYear = startYear - yearsToInclude;
+
+    const years = [];
+    for (let i = startYear; i >= endYear; i--) {
+      years.push({
+        label: i.toString(),
+        value: i,
+      });
+    }
+    return years;
+  }, []);
+
   // Getting publication list
   const { data: publicationsList, isLoading } = useQuery({
-    queryKey: [...keywords, classification, selectedPublishedYear?.value, currentPage],
+    queryKey: [...keywords, classification, selectedPublishedYear, currentPage],
     queryFn: async () => {
       const response = await getDeepSearchPublicationList({
         keywords,
-        year: selectedPublishedYear?.value
-          ? selectedPublishedYear.value
-          : new Date().getFullYear() - 1,
+        year: selectedPublishedYear ? selectedPublishedYear : new Date().getFullYear() - 1,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
         classification,
@@ -150,13 +144,14 @@ export default function PublicationListPage() {
       </div>
 
       {/* Filter section */}
-      <div className="mb-5 flex items-center">
+      <div className="mb-5 flex items-start">
         <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
         <TableYearSelect
+          label="Publication Date"
           placeholder="Publication Date"
-          onChange={(item) => setSelectedPublishedYear(item)}
+          onChange={(year) => setSelectedPublishedYear(year)}
           value={selectedPublishedYear}
-          options={publishYearsOptions()}
+          options={publishYearsOptions}
         />
       </div>
 

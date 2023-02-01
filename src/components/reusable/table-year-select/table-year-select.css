@@ -1,6 +1,6 @@
 .table-year-select {
   cursor: pointer;
-  width: fit-content;
+  width: 100%;
 }
 
 .table-year-select .select__control {
