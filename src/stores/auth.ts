@@ -6,6 +6,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
 import axiosInstance from "../utils/axios";
+import axios from "axios";
 
 /**
  *
@@ -20,7 +21,7 @@ export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const { data } = await axiosInstance.post("/api/v1/user/login/", {
+      const { data } = await axios.post("/api/v1/user/login/", {
         email: payload.email,
         password: payload.password,
       });
@@ -86,7 +87,7 @@ export const getCurrentSession = createAsyncThunk(
 
     //
     try {
-      const response = await axiosInstance.post<IRefreshResponse>("/api/v1/user/refresh-token/", {
+      const response = await axios.post<IRefreshResponse>("/api/v1/user/refresh-token/", {
         refresh: refreshToken,
       });
 
