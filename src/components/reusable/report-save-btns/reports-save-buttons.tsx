@@ -3,7 +3,7 @@ import { BookmarkIcon, ReportIcon } from "../../icons";
 /**
  *
  */
-export default function ReportShareButtons() {
+export default function ReportSaveButtons() {
   return (
     <div className="flex items-center gap-x-3">
       <div className="flex items-center gap-x-[4px] cursor-pointer">

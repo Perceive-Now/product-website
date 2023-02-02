@@ -15,7 +15,7 @@ import { LoadingIcon } from "../../../../../components/icons";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
-import ReportShareButtons from "../../../../../components/reusable/report-share-btns";
+import ReportSaveButtons from "../../../../../components/reusable/report-save-btns";
 
 //
 const PAGE_SIZE = 10;
@@ -167,7 +167,7 @@ export default function DeepSearchInventorPage() {
     <div>
       {/* Report share buttons section */}
       <div className="flex justify-end">
-        <ReportShareButtons />
+        <ReportSaveButtons />
       </div>
 
       <div className="text-2xl leading-8 text-primary-900">
