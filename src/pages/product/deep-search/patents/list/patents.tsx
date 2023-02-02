@@ -183,7 +183,7 @@ export default function PatentListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, classification]);
+  }, [searchedKeywords, classification, publishedYear]);
 
   //
   return (
@@ -199,10 +199,14 @@ export default function PatentListPage() {
             initialValue={searchedKeywords}
           />
 
-          {!!keywords.length && (
+          {keywords.length > 0 ? (
             <p className="mt-[4px]">
               <span>Showing patents for: </span>
               <span className="font-semibold">"{joinedkeywords}"</span>
+            </p>
+          ) : (
+            <p className="mt-[4px] text-appGray-900">
+              Search keywords e.g. “COVID-19” to see related patents.
             </p>
           )}
         </div>
@@ -220,45 +224,49 @@ export default function PatentListPage() {
         />
       </div>
 
-      {/* Filter section */}
-      <div className="mb-5 flex items-start">
-        <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
-        <TableYearSelect
-          label="Publication Date"
-          placeholder="Publication Date"
-          onChange={(year) => setPublishedYear(year)}
-          value={publishedYear}
-          options={publishYearsOptions}
-        />
-      </div>
-
-      {/* Main content */}
-      <div>
-        <p className="text-primary-900 text-[22px]">Patents</p>
-
-        <TooltipProvider>
-          <div className="my-4">
-            {!!keywords.length && isLoading ? (
-              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-                <LoadingIcon width={40} height={40} />
-              </div>
-            ) : (
-              <ReactTable columnsData={columnData} rowsData={finalPatentList} size="medium" />
-            )}
+      {!!keywords.length && (
+        <>
+          {/* Filter section */}
+          <div className="mb-5 flex items-start">
+            <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
+            <TableYearSelect
+              label="Publication Date"
+              placeholder="Publication Date"
+              onChange={(year) => setPublishedYear(year)}
+              value={publishedYear}
+              options={publishYearsOptions}
+            />
           </div>
 
-          <Tooltip className="tooltip" float />
-        </TooltipProvider>
+          {/* Main content */}
+          <div>
+            <p className="text-primary-900 text-[22px]">Patents</p>
 
-        <div className="flex justify-center">
-          <Pagination
-            page={currentPage}
-            total={Math.ceil(totalCount / PAGE_SIZE)}
-            onChange={(pageNum) => setCurrentPage(pageNum)}
-            disabled={isLoading}
-          />
-        </div>
-      </div>
+            <TooltipProvider>
+              <div className="my-4">
+                {!!keywords.length && isLoading ? (
+                  <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                    <LoadingIcon width={40} height={40} />
+                  </div>
+                ) : (
+                  <ReactTable columnsData={columnData} rowsData={finalPatentList} size="medium" />
+                )}
+              </div>
+
+              <Tooltip className="tooltip" float />
+            </TooltipProvider>
+
+            <div className="flex justify-center">
+              <Pagination
+                page={currentPage}
+                total={Math.ceil(totalCount / PAGE_SIZE)}
+                onChange={(pageNum) => setCurrentPage(pageNum)}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Related keywords */}
       {keywords.length > 0 && (

@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
-
 //
 import { getDeepSearchPatentInventor } from "../../../../../utils/api/deep-search/inventors";
 
