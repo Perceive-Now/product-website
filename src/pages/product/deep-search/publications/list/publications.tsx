@@ -163,7 +163,14 @@ export default function PublicationListPage() {
     },
     {
       header: "Citation",
-      cell: () => <CitationModal />,
+      cell: ({ row }) => (
+        <CitationModal
+          author={row.original?.citiation?.author}
+          date={row.original?.citiation?.date}
+          publisher={row.original?.citiation?.publisher}
+          title={row.original?.citiation?.title}
+        />
+      ),
       minSize: 150,
       maxSize: 150,
     },
@@ -225,7 +232,14 @@ export default function PublicationListPage() {
     },
     {
       header: "Citation",
-      cell: () => <CitationModal />,
+      cell: ({ row }) => (
+        <CitationModal
+          author={row.original?.citiation?.author}
+          date={row.original?.citiation?.date}
+          publisher={row.original?.citiation?.publisher}
+          title={row.original?.citiation?.title}
+        />
+      ),
       minSize: 150,
       maxSize: 150,
     },

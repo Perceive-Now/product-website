@@ -230,8 +230,8 @@ export default function PatentListPage() {
           <div className="mb-5 flex items-start">
             <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
             <TableYearSelect
-              label="Publication Date"
-              placeholder="Publication Date"
+              label="Published Date"
+              placeholder="Published Date"
               onChange={(year) => setPublishedYear(year)}
               value={publishedYear}
               options={publishYearsOptions}

@@ -49,7 +49,7 @@ export default function PublicationDetailPage() {
         <div className="mt-4 text-gray-700">
           <div className="grid grid-cols-10 gap-x-2 mb-2">
             <p className="col-span-2 font-bold text-right">Journal name:</p>
-            <p className="col-span-8">{publicationData?.journal_name ?? "-"}</p>
+            <p className="col-span-8">{publicationData?.publisher ?? "-"}</p>
           </div>
 
           <div className="grid grid-cols-10 gap-x-2 mb-2">
@@ -66,7 +66,11 @@ export default function PublicationDetailPage() {
 
           <div className="grid grid-cols-10 gap-x-2 mb-2">
             <p className="col-span-2 font-bold text-right">DOI:</p>
-            <p className="col-span-8">{publicationData?.doi_url}</p>
+            <p className="col-span-8">
+              <a href={publicationData?.doi_url ?? ""} target="_blank" rel="noreferrer">
+                {publicationData?.doi_url}
+              </a>
+            </p>
           </div>
 
           {publicationData?.abstract && (

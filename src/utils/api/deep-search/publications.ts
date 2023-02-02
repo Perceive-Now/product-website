@@ -50,6 +50,13 @@ interface IGetPublicationListOptions {
   classification: "Academic" | "Industry" | "Open";
 }
 
+interface ICitation {
+  title: string;
+  author: string;
+  date: string;
+  publisher: string;
+}
+
 export interface IDeepSearchPublicationListItem {
   title: string;
   doi_url?: string;
@@ -57,6 +64,7 @@ export interface IDeepSearchPublicationListItem {
   _id: string;
   abstract?: string;
   journal_name?: string;
+  citiation?: ICitation;
 }
 
 interface IDeepSearchPublicationListResponse {
@@ -71,6 +79,7 @@ export interface IDeepSearchPublicationDetailItem {
   doi_url?: string;
   URL?: string;
   journal_name?: string;
+  publisher?: string;
   authors?: string[];
   author?: string[];
   published_date: string;

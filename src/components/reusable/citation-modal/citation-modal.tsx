@@ -4,13 +4,27 @@ import { Dialog } from "@headlessui/react";
 //
 import Button from "../button";
 import { CrossIcon } from "../../icons";
+import dayjs from "dayjs";
 
 //
-export default function CitationModal() {
+export default function CitationModal({ author, title, date, publisher }: ICitationModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleViewSource = () => {
-    // console.log("copy");
+  const handleCopyCitation = () => {
+    const citationText = `
+      ${author ? `Inventor name: ${author};` : ""}
+      ${title ? `title: ${title};` : ""}
+      ${publisher ? `Journal Name: ${publisher};` : ""}
+      ${date ? `date: ${dayjs(date).format("MMMM DD, YYYY")};` : ""}
+    `;
+    navigator.clipboard.writeText(citationText).then(
+      () => {
+        /* Success - clipboard success */
+      },
+      () => {
+        /* Rejected - clipboard failed */
+      },
+    );
   };
 
   return (
@@ -28,32 +42,37 @@ export default function CitationModal() {
           <Dialog.Panel className="relative bg-white w-100 max-w-[600px] p-5 rounded-lg">
             <div>
               <Dialog.Description className="max-h-[333px]">
-                <div className="grid grid-cols-12 gap-x-2 mb-2">
-                  <p className="col-span-4 font-bold text-right">Expert name:</p>
-                  <p className="col-span-8">Riccardo Privolizzi</p>
-                </div>
+                {author && (
+                  <div className="grid grid-cols-12 gap-x-2 mb-2">
+                    <p className="col-span-4 font-bold text-right">Inventor name:</p>
+                    <p className="col-span-8">{author}</p>
+                  </div>
+                )}
 
-                <div className="grid grid-cols-12 gap-x-2 mb-2">
-                  <p className="col-span-4 font-bold text-right">Title name:</p>
-                  <p className="col-span-8">
-                    Field evaluation of a rapid antigen test (Panbio™ COVID-19 Ag Rapid Test Device)
-                    for COVID-19 diagnosis in primary healthcare centres
-                  </p>
-                </div>
+                {title && (
+                  <div className="grid grid-cols-12 gap-x-2 mb-2">
+                    <p className="col-span-4 font-bold text-right">Title name:</p>
+                    <p className="col-span-8">{title}</p>
+                  </div>
+                )}
 
-                <div className="grid grid-cols-12 gap-x-2 mb-2">
-                  <p className="col-span-4 font-bold text-right">Journal name:</p>
-                  <p className="col-span-8">Sci-Transl Medicine</p>
-                </div>
+                {publisher && (
+                  <div className="grid grid-cols-12 gap-x-2 mb-2">
+                    <p className="col-span-4 font-bold text-right">Journal name:</p>
+                    <p className="col-span-8">{publisher}</p>
+                  </div>
+                )}
 
-                <div className="grid grid-cols-12 gap-x-2 mb-2">
-                  <p className="col-span-4 font-bold text-right">Date:</p>
-                  <p className="col-span-8">November 27, 2019</p>
-                </div>
+                {date && (
+                  <div className="grid grid-cols-12 gap-x-2 mb-2">
+                    <p className="col-span-4 font-bold text-right">Date:</p>
+                    <p className="col-span-8">{dayjs(date).format("MMMM DD, YYYY")}</p>
+                  </div>
+                )}
               </Dialog.Description>
 
               <div className="flex justify-center mt-3">
-                <Button handleClick={handleViewSource} type="secondary" classname="text-center">
+                <Button handleClick={handleCopyCitation} type={"secondary"} classname="text-center">
                   Copy citation
                 </Button>
               </div>
@@ -71,4 +90,11 @@ export default function CitationModal() {
       </Dialog>
     </p>
   );
+}
+
+interface ICitationModalProps {
+  author?: string;
+  publisher?: string;
+  date?: string;
+  title?: string;
 }
