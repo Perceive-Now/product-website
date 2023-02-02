@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { ColumnDef } from "@tanstack/react-table";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
-import { LoadingIcon } from "../../../../../components/icons";
 
 //
 import { getDeepSearchPatentInventor } from "../../../../../utils/api/deep-search/inventors";
 
+//
 import { useAppSelector } from "../../../../../hooks/redux";
 
 //
-import { Tooltip, TooltipProvider } from "react-tooltip";
+import { LoadingIcon } from "../../../../../components/icons";
 import ReactTable from "../../../../../components/reusable/ReactTable";
-import { patentColumnData } from "./columns";
 import Pagination from "../../../../../components/reusable/pagination";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
 import ReportShareButtons from "../../../../../components/reusable/report-share-btns";
 
 //
@@ -48,6 +50,80 @@ export default function DeepSearchInventorPage() {
     {
       title: "Patent claims",
       value: 40,
+    },
+  ];
+
+  //
+  const patentColumnData: ColumnDef<IDeepSearchPatentListItem>[] = [
+    {
+      header: "Title",
+      accessorKey: "title",
+      cell: ({ row }) => (
+        <span className="flex">
+          <span className="mr-1">
+            {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
+          </span>
+
+          <TooltipWrapper content={row.original.title}>
+            <Link
+              className="line-clamp-1 text-primary-600 hover:underline"
+              to={`/deep-search/patents/${row.original._id}`}
+            >
+              {row.original.title}
+            </Link>
+          </TooltipWrapper>
+        </span>
+      ),
+      minSize: 330,
+      maxSize: 330,
+    },
+    {
+      header: "Organization",
+      accessorKey: "company",
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.company}>
+          <p className="line-clamp-1">{data.row.original.company || "-"}</p>
+        </TooltipWrapper>
+      ),
+      minSize: 200,
+      maxSize: 200,
+    },
+    {
+      header: "Inventor",
+      accessorKey: "inventor",
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.inventor}>
+          <p className="line-clamp-1">{data.row.original.inventor || "-"}</p>
+        </TooltipWrapper>
+      ),
+      minSize: 200,
+      maxSize: 200,
+    },
+    {
+      header: "Abstract",
+      cell: (data) => {
+        const originalData = data.row.original;
+
+        return (
+          <AbstractModal
+            type="Patent"
+            data={{
+              id: originalData._id,
+              title: originalData.title,
+              abstract: originalData.abstract,
+            }}
+            viewPath={`/deep-search/patents/${originalData._id}`}
+          />
+        );
+      },
+      minSize: 130,
+      maxSize: 130,
+    },
+    {
+      header: "Date (Y/M/D)",
+      accessorKey: "date",
+      minSize: 140,
+      maxSize: 140,
     },
   ];
 

@@ -77,7 +77,7 @@ export default function DeepSearchInventorsListPage() {
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
-    queryKey: [...keywords, currentPage],
+    queryKey: [...keywords, currentPage, "deepsearch-patent-inventor-list"],
     queryFn: async () => {
       //
       const response = await getDeepSearchPatentInventorsList({
@@ -102,9 +102,12 @@ export default function DeepSearchInventorsListPage() {
     {
       header: "Inventors",
       accessorKey: "inventor_name",
-      cell: (data) => (
+      cell: ({ row }) => (
         <p className="line-clamp-1">
-          {`${data.row.original.first_name} ${data.row.original.last_name}`}
+          <span className="mr-1">
+            {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
+          </span>
+          {`${row.original.first_name} ${row.original.last_name}`}
         </p>
       ),
       minSize: 350,
@@ -169,7 +172,14 @@ export default function DeepSearchInventorsListPage() {
     {
       header: "Inventors",
       accessorKey: "company_name",
-      cell: (data) => <p className="line-clamp-1">{data.row.original.key || "-"}</p>,
+      cell: ({ row }) => (
+        <p className="line-clamp-1">
+          <span className="mr-1">
+            {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
+          </span>
+          {row.original.key || "-"}
+        </p>
+      ),
       minSize: 350,
       maxSize: 350,
     },

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import { Tooltip, TooltipProvider } from "react-tooltip";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 //
 import Search from "../../../../../components/reusable/search";
@@ -12,6 +12,9 @@ import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
+import Button from "../../../../../components/reusable/button";
+import AbstractModal from "../../../../../components/reusable/abstract-modal";
+import CitationModal from "../../../../../components/reusable/citation-modal";
 
 //
 import { LoadingIcon } from "../../../../../components/icons";
@@ -21,11 +24,13 @@ import { useAppSelector } from "../../../../../hooks/redux";
 import { setDashboardSearch } from "../../../../../stores/dashboard";
 
 //
-import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
-import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
+import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/deep-search/publications";
 
 //
-import { closedColumnData, openColumnData } from "./_data";
+import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
+import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
+import { ColumnDef } from "@tanstack/react-table";
+import { Link } from "react-router-dom";
 
 //
 const PAGE_SIZE = 10;
@@ -102,6 +107,139 @@ export default function PublicationListPage() {
   const changeClassificationMode = (mode: string) => {
     setClassification(mode as classificationMode);
   };
+
+  //
+  const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
+    {
+      header: "Publication Name",
+      accessorKey: "title",
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.title}>
+          <span className="flex">
+            <span className="mr-1">
+              {((currentPage - 1) * PAGE_SIZE + data.row.index + 1).toString().padStart(2, "0")}.
+            </span>
+
+            <Link
+              to={`/deep-search/publications/${encodeURIComponent(
+                data.row.original._id,
+              )}?source=Open`}
+              className="text-primary-600 hover:underline line-clamp-1"
+            >
+              {data.row.original.title}
+            </Link>
+          </span>
+        </TooltipWrapper>
+      ),
+      minSize: 160,
+      maxSize: 160,
+    },
+    {
+      header: "Journel Name",
+      accessorKey: "journel_name",
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.journal_name}>
+          <p className="line-clamp-1">{data.row.original.journal_name || "-"}</p>
+        </TooltipWrapper>
+      ),
+      minSize: 130,
+      maxSize: 130,
+    },
+    {
+      header: "DOI",
+      accessorKey: "doi_url",
+      cell: (data) => (
+        <a
+          href={data.row.original.doi_url || "#"}
+          className="line-clamp-1"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {data.row.original.doi_url || "-"}
+        </a>
+      ),
+      minSize: 130,
+      maxSize: 130,
+    },
+    {
+      header: "Citation",
+      cell: () => <CitationModal />,
+      minSize: 150,
+      maxSize: 150,
+    },
+    {
+      header: " ",
+      cell: () => (
+        <Button type="secondary" size="small">
+          Share
+        </Button>
+      ),
+      minSize: 200,
+      maxSize: 200,
+    },
+  ];
+
+  const closedColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
+    {
+      header: "Publication Name",
+      accessorKey: "title",
+      cell: (data) => (
+        <TooltipWrapper content={data.row.original.title}>
+          <span className="flex">
+            <span className="mr-1">
+              {((currentPage - 1) * PAGE_SIZE + data.row.index + 1).toString().padStart(2, "0")}.
+            </span>
+
+            <Link
+              to={`/deep-search/publications/${encodeURIComponent(
+                data.row.original._id,
+              )}?source=Closed`}
+              className="text-primary-600 hover:underline line-clamp-1"
+            >
+              {data.row.original.title || "-"}
+            </Link>
+          </span>
+        </TooltipWrapper>
+      ),
+      minSize: 160,
+      maxSize: 160,
+    },
+    {
+      header: "Abstract",
+      accessorKey: "abstract",
+      cell: ({ row }) => (
+        <AbstractModal
+          data={{
+            title: row.original.title,
+            abstract: row.original.abstract,
+            id: row.original._id,
+          }}
+          viewPath={`/deep-search/publications/${encodeURIComponent(
+            row.original._id,
+          )}?source=Closed`}
+          type="Publication"
+        />
+      ),
+      minSize: 130,
+      maxSize: 130,
+    },
+    {
+      header: "Citation",
+      cell: () => <CitationModal />,
+      minSize: 150,
+      maxSize: 150,
+    },
+    {
+      header: " ",
+      cell: () => (
+        <Button type="secondary" size="small">
+          Share
+        </Button>
+      ),
+      minSize: 200,
+      maxSize: 200,
+    },
+  ];
 
   //
   return (
