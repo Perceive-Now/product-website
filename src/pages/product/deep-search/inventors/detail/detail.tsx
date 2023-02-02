@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { ColumnDef } from "@tanstack/react-table";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
-import { LoadingIcon } from "../../../../../components/icons";
 
 //
 import { getDeepSearchPatentInventor } from "../../../../../utils/api/deep-search/inventors";
 
+//
 import { useAppSelector } from "../../../../../hooks/redux";
 
 //
-import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
+import { LoadingIcon } from "../../../../../components/icons";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
-import ReportShareButtons from "../../../../../components/reusable/report-share-btns";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
-import { ColumnDef } from "@tanstack/react-table";
+import ReportShareButtons from "../../../../../components/reusable/report-share-btns";
 
 //
 const PAGE_SIZE = 10;
