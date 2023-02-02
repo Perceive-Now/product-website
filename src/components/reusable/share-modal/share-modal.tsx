@@ -21,7 +21,7 @@ export default function ShareModal({ open, handleClose, link }: ICitationModalPr
               <div>Or copy link</div>
 
               <div>
-                <input />
+                <input value={link} />
                 <button>Copy</button>
               </div>
             </div>
