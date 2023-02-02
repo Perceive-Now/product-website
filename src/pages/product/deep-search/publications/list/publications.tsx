@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
+import { ColumnDef } from "@tanstack/react-table";
 
 //
 import Search from "../../../../../components/reusable/search";
@@ -12,7 +14,6 @@ import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
-import Button from "../../../../../components/reusable/button";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
 import CitationModal from "../../../../../components/reusable/citation-modal";
 
@@ -29,8 +30,7 @@ import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/de
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
-import { ColumnDef } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
+import TableShareButton from "../../../../../components/@deepsearch/publication/TableShareButton";
 
 //
 const PAGE_SIZE = 10;
@@ -176,11 +176,7 @@ export default function PublicationListPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
-          Share
-        </Button>
-      ),
+      cell: () => <TableShareButton />,
       minSize: 200,
       maxSize: 200,
     },
@@ -245,11 +241,7 @@ export default function PublicationListPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
-          Share
-        </Button>
-      ),
+      cell: () => <TableShareButton />,
       minSize: 200,
       maxSize: 200,
     },
