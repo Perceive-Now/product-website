@@ -281,60 +281,63 @@ export default function PublicationListPage() {
         />
       </div>
 
-      {/* Filter section */}
-      <div className="mb-5 flex items-start">
-        <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
-        <TableYearSelect
-          label="Publication Date"
-          placeholder="Publication Date"
-          onChange={(year) => setSelectedPublishedYear(year)}
-          value={selectedPublishedYear}
-          options={publishYearsOptions}
-        />
-      </div>
-
-      {/* Main content */}
-      <div>
-        <p className="text-primary-900 text-[22px] mb-4">Publications</p>
-
-        <TooltipProvider>
-          <div className="my-4">
-            {!!keywords.length && isLoading ? (
-              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-                <LoadingIcon width={40} height={40} />
-              </div>
-            ) : (
-              <ReactTable
-                size="small"
-                rowsData={finalPublicationList}
-                columnsData={classification === "Open" ? openColumnData : closedColumnData}
-              />
-            )}
-          </div>
-
-          <Tooltip className="tooltip" float />
-        </TooltipProvider>
-
-        <div className="flex justify-center">
-          <Pagination
-            page={currentPage}
-            total={Math.ceil(totalCount / PAGE_SIZE)}
-            onChange={(pageNum) => setCurrentPage(pageNum)}
-            disabled={isLoading}
-          />
-        </div>
-      </div>
-
       {!!keywords.length && (
-        <div className="mt-5">
-          <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
-
-          <div className="flex flex-wrap gap-1">
-            {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
-              <RelatedKeyword keyword={keyword} key={index} />
-            ))}
+        <>
+          {/* Filter section */}
+          <div className="mb-5 flex items-start">
+            <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
+            <TableYearSelect
+              label="Publication Date"
+              placeholder="Publication Date"
+              onChange={(year) => setSelectedPublishedYear(year)}
+              value={selectedPublishedYear}
+              options={publishYearsOptions}
+            />
           </div>
-        </div>
+
+          {/* Main content */}
+          <div>
+            <p className="text-primary-900 text-[22px] mb-4">Publications</p>
+
+            <TooltipProvider>
+              <div className="my-4">
+                {!!keywords.length && isLoading ? (
+                  <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                    <LoadingIcon width={40} height={40} />
+                  </div>
+                ) : (
+                  <ReactTable
+                    size="small"
+                    rowsData={finalPublicationList}
+                    columnsData={classification === "Open" ? openColumnData : closedColumnData}
+                  />
+                )}
+              </div>
+
+              <Tooltip className="tooltip" float />
+            </TooltipProvider>
+
+            <div className="flex justify-center">
+              <Pagination
+                page={currentPage}
+                total={Math.ceil(totalCount / PAGE_SIZE)}
+                onChange={(pageNum) => setCurrentPage(pageNum)}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+
+          {/* Related keywords */}
+          <div className="mt-5">
+            <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
+
+            <div className="flex flex-wrap gap-1">
+              {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
+                <RelatedKeyword keyword={keyword} key={index} />
+              ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

@@ -265,20 +265,20 @@ export default function PatentListPage() {
               />
             </div>
           </div>
+
+          {/* Related keywords */}
+          {keywords.length > 0 && (
+            <div className="mt-5">
+              <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
+
+              <div className="flex flex-wrap gap-1">
+                {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
+                  <RelatedKeyword keyword={keyword} key={index} />
+                ))}
+              </div>
+            </div>
+          )}
         </>
-      )}
-
-      {/* Related keywords */}
-      {keywords.length > 0 && (
-        <div className="mt-5">
-          <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
-
-          <div className="flex flex-wrap gap-1">
-            {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
-              <RelatedKeyword keyword={keyword} key={index} />
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );
