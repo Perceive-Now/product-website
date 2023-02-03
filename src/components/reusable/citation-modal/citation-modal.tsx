@@ -44,7 +44,7 @@ export default function CitationModal({ author, title, date, publisher }: ICitat
               <Dialog.Description className="max-h-[333px]">
                 {author && (
                   <div className="grid grid-cols-12 gap-x-2 mb-2">
-                    <p className="col-span-4 font-bold text-right">Inventor name:</p>
+                    <p className="col-span-4 font-bold text-right">Author name:</p>
                     <p className="col-span-8">{author}</p>
                   </div>
                 )}

@@ -62,7 +62,7 @@ const sidebarItems: ISidebarListItem[] = [
         title: "Universities",
         key: "universities",
         icon: <UniversitiesIcon />,
-        to: "/",
+        to: "deep-search/university",
       },
       {
         title: "Funders",
