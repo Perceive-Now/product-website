@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
@@ -26,6 +26,7 @@ import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-search/companies";
 
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
+import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 //
 const PAGE_SIZE = 10;
@@ -45,6 +46,23 @@ export default function DeepSearchCompaniesListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [category, setCategory] = useState<CategoryType>("patents");
+  const [publishedYear, setPublishedYear] = useState<number>(2022);
+
+  const publishYearsOptions = useMemo(() => {
+    const startYear = new Date().getFullYear() - 1;
+    const yearsToInclude = 50;
+    const endYear = startYear - yearsToInclude;
+
+    const years = [];
+    for (let i = startYear; i >= endYear; i--) {
+      years.push({
+        label: i.toString(),
+        value: i,
+      });
+    }
+
+    return years;
+  }, []);
 
   //
   const { data: relatedKeywords } = useQuery({
@@ -71,10 +89,14 @@ export default function DeepSearchCompaniesListPage() {
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
-    queryKey: ["deep-search-companies-patent", ...keywords, currentPage],
+    queryKey: ["deep-search-companies-patent", ...keywords, currentPage, publishedYear],
     queryFn: async () => {
+      const lastYearValue = new Date().getFullYear() - 1;
+
+      //
       const response = await getDeepSearchCompaniesPatentList({
         keywords,
+        year: publishedYear ?? lastYearValue,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
       });
@@ -240,7 +262,7 @@ export default function DeepSearchCompaniesListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, category]);
+  }, [searchedKeywords, category, publishedYear]);
 
   //
   return (
@@ -256,10 +278,14 @@ export default function DeepSearchCompaniesListPage() {
             initialValue={searchedKeywords}
           />
 
-          {!!keywords.length && (
+          {keywords.length > 0 ? (
             <p className="mt-[4px]">
               <span>Showing companies for: </span>
               <span className="font-semibold">"{joinedkeywords}"</span>
+            </p>
+          ) : (
+            <p className="mt-[4px] text-appGray-900">
+              Search keywords e.g. “COVID-19” to see related company {category}.
             </p>
           )}
         </div>
@@ -277,53 +303,71 @@ export default function DeepSearchCompaniesListPage() {
         />
       </div>
 
-      {/* Main content */}
-      <div>
-        <p className="text-primary-900 text-[22px]">Companies</p>
+      {!!keywords.length && (
+        <>
+          {/* Filter section */}
+          <div className="mb-5 flex items-start">
+            <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
+            <TableYearSelect
+              label="Published Date"
+              placeholder="Published Date"
+              onChange={(year) => setPublishedYear(year)}
+              value={publishedYear}
+              options={publishYearsOptions}
+            />
+          </div>
 
-        <TooltipProvider>
-          <div className="my-4">
-            {!!keywords.length && isLoading ? (
-              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-                <LoadingIcon width={40} height={40} />
+          {/* Main content */}
+          <div>
+            <p className="text-primary-900 text-[22px]">Companies</p>
+
+            <TooltipProvider>
+              <div className="my-4">
+                {!!keywords.length && isLoading ? (
+                  <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                    <LoadingIcon width={40} height={40} />
+                  </div>
+                ) : (
+                  <>
+                    {category === "patents" && (
+                      <ReactTable
+                        columnsData={patentColumns}
+                        rowsData={finalPatentList}
+                        size="small"
+                      />
+                    )}
+
+                    {category === "publications" && (
+                      <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
+                    )}
+                  </>
+                )}
               </div>
-            ) : (
-              <>
-                {category === "patents" && (
-                  <ReactTable columnsData={patentColumns} rowsData={finalPatentList} size="small" />
-                )}
 
-                {category === "publications" && (
-                  <ReactTable columnsData={publicationColumns} rowsData={[]} size="small" />
-                )}
-              </>
-            )}
+              <Tooltip className="tooltip" float />
+            </TooltipProvider>
+
+            <div className="flex justify-center">
+              <Pagination
+                page={currentPage}
+                total={Math.ceil(totalCount / PAGE_SIZE)}
+                onChange={(pageNum) => setCurrentPage(pageNum)}
+                disabled={isLoading}
+              />
+            </div>
           </div>
 
-          <Tooltip className="tooltip" float />
-        </TooltipProvider>
+          {/* Related keywords */}
+          <div className="mt-5">
+            <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
 
-        <div className="flex justify-center">
-          <Pagination
-            page={currentPage}
-            total={Math.ceil(totalCount / PAGE_SIZE)}
-            onChange={(pageNum) => setCurrentPage(pageNum)}
-            disabled={isLoading}
-          />
-        </div>
-      </div>
-
-      {/* Related keywords */}
-      {keywords.length > 0 && (
-        <div className="mt-5">
-          <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
-
-          <div className="flex flex-wrap gap-1">
-            {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
-              <RelatedKeyword keyword={keyword} key={index} />
-            ))}
+            <div className="flex flex-wrap gap-1">
+              {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
+                <RelatedKeyword keyword={keyword} key={index} />
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

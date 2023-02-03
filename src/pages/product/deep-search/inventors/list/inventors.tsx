@@ -77,11 +77,13 @@ export default function DeepSearchInventorsListPage() {
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
-    queryKey: [...keywords, currentPage, "deepsearch-patent-inventor-list"],
+    queryKey: [...keywords, currentPage, publishedYear, "deepsearch-patent-inventor-list"],
     queryFn: async () => {
+      const lastYearValue = new Date().getFullYear() - 1;
       //
       const response = await getDeepSearchPatentInventorsList({
         keywords,
+        year: publishedYear ?? lastYearValue,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
       });
@@ -246,8 +248,7 @@ export default function DeepSearchInventorsListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, category]);
-
+  }, [searchedKeywords, category, publishedYear]);
   //
   return (
     <div>
@@ -275,20 +276,20 @@ export default function DeepSearchInventorsListPage() {
         </div>
       </div>
 
+      {/* Classification */}
+      <div className="flex justify-end">
+        <RadioButtons
+          activeMode={category}
+          handleModeChange={changeClassificationMode}
+          options={[
+            { label: "Patents", value: "patents" },
+            { label: "Publications", value: "publications" },
+          ]}
+        />
+      </div>
+
       {!!keywords.length && (
         <>
-          {/* Classification */}
-          <div className="flex justify-end">
-            <RadioButtons
-              activeMode={category}
-              handleModeChange={changeClassificationMode}
-              options={[
-                { label: "Patents", value: "patents" },
-                { label: "Publications", value: "publications" },
-              ]}
-            />
-          </div>
-
           {/* Filter section */}
           <div className="mb-5 flex items-start">
             <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
@@ -337,17 +338,15 @@ export default function DeepSearchInventorsListPage() {
           </div>
 
           {/* Related keywords */}
-          {keywords.length > 0 && (
-            <div className="mt-5">
-              <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
+          <div className="mt-5">
+            <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
 
-              <div className="flex flex-wrap gap-1">
-                {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
-                  <RelatedKeyword keyword={keyword} key={index} />
-                ))}
-              </div>
+            <div className="flex flex-wrap gap-1">
+              {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
+                <RelatedKeyword keyword={keyword} key={index} />
+              ))}
             </div>
-          )}
+          </div>
         </>
       )}
     </div>
