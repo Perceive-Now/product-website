@@ -21,6 +21,7 @@ export async function getDeepSearchPatentInventorsList(options: IGetDeepSearchOp
 interface IGetDeepSearchOptions {
   limit?: number;
   offset?: number;
+  year: number;
   keywords: string[];
 }
 

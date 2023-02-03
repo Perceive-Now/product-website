@@ -56,7 +56,7 @@ export default function PatentDetailPage() {
           <p className="text-2xl text-primary-900 font-semibold">{patentData?.title}</p>
 
           <div className="mt-3 text-gray-700">
-            <p className="text-xl font-bold">Abstract</p>
+            <p className="text-xl font-bold">Abstract:</p>
             <p className="mt-2">{patentData?.abstract}</p>
           </div>
         </div>

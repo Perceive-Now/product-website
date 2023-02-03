@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
+import { ColumnDef } from "@tanstack/react-table";
 
 //
 import Search from "../../../../../components/reusable/search";
@@ -12,7 +14,6 @@ import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
-import Button from "../../../../../components/reusable/button";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
 import CitationModal from "../../../../../components/reusable/citation-modal";
 
@@ -29,8 +30,7 @@ import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/de
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
-import { ColumnDef } from "@tanstack/react-table";
-import { Link } from "react-router-dom";
+import TableShareButton from "../../../../../components/@deepsearch/publication/TableShareButton";
 
 //
 const PAGE_SIZE = 10;
@@ -163,17 +163,20 @@ export default function PublicationListPage() {
     },
     {
       header: "Citation",
-      cell: () => <CitationModal />,
+      cell: ({ row }) => (
+        <CitationModal
+          author={row.original?.citiation?.author}
+          date={row.original?.citiation?.date}
+          publisher={row.original?.citiation?.publisher}
+          title={row.original?.citiation?.title}
+        />
+      ),
       minSize: 150,
       maxSize: 150,
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
-          Share
-        </Button>
-      ),
+      cell: () => <TableShareButton />,
       minSize: 200,
       maxSize: 200,
     },
@@ -225,21 +228,29 @@ export default function PublicationListPage() {
     },
     {
       header: "Citation",
-      cell: () => <CitationModal />,
+      cell: ({ row }) => (
+        <CitationModal
+          author={row.original?.citiation?.author}
+          date={row.original?.citiation?.date}
+          publisher={row.original?.citiation?.publisher}
+          title={row.original?.citiation?.title}
+        />
+      ),
       minSize: 150,
       maxSize: 150,
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
-          Share
-        </Button>
-      ),
+      cell: () => <TableShareButton />,
       minSize: 200,
       maxSize: 200,
     },
   ];
+
+  //
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchedKeywords, classification, selectedPublishedYear]);
 
   //
   return (
@@ -281,60 +292,63 @@ export default function PublicationListPage() {
         />
       </div>
 
-      {/* Filter section */}
-      <div className="mb-5 flex items-start">
-        <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
-        <TableYearSelect
-          label="Publication Date"
-          placeholder="Publication Date"
-          onChange={(year) => setSelectedPublishedYear(year)}
-          value={selectedPublishedYear}
-          options={publishYearsOptions}
-        />
-      </div>
-
-      {/* Main content */}
-      <div>
-        <p className="text-primary-900 text-[22px] mb-4">Publications</p>
-
-        <TooltipProvider>
-          <div className="my-4">
-            {!!keywords.length && isLoading ? (
-              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-                <LoadingIcon width={40} height={40} />
-              </div>
-            ) : (
-              <ReactTable
-                size="small"
-                rowsData={finalPublicationList}
-                columnsData={classification === "Open" ? openColumnData : closedColumnData}
-              />
-            )}
-          </div>
-
-          <Tooltip className="tooltip" float />
-        </TooltipProvider>
-
-        <div className="flex justify-center">
-          <Pagination
-            page={currentPage}
-            total={Math.ceil(totalCount / PAGE_SIZE)}
-            onChange={(pageNum) => setCurrentPage(pageNum)}
-            disabled={isLoading}
-          />
-        </div>
-      </div>
-
       {!!keywords.length && (
-        <div className="mt-5">
-          <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
-
-          <div className="flex flex-wrap gap-1">
-            {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
-              <RelatedKeyword keyword={keyword} key={index} />
-            ))}
+        <>
+          {/* Filter section */}
+          <div className="mb-5 flex items-start">
+            <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
+            <TableYearSelect
+              label="Publication Date"
+              placeholder="Publication Date"
+              onChange={(year) => setSelectedPublishedYear(year)}
+              value={selectedPublishedYear}
+              options={publishYearsOptions}
+            />
           </div>
-        </div>
+
+          {/* Main content */}
+          <div>
+            <p className="text-primary-900 text-[22px] mb-4">Publications</p>
+
+            <TooltipProvider>
+              <div className="my-4">
+                {!!keywords.length && isLoading ? (
+                  <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                    <LoadingIcon width={40} height={40} />
+                  </div>
+                ) : (
+                  <ReactTable
+                    size="small"
+                    rowsData={finalPublicationList}
+                    columnsData={classification === "Open" ? openColumnData : closedColumnData}
+                  />
+                )}
+              </div>
+
+              <Tooltip className="tooltip" float />
+            </TooltipProvider>
+
+            <div className="flex justify-center">
+              <Pagination
+                page={currentPage}
+                total={Math.ceil(totalCount / PAGE_SIZE)}
+                onChange={(pageNum) => setCurrentPage(pageNum)}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+
+          {/* Related keywords */}
+          <div className="mt-5">
+            <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
+
+            <div className="flex flex-wrap gap-1">
+              {relatedKeywords?.related_keywords?.slice(0, 15)?.map((keyword, index) => (
+                <RelatedKeyword keyword={keyword} key={index} />
+              ))}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

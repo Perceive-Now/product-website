@@ -39,6 +39,7 @@ export async function getDeepSearchComapniesPatentItem(
 
 //
 interface IGetDeepSearchOptions {
+  year: number;
   limit?: number;
   offset?: number;
   keywords: string[];

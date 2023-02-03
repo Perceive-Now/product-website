@@ -17,12 +17,11 @@ const MAX_KEYWORD = 3;
 export default function Search(props: ISearchProps) {
   // const inputSize = props.size ?? "small";
   // const isRequired = props.required ?? false;
-
   const [selectedKeywords, setSelectedKeywords] = useState(props.initialValue ?? null);
 
   //
   useEffect(() => {
-    if (props.initialValue) {
+    if (props.initialValue?.length) {
       setSelectedKeywords(props.initialValue);
     }
   }, [props.initialValue]);
