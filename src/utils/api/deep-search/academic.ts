@@ -39,9 +39,11 @@ export interface IDeepSearchAcademicsPatentItem {
 /**
  *
  */
-export async function getDeepSearchPatentAcademic(options: IGetDeepSearchInventorOptions) {
+export async function getDeepSearchPatentAcademic(options: IGetDeepSearchUniversityOptions) {
   const queryParams = new URLSearchParams();
   if (options.name) queryParams.append("name", options.name);
+  queryParams.append("limit", options.limit.toString());
+  queryParams.append("offset", options.offset.toString());
 
   queryParams.append("q", options.keywords.join(","));
 
@@ -52,9 +54,11 @@ export async function getDeepSearchPatentAcademic(options: IGetDeepSearchInvento
 }
 
 //
-interface IGetDeepSearchInventorOptions {
+interface IGetDeepSearchUniversityOptions {
   name?: string;
   keywords: string[];
+  limit: number;
+  offset: number;
 }
 
 interface IDeepSearchInventorPatentResponseData {

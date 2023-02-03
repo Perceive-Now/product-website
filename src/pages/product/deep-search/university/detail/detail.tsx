@@ -116,7 +116,7 @@ export default function DeepSearchAcademicPage() {
 
   // Getting patent detail
   const { data, isLoading } = useQuery({
-    queryKey: [type, name, "deep-search-academic-patent"],
+    queryKey: [type, name, currentPage, "deep-search-academic-patent"],
     queryFn: async () => {
       if (!type || !name) return;
 
@@ -124,6 +124,8 @@ export default function DeepSearchAcademicPage() {
       const response = await getDeepSearchPatentAcademic({
         name,
         keywords,
+        limit: PAGE_SIZE,
+        offset: (currentPage - 1) * PAGE_SIZE + 1,
       });
 
       setTotalCount(response?.data?.count ?? 1);
