@@ -3,17 +3,14 @@ import { SVGProps } from "react";
 export default function UniversitiesIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="20"
-      height="18"
-      viewBox="0 0 20 18"
-      fill="none"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M10 4V0H0V18H20V4H10ZM8 16H2V14H8V16ZM8 12H2V10H8V12ZM8 8H2V6H8V8ZM8 4H2V2H8V4ZM18 16H10V6H18V16ZM16 8H12V10H16V8ZM16 12H12V14H16V12Z"
-        fill="#323334"
-      />
+      <path d="M12 7V3H2V21H22V7H12ZM10 19H4V17H10V19ZM10 15H4V13H10V15ZM10 11H4V9H10V11ZM10 7H4V5H10V7ZM20 19H12V9H20V19ZM18 11H14V13H18V11ZM18 15H14V17H18V15Z" />
     </svg>
   );
 }

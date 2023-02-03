@@ -3,17 +3,14 @@ import { SVGProps } from "react";
 export default function DashboardIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="18"
-      height="18"
-      viewBox="0 0 18 18"
-      fill="none"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path
-        d="M0 10H8V0H0V10ZM0 18H8V12H0V18ZM10 18H18V8H10V18ZM10 0V6H18V0H10Z"
-        fill="#323334"
-      />
+      <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z" />
     </svg>
   );
 }

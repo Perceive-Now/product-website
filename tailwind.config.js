@@ -41,6 +41,17 @@ module.exports = {
           800: "#323334",
           900: "#1D1E1F",
         },
+        appGray: {
+          100: "#F5F7FF",
+          200: "#E8EAF2",
+          300: "#D0D2D9",
+          400: "#B8B9BF",
+          500: "#9FA0A6",
+          600: "#87888C",
+          700: "#6E6F73",
+          800: "#565659",
+          900: "#3D3E40",
+        },
         primary: {
           50: "#E1D5F2",
           100: "#B6A2D8",
@@ -63,10 +74,15 @@ module.exports = {
           800: "#641B1B",
         },
       },
+      ringWidth: {
+        0.5: "0.5px",
+      },
     },
   },
   plugins: [
     // https://github.com/tailwindlabs/tailwindcss-forms
     require("@tailwindcss/forms"),
+    // https://github.com/tailwindlabs/tailwindcss-line-clamp
+    require("@tailwindcss/line-clamp"),
   ],
 };

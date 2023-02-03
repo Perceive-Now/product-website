@@ -10,6 +10,10 @@ button {
   @apply bg-white border-2 text-primary-900 border-primary-900 hover:border-primary-600 hover:text-primary-600 focus:border-primary-900 focus:text-primary-900 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed;
 }
 
+.optional-button {
+  @apply bg-secondary-500 text-black hover:bg-secondary-400 disabled:hover:bg-secondary-500 disabled:text-gray-700 disabled:cursor-not-allowed;
+}
+
 .full-width {
   @apply min-w-[174px];
 }
