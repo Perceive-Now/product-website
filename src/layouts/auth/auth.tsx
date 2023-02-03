@@ -29,7 +29,16 @@ export default function AuthLayout() {
 
     // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
-    if (!session.success) navigate("/login");
+
+    if (!session.success) {
+      const { pathname } = window.location;
+      console.log(pathname, "pathname");
+      if (pathname.length > 0) {
+        navigate(`/login?callback_path=${pathname}`);
+      } else {
+        navigate("/login");
+      }
+    }
 
     // Getting user details
     await dispatch(getUserDetails());

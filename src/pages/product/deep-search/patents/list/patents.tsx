@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPatentList } from "../../../../../utils/api/deep-search/patents";
+import TableShareButton from "../../../../../components/@deepsearch/publication/TableShareButton";
 
 //
 const PAGE_SIZE = 10;
@@ -146,7 +147,6 @@ export default function PatentListPage() {
       header: "Abstract",
       cell: (data) => {
         const originalData = data.row.original;
-
         return (
           <AbstractModal
             type="Patent"
@@ -165,6 +165,18 @@ export default function PatentListPage() {
     {
       header: "Date (Y/M/D)",
       accessorKey: "date",
+      minSize: 140,
+      maxSize: 140,
+    },
+    {
+      header: " ",
+      cell: (data) => (
+        <TableShareButton
+          path={`/deep-search/publications/${encodeURIComponent(
+            data.row.original._id,
+          )}?source=Open`}
+        />
+      ),
       minSize: 140,
       maxSize: 140,
     },

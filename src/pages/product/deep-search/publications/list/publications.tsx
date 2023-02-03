@@ -176,7 +176,13 @@ export default function PublicationListPage() {
     },
     {
       header: " ",
-      cell: () => <TableShareButton />,
+      cell: (data) => (
+        <TableShareButton
+          path={`/deep-search/publications/${encodeURIComponent(
+            data.row.original._id,
+          )}?source=Open`}
+        />
+      ),
       minSize: 200,
       maxSize: 200,
     },
@@ -241,7 +247,13 @@ export default function PublicationListPage() {
     },
     {
       header: " ",
-      cell: () => <TableShareButton />,
+      cell: (data) => (
+        <TableShareButton
+          path={`/deep-search/publications/${encodeURIComponent(
+            data.row.original._id,
+          )}?source=Open`}
+        />
+      ),
       minSize: 200,
       maxSize: 200,
     },
