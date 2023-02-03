@@ -39,14 +39,17 @@ export default function ExpertsMap(props: IFootprintHeatmapProps) {
     (industryMode === "industry"
       ? data?.Industry_patent_experts
       : data?.Academic_patent_experts
-    )?.map((item) => ({
-      name: item.name,
-      location: `${item.state}, ${item.city}`,
-      patents: item.count,
-      employment: item.org,
-      lat: item.lat,
-      lng: item.lon,
-    })) ?? [];
+    )?.map((item) => {
+      const [lat, long] = item.coordinates;
+      return {
+        name: item.name,
+        location: item.location,
+        patents: item.count,
+        employment: item.org,
+        lat: lat,
+        lng: long,
+      };
+    }) ?? [];
 
   //
   return (
