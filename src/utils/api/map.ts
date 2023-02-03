@@ -54,10 +54,8 @@ interface ICompetitorMapResponse {
 interface IExpertMapItem {
   name: string;
   org: string;
-  lat: string;
-  lon: string;
-  city: string;
-  state: string;
+  coordinates: string[];
+  location: string;
   count: number;
 }
 
