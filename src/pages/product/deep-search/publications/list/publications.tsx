@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
@@ -246,6 +246,11 @@ export default function PublicationListPage() {
       maxSize: 200,
     },
   ];
+
+  //
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchedKeywords, classification, selectedPublishedYear]);
 
   //
   return (
