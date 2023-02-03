@@ -1,2 +1,2 @@
-import DeepSearchUniversityPage from "./university";
-export default DeepSearchUniversityPage;
+import DeepSearchUniversityListPage from "./university";
+export default DeepSearchUniversityListPage;
