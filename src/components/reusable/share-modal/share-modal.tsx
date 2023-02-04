@@ -12,11 +12,11 @@ import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "re
 export default function ShareModal({ open, handleClose, path }: ICitationModalProps) {
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const origin =
-  process.env.NODE_ENV === "development"
-    ? "https://develop.app.perceivenow.ai"
-    : window.location.origin;
-    
-  const url = `${origin}${path}`
+    process.env.NODE_ENV === "development"
+      ? "https://develop.app.perceivenow.ai"
+      : window.location.origin;
+
+  const url = `${origin}${path}`;
 
   const handleCopyLinkToClipBoard = () => {
     navigator.clipboard.writeText(url).then(
