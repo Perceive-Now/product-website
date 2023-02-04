@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
@@ -108,12 +108,12 @@ export default function DeepSearchFundersPage() {
             <span className="mr-1">
               {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
             </span>
-            <Link
+            {/* <Link
               className="line-clamp-1 text-primary-600 hover:underline"
               to={`/deep-search/funders/${row.original._id}`}
-            >
-              {row.original.title}
-            </Link>
+            > */}
+            {row.original.title}
+            {/* </Link> */}
           </span>
         </TooltipWrapper>
       ),
@@ -145,6 +145,7 @@ export default function DeepSearchFundersPage() {
       cell: (data) => (
         <p className="line-clamp-1">
           {data.row.original.funding ? formatNumber(data.row.original.funding) : "-"}
+          <span className="ml-0.5">USD</span>{" "}
         </p>
       ),
       minSize: 200,
