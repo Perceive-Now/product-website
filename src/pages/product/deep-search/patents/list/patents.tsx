@@ -170,13 +170,7 @@ export default function PatentListPage() {
     },
     {
       header: " ",
-      cell: (data) => (
-        <TableShareButton
-          path={`/deep-search/publications/${encodeURIComponent(
-            data.row.original._id,
-          )}?source=Open`}
-        />
-      ),
+      cell: (data) => <TableShareButton path={`/deep-search/patents/${data.row.original._id}`} />,
       minSize: 140,
       maxSize: 140,
     },

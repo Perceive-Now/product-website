@@ -46,18 +46,22 @@ export default function ShareModal({ open, handleClose, path }: ICitationModalPr
           <p>
             <p className="font-medium">Share</p>
             <p className="flex">
-              <TwitterShareButton url={url}>
+              <TwitterShareButton title="Perceive Now" hashtags={[""]} url={url}>
                 <p className="cursor-pointer mr-1">
                   <img src={TwitterIcon} alt="share in twitter" />
                 </p>
               </TwitterShareButton>
 
-              <FacebookShareButton url={url}>
+              <FacebookShareButton quote="Check it out in Perceive now." url={url}>
                 <p className="cursor-pointer mr-1">
                   <img src={FacebookIcon} alt="share in facebook" />
                 </p>
               </FacebookShareButton>
-              <LinkedinShareButton url={url}>
+              <LinkedinShareButton
+                url={url}
+                title="Perceive Now"
+                summary="Check it out in Perceive now."
+              >
                 <p className="cursor-pointer mr-1">
                   <img src={LinkedInIcon} alt="share in linkedin" />
                 </p>
