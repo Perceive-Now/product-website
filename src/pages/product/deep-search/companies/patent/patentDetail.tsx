@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -92,11 +92,18 @@ export default function DeepSearchCompanyPatent() {
       minSize: 400,
       maxSize: 400,
       cell: ({ row }) => (
-        <p className="line-clamp-1 flex">
+        <p className="flex">
           <span className="mr-1">
             {((currentPage - 1) * PAGE_SIZE + row.index + 1).toString().padStart(2, "0")}.
           </span>
-          <TooltipWrapper content={row.original.title}>{row.original.title}</TooltipWrapper>
+          <TooltipWrapper content={row.original.title}>
+            <Link
+              className="line-clamp-1 text-primary-600 hover:underline"
+              to={`/deep-search/patents/${row.original._id}`}
+            >
+              {row.original.title}
+            </Link>
+          </TooltipWrapper>
         </p>
       ),
     },

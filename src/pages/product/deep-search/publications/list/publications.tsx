@@ -30,7 +30,7 @@ import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/de
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
-import TableShareButton from "../../../../../components/@deepsearch/publication/TableShareButton";
+import TableShareButton from "../../../../../components/reusable/TableShareButton";
 
 //
 const PAGE_SIZE = 10;
@@ -176,7 +176,13 @@ export default function PublicationListPage() {
     },
     {
       header: " ",
-      cell: () => <TableShareButton />,
+      cell: (data) => (
+        <TableShareButton
+          path={`/deep-search/publications/${encodeURIComponent(
+            data.row.original._id,
+          )}?source=Open`}
+        />
+      ),
       minSize: 200,
       maxSize: 200,
     },
@@ -241,7 +247,13 @@ export default function PublicationListPage() {
     },
     {
       header: " ",
-      cell: () => <TableShareButton />,
+      cell: (data) => (
+        <TableShareButton
+          path={`/deep-search/publications/${encodeURIComponent(
+            data.row.original._id,
+          )}?source=Closed`}
+        />
+      ),
       minSize: 200,
       maxSize: 200,
     },

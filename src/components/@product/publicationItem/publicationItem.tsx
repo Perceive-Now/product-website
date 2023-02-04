@@ -40,12 +40,17 @@ export default function PublicationItem(props: IPublicationItemProps) {
   );
 }
 
-export const ActionButton = ({ className, children }: PropsWithChildren<IActionButtonProps>) => {
+export const ActionButton = ({
+  className,
+  handleClick,
+  children,
+}: PropsWithChildren<IActionButtonProps>) => {
   return (
     <div
       className={`mr-4 flex items-center text-primary-900 font-medium cursor-pointer ${
         className ?? ""
       }`}
+      onClick={() => handleClick && handleClick()}
     >
       {children}
     </div>
@@ -62,4 +67,5 @@ interface IPublicationItemProps {
 
 interface IActionButtonProps {
   className?: string;
+  handleClick?: () => void;
 }

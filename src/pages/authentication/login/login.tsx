@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 //
 import * as yup from "yup";
@@ -25,6 +25,9 @@ import { getCurrentSession, loginUser } from "../../../stores/auth";
  */
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const callbackPath = searchParams.get("callback_path");
 
   //
   const dispatch = useAppDispatch();
@@ -63,7 +66,11 @@ export default function LoginPage() {
     // Login user
     const response = await dispatch(loginUser(values)).unwrap();
     if (response.success) {
-      navigate("/");
+      if (callbackPath) {
+        navigate(callbackPath);
+      } else {
+        navigate("/");
+      }
     } else {
       toast.error(response.message);
     }
