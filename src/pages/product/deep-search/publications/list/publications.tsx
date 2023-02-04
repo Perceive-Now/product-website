@@ -251,7 +251,7 @@ export default function PublicationListPage() {
         <TableShareButton
           path={`/deep-search/publications/${encodeURIComponent(
             data.row.original._id,
-          )}?source=Open`}
+          )}?source=Closed`}
         />
       ),
       minSize: 200,

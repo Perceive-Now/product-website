@@ -9,8 +9,7 @@ import ShareModal from "../../../reusable/share-modal";
  */
 export default function TableShareButton({ path }: ITableShareButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { origin } = window.location;
-
+  
   const handleShow = () => {
     setIsOpen(true);
   };
@@ -25,7 +24,7 @@ export default function TableShareButton({ path }: ITableShareButtonProps) {
         Share
       </Button>
 
-      <ShareModal open={isOpen} handleClose={handleHide} link={`${origin}${path}`} />
+      <ShareModal open={isOpen} handleClose={handleHide} path={path} />
     </>
   );
 }

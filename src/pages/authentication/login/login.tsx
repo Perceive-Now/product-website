@@ -83,7 +83,6 @@ export default function LoginPage() {
 
   const getSession = async () => {
     const session = await dispatch(getCurrentSession()).unwrap();
-    console.log(session, "session");
     if (session.success) navigate("/");
 
     setIsLoading(false);

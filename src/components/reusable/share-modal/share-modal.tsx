@@ -6,14 +6,20 @@ import { CrossIcon } from "../../icons";
 import FacebookIcon from "../../../assets/images/Facebook.svg";
 import LinkedInIcon from "../../../assets/images/LinkedIn.svg";
 import TwitterIcon from "../../../assets/images/Twitter.svg";
-import { FacebookShareButton, FacebookShareCount } from "react-share";
+import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
 
 //
-export default function ShareModal({ open, handleClose, link }: ICitationModalProps) {
+export default function ShareModal({ open, handleClose, path }: ICitationModalProps) {
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const origin =
+  process.env.NODE_ENV === "development"
+    ? "https://develop.app.perceivenow.ai"
+    : window.location.origin;
+    
+  const url = `${origin}${path}`
 
   const handleCopyLinkToClipBoard = () => {
-    navigator.clipboard.writeText(link).then(
+    navigator.clipboard.writeText(url).then(
       () => {
         /* Success - clipboard success */
         setIsCopied(true);
@@ -40,25 +46,28 @@ export default function ShareModal({ open, handleClose, link }: ICitationModalPr
           <p>
             <p className="font-medium">Share</p>
             <p className="flex">
-              <p className="cursor-pointer mr-1">
-                <img src={TwitterIcon} alt="share in twitter" />
-              </p>
+              <TwitterShareButton url={url}>
+                <p className="cursor-pointer mr-1">
+                  <img src={TwitterIcon} alt="share in twitter" />
+                </p>
+              </TwitterShareButton>
 
-              <FacebookShareButton url={link}>
+              <FacebookShareButton url={url}>
                 <p className="cursor-pointer mr-1">
                   <img src={FacebookIcon} alt="share in facebook" />
                 </p>
               </FacebookShareButton>
-
-              <p className="cursor-pointer mr-1">
-                <img src={LinkedInIcon} alt="share in linkedin" />
-              </p>
+              <LinkedinShareButton url={url}>
+                <p className="cursor-pointer mr-1">
+                  <img src={LinkedInIcon} alt="share in linkedin" />
+                </p>
+              </LinkedinShareButton>
             </p>
 
             <p className="mt-4">Or copy link</p>
 
             <p className="mt-1 border w-full py-1 px-2 pl-0 rounded flex">
-              <input value={link} className="px-1 mr-1 flex-1" readOnly />
+              <input value={url} className="px-1 mr-1 flex-1" readOnly />
               <button
                 className="bg-gray-200 cursor-pointer py-[4px] px-[20px] rounded hover:bg-gray-300"
                 onClick={handleCopyLinkToClipBoard}
@@ -79,6 +88,6 @@ export default function ShareModal({ open, handleClose, link }: ICitationModalPr
 
 interface ICitationModalProps {
   open: boolean;
-  link: string;
+  path: string;
   handleClose: () => void;
 }
