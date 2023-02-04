@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPatentList } from "../../../../../utils/api/deep-search/patents";
-import TableShareButton from "../../../../../components/@deepsearch/publication/TableShareButton";
+import TableShareButton from "../../../../../components/reusable/TableShareButton";
 
 //
 const PAGE_SIZE = 10;

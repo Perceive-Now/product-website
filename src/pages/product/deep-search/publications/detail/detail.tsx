@@ -3,12 +3,8 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import { useParams, useSearchParams } from "react-router-dom";
 import { ActionButton } from "../../../../../components/@product/publicationItem/publicationItem";
-import {
-  BookmarkIcon,
-  CitationIcon,
-  LoadingIcon,
-  ShareIcon,
-} from "../../../../../components/icons";
+import { BookmarkIcon, CitationIcon, LoadingIcon } from "../../../../../components/icons";
+import ShareButton from "../../../../../components/reusable/ShareButton";
 import { getDeepSearchPublicationItemDetail } from "../../../../../utils/api/deep-search/publications";
 
 /**
@@ -105,10 +101,7 @@ export default function PublicationDetailPage() {
             <span>Generate citation</span>
           </ActionButton>
 
-          <ActionButton className="mb-3">
-            <ShareIcon className="mr-1 flex-shrink-0" />
-            <span>Share</span>
-          </ActionButton>
+          <ShareButton />
         </div>
       </div>
     </div>

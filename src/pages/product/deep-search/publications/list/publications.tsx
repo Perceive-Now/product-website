@@ -30,7 +30,7 @@ import type { IDeepSearchPublicationListItem } from "../../../../../utils/api/de
 //
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
-import TableShareButton from "../../../../../components/@deepsearch/publication/TableShareButton";
+import TableShareButton from "../../../../../components/reusable/TableShareButton";
 
 //
 const PAGE_SIZE = 10;

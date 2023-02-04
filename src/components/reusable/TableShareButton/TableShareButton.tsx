@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 //
-import Button from "../../../reusable/button";
-import ShareModal from "../../../reusable/share-modal";
+import Button from "../button";
+import ShareModal from "../share-modal";
 
 /**
  *
