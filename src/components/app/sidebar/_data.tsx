@@ -68,7 +68,7 @@ const sidebarItems: ISidebarListItem[] = [
         title: "Funders",
         key: "funders",
         icon: <FundersIcon />,
-        to: "/",
+        to: "deep-search/funders",
       },
     ],
   },

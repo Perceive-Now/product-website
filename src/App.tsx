@@ -38,12 +38,17 @@ import DeepSearchCompanyPatenPage from "./pages/product/deep-search/companies/pa
 
 // Deep search - Inventors
 import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/list";
+import DeepSearchInventorPage from "./pages/product/deep-search/inventors/detail";
+
+//
+import DeepSearchUniversityListPage from "./pages/product/deep-search/university/list";
+import DeepSearchAcademicPage from "./pages/product/deep-search/university/detail/detail";
+
+//
+import DeepSearchFundersPage from "./pages/product/deep-search/funders/list";
 
 //
 import PageNotFound404 from "./pages/404";
-import DeepSearchInventorPage from "./pages/product/deep-search/inventors/detail";
-import DeepSearchUniversityListPage from "./pages/product/deep-search/university/list";
-import DeepSearchAcademicPage from "./pages/product/deep-search/university/detail/detail";
 
 /**
  *
@@ -85,6 +90,8 @@ function App() {
 
             <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
             <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />
+
+            <Route path="/deep-search/funders" element={<DeepSearchFundersPage />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
