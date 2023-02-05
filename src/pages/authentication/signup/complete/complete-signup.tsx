@@ -154,6 +154,7 @@ export default function CompleteSignup() {
               handlePrevious={gotoPreviousStep}
               handleNext={gotoNextStep}
               jumpTo={jumpToStep}
+              values={formValues}
             />
           )}
 
