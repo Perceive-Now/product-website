@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -19,7 +20,6 @@ import {
   IUniversityResearchFunding,
 } from "../../../utils/api/charts";
 import NoDataMessage from "../../reusable/no-data";
-import { Link } from "react-router-dom";
 
 /**
  *

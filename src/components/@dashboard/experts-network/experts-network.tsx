@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
-
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 //
 import PageTitle from "../../reusable/page-title";
