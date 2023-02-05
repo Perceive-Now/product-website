@@ -45,72 +45,76 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
 
   //
   return (
-    <DataSection
-      keywords={props.keywords}
-      isLoading={isLoading}
-      isError={isError}
-      error={error}
-      title={
-        <PageTitle
-          title="Inventors"
-          subTitle="Top list of inventors with maximum number of publications and patents "
-          sideTitleOption={
-            <RadioButtons
-              options={[
-                { label: "Industry", value: "industry" },
-                { label: "Academic", value: "academic" },
-              ]}
-              activeMode={expertMode}
-              handleModeChange={handleModeChange}
-            />
-          }
-        />
-      }
-    >
-      <div className="grid gap-y-5 gap-x-4 my-3">
-        <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">Based on patents</p>
+    <div>
+      <DataSection
+        keywords={props.keywords}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        title={
+          <PageTitle
+            title="Inventors"
+            subTitle="Top list of inventors with maximum number of publications and patents "
+            sideTitleOption={
+              <RadioButtons
+                options={[
+                  { label: "Industry", value: "industry" },
+                  { label: "Academic", value: "academic" },
+                ]}
+                activeMode={expertMode}
+                handleModeChange={handleModeChange}
+              />
+            }
+          />
+        }
+      >
+        <div className="grid gap-y-5 gap-x-4 my-3">
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">Based on patents</p>
 
-          <div className="grid grid-cols-12 mb-3">
-            <div className="col-span-1" />
-            <div className="col-span-4 font-semibold ml-2">Name</div>
-            <div className="col-span-6 font-semibold">Company</div>
-            <div className="col-span-1 text-left pr-1 font-semibold">Patents</div>
+            <div className="grid grid-cols-12 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-4 font-semibold ml-2">Name</div>
+              <div className="col-span-6 font-semibold">Company</div>
+              <div className="col-span-1 text-left pr-1 font-semibold">Patents</div>
+            </div>
+
+            {patentsData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                organization={itm.company}
+                value={itm.count}
+                index={index}
+                key={index}
+              />
+            ))}
           </div>
 
-          {patentsData.map((itm, index) => (
-            <ListItem
-              name={itm.name}
-              organization={itm.company}
-              value={itm.count}
-              index={index}
-              key={index}
-            />
-          ))}
-        </div>
+          <div>
+            <p className="text-lg font-semibold text-primary-900 mb-2">Based on publications</p>
 
-        <div>
-          <p className="text-lg font-semibold text-primary-900 mb-2">Based on publications</p>
+            <div className="grid grid-cols-12 mb-3">
+              <div className="col-span-1" />
+              <div className="col-span-4 font-semibold ml-2">Name</div>
+              <div className="col-span-6 font-semibold">Company</div>
+              <div className="col-span-1 text-left pr-1 font-semibold">Publications</div>
+            </div>
 
-          <div className="grid grid-cols-12 mb-3">
-            <div className="col-span-1" />
-            <div className="col-span-4 font-semibold ml-2">Name</div>
-            <div className="col-span-6 font-semibold">Company</div>
-            <div className="col-span-1 text-left pr-1 font-semibold">Publications</div>
+            {publicationData.map((itm, index) => (
+              <ListItem
+                name={itm.name}
+                organization={itm.company}
+                value={itm.count}
+                index={index}
+                key={index}
+              />
+            ))}
           </div>
-
-          {publicationData.map((itm, index) => (
-            <ListItem
-              name={itm.name}
-              organization={itm.company}
-              value={itm.count}
-              index={index}
-              key={index}
-            />
-          ))}
         </div>
-      </div>
-    </DataSection>
+      </DataSection>
+
+      <div className="">View more</div>
+    </div>
   );
 }
 

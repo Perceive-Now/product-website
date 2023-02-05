@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
@@ -33,6 +33,8 @@ const PAGE_SIZE = 10;
 //
 export default function PatentListPage() {
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const paramsClassification: string | null = searchParams.get("mode");
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -46,6 +48,15 @@ export default function PatentListPage() {
   const [classification, setClassification] = useState<classificationMode>("Industry");
 
   const [publishedYear, setPublishedYear] = useState<number>(2022);
+
+  //
+  useEffect(() => {
+    if (paramsClassification) {
+      if (paramsClassification === "Industry" || paramsClassification === "Academic") {
+        setClassification(paramsClassification);
+      }
+    }
+  }, [paramsClassification]);
 
   const publishYearsOptions = useMemo(() => {
     const startYear = new Date().getFullYear() - 1;
@@ -291,4 +302,4 @@ export default function PatentListPage() {
 }
 
 //
-type classificationMode = "Academic" | "Industry";
+export type classificationMode = "Academic" | "Industry";

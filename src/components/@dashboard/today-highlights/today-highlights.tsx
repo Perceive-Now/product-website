@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 //
@@ -26,37 +27,37 @@ export default function TodayHighlights(props: IHighlightsProps) {
       id: "patentsCount",
       name: "Patents",
       value: data?.patentsCount,
-      link: "/",
+      link: "/deep-search/patents",
     },
     {
       id: "industryPublicationsCount",
       name: "Industry Publications",
       value: data?.industryPublicationsCount,
-      link: "/",
+      link: "/deep-search/publications?mode=Industy",
     },
     {
       id: "industryExpertsCount",
       name: "Industry Inventors",
       value: data?.industryExpertsCount,
-      link: "/",
+      link: "/deep-search/inventors?mode=Industry",
     },
     {
       id: "fundingAmount",
       name: "Funding Amount (USD)",
       value: data?.fundingAmount,
-      link: "/",
+      link: "/deep-search/funders",
     },
     {
       id: "academicPublicationsCount",
       name: "Academic Publications",
       value: data?.academicPublicationsCount,
-      link: "/",
+      link: "/deep-search/publications?mode=Academic",
     },
     {
       id: "academicExpertsCount",
       name: "Academic Inventors",
       value: data?.academicExpertsCount,
-      link: "/",
+      link: "/deep-search/inventors?mode=Academic",
     },
   ];
 
@@ -100,9 +101,9 @@ export default function TodayHighlights(props: IHighlightsProps) {
               <hr className="border-[#D9D9D9]" />
 
               <div className="text-center pt-2">
-                {/* <div className="cursor-pointer text-purple-600">
+                <div className="cursor-pointer text-purple-600">
                   <Link to={item.link}>View All</Link>
-                </div> */}
+                </div>
               </div>
             </div>
           </div>

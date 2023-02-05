@@ -50,7 +50,7 @@ axiosInstance.interceptors.response.use(
       // Getting refresh token saved in cookie
       const refreshToken = jsCookie.get("pn_refresh");
 
-      if (!refreshToken) {
+      if (refreshToken === "undefined" || !refreshToken) {
         return Promise.reject(error);
       }
 
@@ -78,7 +78,6 @@ axiosInstance.interceptors.response.use(
 
       jsCookie.remove("pn_refresh");
       sessionStorage.removeItem("pn_access");
-      //TODO search if we logout the user for somewhere else natra we can redirect the user form here using window.location
     }
 
     //

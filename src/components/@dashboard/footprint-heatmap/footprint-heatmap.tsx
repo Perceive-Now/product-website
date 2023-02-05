@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
@@ -8,6 +9,7 @@ import classNames from "classnames";
 import USMap from "../../@product/us-map";
 
 //
+import Button from "../../reusable/button";
 import PageTitle from "../../reusable/page-title";
 import DataSection from "../../reusable/data-section";
 import RadioButtons from "../../reusable/radio-buttons";
@@ -17,13 +19,18 @@ import { getPatentHeatmap } from "../../../utils/api/map";
 import StatesCodes from "../../../utils/extra/us-states-codes";
 
 //
-import { LocationIcon } from "../../icons";
+import { ChevronRight, LocationIcon } from "../../icons";
+
+//
+import { classificationMode } from "../../../pages/product/deep-search/patents/list/patents";
 
 /**
  *
  */
 export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
-  const [currentMode, setCurrentMode] = useState<availableModes>("industries");
+  const navigate = useNavigate();
+
+  const [currentMode, setCurrentMode] = useState<classificationMode>("Industry");
 
   //
   const { data, isLoading, isError, error } = useQuery(
@@ -36,18 +43,22 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
 
   //
   const mapData =
-    (currentMode === "industries" ? data?.Industries : data?.Universities)?.count.map((item) => ({
+    (currentMode === "Industry" ? data?.Industries : data?.Universities)?.count.map((item) => ({
       country: StatesCodes[item.country],
       patents: item.count,
     })) ?? [];
 
   //
   const titleList =
-    (currentMode === "industries" ? data?.Industries : data?.Universities)?.titles ?? [];
+    (currentMode === "Industry" ? data?.Industries : data?.Universities)?.titles ?? [];
 
   //
   const handleModeChange = (mode: string) => {
-    setCurrentMode(mode as availableModes);
+    setCurrentMode(mode as classificationMode);
+  };
+
+  const handleViewMoreClick = () => {
+    navigate(`/deep-search/patents?mode=${currentMode}`);
   };
 
   //
@@ -66,8 +77,8 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
           sideTitleOption={
             <RadioButtons
               options={[
-                { label: "Industries", value: "industries" },
-                { label: "Universities", value: "universities" },
+                { label: "Industries", value: "Industry" },
+                { label: "Universities", value: "Academic" },
               ]}
               activeMode={currentMode}
               handleModeChange={handleModeChange}
@@ -81,35 +92,43 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
           <div className="col-span-3 overflow-y-hidden pr-2">
             <p className="text-xl text-primary-900">Most Recent Patents</p>
 
-            <div className="mt-2">
-              {titleList.slice(0, 4).map((itm, index) => (
-                <div
-                  key={index}
-                  className={classNames({
-                    "border-b border-gray-300 mb-2 pb-2": index !== 3,
-                  })}
-                >
-                  <div className="line-clamp-1 text-xl text-gray-700">
-                    <TooltipWrapper content={itm.patent_title}>
-                      <span className="text-lg mr-1 font-semibold text-primary-800">
-                        0{index + 1}.
-                      </span>
-                      <span>{itm.patent_title}</span>
-                    </TooltipWrapper>
-                  </div>
+            <div className="mt-2 flex flex-col justify-between items-start h-[90%]">
+              <div>
+                {titleList.slice(0, 3).map((itm, index) => (
+                  <div
+                    key={index}
+                    className={classNames({
+                      "border-b border-gray-300 mb-2 pb-2": index !== 3,
+                    })}
+                  >
+                    <div className="line-clamp-1 text-xl text-gray-700">
+                      <TooltipWrapper content={itm.patent_title}>
+                        <span className="text-lg mr-1 font-semibold text-primary-800">
+                          0{index + 1}.
+                        </span>
+                        <span>{itm.patent_title}</span>
+                      </TooltipWrapper>
+                    </div>
 
-                  <div className="line-clamp-2 mt-1 text-gray-600">
-                    <TooltipWrapper content={itm.patent_abstract}>
-                      <p>{itm.patent_abstract}</p>
-                    </TooltipWrapper>
-                  </div>
+                    <div className="line-clamp-2 mt-1 text-gray-600">
+                      <TooltipWrapper content={itm.patent_abstract}>
+                        <p>{itm.patent_abstract}</p>
+                      </TooltipWrapper>
+                    </div>
 
-                  <div className="mt-1 flex items-center gap-1 text-sm text-gray-700">
-                    <LocationIcon width={16} height={16} />
-                    <span>{StatesCodes[itm.state] ?? itm.state}</span>
+                    <div className="mt-1 flex items-center gap-1 text-sm text-gray-700">
+                      <LocationIcon width={16} height={16} />
+                      <span>{StatesCodes[itm.state] ?? itm.state}</span>
+                    </div>
                   </div>
+                ))}
+              </div>
+
+              <Button type="secondary" handleClick={handleViewMoreClick}>
+                <div className="flex">
+                  View more <ChevronRight className="ml-0.5" />
                 </div>
-              ))}
+              </Button>
             </div>
           </div>
 
@@ -118,7 +137,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
 
         <div className="col-span-9 bg-gray-200">
           <USMap
-            type={currentMode === "industries" ? "heatmap_industry" : "heatmap_universities"}
+            type={currentMode === "Industry" ? "heatmap_industry" : "heatmap_universities"}
             data={mapData}
           />
         </div>
@@ -126,8 +145,6 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     </DataSection>
   );
 }
-
-type availableModes = "industries" | "universities";
 
 interface IFootprintHeatmapProps {
   keywords: string[];

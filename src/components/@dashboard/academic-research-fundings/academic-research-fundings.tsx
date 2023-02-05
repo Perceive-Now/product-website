@@ -19,6 +19,7 @@ import {
   IUniversityResearchFunding,
 } from "../../../utils/api/charts";
 import NoDataMessage from "../../reusable/no-data";
+import { Link } from "react-router-dom";
 
 /**
  *
@@ -125,9 +126,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       )}
 
       {/* Caption */}
-      {/* <div className="mt-4">
-        <Link to="/funders">Read more</Link>
-      </div> */}
+      <div className="mt-4">
+        <Link to="/deep-search/funders">Read more</Link>
+      </div>
     </DataSection>
   );
 }
