@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 
 //
 import PageTitle from "../../reusable/page-title";
@@ -11,11 +12,14 @@ import RadioButtons from "../../reusable/radio-buttons";
 
 //
 import { getExpertsTable } from "../../../utils/api/dashboard";
+import { ChevronRight } from "../../icons";
 
 /*
  *
  **/
 export default function ExpertsNetwork(props: IExpertsNetworkProps) {
+  const navigate = useNavigate();
+
   const [expertMode, setExpertMode] = useState<modes>("industry");
 
   const { data, isLoading, isError, error } = useQuery(
@@ -25,6 +29,11 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
     },
     { enabled: !!props.keywords.length },
   );
+
+  //
+  const handleViewMoreClick = () => {
+    navigate(`/deep-search/inventors`);
+  };
 
   //
   const patentsData =
@@ -51,6 +60,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         isLoading={isLoading}
         isError={isError}
         error={error}
+        className={props.keywords?.length > 0 ? "pb-0 rounded-b-none" : ""}
         title={
           <PageTitle
             title="Inventors"
@@ -113,7 +123,17 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         </div>
       </DataSection>
 
-      <div className="">View more</div>
+      {props.keywords?.length > 0 && !isLoading && (
+        <div
+          className="bg-primary-900 hover:bg-primary-600 p-1 text-white border-b-2 rounded-b-lg cursor-pointer"
+          onClick={handleViewMoreClick}
+        >
+          <div className="flex justify-center">
+            View more
+            <ChevronRight className="ml-0.5 text-white" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

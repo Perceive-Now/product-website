@@ -98,7 +98,6 @@ function App() {
             <Route path="/help" element={<HelpPage />} />
           </Route>
         </Route>
-
         {/* 404 not found */}
         <Route path="*" element={<PageNotFound404 />} />
       </Routes>
