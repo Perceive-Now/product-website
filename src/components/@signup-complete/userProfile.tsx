@@ -143,6 +143,7 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
             id="keywords"
             placeholder="E.g. COVID-19, Big data, Clean energy, Gene therapy, Fluid dynamics"
             className="py-1 px-[1.25rem] w-full my-1 rounded-lg border border-gray-400 focus:outline-primary-500"
+            {...register("preferred_keywords")}
           />
           <span className="text-sm">Provide 5 keywords separated by commas</span>
         </fieldset>
@@ -159,6 +160,7 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
             id="journals"
             placeholder="E.g. Journal of Microbiology, Analytical Chemistry"
             className="py-1 px-[1.25rem] w-full my-1 rounded-lg border border-gray-400 focus:outline-primary-500"
+            {...register("preferred_journals")}
           />
           <span className="text-sm">
             Please list the scholarly journals and the magazines you subscribe to. It could also be
@@ -180,6 +182,7 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
                 type="checkbox"
                 value={goal.title}
                 className="appearance-none rounded peer focus:checked:bg-primary-500 checked:bg-primary-500 checked:hover:bg-primary-600 focus:outline-none focus:ring-0"
+                {...register("strategic_goals")}
               />
               <label htmlFor={`goals-${index}`} className="peer-checked:font-semibold">
                 {goal.title}
@@ -215,4 +218,11 @@ interface IUserProfileForm {
     company_name: string;
   };
   job_position: string;
+  preferred_keywords: {
+    name: string;
+  };
+  preferred_journals: {
+    name: string;
+  };
+  strategic_goals: string;
 }
