@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -27,7 +28,6 @@ import {
   getDeepSearchPatentInventorsList,
   IDeepSearchInventorsPatentItem,
 } from "../../../../../utils/api/deep-search/inventors";
-import { useNavigate } from "react-router-dom";
 
 //
 const PAGE_SIZE = 10;
@@ -36,7 +36,9 @@ const PAGE_SIZE = 10;
 export default function DeepSearchInventorsListPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
+  const paramsClassification: string | null = searchParams.get("mode");
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
@@ -50,6 +52,16 @@ export default function DeepSearchInventorsListPage() {
 
   const [publishedYear, setPublishedYear] = useState<number>(2022);
 
+  //
+  useEffect(() => {
+    if (paramsClassification) {
+      if (paramsClassification === "patents" || paramsClassification === "publications") {
+        setCategory(paramsClassification);
+      }
+    }
+  }, [paramsClassification]);
+
+  //
   const publishYearsOptions = useMemo(() => {
     const startYear = new Date().getFullYear() - 1;
     const yearsToInclude = 50;

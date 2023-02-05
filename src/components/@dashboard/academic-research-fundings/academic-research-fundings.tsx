@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -125,9 +126,9 @@ export default function AcademicResearchFundings(props: IFundingProps) {
       )}
 
       {/* Caption */}
-      {/* <div className="mt-4">
-        <Link to="/funders">Read more</Link>
-      </div> */}
+      <div className="mt-4">
+        <Link to="/deep-search/funders">Read more</Link>
+      </div>
     </DataSection>
   );
 }

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -231,9 +232,9 @@ export default function AcademicResearchTrends(props: IResearchProps) {
         </Fragment>
       )}
 
-      {/* <div className="mt-4">
-        <Link to="/publications">Read more</Link>
-      </div> */}
+      <div className="mt-4">
+        <Link to="/deep-search/publications">Read more</Link>
+      </div>
     </DataSection>
   );
 }

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
@@ -89,9 +90,10 @@ export default function TopFundersList(props: ITopFundersListProps) {
 
         <Tooltip className="tooltip" float />
       </TooltipProvider>
-      {/* <div className="text-primary-600 mt-4 cursor-pointer">
-        <Link to="/funders">Read more</Link>
-      </div> */}
+
+      <div className="text-primary-600 mt-4 cursor-pointer">
+        <Link to="/deep-search/funders">Read more</Link>
+      </div>
     </DataSection>
   );
 }

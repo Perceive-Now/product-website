@@ -73,7 +73,7 @@ export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
     const accessToken = sessionStorage.getItem("pn_access");
-    if (accessToken)
+    if (accessToken && accessToken !== "undefined")
       return {
         success: true,
         message: "Current session obtained",
@@ -82,11 +82,12 @@ export const getCurrentSession = createAsyncThunk(
 
     //
     const refreshToken = jsCookie.get("pn_refresh");
-    if (!refreshToken)
+    if (!refreshToken || refreshToken === "undefined") {
       return {
         success: false,
         message: "Current session is terminated!",
       };
+    }
 
     //
     try {
@@ -117,7 +118,6 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
     // TODO:: Make an API call to get user profile
     // After that add user's name and image to the response object
     const [userResponse] = await Promise.all([axiosInstance.get("/api/v1/user/me/")]);
-
     return {
       success: true,
       message: "Successfully fetched user details",
@@ -175,6 +175,10 @@ export const AuthSlice = createSlice({
       if (!state.token && action.payload.success && action.payload.data) {
         state.token = action.payload.data.token;
       }
+    });
+    //
+    builder.addCase(getCurrentSession.rejected, (state) => {
+      state.token = undefined;
     });
 
     //

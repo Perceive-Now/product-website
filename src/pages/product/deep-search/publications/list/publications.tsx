@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
@@ -40,9 +40,12 @@ const PAGE_SIZE = 10;
  */
 export default function PublicationListPage() {
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");
+
+  const paramsClassification: string | null = searchParams.get("mode");
 
   const [selectedPublishedYear, setSelectedPublishedYear] = useState<number>(2022);
   //
@@ -50,6 +53,15 @@ export default function PublicationListPage() {
   //
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+
+  //
+  useEffect(() => {
+    if (paramsClassification) {
+      if (paramsClassification === "Industry" || paramsClassification === "Academic") {
+        setClassification(paramsClassification);
+      }
+    }
+  }, [paramsClassification]);
 
   //
   const { data: relatedKeywords } = useQuery(

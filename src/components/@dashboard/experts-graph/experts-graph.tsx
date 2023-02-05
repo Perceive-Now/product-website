@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -233,9 +234,9 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
           )}
         </Fragment>
       )}
-      {/* <div className="mt-2">
-        <Link to="/experts">Read more</Link>
-      </div>{" "} */}
+      <div className="mt-2">
+        <Link to="/deep-search/inventors">Read more</Link>
+      </div>
     </DataSection>
   );
 }

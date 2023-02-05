@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { PropsWithChildren, ReactElement } from "react";
 
 //
@@ -24,7 +25,12 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
 
   //
   return (
-    <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
+    <div
+      className={classNames(
+        "px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow",
+        props.className,
+      )}
+    >
       {/* Title */}
       {props.title}
 
@@ -63,4 +69,5 @@ interface IDataSectionProps {
   isError: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
+  className?: string;
 }

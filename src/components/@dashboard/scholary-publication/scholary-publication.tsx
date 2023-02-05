@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -219,9 +220,10 @@ export default function ScholaryPublication(props: IScholaryPublicationProps) {
           )}
         </>
       )}
-      {/* <div className="mt-4">
-        <Link to="/publications">Read more</Link>
-      </div> */}
+
+      <div className="mt-4">
+        <Link to="/deep-search/publications">Read more</Link>
+      </div>
     </DataSection>
   );
 }
