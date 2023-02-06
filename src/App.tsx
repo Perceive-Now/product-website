@@ -49,6 +49,8 @@ import DeepSearchFundersPage from "./pages/product/deep-search/funders/list";
 
 //
 import PageNotFound404 from "./pages/404";
+import AccountLayout from "./layouts/account";
+import UserProfilePage from "./pages/account/userProfile";
 
 /**
  *
@@ -93,6 +95,11 @@ function App() {
 
             <Route path="/deep-search/funders" element={<DeepSearchFundersPage />} />
 
+            {/* Account section */}
+            <Route element={<AccountLayout />}>
+              <Route path="/account/user-profile" element={<UserProfilePage />} />
+            </Route>
+            
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />

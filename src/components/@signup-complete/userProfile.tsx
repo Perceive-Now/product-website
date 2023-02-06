@@ -8,7 +8,7 @@ import * as yup from "yup";
 import Button from "../reusable/button";
 
 //
-const goalOptions = [
+export const goalOptions = [
   { title: "Growth Insights" },
   { title: "IP portfolio expansion" },
   { title: "Technical diligence" },
@@ -20,7 +20,7 @@ const goalOptions = [
 ];
 
 //
-const userProfileSchema = yup.object({
+export const userProfileSchema = yup.object({
   first_name: yup.string().required(),
   last_name: yup.string().required(),
   user_company: yup
@@ -211,7 +211,7 @@ interface IUserProfileStepProps {
 }
 
 //
-interface IUserProfileForm {
+export interface IUserProfileForm {
   first_name: string;
   last_name: string;
   user_company: {
