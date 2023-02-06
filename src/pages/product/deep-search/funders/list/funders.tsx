@@ -100,7 +100,7 @@ export default function DeepSearchFundersPage() {
   //
   const columnData: ColumnDef<IDeepSearchFunderListItem>[] = [
     {
-      header: "Title",
+      header: "Project title",
       accessorKey: "title",
       cell: ({ row }) => (
         <TooltipWrapper content={row.original.title}>
@@ -117,11 +117,11 @@ export default function DeepSearchFundersPage() {
           </span>
         </TooltipWrapper>
       ),
-      minSize: 330,
-      maxSize: 330,
+      minSize: 230,
+      maxSize: 230,
     },
     {
-      header: "Abstract",
+      header: "Project abstract",
       cell: (data) => {
         const originalData = data.row.original;
         return (
@@ -132,12 +132,13 @@ export default function DeepSearchFundersPage() {
               title: originalData.title,
               abstract: originalData.abstract,
             }}
-            viewPath={`/deep-search/patents/${originalData._id}`}
+            viewPath={`#`}
+            // viewPath={`/deep-search/patents/${originalData._id}`}
           />
         );
       },
-      minSize: 130,
-      maxSize: 130,
+      minSize: 200,
+      maxSize: 200,
     },
     {
       header: "Funding amount",
