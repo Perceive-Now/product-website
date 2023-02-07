@@ -19,8 +19,6 @@ export default function DeepSearchFunderPage() {
     enabled: !!decodedId,
   });
 
-  console.log(data, "data");
-
   if (isLoading) {
     return (
       <div className="flex w-full h-full justify-center items-center text-primary-600">
