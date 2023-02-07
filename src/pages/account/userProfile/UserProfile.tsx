@@ -11,29 +11,48 @@ import {
 
 //
 import Button from "../../../components/reusable/button";
+import { useAppSelector } from "../../../hooks/redux";
+import { useMutation } from "@tanstack/react-query";
+import { patchUserProfile } from "../../../utils/api/userProfile";
 
 /**
  *
  */
 export default function UserProfilePage() {
+  const user = useAppSelector((state) => state?.auth?.user);
+
+  const { mutate } = useMutation(patchUserProfile);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IUserProfileForm>({
     resolver: yupResolver(userProfileSchema),
-    defaultValues: {},
+    defaultValues: {
+      first_name: user?.firstName,
+      last_name: user?.lastName,
+      user_company: {
+        company_name: user?.companyName,
+      },
+    },
   });
 
   //
-  const onSubmit = (values: IUserProfileForm) => {
-    console.log(values, "values");
+  const onSubmit = async (values: IUserProfileForm) => {
+    try {
+      if (!user) {
+        return;
+      }
+      const response = await mutate({ pkId: user.pkId, body: values });
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   return (
     <div>
       <form className="w-full lg:max-w-4xl" onSubmit={handleSubmit(onSubmit)}>
-        {/* Name row */}
         <div>
           <p className="text-2xl text-primary-900 font-semibold mb-2">Personal Details</p>
 

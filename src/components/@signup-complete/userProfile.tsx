@@ -215,9 +215,9 @@ export interface IUserProfileForm {
   first_name: string;
   last_name: string;
   user_company: {
-    company_name: string;
+    company_name: string | null;
   };
-  job_position: string;
+  job_position: string | null;
   preferred_keywords: {
     name: string;
   };

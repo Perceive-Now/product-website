@@ -4,9 +4,9 @@ import { accountNavbarData } from "./_data";
 
 export default function AccountNavbar() {
   return (
-    <div>
+    <div className="flex">
       {accountNavbarData.map((navData) => (
-        <div key={navData.path}>
+        <div key={navData.path} className="mr-3">
           <NavLink to={navData.path}>
             {({ isActive }) => (
               <div

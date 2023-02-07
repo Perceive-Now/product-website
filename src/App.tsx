@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 //
 import AuthLayout from "./layouts/auth";
 import DefaultLayout from "./layouts/default";
+import AccountLayout from "./layouts/account";
 
 //
 import HomePage from "./pages/homepage";
@@ -48,9 +49,11 @@ import DeepSearchAcademicPage from "./pages/product/deep-search/university/detai
 import DeepSearchFundersPage from "./pages/product/deep-search/funders/list";
 
 //
-import PageNotFound404 from "./pages/404";
-import AccountLayout from "./layouts/account";
 import UserProfilePage from "./pages/account/userProfile";
+
+//
+import PageNotFound404 from "./pages/404";
+import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 
 /**
  *
@@ -98,8 +101,9 @@ function App() {
             {/* Account section */}
             <Route element={<AccountLayout />}>
               <Route path="/account/user-profile" element={<UserProfilePage />} />
+              <Route path="/account/company-profile" element={<CompanyProfilePage />} />
             </Route>
-            
+
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />

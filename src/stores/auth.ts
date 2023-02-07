@@ -117,15 +117,26 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
   try {
     // TODO:: Make an API call to get user profile
     // After that add user's name and image to the response object
-    const [userResponse] = await Promise.all([axiosInstance.get("/api/v1/user/me/")]);
+    const [userResponse, userProfileResponse] = await Promise.all([
+      axiosInstance.get("/api/v1/user/me/"),
+      axiosInstance.get(`/api/v1/profile/profiles/34b6ed2b-6e43-4cfe-b233-86043def60cb/`),
+    ]);
     return {
       success: true,
       message: "Successfully fetched user details",
       data: {
+        name: userProfileResponse.data.full_name,
+        firstName: userProfileResponse.data.first_name,
+        lastName: userProfileResponse.data.last_name,
+        phoneNumber: userProfileResponse.data.phone_number,
+        aboutMe: userProfileResponse.data.about_me,
+        userLocation: userProfileResponse.data.user_location,
+        userCompany: userProfileResponse.data.user_company,
+        jobPosition: userProfileResponse.data.job_position,
         email: userResponse.data.email,
         username: userResponse.data.username,
-        name: userResponse.data.username,
-        image: undefined,
+        image: userProfileResponse.data.profile_photo,
+        pkId: userProfileResponse.data.pkid,
       },
     };
   } catch (error) {
@@ -209,9 +220,18 @@ interface IResponse<T = any> {
 //
 interface IAuthuser {
   email: string;
+  pkId: string;
   username: string;
   name: string;
   image?: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: number | null;
+  aboutMe: string;
+  userLocation: string;
+  userCompany: string | null;
+  jobPosition: string | null;
+  companyName: string | null;
 }
 
 //

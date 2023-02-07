@@ -12,7 +12,7 @@ import Button from "../reusable/button";
 import { CheckIcon, ChevronUpDown } from "../icons";
 
 //
-const companyProfileSchema = yup.object({
+export const companyProfileSchema = yup.object({
   user_company: yup
     .object({
       company_location: yup.string().required(),
@@ -23,7 +23,7 @@ const companyProfileSchema = yup.object({
 });
 
 //
-const technologyOptions = [
+export const technologyOptions = [
   { name: "Agriculture Technology" },
   { name: "Finance" },
   { name: "Biotechnology & Healthcare" },
@@ -209,7 +209,7 @@ interface ISignupStepProps {
 }
 
 //
-interface ICompanyProfileForm {
+export interface ICompanyProfileForm {
   user_company: {
     company_location: string;
     tech_sector: string;
