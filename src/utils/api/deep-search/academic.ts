@@ -26,7 +26,10 @@ interface IGetDeepSearchOptions {
 }
 
 interface IDeepSearchInventorsPatentListResponse {
-  data: IDeepSearchAcademicsPatentItem[];
+  data: {
+    academic: IDeepSearchAcademicsPatentItem[];
+    total: number;
+  };
 }
 
 export interface IDeepSearchAcademicsPatentItem {

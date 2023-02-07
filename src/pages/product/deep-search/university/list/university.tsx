@@ -44,7 +44,7 @@ export default function DeepSearchUniversityListPage() {
   const joinedkeywords = keywords.join(", ");
 
   //
-  const [totalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [category, setCategory] = useState<CategoryType>("patents");
@@ -90,10 +90,10 @@ export default function DeepSearchUniversityListPage() {
       });
 
       //
-      // setTotalCount();
+      setTotalCount(response?.total ?? 0);
 
       //
-      return response ?? [];
+      return response?.academic ?? [];
     },
     enabled: !!keywords.length || category !== "patents",
   });

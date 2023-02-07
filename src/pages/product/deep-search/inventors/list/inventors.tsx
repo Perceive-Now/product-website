@@ -100,17 +100,20 @@ export default function DeepSearchInventorsListPage() {
         limit: PAGE_SIZE,
         offset: offset,
       });
-      const total = offset + PAGE_SIZE;
-      if (response?.status_code === 204) {
-        return [];
-      }
-      if (total > response?.total) {
-        if (response?.inventors?.length > 0) {
-          setTotalCount(total + PAGE_SIZE);
-        }
-      } else {
-        setTotalCount(response?.total || 0);
-      }
+
+      // FOR LATER USE IN OTHER SECTION
+      // const total = offset + PAGE_SIZE;
+      // if (response?.status_code === 204) {
+      //   return [];
+      // }
+      // if (total > response?.total) {
+      //   if (response?.inventors?.length > 0) {
+      //     setTotalCount(total + PAGE_SIZE);
+      //   }
+      // } else {
+      //   setTotalCount(response?.total || 0);
+      // }
+      setTotalCount(response?.total || 0);
 
       //
       return response?.inventors ?? [];
