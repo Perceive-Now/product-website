@@ -26,7 +26,11 @@ interface IGetDeepSearchOptions {
 }
 
 interface IDeepSearchInventorsPatentListResponse {
-  data: IDeepSearchInventorsPatentItem[];
+  data: {
+    inventors: IDeepSearchInventorsPatentItem[];
+    total: number;
+    status_code?: number;
+  };
 }
 
 export interface IDeepSearchInventorsPatentItem {

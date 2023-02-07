@@ -45,7 +45,7 @@ export default function DeepSearchInventorsListPage() {
   const joinedkeywords = keywords.join(", ");
 
   //
-  const [totalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [category, setCategory] = useState<CategoryType>("patents");
@@ -92,19 +92,28 @@ export default function DeepSearchInventorsListPage() {
     queryKey: [...keywords, currentPage, publishedYear, "deepsearch-patent-inventor-list"],
     queryFn: async () => {
       const lastYearValue = new Date().getFullYear() - 1;
+      const offset = (currentPage - 1) * PAGE_SIZE + 1;
       //
       const response = await getDeepSearchPatentInventorsList({
         keywords,
         year: publishedYear ?? lastYearValue,
         limit: PAGE_SIZE,
-        offset: (currentPage - 1) * PAGE_SIZE + 1,
+        offset: offset,
       });
+      const total = offset + PAGE_SIZE;
+      if (response?.status_code === 204) {
+        return [];
+      }
+      if (total > response?.total) {
+        if (response?.inventors?.length > 0) {
+          setTotalCount(total + PAGE_SIZE);
+        }
+      } else {
+        setTotalCount(response?.total || 0);
+      }
 
       //
-      // setTotalCount();
-
-      //
-      return response ?? [];
+      return response?.inventors ?? [];
     },
     enabled: !!keywords.length || category !== "patents",
   });
