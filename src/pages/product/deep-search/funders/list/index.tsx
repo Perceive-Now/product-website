@@ -1,2 +1,2 @@
-import DeepSearchFundersPage from "./funders";
-export default DeepSearchFundersPage;
+import DeepSearchFundersListPage from "./funders";
+export default DeepSearchFundersListPage;

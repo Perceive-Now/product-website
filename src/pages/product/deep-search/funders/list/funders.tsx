@@ -29,6 +29,7 @@ import {
 } from "../../../../../utils/api/deep-search/funders";
 import Button from "../../../../../components/reusable/button";
 import { formatNumber } from "../../../../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 //
 const PAGE_SIZE = 10;
@@ -36,7 +37,8 @@ const PAGE_SIZE = 10;
 /**
  *
  */
-export default function DeepSearchFundersPage() {
+export default function DeepSearchFundersListPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   //
@@ -45,7 +47,7 @@ export default function DeepSearchFundersPage() {
   const joinedkeywords = keywords.join(", ");
 
   //
-  const [totalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [date, setDate] = useState<number>(2022);
@@ -88,6 +90,9 @@ export default function DeepSearchFundersPage() {
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
       });
+
+      //
+      setTotalCount(response?.count || 0);
 
       //
       return response?.data ?? [];
@@ -167,8 +172,14 @@ export default function DeepSearchFundersPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
+      cell: ({ row }) => (
+        <Button
+          type="secondary"
+          size="small"
+          handleClick={() =>
+            navigate(`/deep-search/funders/${encodeURIComponent(row.original._id)}`)
+          }
+        >
           Track
         </Button>
       ),
