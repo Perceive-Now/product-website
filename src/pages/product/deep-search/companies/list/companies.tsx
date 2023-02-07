@@ -42,7 +42,7 @@ export default function DeepSearchCompaniesListPage() {
   const joinedkeywords = keywords.join(", ");
 
   //
-  const [totalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [category, setCategory] = useState<CategoryType>("patents");
@@ -102,10 +102,10 @@ export default function DeepSearchCompaniesListPage() {
       });
 
       //
-      // setTotalCount();
+      setTotalCount(response?.total ?? 0);
 
       //
-      return response ?? [];
+      return response?.companies ?? [];
     },
     enabled: !!keywords.length || category !== "patents",
   });
