@@ -29,6 +29,7 @@ import {
 } from "../../../../../utils/api/deep-search/funders";
 import Button from "../../../../../components/reusable/button";
 import { formatNumber } from "../../../../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 //
 const PAGE_SIZE = 10;
@@ -36,7 +37,8 @@ const PAGE_SIZE = 10;
 /**
  *
  */
-export default function DeepSearchFundersPage() {
+export default function DeepSearchFundersListPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   //
@@ -45,7 +47,7 @@ export default function DeepSearchFundersPage() {
   const joinedkeywords = keywords.join(", ");
 
   //
-  const [totalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [date, setDate] = useState<number>(2022);
@@ -90,6 +92,9 @@ export default function DeepSearchFundersPage() {
       });
 
       //
+      setTotalCount(response?.count || 0);
+
+      //
       return response?.data ?? [];
     },
     enabled: !!keywords.length,
@@ -100,7 +105,7 @@ export default function DeepSearchFundersPage() {
   //
   const columnData: ColumnDef<IDeepSearchFunderListItem>[] = [
     {
-      header: "Title",
+      header: "Project title",
       accessorKey: "title",
       cell: ({ row }) => (
         <TooltipWrapper content={row.original.title}>
@@ -117,11 +122,11 @@ export default function DeepSearchFundersPage() {
           </span>
         </TooltipWrapper>
       ),
-      minSize: 330,
-      maxSize: 330,
+      minSize: 230,
+      maxSize: 230,
     },
     {
-      header: "Abstract",
+      header: "Project abstract",
       cell: (data) => {
         const originalData = data.row.original;
         return (
@@ -132,12 +137,13 @@ export default function DeepSearchFundersPage() {
               title: originalData.title,
               abstract: originalData.abstract,
             }}
-            viewPath={`/deep-search/patents/${originalData._id}`}
+            viewPath={`#`}
+            // viewPath={`/deep-search/patents/${originalData._id}`}
           />
         );
       },
-      minSize: 130,
-      maxSize: 130,
+      minSize: 200,
+      maxSize: 200,
     },
     {
       header: "Funding amount",
@@ -154,6 +160,9 @@ export default function DeepSearchFundersPage() {
     {
       header: "Funding type",
       accessorKey: "funding_type",
+      cell: (data) => (
+        <p className="line-clamp-1 capitalize">{data.row.original.funding_type ?? "-"}</p>
+      ),
       minSize: 200,
       maxSize: 200,
     },
@@ -166,8 +175,14 @@ export default function DeepSearchFundersPage() {
     },
     {
       header: " ",
-      cell: () => (
-        <Button type="secondary" size="small">
+      cell: ({ row }) => (
+        <Button
+          type="secondary"
+          size="small"
+          handleClick={() =>
+            navigate(`/deep-search/funders/${encodeURIComponent(row.original._id)}`)
+          }
+        >
           Track
         </Button>
       ),

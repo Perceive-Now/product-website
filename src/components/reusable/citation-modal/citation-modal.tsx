@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 //
 export default function CitationModal({ author, title, date, publisher }: ICitationModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const handleCopyCitation = () => {
     const citationText = `
@@ -20,11 +21,17 @@ export default function CitationModal({ author, title, date, publisher }: ICitat
     navigator.clipboard.writeText(citationText).then(
       () => {
         /* Success - clipboard success */
+        setIsCopied(true);
       },
       () => {
         /* Rejected - clipboard failed */
       },
     );
+  };
+
+  const handleCloseAction = () => {
+    setIsCopied(false);
+    setIsOpen(false);
   };
 
   return (
@@ -33,7 +40,7 @@ export default function CitationModal({ author, title, date, publisher }: ICitat
         Generate Citation
       </span>
 
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
+      <Dialog open={isOpen} onClose={handleCloseAction} className="relative z-50">
         {/* The backdrop, rendered as a fixed sibling to the panel container */}
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
@@ -73,17 +80,13 @@ export default function CitationModal({ author, title, date, publisher }: ICitat
 
               <div className="flex justify-center mt-3">
                 <Button handleClick={handleCopyCitation} type={"secondary"} classname="text-center">
-                  Copy citation
+                  {isCopied ? "Copied!" : "Copy citation"}
                 </Button>
               </div>
             </div>
 
             <div className="text-primary-600 text-lg mb-1 flex justify-end absolute right-[22px] top-[30px]">
-              <CrossIcon
-                width={"20px"}
-                className="cursor-pointer"
-                onClick={() => setIsOpen(false)}
-              />
+              <CrossIcon width={"20px"} className="cursor-pointer" onClick={handleCloseAction} />
             </div>
           </Dialog.Panel>
         </span>

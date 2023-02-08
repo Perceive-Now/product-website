@@ -26,7 +26,11 @@ interface IGetDeepSearchOptions {
 }
 
 interface IDeepSearchInventorsPatentListResponse {
-  data: IDeepSearchInventorsPatentItem[];
+  data: {
+    inventors: IDeepSearchInventorsPatentItem[];
+    total: number;
+    status_code?: number;
+  };
 }
 
 export interface IDeepSearchInventorsPatentItem {
@@ -44,6 +48,8 @@ export async function getDeepSearchPatentInventor(options: IGetDeepSearchInvento
   const queryParams = new URLSearchParams();
   if (options.firstName) queryParams.append("first_name", options.firstName);
   if (options.lastName) queryParams.append("last_name", options.lastName);
+  if (options.limit) queryParams.append("limit", options.limit.toString());
+  if (options.offset) queryParams.append("offset", options.offset.toString());
 
   queryParams.append("q", options.keywords.join(","));
 
@@ -57,6 +63,8 @@ export async function getDeepSearchPatentInventor(options: IGetDeepSearchInvento
 interface IGetDeepSearchInventorOptions {
   firstName: string;
   lastName?: string;
+  limit?: number;
+  offset?: number;
   keywords: string[];
 }
 

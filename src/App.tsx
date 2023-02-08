@@ -45,7 +45,8 @@ import DeepSearchUniversityListPage from "./pages/product/deep-search/university
 import DeepSearchAcademicPage from "./pages/product/deep-search/university/detail/detail";
 
 //
-import DeepSearchFundersPage from "./pages/product/deep-search/funders/list";
+import DeepSearchFundersListPage from "./pages/product/deep-search/funders/list";
+import DeepSearchFunderPage from "./pages/product/deep-search/funders/detail";
 
 //
 import PageNotFound404 from "./pages/404";
@@ -91,7 +92,8 @@ function App() {
             <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
             <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />
 
-            <Route path="/deep-search/funders" element={<DeepSearchFundersPage />} />
+            <Route path="/deep-search/funders" element={<DeepSearchFundersListPage />} />
+            <Route path="/deep-search/funders/:id" element={<DeepSearchFunderPage />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />

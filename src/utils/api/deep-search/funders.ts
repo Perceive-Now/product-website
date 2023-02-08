@@ -27,6 +27,7 @@ interface IGetFundersListOptions {
 interface IDeepSearchFundersListResponse {
   data: {
     data: IDeepSearchFunderListItem[];
+    count: number;
   };
 }
 
@@ -37,4 +38,33 @@ export interface IDeepSearchFunderListItem {
   funding: number;
   funding_type: string;
   award_date: string;
+}
+
+/**
+ *
+ */
+export async function getDeepSearchFunderDetail(id: string) {
+  const response = await axiosInstance.get<IDeepSearchFunderResponse>(
+    `/api/v1/ds-api/deepsearch/single-funding-info/?id=${id}`,
+  );
+  const data = response.data.data;
+
+  return data;
+}
+
+export interface IDeepSearchFunderItem {
+  _id: string;
+  title: string;
+  abstract: string;
+  funding: number;
+  funding_type: string;
+  funder: string;
+  lead_investigator: string;
+  award_start_date: string;
+  award_end_date: string;
+}
+
+//
+interface IDeepSearchFunderResponse {
+  data: IDeepSearchFunderItem;
 }

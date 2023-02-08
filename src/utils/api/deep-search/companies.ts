@@ -62,7 +62,11 @@ export interface IDeepSearchCompanyPatentItem {
 interface IDeepSearchCompanyPatentListResponse {
   data: {
     statusCode: number;
-    body: IDeepSearchCompanyPatentItem[];
+    body: {
+      companies: IDeepSearchCompanyPatentItem[];
+      total: number;
+      status_code?: number;
+    };
   };
 }
 

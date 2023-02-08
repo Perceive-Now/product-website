@@ -15,7 +15,7 @@ import { LoadingIcon } from "../../../../../components/icons";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
-import ReportSaveButtons from "../../../../../components/reusable/report-save-btns";
+// import ReportSaveButtons from "../../../../../components/reusable/report-save-btns";
 
 //
 const PAGE_SIZE = 10;
@@ -155,9 +155,9 @@ export default function DeepSearchAcademicPage() {
   return (
     <div>
       {/* Report share buttons section */}
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <ReportSaveButtons />
-      </div>
+      </div> */}
 
       <div className="text-2xl leading-8 text-primary-900">{name}</div>
       <div className="text-appGray-900 mt-2">London, England, UK</div>
