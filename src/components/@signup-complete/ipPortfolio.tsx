@@ -1,9 +1,38 @@
+import { useForm } from "react-hook-form";
 import Button from "../reusable/button";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import classNames from "classnames";
+
+//
+const companyProfileSchema = yup.object({
+  ip_portfolio: yup
+    .object({
+      publications: yup.string().required(),
+      scholarly_profile: yup.string().required(),
+      patents: yup.string().required(),
+      orcid_id: yup.number().required(),
+    })
+    .required(),
+});
 
 //
 export default function IpPortfolioStep(props: ISignupStepProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IIPPortfolioForm>({
+    resolver: yupResolver(companyProfileSchema),
+    defaultValues: props.values,
+  });
+
+  //
+  const onSubmit = (values: IIPPortfolioForm) => {
+    props.handleNext(values);
+  };
   return (
-    <div className="p-2 md:p-5 w-full lg:max-w-4xl">
+    <form className="p-2 md:p-5 w-full lg:max-w-4xl" onSubmit={handleSubmit(onSubmit)}>
       {/* Publications */}
       <div>
         <fieldset className="w-full">
@@ -14,7 +43,13 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
           <input
             id="publications"
             placeholder="Publications"
-            className="py-1 px-[1.25rem] w-full my-1 rounded-lg border border-gray-400 focus:outline-primary-500"
+            className={classNames(
+              "py-1 px-[1.25rem] w-full mb-1 rounded-lg border bg-gray-100 focus:bg-white",
+              errors.ip_portfolio?.publications
+                ? "outline-red-500 border-red-500"
+                : "focus:outline-primary-500 border-gray-400",
+            )}
+            {...register("ip_portfolio.publications")}
           />
           <span className="text-sm">Please provide your Publications</span>
         </fieldset>
@@ -30,7 +65,13 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
           <input
             id="scholarly_profile"
             placeholder="Google Scholar Profile"
-            className="py-1 px-[1.25rem] col-span-1 w-full my-1 rounded-lg border border-gray-400 focus:outline-primary-500"
+            className={classNames(
+              "py-1 px-[1.25rem] w-full mb-1 rounded-lg border bg-gray-100 focus:bg-white",
+              errors.ip_portfolio?.publications
+                ? "outline-red-500 border-red-500"
+                : "focus:outline-primary-500 border-gray-400",
+            )}
+            {...register("ip_portfolio.scholarly_profile")}
           />
           <span className="text-sm">
             Link your google scholar profile or copy-paste your google scholar profile
@@ -48,7 +89,13 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
           <input
             id="orcid_id"
             placeholder="ID"
-            className="py-1 px-[1.25rem] w-full my-1 rounded-lg border border-gray-400 focus:outline-primary-500"
+            className={classNames(
+              "py-1 px-[1.25rem] w-full mb-1 rounded-lg border bg-gray-100 focus:bg-white",
+              errors.ip_portfolio?.publications
+                ? "outline-red-500 border-red-500"
+                : "focus:outline-primary-500 border-gray-400",
+            )}
+            {...register("ip_portfolio.orcid_id")}
           />
           <span className="text-sm">Provide your OCID ID</span>
         </fieldset>
@@ -64,7 +111,13 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
           <textarea
             id="patents"
             placeholder="Patent titles"
-            className="py-1 px-[1.25rem] w-full min-h-[10rem] my-1 rounded-lg border border-gray-400 focus:ring-primary-500 focus:border-primary-500"
+            className={classNames(
+              "py-1 px-[1.25rem] w-full min-h-[10rem]  mb-1 rounded-lg border bg-gray-100 focus:bg-white",
+              errors.ip_portfolio?.publications
+                ? "outline-red-500 border-red-500"
+                : "focus:outline-primary-500 border-gray-400",
+            )}
+            {...register("ip_portfolio.patents")}
           />
           <span className="text-sm">
             Please list all the patents owned by you or your organization.
@@ -78,11 +131,11 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
           Go Back
         </Button>
 
-        <Button type="optional" rounded="full" handleClick={() => props.handleNext({})}>
+        <Button type="optional" rounded="full" htmlType="submit">
           Continue
         </Button>
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -91,4 +144,15 @@ interface ISignupStepProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleNext: (values?: any) => void;
   handlePrevious: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  values: any;
+}
+
+interface IIPPortfolioForm {
+  ip_portfolio: {
+    publications: string;
+    scholarly_profile: string;
+    orcid_id: string;
+    patents: string;
+  };
 }

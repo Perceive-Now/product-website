@@ -1,3 +1,4 @@
+import uuid from "react-uuid";
 import classNames from "classnames";
 import { Listbox } from "@headlessui/react";
 
@@ -10,6 +11,7 @@ import Button from "../reusable/button";
 
 //
 import { CheckIcon, ChevronUpDown } from "../icons";
+import { useEffect, useState } from "react";
 
 //
 const companyProfileSchema = yup.object({
@@ -36,6 +38,8 @@ const technologyOptions = [
   { name: "Though Leaders & Consultants" },
 ];
 
+const InitialTeamMembersInputCount = 3;
+
 //
 export default function CompanyDetailsStep(props: ISignupStepProps) {
   const {
@@ -43,6 +47,7 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ICompanyProfileForm>({
     resolver: yupResolver(companyProfileSchema),
@@ -50,11 +55,41 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
   });
 
   //
+  const [teamMemberEmails, setTeamMemberEmails] = useState<string[]>([]);
+
+  useEffect(() => {
+    const values = props.values;
+    const teamMembers = values?.user_company?.team_member;
+    console.log(teamMembers, "teamMembers");
+    if (teamMembers) {
+      setValue("user_company.team_member", null);
+      setTeamMemberEmails(Object.keys(teamMembers));
+    } else {
+      setTeamMemberEmails(() =>
+        Array(InitialTeamMembersInputCount)
+          .fill("1")
+          .map(() => uuid()),
+      );
+    }
+  }, [props.values]);
+
+  //
   const techSector = watch("user_company.tech_sector");
 
   //
   const onSubmit = (values: ICompanyProfileForm) => {
     props.handleNext(values);
+  };
+
+  const handleAddTeamMember = () => {
+    setTeamMemberEmails((prev) => [...prev, uuid()]);
+  };
+
+  const handleRemoveTeamMember = (id: string) => {
+    setValue(`user_company.team_member.${id}`, "");
+    let tempTeamMembers = [...teamMemberEmails];
+    tempTeamMembers = tempTeamMembers.filter((listId) => listId !== id);
+    setTeamMemberEmails(tempTeamMembers);
   };
 
   //
@@ -180,6 +215,56 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
         </fieldset>
       </div>
 
+      {/* Team Members */}
+      <div className="mt-4 grid grid-cols-1">
+        <fieldset className="col-span-1">
+          <span className="text-lg font-semibold">Invite team members</span>
+
+          <div className="mt-1">
+            {teamMemberEmails.map((id, index) => {
+              return (
+                <div className="d-flex mb-4" key={id}>
+                  <label htmlFor={`user_company.team_member.${id}`} className="mb-1 font-bold">
+                    Team member {index + 1}
+                  </label>
+
+                  <input
+                    type="email"
+                    id={`user_company.team_member.${id}`}
+                    placeholder="Team member email"
+                    // classNames="py-1 px-[1.25rem] w-full my-1 rounded-lg border border-gray-400 focus:ring-primary-500"
+                    className={classNames(
+                      "py-1 px-[1.25rem] w-full my-1 rounded-lg border bg-gray-100 focus:bg-white",
+                      errors.user_company?.team_number
+                        ? "!ring-red-500  !border-red-500"
+                        : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
+                    )}
+                    {...register(`user_company.team_member.${id}`)}
+                  />
+
+                  <span className="mt-1 flex justify-between">
+                    Email
+                    <button
+                      className="hover:bg-red-500 hover:text-white border-red-500 border bg-white px-2 py-0.5 rounded-lg text-red-500 font-bold text-lg"
+                      onClick={() => handleRemoveTeamMember(id)}
+                    >
+                      -
+                    </button>
+                  </span>
+                </div>
+              );
+            })}
+            <button
+              className="border border-primary-900 text-primary-900 hover:text-white hover:bg-primar-900 py-0.5 px-2 rounded-lg"
+              type="button"
+              onClick={handleAddTeamMember}
+            >
+              <span className="mr-1">+</span> Add Team member
+            </button>
+          </div>
+        </fieldset>
+      </div>
+
       {/* Actions */}
       <div className="flex justify-center gap-x-2 mt-10">
         <Button
@@ -214,5 +299,8 @@ interface ICompanyProfileForm {
     company_location: string;
     tech_sector: string;
     team_number: number;
+    team_member: {
+      [key: string]: string;
+    } | null;
   };
 }

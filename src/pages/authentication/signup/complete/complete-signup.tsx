@@ -146,7 +146,11 @@ export default function CompleteSignup() {
           )}
 
           {activeStepItem.key === "ip-portfolio" && (
-            <IpPortfolioStep handlePrevious={gotoPreviousStep} handleNext={gotoNextStep} />
+            <IpPortfolioStep
+              handlePrevious={gotoPreviousStep}
+              handleNext={gotoNextStep}
+              values={formValues}
+            />
           )}
 
           {activeStepItem.key === "confirm-details" && (
