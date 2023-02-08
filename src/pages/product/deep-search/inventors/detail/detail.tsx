@@ -127,15 +127,18 @@ export default function DeepSearchInventorPage() {
 
   // Getting patent detail
   const { data, isLoading } = useQuery({
-    queryKey: [type, firstName, lastName],
+    queryKey: ["deepsearch-patent-inventor", type, firstName, lastName, currentPage],
     queryFn: async () => {
       if (!type || !firstName || !lastName) return;
+      const offset = (currentPage - 1) * PAGE_SIZE + 1;
 
       //
       const response = await getDeepSearchPatentInventor({
         firstName,
         lastName,
         keywords,
+        offset,
+        limit: PAGE_SIZE,
       });
 
       setTotalCount(response?.data?.count ?? 1);

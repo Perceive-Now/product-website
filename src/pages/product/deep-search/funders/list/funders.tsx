@@ -160,6 +160,9 @@ export default function DeepSearchFundersListPage() {
     {
       header: "Funding type",
       accessorKey: "funding_type",
+      cell: (data) => (
+        <p className="line-clamp-1 capitalize">{data.row.original.funding_type ?? "-"}</p>
+      ),
       minSize: 200,
       maxSize: 200,
     },
