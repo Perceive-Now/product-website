@@ -60,6 +60,19 @@ interface IDeepSearchItemDetailApplicant {
   country: string;
 }
 
+interface IDeepSearchItemDetailTrainee {
+  assignee_organization: string;
+  assignee_id: string;
+  location_id: string;
+  assignee_type: string;
+  assignee_location_id: string;
+  disambig_city: string;
+  disambig_state: string;
+  disambig_country: string;
+  latitude: string;
+  longitude: string;
+}
+
 interface IDeepSearchItemDetailWipo {
   wipo_field_sequence: string;
   wipo_field_id: string;
