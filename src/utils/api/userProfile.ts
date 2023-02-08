@@ -4,10 +4,8 @@ import axiosInstance from "../axios";
 /**
  *
  */
-export async function getUserProfile(pkId: string) {
-  const response = await axiosInstance.get<IUserProfileResponse>(
-    `/api/v1/profile/profiles/${pkId}/`,
-  );
+export async function getUserProfile() {
+  const response = await axiosInstance.get<IUserProfileResponse>(`/api/v1/profile/profiles/me/`);
 
   return response.data;
 }
@@ -29,13 +27,12 @@ interface IUserProfileResponse {
   job_position: null | string;
 }
 
-export async function patchUserProfile({ pkId, body }: IPatchUserProfileProps) {
-  const response = await axiosInstance.patch(`/api/v1/profile/user-detail/${pkId}/`, body);
+export async function patchUserProfile({ body }: IPatchUserProfileProps) {
+  const response = await axiosInstance.patch(`api/v1/profile/profiles/me/`, body);
 
   return response.data;
 }
 
 interface IPatchUserProfileProps {
-  pkId: string;
   body: IUserProfileForm;
 }

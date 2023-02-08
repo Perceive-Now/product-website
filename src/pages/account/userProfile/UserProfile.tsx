@@ -22,7 +22,7 @@ export default function UserProfilePage() {
   const user = useAppSelector((state) => state?.auth?.user);
 
   const { mutate } = useMutation(patchUserProfile);
-
+  console.log(user, "user");
   const {
     register,
     handleSubmit,
@@ -44,7 +44,7 @@ export default function UserProfilePage() {
       if (!user) {
         return;
       }
-      const response = await mutate({ pkId: user.pkId, body: values });
+      const response = mutate({ body: values });
     } catch (error) {
       console.log(error, "error");
     }
@@ -56,7 +56,7 @@ export default function UserProfilePage() {
         <div>
           <p className="text-2xl text-primary-900 font-semibold mb-2">Personal Details</p>
 
-          <div className="grid grid-cols-2 gap-x-3">
+          <div className="grid grid-cols-2 gap-x-3 mb-2">
             <fieldset className="col-span-1 w-full">
               <label htmlFor="first_name" className="text-appGray-900 font-semibold">
                 First Name
@@ -73,7 +73,9 @@ export default function UserProfilePage() {
                 {...register("first_name")}
               />
             </fieldset>
+          </div>
 
+          <div className="grid grid-cols-2 gap-x-3 mb-2">
             <fieldset className="col-span-1 w-full">
               <label htmlFor="last_name" className="text-appGray-900 font-semibold">
                 Last Name
@@ -96,7 +98,7 @@ export default function UserProfilePage() {
 
         {/* Company info row */}
         <div className="mt-1">
-          <div className="grid grid-cols-2 gap-x-3">
+          <div className="grid grid-cols-2 gap-x-3 mb-2">
             <fieldset className="col-span-1 w-full">
               <label htmlFor="company_name" className="text-appGray-900 font-semibold">
                 Company Name
@@ -114,7 +116,9 @@ export default function UserProfilePage() {
                 {...register("user_company.company_name")}
               />
             </fieldset>
+          </div>
 
+          <div className="grid grid-cols-2 gap-x-3 mb-2">
             <fieldset className="col-span-1 w-full">
               <label htmlFor="company_position" className="text-appGray-900 font-semibold">
                 Position
@@ -142,6 +146,7 @@ export default function UserProfilePage() {
               Preferred keywords to track*
             </label>
 
+            <p className="text-2xl text-primary-900 font-semibold mb-2">Personal Details</p>
             <input
               id="keywords"
               placeholder="E.g. COVID-19, Big data, Clean energy, Gene therapy, Fluid dynamics"

@@ -119,7 +119,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
     // After that add user's name and image to the response object
     const [userResponse, userProfileResponse] = await Promise.all([
       axiosInstance.get("/api/v1/user/me/"),
-      axiosInstance.get(`/api/v1/profile/profiles/34b6ed2b-6e43-4cfe-b233-86043def60cb/`),
+      axiosInstance.get(`/api/v1/profile/profiles/me/`),
     ]);
     return {
       success: true,
