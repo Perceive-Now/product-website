@@ -14,6 +14,7 @@ import { getDeepSearchPatentItemDetail } from "../../../../../utils/api/deep-sea
 import {
   applicantColumnData,
   assigneeColumnData,
+  inventorColumnData,
   attorneyColumnData,
   cpcColumnData,
   examinerColumnData,
@@ -124,6 +125,17 @@ export default function PatentDetailPage() {
             <ReactTable
               columnsData={applicantColumnData}
               rowsData={patentData?.applicant ?? []}
+              size="small"
+            />
+          </Accordion>
+        </div>
+
+        {/* Inventor list */}
+        <div className="border border-gray-200 shadow-lg rounded-xl p-2">
+          <Accordion title="Inventor">
+            <ReactTable
+              columnsData={inventorColumnData}
+              rowsData={patentData?.inventor ?? []}
               size="small"
             />
           </Accordion>

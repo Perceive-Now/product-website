@@ -237,6 +237,77 @@ export const applicantColumnData: ColumnDef<IDeepSearchItemDetailApplicant>[] = 
   },
 ];
 
+// Inventor column data
+export const inventorColumnData: ColumnDef<IDeepSearchItemDetailTrainee>[] = [
+  {
+    header: "Inventor sequence",
+    accessorKey: "inventor_sequence",
+    minSize: 210,
+    maxSize: 210,
+  },
+  {
+    header: "Inventor id",
+    accessorKey: "id",
+    minSize: 210,
+    maxSize: 210,
+  },
+  {
+    header: "First name",
+    accessorKey: "first name",
+    minSize: 260,
+    maxSize: 260,
+  },
+  {
+    header: "Last name",
+    accessorKey: "second name",
+    minSize: 164,
+    maxSize: 164,
+  },
+  {
+    header: "Male flag",
+    accessorKey: "male flag",
+    minSize: 164,
+    maxSize: 164,
+  },
+  {
+    header: "Attribution status",
+    accessorKey: "attribution status",
+    minSize: 164,
+    maxSize: 164,
+  },
+  {
+    header: "Location id",
+    accessorKey: "location_id",
+    minSize: 210,
+    maxSize: 210,
+  },
+  // TODO:: Verify about "Organization" in figma
+  {
+    header: "City",
+    accessorKey: "city",
+    minSize: 210,
+    maxSize: 210,
+  },
+  {
+    header: "Country",
+    accessorKey: "country",
+    minSize: 130,
+    maxSize: 130,
+  },
+  {
+    header: "Latitude",
+    accessorKey: "latitude",
+    minSize: 130,
+    maxSize: 130,
+  },
+  {
+    header: "Longitude",
+    accessorKey: "longitude",
+    minSize: 130,
+    maxSize: 130,
+  },
+];
+
 // WIPO column data
 export const wipoColumnData: ColumnDef<IDeepSearchItemDetailWipo>[] = [
   {
