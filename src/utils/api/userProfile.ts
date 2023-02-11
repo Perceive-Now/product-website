@@ -1,4 +1,5 @@
-import { IUserProfileForm } from "../../components/@signup-complete/userProfile";
+import { ICompanyDetailProfile } from "../../components/@signup-complete/companyDetails";
+import { IUserProfile } from "../../components/@signup-complete/userProfile";
 import axiosInstance from "../axios";
 
 /**
@@ -33,6 +34,36 @@ export async function patchUserProfile({ body }: IPatchUserProfileProps) {
   return response.data;
 }
 
+export async function patchCompanyDetailProfile({ body }: IPatchCompanyDetailProfileProps) {
+  const response = await axiosInstance.patch(`api/v1/profile/profiles/me/`, body);
+
+  return response.data;
+}
+
 interface IPatchUserProfileProps {
-  body: IUserProfileForm;
+  body: IUserProfile;
+}
+interface IPatchCompanyDetailProfileProps {
+  body: ICompanyDetailProfile;
+}
+
+export async function createIpPortfolioProfile({ body }: IIpPortfolioProps) {
+  const response = await axiosInstance.post(`api/v1/profile/ip-portfolio/`, body);
+
+  return response.data;
+}
+
+interface IIpPortfolioProps {
+  body: IIpPortfolio;
+}
+
+interface IIpPortfolio {
+  patents: {
+    patent_name: string;
+  }[];
+  publications: {
+    publication_name: string;
+  }[];
+  scholarly_profile: string;
+  orcid_id: string;
 }

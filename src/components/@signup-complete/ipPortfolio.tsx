@@ -3,6 +3,8 @@ import Button from "../reusable/button";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
+import { createIpPortfolioProfile } from "../../utils/api/userProfile";
+import { useMutation } from "@tanstack/react-query";
 
 //
 const companyProfileSchema = yup.object({
@@ -26,10 +28,23 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
     resolver: yupResolver(companyProfileSchema),
     defaultValues: props.values,
   });
+  const { mutate } = useMutation(createIpPortfolioProfile);
 
   //
   const onSubmit = (values: IIPPortfolioForm) => {
     props.handleNext(values);
+
+    const patents = values.ip_portfolio.patents.split(",").map((value) => ({ patent_name: value }));
+    const publications = values.ip_portfolio.patents
+      .split(",")
+      .map((value) => ({ publication_name: value }));
+    const body = {
+      patents: patents,
+      publications: publications,
+      scholarly_profile: values.ip_portfolio.scholarly_profile,
+      orcid_id: values.ip_portfolio.orcid_id,
+    };
+    // mutate({ body: body });
   };
   return (
     <form className="p-2 md:p-5 w-full lg:max-w-4xl" onSubmit={handleSubmit(onSubmit)}>

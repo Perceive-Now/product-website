@@ -88,3 +88,8 @@ interface IErrorMessage {
 export const getStateFullName = (code: string) => {
   return US_STATES[code];
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isObjEmpty(obj: any) {
+  return Object.keys(obj).length === 0;
+}

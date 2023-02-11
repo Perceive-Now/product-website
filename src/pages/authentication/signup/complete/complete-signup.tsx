@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 //
 import { CheckIcon } from "../../../../components/icons";
@@ -18,6 +18,7 @@ import PerceiveLogo from "../../../../assets/images/logo.svg";
 
 //
 import "./complete-signup.css";
+import { useAppSelector } from "../../../../hooks/redux";
 
 //
 const steps: IStepItem[] = [
@@ -49,11 +50,40 @@ const steps: IStepItem[] = [
 
 //
 export default function CompleteSignup() {
+  const user = useAppSelector((state) => state?.auth?.user);
+  const isFirstRef = useRef<isFirstRefProps>({ first: true });
+
   const [activeStep, setActiveStep] = useState(0);
   const [formValues, setFormValues] = useState({});
 
   //
   const activeStepItem = steps[activeStep] ?? { key: "success" };
+
+  useEffect(() => {
+    if (isFirstRef.current.first && user) {
+      const values = {
+        first_name: user.firstName,
+        last_name: user.lastName,
+        "user_company.company_name": user.userCompany?.companyName,
+        "user_company.company_location": user.userCompany?.companyLocation,
+        "user_company.tech_sector": user.userCompany?.techSector,
+        "user_company.team_number": user.userCompany?.teamNumber,
+        "user_company.team_member": [{ email: "" }, { email: "" }, { email: "" }],
+        job_position: user.jobPosition,
+        preferred_keywords: user.preferredKeywords.map((value: any) => value.name).join(", "),
+        preferred_journals: user.preferredJournals.map((value: any) => value.name).join(", "),
+        strategic_goals: user.strategicGoals,
+      };
+      setFormValues(values);
+      if (user.userCompany.companyLocation) {
+        return setActiveStep(1);
+      }
+      if (user.firstName) {
+        return setActiveStep(0);
+      }
+      isFirstRef.current.first = false;
+    }
+  }, [user]);
 
   //
   const gotoPreviousStep = () => {
@@ -179,4 +209,8 @@ export default function CompleteSignup() {
 interface IStepItem {
   title: string;
   key: string;
+}
+
+interface isFirstRefProps {
+  first: boolean;
 }

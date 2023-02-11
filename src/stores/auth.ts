@@ -125,18 +125,26 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       success: true,
       message: "Successfully fetched user details",
       data: {
-        name: userProfileResponse.data.full_name,
+        name: `${userProfileResponse.data.first_name} ${userProfileResponse.data.last_name} `,
         firstName: userProfileResponse.data.first_name,
         lastName: userProfileResponse.data.last_name,
         phoneNumber: userProfileResponse.data.phone_number,
         aboutMe: userProfileResponse.data.about_me,
         userLocation: userProfileResponse.data.user_location,
-        userCompany: userProfileResponse.data.user_company,
+        userCompany: {
+          companyName: userProfileResponse.data.user_company.company_name,
+          companyLocation: userProfileResponse.data.user_company.company_location,
+          techSector: userProfileResponse.data.user_company.tech_sector,
+          teamNumber: userProfileResponse.data.user_company.team_number,
+        },
         jobPosition: userProfileResponse.data.job_position,
         email: userResponse.data.email,
         username: userResponse.data.username,
         image: userProfileResponse.data.profile_photo,
         pkId: userProfileResponse.data.pkid,
+        preferredKeywords: userProfileResponse.data.preferred_keywords,
+        preferredJournals: userProfileResponse.data.preferred_journals,
+        strategicGoals: userProfileResponse.data.strategic_goals,
       },
     };
   } catch (error) {
@@ -229,9 +237,20 @@ interface IAuthuser {
   phoneNumber: number | null;
   aboutMe: string;
   userLocation: string;
-  userCompany: string | null;
+  userCompany: {
+    companyName: string | null;
+    companyLocation?: string;
+    techSector?: string;
+    teamNumber?: string;
+  };
   jobPosition: string | null;
-  companyName: string | null;
+  preferredKeywords: {
+    name: string;
+  }[];
+  preferredJournals: {
+    name: string;
+  }[];
+  strategicGoals: string[];
 }
 
 //

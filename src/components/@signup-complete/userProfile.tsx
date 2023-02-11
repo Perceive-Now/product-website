@@ -6,17 +6,43 @@ import * as yup from "yup";
 
 //
 import Button from "../reusable/button";
+import { useMutation } from "@tanstack/react-query";
+import { patchUserProfile } from "../../utils/api/userProfile";
 
 //
 export const goalOptions = [
-  { title: "Growth Insights" },
-  { title: "IP portfolio expansion" },
-  { title: "Technical diligence" },
-  { title: "Networking" },
-  { title: "Academic collaborations" },
-  { title: "Business development" },
-  { title: "R&D innovation" },
-  { title: "Prior art search" },
+  {
+    title: "Growth Insights",
+    value: "Growth Insights",
+  },
+  {
+    title: "IP portfolio expansion",
+    value: "IP Portfolio Expansion",
+  },
+  {
+    title: "Technical diligence",
+    value: "Technical Diligence",
+  },
+  {
+    title: "Networking",
+    value: "Networking",
+  },
+  {
+    title: "Academic collaborations",
+    value: "Academic Collaborations",
+  },
+  {
+    title: "Business development",
+    value: "Business Development",
+  },
+  {
+    title: "R&D innovation",
+    value: "R&D Innovation",
+  },
+  {
+    title: "Prior art search",
+    value: "Prior Art Search",
+  },
 ];
 
 //
@@ -37,14 +63,48 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUserProfileForm>({
+  } = useForm<IUserProfileFormValues>({
     resolver: yupResolver(userProfileSchema),
     defaultValues: props.values,
   });
 
-  //
-  const onSubmit = (values: IUserProfileForm) => {
+  const { mutate } = useMutation(patchUserProfile);
+
+  const handleOnSuccess = (data: IUserProfile) => {
+    const values: IUserProfileFormValues = {
+      ...data,
+      preferred_keywords: data.preferred_keywords.map((value) => value.name).join(", "),
+      preferred_journals: data.preferred_journals.map((value) => value.name).join(", "),
+    };
+
     props.handleNext(values);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleOnError = () => {
+    // console.log('error', error);
+  };
+
+  //
+  const onSubmit = (values: IUserProfileFormValues) => {
+    const body: IUserProfile = {
+      first_name: values.first_name,
+      last_name: values.last_name,
+      user_company: {
+        company_name: values.user_company.company_name,
+      },
+      job_position: values.job_position,
+      preferred_keywords: values.preferred_keywords.split(",").map((value) => ({ name: value })),
+      preferred_journals: values.preferred_journals.split(",").map((value) => ({ name: value })),
+      strategic_goals: values.strategic_goals,
+    };
+    mutate(
+      { body: body },
+      {
+        onSuccess: handleOnSuccess,
+        onError: handleOnError,
+      },
+    );
   };
 
   //
@@ -180,7 +240,7 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
               <input
                 id={`goals-${index}`}
                 type="checkbox"
-                value={goal.title}
+                value={goal.value}
                 className="appearance-none rounded peer focus:checked:bg-primary-500 checked:bg-primary-500 checked:hover:bg-primary-600 focus:outline-none focus:ring-0"
                 {...register("strategic_goals")}
               />
@@ -211,7 +271,20 @@ interface IUserProfileStepProps {
 }
 
 //
-export interface IUserProfileForm {
+export interface IUserProfileFormValues {
+  first_name: string;
+  last_name: string;
+  user_company: {
+    company_name: string | null;
+  };
+  job_position: string | null;
+  preferred_keywords: string;
+  preferred_journals: string;
+  strategic_goals: string[];
+}
+
+//
+export interface IUserProfile {
   first_name: string;
   last_name: string;
   user_company: {
@@ -220,9 +293,9 @@ export interface IUserProfileForm {
   job_position: string | null;
   preferred_keywords: {
     name: string;
-  };
+  }[];
   preferred_journals: {
     name: string;
-  };
-  strategic_goals: string;
+  }[];
+  strategic_goals: string[];
 }

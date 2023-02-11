@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 //
 import {
   goalOptions,
-  IUserProfileForm,
+  IUserProfileFormValues,
   userProfileSchema,
 } from "../../../components/@signup-complete/userProfile";
 
@@ -22,29 +22,28 @@ export default function UserProfilePage() {
   const user = useAppSelector((state) => state?.auth?.user);
 
   const { mutate } = useMutation(patchUserProfile);
-  console.log(user, "user");
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUserProfileForm>({
+  } = useForm<IUserProfileFormValues>({
     resolver: yupResolver(userProfileSchema),
     defaultValues: {
       first_name: user?.firstName,
       last_name: user?.lastName,
       user_company: {
-        company_name: user?.companyName,
+        company_name: user?.userCompany.companyName,
       },
     },
   });
 
   //
-  const onSubmit = async (values: IUserProfileForm) => {
+  const onSubmit = async (values: IUserProfileFormValues) => {
     try {
       if (!user) {
         return;
       }
-      const response = mutate({ body: values });
+      // const response = mutate({ body: values });
     } catch (error) {
       console.log(error, "error");
     }
@@ -139,6 +138,8 @@ export default function UserProfilePage() {
           </div>
         </div>
 
+        <p className="text-2xl text-primary-900 font-semibold">Personal Details</p>
+
         {/* Keywords to track */}
         <div className="mt-4">
           <fieldset className="w-full">
@@ -146,7 +147,6 @@ export default function UserProfilePage() {
               Preferred keywords to track*
             </label>
 
-            <p className="text-2xl text-primary-900 font-semibold mb-2">Personal Details</p>
             <input
               id="keywords"
               placeholder="E.g. COVID-19, Big data, Clean energy, Gene therapy, Fluid dynamics"
@@ -187,7 +187,7 @@ export default function UserProfilePage() {
                 <input
                   id={`goals-${index}`}
                   type="checkbox"
-                  value={goal.title}
+                  value={goal.value}
                   className="appearance-none rounded peer focus:checked:bg-primary-500 checked:bg-primary-500 checked:hover:bg-primary-600 focus:outline-none focus:ring-0"
                   {...register("strategic_goals")}
                 />

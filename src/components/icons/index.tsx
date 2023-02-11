@@ -51,6 +51,7 @@ import BriefcaseIcon from "./miscs/Briefcase";
 import ErrorIcon from "./miscs/Error";
 import WarningIcon from "./miscs/Warning";
 import CheckIcon from "./miscs/Check";
+import TeamPlusIcon from "./miscs/team_plus";
 
 // Charts
 import BarIcon from "./charts/bar";
@@ -113,6 +114,7 @@ export {
   ErrorIcon,
   WarningIcon,
   CheckIcon,
+  TeamPlusIcon,
   // used in tables
   VerticalThreeDots,
   // Chart icons
