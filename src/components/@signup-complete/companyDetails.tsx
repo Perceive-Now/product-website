@@ -1,4 +1,3 @@
-import uuid from "react-uuid";
 import classNames from "classnames";
 import { Listbox } from "@headlessui/react";
 
@@ -11,7 +10,6 @@ import Button from "../reusable/button";
 
 //
 import { CheckIcon, ChevronUpDown, TeamPlusIcon } from "../icons";
-import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { patchCompanyDetailProfile } from "../../utils/api/userProfile";
 

@@ -28,7 +28,6 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
   };
 
   const values = props.values;
-  console.log(values, "values");
   //
   return (
     <div className="p-2 md:p-5 w-full lg:max-w-4xl">

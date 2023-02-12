@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 
@@ -193,7 +194,11 @@ export default function CompleteSignup() {
           )}
 
           {activeStepItem.key === "choose-plan" && (
-            <ChoosePlanStep handlePrevious={gotoPreviousStep} handleNext={gotoNextStep} />
+            <ChoosePlanStep
+              handlePrevious={gotoPreviousStep}
+              handleNext={gotoNextStep}
+              values={formValues}
+            />
           )}
 
           {activeStepItem.key === "payment" && (

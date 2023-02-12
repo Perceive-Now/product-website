@@ -1,9 +1,13 @@
 import Button from "../reusable/button";
+import PaymentOption from "./@payment/PaymentOption";
 
 //
 export default function PaymentStep(props: ISignupStepProps) {
   return (
     <div className="p-2 md:p-5 w-full lg:max-w-4xl">
+      <div>
+        <PaymentOption />
+      </div>
       {/* Actions */}
       <div className="flex justify-center gap-x-2 mt-10">
         <Button type="secondary" rounded="full" handleClick={() => props.handlePrevious()}>

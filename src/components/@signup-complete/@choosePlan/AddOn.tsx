@@ -1,9 +1,9 @@
-import { QuestionIcon } from "../icons";
+import { QuestionIcon } from "../../icons";
 
 /**
  *
  */
-export default function AddOn({ id, title, description, isAdded }: IAddOnProps) {
+export default function AddOn({ id, title, description, isAdded, handleClick }: IAddOnProps) {
   return (
     <div key={id} className="col-span-1 flex justify-between pb-2 border-b-2 border-gray-400">
       <span className="text-xl flex">
@@ -11,7 +11,10 @@ export default function AddOn({ id, title, description, isAdded }: IAddOnProps) 
       </span>
 
       <span>
-        <span className="px-3 py-1 rounded-full bg-primary-900 text-white cursor-pointer">
+        <span
+          className="px-3 py-1 rounded-full bg-primary-900 text-white cursor-pointer"
+          onClick={() => handleClick(id)}
+        >
           {isAdded ? "Added" : "Add"}
         </span>
       </span>
@@ -20,8 +23,9 @@ export default function AddOn({ id, title, description, isAdded }: IAddOnProps) 
 }
 
 interface IAddOnProps {
-  id: number;
+  id: string;
   title: string;
   description: string;
   isAdded: boolean;
+  handleClick: (id: string) => void;
 }

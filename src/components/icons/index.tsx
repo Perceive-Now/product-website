@@ -53,6 +53,7 @@ import WarningIcon from "./miscs/Warning";
 import CheckIcon from "./miscs/Check";
 import TeamPlusIcon from "./miscs/team_plus";
 import QuestionIcon from "./miscs/Question";
+import PaymentCardIcon from "./payment/PaymentCardIcon";
 
 // Charts
 import BarIcon from "./charts/bar";
@@ -128,4 +129,5 @@ export {
   EducationIcon,
   ResearchIcon,
   CompetitiveLandscapeIcon,
+  PaymentCardIcon,
 };
