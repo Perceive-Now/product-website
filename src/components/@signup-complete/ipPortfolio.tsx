@@ -13,7 +13,7 @@ const companyProfileSchema = yup.object({
       publications: yup.string().required(),
       scholarly_profile: yup.string().required(),
       patents: yup.string().required(),
-      orcid_id: yup.number().required(),
+      orcid_id: yup.string().required(),
     })
     .required(),
 });
@@ -44,7 +44,7 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
       scholarly_profile: values.ip_portfolio.scholarly_profile,
       orcid_id: values.ip_portfolio.orcid_id,
     };
-    // mutate({ body: body });
+    mutate({ body: body });
   };
   return (
     <form className="p-2 md:p-5 w-full lg:max-w-4xl" onSubmit={handleSubmit(onSubmit)}>

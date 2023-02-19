@@ -70,7 +70,6 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
   const handleOnError = () => {
     // console.log('error', error);
   };
-
   //
   const onSubmit = (values: ICompanyProfileForm) => {
     props.handleNext(values);
@@ -223,34 +222,44 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
           <span className="text-lg font-semibold">Invite team members</span>
 
           <div className="mt-1">
-            {fields.map((field, index) => (
-              <div className="d-flex mb-4" key={field.id}>
-                <label htmlFor={`user_company.team_member.${field.id}`} className="mb-1 font-bold">
-                  Team member {index + 1}
-                </label>
+            {fields.map((field, index) => {
+              const value = props?.values["user_company.team_member"];
+              let defaultValue = "";
+              if (value) {
+                defaultValue = value[index].email;
+              }
+              return (
+                <div className="d-flex mb-4" key={field.id}>
+                  <label
+                    htmlFor={`user_company.team_member.${field.id}`}
+                    className="mb-1 font-bold"
+                  >
+                    Team member {index + 1}
+                  </label>
 
-                <input
-                  type="email"
-                  id={`user_company.team_member.${field.id}`}
-                  placeholder="Team member email"
-                  className={classNames(
-                    "py-1 px-[1.25rem] w-full my-1 rounded-lg border bg-gray-100 focus:bg-white",
-                    errors.user_company?.team_number
-                      ? "!ring-red-500  !border-red-500"
-                      : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
-                  )}
-                  {...register(`user_company.team_member.${index}.email`)}
-                  defaultValue={props?.values["user_company.team_member"][index].email ?? null}
-                />
+                  <input
+                    type="email"
+                    id={`user_company.team_member.${field.id}`}
+                    placeholder="Team member email"
+                    className={classNames(
+                      "py-1 px-[1.25rem] w-full my-1 rounded-lg border bg-gray-100 focus:bg-white",
+                      errors.user_company?.team_number
+                        ? "!ring-red-500  !border-red-500"
+                        : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
+                    )}
+                    {...register(`user_company.team_member.${index}.email`)}
+                    defaultValue={defaultValue}
+                  />
 
-                <span className="mt-1 flex justify-between">
-                  Email
-                  <div className="cursor-pointer" onClick={() => remove(index)}>
-                    Remove
-                  </div>
-                </span>
-              </div>
-            ))}
+                  <span className="mt-1 flex justify-between">
+                    Email
+                    <div className="cursor-pointer" onClick={() => remove(index)}>
+                      Remove
+                    </div>
+                  </span>
+                </div>
+              );
+            })}
 
             <button
               className="flex py-0.5 rounded-lg text-primary-500 font-medium"

@@ -3,7 +3,7 @@ import { QuestionIcon } from "../icons";
 import BriefcasePlanIcon from "../icons/miscs/Briefcase_signup";
 
 //
-import AddOn from "./@choosePlan/AddOn";
+import AddOn, { IAddOnInfo } from "./@choosePlan/AddOn";
 import Button from "../reusable/button";
 import DiligenceCard from "./@choosePlan/DiligenceCard";
 import TailoredFeature from "./@choosePlan/TailoredFeature";
@@ -12,31 +12,12 @@ import MAndAIcon from "../icons/chooseplan/MAndAIcon";
 import SimilarityCheckIcon from "../icons/chooseplan/SimilarityCheckIcon";
 import SummarizeIcon from "../icons/chooseplan/SummarizeIcon";
 import MascotIcon from "../icons/chooseplan/MascotIcon";
-import { useState } from "react";
-
-//
-const addOns = [
-  {
-    id: "123",
-    title: "Technologies",
-    description: "This is description",
-  },
-  {
-    id: "492",
-    title: "Publications",
-    description: "This is description",
-  },
-  {
-    id: "345",
-    title: "Companies",
-    description: "This is description",
-  },
-  {
-    id: "678",
-    title: "Experts",
-    description: "This is description",
-  },
-];
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getProductsAndModules } from "../../utils/api/subscription";
+import PageLoading from "../app/pageLoading";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setBaseProduct, setSelectedAddOns } from "../../stores/subscription";
 
 //
 const diligenceData = [
@@ -73,19 +54,67 @@ const diligenceData = [
 
 //
 export default function ChoosePlanStep(props: ISignupStepProps) {
-  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const pricingMode = "MONTH";
+  const dispatch = useAppDispatch();
+  const selectedAddons = useAppSelector((state) => state.subscription.selectedAddOns);
 
-  const handleAddOnClick = (id: string) => {
+  const { data, isLoading } = useQuery(["subscription-plan"], async () => {
+    return await getProductsAndModules();
+  });
+
+  useEffect(() => {
+    if (data) {
+      if (data.products.length) {
+        if (data.products[0].product_price.length) {
+          const product = data.products[0].product_price.find(
+            (product) => product.duration === pricingMode,
+          );
+          if (product) {
+            const baseProduct: IAddOnInfo = {
+              pkid: product.pkid,
+              price: product.price,
+              title: data.products[0].product_name,
+            };
+            dispatch(setBaseProduct(baseProduct));
+          }
+        }
+      }
+    }
+  }, [data]);
+
+  const handleAddOnClick = (addOnInfo: IAddOnInfo) => {
     const tempSelectedAddons = [...selectedAddons];
-    const index = tempSelectedAddons.findIndex((itemId) => itemId === id);
+    const index = tempSelectedAddons.findIndex((item: IAddOnInfo) => item.pkid === addOnInfo.pkid);
     if (index >= 0) {
       tempSelectedAddons.splice(index, 1);
-      setSelectedAddons(tempSelectedAddons);
+      dispatch(setSelectedAddOns(tempSelectedAddons));
     } else {
-      tempSelectedAddons.push(id);
-      setSelectedAddons(tempSelectedAddons);
+      tempSelectedAddons.push(addOnInfo);
+      dispatch(setSelectedAddOns(tempSelectedAddons));
     }
   };
+
+  const handleDiligenceModuleAdd = () => {
+    const diligenceModule = data?.modules.find((module) => module.module_name === "Diligence 360");
+
+    if (diligenceModule) {
+      const addOn = diligenceModule.module_price?.find(
+        (pricing) => pricing.duration === pricingMode,
+      );
+
+      const addOnInfo: IAddOnInfo = {
+        pkid: addOn?.pkid,
+        title: addOn?.module_name,
+        price: addOn?.price,
+      };
+
+      handleAddOnClick(addOnInfo);
+    }
+  };
+
+  if (isLoading) {
+    return <PageLoading />;
+  }
 
   return (
     <div className="p-2 md:p-5 w-full lg:max-w-5xl">
@@ -97,29 +126,38 @@ export default function ChoosePlanStep(props: ISignupStepProps) {
         </div>
       </div>
 
-      <div className="flex justify-between">
-        <div className="flex">
-          <div className="mr-2">
-            <BriefcasePlanIcon />
-          </div>
+      {data?.products.map((product) => {
+        const productPricing = product.product_price.find(
+          (pricing) => pricing.duration === pricingMode,
+        );
 
-          <div className="flex flex-col">
-            <div className="font-bold text-4xl">PRO</div>
+        const price = productPricing?.price ? productPricing?.price?.split(".")[0] : "";
+        return (
+          <div key={product.pkid} className="flex justify-between">
+            <div className="flex">
+              <div className="mr-2">
+                <BriefcasePlanIcon />
+              </div>
 
-            <div className="text-lg">Quick access Dashboard</div>
-          </div>
-        </div>
+              <div className="flex flex-col">
+                <div className="font-bold text-4xl">{product.product_name}</div>
 
-        <div className="flex justify-end flex-col items-end">
-          <div className="text-xl">
-            <span className="font-bold text-3xl">$790</span>/ month
-          </div>
+                <div className="text-lg">Quick access Dashboard</div>
+              </div>
+            </div>
 
-          <div className="text-gray-600">
-            For quick access dashboard to help you track and share insights
+            <div className="flex justify-end flex-col items-end">
+              <div className="text-xl">
+                <span className="font-bold text-3xl">${price}</span>/ month
+              </div>
+
+              <div className="text-gray-600">
+                For quick access dashboard to help you track and share insights
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        );
+      })}
 
       <div className="mt-5">
         <div className="text-2xl font-bold flex">
@@ -128,15 +166,32 @@ export default function ChoosePlanStep(props: ISignupStepProps) {
         <div>$100 each</div>
 
         <div className="grid grid-cols-2 gap-3 gap-x-12 mt-3">
-          {addOns.map((addOn) => {
+          {data?.modules.map((module) => {
+            const addOn = module?.module_price?.find((pricing) => pricing.duration === pricingMode);
+
+            const addOnInfo: IAddOnInfo = {
+              pkid: addOn?.pkid,
+              title: addOn?.module_name,
+              price: addOn?.price,
+            };
+
+            const isAdded = Boolean(
+              selectedAddons.find((item: IAddOnInfo) => item.pkid === addOnInfo.pkid),
+            );
+
+            if (module.module_name === "Diligence 360") {
+              return null;
+            }
+
             return (
               <AddOn
-                key={addOn.id}
-                id={addOn.id}
-                title={addOn.title}
-                description={addOn.description}
-                isAdded={selectedAddons.includes(addOn.id)}
+                key={module.pkid}
+                id={module.pkid}
+                title={module.module_name}
+                // description={addOn.module_description}
+                isAdded={isAdded}
                 handleClick={handleAddOnClick}
+                addOnInfo={addOnInfo}
               />
             );
           })}
@@ -151,8 +206,13 @@ export default function ChoosePlanStep(props: ISignupStepProps) {
           </div>
 
           <div>
-            <span className="px-3 py-1 rounded-full bg-primary-900 text-white cursor-pointer">
-              Add
+            <span
+              className="px-3 py-1 rounded-full bg-primary-900 text-white cursor-pointer"
+              onClick={handleDiligenceModuleAdd}
+            >
+              {selectedAddons.find((item: IAddOnInfo) => item.title === "Diligence 360")
+                ? "Added"
+                : "Add"}
             </span>
           </div>
         </div>
@@ -169,6 +229,8 @@ export default function ChoosePlanStep(props: ISignupStepProps) {
             );
           })}
         </div>
+
+        <div className="text-xl mt-3">And much more...</div>
       </div>
 
       {/* Actions */}

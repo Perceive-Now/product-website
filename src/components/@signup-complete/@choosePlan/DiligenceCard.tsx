@@ -3,7 +3,7 @@
  */
 export default function DiligenceCard({ title, description, icon }: IDiligenceCardProps) {
   return (
-    <div className="bg-gray-100 px-2 py-3">
+    <div className="bg-gray-100 px-2 py-3 shadow-lg rounded">
       <div className="flex items-center">
         <span className="mr-2">{icon}</span>
 

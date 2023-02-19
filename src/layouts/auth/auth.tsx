@@ -32,7 +32,7 @@ export default function AuthLayout() {
 
     // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
-
+    console.log(session, "session");
     if (!session.success) {
       if (PathPersistRef.current.path) {
         return navigate(`/login?callback_path=${encodeURIComponent(PathPersistRef.current.path)}`);
