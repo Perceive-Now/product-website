@@ -131,14 +131,12 @@ export default function DeepSearchFundersListPage() {
         const originalData = data.row.original;
         return (
           <AbstractModal
-            type="Patent"
+            type="Project"
             data={{
               id: originalData._id,
               title: originalData.title,
               abstract: originalData.abstract,
             }}
-            viewPath={`#`}
-            // viewPath={`/deep-search/patents/${originalData._id}`}
           />
         );
       },

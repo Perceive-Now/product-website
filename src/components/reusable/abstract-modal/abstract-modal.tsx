@@ -52,13 +52,15 @@ export default function AbstractModal(props: IAbstractModalProps) {
               )}
             </Dialog.Description>
 
-            <Button
-              handleClick={handleViewSource}
-              type="secondary"
-              classname="w-full text-center mt-3"
-            >
-              View {props.type}
-            </Button>
+            {props.viewPath && (
+              <Button
+                handleClick={handleViewSource}
+                type="secondary"
+                classname="w-full text-center mt-3"
+              >
+                View {props.type}
+              </Button>
+            )}
           </Dialog.Panel>
         </span>
       </Dialog>
@@ -76,5 +78,5 @@ interface IAbstractModalData {
 interface IAbstractModalProps {
   data: IAbstractModalData;
   viewPath?: string;
-  type?: "Patent" | "Publication";
+  type?: "Patent" | "Publication" | "Project";
 }
