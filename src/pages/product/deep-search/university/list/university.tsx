@@ -90,7 +90,7 @@ export default function DeepSearchUniversityListPage() {
       });
 
       //
-      setTotalCount(response?.total ?? 0);
+      setTotalCount(response?.total ?? 500);
 
       //
       return response?.academic ?? [];
@@ -270,7 +270,7 @@ export default function DeepSearchUniversityListPage() {
 
           {keywords.length > 0 ? (
             <p className="mt-[4px]">
-              <span>Showing {category} for: </span>
+              <span>Showing university {category} for: </span>
               <span className="font-semibold">"{joinedkeywords}"</span>
             </p>
           ) : (

@@ -113,7 +113,7 @@ export default function DeepSearchInventorsListPage() {
       // } else {
       //   setTotalCount(response?.total || 0);
       // }
-      setTotalCount(response?.total || 0);
+      setTotalCount(response?.total || 500);
 
       //
       return response?.inventors ?? [];
