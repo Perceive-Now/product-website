@@ -87,7 +87,7 @@ function App() {
             <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
 
             <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
-            <Route path="/deep-search/inventor/:type" element={<DeepSearchInventorPage />} />
+            <Route path="/deep-search/inventors/:type" element={<DeepSearchInventorPage />} />
 
             <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
             <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />

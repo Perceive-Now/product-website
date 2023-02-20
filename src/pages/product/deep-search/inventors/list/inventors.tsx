@@ -181,7 +181,7 @@ export default function DeepSearchInventorsListPage() {
           size="small"
           handleClick={() =>
             navigate(
-              `/deep-search/inventor/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}&keywords=${joinedkeywords}`,
+              `/deep-search/inventors/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}&keywords=${joinedkeywords}`,
             )
           }
         >
@@ -247,7 +247,7 @@ export default function DeepSearchInventorsListPage() {
           size="small"
           handleClick={() =>
             navigate(
-              `/deep-search/inventor/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}`,
+              `/deep-search/inventors/patent/?firstName=${row.original.first_name}&lastName=${row.original.last_name}`,
             )
           }
         >

@@ -1,5 +1,5 @@
 import { useState, Fragment } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
 
@@ -158,14 +158,17 @@ export default function AppSidebar() {
 }
 
 function NavLinkItem(props: INavLinkItemProps) {
+  const { pathname } = useLocation();
+  const match = props.to ? pathname.includes(props.to) : false;
+
   return (
-    <NavLink to={props.to ?? ""}>
+    <NavLink to={props.to ?? ""} end>
       {({ isActive }) => (
         <div
           className={classNames(
             "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
             props.isTopLevel ? "pl-2" : "pl-4",
-            { "bg-appGray-200": isActive },
+            { "bg-appGray-200": isActive || match },
           )}
         >
           {props.icon && (
