@@ -47,11 +47,20 @@ interface IProductModulesResponse {
   modules: IModule[];
 }
 
+interface ISubscriptionPaymentResponse {
+  data: ISubscriptionPayment
+}
+
+
+export interface ISubscriptionPayment {
+  checkout_session_id: string;
+  stripe_pub_key: string;
+}
 /**
  *
  */
 export async function handleSubscriptionPayment({ body }: ISubscriptionPaymentProps) {
-  const response = await axiosInstance.post<IProductModulesResponse>(
+  const response = await axiosInstance.post<ISubscriptionPaymentResponse>(
     `/api/v1/payment/subscription/payment-method/`,
     body,
   );

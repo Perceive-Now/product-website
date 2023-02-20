@@ -1,21 +1,28 @@
+import { loadStripe } from "@stripe/stripe-js";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import { useAppSelector } from "../../hooks/redux";
-import { handleSubscriptionPayment, ISubscriptionBody } from "../../utils/api/subscription";
+import {
+  handleSubscriptionPayment,
+  ISubscriptionBody,
+  ISubscriptionPayment,
+} from "../../utils/api/subscription";
 import Button from "../reusable/button";
 import PaymentOption from "./@payment/PaymentOption";
 
 //
 export default function PaymentStep(props: ISignupStepProps) {
   const { baseProduct, selectedAddOns } = useAppSelector((state) => state.subscription);
+  const [paymentObject, setPaymentObject] = useState<ISubscriptionPayment | null>(null);
 
-  const { mutate } = useMutation(handleSubscriptionPayment);
+  const { mutate, isLoading: isPayWithStripeLoading } = useMutation(handleSubscriptionPayment);
 
   const totalPrice = selectedAddOns.reduce((acc, cur) => {
     return +acc + +(cur.price ?? 0);
   }, baseProduct.price ?? 0);
 
   const handlePayWithStripe = () => {
-    if (baseProduct.pkid && selectedAddOns.length) {
+    if (baseProduct.pkid) {
       const body: ISubscriptionBody = {
         duration: "MONTH",
         is_trial: true,
@@ -26,7 +33,28 @@ export default function PaymentStep(props: ISignupStepProps) {
           price: addOn.pkid ?? "",
         })),
       };
-      mutate({ body: body });
+
+      mutate(
+        { body: body },
+        {
+          onSuccess: (response) => {
+            const data = response.data;
+            setPaymentObject(data);
+          },
+        },
+      );
+    }
+  };
+
+  const handleStripePayment = async () => {
+    if (paymentObject) {
+      const stripe = await loadStripe(paymentObject?.stripe_pub_key);
+      // Redirect to Stripe Checkout
+      if (stripe) {
+        return stripe.redirectToCheckout({
+          sessionId: paymentObject?.checkout_session_id,
+        });
+      }
     }
   };
 
@@ -38,8 +66,12 @@ export default function PaymentStep(props: ISignupStepProps) {
 
       <div className="mt-10 grid grid-cols-3 gap-8">
         <div className="col-span-2">
-          <Button type="primary" handleClick={handlePayWithStripe}>
-            Pay with Stripe
+          <Button
+            type="primary"
+            handleClick={handlePayWithStripe}
+            disabled={isPayWithStripeLoading}
+          >
+            {isPayWithStripeLoading ? <span>Loading ... </span> : "Pay with Stripe"}
           </Button>
         </div>
 
@@ -56,18 +88,22 @@ export default function PaymentStep(props: ISignupStepProps) {
           </div>
 
           <div className="mt-2">
-            <div className="font-bold mb-2">Deep Search Add-ons:</div>
+            {selectedAddOns.length > 0 && (
+              <>
+                <div className="font-bold mb-2">Deep Search Add-ons:</div>
 
-            <div>
-              {selectedAddOns.map((addOn) => {
-                return (
-                  <div key={addOn.pkid} className="flex justify-between mb-1">
-                    <div>{addOn.title}</div>
-                    <div>${addOn.price ? Math.round(+addOn.price) : null}</div>
-                  </div>
-                );
-              })}
-            </div>
+                <div>
+                  {selectedAddOns.map((addOn) => {
+                    return (
+                      <div key={addOn.pkid} className="flex justify-between mb-1">
+                        <div>{addOn.title}</div>
+                        <div>${addOn.price ? Math.round(+addOn.price) : null}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
 
             <div className="border-t-2 border-gray-400" />
 
@@ -85,8 +121,13 @@ export default function PaymentStep(props: ISignupStepProps) {
           Go Back
         </Button>
 
-        <Button type="optional" rounded="full" handleClick={() => props.handleNext({})}>
-          Continue
+        <Button
+          disabled={!paymentObject}
+          type="optional"
+          rounded="full"
+          handleClick={handleStripePayment}
+        >
+          Pay
         </Button>
       </div>
     </div>
