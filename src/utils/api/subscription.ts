@@ -48,9 +48,8 @@ interface IProductModulesResponse {
 }
 
 interface ISubscriptionPaymentResponse {
-  data: ISubscriptionPayment
+  data: ISubscriptionPayment;
 }
-
 
 export interface ISubscriptionPayment {
   checkout_session_id: string;
