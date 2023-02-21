@@ -10,10 +10,15 @@ import {
 import Button from "../reusable/button";
 import PaymentOption from "./@payment/PaymentOption";
 
+//icons
+import ActiveStripe from "../../assets/images/stripe_active.svg";
+import InActiveStripe from "../../assets/images/stripe_inactive.svg";
+
 //
 export default function PaymentStep(props: ISignupStepProps) {
   const { baseProduct, selectedAddOns } = useAppSelector((state) => state.subscription);
   const [paymentObject, setPaymentObject] = useState<ISubscriptionPayment | null>(null);
+  const [activePaymentOption, setActivePaymentOption] = useState<null | "stripe">(null);
 
   const { mutate, isLoading: isPayWithStripeLoading } = useMutation(handleSubscriptionPayment);
 
@@ -46,6 +51,11 @@ export default function PaymentStep(props: ISignupStepProps) {
     }
   };
 
+  const handleStripeClick = () => {
+    setActivePaymentOption("stripe");
+    handlePayWithStripe();
+  };
+
   const handleStripePayment = async () => {
     if (paymentObject) {
       const stripe = await loadStripe(paymentObject?.stripe_pub_key);
@@ -60,21 +70,7 @@ export default function PaymentStep(props: ISignupStepProps) {
 
   return (
     <div className="p-2 md:p-5 w-full lg:max-w-5xl">
-      <div>
-        <PaymentOption />
-      </div>
-
       <div className="mt-10 grid grid-cols-3 gap-8">
-        <div className="col-span-2">
-          <Button
-            type="primary"
-            handleClick={handlePayWithStripe}
-            disabled={isPayWithStripeLoading}
-          >
-            {isPayWithStripeLoading ? <span>Loading ... </span> : "Pay with Stripe"}
-          </Button>
-        </div>
-
         <div className="col-span-1">
           <div className="flex justify-between">
             <div>
@@ -113,22 +109,41 @@ export default function PaymentStep(props: ISignupStepProps) {
             </div>
           </div>
         </div>
+
+        <div className="col-span-2">
+          <div className="font-semibold mb-2">Please select a payment method.</div>
+
+          <div>
+            <PaymentOption
+              active={activePaymentOption === "stripe"}
+              handleClick={handleStripeClick}
+            >
+              <div className="w-full flex justify-center">
+                {activePaymentOption === "stripe" ? (
+                  <img src={ActiveStripe} alt="stripe payment" />
+                ) : (
+                  <img src={InActiveStripe} alt="stripe payment" />
+                )}
+              </div>
+            </PaymentOption>
+          </div>
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="flex justify-center gap-x-2 mt-10">
+      <div className="flex justify-center gap-x-2 mt-14">
         <Button type="secondary" rounded="full" handleClick={() => props.handlePrevious()}>
           Go Back
         </Button>
 
         <Button
-          disabled={!paymentObject}
-          type="optional"
+          disabled={!paymentObject?.checkout_session_id}
+          type={!paymentObject?.checkout_session_id ? "primary" : "optional"}
           rounded="full"
           handleClick={handleStripePayment}
           classname="min-w-[113px]"
         >
-          Pay
+          Pay Now
         </Button>
       </div>
     </div>

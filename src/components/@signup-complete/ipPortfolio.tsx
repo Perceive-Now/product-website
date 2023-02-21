@@ -1,22 +1,8 @@
 import { useForm } from "react-hook-form";
 import Button from "../reusable/button";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import { createIpPortfolioProfile } from "../../utils/api/userProfile";
 import { useMutation } from "@tanstack/react-query";
-
-//
-const companyProfileSchema = yup.object({
-  ip_portfolio: yup
-    .object({
-      publications: yup.string().required(),
-      scholarly_profile: yup.string().required(),
-      patents: yup.string().required(),
-      orcid_id: yup.string().required(),
-    })
-    .required(),
-});
 
 //
 export default function IpPortfolioStep(props: ISignupStepProps) {
@@ -25,7 +11,6 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<IIPPortfolioForm>({
-    resolver: yupResolver(companyProfileSchema),
     defaultValues: props.values,
   });
   const { mutate } = useMutation(createIpPortfolioProfile);
@@ -46,6 +31,7 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
     };
     mutate({ body: body });
   };
+
   return (
     <form className="p-2 md:p-5 w-full lg:max-w-4xl" onSubmit={handleSubmit(onSubmit)}>
       {/* Publications */}
