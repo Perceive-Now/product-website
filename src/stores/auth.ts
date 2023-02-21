@@ -119,8 +119,10 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
     // After that add user's name and image to the response object
     const [userResponse, userProfileResponse] = await Promise.all([
       axiosInstance.get("/api/v1/user/me/"),
-      axiosInstance.get(`/api/v1/profile/profiles/me/`),
+      axiosInstance.get("/api/v1/profile/profiles/me/"),
+      // axiosInstance.get("/api/v1/payment/subscription/")
     ]);
+    // console.log(subscriptionData, 'subscriptionData')
     return {
       success: true,
       message: "Successfully fetched user details",

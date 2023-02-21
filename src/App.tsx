@@ -56,6 +56,9 @@ import UserProfilePage from "./pages/account/userProfile";
 import PageNotFound404 from "./pages/404";
 import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 
+//
+import { WelcomePage } from "./components/@signup-complete";
+
 /**
  *
  */
@@ -76,6 +79,7 @@ function App() {
 
           {/* Need to ask for profile details before allowing to use */}
           <Route path="/signup/complete" element={<CompleteSignup />} />
+          <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<DefaultLayout />}>
