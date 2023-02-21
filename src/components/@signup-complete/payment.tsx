@@ -126,6 +126,7 @@ export default function PaymentStep(props: ISignupStepProps) {
           type="optional"
           rounded="full"
           handleClick={handleStripePayment}
+          classname="min-w-[113px]"
         >
           Pay
         </Button>
