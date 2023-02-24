@@ -117,12 +117,12 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
   try {
     // TODO:: Make an API call to get user profile
     // After that add user's name and image to the response object
-    const [userResponse, userProfileResponse] = await Promise.all([
+    const [userResponse, userProfileResponse, subscriptionResponse] = await Promise.all([
       axiosInstance.get("/api/v1/user/me/"),
       axiosInstance.get("/api/v1/profile/profiles/me/"),
-      // axiosInstance.get("/api/v1/payment/subscription/")
+      axiosInstance.get("/api/v1/payment/subscription/"),
     ]);
-    // console.log(subscriptionData, 'subscriptionData')
+    const subscriptionData = subscriptionResponse?.data ?? {};
     return {
       success: true,
       message: "Successfully fetched user details",
@@ -134,10 +134,10 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         aboutMe: userProfileResponse.data.about_me,
         userLocation: userProfileResponse.data.user_location,
         userCompany: {
-          companyName: userProfileResponse.data.user_company.company_name,
-          companyLocation: userProfileResponse.data.user_company.company_location,
-          techSector: userProfileResponse.data.user_company.tech_sector,
-          teamNumber: userProfileResponse.data.user_company.team_number,
+          companyName: userProfileResponse.data.user_company?.company_name,
+          companyLocation: userProfileResponse.data.user_company?.company_location,
+          techSector: userProfileResponse.data.user_company?.tech_sector,
+          teamNumber: userProfileResponse.data.user_company?.team_number,
         },
         jobPosition: userProfileResponse.data.job_position,
         email: userResponse.data.email,
@@ -147,6 +147,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         preferredKeywords: userProfileResponse.data.preferred_keywords,
         preferredJournals: userProfileResponse.data.preferred_journals,
         strategicGoals: userProfileResponse.data.strategic_goals,
+        subscription: subscriptionData,
       },
     };
   } catch (error) {
@@ -253,6 +254,18 @@ interface IAuthuser {
     name: string;
   }[];
   strategicGoals: string[];
+  subscription: {
+    has_subscription: boolean;
+    message: string;
+    data: {
+      subscription: string;
+      subscription_status: "unpaid" | "paid";
+      checkout_session_id: string;
+      products: {
+        name: string;
+      }[];
+    };
+  };
 }
 
 //

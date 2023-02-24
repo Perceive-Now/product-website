@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 //
 import {
   goalOptions,
+  IUserProfile,
   IUserProfileFormValues,
   userProfileSchema,
 } from "../../../components/@signup-complete/userProfile";
@@ -14,6 +15,8 @@ import Button from "../../../components/reusable/button";
 import { useAppSelector } from "../../../hooks/redux";
 import { useMutation } from "@tanstack/react-query";
 import { patchUserProfile } from "../../../utils/api/userProfile";
+import { toast } from "react-hot-toast";
+import { LoadingIcon } from "../../../components/icons";
 
 /**
  *
@@ -21,7 +24,7 @@ import { patchUserProfile } from "../../../utils/api/userProfile";
 export default function UserProfilePage() {
   const user = useAppSelector((state) => state?.auth?.user);
 
-  const { mutate } = useMutation(patchUserProfile);
+  const { mutate, isLoading } = useMutation(patchUserProfile);
   const {
     register,
     handleSubmit,
@@ -37,13 +40,39 @@ export default function UserProfilePage() {
     },
   });
 
+  const handleOnSuccess = () => {
+    toast.success("User profile updated Successfully!");
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleOnError = () => {
+    // console.log('error', error);
+  };
+
   //
   const onSubmit = async (values: IUserProfileFormValues) => {
     try {
       if (!user) {
         return;
       }
-      // const response = mutate({ body: values });
+      const body: IUserProfile = {
+        first_name: values.first_name,
+        last_name: values.last_name,
+        user_company: {
+          company_name: values.user_company.company_name,
+        },
+        job_position: values.job_position,
+        preferred_keywords: values.preferred_keywords.split(",").map((value) => ({ name: value })),
+        preferred_journals: values.preferred_journals.split(",").map((value) => ({ name: value })),
+        strategic_goals: values.strategic_goals,
+      };
+      mutate(
+        { body: body },
+        {
+          onSuccess: handleOnSuccess,
+          onError: handleOnError,
+        },
+      );
     } catch (error) {
       console.log(error, "error");
     }
@@ -201,11 +230,11 @@ export default function UserProfilePage() {
 
         {/* Actions */}
         <div className="flex mt-10">
-          <Button type="optional" rounded="full" htmlType="submit" classname="mr-3">
-            Save Changes
+          <Button type={isLoading ? "primary" : "optional"} rounded="full" htmlType="submit" disabled={isLoading} classname="mr-3">
+            {isLoading ? <LoadingIcon /> : "Save Changes"}
           </Button>
 
-          <Button type="secondary" rounded="full">
+          <Button type="secondary" rounded="full" disabled={isLoading}>
             Cancel
           </Button>
         </div>

@@ -8,6 +8,7 @@ import * as yup from "yup";
 import Button from "../reusable/button";
 import { useMutation } from "@tanstack/react-query";
 import { patchUserProfile } from "../../utils/api/userProfile";
+import { useEffect, useMemo } from "react";
 
 //
 export const goalOptions = [
@@ -62,11 +63,18 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IUserProfileFormValues>({
     resolver: yupResolver(userProfileSchema),
-    defaultValues: props.values,
+    defaultValues: useMemo(() => {
+      return props.values;
+    }, [props.values]),
   });
+
+  useEffect(() => {
+    reset(props.values);
+  }, [props.values]);
 
   const { mutate } = useMutation(patchUserProfile);
 

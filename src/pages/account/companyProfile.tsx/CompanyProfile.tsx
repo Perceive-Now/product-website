@@ -1,13 +1,14 @@
 import { Listbox } from "@headlessui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   companyProfileSchema,
   ICompanyProfileForm,
   technologyOptions,
 } from "../../../components/@signup-complete/companyDetails";
-import { CheckIcon, ChevronUpDown } from "../../../components/icons";
+import { CheckIcon, ChevronUpDown, TeamPlusIcon } from "../../../components/icons";
 import Button from "../../../components/reusable/button";
 
 export default function CompanyProfilePage() {
@@ -28,6 +29,11 @@ export default function CompanyProfilePage() {
   };
 
   const techSector = watch("user_company.tech_sector");
+  const [showTeamMemberEmailInput, setShowTeamMemberEmailInput] = useState<boolean>(false);
+
+  const toggleAddTeamMember = () => {
+    setShowTeamMemberEmailInput(prev => !prev)
+  }
 
   return (
     <div>
@@ -130,12 +136,12 @@ export default function CompanyProfilePage() {
           </fieldset>
         </div>
 
-        <p className="text-2xl text-primary-900 font-semibold mb-2">Team</p>
+        <p className="text-2xl text-primary-900 font-semibold mt-5">Team</p>
         {/* Team Size */}
-        <div className="mt-4 grid grid-cols-2">
+        <div className="mt-2 grid grid-cols-2">
           <fieldset className="col-span-1">
-            <label htmlFor="team_size" className="text-lg font-semibold">
-              How big is your team?
+            <label htmlFor="team_size">
+              How many people are in your team currently?
             </label>
 
             <input
@@ -152,8 +158,59 @@ export default function CompanyProfilePage() {
               )}
               {...register("user_company.team_number")}
             />
-            <span className="text-sm">Provide the number of team members</span>
           </fieldset>
+        </div>
+
+        <div className="mt-2 grid grid-cols-2">
+          <fieldset className="col-span-2 mb-1">
+            <div className="text-gray-900 mb-1">Team Members currently using Perceive Now / on your current plan with Perceive now.</div>
+          </fieldset>
+
+          <div className="col-span-1">
+            <div className="flex justify-between mb-1">
+              <div className="text-gray-900">test@gmail.com</div>
+
+              <div className="text-red-500 cursor-pointer">Remove</div>
+            </div>
+
+            <div className="flex justify-between mb-1">
+              <div className="text-gray-900">chandra@gmail.com</div>
+
+              <div className="text-red-500 cursor-pointer">Remove</div>
+            </div>
+
+            <div className="mt-1 mb-2">
+              <button
+                className={classNames("flex py-0.5 rounded-lg font-medium", showTeamMemberEmailInput ? "text-red-500" : "text-primary-500")}
+                type="button"
+                onClick={toggleAddTeamMember}
+              >
+                {
+                  showTeamMemberEmailInput ? "Cancel" :
+                    <>
+                      <TeamPlusIcon className="mr-1" />
+                      Invite more team members
+                    </>
+                }
+              </button>
+
+              {
+                showTeamMemberEmailInput &&
+                <input
+                  type="email"
+                  id={`teamMember`}
+                  placeholder="Team member email"
+                  className={classNames(
+                    "py-1 px-[1.25rem] w-full my-1 rounded-lg border bg-gray-100 focus:bg-white",
+                    errors.user_company?.team_number
+                      ? "!ring-red-500  !border-red-500"
+                      : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
+                  )}
+                />
+              }
+            </div>
+
+          </div>
         </div>
 
         {/* Actions */}

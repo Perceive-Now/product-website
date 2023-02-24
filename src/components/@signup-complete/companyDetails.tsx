@@ -12,6 +12,7 @@ import Button from "../reusable/button";
 import { CheckIcon, ChevronUpDown, TeamPlusIcon } from "../icons";
 import { useMutation } from "@tanstack/react-query";
 import { patchCompanyDetailProfile } from "../../utils/api/userProfile";
+import { useEffect, useMemo } from "react";
 
 //
 export const companyProfileSchema = yup.object({
@@ -26,16 +27,16 @@ export const companyProfileSchema = yup.object({
 
 //
 export const technologyOptions = [
-  { name: "Agriculture Technology" },
+  { name: "Agriculture Technologies" },
   { name: "Finance" },
   { name: "Biotechnology & Healthcare" },
   { name: "Aerospace & Defense" },
-  { name: "Manufacturing Copanies" },
+  { name: "Manufacturing" },
   { name: "Private Equity" },
-  { name: "Research Institution & Higher Education" },
-  { name: "Electronics & Telecom" },
+  { name: "Research Organizations, Non-Profits & Higher Education" },
+  { name: "Electronic & Telecommunication" },
   { name: "Computer Technologies" },
-  { name: "Though Leaders & Consultants" },
+  { name: "Thought Leaders & Consultants" },
 ];
 
 const InitialTeamMembersInputCount = 3;
@@ -46,17 +47,26 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
     watch,
     control,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<ICompanyProfileForm>({
     resolver: yupResolver(companyProfileSchema),
-    defaultValues: props.values,
+    defaultValues: useMemo(() => {
+      return props.values;
+    }, [props.values]),
   });
+
+  useEffect(() => {
+    reset(props.values);
+  }, [props.values]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { fields, append, remove } = useFieldArray<any>({
     control,
     name: "user_company.team_member",
   });
+
   const { mutate } = useMutation(patchCompanyDetailProfile);
 
   //

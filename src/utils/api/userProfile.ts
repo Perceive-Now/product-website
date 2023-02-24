@@ -48,7 +48,7 @@ interface IPatchCompanyDetailProfileProps {
 }
 
 export async function createIpPortfolioProfile({ body }: IIpPortfolioProps) {
-  const response = await axiosInstance.post(`api/v1/profile/ip-portfolio/`, body);
+  const response = await axiosInstance.patch(`api/v1/profile/ip-portfolio/`, body);
 
   return response.data;
 }

@@ -7,4 +7,8 @@ export const accountNavbarData = [
     label: "Company Profile",
     path: "/account/company-profile",
   },
+  {
+    label: "IP Portfolio",
+    path: "/account/ip-portfolio",
+  },
 ];

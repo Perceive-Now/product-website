@@ -58,6 +58,7 @@ import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 
 //
 import { WelcomePage } from "./components/@signup-complete";
+import IpPortfolioPage from "./pages/account/ipPortfolio";
 
 /**
  *
@@ -108,6 +109,7 @@ function App() {
             <Route element={<AccountLayout />}>
               <Route path="/account/user-profile" element={<UserProfilePage />} />
               <Route path="/account/company-profile" element={<CompanyProfilePage />} />
+              <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
             </Route>
 
             {/* Miscs pages */}

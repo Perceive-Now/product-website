@@ -57,6 +57,8 @@ export default function CompleteSignup() {
   const [activeStep, setActiveStep] = useState(0);
   const [formValues, setFormValues] = useState({});
 
+  console.log(formValues, "formValues");
+
   //
   const activeStepItem = steps[activeStep] ?? { key: "success" };
 

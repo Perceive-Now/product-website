@@ -149,7 +149,7 @@ interface ISignupStepProps {
   values: any;
 }
 
-interface IIPPortfolioForm {
+export interface IIPPortfolioForm {
   ip_portfolio: {
     publications: string;
     scholarly_profile: string;

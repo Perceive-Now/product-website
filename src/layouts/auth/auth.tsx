@@ -19,6 +19,7 @@ export default function AuthLayout() {
 
   const dispatch = useAppDispatch();
   const authStore = useAppSelector((state) => state.auth);
+  const { user } = authStore;
 
   //
   const [isLoading, setIsLoading] = useState(true);
@@ -54,13 +55,17 @@ export default function AuthLayout() {
     getSession();
   }, []);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     if (!user?.isProfileComplete) {
-  //       navigate("/signup/complete");
-  //     }
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      if (user.subscription.has_subscription || !user.subscription?.data) {
+        if (user.subscription?.data?.subscription_status === "unpaid") {
+          navigate("/signup/complete");
+        }
+      } else {
+        navigate("/signup/complete");
+      }
+    }
+  }, [user]);
 
   // Do not show the content initially
   if (isLoading) return <PageLoading />;
