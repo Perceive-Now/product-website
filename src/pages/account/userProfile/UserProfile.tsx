@@ -230,7 +230,13 @@ export default function UserProfilePage() {
 
         {/* Actions */}
         <div className="flex mt-10">
-          <Button type={isLoading ? "primary" : "optional"} rounded="full" htmlType="submit" disabled={isLoading} classname="mr-3">
+          <Button
+            type={isLoading ? "primary" : "optional"}
+            rounded="full"
+            htmlType="submit"
+            disabled={isLoading}
+            classname="mr-3"
+          >
             {isLoading ? <LoadingIcon /> : "Save Changes"}
           </Button>
 

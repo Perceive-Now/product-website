@@ -32,8 +32,8 @@ export default function CompanyProfilePage() {
   const [showTeamMemberEmailInput, setShowTeamMemberEmailInput] = useState<boolean>(false);
 
   const toggleAddTeamMember = () => {
-    setShowTeamMemberEmailInput(prev => !prev)
-  }
+    setShowTeamMemberEmailInput((prev) => !prev);
+  };
 
   return (
     <div>
@@ -140,9 +140,7 @@ export default function CompanyProfilePage() {
         {/* Team Size */}
         <div className="mt-2 grid grid-cols-2">
           <fieldset className="col-span-1">
-            <label htmlFor="team_size">
-              How many people are in your team currently?
-            </label>
+            <label htmlFor="team_size">How many people are in your team currently?</label>
 
             <input
               type="number"
@@ -163,7 +161,9 @@ export default function CompanyProfilePage() {
 
         <div className="mt-2 grid grid-cols-2">
           <fieldset className="col-span-2 mb-1">
-            <div className="text-gray-900 mb-1">Team Members currently using Perceive Now / on your current plan with Perceive now.</div>
+            <div className="text-gray-900 mb-1">
+              Team Members currently using Perceive Now / on your current plan with Perceive now.
+            </div>
           </fieldset>
 
           <div className="col-span-1">
@@ -181,21 +181,24 @@ export default function CompanyProfilePage() {
 
             <div className="mt-1 mb-2">
               <button
-                className={classNames("flex py-0.5 rounded-lg font-medium", showTeamMemberEmailInput ? "text-red-500" : "text-primary-500")}
+                className={classNames(
+                  "flex py-0.5 rounded-lg font-medium",
+                  showTeamMemberEmailInput ? "text-red-500" : "text-primary-500",
+                )}
                 type="button"
                 onClick={toggleAddTeamMember}
               >
-                {
-                  showTeamMemberEmailInput ? "Cancel" :
-                    <>
-                      <TeamPlusIcon className="mr-1" />
-                      Invite more team members
-                    </>
-                }
+                {showTeamMemberEmailInput ? (
+                  "Cancel"
+                ) : (
+                  <>
+                    <TeamPlusIcon className="mr-1" />
+                    Invite more team members
+                  </>
+                )}
               </button>
 
-              {
-                showTeamMemberEmailInput &&
+              {showTeamMemberEmailInput && (
                 <input
                   type="email"
                   id={`teamMember`}
@@ -207,9 +210,8 @@ export default function CompanyProfilePage() {
                       : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
                   )}
                 />
-              }
+              )}
             </div>
-
           </div>
         </div>
 
