@@ -40,21 +40,33 @@ export async function patchCompanyDetailProfile({ body }: IPatchCompanyDetailPro
   return response.data;
 }
 
+export async function inviteEmail(body: IEmailProps) {
+  const response = await axiosInstance.post(`api/v1/invitations/create-and-send/`, body);
+
+  return response.data;
+}
+
 interface IPatchUserProfileProps {
   body: IUserProfile;
 }
 interface IPatchCompanyDetailProfileProps {
   body: ICompanyDetailProfile;
 }
-
+interface IEmailProps {
+  email: string;
+}
 export async function createIpPortfolioProfile({ body }: IIpPortfolioProps) {
-  const response = await axiosInstance.patch(`api/v1/profile/ip-portfolio/`, body);
+  const response = await axiosInstance.patch(`api/v1/profile/profiles/me/`, body);
 
   return response.data;
 }
 
 interface IIpPortfolioProps {
-  body: IIpPortfolio;
+  body: {
+    user_company: {
+      ip_portfolio: IIpPortfolio
+    }
+  };
 }
 
 interface IIpPortfolio {

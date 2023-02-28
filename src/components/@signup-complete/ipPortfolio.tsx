@@ -23,11 +23,16 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
     const publications = values.ip_portfolio.patents
       .split(",")
       .map((value) => ({ publication_name: value }));
+
     const body = {
-      patents: patents,
-      publications: publications,
-      scholarly_profile: values.ip_portfolio.scholarly_profile,
-      orcid_id: values.ip_portfolio.orcid_id,
+      user_company: {
+        ip_portfolio: {
+          patents: patents,
+          publications: publications,
+          scholarly_profile: values.ip_portfolio.scholarly_profile,
+          orcid_id: values.ip_portfolio.orcid_id,
+        }
+      }
     };
     mutate({ body: body });
   };
@@ -89,14 +94,16 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
 
           <input
             id="orcid_id"
-            placeholder="ID"
+            placeholder="XXXXXXXXXXXXXXXX"
             className={classNames(
               "py-1 px-[1.25rem] w-full mb-1 rounded-lg border bg-gray-100 focus:bg-white",
               errors.ip_portfolio?.publications
                 ? "outline-red-500 border-red-500"
                 : "focus:outline-primary-500 border-gray-400",
             )}
-            {...register("ip_portfolio.orcid_id")}
+            {...register("ip_portfolio.orcid_id", {
+              maxLength: 16
+            })}
           />
           <span className="text-sm">Provide your OCID ID</span>
         </fieldset>

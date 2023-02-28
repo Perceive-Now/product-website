@@ -11,7 +11,7 @@ import Button from "../reusable/button";
 //
 import { CheckIcon, ChevronUpDown, TeamPlusIcon } from "../icons";
 import { useMutation } from "@tanstack/react-query";
-import { patchCompanyDetailProfile } from "../../utils/api/userProfile";
+import { inviteEmail, patchCompanyDetailProfile } from "../../utils/api/userProfile";
 import { useEffect, useMemo } from "react";
 
 //
@@ -38,8 +38,6 @@ export const technologyOptions = [
   { name: "Computer Technologies" },
   { name: "Thought Leaders & Consultants" },
 ];
-
-const InitialTeamMembersInputCount = 3;
 
 //
 export default function CompanyDetailsStep(props: ISignupStepProps) {
@@ -68,6 +66,7 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
   });
 
   const { mutate } = useMutation(patchCompanyDetailProfile);
+  const { mutate: emailInviteMutate } = useMutation(inviteEmail);
 
   //
   const techSector = watch("user_company.tech_sector");
@@ -82,7 +81,9 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
   };
   //
   const onSubmit = (values: ICompanyProfileForm) => {
-    props.handleNext(values);
+    // props.handleNext(values);
+
+    console.log(values, 'values')
     const body = {
       user_company: {
         company_location: values.user_company.company_location,
@@ -97,6 +98,18 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
         onError: handleOnError,
       },
     );
+
+    const teamMembers = values.user_company.team_member;
+    const teamMembersEmailArray = (teamMembers || []).map((member) => member.email);
+    for (let i = 0; i < teamMembersEmailArray.length; i++) {
+      const email: string = teamMembersEmailArray[i];
+
+      if (email) {
+        emailInviteMutate({
+          email: email
+        })
+      }
+    }
   };
 
   const handleAddTeamMember = () => {
@@ -320,7 +333,7 @@ export interface ICompanyProfileForm {
     team_number: number;
     team_member: {
       [key: string]: string;
-    } | null;
+    }[] | null;
   };
 }
 
@@ -331,4 +344,8 @@ export interface ICompanyDetailProfile {
     tech_sector: string;
     team_number: number;
   };
+}
+
+interface ITeamMember {
+  email: string;
 }

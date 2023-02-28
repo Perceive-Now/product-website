@@ -139,6 +139,12 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
           techSector: userProfileResponse.data.user_company?.tech_sector,
           teamNumber: userProfileResponse.data.user_company?.team_number,
         },
+        ipPortfolio: {
+          orcidId: userProfileResponse.data.user_company?.ip_portfolio?.orcid_id,
+          patents: userProfileResponse.data.user_company?.ip_portfolio?.patents,
+          publications: userProfileResponse.data.user_company?.ip_portfolio?.publications,
+          scholarlyProfile: userProfileResponse.data.user_company?.ip_portfolio?.scholarly_profile,
+        },
         jobPosition: userProfileResponse.data.job_position,
         email: userResponse.data.email,
         username: userResponse.data.username,
@@ -148,6 +154,11 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         preferredJournals: userProfileResponse.data.preferred_journals,
         strategicGoals: userProfileResponse.data.strategic_goals,
         subscription: subscriptionData,
+        isProfileDetailCompleted: userProfileResponse.data.is_profile_detail_completed,
+        isCompanyDetailCompleted
+          : userProfileResponse.data.user_company?.is_company_detail_completed,
+        isIpPortfolioCompleted: userProfileResponse.data._company?.ip_portfolio?.is_ip_portfolio_completed
+
       },
     };
   } catch (error) {
@@ -266,7 +277,17 @@ interface IAuthuser {
       }[];
     };
   };
-}
+  ipPortfolio: {
+    orcidId: string;
+    patents: { patent_name: string } [];
+    publications: { publication_name: string } [];
+    scholarlyProfile: string;
+  }
+  isProfileDetailCompleted?: boolean;
+  isCompanyDetailCompleted?: boolean;
+  isIpPortfolioCompleted: boolean;
+};
+
 
 //
 interface AuthState {

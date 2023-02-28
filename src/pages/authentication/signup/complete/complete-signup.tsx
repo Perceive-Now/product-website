@@ -57,8 +57,6 @@ export default function CompleteSignup() {
   const [activeStep, setActiveStep] = useState(0);
   const [formValues, setFormValues] = useState({});
 
-  console.log(formValues, "formValues");
-
   //
   const activeStepItem = steps[activeStep] ?? { key: "success" };
 
@@ -76,6 +74,10 @@ export default function CompleteSignup() {
         preferred_keywords: user.preferredKeywords.map((value: any) => value.name).join(", "),
         preferred_journals: user.preferredJournals.map((value: any) => value.name).join(", "),
         strategic_goals: user.strategicGoals,
+        "ip_portfolio.publications": user.ipPortfolio?.publications?.map((value: any) => value.publication_name).join(", "),
+        "ip_portfolio.patents": user.ipPortfolio?.patents?.map((value: any) => value.patent_name).join(", "),
+        "ip_portfolio.scholarly_profile": user.ipPortfolio?.scholarlyProfile,
+        "ip_portfolio.orcid_id": user.ipPortfolio?.orcidId,
       };
       setFormValues(values);
       if (user.userCompany.companyLocation) {
@@ -122,6 +124,23 @@ export default function CompleteSignup() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeStep]);
+
+  useEffect(() => {
+    if (user) {
+      if (user?.subscription?.has_subscription) {
+        setActiveStep(5);
+      }
+      else if (user?.isIpPortfolioCompleted) {
+        setActiveStep(3);
+      }
+      else if (user?.isCompanyDetailCompleted) {
+        setActiveStep(2);
+      }
+      else if (user?.isProfileDetailCompleted) {
+        setActiveStep(1);
+      }
+    }
+  }, [user])
 
   //
   return (
