@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 //
 import AuthLayout from "./layouts/auth";
 import DefaultLayout from "./layouts/default";
+import AccountLayout from "./layouts/account";
 
 //
 import HomePage from "./pages/homepage";
@@ -49,7 +50,15 @@ import DeepSearchFundersListPage from "./pages/product/deep-search/funders/list"
 import DeepSearchFunderPage from "./pages/product/deep-search/funders/detail";
 
 //
+import UserProfilePage from "./pages/account/userProfile";
+
+//
 import PageNotFound404 from "./pages/404";
+import CompanyProfilePage from "./pages/account/companyProfile.tsx";
+
+//
+import { WelcomePage } from "./components/@signup-complete";
+import IpPortfolioPage from "./pages/account/ipPortfolio";
 
 /**
  *
@@ -71,6 +80,7 @@ function App() {
 
           {/* Need to ask for profile details before allowing to use */}
           <Route path="/signup/complete" element={<CompleteSignup />} />
+          <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<DefaultLayout />}>
@@ -94,6 +104,13 @@ function App() {
 
             <Route path="/deep-search/funders" element={<DeepSearchFundersListPage />} />
             <Route path="/deep-search/funders/:id" element={<DeepSearchFunderPage />} />
+
+            {/* Account section */}
+            <Route element={<AccountLayout />}>
+              <Route path="/account/user-profile" element={<UserProfilePage />} />
+              <Route path="/account/company-profile" element={<CompanyProfilePage />} />
+              <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
+            </Route>
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />

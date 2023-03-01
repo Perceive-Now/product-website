@@ -19,6 +19,7 @@ export default function AuthLayout() {
 
   const dispatch = useAppDispatch();
   const authStore = useAppSelector((state) => state.auth);
+  // const { user } = authStore;
 
   //
   const [isLoading, setIsLoading] = useState(true);
@@ -26,13 +27,13 @@ export default function AuthLayout() {
   //
   const getSession = async () => {
     if (authStore.token) {
+      await dispatch(getUserDetails());
       setIsLoading(false);
       return;
     }
 
     // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
-
     if (!session.success) {
       if (PathPersistRef.current.path) {
         return navigate(`/login?callback_path=${encodeURIComponent(PathPersistRef.current.path)}`);
@@ -53,6 +54,18 @@ export default function AuthLayout() {
   useEffect(() => {
     getSession();
   }, []);
+
+  // useEffect(() => {
+  //   if (user) {
+  //     if (user.subscription.has_subscription && user.subscription?.data) {
+  //       if (user.subscription.data?.subscription_status === "unpaid") {
+  //         navigate("/signup/complete");
+  //       }
+  //     } else {
+  //       navigate("/signup/complete");
+  //     }
+  //   }
+  // }, [user]);
 
   // Do not show the content initially
   if (isLoading) return <PageLoading />;

@@ -40,17 +40,22 @@ axiosInstance.interceptors.response.use(
 
     // If the API call fails while trying to get refresh token, there is nothing we can do about it!
     if (originalRequest.url.includes("/user/refresh-token/")) {
+      if (error.response.status === 401) {
+        store.dispatch(setAuthToken(undefined));
+
+        jsCookie.remove("pn_refresh");
+        sessionStorage.removeItem("pn_access");
+      }
       return Promise.reject(error);
     }
-
     // We are just trying to get refresh token please
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       // Getting refresh token saved in cookie
       const refreshToken = jsCookie.get("pn_refresh");
 
       if (refreshToken === "undefined" || !refreshToken) {
+        sessionStorage.removeItem("pn_access");
         return Promise.reject(error);
       }
 

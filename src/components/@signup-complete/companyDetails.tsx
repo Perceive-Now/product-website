@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Listbox } from "@headlessui/react";
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -9,10 +9,13 @@ import * as yup from "yup";
 import Button from "../reusable/button";
 
 //
-import { CheckIcon, ChevronUpDown } from "../icons";
+import { CheckIcon, ChevronUpDown, TeamPlusIcon } from "../icons";
+import { useMutation } from "@tanstack/react-query";
+import { inviteEmail, patchCompanyDetailProfile } from "../../utils/api/userProfile";
+import { useEffect, useMemo } from "react";
 
 //
-const companyProfileSchema = yup.object({
+export const companyProfileSchema = yup.object({
   user_company: yup
     .object({
       company_location: yup.string().required(),
@@ -23,17 +26,17 @@ const companyProfileSchema = yup.object({
 });
 
 //
-const technologyOptions = [
-  { name: "Agriculture Technology" },
+export const technologyOptions = [
+  { name: "Agriculture Technologies" },
   { name: "Finance" },
   { name: "Biotechnology & Healthcare" },
   { name: "Aerospace & Defense" },
-  { name: "Manufacturing Copanies" },
+  { name: "Manufacturing" },
   { name: "Private Equity" },
-  { name: "Research Institution & Higher Education" },
-  { name: "Electronics & Telecom" },
+  { name: "Research Organizations, Non-Profits & Higher Education" },
+  { name: "Electronic & Telecommunication" },
   { name: "Computer Technologies" },
-  { name: "Though Leaders & Consultants" },
+  { name: "Thought Leaders & Consultants" },
 ];
 
 //
@@ -42,19 +45,74 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
     watch,
     control,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<ICompanyProfileForm>({
     resolver: yupResolver(companyProfileSchema),
-    defaultValues: props.values,
+    defaultValues: useMemo(() => {
+      return props.values;
+    }, [props.values]),
   });
+
+  useEffect(() => {
+    reset(props.values);
+  }, [props.values]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { fields, append, remove } = useFieldArray<any>({
+    control,
+    name: "user_company.team_member",
+  });
+
+  const { mutate } = useMutation(patchCompanyDetailProfile);
+  const { mutate: emailInviteMutate } = useMutation(inviteEmail);
 
   //
   const techSector = watch("user_company.tech_sector");
 
+  const handleOnSuccess = (data: ICompanyDetailProfile) => {
+    props.handleNext(data);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleOnError = () => {
+    // console.log('error', error);
+  };
   //
   const onSubmit = (values: ICompanyProfileForm) => {
-    props.handleNext(values);
+    // props.handleNext(values);
+
+    const body = {
+      user_company: {
+        company_location: values.user_company.company_location,
+        team_number: values.user_company.team_number,
+        tech_sector: values.user_company.tech_sector,
+      },
+    };
+    mutate(
+      { body: body },
+      {
+        onSuccess: handleOnSuccess,
+        onError: handleOnError,
+      },
+    );
+
+    const teamMembers = values.user_company.team_member;
+    const teamMembersEmailArray = (teamMembers || []).map((member) => member.email);
+    for (let i = 0; i < teamMembersEmailArray.length; i++) {
+      const email: string = teamMembersEmailArray[i];
+
+      if (email) {
+        emailInviteMutate({
+          email: email,
+        });
+      }
+    }
+  };
+
+  const handleAddTeamMember = () => {
+    append({ email: "" });
   };
 
   //
@@ -180,6 +238,63 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
         </fieldset>
       </div>
 
+      {/* Team Members */}
+      <div className="mt-4 grid grid-cols-1">
+        <fieldset className="col-span-1">
+          <span className="text-lg font-semibold">Invite team members</span>
+
+          <div className="mt-1">
+            {fields.map((field, index) => {
+              const value = props?.values["user_company.team_member"];
+              let defaultValue = "";
+              if (value) {
+                defaultValue = value[index].email;
+              }
+              return (
+                <div className="d-flex mb-4" key={field.id}>
+                  <label
+                    htmlFor={`user_company.team_member.${field.id}`}
+                    className="mb-1 font-bold"
+                  >
+                    Team member {index + 1}
+                  </label>
+
+                  <input
+                    type="email"
+                    id={`user_company.team_member.${field.id}`}
+                    placeholder="Team member email"
+                    className={classNames(
+                      "py-1 px-[1.25rem] w-full my-1 rounded-lg border bg-gray-100 focus:bg-white",
+                      errors.user_company?.team_number
+                        ? "!ring-red-500  !border-red-500"
+                        : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
+                    )}
+                    {...register(`user_company.team_member.${index}.email`)}
+                    defaultValue={defaultValue}
+                  />
+
+                  <span className="mt-1 flex justify-between">
+                    Email
+                    <div className="cursor-pointer" onClick={() => remove(index)}>
+                      Remove
+                    </div>
+                  </span>
+                </div>
+              );
+            })}
+
+            <button
+              className="flex py-0.5 rounded-lg text-primary-500 font-medium"
+              type="button"
+              onClick={handleAddTeamMember}
+            >
+              <TeamPlusIcon className="mr-1" />
+              Invite more team members
+            </button>
+          </div>
+        </fieldset>
+      </div>
+
       {/* Actions */}
       <div className="flex justify-center gap-x-2 mt-10">
         <Button
@@ -209,7 +324,22 @@ interface ISignupStepProps {
 }
 
 //
-interface ICompanyProfileForm {
+export interface ICompanyProfileForm {
+  name: string;
+  user_company: {
+    company_location: string;
+    tech_sector: string;
+    team_number: number;
+    team_member:
+      | {
+          [key: string]: string;
+        }[]
+      | null;
+  };
+}
+
+//
+export interface ICompanyDetailProfile {
   user_company: {
     company_location: string;
     tech_sector: string;

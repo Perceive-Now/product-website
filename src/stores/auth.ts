@@ -117,15 +117,48 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
   try {
     // TODO:: Make an API call to get user profile
     // After that add user's name and image to the response object
-    const [userResponse] = await Promise.all([axiosInstance.get("/api/v1/user/me/")]);
+    const [userResponse, userProfileResponse, subscriptionResponse] = await Promise.all([
+      axiosInstance.get("/api/v1/user/me/"),
+      axiosInstance.get("/api/v1/profile/profiles/me/"),
+      axiosInstance.get("/api/v1/payment/subscription/"),
+    ]);
+    const subscriptionData = subscriptionResponse?.data ?? {};
     return {
       success: true,
       message: "Successfully fetched user details",
       data: {
+        name: `${userProfileResponse.data.first_name} ${userProfileResponse.data.last_name} `,
+        firstName: userProfileResponse.data.first_name,
+        lastName: userProfileResponse.data.last_name,
+        phoneNumber: userProfileResponse.data.phone_number,
+        aboutMe: userProfileResponse.data.about_me,
+        userLocation: userProfileResponse.data.user_location,
+        userCompany: {
+          companyName: userProfileResponse.data.user_company?.company_name,
+          companyLocation: userProfileResponse.data.user_company?.company_location,
+          techSector: userProfileResponse.data.user_company?.tech_sector,
+          teamNumber: userProfileResponse.data.user_company?.team_number,
+        },
+        ipPortfolio: {
+          orcidId: userProfileResponse.data.user_company?.ip_portfolio?.orcid_id,
+          patents: userProfileResponse.data.user_company?.ip_portfolio?.patents,
+          publications: userProfileResponse.data.user_company?.ip_portfolio?.publications,
+          scholarlyProfile: userProfileResponse.data.user_company?.ip_portfolio?.scholarly_profile,
+        },
+        jobPosition: userProfileResponse.data.job_position,
         email: userResponse.data.email,
         username: userResponse.data.username,
-        name: userResponse.data.username,
-        image: undefined,
+        image: userProfileResponse.data.profile_photo,
+        pkId: userProfileResponse.data.pkid,
+        preferredKeywords: userProfileResponse.data.preferred_keywords,
+        preferredJournals: userProfileResponse.data.preferred_journals,
+        strategicGoals: userProfileResponse.data.strategic_goals,
+        subscription: subscriptionData,
+        isProfileDetailCompleted: userProfileResponse.data.is_profile_detail_completed,
+        isCompanyDetailCompleted:
+          userProfileResponse.data.user_company?.is_company_detail_completed,
+        isIpPortfolioCompleted:
+          userProfileResponse.data._company?.ip_portfolio?.is_ip_portfolio_completed,
       },
     };
   } catch (error) {
@@ -209,9 +242,50 @@ interface IResponse<T = any> {
 //
 interface IAuthuser {
   email: string;
+  pkId: string;
   username: string;
   name: string;
   image?: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: number | null;
+  aboutMe: string;
+  userLocation: string;
+  userCompany: {
+    companyName: string | null;
+    companyLocation?: string;
+    techSector?: string;
+    teamNumber?: string;
+  };
+  jobPosition: string | null;
+  preferredKeywords: {
+    name: string;
+  }[];
+  preferredJournals: {
+    name: string;
+  }[];
+  strategicGoals: string[];
+  subscription: {
+    has_subscription: boolean;
+    message: string;
+    data: {
+      subscription: string;
+      subscription_status: "unpaid" | "paid";
+      checkout_session_id: string;
+      products: {
+        name: string;
+      }[];
+    };
+  };
+  ipPortfolio: {
+    orcidId: string;
+    patents: { patent_name: string }[];
+    publications: { publication_name: string }[];
+    scholarlyProfile: string;
+  };
+  isProfileDetailCompleted?: boolean;
+  isCompanyDetailCompleted?: boolean;
+  isIpPortfolioCompleted: boolean;
 }
 
 //

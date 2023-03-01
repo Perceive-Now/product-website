@@ -27,6 +27,7 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
     props.jumpTo("ip-portfolio");
   };
 
+  const values = props.values;
   //
   return (
     <div className="p-2 md:p-5 w-full lg:max-w-4xl">
@@ -64,7 +65,41 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
               leaveTo="transform -translate-y-1 opacity-0"
             >
               <Disclosure.Panel className="px-4">
-                <div className="py-4 border-t border-gray-600">User details goes here</div>
+                <div className="py-4 border-t border-gray-600 grid grid-cols-12">
+                  <div className="col-span-3">
+                    <div className="w-[100px] h-[100px] rounded-full bg-slate-100 mx-auto" />
+                  </div>
+
+                  <div className="col-span-9">
+                    <div className="mb-1">
+                      <div className="font-bold">
+                        {values.first_name} {values.last_name}
+                      </div>
+
+                      <div className="">{values.job_position}</div>
+
+                      <div>{values.user_company?.company_name}</div>
+                    </div>
+
+                    <div className="mb-1">
+                      <div>Preferred keywords to track:</div>
+
+                      <div className="font-bold">{values.preferred_keywords}</div>
+                    </div>
+
+                    <div className="mb-1">
+                      <div>Journal interest</div>
+
+                      <div className="font-bold">{values.preferred_journals}</div>
+                    </div>
+
+                    <div className="mb-1">
+                      <div>Strategic goals</div>
+
+                      <div className="font-bold">{values.strategic_goals?.join(", ")}</div>
+                    </div>
+                  </div>
+                </div>
               </Disclosure.Panel>
             </Transition>
           </div>
@@ -106,7 +141,33 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
                 leaveTo="transform -translate-y-1 opacity-0"
               >
                 <Disclosure.Panel className="px-4">
-                  <div className="py-4 border-t border-gray-600">Company details goes here</div>
+                  <div className="py-4 border-t border-gray-600 grid grid-cols-12">
+                    <div className="col-span-12">
+                      <div className="mb-1">
+                        <div>Company Location</div>
+
+                        <div className="font-bold">{values.user_company?.company_location}</div>
+                      </div>
+
+                      <div className="mb-1">
+                        <div>Technology Sector</div>
+
+                        <div className="font-bold">{values.user_company?.tech_sector}</div>
+                      </div>
+
+                      <div className="mb-1">
+                        <div>Team Size</div>
+
+                        <div className="font-bold">{values.user_company?.team_number}</div>
+                      </div>
+
+                      {/* <div className="mb-1">
+                        <div>Invited team members</div>
+
+                        <div className="font-bold">{values.strategic_goals?.join(", ")}</div>
+                      </div> */}
+                    </div>
+                  </div>
                 </Disclosure.Panel>
               </Transition>
             </div>
@@ -149,8 +210,32 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
                 leaveTo="transform -translate-y-1 opacity-0"
               >
                 <Disclosure.Panel className="px-4">
-                  <div className="py-4 border-t border-gray-600">
-                    IP portfolio details goes here
+                  <div className="py-4 border-t border-gray-600 grid grid-cols-12">
+                    <div className="col-span-12">
+                      <div className="mb-1">
+                        <div>Publications</div>
+
+                        <div className="font-bold">{values.ip_portfolio?.publications}</div>
+                      </div>
+
+                      <div className="mb-1">
+                        <div>Scholarly Profile</div>
+
+                        <div className="font-bold">{values.ip_portfolio?.scholarly_profile}</div>
+                      </div>
+
+                      <div className="mb-1">
+                        <div>ORCId ID</div>
+
+                        <div className="font-bold">{values.ip_portfolio?.orcid_id}</div>
+                      </div>
+
+                      <div className="mb-1">
+                        <div>Patents</div>
+
+                        <div className="font-bold">{values.ip_portfolio?.patents}</div>
+                      </div>
+                    </div>
                   </div>
                 </Disclosure.Panel>
               </Transition>
@@ -178,4 +263,6 @@ interface ISignupStepProps {
   handleNext: () => void;
   handlePrevious: () => void;
   jumpTo: (id: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  values: any;
 }
