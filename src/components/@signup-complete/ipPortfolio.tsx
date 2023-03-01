@@ -31,8 +31,8 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
           publications: publications,
           scholarly_profile: values.ip_portfolio.scholarly_profile,
           orcid_id: values.ip_portfolio.orcid_id,
-        }
-      }
+        },
+      },
     };
     mutate({ body: body });
   };
@@ -102,7 +102,7 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
                 : "focus:outline-primary-500 border-gray-400",
             )}
             {...register("ip_portfolio.orcid_id", {
-              maxLength: 16
+              maxLength: 16,
             })}
           />
           <span className="text-sm">Provide your OCID ID</span>

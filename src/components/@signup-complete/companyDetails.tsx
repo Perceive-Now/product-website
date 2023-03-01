@@ -83,7 +83,6 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
   const onSubmit = (values: ICompanyProfileForm) => {
     // props.handleNext(values);
 
-    console.log(values, 'values')
     const body = {
       user_company: {
         company_location: values.user_company.company_location,
@@ -106,8 +105,8 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
 
       if (email) {
         emailInviteMutate({
-          email: email
-        })
+          email: email,
+        });
       }
     }
   };
@@ -331,9 +330,11 @@ export interface ICompanyProfileForm {
     company_location: string;
     tech_sector: string;
     team_number: number;
-    team_member: {
-      [key: string]: string;
-    }[] | null;
+    team_member:
+      | {
+          [key: string]: string;
+        }[]
+      | null;
   };
 }
 
@@ -344,8 +345,4 @@ export interface ICompanyDetailProfile {
     tech_sector: string;
     team_number: number;
   };
-}
-
-interface ITeamMember {
-  email: string;
 }

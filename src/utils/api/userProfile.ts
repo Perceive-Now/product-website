@@ -64,8 +64,8 @@ export async function createIpPortfolioProfile({ body }: IIpPortfolioProps) {
 interface IIpPortfolioProps {
   body: {
     user_company: {
-      ip_portfolio: IIpPortfolio
-    }
+      ip_portfolio: IIpPortfolio;
+    };
   };
 }
 

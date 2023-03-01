@@ -155,10 +155,10 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         strategicGoals: userProfileResponse.data.strategic_goals,
         subscription: subscriptionData,
         isProfileDetailCompleted: userProfileResponse.data.is_profile_detail_completed,
-        isCompanyDetailCompleted
-          : userProfileResponse.data.user_company?.is_company_detail_completed,
-        isIpPortfolioCompleted: userProfileResponse.data._company?.ip_portfolio?.is_ip_portfolio_completed
-
+        isCompanyDetailCompleted:
+          userProfileResponse.data.user_company?.is_company_detail_completed,
+        isIpPortfolioCompleted:
+          userProfileResponse.data._company?.ip_portfolio?.is_ip_portfolio_completed,
       },
     };
   } catch (error) {
@@ -279,15 +279,14 @@ interface IAuthuser {
   };
   ipPortfolio: {
     orcidId: string;
-    patents: { patent_name: string } [];
-    publications: { publication_name: string } [];
+    patents: { patent_name: string }[];
+    publications: { publication_name: string }[];
     scholarlyProfile: string;
-  }
+  };
   isProfileDetailCompleted?: boolean;
   isCompanyDetailCompleted?: boolean;
   isIpPortfolioCompleted: boolean;
-};
-
+}
 
 //
 interface AuthState {
