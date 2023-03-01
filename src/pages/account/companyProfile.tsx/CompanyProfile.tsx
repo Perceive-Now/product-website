@@ -25,6 +25,7 @@ export default function CompanyProfilePage() {
 
   //
   const onSubmit = (values: ICompanyProfileForm) => {
+    // eslint-disable-next-line no-console
     console.log(values, "values");
   };
 

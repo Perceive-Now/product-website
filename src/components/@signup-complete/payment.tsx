@@ -20,7 +20,7 @@ export default function PaymentStep(props: ISignupStepProps) {
   const [paymentObject, setPaymentObject] = useState<ISubscriptionPayment | null>(null);
   const [activePaymentOption, setActivePaymentOption] = useState<null | "stripe">(null);
 
-  const { mutate, isLoading: isPayWithStripeLoading } = useMutation(handleSubscriptionPayment);
+  const { mutate } = useMutation(handleSubscriptionPayment);
 
   const totalPrice = selectedAddOns.reduce((acc, cur) => {
     return +acc + +(cur.price ?? 0);

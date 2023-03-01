@@ -12,7 +12,7 @@ import MAndAIcon from "../icons/chooseplan/MAndAIcon";
 import SimilarityCheckIcon from "../icons/chooseplan/SimilarityCheckIcon";
 import SummarizeIcon from "../icons/chooseplan/SummarizeIcon";
 import MascotIcon from "../icons/chooseplan/MascotIcon";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getProductsAndModules } from "../../utils/api/subscription";
 import PageLoading from "../app/pageLoading";

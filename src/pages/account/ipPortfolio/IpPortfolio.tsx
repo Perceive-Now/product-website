@@ -14,6 +14,7 @@ export default function IpPortfolioPage() {
 
   //
   const onSubmit = (values: IIPPortfolioForm) => {
+    // eslint-disable-next-line no-console
     console.log(values, "values");
   };
   return (

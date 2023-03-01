@@ -22,10 +22,8 @@ const formSchema = yup.object({
  */
 export default function TailoredFeature(props: ITailoredFeatureProps) {
   const user = useAppSelector((state) => state.auth.user);
-  console.log(user, "user");
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm<ITailoredFeatureForm>({
     resolver: yupResolver(formSchema),
@@ -35,7 +33,7 @@ export default function TailoredFeature(props: ITailoredFeatureProps) {
   return (
     <div className="p-2">
       <Disclosure>
-        {({ open, close }) => (
+        {({ open }) => (
           <div>
             <Disclosure.Button onClick={() => !open} className="w-full">
               <div className="flex text-start items-center">

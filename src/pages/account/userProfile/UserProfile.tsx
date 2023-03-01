@@ -74,6 +74,7 @@ export default function UserProfilePage() {
         },
       );
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error, "error");
     }
   };
