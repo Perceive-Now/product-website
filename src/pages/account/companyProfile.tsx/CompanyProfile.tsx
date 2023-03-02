@@ -1,7 +1,8 @@
 import { Listbox } from "@headlessui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import classNames from "classnames";
-import { useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   companyProfileSchema,
@@ -10,8 +11,17 @@ import {
 } from "../../../components/@signup-complete/companyDetails";
 import { CheckIcon, ChevronUpDown, TeamPlusIcon } from "../../../components/icons";
 import Button from "../../../components/reusable/button";
+import { useAppSelector } from "../../../hooks/redux";
+import { inviteEmail, patchCompanyDetailProfile } from "../../../utils/api/userProfile";
 
 export default function CompanyProfilePage() {
+  const user = useAppSelector((state) => state?.auth?.user);
+
+  const [inviteeEmail, setInviteeEmail] = useState("");
+  const { mutate } = useMutation(patchCompanyDetailProfile);
+
+  const { mutate: emailInviteMutate } = useMutation(inviteEmail);
+
   const {
     watch,
     control,
@@ -20,13 +30,27 @@ export default function CompanyProfilePage() {
     formState: { errors },
   } = useForm<ICompanyProfileForm>({
     resolver: yupResolver(companyProfileSchema),
-    defaultValues: {},
+    defaultValues: {
+      user_company: {
+        company_location: user?.userCompany?.companyLocation,
+        tech_sector: user?.userCompany?.techSector,
+        team_number: +(user?.userCompany?.teamNumber || 0),
+      },
+    },
   });
 
   //
   const onSubmit = (values: ICompanyProfileForm) => {
     // eslint-disable-next-line no-console
-    console.log(values, "values");
+    const body = {
+      user_company: {
+        company_location: values.user_company.company_location,
+        team_number: values.user_company.team_number,
+        tech_sector: values.user_company.tech_sector,
+      },
+    };
+
+    mutate({ body: body });
   };
 
   const techSector = watch("user_company.tech_sector");
@@ -34,6 +58,20 @@ export default function CompanyProfilePage() {
 
   const toggleAddTeamMember = () => {
     setShowTeamMemberEmailInput((prev) => !prev);
+  };
+
+  const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInviteeEmail(event.target.value);
+  };
+
+  const handleInviteSend = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      if (inviteeEmail) {
+        emailInviteMutate({
+          email: inviteeEmail,
+        });
+      }
+    }
   };
 
   return (
@@ -210,6 +248,8 @@ export default function CompanyProfilePage() {
                       ? "!ring-red-500  !border-red-500"
                       : "focus:!ring-primary-500 focus:!border-primary-500 border-gray-400",
                   )}
+                  onKeyUp={handleInviteSend}
+                  onChange={handleEmailInputChange}
                 />
               )}
             </div>

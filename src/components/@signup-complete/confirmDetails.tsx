@@ -84,13 +84,21 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
                     <div className="mb-1">
                       <div>Preferred keywords to track:</div>
 
-                      <div className="font-bold">{values.preferred_keywords}</div>
+                      <div className="font-bold">
+                        {values.preferred_keywords?.map(
+                          (keyword: { name: string }) => keyword?.name,
+                        )}
+                      </div>
                     </div>
 
                     <div className="mb-1">
                       <div>Journal interest</div>
 
-                      <div className="font-bold">{values.preferred_journals}</div>
+                      <div className="font-bold">
+                        {values.preferred_journals?.map(
+                          (journal: { name: string }) => journal?.name,
+                        )}
+                      </div>
                     </div>
 
                     <div className="mb-1">

@@ -34,9 +34,17 @@ export default function UserProfilePage() {
     defaultValues: {
       first_name: user?.firstName,
       last_name: user?.lastName,
+      job_position: user?.jobPosition,
       user_company: {
         company_name: user?.userCompany.companyName,
       },
+      preferred_keywords: (user?.preferredKeywords ?? [])
+        ?.map((keyword) => keyword.name)
+        .join(", "),
+      preferred_journals: (user?.preferredJournals ?? [])
+        ?.map((journal) => journal.name)
+        .join(", "),
+      strategic_goals: user?.strategicGoals,
     },
   });
 
