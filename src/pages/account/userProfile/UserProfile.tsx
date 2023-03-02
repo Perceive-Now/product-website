@@ -38,10 +38,13 @@ export default function UserProfilePage() {
       user_company: {
         company_name: user?.userCompany.companyName,
       },
-      preferred_keywords: (user?.preferredKeywords ?? [])?.map(keyword => keyword.name).join(', ')
-      ,
-      preferred_journals: (user?.preferredJournals ?? [])?.map(journal => journal.name).join(', '),
-      strategic_goals: user?.strategicGoals
+      preferred_keywords: (user?.preferredKeywords ?? [])
+        ?.map((keyword) => keyword.name)
+        .join(", "),
+      preferred_journals: (user?.preferredJournals ?? [])
+        ?.map((journal) => journal.name)
+        .join(", "),
+      strategic_goals: user?.strategicGoals,
     },
   });
 

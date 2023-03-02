@@ -17,7 +17,7 @@ import { inviteEmail, patchCompanyDetailProfile } from "../../../utils/api/userP
 export default function CompanyProfilePage() {
   const user = useAppSelector((state) => state?.auth?.user);
 
-  const [inviteeEmail, setInviteeEmail] = useState('');
+  const [inviteeEmail, setInviteeEmail] = useState("");
   const { mutate } = useMutation(patchCompanyDetailProfile);
 
   const { mutate: emailInviteMutate } = useMutation(inviteEmail);
@@ -35,7 +35,7 @@ export default function CompanyProfilePage() {
         company_location: user?.userCompany?.companyLocation,
         tech_sector: user?.userCompany?.techSector,
         team_number: +(user?.userCompany?.teamNumber || 0),
-      }
+      },
     },
   });
 
@@ -50,9 +50,7 @@ export default function CompanyProfilePage() {
       },
     };
 
-    mutate(
-      { body: body },
-    );
+    mutate({ body: body });
   };
 
   const techSector = watch("user_company.tech_sector");
@@ -63,18 +61,18 @@ export default function CompanyProfilePage() {
   };
 
   const handleEmailInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInviteeEmail(event.target.value)
-  }
+    setInviteeEmail(event.target.value);
+  };
 
   const handleInviteSend = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       if (inviteeEmail) {
         emailInviteMutate({
-          email: inviteeEmail
-        })
+          email: inviteeEmail,
+        });
       }
     }
-  }
+  };
 
   return (
     <div>
