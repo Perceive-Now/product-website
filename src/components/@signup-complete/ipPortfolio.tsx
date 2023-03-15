@@ -97,15 +97,26 @@ export default function IpPortfolioStep(props: ISignupStepProps) {
             placeholder="XXXXXXXXXXXXXXXX"
             className={classNames(
               "py-1 px-[1.25rem] w-full mb-1 rounded-lg border bg-gray-100 focus:bg-white",
-              errors.ip_portfolio?.publications
+              errors.ip_portfolio?.orcid_id
                 ? "outline-red-500 border-red-500"
                 : "focus:outline-primary-500 border-gray-400",
             )}
             {...register("ip_portfolio.orcid_id", {
-              maxLength: 16,
+              pattern: {
+                value: /^\d+$/,
+                message: 'Invalid ORCID! Must be numbers only' // JS only: <p>error message</p> TS only support string
+              }
             })}
+            maxLength={16}
           />
-          <span className="text-sm">Provide your OCID ID</span>
+
+          {
+            errors.ip_portfolio?.orcid_id ?
+              <span className="block text-red-700 text-sm">{errors.ip_portfolio?.orcid_id?.message}</span>
+              :
+              <span className="text-sm">
+                Provide your ORCID ID</span>
+          }
         </fieldset>
       </div>
 
