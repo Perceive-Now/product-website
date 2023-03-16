@@ -74,8 +74,6 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
     }, [props.values]),
   });
 
-  console.log(props.values, "props.values");
-
   useEffect(() => {
     let preferredKeywords = "";
     let preferredJournels = "";
