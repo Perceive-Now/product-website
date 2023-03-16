@@ -85,9 +85,9 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
                       <div>Preferred keywords to track:</div>
 
                       <div className="font-bold">
-                        {values.preferred_keywords?.map(
-                          (keyword: { name: string }) => keyword?.name,
-                        )}
+                        {values.preferred_keywords
+                          ?.map((keyword: { name: string }) => keyword?.name)
+                          .join(", ")}
                       </div>
                     </div>
 
@@ -95,9 +95,9 @@ export default function ConfirmDetailsStep(props: ISignupStepProps) {
                       <div>Journal interest</div>
 
                       <div className="font-bold">
-                        {values.preferred_journals?.map(
-                          (journal: { name: string }) => journal?.name,
-                        )}
+                        {values.preferred_journals
+                          ?.map((journal: { name: string }) => journal?.name)
+                          .join(", ")}
                       </div>
                     </div>
 

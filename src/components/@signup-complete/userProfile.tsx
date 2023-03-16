@@ -57,7 +57,7 @@ export const userProfileSchema = yup.object({
     .required(),
   job_position: yup.string().required(),
   preferred_journals: yup.string().required(),
-  preferred_keywords: yup.string().required()
+  preferred_keywords: yup.string().required(),
 });
 
 //
@@ -74,30 +74,34 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
     }, [props.values]),
   });
 
+  console.log(props.values, "props.values");
+
   useEffect(() => {
-    let preferredKeywords = '';
-    let preferredJournels = '';
+    let preferredKeywords = "";
+    let preferredJournels = "";
     if (props.values?.preferred_keywords) {
-      if (typeof props.values?.preferred_keywords === 'string') {
+      if (typeof props.values?.preferred_keywords === "string") {
         preferredKeywords = props.values?.preferred_keywords;
-      }
-      else {
-        preferredKeywords = props.values?.preferred_keywords?.map((keyword: { name: string }) => keyword.name)?.join(', ');
+      } else {
+        preferredKeywords = props.values?.preferred_keywords
+          ?.map((keyword: { name: string }) => keyword.name)
+          ?.join(", ");
       }
     }
     if (props.values?.preferred_journals) {
-      if (typeof props.values?.preferred_journals === 'string') {
+      if (typeof props.values?.preferred_journals === "string") {
         preferredJournels = props.values?.preferred_journals;
-      }
-      else {
-        preferredJournels = props.values?.preferred_journals?.map((journal: { name: string }) => journal.name)?.join(', ');
+      } else {
+        preferredJournels = props.values?.preferred_journals
+          ?.map((journal: { name: string }) => journal.name)
+          ?.join(", ");
       }
     }
 
     reset({
       ...props.values,
       preferred_keywords: preferredKeywords,
-      preferred_journals: preferredJournels
+      preferred_journals: preferredJournels,
     });
   }, [props.values]);
 
