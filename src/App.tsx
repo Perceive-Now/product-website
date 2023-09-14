@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 //
-import AuthLayout from "./layouts/auth";
+// import AuthLayout from "./layouts/auth";
 import DefaultLayout from "./layouts/default";
 import AccountLayout from "./layouts/account";
 
@@ -75,48 +75,48 @@ function App() {
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
         {/* All the routes below are protected */}
-        <Route element={<AuthLayout />}>
+        {/* <Route element={<AuthLayout />}> */}
+
+        {/* Need to ask for profile details before allowing to use */}
+        <Route path="/signup/complete" element={<CompleteSignup />} />
+        <Route path="/welcome/success" element={<WelcomePage />} />
+
+        {/* Actual product pages */}
+        <Route element={<DefaultLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
 
-          {/* Need to ask for profile details before allowing to use */}
-          <Route path="/signup/complete" element={<CompleteSignup />} />
-          <Route path="/welcome/success" element={<WelcomePage />} />
+          {/* Deep Search pages */}
+          <Route path="/deep-search/patents" element={<PatentListPage />} />
+          <Route path="/deep-search/patents/:id" element={<PatentDetailPage />} />
 
-          {/* Actual product pages */}
-          <Route element={<DefaultLayout />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/deep-search/publications" element={<PublicationListPage />} />
+          <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
 
-            {/* Deep Search pages */}
-            <Route path="/deep-search/patents" element={<PatentListPage />} />
-            <Route path="/deep-search/patents/:id" element={<PatentDetailPage />} />
+          <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
+          <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
 
-            <Route path="/deep-search/publications" element={<PublicationListPage />} />
-            <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
+          <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
+          <Route path="/deep-search/inventors/:type" element={<DeepSearchInventorPage />} />
 
-            <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
-            <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
+          <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />
 
-            <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
-            <Route path="/deep-search/inventors/:type" element={<DeepSearchInventorPage />} />
+          <Route path="/deep-search/funders" element={<DeepSearchFundersListPage />} />
+          <Route path="/deep-search/funders/:id" element={<DeepSearchFunderPage />} />
 
-            <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
-            <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />
-
-            <Route path="/deep-search/funders" element={<DeepSearchFundersListPage />} />
-            <Route path="/deep-search/funders/:id" element={<DeepSearchFunderPage />} />
-
-            {/* Account section */}
-            <Route element={<AccountLayout />}>
-              <Route path="/account/user-profile" element={<UserProfilePage />} />
-              <Route path="/account/company-profile" element={<CompanyProfilePage />} />
-              <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
-            </Route>
-
-            {/* Miscs pages */}
-            <Route path="/feedback" element={<FeedbackPage />} />
-            <Route path="/help" element={<HelpPage />} />
+          {/* Account section */}
+          <Route element={<AccountLayout />}>
+            <Route path="/account/user-profile" element={<UserProfilePage />} />
+            <Route path="/account/company-profile" element={<CompanyProfilePage />} />
+            <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
           </Route>
+
+          {/* Miscs pages */}
+          <Route path="/feedback" element={<FeedbackPage />} />
+          <Route path="/help" element={<HelpPage />} />
         </Route>
+        {/* </Route> */}
         {/* 404 not found */}
         <Route path="*" element={<PageNotFound404 />} />
       </Routes>

@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 //
 import {
-  ExpertsIcon,
+  // ExpertsIcon,
   FundersIcon,
   PatentsIcon,
   PublicationsIcon,
@@ -11,28 +11,51 @@ import {
   //
   TechnologyIcon,
   CompaniesIcon,
-  Universities2Icon,
-  SummaryIcon,
-  SimilarityIcon,
-  MascotIcon,
+  // Universities2Icon,
+  // SummaryIcon,
+  // SimilarityIcon,
+  // MascotIcon,
 } from "../../icons";
+import ChatIcon from "../../icons/sidenav/chat";
+import InventorIcon from "../../icons/sidenav/inventors";
+import PortfolioIcon from "../../icons/sidenav/portfolio";
+import ClaimIcon from "../../icons/sidenav/claim";
+import SummarizeIcon from "../../icons/sidenav/summarize";
 
 const sidebarItems: ISidebarListItem[] = [
   {
-    title: "Dashboard",
-    key: "dashboard",
+    title: "Home",
+    key: "home",
     icon: <DashboardIcon />,
-    to: "/dashboard",
+    to: "/",
   },
   {
-    title: "Deep Search",
-    key: "deep-search",
+    title: "Chat with our AI",
+    key: "chat-with-our-ai",
+    icon: <ChatIcon />,
+    to: "/chat",
+  },
+  {
+    title: "Emerging Technologies",
+    key: "emerging-technology",
+    icon: <TechnologyIcon />,
+    to: "/emerging-technologies",
+  },
+  {
+    title: "Pro",
+    key: "pro",
     children: [
+      // {
+      //   title: "Emerging technology",
+      //   key: "emerging-technology",
+      //   icon: <TechnologyIcon />,
+      //   to: "/#",
+      // },
       {
-        title: "Emerging technology",
-        key: "emerging-technology",
-        icon: <TechnologyIcon />,
-        to: "/#",
+        title: "Patents",
+        key: "patents",
+        icon: <PatentsIcon />,
+        to: "/deep-search/patents",
       },
       {
         title: "Publications",
@@ -41,28 +64,22 @@ const sidebarItems: ISidebarListItem[] = [
         to: "/deep-search/publications",
       },
       {
-        title: "Patents",
-        key: "patents",
-        icon: <PatentsIcon />,
-        to: "/deep-search/patents",
-      },
-      {
         title: "Companies",
         key: "companies",
         icon: <CompaniesIcon />,
         to: "/deep-search/companies",
       },
       {
-        title: "Inventors",
-        key: "inventors",
-        icon: <ExpertsIcon />,
-        to: "/deep-search/inventors",
-      },
-      {
         title: "Universities",
         key: "universities",
         icon: <UniversitiesIcon />,
         to: "deep-search/university",
+      },
+      {
+        title: "Inventors",
+        key: "inventors",
+        icon: <InventorIcon />,
+        to: "/deep-search/inventors",
       },
       {
         title: "Funders",
@@ -73,65 +90,95 @@ const sidebarItems: ISidebarListItem[] = [
     ],
   },
   {
-    title: "Diligence 360°",
-    key: "dilligence-360",
+    title: "Premium",
+    key: "premium",
     children: [
       {
-        title: "Connected trends",
-        key: "connected-trends",
-        children: [
-          {
-            title: "Companies",
-            key: "connected-trend-companies",
-            icon: <CompaniesIcon />,
-            to: "/#",
-          },
-          {
-            title: "Universities",
-            key: "connected-trend-universities",
-            icon: <Universities2Icon />,
-            to: "/#",
-          },
-        ],
+        title: "Portfolio Protection",
+        key: "portfolio-protection",
+        icon: <PortfolioIcon />,
+        to: "/portfolio-protection",
       },
       {
         title: "M&A Insights",
-        key: "ma-insights",
-        children: [
-          {
-            title: "Companies",
-            key: "ma-insights-companies",
-            icon: <CompaniesIcon />,
-            to: "/#",
-          },
-          {
-            title: "Universities",
-            key: "ma-insights-universities",
-            icon: <Universities2Icon />,
-            to: "/#",
-          },
-        ],
+        key: "m&a-insights",
+        icon: <TechnologyIcon />,
+        to: "/m&a-insights",
+      },
+      {
+        title: "Claim Check",
+        key: "claim-check",
+        icon: <ClaimIcon />,
+        to: "/claim-check",
       },
       {
         title: "Summarize",
         key: "summarize",
-        icon: <SummaryIcon />,
-        to: "/#",
-      },
-      {
-        title: "Similarity check",
-        key: "similarity-check",
-        icon: <SimilarityIcon />,
-        to: "/#",
-      },
-      {
-        title: "Ask our AI mascot",
-        key: "ask-our-ai-mascot",
-        icon: <MascotIcon />,
-        to: "/#",
+        icon: <SummarizeIcon />,
+        to: "/summarize",
       },
     ],
   },
+  // {
+  //   title: "Diligence 360°",
+  //   key: "dilligence-360",
+  //   children: [
+  //     {
+  //       title: "Connected trends",
+  //       key: "connected-trends",
+  //       children: [
+  //         {
+  //           title: "Companies",
+  //           key: "connected-trend-companies",
+  //           icon: <CompaniesIcon />,
+  //           to: "/#",
+  //         },
+  //         {
+  //           title: "Universities",
+  //           key: "connected-trend-universities",
+  //           icon: <Universities2Icon />,
+  //           to: "/#",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "M&A Insights",
+  //       key: "ma-insights",
+  //       children: [
+  //         {
+  //           title: "Companies",
+  //           key: "ma-insights-companies",
+  //           icon: <CompaniesIcon />,
+  //           to: "/#",
+  //         },
+  //         {
+  //           title: "Universities",
+  //           key: "ma-insights-universities",
+  //           icon: <Universities2Icon />,
+  //           to: "/#",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Summarize",
+  //       key: "summarize",
+  //       icon: <SummaryIcon />,
+  //       to: "/#",
+  //     },
+  //     {
+  //       title: "Similarity check",
+  //       key: "similarity-check",
+  //       icon: <SimilarityIcon />,
+  //       to: "/#",
+  //     },
+  //     {
+  //       title: "Ask our AI mascot",
+  //       key: "ask-our-ai-mascot",
+  //       icon: <MascotIcon />,
+  //       to: "/#",
+  //     },
+  //   ],
+  // },
 ];
 
 export interface ISidebarItem {
