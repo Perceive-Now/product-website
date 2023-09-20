@@ -7,7 +7,7 @@ export default function RadioButtons(props: IRadioButtons) {
   const { options, activeMode, handleModeChange } = props;
 
   return (
-    <div className="flex gap-x-3">
+    <div className="flex gap-x-3 flex-column">
       {options.map((mode) => (
         <div
           className="flex items-center cursor-pointer group"

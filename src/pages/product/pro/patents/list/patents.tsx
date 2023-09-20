@@ -13,8 +13,8 @@ import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
 import RadioButtons from "../../../../../components/reusable/radio-buttons";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
-import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
-import TableYearSelect from "../../../../../components/reusable/table-year-select";
+// import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
+// import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
 
@@ -26,6 +26,8 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPatentList } from "../../../../../utils/api/deep-search/patents";
 import TableShareButton from "../../../../../components/reusable/TableShareButton";
+import SubHeader from "../../../../../components/app/sub-header";
+import Filter from "../../../../../components/reusable/filter";
 
 //
 const PAGE_SIZE = 10;
@@ -47,6 +49,7 @@ export default function PatentListPage() {
 
   const [classification, setClassification] = useState<classificationMode>("Industry");
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [publishedYear, setPublishedYear] = useState<number>(2022);
 
   //
@@ -58,6 +61,7 @@ export default function PatentListPage() {
     }
   }, [paramsClassification]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const publishYearsOptions = useMemo(() => {
     const startYear = new Date().getFullYear() - 1;
     const yearsToInclude = 50;
@@ -75,6 +79,7 @@ export default function PatentListPage() {
   }, []);
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: relatedKeywords } = useQuery({
     queryKey: ["dashboard-most-related-keywords", ...keywords],
     queryFn: () => {
@@ -205,9 +210,20 @@ export default function PatentListPage() {
   //
   return (
     <div>
+      <div>
+        <SubHeader title={"Patents"} analytics={"/patents"} table="/patents/table" />
+      </div>
       {/* Search bar */}
-      <div className="grid grid-cols-7 mb-1">
-        <div className="col-span-4">
+      <div className="grid grid-cols-8 mb-1">
+        <div className="col-span-1 w-full">
+          {/* <button type="button" className="rounded-none rounded-l-lg w-full flex justify-between items-center bg-primary-900 py-[12px] px-[16px] text-white">
+            <span>Filter</span>
+            <span><ChevronDown /></span>
+          </button> */}
+          <Filter />
+        </div>
+        <div className="col-span-6">
+          {/* <div className="flex items-center w-full"> */}
           <Search
             required
             size="small"
@@ -215,6 +231,7 @@ export default function PatentListPage() {
             onSubmit={handleSearch}
             initialValue={searchedKeywords}
           />
+          {/* </div> */}
 
           {keywords.length > 0 ? (
             <p className="mt-[4px]">
@@ -235,8 +252,8 @@ export default function PatentListPage() {
           activeMode={classification}
           handleModeChange={changeClassificationMode}
           options={[
-            { label: "Industry", value: "Industry" },
-            { label: "Academic", value: "Academic" },
+            { label: "Companies", value: "Industry" },
+            { label: "Universities", value: "Academic" },
           ]}
         />
       </div>
@@ -244,7 +261,7 @@ export default function PatentListPage() {
       {!!keywords.length && (
         <>
           {/* Filter section */}
-          <div className="mb-5 flex items-start">
+          {/* <div className="mb-5 flex items-start">
             <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
             <TableYearSelect
               label="Published Date"
@@ -253,7 +270,7 @@ export default function PatentListPage() {
               value={publishedYear}
               options={publishYearsOptions}
             />
-          </div>
+          </div> */}
 
           {/* Main content */}
           <div>
@@ -284,7 +301,7 @@ export default function PatentListPage() {
           </div>
 
           {/* Related keywords */}
-          {keywords.length > 0 && (
+          {/* {keywords.length > 0 && (
             <div className="mt-5">
               <p className="mb-2 uppercase text-sm text-primary-900">Related Keywords</p>
 
@@ -294,7 +311,7 @@ export default function PatentListPage() {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
         </>
       )}
     </div>

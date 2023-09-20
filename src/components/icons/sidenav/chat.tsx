@@ -7,7 +7,7 @@ export default function ChatIcon(props: SVGProps<SVGSVGElement>) {
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <path

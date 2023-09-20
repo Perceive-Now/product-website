@@ -10,7 +10,7 @@ import AppFooter from "../../components/app/footer";
  * The default layout for the app (Used in 99% of the pages).
  */
 export default function DefaultLayout() {
-  // const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(true)
   return (
     <div className="">
       {/* <div className="min-w-min h-screen overflow-y-auto shadow">
@@ -18,15 +18,19 @@ export default function DefaultLayout() {
       </div> */}
 
       <div className="w-full min-h-scree flex flex-col">
-        <div className="sticky top-0 w-full bg-white z-20">
-          <div className="px-4 shadow">
+        <div className="sticky top-0 w-full z-20 bg-appGray-100">
+          <div className="px-4">
             <AppHeader />
           </div>
         </div>
         <div className="flex">
-          {/* <div className="fixe h-screen overflow-y-auto shadow">
-            <AppSidebar/>
-          </div> */}
+          <div className="fixe h-screen overflow-y-auto shadow">
+            {/* <AppSidebar
+              show={open}
+              handleShow={() => setOpen(false)}
+              
+            /> */}
+          </div>
           <div className="relative flex-grow py-3 px-4 z-0">
             <Outlet />
           </div>

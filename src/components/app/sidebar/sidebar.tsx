@@ -15,6 +15,7 @@ import { sidebarItems, ISidebarListItem } from "./_data";
 // import { useAppDispatch } from "../../../hooks/redux";
 import { Dialog } from "@headlessui/react";
 import SidebarTransition from "./sidebarTransition";
+// import { active } from "d3";
 
 /**
  *
@@ -108,6 +109,7 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                                       icon={subChild.icon}
                                       title={subChild.title}
                                       isTopLevel={false}
+                                      value={subChild.key}
                                     />
                                   </div>
                                 ))}
@@ -121,6 +123,7 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                               icon={child.icon}
                               title={child.title}
                               isTopLevel={false}
+                              value={child.key}
                             />
                           )}
                         </div>
@@ -129,7 +132,6 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                   )}
                 </Fragment>
               )}
-
               {!item.children && (
                 <NavLinkItem
                   key={`top-${index}`}
@@ -137,6 +139,7 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                   icon={item.icon}
                   title={item.title}
                   isTopLevel={true}
+                  value={item.key}
                 />
               )}
             </div>
@@ -161,31 +164,39 @@ export default AppSidebar;
 
 function NavLinkItem(props: INavLinkItemProps) {
   const { pathname } = useLocation();
-  const match = props.to ? pathname.includes(props.to) : false;
+  // const match = props.to ? pathname.includes(props.key) : false;
+  const titles = pathname?.split("/").slice(1);
+  const hasKey = titles.includes(props.value);
 
   return (
     <NavLink to={props.to ?? ""} end>
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
+            "flex items-center py-2 text-gray-900 pr-2",
             props.isTopLevel ? "pl-2" : "pl-4",
-            { "bg-primary-900 hover:bg-primary-900": isActive || match },
+            isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-50",
           )}
         >
           {props.icon && (
             <div
-              className={classNames("mr-1", {
-                "text-gray-600": !props.isTopLevel,
-              })}
+              className={classNames(
+                "mr-1 text-gray-600",
+
+                {
+                  // "text-gray-600": !props.isTopLevel,
+                  "text-white": isActive || hasKey,
+                },
+              )}
             >
               {props.icon}
             </div>
           )}
           <span
-            className={classNames("flex items-center text-lg", {
-              "text-white ": isActive || match,
-            })}
+            className={classNames(
+              "flex items-center text-lg ",
+              isActive || hasKey ? "text-white " : "text-gray-900",
+            )}
           >
             {props.title}
           </span>
@@ -197,4 +208,5 @@ function NavLinkItem(props: INavLinkItemProps) {
 
 interface INavLinkItemProps extends ISidebarListItem {
   isTopLevel: boolean;
+  value: string;
 }

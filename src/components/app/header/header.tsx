@@ -53,7 +53,7 @@ export default function AppHeader() {
 
   return (
     <>
-      <div className="flex justify-between items-center my-auto h-10 py-1">
+      <div className="flex justify-between items-center my-auto h-10 py-1 ">
         {/* <>
         {isDashboardPage ? (
           <div className="flex-grow max-w-xl">

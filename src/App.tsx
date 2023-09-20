@@ -26,28 +26,28 @@ import FeedbackPage from "./pages/miscs/feedback";
 import DashboardPage from "./pages/product/dashboard";
 
 // Deep search - Patent
-import PatentListPage from "./pages/product/deep-search/patents/list";
-import PatentDetailPage from "./pages/product/deep-search/patents/detail";
+import PatentListPage from "./pages/product/pro/patents/list";
+import PatentDetailPage from "./pages/product/pro/patents/detail";
 
 // Deep search - Publication
-import PublicationListPage from "./pages/product/deep-search/publications/list";
-import PublicationDetailPage from "./pages/product/deep-search/publications/detail";
+import PublicationListPage from "./pages/product/pro/publications/list";
+import PublicationDetailPage from "./pages/product/pro/publications/detail";
 
 // Deep search - Companies
-import DeepSearchCompaniesListPage from "./pages/product/deep-search/companies/list";
-import DeepSearchCompanyPatenPage from "./pages/product/deep-search/companies/patent";
+import DeepSearchCompaniesListPage from "./pages/product/pro/companies/list";
+import DeepSearchCompanyPatenPage from "./pages/product/pro/companies/patent";
 
 // Deep search - Inventors
-import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/list";
-import DeepSearchInventorPage from "./pages/product/deep-search/inventors/detail";
+import DeepSearchInventorsListPage from "./pages/product/pro/inventors/list";
+import DeepSearchInventorPage from "./pages/product/pro/inventors/detail";
 
 //
-import DeepSearchUniversityListPage from "./pages/product/deep-search/university/list";
-import DeepSearchAcademicPage from "./pages/product/deep-search/university/detail/detail";
+import DeepSearchUniversityListPage from "./pages/product/pro/university/list";
+import DeepSearchAcademicPage from "./pages/product/pro/university/detail/detail";
 
 //
-import DeepSearchFundersListPage from "./pages/product/deep-search/funders/list";
-import DeepSearchFunderPage from "./pages/product/deep-search/funders/detail";
+import DeepSearchFundersListPage from "./pages/product/pro/funders/list";
+import DeepSearchFunderPage from "./pages/product/pro/funders/detail";
 
 //
 import UserProfilePage from "./pages/account/userProfile";
@@ -59,6 +59,7 @@ import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 //
 import { WelcomePage } from "./components/@signup-complete";
 import IpPortfolioPage from "./pages/account/ipPortfolio";
+import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
 
 /**
  *
@@ -87,8 +88,10 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
 
           {/* Deep Search pages */}
-          <Route path="/deep-search/patents" element={<PatentListPage />} />
-          <Route path="/deep-search/patents/:id" element={<PatentDetailPage />} />
+          <Route path="/patents" element={<PatentAnalyticPage />} />
+          <Route path="/patents/table" element={<PatentListPage />} />
+
+          <Route path="/patents/:id" element={<PatentDetailPage />} />
 
           <Route path="/deep-search/publications" element={<PublicationListPage />} />
           <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
