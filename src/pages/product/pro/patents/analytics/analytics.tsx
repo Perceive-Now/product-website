@@ -57,7 +57,7 @@ const Analytics = () => {
       </div>
       <div className="grid grid-cols-2 gap-4 mt-3">
         <div>
-          <Patents key={joinedKeywords} keywords={keywordValue} />
+          <Patents key={joinedKeywords} keywords={keywordValue} title={"Funding"} />
         </div>
         <div>
           <h6 className="text-xl font-semibold text-primary-900">New Entrants</h6>

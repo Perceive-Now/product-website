@@ -62,18 +62,18 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         className={props.keywords?.length > 0 ? "pb-0 rounded-b-none" : ""}
         title={
           <PageTitle
-            title="Inventors"
-            subTitle="Top list of inventors with maximum number of publications and patents "
-            sideTitleOption={
-              <RadioButtons
-                options={[
-                  { label: "Industry", value: "industry" },
-                  { label: "Academic", value: "academic" },
-                ]}
-                activeMode={expertMode}
-                handleModeChange={handleModeChange}
-              />
-            }
+            title="Ip Landscape"
+            // subTitle="Top list of inventors with maximum number of publications and patents "
+            // sideTitleOption={
+            //   <RadioButtons
+            //     options={[
+            //       { label: "Industry", value: "industry" },
+            //       { label: "Academic", value: "academic" },
+            //     ]}
+            //     activeMode={expertMode}
+            //     handleModeChange={handleModeChange}
+            //   />
+            // }
           />
         }
       >

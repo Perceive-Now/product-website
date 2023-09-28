@@ -24,14 +24,14 @@ export default function DefaultLayout() {
           </div>
         </div>
         <div className="flex">
-          <div className="fixe h-screen overflow-y-auto shadow">
+          <div className="fixe h-scree overflow-y-auto shadow">
             {/* <AppSidebar
               show={open}
               handleShow={() => setOpen(false)}
               
             /> */}
           </div>
-          <div className="relative flex-grow py-3 px-4 z-0">
+          <div className="relative flex-grow py-3 px-4 z-0 min-h-[calc(100vh-200px)]">
             <Outlet />
           </div>
         </div>

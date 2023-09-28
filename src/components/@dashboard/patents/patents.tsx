@@ -117,7 +117,7 @@ export default function Patents(props: IPatentsProps) {
       error={error}
       title={
         <PageTitle
-          title="Patents"
+          title={props.title}
           // info={`Stats in this graph are extracted from a total of "X" number of patents`}
           titleClass="font-semibold"
         />
@@ -172,4 +172,5 @@ export default function Patents(props: IPatentsProps) {
 
 interface IPatentsProps {
   keywords: string[];
+  title: string;
 }

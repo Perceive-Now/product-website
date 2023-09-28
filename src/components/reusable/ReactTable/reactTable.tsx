@@ -5,11 +5,13 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { InfoIcon } from "../../icons";
+import TableSortIcon from "../../icons/table-sort";
 
 /*
  *
@@ -31,6 +33,7 @@ export default function ReactTable(props: IReactTable) {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
+    getSortedRowModel: getSortedRowModel(),
     debugTable: process.env.NODE_ENV === "development",
   });
 
@@ -53,11 +56,20 @@ export default function ReactTable(props: IReactTable) {
                     },
                   }}
                 >
-                  <>
+                  <div className="flex items-center gap-x-1">
                     {header.isPlaceholder ? null : (
                       <>{flexRender(header.column.columnDef.header, header.getContext())}</>
                     )}
-                  </>
+                    {header.column.getCanSort() && (
+                      <button
+                        type="button"
+                        className="ml-"
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <TableSortIcon />
+                      </button>
+                    )}
+                  </div>
                 </th>
               ))}
             </tr>

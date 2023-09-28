@@ -18,6 +18,9 @@ import type { IDeepSearchCompanyPatentSingleItem } from "../../../../../utils/ap
 
 //
 import { useAppSelector } from "../../../../../hooks/redux";
+import Breadcrumb from "../../../../../components/reusable/breadcrumb";
+import { Tab } from "@headlessui/react";
+import classNames from "classnames";
 
 //
 const PAGE_SIZE = 10;
@@ -71,15 +74,15 @@ export default function DeepSearchCompanyPatent() {
   //
   const infoItem: IInfoItem[] = [
     {
-      title: "Number of Patents",
+      title: "Total Patents",
       value: patentCount,
     },
     {
-      title: "Number of Patent claims",
+      title: "Total Inventors",
       value: patentClaimSum,
     },
     {
-      title: "Number of Inventors",
+      title: "Total Patent claims",
       value: inventorCount,
     },
   ];
@@ -87,7 +90,7 @@ export default function DeepSearchCompanyPatent() {
   //
   const columnsData: ColumnDef<IDeepSearchCompanyPatentSingleItem>[] = [
     {
-      header: "Title",
+      header: "Patent title",
       accessorKey: "title",
       minSize: 400,
       maxSize: 400,
@@ -108,7 +111,33 @@ export default function DeepSearchCompanyPatent() {
       ),
     },
     {
-      header: "Owner",
+      header: "Company name/University name",
+      accessorKey: "company",
+      minSize: 330,
+      maxSize: 330,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
+    },
+    {
+      header: "Inventors",
+      accessorKey: "company",
+      minSize: 330,
+      maxSize: 330,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
+    },
+    {
+      header: "Examiner (Art group)",
       accessorKey: "company",
       minSize: 330,
       maxSize: 330,
@@ -141,58 +170,187 @@ export default function DeepSearchCompanyPatent() {
       maxSize: 130,
     },
     {
-      header: "Date (Y/M/D)",
+      header: "Published date",
       accessorKey: "date",
       minSize: 170,
       maxSize: 170,
     },
   ];
 
+  const inventorsColumn: ColumnDef<IDeepSearchCompanyPatentSingleItem>[] = [
+    {
+      header: "Inventor Name",
+      accessorKey: "inventor_name",
+      minSize: 330,
+      maxSize: 330,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
+    },
+    {
+      header: "City, Country",
+      accessorKey: "city",
+      minSize: 330,
+      maxSize: 330,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
+    },
+    {
+      header: "No. of publications",
+      accessorKey: "company",
+      minSize: 330,
+      maxSize: 330,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
+    },
+    {
+      header: "No. of citations",
+      accessorKey: "no_of_citations",
+      minSize: 330,
+      maxSize: 330,
+      cell: (data) => (
+        <p className="line-clamp-1">
+          <TooltipWrapper content={data.row.original.company}>
+            {data.row.original.company}
+          </TooltipWrapper>
+        </p>
+      ),
+    },
+  ];
+
   //
   return (
     <div>
-      <div className="text-2xl leading-8 text-primary-900">{companyName}</div>
+      <Breadcrumb breadCrumbs={breadcrumbs} />
+      <div className="text-2xl leading-8 text-primary-900">
+        {companyName ? <span>{companyName}</span> : <span>Microsoft Corporation</span>}
+      </div>
+      <p>Washington DC</p>
 
       {/* Info section - These data amazingly have to be supplied from query params for now */}
-      <div className="my-4 grid grid-cols-4 gap-3">
-        {infoItem.map((item, index) => (
-          <div
-            className="col-span-1 rounded-lg p-2 bg-gray-100 shadow hover:bg-gray-200 hover:shadow-lg hover:-translate-y-[1px] h-11 flex flex-col justify-center items-center"
-            key={index}
-          >
-            <p className="text-gray-700 mb-1">{item.title}</p>
-            <p className="font-semibold">{item.value ? (+item.value).toLocaleString() : "-"}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Actual data section */}
-      <div>
-        <p className="text-[22px] text-primary-900">Patents</p>
-
-        <TooltipProvider>
-          <div className="my-4">
-            {!!keywords.length && isLoading ? (
-              <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
-                <LoadingIcon width={40} height={40} />
-              </div>
-            ) : (
-              <ReactTable columnsData={columnsData} rowsData={finalData} />
-            )}
-          </div>
-
-          <Tooltip className="tooltip" float />
-        </TooltipProvider>
-
-        <div className="flex justify-center">
-          <Pagination
-            page={currentPage}
-            total={Math.ceil(totalCount / PAGE_SIZE)}
-            onChange={(pageNum) => setCurrentPage(pageNum)}
-            disabled={isLoading}
-          />
+      <Tab.Group>
+        <div className="mx-auto w-3/5">
+          <Tab.List className="my-4 grid grid-cols-3 gap-3">
+            {infoItem.map((item, index) => (
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    "col-span-1 rounded-lg p-2 hover:shadow-lg hover:-translate-y-[1px] h-11 flex flex-col justify-center items-center",
+                    selected
+                      ? "bg-primary-900 text-white font-bold"
+                      : "text-secondary-800 bg-gray-100 shadow hover:bg-gray-200",
+                  )
+                }
+                key={index}
+              >
+                <p className=" mb-1 ">{item.title}</p>
+                <p className="font-semibold">{item.value ? (+item.value).toLocaleString() : "-"}</p>
+              </Tab>
+            ))}
+          </Tab.List>
         </div>
-      </div>
+
+        {/* Actual data section */}
+        <Tab.Panels>
+          <Tab.Panel>
+            <div>
+              <p className="text-[22px] text-primary-900">List of patents</p>
+              <TooltipProvider>
+                <div className="my-4">
+                  {!!keywords.length && isLoading ? (
+                    <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                      <LoadingIcon width={40} height={40} />
+                    </div>
+                  ) : (
+                    <ReactTable columnsData={columnsData} rowsData={finalData} />
+                  )}
+                </div>
+
+                <Tooltip className="tooltip" float />
+              </TooltipProvider>
+
+              <div className="flex justify-center">
+                <Pagination
+                  page={currentPage}
+                  total={Math.ceil(totalCount / PAGE_SIZE)}
+                  onChange={(pageNum) => setCurrentPage(pageNum)}
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+          </Tab.Panel>
+          <Tab.Panel>
+            <div>
+              <p className="text-[22px] text-primary-900">List of inventors</p>
+
+              <TooltipProvider>
+                <div className="my-4">
+                  {!!keywords.length && isLoading ? (
+                    <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                      <LoadingIcon width={40} height={40} />
+                    </div>
+                  ) : (
+                    <ReactTable columnsData={inventorsColumn} rowsData={finalData} />
+                  )}
+                </div>
+
+                <Tooltip className="tooltip" float />
+              </TooltipProvider>
+
+              <div className="flex justify-center">
+                <Pagination
+                  page={currentPage}
+                  total={Math.ceil(totalCount / PAGE_SIZE)}
+                  onChange={(pageNum) => setCurrentPage(pageNum)}
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+          </Tab.Panel>
+          <Tab.Panel>
+            <div>
+              <p className="text-[22px] text-primary-900">List of patents</p>
+
+              <TooltipProvider>
+                <div className="my-4">
+                  {!!keywords.length && isLoading ? (
+                    <div className="w-full h-[300px] flex justify-center items-center text-primary-600">
+                      <LoadingIcon width={40} height={40} />
+                    </div>
+                  ) : (
+                    <ReactTable columnsData={columnsData} rowsData={finalData} />
+                  )}
+                </div>
+
+                <Tooltip className="tooltip" float />
+              </TooltipProvider>
+
+              <div className="flex justify-center">
+                <Pagination
+                  page={currentPage}
+                  total={Math.ceil(totalCount / PAGE_SIZE)}
+                  onChange={(pageNum) => setCurrentPage(pageNum)}
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   );
 }
@@ -202,3 +360,8 @@ interface IInfoItem {
   title: string;
   value: string | null;
 }
+
+const breadcrumbs = [
+  { title: "Companies", link: "/companies" },
+  { title: "Companies Details", link: "/patents/1" },
+];

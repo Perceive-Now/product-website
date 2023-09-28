@@ -17,6 +17,7 @@ export const DashboardSlice = createSlice({
   initialState,
   reducers: {
     setDashboardSearch: (state, action: PayloadAction<IKeywordOption[]>) => {
+      console.log(state.search);
       state.search = action.payload;
     },
     clearDashboardSearch: (state) => {

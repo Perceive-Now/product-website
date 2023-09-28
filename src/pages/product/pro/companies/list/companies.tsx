@@ -27,6 +27,8 @@ import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-
 
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
 import TableYearSelect from "../../../../../components/reusable/table-year-select";
+import SubHeader from "../../../../../components/app/sub-header";
+import Filter from "../../../../../components/reusable/filter";
 
 //
 const PAGE_SIZE = 10;
@@ -267,28 +269,36 @@ export default function DeepSearchCompaniesListPage() {
   //
   return (
     <div>
+      <SubHeader title={"Companies"} analytics={"/companies"} table="/companies/table" />
       {/* Search bar */}
-      <div className="grid grid-cols-7 mb-1">
-        <div className="col-span-4">
-          <Search
-            required
-            size="small"
-            className="w-full"
-            onSubmit={handleSearch}
-            initialValue={searchedKeywords}
-          />
-
-          {keywords.length > 0 ? (
-            <p className="mt-[4px]">
-              <span>Showing companies for: </span>
-              <span className="font-semibold">"{joinedkeywords}"</span>
-            </p>
-          ) : (
-            <p className="mt-[4px] text-appGray-900">
-              Search keywords e.g. “COVID-19” to see related company {category}.
-            </p>
-          )}
+      <div>
+        <div className="grid grid-cols-8 mb-1">
+          <div className="col-span-1 w-full">
+            {category === "patents" && <Filter />}
+            {category === "publications" && <Filter />}
+          </div>
+          <div className="col-span-6">
+            {/* <div className="flex items-center w-full"> */}
+            <Search
+              required
+              size="small"
+              className="w-full"
+              onSubmit={handleSearch}
+              initialValue={searchedKeywords}
+            />
+            {/* </div> */}
+          </div>
         </div>
+        {keywords.length > 0 ? (
+          <p className="mt-[4px]">
+            <span>Showing patents for: </span>
+            <span className="font-semibold">"{joinedkeywords}"</span>
+          </p>
+        ) : (
+          <p className="mt-[4px] text-appGray-900">
+            Search keywords e.g. “COVID-19” to see related patents.
+          </p>
+        )}
       </div>
 
       {/* Classification */}
@@ -306,7 +316,7 @@ export default function DeepSearchCompaniesListPage() {
       {!!keywords.length && (
         <>
           {/* Filter section */}
-          <div className="mb-5 flex items-start">
+          {/* <div className="mb-5 flex items-start">
             <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
             <TableYearSelect
               label="Published Date"
@@ -315,7 +325,7 @@ export default function DeepSearchCompaniesListPage() {
               value={publishedYear}
               options={publishYearsOptions}
             />
-          </div>
+          </div> */}
 
           {/* Main content */}
           <div>

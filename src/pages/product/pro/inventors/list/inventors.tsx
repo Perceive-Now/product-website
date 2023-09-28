@@ -28,6 +28,7 @@ import {
   getDeepSearchPatentInventorsList,
   IDeepSearchInventorsPatentItem,
 } from "../../../../../utils/api/deep-search/inventors";
+import SubHeader from "../../../../../components/app/sub-header";
 
 //
 const PAGE_SIZE = 10;
@@ -276,6 +277,7 @@ export default function DeepSearchInventorsListPage() {
   //
   return (
     <div>
+      <SubHeader title={"Inventors"} analytics={"/inventors"} table="/inventors/table" />
       {/* Search bar */}
       <div className="grid grid-cols-7 mb-1">
         <div className="col-span-4">
@@ -301,7 +303,7 @@ export default function DeepSearchInventorsListPage() {
       </div>
 
       {/* Classification */}
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <RadioButtons
           activeMode={category}
           handleModeChange={changeClassificationMode}
@@ -310,12 +312,12 @@ export default function DeepSearchInventorsListPage() {
             { label: "Publications", value: "publications" },
           ]}
         />
-      </div>
+      </div> */}
 
       {!!keywords.length && (
         <>
           {/* Filter section */}
-          <div className="mb-5 flex items-start">
+          {/* <div className="mb-5 flex items-start">
             <span className="font-semibold text-appGray-900 mr-2">Filter by:</span>
             <TableYearSelect
               label="Publication Date"
@@ -324,7 +326,7 @@ export default function DeepSearchInventorsListPage() {
               value={publishedYear}
               options={publishYearsOptions}
             />
-          </div>
+          </div> */}
           {/* Main content */}
           <div>
             <p className="text-primary-900 text-[22px]">Inventors</p>

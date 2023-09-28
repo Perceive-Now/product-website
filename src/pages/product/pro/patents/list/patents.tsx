@@ -214,36 +214,33 @@ export default function PatentListPage() {
         <SubHeader title={"Patents"} analytics={"/patents"} table="/patents/table" />
       </div>
       {/* Search bar */}
-      <div className="grid grid-cols-8 mb-1">
-        <div className="col-span-1 w-full">
-          {/* <button type="button" className="rounded-none rounded-l-lg w-full flex justify-between items-center bg-primary-900 py-[12px] px-[16px] text-white">
-            <span>Filter</span>
-            <span><ChevronDown /></span>
-          </button> */}
-          <Filter />
+      <div>
+        <div className="grid grid-cols-8 mb-1">
+          <div className="col-span-1 w-full">
+            <Filter />
+          </div>
+          <div className="col-span-6">
+            {/* <div className="flex items-center w-full"> */}
+            <Search
+              required
+              size="small"
+              className="w-full"
+              onSubmit={handleSearch}
+              initialValue={searchedKeywords}
+            />
+            {/* </div> */}
+          </div>
         </div>
-        <div className="col-span-6">
-          {/* <div className="flex items-center w-full"> */}
-          <Search
-            required
-            size="small"
-            className="w-full"
-            onSubmit={handleSearch}
-            initialValue={searchedKeywords}
-          />
-          {/* </div> */}
-
-          {keywords.length > 0 ? (
-            <p className="mt-[4px]">
-              <span>Showing patents for: </span>
-              <span className="font-semibold">"{joinedkeywords}"</span>
-            </p>
-          ) : (
-            <p className="mt-[4px] text-appGray-900">
-              Search keywords e.g. “COVID-19” to see related patents.
-            </p>
-          )}
-        </div>
+        {keywords.length > 0 ? (
+          <p className="mt-[4px]">
+            <span>Showing patents for: </span>
+            <span className="font-semibold">"{joinedkeywords}"</span>
+          </p>
+        ) : (
+          <p className="mt-[4px] text-appGray-900">
+            Search keywords e.g. “COVID-19” to see related patents.
+          </p>
+        )}
       </div>
 
       {/* Classification */}

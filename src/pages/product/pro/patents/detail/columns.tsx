@@ -2,10 +2,31 @@ import { ColumnDef } from "@tanstack/react-table";
 
 // Attorney table columns
 export const attorneyColumnData: ColumnDef<IDeepSearchPatentDetailAttorney>[] = [
+  // {
+  //   header: "ID",
+  //   accessorKey: "id",
+  //   cell: (data) => <p className="line-clamp-1">{data.row.original.id || "-"}</p>,
+  // },
+
   {
-    header: "ID",
-    accessorKey: "id",
-    cell: (data) => <p className="line-clamp-1">{data.row.original.id || "-"}</p>,
+    header: "Sequence",
+    accessorKey: "sequence",
+    // TODO:: Discuss where this data exactly comes from
+    cell: () => <p className="line-clamp-1">-</p>,
+  },
+  {
+    header: "First Name",
+    accessorKey: "attorney_organization",
+    cell: (data) => (
+      <p className="line-clamp-1">{data.row.original.attorney_organization || "-"}</p>
+    ),
+  },
+  {
+    header: "Last Name",
+    accessorKey: "attorney_organization",
+    cell: (data) => (
+      <p className="line-clamp-1">{data.row.original.attorney_organization || "-"}</p>
+    ),
   },
   {
     header: "Attorney organization",
@@ -13,12 +34,6 @@ export const attorneyColumnData: ColumnDef<IDeepSearchPatentDetailAttorney>[] = 
     cell: (data) => (
       <p className="line-clamp-1">{data.row.original.attorney_organization || "-"}</p>
     ),
-  },
-  {
-    header: "Sequence",
-    accessorKey: "sequence",
-    // TODO:: Discuss where this data exactly comes from
-    cell: () => <p className="line-clamp-1">-</p>,
   },
 ];
 
@@ -35,7 +50,7 @@ export const examinerColumnData: ColumnDef<IDeepSearchPatentDetailExamier>[] = [
     cell: (data) => <p className="line-clamp-1">{data.row.original.last_name || "-"}</p>,
   },
   {
-    header: "Examier role",
+    header: "Examiner role",
     accessorKey: "examiner_role",
     cell: (data) => <p className="line-clamp-1">{data.row.original.examiner_role || "-"}</p>,
   },
@@ -79,40 +94,6 @@ export const foreignCitationColumnData: ColumnDef<IDeepSearchPatentDetailForeign
 // CPC table columns
 export const cpcColumnData: ColumnDef<IDeepSearchItemDetailCPC>[] = [
   {
-    header: "Class",
-    accessorKey: "class",
-    minSize: 56,
-    maxSize: 56,
-  },
-  {
-    header: "Class title",
-    accessorKey: "class_title",
-    minSize: 400,
-    maxSize: 400,
-  },
-  {
-    header: "Subclass",
-    accessorKey: "subclass",
-    minSize: 80,
-    maxSize: 80,
-  },
-  {
-    header: "Subclass title",
-    accessorKey: "subclass_title",
-    minSize: 400,
-    maxSize: 400,
-  },
-  {
-    header: "Group",
-    accessorKey: "group",
-  },
-  {
-    header: "Group title",
-    accessorKey: "group_title",
-    minSize: 400,
-    maxSize: 400,
-  },
-  {
     header: "Sequence",
     accessorKey: "cpc_sequence",
     minSize: 88,
@@ -133,62 +114,108 @@ export const cpcColumnData: ColumnDef<IDeepSearchItemDetailCPC>[] = [
   {
     header: "Symbol position",
     accessorKey: "cpc_symbol_position",
-    minSize: 132,
-    maxSize: 132,
+    // minSize: 132,
+    // maxSize: 132,
+  },
+  {
+    header: "Class",
+    accessorKey: "class",
+    minSize: 56,
+    maxSize: 56,
+  },
+  {
+    header: "Class title",
+    accessorKey: "class_title",
+    // minSize: 400,
+    // maxSize: 400,
+  },
+  {
+    header: "Subclass",
+    accessorKey: "subclass",
+    minSize: 80,
+    maxSize: 80,
+  },
+  {
+    header: "Subclass title",
+    accessorKey: "subclass_title",
+    // minSize: 400,
+    // maxSize: 400,
+  },
+  {
+    header: "Group",
+    accessorKey: "group",
+  },
+  {
+    header: "Group title",
+    accessorKey: "group_title",
+    // minSize: 400,
+    // maxSize: 400,
   },
 ];
 
 // Assignee column data
 export const assigneeColumnData: ColumnDef<IDeepSearchItemDetailAssignee>[] = [
+  // {
+  //   header: "Assignee id",
+  //   accessorKey: "assignee_id",
+  //   minSize: 210,
+  //   maxSize: 210,
+  // },
   {
-    header: "Assignee id",
-    accessorKey: "assignee_id",
-    minSize: 210,
-    maxSize: 210,
-  },
-  {
-    header: "Assignee organization",
+    header: "Sequence",
     accessorKey: "assignee_organization",
     minSize: 260,
     maxSize: 260,
   },
   {
-    header: "Assignee type",
+    header: "First Name",
+    accessorKey: "assignee_organization",
+    minSize: 260,
+    maxSize: 260,
+  },
+  {
+    header: "Last Name",
+    accessorKey: "assignee_organization",
+    minSize: 260,
+    maxSize: 260,
+  },
+  {
+    header: "Attorney Organization",
     accessorKey: "assignee_type",
     minSize: 164,
     maxSize: 164,
   },
-  {
-    header: "Location id",
-    accessorKey: "location_id",
-    minSize: 210,
-    maxSize: 210,
-  },
-  // TODO:: Verify about "Organization" in figma
-  {
-    header: "City",
-    accessorKey: "disambig_city",
-    minSize: 210,
-    maxSize: 210,
-  },
-  {
-    header: "Country",
-    accessorKey: "disambig_country",
-    minSize: 130,
-    maxSize: 130,
-  },
-  {
-    header: "Latitude",
-    accessorKey: "latitude",
-    minSize: 130,
-    maxSize: 130,
-  },
-  {
-    header: "Longitude",
-    accessorKey: "longitude",
-    minSize: 130,
-    maxSize: 130,
-  },
+  // {
+  //   header: "Location id",
+  //   accessorKey: "location_id",
+  //   minSize: 210,
+  //   maxSize: 210,
+  // },
+  // // TODO:: Verify about "Organization" in figma
+  // {
+  //   header: "City",
+  //   accessorKey: "disambig_city",
+  //   minSize: 210,
+  //   maxSize: 210,
+  // },
+  // {
+  //   header: "Country",
+  //   accessorKey: "disambig_country",
+  //   minSize: 130,
+  //   maxSize: 130,
+  // },
+  // {
+  //   header: "Latitude",
+  //   accessorKey: "latitude",
+  //   minSize: 130,
+  //   maxSize: 130,
+  // },
+  // {
+  //   header: "Longitude",
+  //   accessorKey: "longitude",
+  //   minSize: 130,
+  //   maxSize: 130,
+  // },
 ];
 
 // Applicant column data
@@ -212,14 +239,14 @@ export const applicantColumnData: ColumnDef<IDeepSearchItemDetailApplicant>[] = 
     maxSize: 210,
   },
   {
-    header: "Designation",
-    accessorKey: "applicant_designation",
+    header: "Type",
+    accessorKey: "applicant_location_id",
     minSize: 210,
     maxSize: 210,
   },
   {
-    header: "Location id",
-    accessorKey: "applicant_location_id",
+    header: "Designation",
+    accessorKey: "applicant_designation",
     minSize: 210,
     maxSize: 210,
   },
@@ -240,17 +267,17 @@ export const applicantColumnData: ColumnDef<IDeepSearchItemDetailApplicant>[] = 
 // Inventor column data
 export const inventorColumnData: ColumnDef<IDeepSearchItemDetailTrainee>[] = [
   {
-    header: "Inventor sequence",
+    header: "Sequence",
     accessorKey: "inventor_sequence",
     minSize: 210,
     maxSize: 210,
   },
-  {
-    header: "Inventor id",
-    accessorKey: "id",
-    minSize: 210,
-    maxSize: 210,
-  },
+  // {
+  //   header: "Inventor id",
+  //   accessorKey: "id",
+  //   minSize: 210,
+  //   maxSize: 210,
+  // },
   {
     header: "First name",
     accessorKey: "first name",
@@ -263,24 +290,24 @@ export const inventorColumnData: ColumnDef<IDeepSearchItemDetailTrainee>[] = [
     minSize: 164,
     maxSize: 164,
   },
-  {
-    header: "Male flag",
-    accessorKey: "male flag",
-    minSize: 164,
-    maxSize: 164,
-  },
+  // {
+  //   header: "Male flag",
+  //   accessorKey: "male flag",
+  //   minSize: 164,
+  //   maxSize: 164,
+  // },
   {
     header: "Attribution status",
     accessorKey: "attribution status",
     minSize: 164,
     maxSize: 164,
   },
-  {
-    header: "Location id",
-    accessorKey: "location_id",
-    minSize: 210,
-    maxSize: 210,
-  },
+  // {
+  //   header: "Location id",
+  //   accessorKey: "location_id",
+  //   minSize: 210,
+  //   maxSize: 210,
+  // },
   // TODO:: Verify about "Organization" in figma
   {
     header: "City",
@@ -294,24 +321,24 @@ export const inventorColumnData: ColumnDef<IDeepSearchItemDetailTrainee>[] = [
     minSize: 130,
     maxSize: 130,
   },
-  {
-    header: "Latitude",
-    accessorKey: "latitude",
-    minSize: 130,
-    maxSize: 130,
-  },
-  {
-    header: "Longitude",
-    accessorKey: "longitude",
-    minSize: 130,
-    maxSize: 130,
-  },
+  // {
+  //   header: "Latitude",
+  //   accessorKey: "latitude",
+  //   minSize: 130,
+  //   maxSize: 130,
+  // },
+  // {
+  //   header: "Longitude",
+  //   accessorKey: "longitude",
+  //   minSize: 130,
+  //   maxSize: 130,
+  // },
 ];
 
 // WIPO column data
 export const wipoColumnData: ColumnDef<IDeepSearchItemDetailWipo>[] = [
   {
-    header: "Field sequence",
+    header: "Sequence",
     accessorKey: "wipo_field_sequence",
     minSize: 120,
   },
@@ -321,8 +348,13 @@ export const wipoColumnData: ColumnDef<IDeepSearchItemDetailWipo>[] = [
     minSize: 80,
   },
   {
-    header: "Sector title",
+    header: "Kind/Sector title",
     accessorKey: "wipo_sector_title",
+    minSize: 250,
+  },
+  {
+    header: "Field name",
+    accessorKey: "wipo_field_title",
     minSize: 250,
   },
   {
@@ -341,33 +373,123 @@ export const usPatentCitationColumnData: ColumnDef<IDeepSearchItemDetailUsPatent
     maxSize: 100,
   },
   {
-    header: "Citation patent id",
+    header: "Main Class id",
     accessorKey: "citation_patent_id",
     minSize: 180,
     maxSize: 180,
   },
   {
-    header: "Date",
+    header: "Main Class",
     accessorKey: "citation_date",
     minSize: 120,
     maxSize: 120,
   },
   {
-    header: "Record name",
+    header: "Subclass id",
     accessorKey: "record_name",
     minSize: 150,
     maxSize: 150,
   },
+  // {
+  //   header: "WIPO kind",
+  //   accessorKey: "wipo_kind",
+  //   minSize: 100,
+  //   maxSize: 100,
+  // },
+  // {
+  //   header: "Citation category",
+  //   accessorKey: "citation_category",
+  //   minSize: 180,
+  //   maxSize: 180,
+  // },
+];
+
+export const pctColumnData: ColumnDef<IDeepSearchItemDetailUsPatentCitation>[] = [
   {
-    header: "WIPO kind",
-    accessorKey: "wipo_kind",
+    header: "PCT 102 date",
+    accessorKey: "citation_sequence",
     minSize: 100,
     maxSize: 100,
   },
   {
-    header: "Citation category",
-    accessorKey: "citation_category",
-    minSize: 180,
-    maxSize: 180,
+    header: "PCT 371 date",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Doc number",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Doc type",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Filed country",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Application kind",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+];
+
+export const ipcColumnData: ColumnDef<IDeepSearchItemDetailUsPatentCitation>[] = [
+  {
+    header: "Sequence",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Classification level",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Classification status",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Section",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "IPC class",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Sub class",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Main group",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
+  },
+  {
+    header: "Sub group",
+    accessorKey: "citation_sequence",
+    minSize: 100,
+    maxSize: 100,
   },
 ];

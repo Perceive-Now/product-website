@@ -43,7 +43,7 @@ import DeepSearchInventorPage from "./pages/product/pro/inventors/detail";
 
 //
 import DeepSearchUniversityListPage from "./pages/product/pro/university/list";
-import DeepSearchAcademicPage from "./pages/product/pro/university/detail/detail";
+// import DeepSearchAcademicPage from "./pages/product/pro/university/detail/detail";
 
 //
 import DeepSearchFundersListPage from "./pages/product/pro/funders/list";
@@ -60,6 +60,17 @@ import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 import { WelcomePage } from "./components/@signup-complete";
 import IpPortfolioPage from "./pages/account/ipPortfolio";
 import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
+import PublicationAnalyticPage from "./pages/product/pro/publications/analytics";
+import CompanyAnalyticPage from "./pages/product/pro/companies/analytics";
+import UniversityAnalyticPage from "./pages/product/pro/university/analytics";
+import FunderAnalyticPage from "./pages/product/pro/funders/analytics";
+import InventorAnalyticPage from "./pages/product/pro/inventors/analytics";
+import EmergingTechnologiesAnalytics from "./pages/product/emerging-technology/analytics";
+import EmergingTechnologyListPage from "./pages/product/emerging-technology/list";
+import CompanyPublicationDetailPage from "./pages/product/pro/companies/publication";
+import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
+import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
+import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
 
 /**
  *
@@ -87,26 +98,40 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
 
+          <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
+          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} />
+
           {/* Deep Search pages */}
           <Route path="/patents" element={<PatentAnalyticPage />} />
           <Route path="/patents/table" element={<PatentListPage />} />
-
           <Route path="/patents/:id" element={<PatentDetailPage />} />
 
-          <Route path="/deep-search/publications" element={<PublicationListPage />} />
-          <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
+          <Route path="/publications" element={<PublicationAnalyticPage />} />
+          <Route path="/publications/table" element={<PublicationListPage />} />
+          <Route path="/publications/:id" element={<PublicationDetailPage />} />
 
-          <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
-          <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/companies" element={<CompanyAnalyticPage />} />
+          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
+          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
 
-          <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
-          <Route path="/deep-search/inventors/:type" element={<DeepSearchInventorPage />} />
+          <Route path="/inventors" element={<InventorAnalyticPage />} />
+          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
+          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
 
-          <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
-          <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />
+          <Route path="/universities" element={<UniversityAnalyticPage />} />
+          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} />
+          {/* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */}
+          <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
+          <Route
+            path="/universities/publication/:id"
+            element={<UniversityPublicationDetailPage />}
+          />
 
-          <Route path="/deep-search/funders" element={<DeepSearchFundersListPage />} />
-          <Route path="/deep-search/funders/:id" element={<DeepSearchFunderPage />} />
+          <Route path="/funders" element={<FunderAnalyticPage />} />
+          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
+          <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
+          <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} />
 
           {/* Account section */}
           <Route element={<AccountLayout />}>

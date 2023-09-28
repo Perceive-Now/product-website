@@ -1,11 +1,18 @@
 import { Fragment, FunctionComponent } from "react";
-import { ChevronDown, ChevronRight } from "../../icons";
+import { ChevronDown } from "../../icons";
 import { Menu, Transition } from "@headlessui/react";
-import DateFilter from "./DateFilter";
+import FilterList from "./FiilterList";
 
 // const FilterData =[
 //   {title:""}
 // ]
+const DateFiltersLists = [
+  "Published Date",
+  "Filing Date",
+  "Earliest Priority Date",
+  "Granted Date",
+];
+const countryLists = ["Nepal", "China", "India"];
 
 const Filter: FunctionComponent = () => {
   return (
@@ -34,52 +41,37 @@ const Filter: FunctionComponent = () => {
           <Menu.Items className="absolute right-0 mt-0.5 w-full origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="px-1 py-1 ">
               <Menu.Item>
-                <DateFilter />
-                {/* {({ active }) => (
-                  
-                )} */}
+                <FilterList filters={DateFiltersLists} filterName={"Date"} />
               </Menu.Item>
               <Menu.Item>
-                <button
-                  onClick={(event) => {
-                    // Prevent the default behavior (closing the menu)
-                    event.preventDefault();
-                    // Add your custom click handling logic here
-                    // For example, you can trigger actions or update state
-                  }}
-                  className="hover:hover:bg-primary-50 w-full text-start p-1 flex items-center justify-between"
-                >
-                  <span>Country</span>
-                  <ChevronRight />
-                </button>
+                <FilterList filters={countryLists} filterName={"Country"} />
               </Menu.Item>
               <Menu.Item>
-                <button
-                  onClick={(event) => {
-                    // Prevent the default behavior (closing the menu)
-                    event.preventDefault();
-                    // Add your custom click handling logic here
-                    // For example, you can trigger actions or update state
-                  }}
-                  className="hover:hover:bg-primary-50 w-full text-start p-1 flex items-center justify-between"
-                >
-                  <span>Legal Status</span>
-                  <ChevronRight />
-                </button>
+                <FilterList filters={DateFiltersLists} filterName={"Legal Status"} />
               </Menu.Item>
               <Menu.Item>
-                <button
-                  onClick={(event) => {
-                    // Prevent the default behavior (closing the menu)
-                    event.preventDefault();
-                    // Add your custom click handling logic here
-                    // For example, you can trigger actions or update state
-                  }}
-                  className="hover:hover:bg-primary-50 w-full text-start p-1 flex items-center justify-between"
-                >
-                  <span>Type</span>
-                  <ChevronRight />
-                </button>
+                <FilterList filters={DateFiltersLists} filterName={"Type"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Art group"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Classification"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Jurisdiction"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Inventor"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Applicant"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Patent Owner"} />
+              </Menu.Item>
+              <Menu.Item>
+                <FilterList filters={DateFiltersLists} filterName={"Agents/ Attorney"} />
               </Menu.Item>
             </div>
           </Menu.Items>
