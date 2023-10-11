@@ -4,8 +4,8 @@ import Search, { IKeywordOption } from "../../../../../components/reusable/searc
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { setDashboardSearch } from "../../../../../stores/dashboard";
 import Patents from "../../../../../components/@dashboard/patents";
-import CommonList from "../../../../../components/@dashboard/common-list";
-import { DummyData } from "../../../../../components/@dashboard/common-list/dummy_data";
+// import CommonList from "../../../../../components/@dashboard/common-list";
+// import { DummyData } from "../../../../../components/@dashboard/common-list/dummy_data";
 import FootprintHeatmap from "../../../../../components/@dashboard/footprint-heatmap";
 import { LocationIcon } from "../../../../../components/icons";
 

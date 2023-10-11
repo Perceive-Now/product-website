@@ -26,7 +26,7 @@ import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-search/companies";
 
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
-import TableYearSelect from "../../../../../components/reusable/table-year-select";
+// import TableYearSelect from "../../../../../components/reusable/table-year-select";
 import SubHeader from "../../../../../components/app/sub-header";
 import Filter from "../../../../../components/reusable/filter";
 
@@ -48,8 +48,10 @@ export default function DeepSearchCompaniesListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [category, setCategory] = useState<CategoryType>("patents");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [publishedYear, setPublishedYear] = useState<number>(2022);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const publishYearsOptions = useMemo(() => {
     const startYear = new Date().getFullYear() - 1;
     const yearsToInclude = 50;

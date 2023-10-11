@@ -10,7 +10,7 @@ import { LoadingIcon } from "../../../../../components/icons";
 import Search from "../../../../../components/reusable/search";
 import ReactTable from "../../../../../components/reusable/ReactTable";
 import Pagination from "../../../../../components/reusable/pagination";
-import RadioButtons from "../../../../../components/reusable/radio-buttons";
+// import RadioButtons from "../../../../../components/reusable/radio-buttons";
 import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 
 import Button from "../../../../../components/reusable/button";
-import TableYearSelect from "../../../../../components/reusable/table-year-select/table-year-select";
+// import TableYearSelect from "../../../../../components/reusable/table-year-select/table-year-select";
 import {
   getDeepSearchPatentInventorsList,
   IDeepSearchInventorsPatentItem,
@@ -51,6 +51,7 @@ export default function DeepSearchInventorsListPage() {
 
   const [category, setCategory] = useState<CategoryType>("patents");
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [publishedYear, setPublishedYear] = useState<number>(2022);
 
   //
@@ -63,6 +64,7 @@ export default function DeepSearchInventorsListPage() {
   }, [paramsClassification]);
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const publishYearsOptions = useMemo(() => {
     const startYear = new Date().getFullYear() - 1;
     const yearsToInclude = 50;
@@ -266,6 +268,7 @@ export default function DeepSearchInventorsListPage() {
   };
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const changeClassificationMode = (mode: string) => {
     setCategory(mode as CategoryType);
   };

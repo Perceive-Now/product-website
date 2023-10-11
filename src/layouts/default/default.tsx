@@ -17,7 +17,7 @@ export default function DefaultLayout() {
         <AppSidebar />
       </div> */}
 
-      <div className="w-full min-h-scree flex flex-col">
+      <div className="w-full flex flex-col">
         <div className="sticky top-0 w-full z-20 bg-appGray-100">
           <div className="px-4">
             <AppHeader />

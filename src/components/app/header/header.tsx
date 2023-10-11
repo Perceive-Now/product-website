@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // //
 // import Search, { IKeywordOption } from "../../reusable/search";
@@ -12,7 +12,7 @@ import UserIcon from "../userIcon";
 import PerceiveLogo from "../../../assets/images/logo.svg";
 // import BarIcon from "../../icons/sidenav/bars";
 import ToggleBarIcon from "../../icons/sidenav/bars";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppSidebar from "../sidebar";
 
 //
@@ -23,7 +23,7 @@ import AppSidebar from "../sidebar";
  */
 export default function AppHeader() {
   // const navigate = useNavigate();
-  // const location = useLocation();
+  const location = useLocation();
   // const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
 
@@ -46,6 +46,11 @@ export default function AppHeader() {
   // const handleSearch = (value: IKeywordOption[]) => {
   //   dispatch(setDashboardSearch(value));
   // };
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setOpen(true);
+    }
+  }, [location]);
 
   const toggleSideBar = () => {
     setOpen(!open);
@@ -75,9 +80,16 @@ export default function AppHeader() {
       </> */}
 
         <div className="flex justify-center items-end py-3 gap-2">
-          <button type="button" className="" onClick={toggleSideBar}>
-            <ToggleBarIcon />
-          </button>
+          {!open && (
+            <button type="button" className="" onClick={toggleSideBar}>
+              <ToggleBarIcon />
+            </button>
+          )}
+          {open && (
+            <button type="button" className="" onClick={() => setOpen(false)}>
+              <ToggleBarIcon />
+            </button>
+          )}
           <Link to="/">
             <img src={PerceiveLogo} alt="PerceiveNow logo" />
           </Link>

@@ -1,5 +1,5 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
@@ -9,9 +9,9 @@ import { ColumnDef } from "@tanstack/react-table";
 import Search from "../../../../../components/reusable/search";
 import Pagination from "../../../../../components/reusable/pagination";
 import ReactTable from "../../../../../components/reusable/ReactTable";
-import RadioButtons from "../../../../../components/reusable/radio-buttons";
+// import RadioButtons from "../../../../../components/reusable/radio-buttons";
 import RelatedKeyword from "../../../../../components/@product/relatedKeyword";
-import TableYearSelect from "../../../../../components/reusable/table-year-select";
+// import TableYearSelect from "../../../../../components/reusable/table-year-select";
 
 import type { IKeywordOption } from "../../../../../components/reusable/search";
 import AbstractModal from "../../../../../components/reusable/abstract-modal";
@@ -49,6 +49,7 @@ export default function PublicationListPage() {
 
   const paramsClassification: string | null = searchParams.get("mode");
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedPublishedYear, setSelectedPublishedYear] = useState<number>(2022);
   //
   const [classification, setClassification] = useState<classificationMode>("Industry");
@@ -74,20 +75,20 @@ export default function PublicationListPage() {
     { enabled: !!keywords.length },
   );
 
-  const publishYearsOptions = useMemo(() => {
-    const startYear = new Date().getFullYear() - 1;
-    const yearsToInclude = 50;
-    const endYear = startYear - yearsToInclude;
+  // const publishYearsOptions = useMemo(() => {
+  //   const startYear = new Date().getFullYear() - 1;
+  //   const yearsToInclude = 50;
+  //   const endYear = startYear - yearsToInclude;
 
-    const years = [];
-    for (let i = startYear; i >= endYear; i--) {
-      years.push({
-        label: i.toString(),
-        value: i,
-      });
-    }
-    return years;
-  }, []);
+  //   const years = [];
+  //   for (let i = startYear; i >= endYear; i--) {
+  //     years.push({
+  //       label: i.toString(),
+  //       value: i,
+  //     });
+  //   }
+  //   return years;
+  // }, []);
 
   // Getting publication list
   const { data: publicationsList, isLoading } = useQuery({
@@ -118,9 +119,9 @@ export default function PublicationListPage() {
   };
 
   //
-  const changeClassificationMode = (mode: string) => {
-    setClassification(mode as classificationMode);
-  };
+  // const changeClassificationMode = (mode: string) => {
+  //   setClassification(mode as classificationMode);
+  // };
 
   //
   const openColumnData: ColumnDef<IDeepSearchPublicationListItem>[] = [
@@ -276,7 +277,7 @@ export default function PublicationListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, classification, selectedPublishedYear]);
+  }, [searchedKeywords, classification]);
 
   //
   return (

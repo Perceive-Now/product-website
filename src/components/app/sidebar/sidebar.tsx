@@ -67,7 +67,7 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
     <div>
       <SidebarTransition show={show} handleShow={handleShow}>
-        <Dialog.Panel className="mt-10 bg-white shadow w-[260px]">
+        <Dialog.Panel className="mt-10 bg-white shadow w-[270px] overflow-auto">
           {sidebarItems.map((item, index) => (
             <div key={index}>
               {item.children && (

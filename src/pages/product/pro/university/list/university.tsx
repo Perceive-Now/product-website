@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 
 import Button from "../../../../../components/reusable/button";
-import TableYearSelect from "../../../../../components/reusable/table-year-select/table-year-select";
+// import TableYearSelect from "../../../../../components/reusable/table-year-select/table-year-select";
 
 import {
   getDeepSearchPatentAcademicList,
@@ -51,23 +51,23 @@ export default function DeepSearchUniversityListPage() {
 
   const [category, setCategory] = useState<CategoryType>("patents");
 
-  const [publishedYear, setPublishedYear] = useState<number>(2022);
+  // const [publishedYear, setPublishedYear] = useState<number>(2022);
 
-  const publishYearsOptions = useMemo(() => {
-    const startYear = new Date().getFullYear() - 1;
-    const yearsToInclude = 50;
-    const endYear = startYear - yearsToInclude;
+  // const publishYearsOptions = useMemo(() => {
+  //   const startYear = new Date().getFullYear() - 1;
+  //   const yearsToInclude = 50;
+  //   const endYear = startYear - yearsToInclude;
 
-    const years = [];
-    for (let i = startYear; i >= endYear; i--) {
-      years.push({
-        label: i.toString(),
-        value: i,
-      });
-    }
+  //   const years = [];
+  //   for (let i = startYear; i >= endYear; i--) {
+  //     years.push({
+  //       label: i.toString(),
+  //       value: i,
+  //     });
+  //   }
 
-    return years;
-  }, []);
+  //   return years;
+  // }, []);
 
   //
   const { data: relatedKeywords } = useQuery({
@@ -80,13 +80,13 @@ export default function DeepSearchUniversityListPage() {
 
   // Getting patent list
   const { data: patentList, isLoading } = useQuery({
-    queryKey: [...keywords, currentPage, publishedYear, "deepsearch-patent-academic-list"],
+    queryKey: [...keywords, currentPage, "deepsearch-patent-academic-list"],
     queryFn: async () => {
       const lastYearValue = new Date().getFullYear() - 1;
       //
       const response = await getDeepSearchPatentAcademicList({
         keywords,
-        year: publishedYear ?? lastYearValue,
+        year: lastYearValue,
         limit: PAGE_SIZE,
         offset: (currentPage - 1) * PAGE_SIZE + 1,
       });
@@ -255,7 +255,7 @@ export default function DeepSearchUniversityListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, category, publishedYear]);
+  }, [searchedKeywords, category]);
   //
   return (
     <div>

@@ -6,10 +6,12 @@ export default function DateRangePick() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleStartDateChange = (date: any) => {
     setStartDate(date);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleEndDateChange = (date: any) => {
     setEndDate(date);
   };
