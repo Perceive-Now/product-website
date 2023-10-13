@@ -1,10 +1,10 @@
 import { useState, Fragment, FunctionComponent } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import classNames from "classnames";
 
 //
-// import PerceiveLogo from "../../../assets/images/logo.svg";
+import PerceiveLogo from "../../../assets/images/logo.svg";
 
 //
 import { ChevronDown, ChevronUp } from "../../icons";
@@ -15,6 +15,7 @@ import { sidebarItems, ISidebarListItem } from "./_data";
 // import { useAppDispatch } from "../../../hooks/redux";
 import { Dialog } from "@headlessui/react";
 import SidebarTransition from "./sidebarTransition";
+import ToggleBarIcon from "../../icons/sidenav/bars";
 // import { active } from "d3";
 
 /**
@@ -67,11 +68,21 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
     <div>
       <SidebarTransition show={show} handleShow={handleShow}>
-        <Dialog.Panel className="mt-10 bg-white shadow w-[270px] overflow-auto">
+        <Dialog.Panel className=" bg-white shadow w-[270px] overflow-auto">
+          <div className="flex justify-center items-end py-3 gap-2 bg-appGray-100">
+            {/* {open && ( */}
+            <button type="button" className="" onClick={handleShow}>
+              <ToggleBarIcon />
+            </button>
+            {/* )} */}
+            <Link to="/">
+              <img src={PerceiveLogo} alt="PerceiveNow logo" />
+            </Link>
+          </div>
           {sidebarItems.map((item, index) => (
             <div key={index}>
               {item.children && (
-                <Fragment>
+                <div>
                   <div
                     className="px-2 py-2 flex items-center cursor-pointer"
                     onClick={() => updateActiveGroup(item.key)}
@@ -130,7 +141,7 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                       ))}
                     </div>
                   )}
-                </Fragment>
+                </div>
               )}
               {!item.children && (
                 <NavLinkItem

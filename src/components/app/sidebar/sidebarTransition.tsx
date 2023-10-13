@@ -14,7 +14,7 @@ const SidebarTransition: FunctionComponent<PropsWithChildren<Props>> = ({
   return (
     <div>
       <Transition.Root show={show} as={Fragment}>
-        <Dialog as="div" className="relative" onClose={handleShow}>
+        <Dialog as="div" className="relative " onClose={handleShow}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -24,9 +24,9 @@ const SidebarTransition: FunctionComponent<PropsWithChildren<Props>> = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed z-10 inset-0" />
+            <div className="fixed z-20 inset-0  bg-black/30 " />
           </Transition.Child>
-          <div className="fixed inset-0 flex z-10 ">
+          <div className="fixed inset-0 flex z-20 ">
             <Transition.Child
               as={Fragment}
               enter="transition ease-in-out duration-300 transform"

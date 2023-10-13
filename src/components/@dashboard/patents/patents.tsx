@@ -88,7 +88,7 @@ export default function Patents(props: IPatentsProps) {
   }, [selectedTimeperiod, data]);
 
   //
-  const barChartData = activeData ?? [];
+  // const barChartData = activeData ?? [];
 
   //
   const pieChartData = (activeData ?? []).map((item) => ({
@@ -147,7 +147,8 @@ export default function Patents(props: IPatentsProps) {
         <>
           {activeGraph === "bar" && (
             <BarChart
-              data={barChartData ?? []}
+              data={demoData}
+              // data={barChartData ?? []}
               keys={["count"]}
               indexBy="year"
               groupMode="stacked"
@@ -174,3 +175,111 @@ interface IPatentsProps {
   keywords: string[];
   title: string;
 }
+
+const demoData = [
+  {
+    country: "AD",
+    "hot dog": 33,
+    "hot dogColor": "hsl(313, 70%, 50%)",
+    burger: 21,
+    burgerColor: "hsl(285, 70%, 50%)",
+    sandwich: 112,
+    sandwichColor: "hsl(80, 70%, 50%)",
+    kebab: 117,
+    kebabColor: "hsl(121, 70%, 50%)",
+    fries: 15,
+    friesColor: "hsl(13, 70%, 50%)",
+    donut: 146,
+    donutColor: "hsl(34, 70%, 50%)",
+  },
+  {
+    country: "AE",
+    "hot dog": 32,
+    "hot dogColor": "hsl(158, 70%, 50%)",
+    burger: 68,
+    burgerColor: "hsl(264, 70%, 50%)",
+    sandwich: 170,
+    sandwichColor: "hsl(12, 70%, 50%)",
+    kebab: 147,
+    kebabColor: "hsl(99, 70%, 50%)",
+    fries: 48,
+    friesColor: "hsl(325, 70%, 50%)",
+    donut: 154,
+    donutColor: "hsl(114, 70%, 50%)",
+  },
+  {
+    country: "AF",
+    "hot dog": 152,
+    "hot dogColor": "hsl(12, 70%, 50%)",
+    burger: 5,
+    burgerColor: "hsl(9, 70%, 50%)",
+    sandwich: 28,
+    sandwichColor: "hsl(2, 70%, 50%)",
+    kebab: 70,
+    kebabColor: "hsl(199, 70%, 50%)",
+    fries: 160,
+    friesColor: "hsl(129, 70%, 50%)",
+    donut: 93,
+    donutColor: "hsl(178, 70%, 50%)",
+  },
+  {
+    country: "AG",
+    "hot dog": 101,
+    "hot dogColor": "hsl(306, 70%, 50%)",
+    burger: 197,
+    burgerColor: "hsl(270, 70%, 50%)",
+    sandwich: 199,
+    sandwichColor: "hsl(200, 70%, 50%)",
+    kebab: 66,
+    kebabColor: "hsl(138, 70%, 50%)",
+    fries: 97,
+    friesColor: "hsl(215, 70%, 50%)",
+    donut: 120,
+    donutColor: "hsl(297, 70%, 50%)",
+  },
+  {
+    country: "AI",
+    "hot dog": 15,
+    "hot dogColor": "hsl(310, 70%, 50%)",
+    burger: 126,
+    burgerColor: "hsl(271, 70%, 50%)",
+    sandwich: 38,
+    sandwichColor: "hsl(271, 70%, 50%)",
+    kebab: 65,
+    kebabColor: "hsl(173, 70%, 50%)",
+    fries: 114,
+    friesColor: "hsl(135, 70%, 50%)",
+    donut: 66,
+    donutColor: "hsl(155, 70%, 50%)",
+  },
+  {
+    country: "AL",
+    "hot dog": 86,
+    "hot dogColor": "hsl(299, 70%, 50%)",
+    burger: 96,
+    burgerColor: "hsl(323, 70%, 50%)",
+    sandwich: 87,
+    sandwichColor: "hsl(151, 70%, 50%)",
+    kebab: 73,
+    kebabColor: "hsl(298, 70%, 50%)",
+    fries: 159,
+    friesColor: "hsl(62, 70%, 50%)",
+    donut: 102,
+    donutColor: "hsl(247, 70%, 50%)",
+  },
+  {
+    country: "AM",
+    "hot dog": 132,
+    "hot dogColor": "hsl(20, 70%, 50%)",
+    burger: 59,
+    burgerColor: "hsl(330, 70%, 50%)",
+    sandwich: 76,
+    sandwichColor: "hsl(285, 70%, 50%)",
+    kebab: 104,
+    kebabColor: "hsl(31, 70%, 50%)",
+    fries: 112,
+    friesColor: "hsl(126, 70%, 50%)",
+    donut: 11,
+    donutColor: "hsl(35, 70%, 50%)",
+  },
+];

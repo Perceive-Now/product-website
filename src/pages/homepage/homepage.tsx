@@ -37,7 +37,7 @@ export default function HomePage() {
 
     switch (selectSearch) {
       case "ip-landscaping":
-        navigate("/publications", {
+        navigate("/ip-landscaping", {
           state: { search: searchValue },
         });
         break;

@@ -47,9 +47,10 @@ export default function AppHeader() {
   //   dispatch(setDashboardSearch(value));
   // };
   useEffect(() => {
-    if (location.pathname === "/") {
-      setOpen(true);
-    }
+    // if (location.pathname === "/") {
+    //   setOpen(true);
+    // }
+    setOpen(false);
   }, [location]);
 
   const toggleSideBar = () => {

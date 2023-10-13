@@ -24,7 +24,7 @@ export default function BarChart(props: IBarChartProps) {
 
   //
   return (
-    <div className="h-[300px]">
+    <div className="h-[350px]">
       <ResponsiveBar
         data={dataItems}
         keys={props.keys}

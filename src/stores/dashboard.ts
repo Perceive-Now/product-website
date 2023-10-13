@@ -17,9 +17,11 @@ export const DashboardSlice = createSlice({
   initialState,
   reducers: {
     setDashboardSearch: (state, action: PayloadAction<IKeywordOption[]>) => {
-      // console.log(state.search);
       state.search = action.payload;
     },
+    // setFilter: (state, action: PayloadAction<IKeywordOption[]>) => {
+    //   state.search
+    // },
     clearDashboardSearch: (state) => {
       state.search = undefined;
     },

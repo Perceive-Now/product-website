@@ -71,6 +71,7 @@ import CompanyPublicationDetailPage from "./pages/product/pro/companies/publicat
 import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
 import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
 import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
+import IPLandscaping from "./pages/product/ip-landscaping";
 
 /**
  *
@@ -132,6 +133,8 @@ function App() {
           <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
           <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
           <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} />
+
+          <Route path="/ip-landscaping" element={<IPLandscaping />} />
 
           {/* Account section */}
           <Route element={<AccountLayout />}>

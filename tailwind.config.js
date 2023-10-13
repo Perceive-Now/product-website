@@ -64,7 +64,7 @@ module.exports = {
           400: "#FFB531",
           500: "#FFA300",
           700: "#CC8300",
-          800:"#373D3F"
+          800: "#373D3F"
         },
         success: {
           500: "#40A140",
@@ -77,6 +77,9 @@ module.exports = {
       },
       ringWidth: {
         0.5: "0.5px",
+      },
+      boxShadow: {
+        'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       },
     },
   },

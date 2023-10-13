@@ -17,19 +17,17 @@
   .custom-scroller::-webkit-scrollbar {
     width: 0.65em;
   }
-   
+
   .custom-scroller::-webkit-scrollbar-track {
     /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
     border-radius: 100px;
-    background: #EFEFEF;
-
+    background: #efefef;
   }
-   
+
   .custom-scroller::-webkit-scrollbar-thumb {
-    background-color: #533F73;
+    background-color: #533f73;
     border-radius: 100px;
-    }
-  
+  }
 
   input[type="radio"] {
     @apply text-primary-600 focus:ring-0 cursor-pointer;
@@ -136,4 +134,8 @@
   border-radius: 10px !important;
   background-color: #5c1fc4 !important;
   color: white !important;
+}
+
+.shadow-custom {
+  box-shadow: 0 4px 18px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06);
 }
