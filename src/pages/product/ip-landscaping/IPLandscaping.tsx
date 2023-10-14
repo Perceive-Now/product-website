@@ -1,30 +1,31 @@
-// import { useSearchParams } from 'react-router-dom';
-// import SubHeader from "../../../components/app/sub-header";
 import Search, { IKeywordOption } from "../../../components/reusable/search";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+
 import { setDashboardSearch } from "../../../stores/dashboard";
 import Patents from "../../../components/@dashboard/patents";
-// import CommonList from "../../../components/@dashboard/common-list";
-import { DummyData } from "../../../components/@dashboard/common-list/dummy_data";
 import FootprintHeatmap from "../../../components/@dashboard/footprint-heatmap";
-// import { Menu } from "@headlessui/react";
 import FilterList from "../../../components/reusable/filter/FiilterList";
+
+import { DummyData } from "../../../components/@dashboard/common-list/dummy_data";
 import { BookmarkIcon } from "../../../components/icons";
 import PDFIcon from "../../../components/icons/miscs/Pdf";
+
 import Sunburst from "../../../components/@dashboard/sunburst";
 import BarChart from "../../../components/@product/bar-chart";
 import TreeMap from "../../../components/@product/tree-map";
-// import AreaBump from "../../../components/@product/area-bump";
 import Sankey from "../../../components/@product/sankey";
 import ScatterChart from "../../../components/@product/scatter-chart";
 import HeatMap from "../../../components/@product/heat-map";
-// import { useState } from "react";
-// import Button from "../../../components/reusable/button";
+import RadioButtons from "../../../components/reusable/radio-buttons";
+import { useState } from "react";
+
+type classificationMode = "ipc" | "cpc";
 
 const IPLandscaping = () => {
   const dispatch = useAppDispatch();
   // const [searchParams] = useSearchParams();
   // const paramsClassification: string | null = searchParams.get("mode");
+  const [classification, setClassification] = useState<classificationMode>("ipc");
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -45,6 +46,9 @@ const IPLandscaping = () => {
   //
   const handleSearch = (value: IKeywordOption[]) => {
     dispatch(setDashboardSearch(value));
+  };
+  const changeClassificationMode = (mode: string) => {
+    setClassification(mode as classificationMode);
   };
   // const [isOverlayVisible, setOverlayVisible] = useState(false);
 
@@ -231,8 +235,17 @@ const IPLandscaping = () => {
                 </div>
               </div>
               <div>
+                <div className="flex justify-end mb-2">
+                  <RadioButtons
+                    activeMode={classification}
+                    handleModeChange={changeClassificationMode}
+                    options={[
+                      { label: "IPC", value: "ipc" },
+                      { label: "CPC", value: "cpc" },
+                    ]}
+                  />
+                </div>
                 <TreeMap />
-                {/* <Patents key={joinedKeywords} keywords={keywordValue} title={"Top 5 states based on patent filings"} /> */}
 
                 <ul className="list-disc	ml-3 mt-6">
                   {DummyData.map((d, idx) => (
