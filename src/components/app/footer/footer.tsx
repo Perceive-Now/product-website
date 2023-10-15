@@ -22,6 +22,9 @@ const footerLinks: IFooterLink[] = [
 export default function AppFooter() {
   const websiteUrl = process.env.REACT_APP_WEBSITE_URL ?? "";
 
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+
   //
   return (
     <div className="pt-8 pb-4 px-4 flex justify-between items-center">
@@ -38,7 +41,7 @@ export default function AppFooter() {
       </div>
 
       <div className="flex gap-x-3">
-        <p>&copy; 2020</p>
+        <p>&copy; {currentYear}</p>
 
         {footerLinks.map((item, index) => (
           <a

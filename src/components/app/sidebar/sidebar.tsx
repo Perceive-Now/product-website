@@ -16,7 +16,6 @@ import { sidebarItems, ISidebarListItem } from "./_data";
 import { Dialog } from "@headlessui/react";
 import SidebarTransition from "./sidebarTransition";
 import ToggleBarIcon from "../../icons/sidenav/bars";
-// import { active } from "d3";
 
 /**
  *
@@ -93,7 +92,6 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                     </div>
                     <span className="text-lg">{item.title}</span>
                   </div>
-
                   {expandedGroups.includes(item.key) && (
                     <div>
                       {item.children?.map((child, jndex) => (

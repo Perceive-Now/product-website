@@ -16,7 +16,7 @@ import {
   // SimilarityIcon,
   // MascotIcon,
 } from "../../icons";
-import ChatIcon from "../../icons/sidenav/chat";
+// import ChatIcon from "../../icons/sidenav/chat";
 // import InventorIcon from "../../icons/sidenav/inventors";
 // import PortfolioIcon from "../../icons/sidenav/portfolio";
 // import ClaimIcon from "../../icons/sidenav/claim";
@@ -32,14 +32,14 @@ const sidebarItems: ISidebarListItem[] = [
   {
     title: "IP Landscaping",
     key: "ip-landscaping",
-    icon: <ChatIcon />,
+    icon: <TechnologyIcon />,
     to: "/ip-landscaping",
   },
   {
     title: "Freedom to operate",
     key: "freedom-to-operate",
     icon: <TechnologyIcon />,
-    to: "/freedom-to-operate",
+    to: "/patents",
   },
   {
     title: "IP Licensing opportunities",

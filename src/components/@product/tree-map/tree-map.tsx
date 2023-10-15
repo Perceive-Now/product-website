@@ -1,5 +1,5 @@
 import { ResponsiveTreeMap } from "@nivo/treemap";
-// const COLORS = [ "#7F4BD8","#E1D5F2", "#FFB531"]
+const COLORS = ["#7F4BD8", "#E1D5F2", "#FFB531"];
 
 export function TreeMap() {
   return (
@@ -16,18 +16,21 @@ export function TreeMap() {
           modifiers: [["brighter", 5]],
         }}
         parentLabelPosition="left"
+        parentLabelTextColor="#ffffff"
         borderWidth={1}
-        // colors={COLORS}
+        colors={COLORS}
+        nodeOpacity={1}
         // colors={{ scheme: 'set1' }}
 
-        parentLabelTextColor={{
-          from: "color",
-          modifiers: [["darker", 2]],
-        }}
-        borderColor={{
-          from: "color",
-          modifiers: [["darker", 0.1]],
-        }}
+        // parentLabelTextColor={{
+        //   from: "color",
+        //   modifiers: [["darker", 2]],
+        // }}
+        borderColor="#f4f1f1"
+        // borderColor={{
+        //   from: "color",
+        //   modifiers: [["brighter", 0.1]],
+        // }}
       />
     </div>
   );

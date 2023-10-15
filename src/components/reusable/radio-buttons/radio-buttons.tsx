@@ -22,7 +22,7 @@ export default function RadioButtons(props: IRadioButtons) {
             )}
           </span>
 
-          <span className="text-gray-600">{mode.label}</span>
+          <span className={`${props?.classNames} text-gray-600`}>{mode.label}</span>
         </div>
       ))}
     </div>
@@ -39,4 +39,5 @@ interface IRadioButtons {
   options: RadioButtonOption[];
   activeMode: string;
   handleModeChange: (mode: string) => void;
+  classNames?: string;
 }

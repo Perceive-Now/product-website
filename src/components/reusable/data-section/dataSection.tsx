@@ -25,12 +25,7 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
 
   //
   return (
-    <div
-      className={classNames(
-        "px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow",
-        props.className,
-      )}
-    >
+    <div className={classNames(" pt-1 pb-3 rounded-lg bg-white font-bold", props.className)}>
       {/* Title */}
       {props.title}
 

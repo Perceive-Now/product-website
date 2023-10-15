@@ -38,24 +38,24 @@ export function HeatMap() {
           maxValue: 100000,
         }}
         emptyColor="#555555"
-        legends={[
-          {
-            anchor: "bottom",
-            translateX: 0,
-            translateY: 30,
-            length: 400,
-            thickness: 8,
-            direction: "row",
-            tickPosition: "after",
-            tickSize: 3,
-            tickSpacing: 4,
-            tickOverlap: false,
-            tickFormat: ">-.2s",
-            title: "Value →",
-            titleAlign: "start",
-            titleOffset: 4,
-          },
-        ]}
+        // legends={[
+        //   {
+        //     anchor: "bottom",
+        //     translateX: 0,
+        //     translateY: 30,
+        //     length: 400,
+        //     thickness: 8,
+        //     direction: "row",
+        //     tickPosition: "after",
+        //     tickSize: 3,
+        //     tickSpacing: 4,
+        //     tickOverlap: false,
+        //     tickFormat: ">-.2s",
+        //     title: "Value →",
+        //     titleAlign: "start",
+        //     titleOffset: 4,
+        //   },
+        // ]}
       />
     </div>
   );
@@ -264,129 +264,6 @@ const data = [
       {
         x: "Others",
         y: -4830,
-      },
-    ],
-  },
-  {
-    id: "Iceland",
-    data: [
-      {
-        x: "Train",
-        y: -42587,
-      },
-      {
-        x: "Subway",
-        y: 64220,
-      },
-      {
-        x: "Bus",
-        y: 33029,
-      },
-      {
-        x: "Car",
-        y: -27809,
-      },
-      {
-        x: "Boat",
-        y: -29291,
-      },
-      {
-        x: "Moto",
-        y: -77527,
-      },
-      {
-        x: "Moped",
-        y: 98711,
-      },
-      {
-        x: "Bicycle",
-        y: -64649,
-      },
-      {
-        x: "Others",
-        y: -18216,
-      },
-    ],
-  },
-  {
-    id: "UK",
-    data: [
-      {
-        x: "Train",
-        y: 22373,
-      },
-      {
-        x: "Subway",
-        y: 62661,
-      },
-      {
-        x: "Bus",
-        y: -21031,
-      },
-      {
-        x: "Car",
-        y: -21548,
-      },
-      {
-        x: "Boat",
-        y: 57822,
-      },
-      {
-        x: "Moto",
-        y: -63170,
-      },
-      {
-        x: "Moped",
-        y: -47556,
-      },
-      {
-        x: "Bicycle",
-        y: 76309,
-      },
-      {
-        x: "Others",
-        y: -69366,
-      },
-    ],
-  },
-  {
-    id: "Vietnam",
-    data: [
-      {
-        x: "Train",
-        y: -29090,
-      },
-      {
-        x: "Subway",
-        y: 16376,
-      },
-      {
-        x: "Bus",
-        y: 99747,
-      },
-      {
-        x: "Car",
-        y: -92738,
-      },
-      {
-        x: "Boat",
-        y: -74231,
-      },
-      {
-        x: "Moto",
-        y: -22938,
-      },
-      {
-        x: "Moped",
-        y: -56996,
-      },
-      {
-        x: "Bicycle",
-        y: -19177,
-      },
-      {
-        x: "Others",
-        y: -10591,
       },
     ],
   },

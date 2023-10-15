@@ -119,7 +119,7 @@ export default function Patents(props: IPatentsProps) {
         <PageTitle
           title={props.title}
           // info={`Stats in this graph are extracted from a total of "X" number of patents`}
-          titleClass="font-semibold"
+          titleClass="font-bold"
         />
       }
     >

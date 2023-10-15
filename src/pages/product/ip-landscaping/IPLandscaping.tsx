@@ -7,7 +7,7 @@ import FootprintHeatmap from "../../../components/@dashboard/footprint-heatmap";
 import FilterList from "../../../components/reusable/filter/FiilterList";
 
 import { DummyData } from "../../../components/@dashboard/common-list/dummy_data";
-import { BookmarkIcon } from "../../../components/icons";
+import { BookmarkIcon, InfoIcon } from "../../../components/icons";
 import PDFIcon from "../../../components/icons/miscs/Pdf";
 
 import Sunburst from "../../../components/@dashboard/sunburst";
@@ -17,6 +17,8 @@ import Sankey from "../../../components/@product/sankey";
 import ScatterChart from "../../../components/@product/scatter-chart";
 import HeatMap from "../../../components/@product/heat-map";
 import RadioButtons from "../../../components/reusable/radio-buttons";
+import Tooltip from "../../../components/reusable/popover";
+
 import { useState } from "react";
 
 type classificationMode = "ipc" | "cpc";
@@ -56,8 +58,22 @@ const IPLandscaping = () => {
     <div>
       <div>
         <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md">
-          <div className="flex items-center justify-center gap-1 py-1">
+          <div className="flex items-start justify-center gap-0.5 py-1">
             <p className="text-lg text-primary-900 fw-600">IP Landscaping</p>
+            <Tooltip
+              trigger={
+                <p className="text-primary-500 cursor-pointer">
+                  <span>
+                    <InfoIcon className="w-2 h-2" />
+                  </span>
+                </p>
+              }
+            >
+              Recusandae expedita natus nobis veritatis porro omnis fugit ratione, dolore commodi?
+              Voluptate doloremque perspiciatis molestiae vitae explicabo atque velit deserunt
+              minima provident ea. Tempora odit enim, facere quasi deleniti ab corporis, temporibus
+              magnam, magni exercitationem error?
+            </Tooltip>
           </div>
         </div>
       </div>
@@ -67,7 +83,7 @@ const IPLandscaping = () => {
           <Search
             required
             size="small"
-            className="w-full z-30"
+            className="w-full bg-white"
             onSubmit={handleSearch}
             initialValue={searchedKeywords}
           />
@@ -86,23 +102,24 @@ const IPLandscaping = () => {
         </div>
       </div>
       <div className="flex  gap-2">
+        {/* filter */}
         <div className="flex-shrink-0 w-[260px]">
-          <div className="px-1 py-1 bg-white shadow rounded-lg relative">
+          <div className=" bg-white shadow-lg rounded-lg">
             <div className="rounded-none rounded-t-lg w-full flex justify-between items-center bg-primary-900 py-[12px] px-[16px] text-white">
               <span>Filter</span>
             </div>
             <div className="">
               <FilterList filters={DateFiltersLists} filterName={"Date"} />
               <FilterList filters={countryLists} filterName={"Country"} />
-              <FilterList filters={DateFiltersLists} filterName={"Legal Status"} />
-              <FilterList filters={DateFiltersLists} filterName={"Type"} />
-              <FilterList filters={DateFiltersLists} filterName={"Art group"} />
-              <FilterList filters={DateFiltersLists} filterName={"Classification"} />
-              <FilterList filters={DateFiltersLists} filterName={"Jurisdiction"} />
-              <FilterList filters={DateFiltersLists} filterName={"Inventor"} />
-              <FilterList filters={DateFiltersLists} filterName={"Applicant"} />
-              <FilterList filters={DateFiltersLists} filterName={"Patent Owner"} />
-              <FilterList filters={DateFiltersLists} filterName={"Agents/ Attorney"} />
+              <FilterList filters={LegalStatus} filterName={"Legal Status"} />
+              <FilterList filters={Types} filterName={"Type"} />
+              <FilterList filters={ArtGroup} filterName={"Art group"} />
+              <FilterList filters={Classifications} filterName={"Classification"} />
+              <FilterList filters={Jurisdiction} filterName={"Jurisdiction"} />
+              <FilterList filters={Names} filterName={"Inventor"} />
+              <FilterList filters={Names} filterName={"Applicant"} />
+              <FilterList filters={Names} filterName={"Patent Owner"} />
+              <FilterList filters={Names} filterName={"Agents/ Attorney"} />
             </div>
           </div>
           <div className="bg-white shadow rounded-lg mt-3">
@@ -121,11 +138,28 @@ const IPLandscaping = () => {
             </div>
           </div>
         </div>
+        {/* graph */}
         <div>
-          <div className=" shadow-lg p-2 w-full">
+          <div className="border-gray-200 shadow border p-2 w-full">
             <div>
-              <h4 className="text-xl font-semibold text-primary-900">Patent landscaping</h4>
-              <div className="grid grid-cols-2 gap-4 mt-3">
+              <div className="flex items-start justify-start gap-0.5">
+                <h4 className="text-lg font-bold text-primary-900">Patent landscaping</h4>
+                <Tooltip
+                  trigger={
+                    <p className="text-primary-500 cursor-pointer">
+                      <span>
+                        <InfoIcon className="w-2 h-2" />
+                      </span>
+                    </p>
+                  }
+                >
+                  Recusandae expedita natus nobis veritatis porro omnis fugit ratione, dolore
+                  commodi? Voluptate doloremque perspiciatis molestiae vitae explicabo atque velit
+                  deserunt minima provident ea. Tempora odit enim, facere quasi deleniti ab
+                  corporis, temporibus magnam, magni exercitationem error?
+                </Tooltip>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Patents
                     key={joinedKeywords}
@@ -134,18 +168,17 @@ const IPLandscaping = () => {
                   />
                 </div>
                 <div>
-                  <h6 className="text-xl font-semibold text-primary-900">Key takeaways</h6>
-                  {/* <CommonList dataList={DummyData} /> */}
+                  <h6 className="text-base font-bold text-primary-900 pt-2 pb-1">Key takeaways</h6>
                   <ul className="list-disc	">
                     {DummyData.map((d, idx) => (
-                      <li key={idx} className="mt-0.5">
+                      <li key={idx} className="mt-0.5 ml-2 text-sm">
                         {d.description}
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 mt-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                 <div>
                   <Patents
                     key={joinedKeywords}
@@ -154,11 +187,10 @@ const IPLandscaping = () => {
                   />
                 </div>
                 <div>
-                  <h6 className="text-xl font-semibold text-primary-900">Key takeaways</h6>
-                  {/* <CommonList dataList={DummyData} /> */}
-                  <ul className="list-disc	">
+                  <h6 className="text-base font-bold text-primary-900 pt-2 pb-1">Key takeaways</h6>
+                  <ul className="list-disc	ml-2">
                     {DummyData.map((d, idx) => (
-                      <li key={idx} className="mt-0.5">
+                      <li key={idx} className="mt-0.5 text-sm">
                         {d.description}
                       </li>
                     ))}
@@ -166,15 +198,14 @@ const IPLandscaping = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
               <div className="">
                 <FootprintHeatmap keywords={keywordValue} />
                 <div>
-                  <h6 className="text-xl font-semibold text-primary-900">Key takeaways</h6>
-                  {/* <CommonList dataList={DummyData} /> */}
+                  <h6 className="text-base font-bold text-primary-900">Key takeaways</h6>
                   <ul className="list-disc	ml-3">
                     {DummyData.map((d, idx) => (
-                      <li key={idx} className="mt-0.5">
+                      <li key={idx} className="mt-0.5 text-sm">
                         {d.description}
                       </li>
                     ))}
@@ -182,32 +213,19 @@ const IPLandscaping = () => {
                 </div>
               </div>
               <div>
-                {/* <Patents key={joinedKeywords} keywords={keywordValue} title={"Top 5 states based on patent filings"} />
-                 */}
-                <h6 className="text-xl font-semibold text-primary-900">
+                <h6 className="text-base font-bold text-primary-900">
                   Top 5 states based on patent filings
                 </h6>
-
                 <BarChart
                   data={demoData}
-                  // data={barChartData ?? []}
-                  // keys={["count"]}
-                  keys={[
-                    "hot dog",
-                    // 'burger',
-                    // 'sandwich',
-                    // 'kebab',
-                    // 'fries',
-                    // 'donut'
-                  ]}
-                  // indexBy="year"
+                  keys={["hot dog"]}
                   indexBy="country"
                   groupMode="stacked"
                   legendY="Number of Patents"
                 />
                 <ul className="list-disc	ml-3 mt-6">
                   {DummyData.map((d, idx) => (
-                    <li key={idx} className="mt-0.5">
+                    <li key={idx} className="mt-0.5 text-sm">
                       {d.description}
                     </li>
                   ))}
@@ -217,17 +235,16 @@ const IPLandscaping = () => {
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div className="">
                 <div className="">
-                  <h6 className="text-xl font-semibold text-primary-900">
+                  <h6 className="text-base font-bold text-primary-900">
                     Patent landscape overview
                   </h6>
                   <Sunburst />
                 </div>
                 <div>
-                  <h6 className="text-xl font-semibold text-primary-900">Summary</h6>
-                  {/* <CommonList dataList={DummyData} /> */}
+                  <h6 className="text-base font-bold text-primary-900">Summary</h6>
                   <ul className="list-disc	ml-3">
                     {DummyData.map((d, idx) => (
-                      <li key={idx} className="mt-0.5">
+                      <li key={idx} className="mt-0.5 text-sm">
                         {d.description}
                       </li>
                     ))}
@@ -243,13 +260,14 @@ const IPLandscaping = () => {
                       { label: "IPC", value: "ipc" },
                       { label: "CPC", value: "cpc" },
                     ]}
+                    classNames={"text-sm"}
                   />
                 </div>
                 <TreeMap />
 
                 <ul className="list-disc	ml-3 mt-6">
                   {DummyData.map((d, idx) => (
-                    <li key={idx} className="mt-0.5">
+                    <li key={idx} className="mt-0.5 text-sm">
                       {d.description}
                     </li>
                   ))}
@@ -257,36 +275,25 @@ const IPLandscaping = () => {
               </div>
             </div>
           </div>
-
           <div className="shadow-custom p-2 w-full mt-4">
-            <h6 className="text-xl font-semibold text-primary-900">Company landscape</h6>
+            <h6 className="text-lg font-bold text-primary-900">Company landscape</h6>
             <Sankey />
           </div>
           <div className="shadow-custom p-2 w-full mt-4">
-            <h6 className="text-xl font-semibold text-primary-900">Keyword analysis</h6>
+            <h6 className="text-lg font-bold text-primary-900">Keyword analysis</h6>
             <BarChart
               data={demoData}
-              // data={barChartData ?? []}
-              // keys={["count"]}
-              keys={[
-                "sandwich",
-                // 'burger',
-                // 'sandwich',
-                // 'kebab',
-                // 'fries',
-                // 'donut'
-              ]}
-              // indexBy="year"
+              keys={["sandwich"]}
               indexBy="country"
               groupMode="stacked"
               legendY="Number of Patents"
             />
             <div className="grid grid-cols-2 mt-1">
               <div>
-                <h6 className="text-xl font-semibold text-primary-900">Summary</h6>
+                <h6 className="text-lg font-bold text-primary-900">Summary</h6>
                 <ul className="list-disc	ml-3 mt-1">
                   {DummyData.map((d, idx) => (
-                    <li key={idx} className="mt-0.5">
+                    <li key={idx} className="mt-0.5 text-sm">
                       {d.description}
                     </li>
                   ))}
@@ -296,16 +303,14 @@ const IPLandscaping = () => {
             </div>
           </div>
           <div className="shadow-custom p-2 w-full mt-4">
-            <h6 className="text-xl font-semibold text-primary-900">
-              Portfolio strength and growth
-            </h6>
+            <h6 className="text-lg font-bold text-primary-900">Portfolio strength and growth</h6>
             <ScatterChart data={lineData} legendY="Number of patent claims" />
             <div className="grid grid-cols-2 mt-1">
               <div>
-                <h6 className="text-xl font-semibold text-primary-900">Summary</h6>
+                <h6 className="text-lg font-bold text-primary-900">Summary</h6>
                 <ul className="list-disc	ml-3 mt-1">
                   {DummyData.map((d, idx) => (
-                    <li key={idx} className="mt-0.5">
+                    <li key={idx} className="mt-0.5 text-sm">
                       {d.description}
                     </li>
                   ))}
@@ -316,20 +321,20 @@ const IPLandscaping = () => {
           </div>
           {/* heatmap */}
           <div className="shadow-custom p-2 w-full mt-4">
-            <h6 className="text-xl font-semibold text-primary-900">Technology trends</h6>
+            <h6 className="text-lg font-bold text-primary-900">Technology trends</h6>
 
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div>
-                <h6 className="text-xl font-semibold text-primary-900">
+                <h6 className="text-lg font-bold text-primary-900">
                   Patent filing over time against technology advancement
                 </h6>
                 <HeatMap />
               </div>
               <div>
-                <h6 className="text-xl font-semibold text-primary-900">Key takeaway</h6>
+                <h6 className="text-lg font-bold text-primary-900">Key takeaway</h6>
                 <ul className="list-disc	ml-3 mt-3">
                   {DummyData.map((d, idx) => (
-                    <li key={idx} className="mt-0.5">
+                    <li key={idx} className="mt-0.5 text-sm">
                       {d.description}
                     </li>
                   ))}
@@ -341,16 +346,14 @@ const IPLandscaping = () => {
           <div className="shadow-custom p-2 w-full mt-4">
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div>
-                <h6 className="text-xl font-semibold text-primary-900">
-                  Upcoming expiring patents
-                </h6>
+                <h6 className="text-lg font-bold text-primary-900">Upcoming expiring patents</h6>
                 <ScatterChart data={lineData} legendY="Number of patent claims" />
               </div>
               <div>
-                <h6 className="text-xl font-semibold text-primary-900">Summary</h6>
+                <h6 className="text-lg font-bold text-primary-900">Summary</h6>
                 <ul className="list-disc	ml-3 mt-3">
                   {DummyData.map((d, idx) => (
-                    <li key={idx} className="mt-0.5">
+                    <li key={idx} className="mt-0.5 text-sm">
                       {d.description}
                     </li>
                   ))}
@@ -359,22 +362,12 @@ const IPLandscaping = () => {
             </div>
           </div>
         </div>
-
+        {/* report */}
         <div className="flex-shrink-0 w-[200px]">
           <div className="shadow-lg p-1 space-y-2">
             <button className="flex justify-between w-full">
               <span>Create Report</span>
               <span>
-                {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <g clipPath="url(#clip0_909_23689)">
-                    <path d="M20 2H8C6.9 2 6 2.9 6 4V16C6 17.1 6.9 18 8 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM11.5 9.5C11.5 10.33 10.83 11 10 11H9V13H7.5V7H10C10.83 7 11.5 7.67 11.5 8.5V9.5ZM16.5 11.5C16.5 12.33 15.83 13 15 13H12.5V7H15C15.83 7 16.5 7.67 16.5 8.5V11.5ZM20.5 8.5H19V9.5H20.5V11H19V13H17.5V7H20.5V8.5ZM9 9.5H10V8.5H9V9.5ZM4 6H2V20C2 21.1 2.9 22 4 22H18V20H4V6ZM14 11.5H15V8.5H14V11.5Z" fill="#636567" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_909_23689">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg> */}
                 <PDFIcon className="text-gray-600" />
               </span>
             </button>
@@ -382,16 +375,6 @@ const IPLandscaping = () => {
               <span>Save</span>
               <span>
                 <BookmarkIcon />
-                {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <g clipPath="url(#clip0_909_23689)">
-                    <path d="M20 2H8C6.9 2 6 2.9 6 4V16C6 17.1 6.9 18 8 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM11.5 9.5C11.5 10.33 10.83 11 10 11H9V13H7.5V7H10C10.83 7 11.5 7.67 11.5 8.5V9.5ZM16.5 11.5C16.5 12.33 15.83 13 15 13H12.5V7H15C15.83 7 16.5 7.67 16.5 8.5V11.5ZM20.5 8.5H19V9.5H20.5V11H19V13H17.5V7H20.5V8.5ZM9 9.5H10V8.5H9V9.5ZM4 6H2V20C2 21.1 2.9 22 4 22H18V20H4V6ZM14 11.5H15V8.5H14V11.5Z" fill="#636567" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_909_23689">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg> */}
               </span>
             </button>
           </div>
@@ -408,6 +391,56 @@ const DateFiltersLists = [
   "Filing Date",
   "Earliest Priority Date",
   "Granted Date",
+];
+const LegalStatus = [
+  "Active",
+  "Pending",
+  "Discontinued",
+  "Expired",
+  "Inactive",
+  "Unknown",
+  "Patented",
+];
+const Types = [
+  "Utility",
+  "Design",
+  "Plant",
+  "Software",
+  "Biotechnology",
+  "Business method",
+  "Chemical",
+  "Pharmaceutical",
+  "Mechanical",
+  "Medical device",
+];
+const ArtGroup = ["2169", "2187", "3662", "3729", "2915", "1793", "3725", "1733", "2823"];
+const Classifications = ["WIPO", "USPC", "PCT", "CPC", "IPC/ IPCR"];
+const Jurisdiction = [
+  "United States",
+  "European Union",
+  "China",
+  "Japan",
+  "South Korea",
+  "India",
+  "Canada",
+  "Australia",
+  "Brazil",
+  "Russia",
+];
+
+const Names = [
+  "Danet ty M",
+  "Hart Justin",
+  "Lee Jongryul",
+  "Kim Jaedeok",
+  "Danet Ty M",
+  "Hart Justin",
+  "Riabov",
+  "Lee Jongryul",
+  "Kim Jaedeok",
+  "Danet Ty M",
+  "Hart Justin",
+  "Riabov",
 ];
 const countryLists = ["Nepal", "China", "India"];
 

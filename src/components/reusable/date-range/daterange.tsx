@@ -59,7 +59,12 @@ export default function DateRangePick({ classification, getValues }: Props) {
           selectsStart
           startDate={startDate}
           endDate={endDate}
+          placeholderText="MM/DD/YYYY"
           disabled={classification === "none"}
+          maxDate={endDate || today}
+          isClearable
+          // showMonthYearDropdown
+          // scrollableMonthYearDropdown
         />
       </div>
       <div className="flex flex-col">
@@ -70,8 +75,13 @@ export default function DateRangePick({ classification, getValues }: Props) {
           selectsEnd
           startDate={startDate}
           endDate={endDate}
-          minDate={startDate || new Date()} // Prevent selecting a date before the start date
+          placeholderText="MM/DD/YYYY"
+          minDate={startDate} // Prevent selecting a date before the start date
           disabled={classification === "none"}
+          maxDate={today}
+          isClearable
+          // showMonthYearDropdown
+          // scrollableMonthYearDropdown
         />
       </div>
     </div>

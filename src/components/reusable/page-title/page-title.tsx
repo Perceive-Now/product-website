@@ -12,9 +12,7 @@ export default function PageTitle(props: PropsWithChildren<IPageTitleProps>) {
   return (
     <div className="py-1">
       <div className="flex justify-between items-center">
-        <p className={classNames("text-[22px] text-primary-900", props.titleClass)}>
-          {props.title}
-        </p>
+        <p className={classNames("text-base text-primary-900", props.titleClass)}>{props.title}</p>
 
         {props.learnMore && !props.info && !props.learnHow && (
           <Tooltip

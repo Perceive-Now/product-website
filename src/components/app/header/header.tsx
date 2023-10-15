@@ -47,9 +47,6 @@ export default function AppHeader() {
   //   dispatch(setDashboardSearch(value));
   // };
   useEffect(() => {
-    // if (location.pathname === "/") {
-    //   setOpen(true);
-    // }
     setOpen(false);
   }, [location]);
 

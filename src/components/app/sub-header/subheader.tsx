@@ -8,18 +8,22 @@ const Subheader: FunctionComponent<Props> = ({ title, analytics, table }) => {
   const { pathname } = useLocation();
   return (
     <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md">
-      <div className="flex items-center justify-center gap-1 py-">
+      <div className="flex items-start justify-center gap-1 py-">
         <p className="text-lg text-primary-900 fw-600">{title}</p>
         <Tooltip
           trigger={
             <p className="text-primary-500 cursor-pointer">
               <span>
-                <InfoIcon />
+                <InfoIcon className="w-2 h-2" />
               </span>
             </p>
           }
         >
-          Tooltip text
+          Minima pariatur est incidunt omnis, doloremque aliquid exercitationem explicabo quis, iure
+          tenetur ad consequuntur officia distinctio in minus, velit cupiditate aperiam neque
+          sapiente blanditiis ea quas tempora? Quibusdam, ullam blanditiis aut nemo unde labore enim
+          dolore magnam inventore voluptates suscipit cupiditate facilis sequi. Alias, nisi. Earum
+          tempore recusandae vel assumenda et.
         </Tooltip>
       </div>
       <div className="flex items-center">
