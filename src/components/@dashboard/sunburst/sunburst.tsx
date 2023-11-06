@@ -30,6 +30,50 @@ export function Sunburst() {
     </div>
   );
 }
+const s = {
+  count: 2290,
+  children: [
+    {
+      org: "01",
+      children: [
+        {
+          org: "01 Communique Laboratory Inc.",
+          count: 10,
+        },
+        {
+          org: "01 (Germany) GmbH & Co. OHG",
+          count: 10,
+        },
+      ],
+    },
+    {
+      org: "02",
+      children: [
+        {
+          org: "02 Communique Laboratory Inc.",
+          count: 10,
+        },
+        {
+          org: "03 (Germany) GmbH & Co. OHG",
+          count: 10,
+        },
+      ],
+    },
+    {
+      org: "03",
+      children: [
+        {
+          org: "03 Communique Laboratory Inc.",
+          count: 10,
+        },
+        {
+          org: "03 (Germany) GmbH & Co. OHG",
+          count: 10,
+        },
+      ],
+    },
+  ],
+};
 
 const data = {
   name: "nivo",
@@ -452,3 +496,10 @@ const data = {
     },
   ],
 };
+
+// response:[
+//   {
+//     year:1976,
+//     org:""
+//   }
+// ]

@@ -3,6 +3,89 @@ import axiosInstance from "../axios";
 /**
  *
  */
+const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
+
+export async function getPatentsYearly(keywords: string[]) {
+  const response = await axiosInstance.get<IPatent>(
+    `/api/patent_yearwise_publications?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return response.data.response;
+}
+
+export async function getPatentCitationsReference(keywords: string[]) {
+  const res = await axiosInstance.get<IPatentCitation>(
+    `/api/patent_citations_references?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getPatentLegalStatus(keywords: string[]) {
+  const res = await axiosInstance.get<IPatentLegalStatus>(
+    `/api/patent_legal_status?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getInventorAssigneeAnalysis(keywords: string[]) {
+  const res = await axiosInstance.get<IInventorAnalysis>(
+    `/api/inventor_assignee_analysis?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return res.data.results;
+}
+
+export async function getGeoFiling(keywords: string[]) {
+  const res = await axiosInstance.get<IGeoFiling>(
+    `/api/patent_heatmap?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getPatentClassificationCPC(keywords: string[]) {
+  const res = await axiosInstance.get<IGeoFiling>(
+    `/api/patent_classification_cpc?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getWIPOAnalysis(keywords: string[]) {
+  const res = await axiosInstance.get<IWipoAnalysis>(
+    `/api/wipo_analysis?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getEmergingTechnologyTrend(keywords: string[]) {
+  const res = await axiosInstance.get<IEmergingTechnologyTrend>(
+    `/api/emerging_trends_wipo?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getPatentCompetitorPortfolio(keywords: string[]) {
+  const res = await axiosInstance.get<IPatentCompetitorPortfolio>(
+    `/api/competitor_portfolios?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getTechnlogyLifeCycleAnalysis(keywords: string[]) {
+  const res = await axiosInstance.get<ITechnologyAnalysis>(
+    `/api/lifecycle_analysis?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.results;
+}
+
+/**
+ *
+ */
 export async function getScholaryPublications(keywords: string[]) {
   const response = await axiosInstance.get<IScholaryPublicationResponse>(
     `/api/v1/ds-api/dashboard/scholarly-publications/?q=${keywords.join(",")}`,
@@ -11,17 +94,6 @@ export async function getScholaryPublications(keywords: string[]) {
   return response.data.data;
 }
 
-export async function getPatentsPieChart(keywords: string[]) {
-  const response = await axiosInstance.get<IPatent[]>(
-    `/api/v1/ds-api/dashboard/patent-yearly-count/?q=${keywords.join(",")}`,
-  );
-
-  return response.data;
-}
-
-/**
- *
- */
 export async function getExpertsCountGraph(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
     `/api/v1/ds-api/dashboard/experts-trend/?q=${keywords.join(",")}`,
@@ -60,6 +132,74 @@ export async function getTopFundingChart(keywords: string[]) {
 /**
  *
  */
+
+export interface IPatent {
+  response: {
+    year: string;
+    count: string;
+  }[];
+}
+export interface IPatentCitation {
+  response: {
+    patent_id: string;
+    count: string;
+  }[];
+}
+
+export interface IPatentLegalStatus {
+  response: {
+    withdrawn: string;
+    count: number;
+  }[];
+}
+
+export interface IInventorAnalysis {
+  results: {
+    filed_country: string;
+    count: number;
+  }[];
+}
+export interface IGeoFiling {
+  response: {
+    state: string;
+    cout: number;
+  }[];
+}
+export interface IPatentClassification {
+  response: {
+    cpc_subclas: string;
+    count: number;
+  }[];
+}
+export interface IWipoAnalysis {
+  response: {
+    title: string;
+    count: number;
+  }[];
+}
+export interface IEmergingTechnologyTrend {
+  response: {
+    wipo_field_title: string;
+    count: number;
+    year: string;
+  }[];
+}
+
+export interface IPatentCompetitorPortfolio {
+  response: {
+    org: string;
+    count: number;
+  }[];
+}
+export interface ITechnologyAnalysis {
+  results: {
+    date: string;
+    count: number;
+  }[];
+}
+
+//
+
 interface IScholaryPublication {
   year: number;
   open_source: number;
@@ -68,11 +208,6 @@ interface IScholaryPublication {
 
 interface IScholaryPublicationResponse {
   data: IScholaryPublication[];
-}
-
-export interface IPatent {
-  year: string;
-  count: string;
 }
 
 export interface IExpertCountItem {

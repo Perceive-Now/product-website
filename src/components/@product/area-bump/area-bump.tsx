@@ -1,10 +1,16 @@
 import { ResponsiveAreaBump } from "@nivo/bump";
+import { FunctionComponent } from "react";
 
-export function AreaBump() {
+interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+}
+
+export const AreaBump: FunctionComponent<Props> = ({ data }) => {
   return (
     <div className="h-[400px]">
       <ResponsiveAreaBump
-        data={data}
+        data={data1}
         margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
         spacing={8}
         colors={{ scheme: "nivo" }}
@@ -29,20 +35,20 @@ export function AreaBump() {
             spacing: 10,
           },
         ]}
-        fill={[
-          {
-            match: {
-              id: "CoffeeScript",
-            },
-            id: "dots",
-          },
-          {
-            match: {
-              id: "TypeScript",
-            },
-            id: "lines",
-          },
-        ]}
+        // fill={[
+        //   {
+        //     match: {
+        //       id: "CoffeeScript",
+        //     },
+        //     id: "dots",
+        //   },
+        //   {
+        //     match: {
+        //       id: "TypeScript",
+        //     },
+        //     id: "lines",
+        //   },
+        // ]}
         // startLabel="id"
         // endLabel="id"
         axisTop={{
@@ -64,9 +70,9 @@ export function AreaBump() {
       />
     </div>
   );
-}
+};
 
-const data = [
+const data1 = [
   {
     id: "JavaScript",
     data: [

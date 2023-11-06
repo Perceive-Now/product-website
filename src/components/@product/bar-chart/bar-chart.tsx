@@ -7,6 +7,7 @@ import { COLORS } from "../../../utils/constants";
 
 //
 import { formatNumber } from "../../../utils/helpers";
+import classNames from "classnames";
 
 /**
  *
@@ -20,29 +21,31 @@ export default function BarChart(props: IBarChartProps) {
   }, [props.data]);
 
   //
-  const barPadding = props.groupMode === "stacked" ? 0.85 : 0.4;
+  // const barPadding = props.groupMode === "stacked" ? 0.8 : 0.4;
+  const barPadding = props.layout === "horizontal" ? 0.3 : 0.8;
 
   //
   return (
-    <div className="h-[350px]">
+    <div className={classNames(props.layout === "horizontal" ? "h-[900px]" : "h-[400px]")}>
       <ResponsiveBar
         data={dataItems}
         keys={props.keys}
         indexBy={props.indexBy}
         margin={{
           top: 50,
-          right: 0,
-          left: 60,
+          right: 200,
+          left: 200,
           bottom: props.legendX ? 50 : 30,
         }}
         padding={barPadding}
-        innerPadding={4}
+        innerPadding={props.innerPadding !== undefined ? props.innerPadding : 4}
         groupMode={props.groupMode || "grouped"}
-        borderRadius={5}
+        borderRadius={props.borderRadius !== undefined ? props.borderRadius : 4}
         valueScale={{ type: "linear" }}
         indexScale={{ type: "band", round: true }}
         axisTop={null}
         axisRight={null}
+        layout={props.layout !== undefined ? props.layout : "vertical"}
         {...(props.legendX && {
           axisBottom: {
             tickSize: 5,
@@ -65,12 +68,16 @@ export default function BarChart(props: IBarChartProps) {
           },
         })}
         legends={props.legends}
-        enableLabel={false}
+        enableLabel={props.label !== undefined ? props.label : false}
+        labelTextColor={{
+          from: "color",
+          modifiers: [["brighter", 5]],
+        }}
         labelSkipWidth={12}
         labelSkipHeight={12}
         animate={false}
         role="application"
-        colors={COLORS.slice(3 - props.keys.length)}
+        colors={COLORS.slice(9 - props.keys.length)}
         tooltip={(item) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
             {formatNumber(item.value)}
@@ -91,10 +98,16 @@ export default function BarChart(props: IBarChartProps) {
 interface IBarChartProps {
   data: any[];
   keys: string[];
+  innerPadding?: number;
+  borderRadius?: number;
+  marginRight?: number;
+  marginLeft?: number;
   indexBy: string;
   legendY?: string;
   legendX?: string;
   legends?: any;
+  layout?: "horizontal" | "vertical";
   groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
+  label?: boolean;
 }

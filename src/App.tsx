@@ -72,6 +72,8 @@ import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
 import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
 import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
 import IPLandscaping from "./pages/product/ip-landscaping";
+import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 
 /**
  *
@@ -135,6 +137,8 @@ function App() {
           <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} />
 
           <Route path="/ip-landscaping" element={<IPLandscaping />} />
+          <Route path="/ip-landscaping/summary" element={<IPSummaryReport />} />
+          <Route path="/ip-landscaping/full-report" element={<IPFullReport />} />
 
           {/* Account section */}
           <Route element={<AccountLayout />}>

@@ -3,7 +3,8 @@ button {
 }
 
 .primary-button {
-  @apply bg-primary-900 text-white hover:bg-primary-50 hover:text-primary-900 focus:bg-primary-800 focus:text-white disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed;
+  @apply bg-primary-900 text-white  focus:bg-primary-800 focus:text-white disabled:bg-gray-300 disabled:text-white disabled:cursor-not-allowed;
+  /* hover:bg-primary-50 hover:text-primary-900 */
 }
 
 .secondary-button {

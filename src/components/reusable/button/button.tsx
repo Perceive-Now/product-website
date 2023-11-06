@@ -31,12 +31,13 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
       type={props.htmlType}
       className={classNames(
         {
-          "py-1 px-2": buttonSize === "small",
+          "py-1 px-3": buttonSize === "small",
           "py-[12px] px-[24px]": buttonSize === "medium",
         },
         {
           "rounded-md": roundValue === "small",
-          "rounded-2xl": roundValue === "medium",
+          "rounded-lg": roundValue === "medium",
+          "rounded-2xl": roundValue === "large",
           "rounded-full": roundValue === "full",
         },
         {
@@ -67,7 +68,7 @@ interface IButtonProps {
   size?: "small" | "medium";
   classname?: string;
   // Custom
-  rounded?: "small" | "medium" | "full";
+  rounded?: "small" | "medium" | "large" | "full";
   type?: "primary" | "secondary" | "optional";
   icon?: ReactElement;
   loading?: boolean;

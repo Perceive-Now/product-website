@@ -190,7 +190,7 @@ function NavLinkItem(props: INavLinkItemProps) {
           {props.icon && (
             <div
               className={classNames(
-                "mr-1 text-gray-600",
+                "mr-1 text-gray-600 fill-gray-600",
 
                 {
                   // "text-gray-600": !props.isTopLevel,

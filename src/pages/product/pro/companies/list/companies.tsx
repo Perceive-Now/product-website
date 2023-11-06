@@ -28,7 +28,7 @@ import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
 // import TableYearSelect from "../../../../../components/reusable/table-year-select";
 import SubHeader from "../../../../../components/app/sub-header";
-import Filter from "../../../../../components/reusable/filter";
+import Filter from "../../../../../components/icons/chooseplan/filter";
 
 //
 const PAGE_SIZE = 10;

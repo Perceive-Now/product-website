@@ -15,7 +15,7 @@ export default function ChevronRight(props: SVGProps<SVGSVGElement>) {
       </g>
       <defs>
         <clipPath id="clip0_2360_40054">
-          <rect width="24" height="24" fill="white" />
+          <rect width="24" height="24" />
         </clipPath>
       </defs>
     </svg>

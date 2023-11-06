@@ -1,5 +1,5 @@
 import { Fragment, FunctionComponent } from "react";
-import { ChevronDown } from "../../icons";
+import { ChevronDown } from "../..";
 import { Menu, Transition } from "@headlessui/react";
 import FilterList from "./FiilterList";
 

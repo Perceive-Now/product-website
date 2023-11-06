@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, FunctionComponent, useState } from "react";
-import { ChevronRight } from "../../icons";
+import { ChevronRight } from "../..";
 import DateFilter from "./DateFilter";
 import ClassificationFilter from "./ClassificationFilter";
 import classNames from "classnames";
@@ -45,7 +45,6 @@ const FilterList: FunctionComponent<Props> = ({ filters, filterName }) => {
               <span>{filterName}</span>
               <ChevronRight />
             </Menu.Button>
-
             <Transition
               as={Fragment}
               enter="transition ease-out duration-100"
@@ -59,11 +58,8 @@ const FilterList: FunctionComponent<Props> = ({ filters, filterName }) => {
                 {filterName !== "Date" && filterName !== "Classification" ? (
                   <>
                     {filters.map((filter, idx) => (
-                      <Menu.Item key={idx}>
+                      <div key={idx}>
                         <label
-                          onClick={(event) => {
-                            event.preventDefault(); // Prevent the click event from propagating to close the menu
-                          }}
                           htmlFor={filter}
                           className="flex items-center gap-x-2 hover:bg-primary-50 w-full text-start p-1"
                         >
@@ -72,15 +68,12 @@ const FilterList: FunctionComponent<Props> = ({ filters, filterName }) => {
                             type="checkbox"
                             checked={selectedOptions.includes(filter)}
                             onChange={() => toggleOption(filter)}
-                            onClick={(event) => {
-                              event.stopPropagation(); // Prevent the click event from propagating to close the menu
-                              return false; // Prevent the click event from bubbling up
-                            }}
+                            onClick={(e) => e.stopPropagation()}
                             className="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 "
                           />
                           <span className="">{filter}</span>
                         </label>
-                      </Menu.Item>
+                      </div>
                     ))}
                   </>
                 ) : (

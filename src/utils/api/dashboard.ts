@@ -3,6 +3,16 @@ import axiosInstance from "../axios";
 /**
  *
  */
+
+export async function getRelatedKeywords(keywords: string[]) {
+  const response = await axiosInstance.get<IRelatedKeywordsResponse>(
+    `/api/v1/ds-api/dashboard/related-keywords/?q=${keywords.join(",")}`,
+  );
+
+  return response.data.data;
+}
+
+//
 export async function getPatentsCount(keywords: string[]) {
   const response = await axiosInstance.get<IPatentsCountResponse>(
     `/dashboard/patents/count?q=${keywords.join(",")}`,
@@ -30,14 +40,6 @@ export async function getTopUniversities(keywords: string[]) {
 export async function getExpertsCount(keywords: string[]) {
   const response = await axiosInstance.get<IExpertCountResponse>(
     `/dashboard/experts/count?q=${keywords.join(",")}`,
-  );
-
-  return response.data.data;
-}
-
-export async function getRelatedKeywords(keywords: string[]) {
-  const response = await axiosInstance.get<IRelatedKeywordsResponse>(
-    `/api/v1/ds-api/dashboard/related-keywords/?q=${keywords.join(",")}`,
   );
 
   return response.data.data;

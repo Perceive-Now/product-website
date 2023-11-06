@@ -51,7 +51,7 @@ export default function ScatterChart(props: IScatterChartProps) {
         })}
         {...(props.legendY && {
           axisLeft: {
-            format: (value) => formatNumber(value),
+            // format: (value) => formatNumber(value),
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,

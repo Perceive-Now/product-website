@@ -50,7 +50,8 @@ export default function DateRangePick({ classification, getValues }: Props) {
   // send date
 
   return (
-    <div className="flex items-center justify-end gap-x-1 ml-4 my-1">
+    // <div className="flex items-center justify-end gap-x-1 ml-4 my-1">
+    <div className="flex items-center  gap-x-1  my-1">
       <div className="flex flex-col">
         <label>From</label>
         <ReactDatePicker
@@ -62,7 +63,7 @@ export default function DateRangePick({ classification, getValues }: Props) {
           placeholderText="MM/DD/YYYY"
           disabled={classification === "none"}
           maxDate={endDate || today}
-          isClearable
+          isClearable={classification === "specific"}
           // showMonthYearDropdown
           // scrollableMonthYearDropdown
         />
@@ -79,7 +80,8 @@ export default function DateRangePick({ classification, getValues }: Props) {
           minDate={startDate} // Prevent selecting a date before the start date
           disabled={classification === "none"}
           maxDate={today}
-          isClearable
+          isClearable={classification === "specific"}
+
           // showMonthYearDropdown
           // scrollableMonthYearDropdown
         />

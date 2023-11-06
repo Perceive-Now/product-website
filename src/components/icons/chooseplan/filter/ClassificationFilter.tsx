@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, FunctionComponent } from "react";
-import { ChevronRight } from "../../icons";
+import { ChevronRight } from "../..";
 
 interface Props {
   filters: IFIlters[];

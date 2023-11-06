@@ -10,17 +10,16 @@ import { setDashboardSearch } from "../../stores/dashboard";
 
 //
 // import PerceiveLogo from "../../assets/images/logo.svg";
-import {
-  CompaniesIcon,
-  FundingIcon,
-  PatentsIcon,
-  PublicationsIcon,
-  UniversitiesIcon,
-} from "../../components/icons";
+import { PatentsIcon } from "../../components/icons";
 import classNames from "classnames";
 import { useCallback, useState } from "react";
-import InventorIcon from "../../components/icons/sidenav/inventors";
 import { Disclosure, Transition } from "@headlessui/react";
+import HookIcon from "../../components/icons/sidenav/hook";
+import DocumentIcon from "../../components/icons/miscs/document";
+import TechnologyIcon from "../../components/icons/miscs/Technology";
+import BulbIcon from "../../components/icons/miscs/Bulb";
+import PortfolioIcon from "../../components/icons/sidenav/portfolio";
+import ClaimIcon from "../../components/icons/sidenav/claim";
 
 /**
  *
@@ -88,11 +87,11 @@ export default function HomePage() {
                 onSubmit={handleSearch}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6  mt-4 gap-4 ">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-7 mt-4 gap-4 content-start">
               {SearchType.map((type, index) => (
                 <div
                   key={index}
-                  className="hover:cursor-pointer flex flex-col justify-center items-center"
+                  className="hover:cursor-pointer flex flex-col justify-start items-center"
                   onClick={() => selectSearchType(type.key)}
                 >
                   <div
@@ -106,7 +105,9 @@ export default function HomePage() {
                     <type.icon
                       className={classNames(
                         "w-[32px] h-[32px] ",
-                        selectSearch === type.key ? "text-white" : "text-primary-900",
+                        selectSearch === type.key
+                          ? "text-white fill-white"
+                          : "text-primary-900 fill-primary-900",
                       )}
                     />
                   </div>
@@ -178,28 +179,33 @@ const SearchType = [
   },
   {
     name: "Freedom to operate",
-    icon: PublicationsIcon,
+    icon: HookIcon,
     key: "freedom-to-operate",
   },
   {
-    name: "IP Licensing opportunities",
-    icon: CompaniesIcon,
-    key: "ip-licensing-opportunities",
+    name: "M&A licensing",
+    icon: DocumentIcon,
+    key: "m&a-licensing",
   },
   {
     name: "Technology landscaping",
-    icon: UniversitiesIcon,
+    icon: TechnologyIcon,
     key: "technology-landscaping",
   },
   {
     name: "Competitive intelligence",
-    icon: InventorIcon,
+    icon: BulbIcon,
     key: "competitive-intelligence",
   },
   {
     name: "Infringement analysis",
-    icon: FundingIcon,
+    icon: PortfolioIcon,
     key: "infringement-analysis",
+  },
+  {
+    name: "Database Search",
+    icon: ClaimIcon,
+    key: "database-search",
   },
 ];
 

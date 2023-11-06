@@ -30,7 +30,7 @@ import {
   IDeepSearchAcademicsPatentItem,
 } from "../../../../../utils/api/deep-search/academic";
 import SubHeader from "../../../../../components/app/sub-header";
-import Filter from "../../../../../components/reusable/filter";
+import Filter from "../../../../../components/icons/chooseplan/filter";
 
 //
 const PAGE_SIZE = 10;

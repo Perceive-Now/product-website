@@ -32,7 +32,7 @@ import { getRelatedKeywords } from "../../../../../utils/api/dashboard";
 import { getDeepSearchPublicationList } from "../../../../../utils/api/deep-search/publications";
 import TableShareButton from "../../../../../components/reusable/TableShareButton";
 import SubHeader from "../../../../../components/app/sub-header";
-import Filter from "../../../../../components/reusable/filter";
+import Filter from "../../../../../components/icons/chooseplan/filter";
 
 //
 const PAGE_SIZE = 10;

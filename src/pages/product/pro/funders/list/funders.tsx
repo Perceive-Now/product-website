@@ -31,7 +31,7 @@ import Button from "../../../../../components/reusable/button";
 import { formatNumber } from "../../../../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import SubHeader from "../../../../../components/app/sub-header";
-import Filter from "../../../../../components/reusable/filter";
+import Filter from "../../../../../components/icons/chooseplan/filter";
 
 //
 const PAGE_SIZE = 10;

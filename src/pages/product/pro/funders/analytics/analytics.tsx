@@ -59,7 +59,7 @@ const Analytics = () => {
       </div>
       <div className="grid grid-cols-2 gap-4 mt-3">
         <div>
-          <Patents key={joinedKeywords} keywords={keywordValue} title={"Funding"} />
+          {/* <Patents key={joinedKeywords} keywords={keywordValue} title={"Funding"} /> */}
         </div>
         <div>
           <div className="flex items-center justify-between">
