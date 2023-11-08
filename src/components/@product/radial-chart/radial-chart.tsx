@@ -39,15 +39,15 @@ export default function RadialChart(props: IRadialChartProps) {
         cornerRadius={4}
         enableRadialGrid={false}
         enableCircularGrid={false}
-        tooltip={(data) => (
-          <div className="px-2 py-1 bg-white border border-gray-300 shadow rounded-lg">
-            <p className="font-semibold">{data.bar.groupId}</p>
-            <p className="text-sm">
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {((data.bar.data as any).value ?? data.bar.data.y ?? "").toLocaleString()}
-            </p>
-          </div>
-        )}
+        // tooltip={(data) => (
+        //   <div className="px-2 py-1 bg-white border border-gray-300 shadow rounded-lg">
+        //     <p className="font-semibold">{data.bar.groupId}</p>
+        //     <p className="text-sm">
+        //       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        //       {((data.bar.data as any).value ?? data.bar.data.y ?? "").toLocaleString()}
+        //     </p>
+        //   </div>
+        // )}
         colors={props.colors || COLORS}
       />
     </div>
