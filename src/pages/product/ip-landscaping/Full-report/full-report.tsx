@@ -93,8 +93,9 @@ export const IPFullReport = () => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2">
-        <div className="col-span-7 mt-0.5">
+      {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
+      <div className="flex flex-col lg:flex-row mb-2 gap-x-3 mt-2">
+        <div className="mt-0.5">
           {/* Search bar */}
           <div>
             <Search
@@ -129,7 +130,7 @@ export const IPFullReport = () => {
             )}
           </div>
           {/* summary report */}
-          <div className="flex gap-x-4 mt-6 ">
+          <div className="flex flex-col md:flex-row gap-x-4 mt-6 ">
             <div className="flex-shrink-0 w-auto">
               <div className="flex flex-col border rounded-t-lg shadow">
                 <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
@@ -151,7 +152,7 @@ export const IPFullReport = () => {
                 </div>
               </div>
             </div>
-            <div className="space-y-4 w-[920px] xl:w-full">
+            <div className="space-y-4 lg:w-[920px] xl:w-full">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Related Technologies</h2>
@@ -284,7 +285,7 @@ export const IPFullReport = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-1">
+        <div className="lg:w-[200px] flex-shrink-0">
           <div className="flex flex-col gap-y-1">
             <Button
               htmlType={"button"}

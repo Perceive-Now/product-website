@@ -1,12 +1,16 @@
 import { FunctionComponent, useEffect } from "react";
-import DataSection from "../../../reusable/data-section";
-import { getGeoFiling } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
+
+//
+import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import USMap from "../../../@product/us-map";
+
+//
+import { getGeoFiling } from "../../../../utils/api/charts";
+//
 import StatesCodes from "../../../../utils/extra/us-states-codes";
-import WorldMap from "../../../@product/world-map";
-import countryNames from "../../../../utils/extra/country-2-names";
+//
+import USMap from "../../../@product/us-map";
 import BarChart from "../../../@product/bar-chart";
 
 interface Props {

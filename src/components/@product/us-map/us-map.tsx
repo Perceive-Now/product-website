@@ -17,20 +17,18 @@ import geoUrl from "./topology.json";
 const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const HEATMAP_SECTIONS = 10;
 
-//
+//handleButtonClick
 const COLOR_RANGE = [
   "#533F73",
-  "#5C1FC4",
-  "#7F4BD8",
   "#442873",
+  "#5C1FC4",
+  "#5C20C4",
+  "#7D4DD0",
   "#B6A2D8",
   "#7F4BD8",
-  // "#442873e6",
-  //
-  //
-  // "#5C1FC4",
-  // "#533F73",
-  // "#442873",
+  "#926AD7",
+  "#CCBAED",
+  "#5C1FC4",
 ];
 
 const HEATMAP_COLORS = [
@@ -98,7 +96,7 @@ export default function USMap(props: IUSMapProps) {
             (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
 
-        if (currentStateValue === 0) return "#d7d7d7";
+        if (currentStateValue === 0) return "#E1D5F2";
 
         //
         for (let i = 1; i <= COLOR_RANGE.length; i++) {
@@ -115,7 +113,7 @@ export default function USMap(props: IUSMapProps) {
             (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
 
-        if (currentStateValue === 0) return "#d7d7d7";
+        if (currentStateValue === 0) return "#E1D5F2";
 
         //
         for (let i = 1; i <= COLOR_RANGE2.length; i++) {
@@ -157,7 +155,7 @@ export default function USMap(props: IUSMapProps) {
         <div className="flex justify-center w-full object-cover" id="us-map">
           <ComposableMap
             projection="geoAlbersUsa"
-            className="bg-gray-200 h-[610px]"
+            className="bg-white h-[610px]"
             projectionConfig={{ scale: 1000 }}
           >
             <Geographies geography={geoUrl}>
