@@ -27,8 +27,8 @@ import DashboardPage from "./pages/product/dashboard";
 
 // Deep search - Patent
 
-import EmergingTechnologiesAnalytics from "./pages/product/emerging-technology/analytics";
-import EmergingTechnologyListPage from "./pages/product/emerging-technology/list";
+// import EmergingTechnologiesAnalytics from "./pages/product/emerging-technology/analytics";
+// import EmergingTechnologyListPage from "./pages/product/emerging-technology/list";
 
 // import PatentListPage from "./pages/product/pro/patents/list";
 // import PatentDetailPage from "./pages/product/pro/patents/detail";
