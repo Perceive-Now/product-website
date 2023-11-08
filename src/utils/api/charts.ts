@@ -14,18 +14,18 @@ export async function getPatentsYearly(keywords: string[]) {
   return response.data.response;
 }
 
+export async function getPatentLegalStatus(keywords: string[]) {
+  const res = await axiosInstance.get<IPatentLegalStatus>(
+    `/api/patent_legal_status?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
 export async function getPatentCitationsReference(keywords: string[]) {
   const res = await axiosInstance.get<IPatentCitation>(
     `/api/patent_citations_references?keywords=${keywords.join(
       "|",
     )}&code=${authCode}&clientId=default`,
-  );
-  return res.data.response;
-}
-
-export async function getPatentLegalStatus(keywords: string[]) {
-  const res = await axiosInstance.get<IPatentLegalStatus>(
-    `/api/patent_legal_status?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
   );
   return res.data.response;
 }
@@ -81,6 +81,22 @@ export async function getTechnlogyLifeCycleAnalysis(keywords: string[]) {
     `/api/lifecycle_analysis?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
   );
   return res.data.results;
+}
+
+export async function getCompetitorPatentingActivity(keywords: string[]) {
+  const res = await axiosInstance.get<ICompetitorActivity>(
+    `/api/competitor_activity?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getPatentActivityClass(keywords: string[]) {
+  const res = await axiosInstance.get<IPatentActivityClass>(
+    `/api/competitor_activity_subclass?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
 }
 
 /**
@@ -194,6 +210,22 @@ export interface IPatentCompetitorPortfolio {
 export interface ITechnologyAnalysis {
   results: {
     date: string;
+    count: number;
+  }[];
+}
+
+export interface ICompetitorActivity {
+  response: {
+    year: string;
+    org: string;
+    count: number;
+  }[];
+}
+
+export interface IPatentActivityClass {
+  response: {
+    uspc_subclass_title: string;
+    org: string;
     count: number;
   }[];
 }

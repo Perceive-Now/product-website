@@ -2,27 +2,28 @@ import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { FunctionComponent, useEffect, useState } from "react";
-import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
-import Sunburst from "../../sunburst";
+import { getPatentActivityClass } from "../../../../utils/api/charts";
+import BarChart from "../../../@product/bar-chart";
 import RadioButtons from "../../../reusable/radio-buttons";
 
 interface Props {
   keywords: string[];
 }
 
-type ICompetitorType = "ipc" | "cpc";
+type IYear = "2023" | "2022" | "2021" | "2020";
 
-export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }) => {
-  const [competitorType, setCompetitorType] = useState<ICompetitorType>("ipc");
+export const PatentCompetitorClass: FunctionComponent<Props> = ({ keywords }) => {
+  const [year, setYear] = useState<IYear>("2023");
 
-  const changeType = (mode: string) => {
-    setCompetitorType(mode as ICompetitorType);
+  const changeYear = (mode: string) => {
+    setYear(mode as IYear);
   };
 
+  //
   const { data, isLoading, isError, error } = useQuery(
-    ["patemt-portfolio", ...keywords],
+    ["patent-competitor-activity-class", ...keywords],
     async () => {
-      return await getPatentCompetitorPortfolio(keywords);
+      return await getPatentActivityClass(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -33,6 +34,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
 
     //
   }, [data]);
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -44,15 +46,17 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="10. Patent Portfolios of Key Competitors"
+            title="13. Top 10 Classes of Competitor Patenting Activity Class (USPC)"
             sideTitleOption={
               <RadioButtons
                 options={[
-                  { label: "IPC", value: "ipc" },
-                  { label: "CPC", value: "cpc" },
+                  { label: "2023", value: "2023" },
+                  { label: "2022", value: "2022" },
+                  { label: "2021", value: "2021" },
+                  { label: "2020", value: "2020" },
                 ]}
-                activeMode={competitorType}
-                handleModeChange={changeType}
+                activeMode={year}
+                handleModeChange={changeYear}
                 classNames="text-sm font-semibold"
               />
             }
@@ -60,8 +64,44 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
         }
       >
         <div>
-          <Sunburst />
-          {/* <RadarChart /> */}
+          {data && (
+            <BarChart
+              data={data.slice(2, 15)}
+              keys={["count"]}
+              indexBy="org"
+              groupMode={"stacked"}
+              // legendX="Number of Patents"
+              legendY="WIPO FIELD"
+              innerPadding={0}
+              borderRadius={4}
+              layout={"horizontal"}
+              legends={[
+                {
+                  dataFrom: "keys",
+                  anchor: "bottom-left",
+                  direction: "row",
+                  justify: false,
+                  translateX: 100,
+                  translateY: 80,
+                  itemsSpacing: 0,
+                  itemWidth: 83,
+                  itemHeight: 45,
+                  itemDirection: "left-to-right",
+                  itemOpacity: 0.85,
+                  symbolSize: 20,
+                  effects: [
+                    {
+                      on: "hover",
+                      style: {
+                        itemOpacity: 1,
+                      },
+                    },
+                  ],
+                  legendClassName: "custom-legend",
+                },
+              ]}
+            />
+          )}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

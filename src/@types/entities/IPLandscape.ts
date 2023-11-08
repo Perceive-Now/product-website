@@ -5,11 +5,12 @@ export interface IReport {
 }
 
 export interface IStepTwo {
-  objectives: string;
-  from: string;
-  to: string;
+  objective: string;
+  start_date: string;
+  end_date: string;
 }
 
 export interface IStepThree {
   competitor: string[];
+  organization: string[];
 }

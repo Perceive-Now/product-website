@@ -47,10 +47,10 @@ const sidebarItems: ISidebarListItem[] = [
     to: "/patents",
   },
   {
-    title: "IP Licensing opportunities",
-    key: "ip-licensing-opportunities",
+    title: "M&A Licensing",
+    key: "m&a-licensing",
     icon: <DOcumentIcon />,
-    to: "/a",
+    to: "/m&a-licensing",
   },
   {
     title: "Technology landscaping",

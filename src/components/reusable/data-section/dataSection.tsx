@@ -14,7 +14,9 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
   //
   const isEmpty = props.keywords.length === 0;
   const isLoading = !isEmpty && props.isLoading;
-  const isErrorState = !isLoading && props.isError;
+  const isErrorState = !isLoading && props.isError && !isEmpty;
+
+  // console.log(isLoading)
 
   //
   const errorMessage = props.error

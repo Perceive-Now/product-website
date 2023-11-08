@@ -1,16 +1,27 @@
 import { FunctionComponent, useEffect } from "react";
-import StreamChart from "../../../@product/stream-chart";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getTechnlogyLifeCycleAnalysis } from "../../../../utils/api/charts";
-import AreaBump from "../../../@product/area-bump";
 import ScatterChart from "../../../@product/scatter-chart";
 
 interface Props {
   keywords: string[];
 }
+interface IScholaryPublicationData {
+  count: number;
+  date: string;
+}
 
+interface IScatterItem {
+  x: string;
+  y: number;
+}
+
+interface IScatterList {
+  id: string;
+  data: IScatterItem[];
+}
 export const TechnologyLifeCycleAnalysis: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["lifecycle-analysis", ...keywords],
@@ -26,6 +37,33 @@ export const TechnologyLifeCycleAnalysis: FunctionComponent<Props> = ({ keywords
 
     //
   }, [data]);
+
+  const finalScatterDataFormatHelper = (data: IScholaryPublicationData[]) => {
+    if (!data) return [];
+
+    const openAccessCountObj: IScatterList = { id: "Stage", data: [] };
+    // const closedAccessCountObj: IScatterList = {
+    //   id: "Closed access",
+    //   data: [],
+    // };
+
+    const openAccessData: IScatterItem[] = [];
+    // const closedAccessData: IScatterItem[] = [];
+
+    //
+    data.forEach((d) => {
+      openAccessData.push({ x: d.date, y: d.count });
+      // closedAccessData.push({ x: d.year.toString(), y: d.closed_source });
+    });
+
+    //
+    openAccessCountObj.data = openAccessData.slice(0, 10);
+    // closedAccessCountObj.data = closedAccessData;
+
+    //
+    return [openAccessCountObj];
+  };
+  const scatterChartData = finalScatterDataFormatHelper(data ?? []);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -54,17 +92,15 @@ export const TechnologyLifeCycleAnalysis: FunctionComponent<Props> = ({ keywords
         }
       >
         <div className="space-y-2 text-secondary-800 mt-4">
-          {/* {
-            data &&
-            // <AreaBump data={data}/>
+          {
             <ScatterChart
-              data={data}
-              legendX="date"
-              legendY="count"
-              abbreviateLegendX={true}
-              colors={["#7F4BD8", "#442873"]}
+              data={scatterChartData}
+              colors={["#FFA300CC"]}
+              // legendX={""}
+              // legendY="b"
             />
-          } */}
+          }
+
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
             <h6 className="font-semibold text-primary-900">

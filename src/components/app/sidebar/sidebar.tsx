@@ -24,7 +24,7 @@ interface Props {
   show: boolean;
   handleShow: () => void;
 }
-const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
+export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
   // const navigate = useNavigate();
   // const dispath = useAppDispatch();
 
@@ -168,8 +168,6 @@ const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // </div>
   );
 };
-
-export default AppSidebar;
 
 function NavLinkItem(props: INavLinkItemProps) {
   const { pathname } = useLocation();

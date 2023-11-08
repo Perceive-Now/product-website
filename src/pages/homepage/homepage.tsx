@@ -45,8 +45,8 @@ export default function HomePage() {
           state: { search: searchValue },
         });
         break;
-      case "universties":
-        navigate("/universities", {
+      case "m&a-licensing":
+        navigate("/m&a-licensing", {
           state: { search: searchValue },
         });
         break;

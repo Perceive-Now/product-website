@@ -78,15 +78,16 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
             </div>
           </div>
         </div>
-        <div>
-          {/* <RelatedKeywords title="6. Patent Classification Analysis" keywords={keywords} /> */}
-          <PageTitle
+        <div className="mt-4">
+          {/* <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="6. Patent Classification Analysis"
-          />
+            title="Associated technologies "
+          /> */}
+          <RelatedKeywords title="Associated technologies" keywords={keywords} />
         </div>
       </DataSection>
+      <div></div>
     </div>
   );
 };

@@ -11,7 +11,7 @@ interface Props {
 
 export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["geographical-filing", ...keywords],
+    ["emerging-technology-trend", ...keywords],
     async () => {
       return await getEmergingTechnologyTrend(keywords);
     },

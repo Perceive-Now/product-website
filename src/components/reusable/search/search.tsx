@@ -162,6 +162,7 @@ interface ISearchProps {
   onSubmit: (value: IKeywordOption[]) => void;
   onKeywordsChange?: (value: IKeywordOption[]) => void;
   searchButton?: boolean;
+  // isDisabled?: boolean
 }
 
 // remove once api is received

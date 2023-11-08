@@ -1,28 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import { FunctionComponent, useEffect, useState } from "react";
-import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
-import Sunburst from "../../sunburst";
-import RadioButtons from "../../../reusable/radio-buttons";
+import { FunctionComponent, useEffect } from "react";
+import { getCompetitorPatentingActivity } from "../../../../utils/api/charts";
+import RadarChart from "../../../@product/radar";
 
 interface Props {
   keywords: string[];
 }
 
-type ICompetitorType = "ipc" | "cpc";
-
-export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }) => {
-  const [competitorType, setCompetitorType] = useState<ICompetitorType>("ipc");
-
-  const changeType = (mode: string) => {
-    setCompetitorType(mode as ICompetitorType);
-  };
-
+export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["patemt-portfolio", ...keywords],
+    ["patent-competitor-activity", ...keywords],
     async () => {
-      return await getPatentCompetitorPortfolio(keywords);
+      return await getCompetitorPatentingActivity(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -33,6 +24,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
 
     //
   }, [data]);
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -44,24 +36,12 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="10. Patent Portfolios of Key Competitors"
-            sideTitleOption={
-              <RadioButtons
-                options={[
-                  { label: "IPC", value: "ipc" },
-                  { label: "CPC", value: "cpc" },
-                ]}
-                activeMode={competitorType}
-                handleModeChange={changeType}
-                classNames="text-sm font-semibold"
-              />
-            }
+            title="12. Competitor Patenting Activity"
           />
         }
       >
         <div>
-          <Sunburst />
-          {/* <RadarChart /> */}
+          <RadarChart />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

@@ -5,6 +5,7 @@ import AuthReducer from "./stores/auth";
 import DashboardReducer from "./stores/dashboard";
 import SubscriptionReducer from "./stores/subscription";
 import DateSlice from "./stores/date";
+import IPStepSlice from "./stores/IpSteps";
 
 //
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     dashboard: DashboardReducer,
     subscription: SubscriptionReducer,
     date: DateSlice,
+    ipData: IPStepSlice,
   },
 });
 

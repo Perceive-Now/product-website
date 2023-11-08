@@ -1,26 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
-import Sunburst from "../../sunburst";
-import RadioButtons from "../../../reusable/radio-buttons";
+import BarChart from "../../../@product/bar-chart";
+import RelatedKeywords from "../../related-keywords";
 
 interface Props {
   keywords: string[];
 }
 
-type ICompetitorType = "ipc" | "cpc";
-
-export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }) => {
-  const [competitorType, setCompetitorType] = useState<ICompetitorType>("ipc");
-
-  const changeType = (mode: string) => {
-    setCompetitorType(mode as ICompetitorType);
-  };
-
+export const PatentPortfolioDepth: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["patemt-portfolio", ...keywords],
+    ["patent-portfolio", ...keywords],
     async () => {
       return await getPatentCompetitorPortfolio(keywords);
     },
@@ -33,6 +25,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
 
     //
   }, [data]);
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -44,24 +37,49 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="10. Patent Portfolios of Key Competitors"
-            sideTitleOption={
-              <RadioButtons
-                options={[
-                  { label: "IPC", value: "ipc" },
-                  { label: "CPC", value: "cpc" },
-                ]}
-                activeMode={competitorType}
-                handleModeChange={changeType}
-                classNames="text-sm font-semibold"
-              />
-            }
+            title="11. Patent Portfolio Depth"
           />
         }
       >
         <div>
-          <Sunburst />
-          {/* <RadarChart /> */}
+          {data && (
+            <BarChart
+              data={data.slice(1, 5)}
+              keys={["count"]}
+              indexBy="org"
+              groupMode={"stacked"}
+              legendX="Number of Patents"
+              legendY="WIPO FIELD"
+              innerPadding={0}
+              borderRadius={4}
+
+              // legends={[
+              //   {
+              //     dataFrom: 'keys',
+              //     anchor: 'bottom-right',
+              //     direction: 'column',
+              //     justify: false,
+              //     translateX: 100,
+              //     translateY: -20,
+              //     itemsSpacing: 0,
+              //     itemWidth: 83,
+              //     itemHeight: 45,
+              //     itemDirection: 'left-to-right',
+              //     itemOpacity: 0.85,
+              //     symbolSize: 20,
+              //     effects: [
+              //       {
+              //         on: 'hover',
+              //         style: {
+              //           itemOpacity: 1
+              //         }
+              //       }
+              //     ],
+              //     legendClassName: 'custom-legend'
+              //   }
+              // ]}
+            />
+          )}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -85,6 +103,9 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
           </div>
         </div>
       </DataSection>
+      <div className="mt-4">
+        <RelatedKeywords title="Associated technologies" keywords={keywords} />
+      </div>
     </div>
   );
 };

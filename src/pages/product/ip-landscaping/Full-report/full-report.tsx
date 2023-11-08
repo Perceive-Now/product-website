@@ -25,6 +25,10 @@ import WipoAnalysis from "../../../../components/@dashboard/IP-landscaping/wipo-
 import EmergingTechnologyTrend from "../../../../components/@dashboard/IP-landscaping/emerging-technology";
 import PatentPortfolioCompetitor from "../../../../components/@dashboard/IP-landscaping/patent-portfolio";
 import TechnologyLifeCycleAnalysis from "../../../../components/@dashboard/IP-landscaping/technology-analysis";
+import { useState } from "react";
+import PatentCompetitorActivity from "../../../../components/@dashboard/IP-landscaping/patent-competitior-activity";
+import PatentCompetitorClass from "../../../../components/@dashboard/IP-landscaping/patent-competitor-class";
+import PatentPortfolioDepth from "../../../../components/@dashboard/IP-landscaping/patent-portfolio-depth";
 
 //
 
@@ -35,7 +39,7 @@ export const IPFullReport = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   //
-
+  const [scroll, setScrollId] = useState("related_technology");
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
@@ -55,6 +59,21 @@ export const IPFullReport = () => {
   //
   const filterClear = () => {
     dispatch(setFilter([]));
+  };
+
+  const handleButtonClick = (id: string) => {
+    // if () {
+    //   formRef.current.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "start",
+    //   });
+    // }
+    setScrollId(id);
+  };
+
+  //
+  const handleKeyword = (keyword: IKeywordOption[]) => {
+    dispatch(setDashboardSearch(keyword));
   };
 
   return (
@@ -134,12 +153,13 @@ export const IPFullReport = () => {
                 <h2 className="text-lg font-bold text-primary-900">Related Technologies</h2>
                 <div className="flex item-center gap-2">
                   {relatedKeywords.map((keyword) => (
-                    <span
+                    <button
+                      onClick={() => handleKeyword([{ label: keyword, value: keyword }])}
                       key={keyword}
                       className="rounded-full bg-appGray-100 py-1 px-2 text-primary-900 font-semibold text-sm"
                     >
                       {keyword}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -224,45 +244,82 @@ export const IPFullReport = () => {
               {/*  */}
               <EmergingTechnologyTrend keywords={keywords} />
               {/*  */}
+              <PatentPortfolioDepth keywords={keywords} />
+              {/*  */}
               <PatentPortfolioCompetitor keywords={keywords} />
+              {/*  */}
+              <PatentCompetitorActivity keywords={keywords} />
+              {/*  */}
+              <PatentCompetitorClass keywords={keywords} />
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-y-1">
-          <Button
-            htmlType={"button"}
-            type={"primary"}
-            rounded={"medium"}
-            size={"small"}
-            classname={"text-sm font-semibold border-2 border-primary-900"}
-          >
-            Print report
-          </Button>
-          <Button
-            htmlType={"button"}
-            type={"secondary"}
-            rounded={"medium"}
-            size={"small"}
-            classname={"text-sm font-semibold"}
-          >
-            Save
-          </Button>
-          <Button
-            htmlType={"button"}
-            type={"secondary"}
-            rounded={"medium"}
-            size={"small"}
-            disabled
-            classname={"text-sm font-semibold"}
-            handleClick={() => navigate("/ip-landscaping")}
-          >
-            Change report details
-          </Button>
+        <div>
+          <div className="flex flex-col gap-y-1">
+            <Button
+              htmlType={"button"}
+              type={"primary"}
+              rounded={"medium"}
+              size={"small"}
+              classname={"text-sm font-semibold border-2 border-primary-900"}
+            >
+              Print report
+            </Button>
+            <Button
+              htmlType={"button"}
+              type={"secondary"}
+              rounded={"medium"}
+              size={"small"}
+              classname={"text-sm font-semibold"}
+            >
+              Save
+            </Button>
+            <Button
+              htmlType={"button"}
+              type={"secondary"}
+              rounded={"medium"}
+              size={"small"}
+              disabled
+              classname={"text-sm font-semibold"}
+              handleClick={() => navigate("/ip-landscaping")}
+            >
+              Change report details
+            </Button>
+          </div>
+          <div className="rounded-lg shadow-custom flex flex-col mt-4 p-2 gap-1">
+            {topics.map((topic) => (
+              <button
+                onClick={() => handleButtonClick(topic.id)}
+                key={topic.name}
+                className={classNames(
+                  topic.id === scroll ? "border-l-4 border-primary-600 pl-0.5" : "pl-1",
+                  "text-start text-primary-900 font-sm truncate",
+                )}
+              >
+                {topic.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </>
   );
 };
+
+const topics = [
+  { name: "Related technology", id: "related_technology" },
+  { name: "1. Patent Families", id: "patent_families" },
+  { name: "2. Patent References", id: "patent_references" },
+  { name: "3. Legal Staus of Patent", id: "patent_legal_status" },
+  { name: "4. Inventors and Asignees", id: "inventors_asignees" },
+  { name: "5. Geographical Distribution", id: "geographical_distribution" },
+  { name: "6. Patent Classification", id: "patent_classification" },
+  { name: "7. WIPO FIeld Analysis", id: "wipo_field_analysis" },
+  { name: "8. Technology Lifecycle", id: "technology_lifecycle" },
+  { name: "9. Emerging Technology", id: "emerging_technology" },
+  { name: "10. Patent Portfolio Depth", id: "patent_postfolio_depth" },
+  { name: "11. Competitor Patenting Activity", id: "competitior_patenting_activity" },
+];
 
 const List = [
   "IP Landscaping",

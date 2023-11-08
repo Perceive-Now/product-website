@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 //
-import { ChevronRight, CrossIcon } from "../../../../components/icons";
+import { ChevronRight, CrossIcon, SearchIcon } from "../../../../components/icons";
 //
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import Button from "../../../../components/reusable/button";
@@ -16,14 +16,27 @@ import BarChart from "../../../../components/@product/bar-chart";
 import RadarChart from "../../../../components/@product/radar";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentsYearly } from "../../../../utils/api/charts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import DataSection from "../../../../components/reusable/data-section";
+import PageTitle from "../../../../components/reusable/page-title";
+import SemanticSearch from "../../../../components/reusable/semantic-search";
+import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
+import RadioButtons from "../../../../components/reusable/radio-buttons";
 
+type ISearchType = "or" | "and" | "custom";
 /**
  *
  */
 export const IPSummaryReport = () => {
-  const dispatch = useAppDispatch();
+  const [searchType, SetSearchType] = useState<ISearchType>("or");
+
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  //
+  const [isSemantic, setISearchSemantic] = useState(false);
+  const ipDetails = useAppSelector((state) => state.ipData) ?? {};
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -45,7 +58,6 @@ export const IPSummaryReport = () => {
     },
     // { enabled: !!props.keywords.length },
   );
-  console.log(data);
 
   //
   // const joinedKeywords = searchedKeywords.map((kwd) => `"${kwd.value}"`).join(", ");
@@ -67,11 +79,15 @@ export const IPSummaryReport = () => {
     dispatch(setFilter([]));
   };
 
+  const handleSearchType = (value: string) => {
+    SetSearchType(value as ISearchType);
+  };
+
   return (
     <>
       <div>
-        <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md">
-          <div className="flex items-start justify-center gap-0.5 py-1">
+        <div className="bg-appGray-200 flekeywordx justify-between items-center mb-1 pl-2 rounded-md">
+          <div className="flex items-start justify- gap-0.5 py-1">
             <p className="text-lg text-primary-900 font-semibold">
               IP Landscaping{" "}
               <span className="font-bold text-secondary-800 text-sm">
@@ -84,16 +100,21 @@ export const IPSummaryReport = () => {
       <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2">
         <div className="col-span-7 mt-0.5">
           {/* Search bar */}
-          <div>
-            <Search
-              required
-              size="small"
-              className="w-full bg-white"
-              onSubmit={handleSearch}
-              initialValue={searchedKeywords}
-              searchButton={true}
-            />
-            {keywords.length > 0 ? (
+          {isSemantic ? (
+            <>
+              <SemanticSearch initialValue={searchedKeywords} />
+            </>
+          ) : (
+            <div>
+              <Search
+                required
+                size="small"
+                className="w-full bg-white"
+                onSubmit={handleSearch}
+                initialValue={searchedKeywords}
+                searchButton={true}
+              />
+              {/* {keywords.length > 0 ? (
               <div className="mt-2">
                 <span>Showing patents for: </span>
                 <span className="">"{joinedkeywords}"</span>&nbsp;
@@ -113,8 +134,44 @@ export const IPSummaryReport = () => {
               <p className="mt-[4px] text-appGray-900">
                 Search keywords e.g. “COVID-19” to see related patents.
               </p>
-            )}
+            )} */}
+            </div>
+          )}
+          <div className="flex justify-end mt-2">
+            <button
+              type="button"
+              className="flex items-center gap-x-1"
+              onClick={() => setISearchSemantic(!isSemantic)}
+            >
+              {isSemantic ? (
+                <>
+                  <SearchIcon />
+                  <span>Regular Search</span>
+                </>
+              ) : (
+                <>
+                  <AdvancedSearchIcon />
+                  <span>Semantic Search</span>
+                </>
+              )}
+            </button>
           </div>
+          {isSemantic && (
+            <div className="flex items-center gap-x-1">
+              <span className="text-primary-900">Search logic:</span>
+              <RadioButtons
+                options={[
+                  { label: "OR", value: "or" },
+                  { label: "AND", value: "and" },
+                  { label: "Custom", value: "custom" },
+                ]}
+                activeMode={searchType}
+                handleModeChange={handleSearchType}
+                // classNames="text-sm"
+              />
+            </div>
+          )}
+
           {/* summary report */}
           <div className="flex gap-x-4 mt-6 ">
             <div className="flex-shrink-0 w-[260px]">
@@ -143,25 +200,27 @@ export const IPSummaryReport = () => {
               <div className="border-gray-200 shadow-custom border px-2 py-1 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Report Details</h2>
                 <h3 className="font-bold text-sm">
-                  Project title:{" "}
-                  <span className="font-normal"> Intellectual Property Licensing in US</span>
+                  Project title:
+                  <span className="font-normal"> {ipDetails.report_details.title}</span>
                 </h3>
                 <div className="font-bold text-sm">
-                  Report created on: <span className="font-normal"> Oct 27th, 2023</span>
+                  Report created on:{" "}
+                  <span className="font-normal">{ipDetails.report_details.date}</span>
                 </div>
                 <div className="font-bold text-sm">
                   Technology / Sector Description:{" "}
                   <span className="font-normal">
-                    {" "}
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                    {ipDetails.report_details.description}
+                    {/* Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
                     doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
-                    veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                    veritatis et quasi architecto beatae vitae dicta sunt explicabo. */}
                   </span>
                 </div>
                 <div className="font-bold text-sm">
                   Objectives:
                   <ul className="font-normal list-disc ml-4">
-                    <li>
+                    {ipDetails.objective_detail.objective}
+                    {/* <li>
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam, consequatur.
                     </li>
                     <li>
@@ -169,7 +228,7 @@ export const IPSummaryReport = () => {
                     </li>
                     <li>
                       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ullam, consequatur.
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 <div className="font-bold text-sm">
@@ -177,7 +236,10 @@ export const IPSummaryReport = () => {
                 </div>
                 <div className="font-bold text-sm">
                   Relevant Time Period for Analysis:{" "}
-                  <span className="font-normal">Oct 24th, 2011 to Oct 27th, 2023</span>
+                  <span className="font-normal">
+                    {ipDetails.objective_detail.start_date} to {ipDetails.objective_detail.end_date}
+                    {/* Oct 24th, 2011 to Oct 27th, 2023 */}
+                  </span>
                 </div>
                 <div className="font-bold text-sm">
                   Patent Classifications:
@@ -200,28 +262,76 @@ export const IPSummaryReport = () => {
                   </ul>
                 </div>
                 <div className="font-bold text-sm">
-                  Geographical Scope: <span className="font-normal">US all states</span>
-                </div>
-                <div className="font-bold text-sm">
-                  Relevant Time Period for Analysis:{" "}
-                  <span className="font-normal">Oct 24th, 2011 to Oct 27th, 2023</span>
-                </div>
-                <div className="font-bold text-sm">
-                  Organizations:<span className="font-normal">Industry and University</span>
+                  Organizations: <span className="font-normal">Industry and University</span>
                 </div>
                 <div className="font-bold text-sm">
                   Competitor's name:
                   <ul className="font-normal list-disc ml-4">
-                    <li>Omron Healthcare</li>
+                    {ipDetails.organization_competitor.competitor.map((c) => (
+                      <li key={c}>{c}</li>
+                    ))}
+                    {/* <li>Omron Healthcare</li>
                     <li>Withings</li>
-                    <li>iHealth</li>
+                    <li>iHealth</li> */}
                   </ul>
                 </div>
               </div>
               {/*key highlights  */}
               <div className="border-gray-200 shadow-custom border px-2 py-1 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Key Highlights</h2>
-                <div>
+                <DataSection
+                  keywords={keywords}
+                  isLoading={isLoading}
+                  isError={isError}
+                  error={error}
+                  title={
+                    <PageTitle
+                      // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
+                      titleClass="font-semibold"
+                      title="1. Patent Families by year"
+                    />
+                  }
+                >
+                  <div>
+                    {data && (
+                      <BarChart
+                        data={data}
+                        keys={["count"]}
+                        indexBy="year"
+                        groupMode="stacked"
+                        legendY="Number of Patents"
+                        innerPadding={0}
+                        borderRadius={0}
+                        legends={[
+                          {
+                            dataFrom: "keys",
+                            anchor: "bottom-right",
+                            direction: "column",
+                            justify: false,
+                            translateX: 100,
+                            translateY: -20,
+                            itemsSpacing: 0,
+                            itemWidth: 83,
+                            itemHeight: 45,
+                            itemDirection: "left-to-right",
+                            itemOpacity: 0.85,
+                            symbolSize: 20,
+                            effects: [
+                              {
+                                on: "hover",
+                                style: {
+                                  itemOpacity: 1,
+                                },
+                              },
+                            ],
+                            legendClassName: "custom-legend",
+                          },
+                        ]}
+                      />
+                    )}
+                  </div>
+                </DataSection>
+                {/* <div>
                   <h5 className="font-semibold text-primary-900">
                     Patent families of past 5 years
                   </h5>
@@ -268,7 +378,7 @@ export const IPSummaryReport = () => {
                       ]}
                     />
                   )}
-                </div>
+                </div> */}
                 <div className="font-bold text-sm">
                   Patent Families:
                   <p className="font-normal">
@@ -366,12 +476,15 @@ export const IPSummaryReport = () => {
         </div>
         <div className="flex flex-col gap-y-1">
           <Button
+            disabled={keywords.length === 0}
             htmlType={"button"}
             type={"primary"}
             rounded={"medium"}
             size={"small"}
             handleClick={() => navigate("/ip-landscaping/full-report")}
-            classname={"text-sm font-semibold border-2 border-primary-900"}
+            classname={
+              "disabled:cursor-not-allowed text-sm font-semibold border-2 border-primary-900"
+            }
           >
             Generate full report
           </Button>
@@ -408,112 +521,4 @@ const List = [
   "Competitive intelligence",
   "Infringement analysis",
   "Database Search",
-];
-
-const demoData = [
-  {
-    country: "AD",
-    "hot dog": 33,
-    "hot dogColor": "hsl(313, 70%, 50%)",
-    burger: 21,
-    burgerColor: "hsl(285, 70%, 50%)",
-    sandwich: 112,
-    sandwichColor: "hsl(80, 70%, 50%)",
-    kebab: 117,
-    kebabColor: "hsl(121, 70%, 50%)",
-    fries: 15,
-    friesColor: "hsl(13, 70%, 50%)",
-    donut: 146,
-    donutColor: "hsl(34, 70%, 50%)",
-  },
-  {
-    country: "AE",
-    "hot dog": 32,
-    "hot dogColor": "hsl(158, 70%, 50%)",
-    burger: 68,
-    burgerColor: "hsl(264, 70%, 50%)",
-    sandwich: 170,
-    sandwichColor: "hsl(12, 70%, 50%)",
-    kebab: 147,
-    kebabColor: "hsl(99, 70%, 50%)",
-    fries: 48,
-    friesColor: "hsl(325, 70%, 50%)",
-    donut: 154,
-    donutColor: "hsl(114, 70%, 50%)",
-  },
-  {
-    country: "AF",
-    "hot dog": 152,
-    "hot dogColor": "hsl(12, 70%, 50%)",
-    burger: 5,
-    burgerColor: "hsl(9, 70%, 50%)",
-    sandwich: 28,
-    sandwichColor: "hsl(2, 70%, 50%)",
-    kebab: 70,
-    kebabColor: "hsl(199, 70%, 50%)",
-    fries: 160,
-    friesColor: "hsl(129, 70%, 50%)",
-    donut: 93,
-    donutColor: "hsl(178, 70%, 50%)",
-  },
-  {
-    country: "AG",
-    "hot dog": 101,
-    "hot dogColor": "hsl(306, 70%, 50%)",
-    burger: 197,
-    burgerColor: "hsl(270, 70%, 50%)",
-    sandwich: 199,
-    sandwichColor: "hsl(200, 70%, 50%)",
-    kebab: 66,
-    kebabColor: "hsl(138, 70%, 50%)",
-    fries: 97,
-    friesColor: "hsl(215, 70%, 50%)",
-    donut: 120,
-    donutColor: "hsl(297, 70%, 50%)",
-  },
-  {
-    country: "AI",
-    "hot dog": 15,
-    "hot dogColor": "hsl(310, 70%, 50%)",
-    burger: 126,
-    burgerColor: "hsl(271, 70%, 50%)",
-    sandwich: 38,
-    sandwichColor: "hsl(271, 70%, 50%)",
-    kebab: 65,
-    kebabColor: "hsl(173, 70%, 50%)",
-    fries: 114,
-    friesColor: "hsl(135, 70%, 50%)",
-    donut: 66,
-    donutColor: "hsl(155, 70%, 50%)",
-  },
-  {
-    country: "AL",
-    "hot dog": 86,
-    "hot dogColor": "hsl(299, 70%, 50%)",
-    burger: 96,
-    burgerColor: "hsl(323, 70%, 50%)",
-    sandwich: 87,
-    sandwichColor: "hsl(151, 70%, 50%)",
-    kebab: 73,
-    kebabColor: "hsl(298, 70%, 50%)",
-    fries: 159,
-    friesColor: "hsl(62, 70%, 50%)",
-    donut: 102,
-    donutColor: "hsl(247, 70%, 50%)",
-  },
-  {
-    country: "AM",
-    "hot dog": 132,
-    "hot dogColor": "hsl(20, 70%, 50%)",
-    burger: 59,
-    burgerColor: "hsl(330, 70%, 50%)",
-    sandwich: 76,
-    sandwichColor: "hsl(285, 70%, 50%)",
-    kebab: 104,
-    kebabColor: "hsl(31, 70%, 50%)",
-    fries: 112,
-    friesColor: "hsl(126, 70%, 50%)",
-    donut: 11,
-    donutColor: "hsl(35, 70%, 50%)",
-  },
 ];

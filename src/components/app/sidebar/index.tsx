@@ -1,2 +1,2 @@
-import AppSidebar from "./sidebar";
+import { AppSidebar } from "./sidebar";
 export default AppSidebar;

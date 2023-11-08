@@ -76,7 +76,7 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
               groupMode="stacked"
               legendY="Number of Patents"
               innerPadding={0}
-              borderRadius={0}
+              borderRadius={4}
               legends={[
                 {
                   dataFrom: "keys",

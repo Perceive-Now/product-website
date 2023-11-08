@@ -83,7 +83,7 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
           </div>
         </div>
         {/* bar chart */}
-        <div>
+        <div className="mt-4">
           <h5 className="font-bold text-primary-900 text-lg">
             Top 5 states based on patent filings
           </h5>
@@ -99,6 +99,18 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
           )}
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
+          <ul className="list-disc ml-3 text-sm mt-1 font-medium">
+            <li>
+              The wearable blood pressure sensor market is on a growth trajectory with a projected
+              Compound Annual Growth Rate (CAGR) of 8.5% over the next five years. This could
+              potentially elevate the market valuation from an estimated $1.5 billion to over $2.25
+              billion by the end of the forecast period.
+            </li>
+            <li>
+              The driving factors behind this growth could be an increasing awareness of health and
+              fitness, aging population, and the advancement in wearable technology.
+            </li>
+          </ul>
         </div>
       </DataSection>
     </div>

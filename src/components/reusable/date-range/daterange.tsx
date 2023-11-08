@@ -5,13 +5,18 @@ import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {
   classification: "recent" | "specific" | "none";
-  getValues: (data: Array<string | null | Date>) => void;
+  getValues: (data: IDate) => void;
+}
+
+interface IDate {
+  start_date: string;
+  end_date: string;
 }
 
 export default function DateRangePick({ classification, getValues }: Props) {
   const today = new Date();
   const pastDate = new Date(today);
-  pastDate.setFullYear(today.getFullYear() - 2);
+  pastDate.setFullYear(today.getFullYear() - 10);
   // const formattedDate = today.toISOString().split('T')[0];
 
   // const FilteredDate = useAppSelector((state) => state.date?.filter) ?? [];
@@ -23,7 +28,7 @@ export default function DateRangePick({ classification, getValues }: Props) {
     if (classification === "recent") {
       const today = new Date();
       const pastDate = new Date(today);
-      pastDate.setFullYear(today.getFullYear() - 2);
+      pastDate.setFullYear(today.getFullYear() - 10);
 
       setStartDate(pastDate);
       setEndDate(today);
@@ -34,7 +39,10 @@ export default function DateRangePick({ classification, getValues }: Props) {
   }, [classification]);
   useEffect(() => {
     if (startDate && endDate) {
-      getValues([startDate.toISOString().split("T")[0], endDate.toISOString().split("T")[0]]);
+      getValues({
+        start_date: startDate.toISOString().split("T")[0],
+        end_date: endDate.toISOString().split("T")[0],
+      });
     }
   }, [startDate, endDate]);
 

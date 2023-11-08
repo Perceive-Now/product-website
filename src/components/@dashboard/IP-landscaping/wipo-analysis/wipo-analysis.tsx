@@ -43,7 +43,7 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
         <div>
           {data && (
             <BarChart
-              data={data}
+              data={data.slice(0, 10)}
               keys={["count"]}
               indexBy="title"
               groupMode={"stacked"}

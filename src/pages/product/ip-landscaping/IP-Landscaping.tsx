@@ -48,8 +48,12 @@ export function IPLandscaping() {
           <Breadcrumb breadCrumbs={breadcrumbs} />
         </div>
       </div>
-      <div className="mx-auto w-1/3 mt-4">
-        <Stepper steps={steps} activeStep={activeStep} changeActiveStep={changeActiveStep} />
+      <div className="mx-auto w-1/3 mt-6">
+        <Stepper
+          steps={steps}
+          activeStep={activeStep}
+          // changeActiveStep={changeActiveStep}
+        />
         {activeComponent}
       </div>
     </>

@@ -34,8 +34,9 @@ export default function BarChart(props: IBarChartProps) {
         margin={{
           top: 50,
           right: 200,
-          left: 200,
-          bottom: props.legendX ? 50 : 30,
+          left: props.layout === "horizontal" ? 500 : 200,
+          // bottom: props.legendX ? 50 : 30,
+          bottom: props.layout === "horizontal" ? 100 : 30,
         }}
         padding={barPadding}
         innerPadding={props.innerPadding !== undefined ? props.innerPadding : 4}
@@ -58,13 +59,13 @@ export default function BarChart(props: IBarChartProps) {
         })}
         {...(props.legendY && {
           axisLeft: {
-            format: (value) => formatNumber(value),
+            // format: (value) => formatNumber(value),
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
             legend: props.legendY,
             legendPosition: "middle",
-            legendOffset: -50,
+            legendOffset: props.layout === "horizontal" ? -250 : -50,
           },
         })}
         legends={props.legends}

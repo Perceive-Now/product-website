@@ -78,16 +78,21 @@ export default function AppHeader() {
       </> */}
 
         <div className="flex justify-center items-end py-3 gap-2">
-          {!open && (
-            <button type="button" className="" onClick={toggleSideBar}>
-              <ToggleBarIcon />
-            </button>
-          )}
-          {open && (
-            <button type="button" className="" onClick={() => setOpen(false)}>
-              <ToggleBarIcon />
-            </button>
-          )}
+          {/* {
+            location.pathname !== "/" && location.pathname !== "/ip-landscaping" &&
+            <>
+              {!open && (
+                <button type="button" className="" onClick={toggleSideBar}>
+                  <ToggleBarIcon />
+                </button>
+              )}
+              {open && (
+                <button type="button" className="" onClick={() => setOpen(false)}>
+                  <ToggleBarIcon />
+                </button>
+              )}
+            </>
+          } */}
           <Link to="/">
             <img src={PerceiveLogo} alt="PerceiveNow logo" />
           </Link>

@@ -8,14 +8,13 @@ import { CheckIcon } from "../../icons";
 interface Props {
   steps: IStep[];
   activeStep: number;
-  changeActiveStep: (step: number) => void;
 }
 
-export const Stepper: FunctionComponent<Props> = ({ steps, activeStep, changeActiveStep }) => {
+export const Stepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
   const isStepComplete = (currentStep: number) => activeStep > currentStep;
   return (
     <>
-      <ol className="flex items-center w-full mb-4 sm:mb-5">
+      <ol className="flex items-center mx-auto mb-8 w-4/5">
         {steps.map((step, idx, arr) => (
           <li
             key={idx}

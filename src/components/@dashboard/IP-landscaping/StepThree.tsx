@@ -1,6 +1,5 @@
-import { FunctionComponent, useCallback } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import classNames from "classnames";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -9,6 +8,10 @@ import { IStepThree } from "../../../@types/entities/IPLandscape";
 //
 import Button from "../../reusable/button";
 import { useNavigate } from "react-router-dom";
+import MultiKeywords from "../../reusable/multiple-keywords";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setIPOrganization } from "../../../stores/IpSteps";
+import MultipleCheckbox from "../../reusable/multiple-checkbox";
 //
 
 interface Props {
@@ -20,9 +23,23 @@ interface Props {
  */
 const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+  const organization_competitor =
+    useAppSelector((state) => state.ipData.organization_competitor) ?? {};
+
+  const [keyword, setKeyword] = useState(organization_competitor.competitor);
+  const [checkboxValue, setCheckboxValue] = useState(organization_competitor.organization);
+
+  // useEffect(() => {
+  //   setCheckboxValue(organization_competitor.organization)
+  //   setKeyword(organization_competitor.competitor)
+  // }, [])
+
   //
   const formInitialValue: IStepThree = {
     competitor: [],
+    organization: [],
   };
   const formResolver = yup.object().shape({
     // title: yup
@@ -32,8 +49,6 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
   });
 
   const {
-    watch,
-    register,
     formState: { errors },
     handleSubmit,
   } = useForm({
@@ -43,11 +58,22 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
   });
 
   //
-  const onContinue = useCallback((values: IStepThree) => {
-    console.log(values);
-    // changeActiveStep(0)
-    navigate("/ip-landscaping/summary");
-  }, []);
+  const onContinue = useCallback(
+    (values: IStepThree) => {
+      // changeActiveStep(0)}
+      const three_value = {
+        organization: checkboxValue || [],
+        competitor: keyword || [],
+      };
+      navigate("/ip-landscaping/summary");
+      dispatch(setIPOrganization(three_value));
+    },
+    [checkboxValue, keyword],
+  );
+
+  const onChange = (value: any) => {
+    setCheckboxValue(value);
+  };
 
   return (
     <div>
@@ -55,7 +81,9 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
         <fieldset className="mt-3">
           <p>Organizations*</p>
           <div className="flex items-center gap-x-3">
-            <div className="flex items-center">
+            {/* {...register("objective")} */}
+            <MultipleCheckbox topics={topics} onChange={onChange} value={checkboxValue || []} />
+            {/* <div className="flex items-center">
               <input
                 id="industry"
                 type="checkbox"
@@ -84,14 +112,14 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
               <label htmlFor="both" className="ml-1 text-sm font-medium text-gray-500 ">
                 Both
               </label>
-            </div>
+            </div> */}
           </div>
         </fieldset>
         {/* name */}
         <fieldset className="mt-3">
           <label className="block text-sm font-medium leading-5 text-gray-700">
             Competitor’s names
-            <div className="mt-0.5 rounded-md shadow-sm">
+            {/* <div className="mt-0.5 rounded-md shadow-sm">
               <input
                 {...register("competitor")}
                 type="text"
@@ -103,7 +131,18 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
                 )}
                 placeholder="Enter competitor name"
               />
-            </div>
+            </div> */}
+            <MultiKeywords
+              required
+              size="small"
+              className="w-full bg-white"
+              placeholder={"Enter Competitors Name"}
+              changeKeyword={setKeyword}
+              // initialValue={keyword.map((k) => ({
+              //   label: k,
+              //   value: k
+              // }))}
+            />
           </label>
           {errors.competitor?.message && (
             <div className="mt-1 text-xs text-danger-500">{errors.competitor?.message}</div>
@@ -111,7 +150,10 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
         </fieldset>
         {/* Date */}
 
-        <div className="text-center mt-4">
+        <div className="flex justify-center gap-x-4 mt-4">
+          <Button htmlType={"button"} type={"secondary"} handleClick={() => changeActiveStep(2)}>
+            Go Back
+          </Button>
           <Button htmlType={"submit"}>Generate Report</Button>
         </div>
       </form>
@@ -120,3 +162,9 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
 };
 
 export default StepThree;
+
+const topics = [
+  { label: "Industry", value: "industry" },
+  { label: "University", value: "university" },
+  { label: "Both", value: "both" },
+];

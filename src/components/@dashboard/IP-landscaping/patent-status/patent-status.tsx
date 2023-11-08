@@ -16,7 +16,7 @@ interface Props {
  */
 export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["patents-reference", ...keywords],
+    ["patents-status", ...keywords],
     async () => {
       return await getPatentLegalStatus(keywords);
     },
@@ -64,7 +64,7 @@ export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
         }
       >
         <div className="space-y-2 text-secondary-800 mt-4">
-          {data && <PieChart data={data} />}
+          {<PieChart data={pieChartData} />}
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
             <h6 className="font-semibold text-primary-900">

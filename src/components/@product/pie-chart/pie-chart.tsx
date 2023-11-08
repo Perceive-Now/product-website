@@ -71,6 +71,19 @@ export default function PieChart(props: IPieChartProps) {
   );
 }
 
+// const data = [
+//   {
+//     "id": "rust",
+//     "label": "rust",
+//     "value": 141,
+//   },
+//   {
+//     "id": "ruby",
+//     "label": "ruby",
+//     "value": 207,
+//   },
+// ]
+
 interface IPieChartProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
