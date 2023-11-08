@@ -174,7 +174,7 @@ export const IPSummaryReport = () => {
 
           {/* summary report */}
           <div className="flex gap-x-4 mt-6 ">
-            <div className="flex-shrink-0 w-[260px]">
+            <div className="flex-shrink-0 w-auto ">
               <div className="flex flex-col border rounded-t-lg shadow">
                 <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
                   More
@@ -195,7 +195,7 @@ export const IPSummaryReport = () => {
                 </div>
               </div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 w-[920px] xl:w-full">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 py-1 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Report Details</h2>
@@ -474,39 +474,41 @@ export const IPSummaryReport = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-y-1">
-          <Button
-            disabled={keywords.length === 0}
-            htmlType={"button"}
-            type={"primary"}
-            rounded={"medium"}
-            size={"small"}
-            handleClick={() => navigate("/ip-landscaping/full-report")}
-            classname={
-              "disabled:cursor-not-allowed text-sm font-semibold border-2 border-primary-900"
-            }
-          >
-            Generate full report
-          </Button>
-          <Button
-            htmlType={"button"}
-            type={"secondary"}
-            rounded={"medium"}
-            size={"small"}
-            classname={"text-sm font-semibold"}
-          >
-            Save
-          </Button>
-          <Button
-            htmlType={"button"}
-            type={"secondary"}
-            rounded={"medium"}
-            size={"small"}
-            classname={"text-sm font-semibold"}
-            handleClick={() => navigate("/ip-landscaping")}
-          >
-            Change report details
-          </Button>
+        <div className="col-span-1 ">
+          <div className=" flex flex-col gap-y-1">
+            <Button
+              disabled={keywords.length === 0}
+              htmlType={"button"}
+              type={"primary"}
+              rounded={"medium"}
+              size={"small"}
+              handleClick={() => navigate("/ip-landscaping/full-report")}
+              classname={
+                "disabled:cursor-not-allowed text-sm font-semibold border-2 border-primary-900"
+              }
+            >
+              Generate full report
+            </Button>
+            <Button
+              htmlType={"button"}
+              type={"secondary"}
+              rounded={"medium"}
+              size={"small"}
+              classname={"text-sm font-semibold"}
+            >
+              Save
+            </Button>
+            <Button
+              htmlType={"button"}
+              type={"secondary"}
+              rounded={"medium"}
+              size={"small"}
+              classname={"text-sm font-semibold"}
+              handleClick={() => navigate("/ip-landscaping")}
+            >
+              Change report details
+            </Button>
+          </div>
         </div>
       </div>
     </>

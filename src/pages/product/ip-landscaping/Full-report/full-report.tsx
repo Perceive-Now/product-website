@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { HashLink as Link } from "react-router-hash-link";
+
 import classNames from "classnames";
 //
 import { ChevronRight, CrossIcon } from "../../../../components/icons";
@@ -68,6 +70,7 @@ export const IPFullReport = () => {
     //     block: "start",
     //   });
     // }
+    // scroll.scrollIntoView({ behavior: 'smooth' });
     setScrollId(id);
   };
 
@@ -101,6 +104,7 @@ export const IPFullReport = () => {
               onSubmit={handleSearch}
               initialValue={searchedKeywords}
               searchButton={true}
+              isDisabled={true}
             />
             {keywords.length > 0 ? (
               <div className="mt-2">
@@ -126,7 +130,7 @@ export const IPFullReport = () => {
           </div>
           {/* summary report */}
           <div className="flex gap-x-4 mt-6 ">
-            <div className="flex-shrink-0 w-[260px]">
+            <div className="flex-shrink-0 w-auto">
               <div className="flex flex-col border rounded-t-lg shadow">
                 <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
                   More
@@ -147,7 +151,7 @@ export const IPFullReport = () => {
                 </div>
               </div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 w-[920px] xl:w-full">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Related Technologies</h2>
@@ -226,35 +230,61 @@ export const IPFullReport = () => {
                 </div>
               </div>
               {/*Patents by year  */}
-              <PatentYear keywords={keywords} />
+              <div id="patent_families">
+                <PatentYear keywords={keywords} />
+              </div>
               {/* Top 10 Patents by patent references */}
-              <PatentReference keywords={keywords} />
+              <div id="patent_references">
+                <PatentReference keywords={keywords} />
+              </div>
               {/* legal status */}
-              <PatentLegalStatus keywords={keywords} />
+              <div id="patent_legal_status">
+                <PatentLegalStatus keywords={keywords} />
+              </div>
               {/* inventor */}
-              <InventorAnalysis keywords={keywords} />
+              <div id="inventors_asignees">
+                <InventorAnalysis keywords={keywords} />
+              </div>
               {/* geographical distribution */}
-              <GeographicalDistributionFiling keywords={keywords} />
+              <div id="geographical_distribution">
+                <GeographicalDistributionFiling keywords={keywords} />
+              </div>
               {/*  */}
-              <PatentClassificationAnalysis keywords={keywords} />
+              <div id="patent_classification">
+                <PatentClassificationAnalysis keywords={keywords} />
+              </div>
               {/*  */}
-              <WipoAnalysis keywords={keywords} />
+              <div id="wipo_field_analysis">
+                <WipoAnalysis keywords={keywords} />
+              </div>
               {/*  */}
-              <TechnologyLifeCycleAnalysis keywords={keywords} />
+              <div id="technology_lifecycle">
+                <TechnologyLifeCycleAnalysis keywords={keywords} />
+              </div>
               {/*  */}
-              <EmergingTechnologyTrend keywords={keywords} />
+              <div id="emerging_technology">
+                <EmergingTechnologyTrend keywords={keywords} />
+              </div>
               {/*  */}
-              <PatentPortfolioDepth keywords={keywords} />
+              <div id="patent_portfolio_depth">
+                <PatentPortfolioDepth keywords={keywords} />
+              </div>
               {/*  */}
-              <PatentPortfolioCompetitor keywords={keywords} />
+              <div id="patent_competitior_depth">
+                <PatentPortfolioCompetitor keywords={keywords} />
+              </div>
               {/*  */}
-              <PatentCompetitorActivity keywords={keywords} />
+              <div id="competitior_patenting_activity">
+                <PatentCompetitorActivity keywords={keywords} />
+              </div>
               {/*  */}
-              <PatentCompetitorClass keywords={keywords} />
+              <div id="competitior_patenting_activity_class">
+                <PatentCompetitorClass keywords={keywords} />
+              </div>
             </div>
           </div>
         </div>
-        <div>
+        <div className="col-span-1">
           <div className="flex flex-col gap-y-1">
             <Button
               htmlType={"button"}
@@ -288,16 +318,18 @@ export const IPFullReport = () => {
           </div>
           <div className="rounded-lg shadow-custom flex flex-col mt-4 p-2 gap-1">
             {topics.map((topic) => (
-              <button
-                onClick={() => handleButtonClick(topic.id)}
-                key={topic.name}
+              <Link
+                key={topic.id}
+                smooth
+                // onClick={() => handleButtonClick(topic.id)}
+                to={`#${topic.id}`}
                 className={classNames(
                   topic.id === scroll ? "border-l-4 border-primary-600 pl-0.5" : "pl-1",
                   "text-start text-primary-900 font-sm truncate",
                 )}
               >
                 {topic.name}
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -314,11 +346,13 @@ const topics = [
   { name: "4. Inventors and Asignees", id: "inventors_asignees" },
   { name: "5. Geographical Distribution", id: "geographical_distribution" },
   { name: "6. Patent Classification", id: "patent_classification" },
-  { name: "7. WIPO FIeld Analysis", id: "wipo_field_analysis" },
+  { name: "7. WIPO Field Analysis", id: "wipo_field_analysis" },
   { name: "8. Technology Lifecycle", id: "technology_lifecycle" },
   { name: "9. Emerging Technology", id: "emerging_technology" },
-  { name: "10. Patent Portfolio Depth", id: "patent_postfolio_depth" },
-  { name: "11. Competitor Patenting Activity", id: "competitior_patenting_activity" },
+  { name: "10. Patent Portfolio Depth", id: "patent_portfolio_depth" },
+  { name: "11. Patent Portfolio Depth Competitor", id: "patent_competitior_depth" },
+  { name: "12. Competitor Patenting Activity", id: "competitior_patenting_activity" },
+  { name: "13. Competitor Patenting Activity Class", id: "competitior_patenting_activity_class" },
 ];
 
 const List = [

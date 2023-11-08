@@ -96,6 +96,7 @@ export default function Search(props: ISearchProps) {
     <form onSubmit={handleSubmit} className="relative">
       <div className="relative flex items-center gap-x-1">
         <AsyncCreateableSelect
+          isDisabled={props.isDisabled}
           loadOptions={fetchOptions}
           formatCreateLabel={(inputValue: string) => inputValue}
           isMulti
@@ -162,7 +163,7 @@ interface ISearchProps {
   onSubmit: (value: IKeywordOption[]) => void;
   onKeywordsChange?: (value: IKeywordOption[]) => void;
   searchButton?: boolean;
-  // isDisabled?: boolean
+  isDisabled?: boolean;
 }
 
 // remove once api is received

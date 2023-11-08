@@ -44,7 +44,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="10. Patent Portfolios of Key Competitors"
+            title="11. Patent Portfolios of Key Competitors"
             sideTitleOption={
               <RadioButtons
                 options={[
