@@ -236,7 +236,7 @@ export const IPFullReport = () => {
               {/* geographical distribution */}
               <GeographicalDistributionFiling keywords={keywords} />
               {/*  */}
-              <PatentClassificationAnalysis keywords={keywords} />
+              {/* <PatentClassificationAnalysis keywords={keywords} /> */}
               {/*  */}
               <WipoAnalysis keywords={keywords} />
               {/*  */}
@@ -244,7 +244,7 @@ export const IPFullReport = () => {
               {/*  */}
               <EmergingTechnologyTrend keywords={keywords} />
               {/*  */}
-              <PatentPortfolioDepth keywords={keywords} />
+              {/* <PatentPortfolioDepth keywords={keywords} /> */}
               {/*  */}
               <PatentPortfolioCompetitor keywords={keywords} />
               {/*  */}

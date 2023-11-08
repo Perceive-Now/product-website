@@ -79,11 +79,11 @@ export default function BarChart(props: IBarChartProps) {
         animate={false}
         role="application"
         colors={COLORS.slice(9 - props.keys.length)}
-        tooltip={(item) => (
-          <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
-            {formatNumber(item.value)}
-          </div>
-        )}
+        // tooltip={(item) => (
+        //   <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
+        //     {formatNumber(item.value)}
+        //   </div>
+        // )}
         theme={{
           axis: {
             legend: {
