@@ -75,10 +75,10 @@ export default function HomePage() {
   //
   return (
     <div className="min-h-[calc(100vh-120px)] flex flex-col">
-      <div className="grow flex justify-center items-center px-4 py-7">
+      <div className="grow flex justify-center items-center md:px-4 py-7">
         <div className="my-auto justify-center text-center">
-          <h6 className="text-primary-900 text-3xl font-semibold">Type any Keyword</h6>
-          <div className="max-w-[1024px] mx-auto">
+          <h6 className="text-primary-900 text-xl md:text-3xl font-semibold">Type any Keyword</h6>
+          <div className="md:max-w-[1024px] mx-auto">
             <div className="mt-3">
               <Search
                 required
@@ -153,7 +153,7 @@ export default function HomePage() {
               leaveTo="transform scale-95 opacity-0"
             >
               {/* <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500"> */}
-              <Disclosure.Panel className="grid grid-cols-6 gap-2 mt-2">
+              <Disclosure.Panel className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 mt-2">
                 {DataSets.map((item, idx) => (
                   <div key={idx + 1} className="">
                     <p className="text-gray-500 uppercase">{item.type}</p>

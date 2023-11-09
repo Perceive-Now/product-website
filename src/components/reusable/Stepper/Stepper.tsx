@@ -14,7 +14,7 @@ export const Stepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
   const isStepComplete = (currentStep: number) => activeStep > currentStep;
   return (
     <>
-      <ol className="flex items-center mx-auto mb-8 w-4/5">
+      <ol className="flex items-center mx-auto mb-8  lg:w-4/5">
         {steps.map((step, idx, arr) => (
           <li
             key={idx}
@@ -30,7 +30,7 @@ export const Stepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
                 className={classNames(
                   isStepComplete(step.value) && "bg-success-500 text-success-500",
                   activeStep === step.value ? "bg-primary-900 text-white" : "bg-gray-200 ",
-                  "flex items-center justify-center  rounded-full lg:h-3 lg:w-3 shrink-0",
+                  "flex items-center justify-center  rounded-full h-3 w-3 shrink-0",
                 )}
               >
                 {isStepComplete(step.value) ? (

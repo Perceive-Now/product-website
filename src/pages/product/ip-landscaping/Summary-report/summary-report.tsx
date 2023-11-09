@@ -97,7 +97,7 @@ export const IPSummaryReport = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row mb-2 gap-x-3 mt-2">
+      <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2">
         <div className="mt-0.5">
           {/* Search bar */}
           {isSemantic ? (
@@ -195,7 +195,7 @@ export const IPSummaryReport = () => {
                 </div>
               </div>
             </div>
-            <div className="space-y-4 w-[920px] xl:w-full">
+            <div className="space-y-4 lg:w-[920px] xl:w-full">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 py-1 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Report Details</h2>

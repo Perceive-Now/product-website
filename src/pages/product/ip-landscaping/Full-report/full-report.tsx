@@ -94,7 +94,7 @@ export const IPFullReport = () => {
         </div>
       </div>
       {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
-      <div className="flex flex-col lg:flex-row mb-2 gap-x-3 mt-2">
+      <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2">
         <div className="mt-0.5">
           {/* Search bar */}
           <div>
@@ -156,7 +156,7 @@ export const IPFullReport = () => {
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Related Technologies</h2>
-                <div className="flex item-center gap-2">
+                <div className="flex flex-wrap item-center gap-2">
                   {relatedKeywords.map((keyword) => (
                     <button
                       onClick={() => handleKeyword([{ label: keyword, value: keyword }])}
@@ -285,7 +285,7 @@ export const IPFullReport = () => {
             </div>
           </div>
         </div>
-        <div className="lg:w-[200px] flex-shrink-0">
+        <div className="md:w-[200px] flex-shrink-0">
           <div className="flex flex-col gap-y-1">
             <Button
               htmlType={"button"}

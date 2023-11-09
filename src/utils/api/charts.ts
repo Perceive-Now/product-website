@@ -288,3 +288,27 @@ export interface ITopFundingItem {
 interface ITopFundingChartResponse {
   data: ITopFundingItem[];
 }
+
+// [
+//   {
+//     "name": "a",
+//     "year": 2000
+//   },
+//   {
+//     "name": "b",
+//     "year": 1999
+//   },
+//   {
+//     name:'a',
+//     year:2012
+//   },
+//   {
+//     name:'b',
+//     year:2013
+//   }
+// ]
+// [
+//   {
+//     a
+//   }
+// ]
