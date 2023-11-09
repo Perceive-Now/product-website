@@ -5,9 +5,10 @@ module.exports = {
     screens: {
       sm: "428px",
       md: "834px",
-      lg: "1280px",
-      xl: "1440px",
-      "2xl": "1728px",
+      lg:"1080px",
+      xl: "1280px",
+      "2xl": "1440px",
+      "3xl": "1728px",
     },
     spacing: {
       0: 0,
