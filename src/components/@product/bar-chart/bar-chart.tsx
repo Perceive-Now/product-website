@@ -33,8 +33,8 @@ export default function BarChart(props: IBarChartProps) {
         indexBy={props.indexBy}
         margin={{
           top: 50,
-          right: 200,
-          left: props.layout === "horizontal" ? 500 : 200,
+          right: 100,
+          left: props.layout === "horizontal" ? 300 : 100,
           // bottom: props.legendX ? 50 : 30,
           bottom: props.layout === "horizontal" ? 100 : 30,
         }}
@@ -65,7 +65,7 @@ export default function BarChart(props: IBarChartProps) {
             tickRotation: 0,
             legend: props.legendY,
             legendPosition: "middle",
-            legendOffset: props.layout === "horizontal" ? -250 : -50,
+            legendOffset: props.layout === "horizontal" ? -250 : -70,
           },
         })}
         legends={props.legends}
