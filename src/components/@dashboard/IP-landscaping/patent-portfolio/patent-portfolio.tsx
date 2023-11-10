@@ -2,18 +2,23 @@ import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { FunctionComponent, useEffect, useState } from "react";
-import {
-  getCompetitorPatentingActivity,
-  getPatentCompetitorPortfolio,
-} from "../../../../utils/api/charts";
+import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
 import Sunburst from "../../sunburst";
 import RadioButtons from "../../../reusable/radio-buttons";
 
 interface Props {
   keywords: string[];
 }
-
+interface GroupedData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: { org: string; children: any[] };
+}
 type ICompetitorType = "ipc" | "cpc";
+
+interface IIPatentCompetitorPortfolio {
+  org: string;
+  count: number;
+}
 
 export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }) => {
   const [competitorType, setCompetitorType] = useState<ICompetitorType>("ipc");
@@ -36,6 +41,40 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
 
     //
   }, [data]);
+
+  const transformData = (data: IIPatentCompetitorPortfolio[] | undefined) => {
+    if (!data) {
+      return [];
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result: { org: string; children: any[] } = {
+      org: "data",
+      children: [],
+    };
+
+    // Group data by the first letter and second letter of cpc_subclass
+    const groupedData: GroupedData = data.reduce((acc: GroupedData, item) => {
+      const firstLetter = item.org.charAt(0);
+      const groupName = firstLetter;
+
+      acc[groupName] = acc[groupName] || { org: groupName, children: [] };
+      acc[groupName].children.push({
+        org: item.org,
+        count: item.count,
+      });
+      return acc;
+    }, {});
+
+    // Transform grouped data into the desired format
+    for (const key in groupedData) {
+      result.children.push(groupedData[key]);
+    }
+    result.children = result.children.slice(0, 5);
+    return result;
+  };
+
+  const result = transformData(data);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -64,7 +103,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
         }
       >
         <div>
-          {data && <Sunburst data={data} />}
+          {<Sunburst data={result} />}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -91,3 +130,59 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
     </div>
   );
 };
+
+[
+  {
+    org: "",
+    count: 2290,
+  },
+  {
+    org: "01 Communique Laboratory Inc.",
+    count: 3,
+  },
+  {
+    org: "1 Communique Laboratory Inc.",
+    count: 3,
+  },
+  {
+    org: "2 Communique Laboratory Inc.",
+    count: 3,
+  },
+  {
+    org: "3 Communique Laboratory Inc.",
+    count: 3,
+  },
+];
+
+// {
+//   total: 2290,
+//     children: [
+//       {
+//         org: '0',
+//         children: [
+//           {
+//             "org": "01 Communique Laboratory Inc.",
+//             "count": 3
+//           },
+//         ]
+//       },
+//       {
+//         org: '1',
+//         children: [
+//           {
+//             "org": "1 Communique Laboratory Inc.",
+//             "count": 3
+//           },
+//         ]
+//       },
+//       {
+//         org: '2',
+//         children: [
+//           {
+//             "org": "3 Communique Laboratory Inc.",
+//             "count": 3
+//           },I
+//         ]
+//       },
+//     ]
+// }

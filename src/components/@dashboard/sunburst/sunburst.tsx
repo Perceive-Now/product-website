@@ -5,27 +5,28 @@ import { FunctionComponent } from "react";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[];
+  data: any;
 }
 
 export const Sunburst: FunctionComponent<Props> = ({ data }) => {
   return (
     <div className="h-[500px]">
       <ResponsiveSunburst
-        data={datas}
+        data={data}
         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
-        id="name"
-        value="loc"
+        id="org"
+        value="count"
         cornerRadius={2}
         borderColor={{ theme: "background" }}
         // borderWidth={}
         // colors={{ scheme: 'nivo' }}
-        colors={COLORS.slice(3 - 2)}
+        // colors={COLORS}
+        colors={{ scheme: "purples" }}
         childColor={{
           from: "color",
           modifiers: [["brighter", 0.1]],
         }}
-        arcLabel="id"
+        // arcLabel="id"
         enableArcLabels={true}
         arcLabelsSkipAngle={10}
         arcLabelsTextColor={{
