@@ -43,15 +43,16 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
         <div>
           {data && (
             <BarChart
-              data={data.slice(0, 10)}
+              data={data}
               keys={["count"]}
               indexBy="title"
               groupMode={"stacked"}
               legendX="Number of Patents"
               legendY="WIPO FIELD"
               innerPadding={0}
-              borderRadius={0}
+              borderRadius={4}
               layout={"horizontal"}
+              height={"h-[1000px]"}
 
               // legends={[
               //   {

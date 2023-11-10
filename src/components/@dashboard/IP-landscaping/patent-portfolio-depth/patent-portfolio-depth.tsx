@@ -37,7 +37,7 @@ export const PatentPortfolioDepth: FunctionComponent<Props> = ({ keywords }) => 
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="10. Patent Portfolio Depth"
+            title="11. Patent Portfolio Depth"
           />
         }
       >

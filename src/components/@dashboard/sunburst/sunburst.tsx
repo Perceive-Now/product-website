@@ -1,12 +1,18 @@
 import { ResponsiveSunburst } from "@nivo/sunburst";
 
 import { COLORS } from "../../../utils/constants";
+import { FunctionComponent } from "react";
 
-export function Sunburst() {
+interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+}
+
+export const Sunburst: FunctionComponent<Props> = ({ data }) => {
   return (
     <div className="h-[500px]">
       <ResponsiveSunburst
-        data={data}
+        data={datas}
         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
         id="name"
         value="loc"
@@ -29,8 +35,8 @@ export function Sunburst() {
       />
     </div>
   );
-}
-const s = {
+};
+const datas = {
   count: 2290,
   children: [
     {

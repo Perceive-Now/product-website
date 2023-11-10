@@ -4,11 +4,21 @@ import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getEmergingTechnologyTrend } from "../../../../utils/api/charts";
+import TreeMap from "../../../@product/tree-map";
 
 interface Props {
   keywords: string[];
 }
 
+// wipo_field_title: string;
+// count: number;
+// year: string;
+interface ITransformedData {
+  [wipo_field_title: string]: {
+    id: string;
+    data: { x: string; y: number }[];
+  };
+}
 export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["emerging-technology-trend", ...keywords],
@@ -24,6 +34,24 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
 
     //
   }, [data]);
+
+  const transformedData: ITransformedData = {};
+
+  data &&
+    data.forEach((entry) => {
+      if (!transformedData[entry.wipo_field_title]) {
+        transformedData[entry.wipo_field_title] = { id: entry.wipo_field_title, data: [] };
+      }
+
+      if (entry.year && entry.count && transformedData[entry.wipo_field_title].data.length < 5) {
+        transformedData[entry.wipo_field_title].data.push({
+          x: entry.year.toString(),
+          y: entry.count,
+        });
+      }
+    });
+
+  const TreeData = Object.values(transformedData);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -41,7 +69,7 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
         }
       >
         <div>
-          <HeatMap />
+          <HeatMap data={TreeData} />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -62,6 +90,7 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
                 </li>
               </ul>
             </div>
+            T
           </div>
         </div>
       </DataSection>

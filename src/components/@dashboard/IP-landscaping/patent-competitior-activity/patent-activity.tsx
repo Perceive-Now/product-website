@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { getCompetitorPatentingActivity } from "../../../../utils/api/charts";
 import RadarChart from "../../../@product/radar";
 
@@ -9,7 +9,16 @@ interface Props {
   keywords: string[];
 }
 
+interface ITransformedData {
+  [key: string]: {
+    year: number;
+    [org: string]: number;
+  };
+}
+
 export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [keys, setKeys] = useState<any>([]);
   const { data, isLoading, isError, error } = useQuery(
     ["patent-competitor-activity", ...keywords],
     async () => {
@@ -24,6 +33,37 @@ export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords })
 
     //
   }, [data]);
+
+  const transformedData: ITransformedData = {};
+
+  data &&
+    data.forEach((entry) => {
+      const year = Math.floor(entry.year);
+
+      if (!transformedData[year]) {
+        transformedData[year] = { year: year };
+      }
+
+      transformedData[year][entry.org] = entry.count;
+    });
+
+  const result = Object.values(transformedData);
+
+  useEffect(() => {
+    const uniqueKeys = new Set(keys);
+
+    result.forEach((obj) => {
+      Object.entries(obj).forEach(([key]) => {
+        if (key !== "year") {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // setKeys((prevKeys: any) => [...prevKeys, key]);
+          uniqueKeys.add(key);
+        }
+      });
+    });
+
+    setKeys(Array.from(uniqueKeys));
+  }, []);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -41,7 +81,12 @@ export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords })
         }
       >
         <div>
-          <RadarChart />
+          <RadarChart
+            data={result.slice(0, 5)}
+            keys={keys.slice(0, 5)}
+            // keys={["AEROSPACE COMMUNICATION HOLDINGS, CO., LTD","Fairchild Camera & Instrument Corp","Standard Systems Corporation","The United States of America as represented by the Secretary of the Army"]}
+            index={"year"}
+          />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

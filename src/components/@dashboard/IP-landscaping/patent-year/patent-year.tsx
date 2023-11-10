@@ -77,31 +77,30 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
               legendY="Number of Patents"
               innerPadding={0}
               borderRadius={4}
-              legends={[
-                {
-                  dataFrom: "keys",
-                  anchor: "bottom-right",
-                  direction: "column",
-                  justify: false,
-                  translateX: 100,
-                  translateY: -20,
-                  itemsSpacing: 0,
-                  itemWidth: 83,
-                  itemHeight: 45,
-                  itemDirection: "left-to-right",
-                  itemOpacity: 0.85,
-                  symbolSize: 20,
-                  effects: [
-                    {
-                      on: "hover",
-                      style: {
-                        itemOpacity: 1,
-                      },
-                    },
-                  ],
-                  legendClassName: "custom-legend",
-                },
-              ]}
+              // legends={[
+              //   {
+              //     dataFrom: "keys",
+              //     anchor: "bottom-right",
+              //     direction: "column",
+              //     justify: false,
+              //     translateX: 100,
+              //     translateY: -20,
+              //     itemsSpacing: 0,
+              //     itemWidth: 83,
+              //     itemHeight: 45,
+              //     itemDirection: "left-to-right",
+              //     itemOpacity: 0.85,
+              //     symbolSize: 20,
+              //     effects: [
+              //       {
+              //         on: "hover",
+              //         style: {
+              //           itemOpacity: 1,
+              //         },
+              //       },
+              //     ],
+              //   },
+              // ]}
             />
           )}
           <div className="space-y-2 text-secondary-800 mt-4">

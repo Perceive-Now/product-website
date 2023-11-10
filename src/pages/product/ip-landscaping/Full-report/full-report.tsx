@@ -131,7 +131,7 @@ export const IPFullReport = () => {
           </div>
           {/* summary report */}
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 ">
-            <div className="flex-shrink-0 w-auto">
+            <div className="flex-shrink-0  w-auto">
               <div className="flex flex-col border rounded-t-lg shadow">
                 <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
                   More
@@ -152,7 +152,7 @@ export const IPFullReport = () => {
                 </div>
               </div>
             </div>
-            <div className="space-y-4 lg:w-[920px] xl:w-full">
+            <div className="space-y-4 lg:w-[920px] xl:w-full grow-0">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Related Technologies</h2>
@@ -267,12 +267,12 @@ export const IPFullReport = () => {
                 <EmergingTechnologyTrend keywords={keywords} />
               </div>
               {/*  */}
-              <div id="patent_portfolio_depth">
-                <PatentPortfolioDepth keywords={keywords} />
-              </div>
-              {/*  */}
               <div id="patent_competitior_depth">
                 <PatentPortfolioCompetitor keywords={keywords} />
+              </div>
+              {/*  */}
+              <div id="patent_portfolio_depth">
+                <PatentPortfolioDepth keywords={keywords} />
               </div>
               {/*  */}
               <div id="competitior_patenting_activity">

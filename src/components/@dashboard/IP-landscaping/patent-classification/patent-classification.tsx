@@ -10,6 +10,21 @@ interface Props {
   keywords: string[];
 }
 
+interface IPatentClassification {
+  cpc_subclass: string;
+  count: number;
+}
+
+interface ITreeData {
+  cpc_subclass: string;
+  children: any[];
+}
+
+interface GroupedData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: { cpc_subclass: string; children: any[] };
+}
+
 export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["patents-cpc", ...keywords],
@@ -25,6 +40,41 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
 
     //
   }, [data]);
+
+  const transformData = (data: IPatentClassification[] | undefined) => {
+    if (!data) {
+      return [];
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result: { cpc_subclass: string; children: any[] } = {
+      cpc_subclass: "data",
+      children: [],
+    };
+
+    // Group data by the first letter and second letter of cpc_subclass
+    const groupedData: GroupedData = data.reduce((acc: GroupedData, item) => {
+      const firstLetter = item.cpc_subclass.charAt(0).toUpperCase();
+      const secondLetter = item.cpc_subclass.charAt(1).toLowerCase();
+      const groupName = firstLetter + secondLetter;
+
+      acc[groupName] = acc[groupName] || { cpc_subclass: groupName, children: [] };
+      acc[groupName].children.push({
+        cpc_subclass: item.cpc_subclass,
+        count: item.count,
+      });
+      return acc;
+    }, {});
+
+    // Transform grouped data into the desired format
+    for (const key in groupedData) {
+      result.children.push(groupedData[key]);
+    }
+    result.children = result.children.slice(0, 8);
+    return result;
+  };
+
+  const result = transformData(data);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -55,7 +105,7 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
         }
       >
         <div>
-          {data && <TreeMap data={data} />}
+          {<TreeMap data={result} />}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

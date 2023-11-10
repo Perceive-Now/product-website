@@ -1,13 +1,21 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { COLORS } from "../../../utils/constants";
+import { FunctionComponent } from "react";
 
-export const RadarChart = () => {
+interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+  keys: string[];
+  index: string;
+}
+
+export const RadarChart: FunctionComponent<Props> = ({ data, keys, index }) => {
   return (
     <div className="h-[400px]">
       <ResponsiveRadar
         data={data}
-        keys={["chardonay", "carmenere", "syrah"]}
-        indexBy="taste"
+        keys={keys}
+        indexBy={index}
         valueFormat=">-.2f"
         margin={{ top: 70, right: 120, bottom: 40, left: 120 }}
         borderColor={{ from: "color" }}
@@ -44,7 +52,7 @@ export const RadarChart = () => {
   );
 };
 
-const data = [
+const datas = [
   {
     taste: "fruity",
     chardonay: 81,

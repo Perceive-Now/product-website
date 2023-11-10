@@ -155,7 +155,7 @@ export default function USMap(props: IUSMapProps) {
         <div className="flex justify-center w-full object-cover" id="us-map">
           <ComposableMap
             projection="geoAlbersUsa"
-            className="bg-white h-[610px]"
+            className="bg-white h-[610px] lg:w-[610px] xl:w-full"
             projectionConfig={{ scale: 1000 }}
           >
             <Geographies geography={geoUrl}>

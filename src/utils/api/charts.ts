@@ -47,7 +47,7 @@ export async function getGeoFiling(keywords: string[]) {
 }
 
 export async function getPatentClassificationCPC(keywords: string[]) {
-  const res = await axiosInstance.get<IGeoFiling>(
+  const res = await axiosInstance.get<IPatentClassification>(
     `/api/patent_classification_cpc?keywords=${keywords.join(
       "|",
     )}&code=${authCode}&clientId=default`,
@@ -183,7 +183,7 @@ export interface IGeoFiling {
 }
 export interface IPatentClassification {
   response: {
-    cpc_subclas: string;
+    cpc_subclass: string;
     count: number;
   }[];
 }
@@ -216,7 +216,7 @@ export interface ITechnologyAnalysis {
 
 export interface ICompetitorActivity {
   response: {
-    year: string;
+    year: number;
     org: string;
     count: number;
   }[];

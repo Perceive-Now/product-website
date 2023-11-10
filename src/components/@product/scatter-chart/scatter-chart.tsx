@@ -11,8 +11,6 @@ import { abbreviateString, formatNumber } from "../../../utils/helpers";
 export default function ScatterChart(props: IScatterChartProps) {
   const [dataItems, setDataItems] = useState(props.data);
 
-  console.log(dataItems);
-
   useEffect(() => {
     setDataItems(props.data);
   }, [props.data]);

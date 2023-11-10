@@ -26,7 +26,13 @@ export default function BarChart(props: IBarChartProps) {
 
   //
   return (
-    <div className={classNames(props.layout === "horizontal" ? "h-[900px]" : "h-[400px]")}>
+    <div
+      className={classNames(
+        props.layout === "horizontal"
+          ? `${props.height !== undefined ? props.height : "h-[600px]"}`
+          : "h-[400px]",
+      )}
+    >
       <ResponsiveBar
         data={dataItems}
         keys={props.keys}
@@ -34,7 +40,7 @@ export default function BarChart(props: IBarChartProps) {
         margin={{
           top: 50,
           right: 100,
-          left: props.layout === "horizontal" ? 300 : 100,
+          left: props.layout === "horizontal" ? 200 : 100,
           // bottom: props.legendX ? 50 : 30,
           bottom: props.layout === "horizontal" ? 100 : 30,
         }}
@@ -65,7 +71,7 @@ export default function BarChart(props: IBarChartProps) {
             tickRotation: 0,
             legend: props.legendY,
             legendPosition: "middle",
-            legendOffset: props.layout === "horizontal" ? -250 : -70,
+            legendOffset: props.layout === "horizontal" ? -150 : -70,
           },
         })}
         legends={props.legends}
@@ -79,11 +85,11 @@ export default function BarChart(props: IBarChartProps) {
         animate={false}
         role="application"
         colors={COLORS.slice(9 - props.keys.length)}
-        // tooltip={(item) => (
-        //   <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
-        //     {formatNumber(item.value)}
-        //   </div>
-        // )}
+        tooltip={(item: { value: number }) => (
+          <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
+            {formatNumber(item.value)}
+          </div>
+        )}
         theme={{
           axis: {
             legend: {
@@ -111,4 +117,58 @@ interface IBarChartProps {
   groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
   label?: boolean;
+  height?: string;
 }
+
+// [
+//   {
+//     "name": "a",
+//     "year": 2000,
+//     "count":10
+//   },
+//   {
+//     "name": "b",
+//     "year": 1999,
+//     "count":10
+
+//   },
+//   {
+//     "name": "a",
+//     "year": 2023,
+//     "count":10
+
+//   },
+//   {
+//     "name": "b",
+//     "year": 2022,
+
+//   }
+// ]
+
+// [
+//   {
+//     name: "a",
+//     data: [
+//      {
+//       year: "2000",
+//       count: 10
+//      },
+//      {
+//       year: "2023",
+//       count: 10
+//      },
+//     ]
+//    },
+//    {
+//     name:"b",
+//     data: [
+//       {
+//        year: "1999",
+//        count: 10
+//       },
+//       {
+//        year: "2022",
+//        count: 10
+//       },
+//    }
+// ]
