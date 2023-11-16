@@ -197,7 +197,7 @@ export interface IEmergingTechnologyTrend {
   response: {
     wipo_field_title: string;
     count: number;
-    year: string;
+    year: number;
   }[];
 }
 

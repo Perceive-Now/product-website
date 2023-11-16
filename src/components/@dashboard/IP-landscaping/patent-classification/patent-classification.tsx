@@ -15,10 +15,10 @@ interface IPatentClassification {
   count: number;
 }
 
-interface ITreeData {
-  cpc_subclass: string;
-  children: any[];
-}
+// interface ITreeData {
+//   cpc_subclass: string;
+//   children: any[];
+// }
 
 interface GroupedData {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,12 +70,12 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
     for (const key in groupedData) {
       result.children.push(groupedData[key]);
     }
-    result.children = result.children.slice(0, 8);
+    result.children = result.children.slice(0, 3);
     return result;
   };
 
   const result = transformData(data);
-
+  // console.log(result)
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection

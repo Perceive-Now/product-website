@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useCallback, useEffect } from "react";
 import { getCompetitorPatentingActivity } from "../../../../utils/api/charts";
 import RadarChart from "../../../@product/radar";
 
@@ -16,9 +16,12 @@ interface ITransformedData {
   };
 }
 
+interface ITransformedEntry {
+  year: number;
+  [org: string]: number;
+}
+
 export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [keys, setKeys] = useState<any>([]);
   const { data, isLoading, isError, error } = useQuery(
     ["patent-competitor-activity", ...keywords],
     async () => {
@@ -49,21 +52,43 @@ export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords })
 
   const result = Object.values(transformedData);
 
-  useEffect(() => {
-    const uniqueKeys = new Set(keys);
+  const transformData = useCallback((inputData: ITransformedEntry[]) => {
+    const uniqueKeys = Array.from(
+      new Set(inputData.flatMap((entry) => Object.keys(entry).filter((key) => key !== "year"))),
+    );
 
-    result.forEach((obj) => {
-      Object.entries(obj).forEach(([key]) => {
-        if (key !== "year") {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          // setKeys((prevKeys: any) => [...prevKeys, key]);
-          uniqueKeys.add(key);
+    // Check and add missing keys with a value of 0
+    inputData.forEach((entry) => {
+      uniqueKeys.forEach((key) => {
+        if (!entry[key]) {
+          entry[key] = 0;
         }
       });
     });
 
-    setKeys(Array.from(uniqueKeys));
+    return inputData;
   }, []);
+
+  const finalData = transformData(result);
+
+  // const uniqueKeys = useMemo(() => { new Set(keys); }, [keys])
+
+  const updateKeys = useCallback((data: ITransformedEntry[]) => {
+    const uniqueKeys = new Set();
+
+    data.forEach((obj) => {
+      Object.keys(obj).forEach((key) => {
+        if (key !== "year") {
+          uniqueKeys.add(key);
+        }
+      });
+    });
+    const newKeys = Array.from(uniqueKeys);
+
+    return newKeys as string[];
+  }, []);
+
+  const keys = updateKeys(finalData);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -81,12 +106,7 @@ export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords })
         }
       >
         <div>
-          <RadarChart
-            data={result.slice(0, 5)}
-            keys={keys.slice(0, 5)}
-            // keys={["AEROSPACE COMMUNICATION HOLDINGS, CO., LTD","Fairchild Camera & Instrument Corp","Standard Systems Corporation","The United States of America as represented by the Secretary of the Army"]}
-            index={"year"}
-          />
+          <RadarChart data={finalData.slice(0, 5)} keys={keys.slice(0, 10)} index={"year"} />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

@@ -1,6 +1,6 @@
 import { ResponsiveRadar } from "@nivo/radar";
 import { COLORS } from "../../../utils/constants";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,13 +10,27 @@ interface Props {
 }
 
 export const RadarChart: FunctionComponent<Props> = ({ data, keys, index }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [datas, setDatas] = useState<any>([]);
+
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const [key, setKey] = useState<any>([])
+  useEffect(() => {
+    setDatas(data);
+    // setKey(keys)
+  }, [data]);
+  // console.log(datas)
+  // console.log(key)
+  // console.log(data)
+  // console.log(keys)
+
   return (
     <div className="h-[400px]">
       <ResponsiveRadar
-        data={data}
+        data={datas}
+        // keys={[ 'chardonay', 'carmenere', 'syrah' ]}
         keys={keys}
         indexBy={index}
-        valueFormat=">-.2f"
         margin={{ top: 70, right: 120, bottom: 40, left: 120 }}
         borderColor={{ from: "color" }}
         gridLabelOffset={36}
@@ -52,43 +66,35 @@ export const RadarChart: FunctionComponent<Props> = ({ data, keys, index }) => {
   );
 };
 
-const datas = [
-  {
-    taste: "fruity",
-    chardonay: 81,
-    carmenere: 120,
-    syrah: 118,
-  },
-  {
-    taste: "bitter",
-    chardonay: 98,
-    carmenere: 93,
-    syrah: 29,
-  },
-  {
-    taste: "heavy",
-    chardonay: 102,
-    carmenere: 62,
-    syrah: 100,
-  },
-  {
-    taste: "strong",
-    chardonay: 90,
-    carmenere: 62,
-    syrah: 50,
-  },
-  {
-    taste: "sunny",
-    chardonay: 33,
-    carmenere: 105,
-    syrah: 70,
-  },
-];
-
-// response:[
+// const datas = [
 //   {
-//     "uspc_subclass_title": "A",
-//     "01 Communique Laboratory Inc.":100,
-
-//   }
-// ]
+//     taste: "fruity",
+//     chardonay: 0,
+//     carmenere: 0,
+//     syrah: 0,
+//   },
+//   {
+//     taste: "bitter",
+//     chardonay: 0,
+//     carmenere: 93,
+//     syrah: 0,
+//   },
+//   {
+//     taste: "heavy",
+//     chardonay: 0,
+//     carmenere: 0,
+//     syrah: 0,
+//   },
+//   {
+//     taste: "strong",
+//     chardonay: 90,
+//     carmenere: 0,
+//     syrah: 0,
+//   },
+//   {
+//     taste: "sunny",
+//     chardonay: 0,
+//     carmenere: 0,
+//     syrah: 0,
+//   },
+// ];

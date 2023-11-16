@@ -4,20 +4,18 @@ import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getEmergingTechnologyTrend } from "../../../../utils/api/charts";
-import TreeMap from "../../../@product/tree-map";
 
 interface Props {
   keywords: string[];
 }
 
-// wipo_field_title: string;
-// count: number;
-// year: string;
 interface ITransformedData {
-  [wipo_field_title: string]: {
-    id: string;
-    data: { x: string; y: number }[];
-  };
+  [wipo_field_title: string]: ITransformedEntry;
+}
+
+interface ITransformedEntry {
+  id: string;
+  data: { x: number; y: number | null }[];
 }
 export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
@@ -43,15 +41,39 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
         transformedData[entry.wipo_field_title] = { id: entry.wipo_field_title, data: [] };
       }
 
-      if (entry.year && entry.count && transformedData[entry.wipo_field_title].data.length < 5) {
+      if (entry.year && entry.count && transformedData[entry.wipo_field_title]) {
         transformedData[entry.wipo_field_title].data.push({
-          x: entry.year.toString(),
+          x: entry.year,
           y: entry.count,
         });
       }
+      Object.values(transformedData).forEach((entry) => {
+        entry.data = entry.data.slice(0, 5);
+      });
     });
 
-  const TreeData = Object.values(transformedData);
+  const tree_data = Object.values(transformedData).slice(0, 5);
+
+  const transformData = (inputData: ITransformedEntry[]) => {
+    // Collect all unique years from the existing data
+    const uniqueYears = Array.from(
+      new Set(inputData.flatMap((entry) => entry.data.map((item) => item.x))),
+    );
+
+    inputData.forEach((entry) => {
+      // Check and add missing years
+      uniqueYears.forEach((year) => {
+        const existingYear = entry.data.find((item) => item.x === year);
+
+        if (!existingYear) {
+          entry.data.push({ x: year, y: null });
+        }
+      });
+    });
+    return inputData;
+  };
+
+  const finalData = transformData(tree_data);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -69,7 +91,27 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
         }
       >
         <div>
-          <HeatMap data={TreeData} />
+          <HeatMap
+            data={finalData}
+            legend={[
+              {
+                anchor: "right",
+                translateX: 60,
+                translateY: -1,
+                length: 500,
+                thickness: 8,
+                direction: "column",
+                tickPosition: "after",
+                tickSize: 3,
+                tickSpacing: 4,
+                tickOverlap: false,
+                tickFormat: ">-.2s",
+                title: "Growth rate",
+                titleAlign: "end",
+                titleOffset: 8,
+              },
+            ]}
+          />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -90,7 +132,6 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
                 </li>
               </ul>
             </div>
-            T
           </div>
         </div>
       </DataSection>

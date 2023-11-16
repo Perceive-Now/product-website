@@ -27,7 +27,6 @@ import WipoAnalysis from "../../../../components/@dashboard/IP-landscaping/wipo-
 import EmergingTechnologyTrend from "../../../../components/@dashboard/IP-landscaping/emerging-technology";
 import PatentPortfolioCompetitor from "../../../../components/@dashboard/IP-landscaping/patent-portfolio";
 import TechnologyLifeCycleAnalysis from "../../../../components/@dashboard/IP-landscaping/technology-analysis";
-import { useState } from "react";
 import PatentCompetitorActivity from "../../../../components/@dashboard/IP-landscaping/patent-competitior-activity";
 import PatentCompetitorClass from "../../../../components/@dashboard/IP-landscaping/patent-competitor-class";
 import PatentPortfolioDepth from "../../../../components/@dashboard/IP-landscaping/patent-portfolio-depth";
@@ -41,7 +40,6 @@ export const IPFullReport = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   //
-  const [scroll, setScrollId] = useState("related_technology");
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
@@ -61,17 +59,6 @@ export const IPFullReport = () => {
   //
   const filterClear = () => {
     dispatch(setFilter([]));
-  };
-
-  const handleButtonClick = (id: string) => {
-    // if () {
-    //   formRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "start",
-    //   });
-    // }
-    // scroll.scrollIntoView({ behavior: 'smooth' });
-    setScrollId(id);
   };
 
   //
@@ -325,7 +312,9 @@ export const IPFullReport = () => {
                 // onClick={() => handleButtonClick(topic.id)}
                 to={`#${topic.id}`}
                 className={classNames(
-                  topic.id === scroll ? "border-l-4 border-primary-600 pl-0.5" : "pl-1",
+                  topic.id === "related_technology"
+                    ? "border-l-4 border-primary-600 pl-0.5"
+                    : "pl-1",
                   "text-start text-primary-900 font-sm truncate",
                 )}
               >

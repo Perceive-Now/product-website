@@ -9,10 +9,13 @@ import RadioButtons from "../../../reusable/radio-buttons";
 interface Props {
   keywords: string[];
 }
+
 interface GroupedData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: { org: string; children: any[] };
+  org: string;
+  count?: number;
+  children?: GroupedData[];
 }
+
 type ICompetitorType = "ipc" | "cpc";
 
 interface IIPatentCompetitorPortfolio {
@@ -48,29 +51,58 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result: { org: string; children: any[] } = {
+    const result: { org: string; children: GroupedData[] } = {
       org: "data",
       children: [],
     };
 
-    // Group data by the first letter and second letter of cpc_subclass
-    const groupedData: GroupedData = data.reduce((acc: GroupedData, item) => {
-      const firstLetter = item.org.charAt(0);
-      const groupName = firstLetter;
+    // // Group data by the first letter and second letter of cpc_subclass
+    // const groupedData: GroupedData = data.reduce((acc: GroupedData, item) => {
+    //   const firstLetter = item.org.charAt(0);
+    //   // const groupName = firstLetter ;
 
-      acc[groupName] = acc[groupName] || { org: groupName, children: [] };
-      acc[groupName].children.push({
-        org: item.org,
-        count: item.count,
-      });
-      return acc;
-    }, {});
+    //   // const groupName = firstLetter;
 
-    // Transform grouped data into the desired format
-    for (const key in groupedData) {
-      result.children.push(groupedData[key]);
-    }
-    result.children = result.children.slice(0, 5);
+    //   acc[firstLetter] = acc[firstLetter] || { org: firstLetter, children: [] };
+
+    //   const firstLetter = item.org.charAt(0);
+    //   const secondLetter = item.org.charAt(1);
+    //   // const groupName = firstLetter;
+
+    //   acc[firstLetter].children.push({
+    //     org: item.org,
+    //     count: item.count,
+    //   });
+    //   return acc;
+    // }, {});
+
+    // // Transform grouped data into the desired format
+    // for (const key in groupedData) {
+    //   result.children.push(groupedData[key]);
+    // }
+    // result.children = result.children.slice(0, 5);
+    // return result;
+
+    data.forEach((item) => {
+      const firstChar = item.org.charAt(0);
+      const secondChar = item.org.slice(0, 2);
+
+      let firstLevel = result.children?.find((g) => g.org === firstChar);
+
+      if (!firstLevel) {
+        firstLevel = { org: firstChar, children: [] };
+        result.children?.push(firstLevel);
+      }
+
+      let secondLevel = firstLevel.children?.find((sg) => sg.org === secondChar);
+
+      if (!secondLevel) {
+        secondLevel = { org: secondChar, children: [] };
+        firstLevel.children?.push(secondLevel);
+      }
+      secondLevel.children?.push({ org: item.org, count: item.count });
+    });
+    result.children = result.children.slice(1, 8);
     return result;
   };
 
@@ -103,7 +135,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
         }
       >
         <div>
-          {<Sunburst data={result} />}
+          <Sunburst data={result} />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -131,38 +163,56 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
   );
 };
 
-[
-  {
-    org: "",
-    count: 2290,
-  },
-  {
-    org: "01 Communique Laboratory Inc.",
-    count: 3,
-  },
-  {
-    org: "1 Communique Laboratory Inc.",
-    count: 3,
-  },
-  {
-    org: "2 Communique Laboratory Inc.",
-    count: 3,
-  },
-  {
-    org: "3 Communique Laboratory Inc.",
-    count: 3,
-  },
-];
+// [
+//   {
+//     org: "",
+//     count: 2290,
+//   },
+//   {
+//     org: "01 Communique Laboratory Inc.",
+//     count: 3,
+//   },
+//   {
+//     org: "02 Communique Laboratory Inc.",
+//     count: 3,
+//   },
+//   {
+//     org: "1 Communique Laboratory Inc.",
+//     count: 3,
+//   },
+//   {
+//     org: "2 Communique Laboratory Inc.",
+//     count: 3,
+//   },
+//   {
+//     org: "3 Communique Laboratory Inc.",
+//     count: 3,
+//   },
+// ];
 
 // {
-//   total: 2290,
+//   total: data,
 //     children: [
 //       {
 //         org: '0',
 //         children: [
 //           {
-//             "org": "01 Communique Laboratory Inc.",
-//             "count": 3
+//             "org": "01",
+//             children: [
+//               {
+//                 "org": "01 Communique Laboratory Inc.",
+//                 "count": 3
+//               }
+//             ]
+//           },
+//           {
+//             "org": "02",
+//             children: [
+//               {
+//                 "org": "02 Communique Laboratory Inc.",
+//                 "count": 3
+//               }
+//             ]
 //           },
 //         ]
 //       },
@@ -181,7 +231,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
 //           {
 //             "org": "3 Communique Laboratory Inc.",
 //             "count": 3
-//           },I
+//           }, I
 //         ]
 //       },
 //     ]

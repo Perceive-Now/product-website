@@ -8,16 +8,21 @@ interface Props {
 }
 
 export const TreeMap: FunctionComponent<Props> = ({ data }) => {
+  // console.log(data)
   return (
-    <div className="h-[600px]">
+    <div className="h-[900px] w-full">
       <ResponsiveTreeMap
         data={data}
         identity="cpc_subclass"
         value="count"
-        valueFormat=".02s"
+        // valueFormat=".02s"
+        // leavesOnly={true}
+
         innerPadding={1}
         margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-        labelSkipSize={3}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        label={(e: any) => e.id + " (" + e.formattedValue + ")"}
+        labelSkipSize={30}
         labelTextColor={{
           from: "color",
           modifiers: [["darker", 5]],
@@ -30,12 +35,12 @@ export const TreeMap: FunctionComponent<Props> = ({ data }) => {
         parentLabelPosition="top"
         parentLabelPadding={20}
         enableParentLabel={false}
-        label="id"
-        tooltip={(item: { value: number }) => (
-          <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
-            {item.value}
-          </div>
-        )}
+        // label="id"
+        // tooltip={(item: { value: number }) => (
+        //   <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
+        //     {item.value}
+        //   </div>
+        // )}
         // colors={{ scheme: 'set1' }}
 
         // parentLabelTextColor={{
@@ -87,67 +92,3 @@ export const TreeMap: FunctionComponent<Props> = ({ data }) => {
 //     },
 //   ],
 // };
-
-[
-  {
-    cpc_subclass: "A01B",
-    count: 276,
-  },
-  {
-    cpc_subclass: "A01C",
-    count: 170,
-  },
-  {
-    cpc_subclass: "A01D",
-    count: 166,
-  },
-  {
-    cpc_subclass: "B01D",
-    count: 166,
-  },
-  {
-    cpc_subclass: "C01D",
-    count: 166,
-  },
-];
-// {
-//   name: "data",
-//     children: [
-//       {
-//         name: "a",
-//         children: [
-//           {
-//             "cpc_subclass": "A01B",
-//             "count": 276
-//           },
-//           {
-//             "cpc_subclass": "A01C",
-//             "count": 170
-//           },
-//           {
-//             "cpc_subclass": "A01D",
-//             "count": 166
-//           },
-//         ],
-//       },
-//       {
-//         name: 'b',
-//         children: [
-//           {
-//             "cpc_subclass": "B01D",
-//             "count": 166
-//           },
-//         ],
-//       },
-//       {
-//         name: 'c',
-//         children: [
-//           {
-//             "cpc_subclass": "C01D",
-//             "count": 166
-//           },
-//         ]
-//       }
-
-//     ]
-// }
