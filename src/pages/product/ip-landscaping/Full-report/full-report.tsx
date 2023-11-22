@@ -228,55 +228,55 @@ export const IPFullReport = () => {
                   </div>
                 </div>
                 {/*Patents by year  */}
-                <div id="patent_families">
+                <div id="patent_families" className="page-break">
                   <PatentYear keywords={keywords} />
                 </div>
                 {/* Top 10 Patents by patent references */}
-                <div id="patent_references">
+                <div id="patent_references" className="page-break">
                   <PatentReference keywords={keywords} />
                 </div>
                 {/* legal status */}
-                <div id="patent_legal_status">
+                <div id="patent_legal_status" className="page-break">
                   <PatentLegalStatus keywords={keywords} />
                 </div>
                 {/* inventor */}
-                <div id="inventors_asignees">
+                <div id="inventors_asignees" className="page-break">
                   <InventorAnalysis keywords={keywords} />
                 </div>
                 {/* geographical distribution */}
-                <div id="geographical_distribution">
+                <div id="geographical_distribution" className="page-break">
                   <GeographicalDistributionFiling keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="patent_classification">
+                <div id="patent_classification" className="page-break">
                   <PatentClassificationAnalysis keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="wipo_field_analysis">
+                <div id="wipo_field_analysis" className="page-break">
                   <WipoAnalysis keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="technology_lifecycle">
+                <div id="technology_lifecycle" className="page-break">
                   <TechnologyLifeCycleAnalysis keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="emerging_technology">
+                <div id="emerging_technology" className="page-break">
                   <EmergingTechnologyTrend keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="patent_competitior_depth">
+                <div id="patent_competitior_depth" className="page-break">
                   <PatentPortfolioCompetitor keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="patent_portfolio_depth">
+                <div id="patent_portfolio_depth" className="page-break">
                   <PatentPortfolioDepth keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="competitior_patenting_activity">
+                <div id="competitior_patenting_activity" className="page-break">
                   <PatentCompetitorActivity keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="competitior_patenting_activity_class">
+                <div id="competitior_patenting_activity_class" className="page-break">
                   <PatentCompetitorClass keywords={keywords} />
                 </div>
               </div>

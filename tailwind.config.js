@@ -5,11 +5,28 @@ module.exports = {
     screens: {
       sm: "428px",
       md: "834px",
-      lg:"1080px",
+      lg: "1080px",
       xl: "1280px",
       "2xl": "1440px",
-      "3xl": "1728px",
+      "3xl": "1600px",
     },
+    // screens: {
+    //   'sm': '640px',
+    //   // => @media (min-width: 640px) { ... }
+
+    //   'md': '768px',
+    //   // => @media (min-width: 768px) { ... }
+
+    //   'lg': '1024px',
+    //   // => @media (min-width: 1024px) { ... }
+
+    //   'xl': '1280px',
+    //   // => @media (min-width: 1280px) { ... }
+
+    //   '2xl': '1440px',
+    //   // => @media (min-width: 1536px) { ... }
+    //   '3xl': '1800px'
+    // },
     spacing: {
       0: 0,
       0.5: "0.25rem",
@@ -78,6 +95,16 @@ module.exports = {
       },
       ringWidth: {
         0.5: "0.5px",
+      },
+      container: {
+        center: true,
+        screens: {
+          // sm: '600px',
+          // md: '728px',
+          // lg: '984px',
+          // xl: '1240px',
+          // '3xl': '1240px',
+        },
       },
       // boxShadow: {
       //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

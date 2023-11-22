@@ -25,7 +25,7 @@ export const RadarChart: FunctionComponent<Props> = ({ data, keys, index }) => {
   // console.log(keys)
 
   return (
-    <div className="h-[400px]">
+    <div className="h-[400px] 3xl:w-[1000px] mx-auto">
       <ResponsiveRadar
         data={datas}
         // keys={[ 'chardonay', 'carmenere', 'syrah' ]}

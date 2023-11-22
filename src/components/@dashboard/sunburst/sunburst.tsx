@@ -21,10 +21,10 @@ const CenteredMetric = () => {
 
 export const Sunburst: FunctionComponent<Props> = ({ data, total }) => {
   return (
-    <div className="h-[500px] relative overflow-hidden">
+    <div className="h-[500px] relative overflow-hidden 3xl:w-[1000px] mx-auto">
       <ResponsiveSunburst
         data={data}
-        margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
         id="org"
         value="count"
         cornerRadius={0}
@@ -61,7 +61,7 @@ export const Sunburst: FunctionComponent<Props> = ({ data, total }) => {
         //   </div>
         // )}
       />
-      <div className="absolute z- top-[48%] left-[46%] ">
+      <div className="absolute z- top-[48%] left-[42%] 2xl:left-[43%] 3xl:left-[46%] ">
         <span className="text-black text-xl ">{total} patents</span>
       </div>
     </div>

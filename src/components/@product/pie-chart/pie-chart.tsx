@@ -20,7 +20,7 @@ export default function PieChart(props: IPieChartProps) {
 
   //
   return (
-    <div className="h-[300px]">
+    <div className="h-[300px] 3xl:w-[1000px] mx-auto">
       <ResponsivePie
         data={dataItems}
         margin={{ top: 40, right: 250, bottom: 40, left: 0 }}

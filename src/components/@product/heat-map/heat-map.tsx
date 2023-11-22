@@ -12,7 +12,7 @@ interface Props {
 
 export const HeatMap: FunctionComponent<Props> = ({ data, legend }) => {
   return (
-    <div className="h-[600px]">
+    <div className="h-[600px] 3xl:w-[1000px] mx-auto">
       <ResponsiveHeatMap
         data={data}
         margin={{ top: 60, right: 200, bottom: 60, left: 200 }}

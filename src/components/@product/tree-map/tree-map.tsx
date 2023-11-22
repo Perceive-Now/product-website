@@ -10,7 +10,7 @@ interface Props {
 export const TreeMap: FunctionComponent<Props> = ({ data }) => {
   // console.log(data)
   return (
-    <div className="h-[600px] w-full">
+    <div className="h-[600px] 3xl:w-[1000px] mx-auto">
       <ResponsiveTreeMap
         data={data}
         identity="cpc_subclass"
@@ -19,7 +19,7 @@ export const TreeMap: FunctionComponent<Props> = ({ data }) => {
         // leavesOnly={true}
 
         innerPadding={1}
-        margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+        margin={{ top: 10, right: 50, bottom: 10, left: 50 }}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         label={(e: any) => e.id + " (" + e.formattedValue + ")"}
         labelSkipSize={30}

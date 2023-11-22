@@ -30,7 +30,8 @@ export default function BarChart(props: IBarChartProps) {
       className={classNames(
         props.layout === "horizontal"
           ? `${props.height !== undefined ? props.height : "h-[600px]"}`
-          : "h-[400px]",
+          : "h-[400px] ",
+        "3xl:w-[1000px] mx-auto",
       )}
     >
       <ResponsiveBar
