@@ -10,7 +10,7 @@ interface Props {
 export const TreeMap: FunctionComponent<Props> = ({ data }) => {
   // console.log(data)
   return (
-    <div className="h-[900px] w-full">
+    <div className="h-[600px] w-full">
       <ResponsiveTreeMap
         data={data}
         identity="cpc_subclass"

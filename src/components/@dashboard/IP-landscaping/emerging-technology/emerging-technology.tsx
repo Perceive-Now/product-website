@@ -47,29 +47,50 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
           y: entry.count,
         });
       }
-      Object.values(transformedData).forEach((entry) => {
-        entry.data = entry.data.slice(0, 5);
-      });
+      // Object.values(transformedData).forEach((entry) => {
+      //   entry.data = entry.data.slice(0, 5);
+      // });
     });
 
-  const tree_data = Object.values(transformedData).slice(0, 5);
+  const tree_data = Object.values(transformedData);
 
+  // const transformData = (inputData: ITransformedEntry[]) => {
+  //   // Collect all unique years from the existing data
+  //   const uniqueYears = Array.from(
+  //     new Set(inputData.flatMap((entry) => entry.data.map((item) => item.x))),
+  //   );
+
+  //   inputData.forEach((entry) => {
+  //     // Check and add missing years
+  //     uniqueYears.forEach((year) => {
+  //       const existingYear = entry.data.find((item) => item.x === year);
+
+  //       if (!existingYear) {
+  //         entry.data.push({ x: year, y: null });
+  //       }
+  //     });
+  //   });
+  //   return inputData;
+  // };
+
+  // const finalData = transformData(tree_data);
   const transformData = (inputData: ITransformedEntry[]) => {
     // Collect all unique years from the existing data
     const uniqueYears = Array.from(
       new Set(inputData.flatMap((entry) => entry.data.map((item) => item.x))),
     );
 
-    inputData.forEach((entry) => {
-      // Check and add missing years
-      uniqueYears.forEach((year) => {
-        const existingYear = entry.data.find((item) => item.x === year);
+    // Sort the years in descending order
+    const sortedYears = uniqueYears.sort((a, b) => b - a);
 
-        if (!existingYear) {
-          entry.data.push({ x: year, y: null });
-        }
-      });
+    // Include only the recent five years
+    const recentYears = sortedYears.slice(0, 5);
+
+    inputData.forEach((entry) => {
+      // Filter data to include only the recent five years
+      entry.data = entry.data.filter((item) => recentYears.includes(item.x));
     });
+
     return inputData;
   };
 
@@ -92,7 +113,7 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
       >
         <div>
           <HeatMap
-            data={finalData}
+            data={finalData.slice(0, 5)}
             legend={[
               {
                 anchor: "right",

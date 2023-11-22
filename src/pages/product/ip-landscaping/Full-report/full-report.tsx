@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
+import { useReactToPrint } from "react-to-print";
 
 import classNames from "classnames";
 //
@@ -30,6 +31,7 @@ import TechnologyLifeCycleAnalysis from "../../../../components/@dashboard/IP-la
 import PatentCompetitorActivity from "../../../../components/@dashboard/IP-landscaping/patent-competitior-activity";
 import PatentCompetitorClass from "../../../../components/@dashboard/IP-landscaping/patent-competitor-class";
 import PatentPortfolioDepth from "../../../../components/@dashboard/IP-landscaping/patent-portfolio-depth";
+import { useRef } from "react";
 
 //
 
@@ -39,6 +41,8 @@ import PatentPortfolioDepth from "../../../../components/@dashboard/IP-landscapi
 export const IPFullReport = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const printRef = useRef<HTMLDivElement>(null);
   //
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -66,22 +70,24 @@ export const IPFullReport = () => {
     dispatch(setDashboardSearch(keyword));
   };
 
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+  });
+
   return (
     <>
-      <div>
-        <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md">
-          <div className="flex items-start justify-center gap-0.5 py-1">
-            <p className="text-lg text-primary-900 font-semibold">
-              IP Landscaping{" "}
-              <span className="font-bold text-secondary-800 text-sm">
-                (407, 046 Patents & 431,402 Companies)
-              </span>
-            </p>
-          </div>
+      <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md ">
+        <div className="flex items-start justify-center gap-0.5 py-1">
+          <p className="text-lg text-primary-900 font-semibold">
+            IP Landscaping{" "}
+            <span className="font-bold text-secondary-800 text-sm">
+              (407, 046 Patents & 431,402 Companies)
+            </span>
+          </p>
         </div>
       </div>
       {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
-      <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2">
+      <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2 h-full">
         <div className="mt-0.5">
           {/* Search bar */}
           <div>
@@ -155,134 +161,146 @@ export const IPFullReport = () => {
                   ))}
                 </div>
               </div>
-              {/* Exexutive Summary */}
-              <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-4 w-full space-y-2">
-                <h2 className="text-lg font-bold text-primary-900">Executive Summary</h2>
-                <BarChart
-                  data={demoData}
-                  keys={["hot dog"]}
-                  indexBy="country"
-                  groupMode="stacked"
-                  legendY="Number of Patents"
-                />
-                {/*  */}
-                <div className="text-secondary-800 font-medium space-y-3">
-                  <div>
-                    <h6>Market Growth:</h6>
-                    <ul className="list-disc ml-4">
-                      <li>
-                        The wearable blood pressure sensor market is on a growth trajectory with a
-                        projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
-                        years. This could potentially elevate the market valuation from an estimated
-                        $1.5 billion to over $2.25 billion by the end of the forecast period.
-                      </li>
-                      <li>
-                        The driving factors behind this growth could be an increasing awareness of
-                        health and fitness, aging population, and the advancement in wearable
-                        technology.
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h6>Patent Landscape:</h6>
-                    <ul className="list-disc ml-4">
-                      <li>
-                        The wearable blood pressure sensor market is on a growth trajectory with a
-                        projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
-                        years. This could potentially elevate the market valuation from an estimated
-                        $1.5 billion to over $2.25 billion by the end of the forecast period.
-                      </li>
-                      <li>
-                        The driving factors behind this growth could be an increasing awareness of
-                        health and fitness, aging population, and the advancement in wearable
-                        technology.
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h6>Key Market Players:</h6>
-                    <ul className="list-disc ml-4">
-                      <li>
-                        The wearable blood pressure sensor market is on a growth trajectory with a
-                        projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
-                        years. This could potentially elevate the market valuation from an estimated
-                        $1.5 billion to over $2.25 billion by the end of the forecast period.
-                      </li>
-                      <li>
-                        The driving factors behind this growth could be an increasing awareness of
-                        health and fitness, aging population, and the advancement in wearable
-                        technology.
-                      </li>
-                    </ul>
+              <div ref={printRef} className="space-y-5">
+                {/* Exexutive Summary */}
+                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-4 w-full space-y-2">
+                  <h2 className="text-lg font-bold text-primary-900">Executive Summary</h2>
+                  <BarChart
+                    data={demoData}
+                    keys={["hot dog"]}
+                    indexBy="country"
+                    groupMode="stacked"
+                    legendY="Number of Patents"
+                  />
+                  {/*  */}
+                  <div className="text-secondary-800 font-medium space-y-3">
+                    <div>
+                      <h6>Market Growth:</h6>
+                      <ul className="list-disc ml-4">
+                        <li>
+                          The wearable blood pressure sensor market is on a growth trajectory with a
+                          projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
+                          years. This could potentially elevate the market valuation from an
+                          estimated $1.5 billion to over $2.25 billion by the end of the forecast
+                          period.
+                        </li>
+                        <li>
+                          The driving factors behind this growth could be an increasing awareness of
+                          health and fitness, aging population, and the advancement in wearable
+                          technology.
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h6>Patent Landscape:</h6>
+                      <ul className="list-disc ml-4">
+                        <li>
+                          The wearable blood pressure sensor market is on a growth trajectory with a
+                          projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
+                          years. This could potentially elevate the market valuation from an
+                          estimated $1.5 billion to over $2.25 billion by the end of the forecast
+                          period.
+                        </li>
+                        <li>
+                          The driving factors behind this growth could be an increasing awareness of
+                          health and fitness, aging population, and the advancement in wearable
+                          technology.
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h6>Key Market Players:</h6>
+                      <ul className="list-disc ml-4">
+                        <li>
+                          The wearable blood pressure sensor market is on a growth trajectory with a
+                          projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
+                          years. This could potentially elevate the market valuation from an
+                          estimated $1.5 billion to over $2.25 billion by the end of the forecast
+                          period.
+                        </li>
+                        <li>
+                          The driving factors behind this growth could be an increasing awareness of
+                          health and fitness, aging population, and the advancement in wearable
+                          technology.
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {/*Patents by year  */}
-              <div id="patent_families">
-                <PatentYear keywords={keywords} />
-              </div>
-              {/* Top 10 Patents by patent references */}
-              <div id="patent_references">
-                <PatentReference keywords={keywords} />
-              </div>
-              {/* legal status */}
-              <div id="patent_legal_status">
-                <PatentLegalStatus keywords={keywords} />
-              </div>
-              {/* inventor */}
-              <div id="inventors_asignees">
-                <InventorAnalysis keywords={keywords} />
-              </div>
-              {/* geographical distribution */}
-              <div id="geographical_distribution">
-                <GeographicalDistributionFiling keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="patent_classification">
-                <PatentClassificationAnalysis keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="wipo_field_analysis">
-                <WipoAnalysis keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="technology_lifecycle">
-                <TechnologyLifeCycleAnalysis keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="emerging_technology">
-                <EmergingTechnologyTrend keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="patent_competitior_depth">
-                <PatentPortfolioCompetitor keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="patent_portfolio_depth">
-                <PatentPortfolioDepth keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="competitior_patenting_activity">
-                <PatentCompetitorActivity keywords={keywords} />
-              </div>
-              {/*  */}
-              <div id="competitior_patenting_activity_class">
-                <PatentCompetitorClass keywords={keywords} />
+                {/*Patents by year  */}
+                <div id="patent_families">
+                  <PatentYear keywords={keywords} />
+                </div>
+                {/* Top 10 Patents by patent references */}
+                <div id="patent_references">
+                  <PatentReference keywords={keywords} />
+                </div>
+                {/* legal status */}
+                <div id="patent_legal_status">
+                  <PatentLegalStatus keywords={keywords} />
+                </div>
+                {/* inventor */}
+                <div id="inventors_asignees">
+                  <InventorAnalysis keywords={keywords} />
+                </div>
+                {/* geographical distribution */}
+                <div id="geographical_distribution">
+                  <GeographicalDistributionFiling keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="patent_classification">
+                  <PatentClassificationAnalysis keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="wipo_field_analysis">
+                  <WipoAnalysis keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="technology_lifecycle">
+                  <TechnologyLifeCycleAnalysis keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="emerging_technology">
+                  <EmergingTechnologyTrend keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="patent_competitior_depth">
+                  <PatentPortfolioCompetitor keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="patent_portfolio_depth">
+                  <PatentPortfolioDepth keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="competitior_patenting_activity">
+                  <PatentCompetitorActivity keywords={keywords} />
+                </div>
+                {/*  */}
+                <div id="competitior_patenting_activity_class">
+                  <PatentCompetitorClass keywords={keywords} />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="md:w-[200px] flex-shrink-0">
+        <div className="md:w-[200px] flex-shrink-0 sticky top-[100px]">
           <div className="flex flex-col gap-y-1">
+            {/* <ReactToPrint
+              bodyClass="print-agreement"
+              content={() => printRef.current}
+              trigger={() => ( */}
             <Button
               htmlType={"button"}
               type={"primary"}
               rounded={"medium"}
               size={"small"}
+              handleClick={() => handlePrint()}
               classname={"text-sm font-semibold border-2 border-primary-900"}
             >
               Print report
             </Button>
+            {/* )}
+            /> */}
             <Button
               htmlType={"button"}
               type={"secondary"}

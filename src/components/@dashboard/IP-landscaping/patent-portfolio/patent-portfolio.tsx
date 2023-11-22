@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
 import Sunburst from "../../sunburst";
 import RadioButtons from "../../../reusable/radio-buttons";
@@ -45,6 +45,13 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
     //
   }, [data]);
 
+  const total = useMemo(() => {
+    if (data) {
+      return [...data].length;
+    }
+    return 0;
+  }, [data]);
+
   const transformData = (data: IIPatentCompetitorPortfolio[] | undefined) => {
     if (!data) {
       return [];
@@ -85,7 +92,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
 
     data.forEach((item) => {
       const firstChar = item.org.charAt(0);
-      const secondChar = item.org.slice(0, 2);
+      const secondChar = item.org.slice(0, 3);
 
       let firstLevel = result.children?.find((g) => g.org === firstChar);
 
@@ -135,7 +142,7 @@ export const PatentPortfolioCompetitor: FunctionComponent<Props> = ({ keywords }
         }
       >
         <div>
-          <Sunburst data={result} />
+          <Sunburst data={result} total={total} />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

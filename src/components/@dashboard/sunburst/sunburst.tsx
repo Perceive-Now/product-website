@@ -6,6 +6,7 @@ import { FunctionComponent } from "react";
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
+  total?: number;
 }
 
 const CenteredMetric = () => {
@@ -18,7 +19,7 @@ const CenteredMetric = () => {
   );
 };
 
-export const Sunburst: FunctionComponent<Props> = ({ data }) => {
+export const Sunburst: FunctionComponent<Props> = ({ data, total }) => {
   return (
     <div className="h-[500px] relative overflow-hidden">
       <ResponsiveSunburst
@@ -26,11 +27,11 @@ export const Sunburst: FunctionComponent<Props> = ({ data }) => {
         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
         id="org"
         value="count"
-        cornerRadius={2}
+        cornerRadius={0}
         borderColor={{ theme: "background" }}
         // borderWidth={}
         // colors={{ scheme: 'nivo' }}
-        colors={COLORS}
+        colors={COLORS.slice(4, 6)}
         // colors={{ scheme: "purples" }}
         childColor={{
           from: "color",
@@ -61,7 +62,7 @@ export const Sunburst: FunctionComponent<Props> = ({ data }) => {
         // )}
       />
       <div className="absolute z- top-[48%] left-[46%] ">
-        <span className="text-black text-xl ">2000 patents</span>
+        <span className="text-black text-xl ">{total} patents</span>
       </div>
     </div>
   );

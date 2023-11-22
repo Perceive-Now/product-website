@@ -33,11 +33,12 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend }) => {
           legendPosition: "middle",
           legendOffset: -72,
         }}
+        // colors={COLORS}
         colors={{
           type: "sequential",
           scheme: "purples",
           // minValue: 100000,
-          // maxValue: 0
+          // maxValue: -100000
         }}
         emptyColor="#7F4BD8"
         hoverTarget="row"

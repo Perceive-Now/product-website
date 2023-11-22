@@ -12,6 +12,8 @@ import MultiKeywords from "../../reusable/multiple-keywords";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setIPOrganization } from "../../../stores/IpSteps";
 import MultipleCheckbox from "../../reusable/multiple-checkbox";
+import KeywordSelected from "./KeywordSelected";
+import classNames from "classnames";
 //
 
 interface Props {
@@ -38,8 +40,7 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   //
   const formInitialValue: IStepThree = {
-    competitor: [],
-    organization: [],
+    objectives: [],
   };
   const formResolver = yup.object().shape({
     // title: yup
@@ -49,6 +50,7 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
   });
 
   const {
+    register,
     formState: { errors },
     handleSubmit,
   } = useForm({
@@ -60,15 +62,14 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
   //
   const onContinue = useCallback(
     (values: IStepThree) => {
-      // changeActiveStep(0)}
+      changeActiveStep(4);
       const three_value = {
         organization: checkboxValue || [],
         competitor: keyword || [],
       };
-      navigate("/ip-landscaping/summary");
       dispatch(setIPOrganization(three_value));
     },
-    [checkboxValue, keyword],
+    [changeActiveStep, checkboxValue, dispatch, keyword],
   );
 
   const onChange = (value: any) => {
@@ -76,85 +77,71 @@ const StepThree: FunctionComponent<Props> = ({ changeActiveStep }) => {
   };
 
   return (
-    <div>
+    <div className="">
+      <KeywordSelected />
+      <div className="mt-4">
+        <h4 className="text-gray-600 text-4xl	">
+          What are your <b>objectives</b> for this report?
+        </h4>
+        <h6 className="text-secondary-800 mt-2">
+          Select Objectives from the suggestions or enter below
+        </h6>
+      </div>
       <form onSubmit={handleSubmit(onContinue)}>
-        <fieldset className="mt-3">
-          <p>Organizations*</p>
-          <div className="flex items-center gap-x-3">
-            {/* {...register("objective")} */}
-            <MultipleCheckbox topics={topics} onChange={onChange} value={checkboxValue || []} />
-            {/* <div className="flex items-center">
-              <input
-                id="industry"
-                type="checkbox"
-                className="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300  focus:ring-0 focus:outline-none focus:ring-white"
-              />
-              <label htmlFor="industry" className="ml-1 text-sm font-medium text-gray-500 ">
-                Industry
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                id="university"
-                type="checkbox"
-                className="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300  focus:ring-0 focus:outline-none focus:ring-white"
-              />
-              <label htmlFor="university" className="ml-1 text-sm font-medium text-gray-500 ">
-                University
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                id="both"
-                type="checkbox"
-                className="w-2 h-2 text-blue-600 bg-gray-100 border-gray-300  focus:ring-0 focus:outline-none focus:ring-white"
-              />
-              <label htmlFor="both" className="ml-1 text-sm font-medium text-gray-500 ">
-                Both
-              </label>
-            </div> */}
-          </div>
-        </fieldset>
-        {/* name */}
-        <fieldset className="mt-3">
+        <fieldset className="">
           <label className="block text-sm font-medium leading-5 text-gray-700">
-            Competitor’s names
-            {/* <div className="mt-0.5 rounded-md shadow-sm">
-              <input
-                {...register("competitor")}
-                type="text"
+            <div className="mt-0.5 rounded-md shadow-sm">
+              <textarea
+                rows={3}
+                {...register("objectives")}
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                  errors.competitor
+                  errors.objectives
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Enter competitor name"
+                placeholder="Write your objectives and press enter "
               />
-            </div> */}
+            </div>
+          </label>
+          {errors.objectives?.message && (
+            <div className="mt-1 text-xs text-danger-500">{errors.objectives?.message}</div>
+          )}
+        </fieldset>
+        {/* <fieldset className="">
+          <p>Organizations*</p>
+          <div className="flex items-center gap-x-3">
+            {...register("objective")}
+            <MultipleCheckbox topics={topics} onChange={onChange} value={checkboxValue || []} />
+           
+          </div>
+        </fieldset> */}
+        {/* name */}
+        {/* <fieldset className="mt-3">
+          <label className="block text-sm font-medium leading-5 text-gray-700">
+            Competitor’s names
+           
             <MultiKeywords
               required
               size="small"
               className="w-full bg-white"
               placeholder={"Enter Competitors Name"}
               changeKeyword={setKeyword}
-              // initialValue={keyword.map((k) => ({
-              //   label: k,
-              //   value: k
-              // }))}
             />
           </label>
           {errors.competitor?.message && (
             <div className="mt-1 text-xs text-danger-500">{errors.competitor?.message}</div>
           )}
-        </fieldset>
+        </fieldset> */}
         {/* Date */}
 
-        <div className="flex justify-center gap-x-4 mt-4">
-          <Button htmlType={"button"} type={"secondary"} handleClick={() => changeActiveStep(2)}>
+        <div className="flex justify-cente gap-x-4 mt-4">
+          {/* <Button htmlType={"button"} type={"secondary"} handleClick={() => changeActiveStep(2)}>
             Go Back
+          </Button> */}
+          <Button htmlType={"submit"} rounded={"large"}>
+            Continue
           </Button>
-          <Button htmlType={"submit"}>Generate Report</Button>
         </div>
       </form>
     </div>

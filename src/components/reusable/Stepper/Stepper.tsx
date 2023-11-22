@@ -14,35 +14,36 @@ export const Stepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
   const isStepComplete = (currentStep: number) => activeStep > currentStep;
   return (
     <>
-      <ol className="flex items-center mx-auto mb-8  lg:w-4/5">
+      <ol className="mb-8 space-y-1">
         {steps.map((step, idx, arr) => (
           <li
             key={idx}
             className={classNames(
+              idx === 0 && "hidden",
               activeStep === step.value ? "text-primary-900" : "text-gray-500",
-              arr.length - 1 === idx
-                ? "flex items-center"
-                : "flex w-full items-center   after:content-[''] after:w-full after:h-0.25 after:border-b after:border-gray-500 after:border-1 after:bg-primary-900  after:inline-block after:-mt-6",
             )}
           >
-            <div className="flex flex-col items-center">
+            <div className="flex items-center gap-x-1">
               <div
                 className={classNames(
-                  isStepComplete(step.value) && "bg-success-500 text-success-500",
-                  activeStep === step.value ? "bg-primary-900 text-white" : "bg-gray-200 ",
-                  "flex items-center justify-center  rounded-full h-3 w-3 shrink-0",
+                  // activeStep === 0 && "hidden",
+                  isStepComplete(step.value) && "bg-primary-800",
+                  activeStep === step.value ? "bg-primary-900 text-white" : "bg-appGray-100 ",
+                  " rounded-full w-4 h-4 flex items-center justify-center font-bold text-sm shrink-0 duration-500 ease-in-out",
                 )}
               >
+                {/* {step.value} */}
+                {/* <span className="bg-appGray-100 rounded-full w-4 h-4 flex items-center justify-center text-gray-600 font-bold text-sm shrink-0"></span> */}
                 {isStepComplete(step.value) ? (
                   <CheckIcon className="text-white w-5 h-5" />
                 ) : (
-                  <span className="font-bold">{step.value}</span>
+                  <>{step.value}</>
                 )}
               </div>
               <span
                 className={classNames(
-                  isStepComplete(step.value) && "text-success-500",
-                  "text-center ",
+                  // isStepComplete(step.value) && "text-success-500",
+                  "text-center text-secondary-800",
                 )}
               >
                 {step.label}

@@ -106,7 +106,7 @@ export const PatentCompetitorActivity: FunctionComponent<Props> = ({ keywords })
         }
       >
         <div>
-          <RadarChart data={finalData.slice(0, 5)} keys={keys.slice(0, 10)} index={"year"} />
+          <RadarChart data={finalData.slice(0, 5)} keys={keys.slice(0, 5)} index={"year"} />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

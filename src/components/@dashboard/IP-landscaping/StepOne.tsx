@@ -11,6 +11,7 @@ import Button from "../../reusable/button";
 import CalendarIcon from "../../icons/miscs/Calendar";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setIPDetail } from "../../../stores/IpSteps";
+import KeywordSelected from "./KeywordSelected";
 //
 
 interface Props {
@@ -54,8 +55,7 @@ const StepOne: FunctionComponent<Props> = ({ changeActiveStep }) => {
   };
 
   const formResolver = yup.object().shape({
-    title: yup.string().required("Project title is required"),
-    description: yup.string().required("Description is required"),
+    description: yup.string().required("Case is required"),
   });
 
   const {
@@ -69,16 +69,27 @@ const StepOne: FunctionComponent<Props> = ({ changeActiveStep }) => {
   });
 
   //
-  const onContinue = useCallback((values: IReport) => {
-    changeActiveStep(2);
-    dispatch(setIPDetail(values));
-  }, []);
+  const onContinue = useCallback(
+    (values: IReport) => {
+      changeActiveStep(2);
+      dispatch(setIPDetail(values));
+    },
+    [changeActiveStep, dispatch],
+  );
 
   return (
-    <div>
+    <div className="">
+      <KeywordSelected />
+      <div className="mt-4">
+        <h4 className="text-gray-600 text-4xl	">
+          What is your <b>use case?</b>
+        </h4>
+        <h6 className="text-secondary-800 mt-2">Let’s add more info to create your report</h6>
+      </div>
+
       <form onSubmit={handleSubmit(onContinue)}>
         {/* title */}
-        <fieldset className="mt-3">
+        {/* <fieldset className="">
           <label className="block text-sm font-medium leading-5 text-gray-700">
             Project title*
             <div className="mt-0.5 rounded-md shadow-sm">
@@ -99,9 +110,9 @@ const StepOne: FunctionComponent<Props> = ({ changeActiveStep }) => {
           {errors.title?.message && (
             <div className="mt-1 text-xs text-danger-500">{errors.title?.message}</div>
           )}
-        </fieldset>
+        </fieldset> */}
         {/* Date */}
-        <fieldset className="mt-3">
+        {/* <fieldset className="mt-3">
           <div className=" text-sm font-medium leading-5 text-gray-700 flex items-center gap-x-1">
             Report Created on :
             <div className="flex items-center gap-x-2">
@@ -109,21 +120,21 @@ const StepOne: FunctionComponent<Props> = ({ changeActiveStep }) => {
               <CalendarIcon />
             </div>
           </div>
-        </fieldset>
+        </fieldset> */}
         <fieldset className="mt-3">
-          <label className="block text-sm font-medium leading-5 text-gray-700">
-            Technology / Sector Description*
+          <label className=" text-sm font-medium leading-5 text-gray-700">
+            {/* Technology / Sector Description* */}
             <div className="mt-0.5 rounded-md shadow-sm">
               <textarea
-                rows={10}
+                rows={2}
                 {...register("description")}
                 className={classNames(
-                  "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                   errors.description
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Description"
+                placeholder="Enter your case here"
               />
             </div>
           </label>
@@ -131,8 +142,10 @@ const StepOne: FunctionComponent<Props> = ({ changeActiveStep }) => {
             <div className="mt-1 text-xs text-danger-500">{errors.description?.message}</div>
           )}
         </fieldset>
-        <div className="text-center mt-4">
-          <Button htmlType={"submit"}>Continue</Button>
+        <div className="mt-4 pb-4">
+          <Button htmlType={"submit"} rounded={"large"}>
+            Continue
+          </Button>
         </div>
       </form>
     </div>

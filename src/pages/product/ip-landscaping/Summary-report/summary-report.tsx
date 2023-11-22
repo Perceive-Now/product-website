@@ -22,6 +22,7 @@ import PageTitle from "../../../../components/reusable/page-title";
 import SemanticSearch from "../../../../components/reusable/semantic-search";
 import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
 import RadioButtons from "../../../../components/reusable/radio-buttons";
+import MoreNavOption from "../../../../components/reusable/nav-options";
 
 type ISearchType = "or" | "and" | "custom";
 /**
@@ -174,27 +175,7 @@ export const IPSummaryReport = () => {
 
           {/* summary report */}
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 ">
-            <div className="flex-shrink-0 w-auto ">
-              <div className="flex flex-col border rounded-t-lg shadow">
-                <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
-                  More
-                </div>
-                <div>
-                  {List.map((name) => (
-                    <button
-                      key={name}
-                      type="button"
-                      className={classNames(
-                        "hover:bg-primary-50 text-sm font-semibold text-secondary-800 w-full text-start py-1 px-2 flex items-center justify-between border-b",
-                      )}
-                    >
-                      <span>{name}</span>
-                      <ChevronRight />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <MoreNavOption />
             <div className="space-y-4 lg:w-[920px] xl:w-full">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 py-1 w-full space-y-2">

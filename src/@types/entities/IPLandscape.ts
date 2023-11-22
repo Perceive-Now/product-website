@@ -11,6 +11,10 @@ export interface IStepTwo {
 }
 
 export interface IStepThree {
-  competitor: string[];
-  organization: string[];
+  objectives: string[];
+  // organization: string[];
+}
+
+export interface IUSState {
+  state: string[];
 }

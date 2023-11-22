@@ -11,9 +11,9 @@ import { IStepTwo } from "../../../@types/entities/IPLandscape";
 import Button from "../../reusable/button";
 import RadioButtons from "../../reusable/radio-buttons";
 import DateRangePick from "../../reusable/date-range";
-import CountryModal from "./CountryModal";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setIPObjectives } from "../../../stores/IpSteps";
+import KeywordSelected from "./KeywordSelected";
 
 //
 interface Props {
@@ -63,7 +63,7 @@ const StepTwo: FunctionComponent<Props> = ({ changeActiveStep }) => {
   };
 
   const formResolver = yup.object().shape({
-    objective: yup.string().required("Objectives is required"),
+    objective: yup.string().required("Description is required"),
     // from: yup.string().required("Description is required"),
   });
 
@@ -88,19 +88,27 @@ const StepTwo: FunctionComponent<Props> = ({ changeActiveStep }) => {
       changeActiveStep(3);
       dispatch(setIPObjectives(two_values));
     },
-    [valueDate],
+    [changeActiveStep, dispatch, valueDate],
   );
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onContinue)}>
+    <div className="">
+      <KeywordSelected />
+      <div className="mt-4">
+        <h4 className="text-gray-600 text-4xl	">
+          How about providing a short <b>technology </b> or sector <b>description</b>?
+        </h4>
+        <h6 className="text-secondary-800 mt-2">
+          Description may content short intro about the report.
+        </h6>
+      </div>
+      <form onSubmit={handleSubmit(onContinue)} className="mt-2">
         {/* title */}
-        <fieldset className="mt-3">
+        <fieldset className="">
           <label className="block text-sm font-medium leading-5 text-gray-700">
-            Objectives*
             <div className="mt-0.5 rounded-md shadow-sm">
               <textarea
-                rows={6}
+                rows={3}
                 {...register("objective")}
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
@@ -108,7 +116,7 @@ const StepTwo: FunctionComponent<Props> = ({ changeActiveStep }) => {
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Objective"
+                placeholder="Enter report description here "
               />
             </div>
           </label>
@@ -116,7 +124,7 @@ const StepTwo: FunctionComponent<Props> = ({ changeActiveStep }) => {
             <div className="mt-1 text-xs text-danger-500">{errors.objective?.message}</div>
           )}
         </fieldset>
-        <fieldset className="mt-3">
+        {/* <fieldset className="mt-3">
           <p>Geographical scope (US states of interest for the IP landscape)*</p>
           <RadioButtons
             activeMode={country}
@@ -140,18 +148,19 @@ const StepTwo: FunctionComponent<Props> = ({ changeActiveStep }) => {
             classNames={"text-sm"}
           />
           <DateRangePick classification={date} getValues={setValues} />
-        </fieldset>
+        </fieldset> */}
 
-        <div className="flex justify-center gap-x-4 mt-4">
-          <Button htmlType={"button"} type={"secondary"} handleClick={() => changeActiveStep(1)}>
+        <div className="flex justify-cente gap-x-4 mt-4 pb-4">
+          {/* <Button htmlType={"button"} type={"secondary"} handleClick={() => changeActiveStep(1)}>
             Go Back
+          </Button> */}
+          <Button htmlType={"submit"} rounded={"large"}>
+            Continue
           </Button>
-          <Button htmlType={"submit"}>Continue</Button>
         </div>
       </form>
       {/*  */}
-      <CountryModal open={open} handleClose={() => setOpen(false)} />
-    </>
+    </div>
   );
 };
 

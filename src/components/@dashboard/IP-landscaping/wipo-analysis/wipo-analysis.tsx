@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect } from "react";
+import { FunctionComponent, useEffect, useMemo } from "react";
 import DataSection from "../../../reusable/data-section";
 import { getWIPOAnalysis } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
@@ -25,6 +25,13 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
     //
   }, [data]);
 
+  const sortedData = useMemo(() => {
+    if (data) {
+      return [...data].sort((a, b) => a.count - b.count);
+    }
+    return [];
+  }, [data]);
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -43,7 +50,7 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
         <div>
           {data && (
             <BarChart
-              data={data}
+              data={sortedData}
               keys={["count"]}
               indexBy="title"
               groupMode={"stacked"}
