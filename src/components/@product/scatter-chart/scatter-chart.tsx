@@ -16,7 +16,7 @@ export default function ScatterChart(props: IScatterChartProps) {
   }, [props.data]);
 
   return (
-    <div className="h-[400px]">
+    <div className="h-[400px] w-[668px] mx-auto">
       <ResponsiveLine
         data={dataItems}
         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
@@ -25,11 +25,10 @@ export default function ScatterChart(props: IScatterChartProps) {
           type: "linear",
           min: "auto",
           max: "auto",
-          stacked: false,
+          stacked: true,
           reverse: false,
         }}
         enableSlices="x"
-        yFormat=" >-.2f"
         axisTop={null}
         axisBottom={{
           tickPadding: 20,
@@ -63,16 +62,17 @@ export default function ScatterChart(props: IScatterChartProps) {
             legendOffset: -50,
           },
         })}
-        lineWidth={0}
-        pointSize={10}
-        pointColor={{ theme: "background" }}
+        lineWidth={1}
+        pointSize={6}
+        // pointColor={{ theme: "background" }}
         pointBorderWidth={2}
-        pointBorderColor={"#1BF599"}
+        pointBorderColor={"#7F4BD8"}
         pointLabelYOffset={-12}
         useMesh={true}
-        enableArea={true}
+        enableArea={false}
         areaBaselineValue={0}
-        areaOpacity={1}
+        enableGridX={false}
+        // areaOpacity={1}
         // colors={{ scheme: "purples" }}
         colors={props.colors || COLORS}
         theme={{
@@ -218,59 +218,59 @@ interface IScatterChartProps {
   abbreviateLegendX?: boolean | undefined;
 }
 
-const data = [
-  {
-    id: "japan",
-    color: "hsl(243, 70%, 50%)",
-    data: [
-      {
-        x: "plane",
-        y: 109,
-      },
-      {
-        x: "helicopter",
-        y: 249,
-      },
-      {
-        x: "boat",
-        y: 14,
-      },
-      {
-        x: "train",
-        y: 31,
-      },
-      {
-        x: "subway",
-        y: 162,
-      },
-      {
-        x: "bus",
-        y: 13,
-      },
-      {
-        x: "car",
-        y: 242,
-      },
-      {
-        x: "moto",
-        y: 113,
-      },
-      {
-        x: "bicycle",
-        y: 27,
-      },
-      {
-        x: "horse",
-        y: 45,
-      },
-      {
-        x: "skateboard",
-        y: 278,
-      },
-      {
-        x: "others",
-        y: 257,
-      },
-    ],
-  },
-];
+// const data = [
+//   {
+//     id: "japan",
+//     color: "hsl(243, 70%, 50%)",
+//     data: [
+//       {
+//         x: "plane",
+//         y: 109,
+//       },
+//       {
+//         x: "helicopter",
+//         y: 249,
+//       },
+//       {
+//         x: "boat",
+//         y: 14,
+//       },
+//       {
+//         x: "train",
+//         y: 31,
+//       },
+//       {
+//         x: "subway",
+//         y: 162,
+//       },
+//       {
+//         x: "bus",
+//         y: 13,
+//       },
+//       {
+//         x: "car",
+//         y: 242,
+//       },
+//       {
+//         x: "moto",
+//         y: 113,
+//       },
+//       {
+//         x: "bicycle",
+//         y: 27,
+//       },
+//       {
+//         x: "horse",
+//         y: 45,
+//       },
+//       {
+//         x: "skateboard",
+//         y: 278,
+//       },
+//       {
+//         x: "others",
+//         y: 257,
+//       },
+//     ],
+//   },
+// ];

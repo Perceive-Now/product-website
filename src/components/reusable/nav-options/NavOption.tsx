@@ -3,10 +3,10 @@ import { ChevronRight } from "../../icons";
 
 export const MoreNavOption = () => {
   return (
-    <div className="flex-shrink-0 w-auto ">
-      <div className="flex flex-col border rounded-t-lg shadow">
-        <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
-          More
+    <div className="flex-shrink-0 w-[228px] ">
+      <div className="flex flex-col border rounded-t-sm shadow">
+        <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-l">
+          Home
         </div>
         <div>
           {List.map((name) => (
@@ -27,12 +27,4 @@ export const MoreNavOption = () => {
   );
 };
 
-const List = [
-  "IP Landscaping",
-  "Freedom to operate",
-  "M&A licensing",
-  "Technology landscaping",
-  "Competitive intelligence",
-  "Infringement analysis",
-  "Database Search",
-];
+const List = ["IP Analysis", "Market Research & IP", "Financial Investments"];

@@ -295,11 +295,11 @@ const Names = [
 ];
 const countryLists = ["Nepal", "China", "India"];
 
-const relatedKeywords = [
-  "Machine learning",
-  "Neural networks",
-  "Robotics",
-  "Deep learning",
-  "Computer vision",
-  "Data mining",
-];
+// const relatedKeywords = [
+//   "Machine learning",
+//   "Neural networks",
+//   "Robotics",
+//   "Deep learning",
+//   "Computer vision",
+//   "Data mining",
+// ];

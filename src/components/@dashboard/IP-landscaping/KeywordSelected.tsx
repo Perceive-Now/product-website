@@ -1,4 +1,6 @@
 import { useAppSelector } from "../../../hooks/redux";
+import { PatentsIcon } from "../../icons";
+import EditIcon from "../../icons/miscs/Edit";
 
 const KeywordSelected = () => {
   const keywords = useAppSelector((state) => state.dashboard.search) ?? [];
@@ -12,6 +14,7 @@ const KeywordSelected = () => {
             "{keyword.value}"{idx !== arr.length - 1 && <span>,&nbsp;</span>}
           </span>
         ))}
+        <EditIcon />
       </div>
     </div>
   );

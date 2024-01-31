@@ -62,7 +62,7 @@ const Analytics = () => {
         </div>
         <div className="px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow">
           <h6 className="text-xl font-semibold text-primary-900 py-1">Recent Inventors</h6>
-          <div className="space-y-2 h-[310px] overflow-y-auto custom-scroller">
+          <div className="space-y-2 h-[310px] overflow-y-auto pn_scroller">
             {RecentInventorLists.map((recent, idx) => (
               <div key={idx} className="p-1 bg-appGray-100 rounded-lg text-secondary-800">
                 <p className="font-normal ">{recent.title}</p>
@@ -83,7 +83,7 @@ const Analytics = () => {
           <h6 className="text-xl font-bold text-primary-900 py-1">
             Inventors from selected states
           </h6>
-          <div className="space-y-2 h-[310px] overflow-y-auto custom-scroller">
+          <div className="space-y-2 h-[310px] overflow-y-auto pn_scroller">
             {RecentInventorLists.map((recent, idx) => (
               <div key={idx} className="p-1 bg-appGray-100 rounded-lg text-secondary-800">
                 <p className="font-normal ">{recent.title}</p>

@@ -20,6 +20,9 @@ const initialState: IDetail = {
     organization: [],
     competitor: [],
   },
+  use_case: {
+    label: undefined,
+  },
 };
 
 /**
@@ -29,6 +32,9 @@ export const IPStepSlice = createSlice({
   name: "ip_detail",
   initialState,
   reducers: {
+    setIPUseCase: (state, action: PayloadAction<IUseCase>) => {
+      state.use_case.label = action.payload.label;
+    },
     setIPDetail: (state, action: PayloadAction<IStep>) => {
       state.report_details.title = action.payload.title;
       (state.report_details.description = action.payload.description),
@@ -50,7 +56,8 @@ export const IPStepSlice = createSlice({
 });
 
 //
-export const { setIPDetail, clearDetail, setIPObjectives, setIPOrganization } = IPStepSlice.actions;
+export const { setIPDetail, clearDetail, setIPObjectives, setIPOrganization, setIPUseCase } =
+  IPStepSlice.actions;
 export default IPStepSlice.reducer;
 
 //
@@ -58,6 +65,7 @@ interface IDetail {
   report_details: IStep;
   objective_detail: IObjective;
   organization_competitor: IOrganization;
+  use_case: IUseCase;
 }
 
 interface IStep {
@@ -76,4 +84,8 @@ interface IObjective {
 interface IOrganization {
   organization: string[];
   competitor: string[];
+}
+
+interface IUseCase {
+  label: string | undefined;
 }

@@ -22,7 +22,7 @@ export default function BarChart(props: IBarChartProps) {
 
   //
   // const barPadding = props.groupMode === "stacked" ? 0.8 : 0.4;
-  const barPadding = props.layout === "horizontal" ? 0.3 : 0.8;
+  const barPadding = props.layout === "horizontal" ? 0.7 : 0.7;
 
   //
   return (
@@ -31,8 +31,9 @@ export default function BarChart(props: IBarChartProps) {
         props.layout === "horizontal"
           ? `${props.height !== undefined ? props.height : "h-[600px]"}`
           : "h-[400px] ",
-        "3xl:w-[1000px] mx-auto",
+        "3xl:w-[1000px] max-w-[] mx-auto overflow-x-auto whitespace-nowrap",
       )}
+      style={{ width: "100%", overflowX: "auto" }}
     >
       <ResponsiveBar
         data={dataItems}
@@ -41,7 +42,7 @@ export default function BarChart(props: IBarChartProps) {
         margin={{
           top: 50,
           right: 100,
-          left: props.layout === "horizontal" ? 200 : 100,
+          left: props.layout === "horizontal" ? 250 : 100,
           // bottom: props.legendX ? 50 : 30,
           bottom: props.layout === "horizontal" ? 100 : 30,
         }}
@@ -72,7 +73,7 @@ export default function BarChart(props: IBarChartProps) {
             tickRotation: 0,
             legend: props.legendY,
             legendPosition: "middle",
-            legendOffset: props.layout === "horizontal" ? -150 : -70,
+            legendOffset: props.layout === "horizontal" ? -200 : -70,
           },
         })}
         legends={props.legends}
@@ -86,7 +87,7 @@ export default function BarChart(props: IBarChartProps) {
         animate={false}
         role="application"
         colors={COLORS.slice(9 - props.keys.length)}
-        tooltip={(item: { value: number }) => (
+        tooltip={(item: { value: number; label: string }) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
             {formatNumber(item.value)}
           </div>

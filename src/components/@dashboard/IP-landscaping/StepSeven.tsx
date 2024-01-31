@@ -31,7 +31,7 @@ const StepSeven: FunctionComponent<Props> = ({ changeActiveStep }) => {
   //
   const onContinue = useCallback(() => {
     changeActiveStep(7);
-    navigate("/ip-landscaping/summary");
+    navigate("/ip-landscaping/full-report");
 
     // const three_value = {
     //   organization: checkboxValue || [],
@@ -39,7 +39,7 @@ const StepSeven: FunctionComponent<Props> = ({ changeActiveStep }) => {
     // };
     // ;
     // dispatch(setIPOrganization(three_value));
-  }, [changeActiveStep]);
+  }, [changeActiveStep, navigate]);
 
   return (
     <div className="">

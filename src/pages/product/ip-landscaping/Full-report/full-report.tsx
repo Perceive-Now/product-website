@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
 import { useReactToPrint } from "react-to-print";
 
@@ -15,23 +15,23 @@ import { setFilter } from "../../../../stores/country";
 import { setDashboardSearch } from "../../../../stores/dashboard";
 //
 
-import BarChart from "../../../../components/@product/bar-chart";
-
 //
-import PatentReference from "../../../../components/@dashboard/IP-landscaping/patents-reference";
 import PatentYear from "../../../../components/@dashboard/IP-landscaping/patent-year";
 import PatentLegalStatus from "../../../../components/@dashboard/IP-landscaping/patent-status";
 import InventorAnalysis from "../../../../components/@dashboard/IP-landscaping/inventor-analysis";
 import GeographicalDistributionFiling from "../../../../components/@dashboard/IP-landscaping/geographical-filing";
-import PatentClassificationAnalysis from "../../../../components/@dashboard/IP-landscaping/patent-classification";
 import WipoAnalysis from "../../../../components/@dashboard/IP-landscaping/wipo-analysis";
-import EmergingTechnologyTrend from "../../../../components/@dashboard/IP-landscaping/emerging-technology";
-import PatentPortfolioCompetitor from "../../../../components/@dashboard/IP-landscaping/patent-portfolio";
-import TechnologyLifeCycleAnalysis from "../../../../components/@dashboard/IP-landscaping/technology-analysis";
-import PatentCompetitorActivity from "../../../../components/@dashboard/IP-landscaping/patent-competitior-activity";
-import PatentCompetitorClass from "../../../../components/@dashboard/IP-landscaping/patent-competitor-class";
-import PatentPortfolioDepth from "../../../../components/@dashboard/IP-landscaping/patent-portfolio-depth";
 import { useRef } from "react";
+import TrendExaminationYear from "../../../../components/@dashboard/IP-landscaping/trends-examination-years";
+import ClassificationCPC from "../../../../components/@dashboard/IP-landscaping/cpc-classification";
+import PatentClassificationAnalysis from "../../../../components/@dashboard/IP-landscaping/patent-classification";
+import PatentAssignment from "../../../../components/@dashboard/IP-landscaping/patent-assignment";
+import InventorTrendOverTime from "../../../../components/@dashboard/IP-landscaping/inventor-trend";
+import PatentIPC from "../../../../components/@dashboard/IP-landscaping/patent-ipc-class";
+import PatentWipo from "../../../../components/@dashboard/IP-landscaping/patent-wipo";
+import PCTApplication from "../../../../components/@dashboard/IP-landscaping/pct-application";
+import GeographicalDistributionAssignment from "../../../../components/@dashboard/IP-landscaping/geographic-assignment";
+import GeographicalDistributionInventors from "../../../../components/@dashboard/IP-landscaping/geographical-inventors";
 
 //
 
@@ -41,12 +41,14 @@ import { useRef } from "react";
 export const IPFullReport = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const printRef = useRef<HTMLDivElement>(null);
   //
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
+  const selectedValue = useAppSelector((state) => state.ipData.use_case.label) ?? [];
 
   //
   const keywords = searchedKeywords.map((kwd) => kwd.value);
@@ -79,16 +81,16 @@ export const IPFullReport = () => {
       <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md ">
         <div className="flex items-start justify-center gap-0.5 py-1">
           <p className="text-lg text-primary-900 font-semibold">
-            IP Landscaping{" "}
-            <span className="font-bold text-secondary-800 text-sm">
+            IP Analysis
+            {/* <span className="font-bold text-secondary-800 text-sm">
               (407, 046 Patents & 431,402 Companies)
-            </span>
+            </span> */}
           </p>
         </div>
       </div>
       {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
-      <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2 h-full">
-        <div className="mt-0.5">
+      <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2 h-full w-full">
+        <div className="mt-0.5 w-full">
           {/* Search bar */}
           <div>
             <Search
@@ -98,7 +100,7 @@ export const IPFullReport = () => {
               onSubmit={handleSearch}
               initialValue={searchedKeywords}
               searchButton={true}
-              isDisabled={true}
+              // isDisabled={true}
             />
             {keywords.length > 0 ? (
               <div className="mt-2">
@@ -123,33 +125,40 @@ export const IPFullReport = () => {
             )}
           </div>
           {/* summary report */}
-          <div className="flex flex-col md:flex-row gap-x-4 mt-6 ">
-            <div className="flex-shrink-0  w-auto">
+          <div className="flex flex-col md:flex-row gap-x-4 mt-6 w-full">
+            <div className="flex-shrink-0 w-auto">
               <div className="flex flex-col border rounded-t-lg shadow">
                 <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
-                  More
+                  Back
                 </div>
                 <div>
                   {List.map((name) => (
                     <button
-                      key={name}
+                      key={name.title}
                       type="button"
                       className={classNames(
-                        "hover:bg-primary-50 text-sm font-semibold text-secondary-800 w-full text-start py-1 px-2 flex items-center justify-between border-b",
+                        "hover:bg-primary-50 text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between border-b",
+                        name.key === location.pathname
+                          ? "bg-primary-900 text-white"
+                          : "text-secondary-800",
                       )}
                     >
-                      <span>{name}</span>
+                      <span>{name.title}</span>
                       <ChevronRight />
                     </button>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="space-y-4 lg:w-[920px] xl:w-full grow-0">
+            <div className="space-y-4 lg:w-[920px] xl:w-full ">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                <h2 className="text-lg font-bold text-primary-900">Related Technologies</h2>
-                <div className="flex flex-wrap item-center gap-2">
+                <h2 className="text-lg font-bold text-primary-900">Report On {joinedkeywords}</h2>
+                <div>
+                  <span className="text-gray-500">Use Case :&nbsp;</span>
+                  <span>{selectedValue}</span>
+                </div>
+                {/* <div className="flex flex-wrap item-center gap-2">
                   {relatedKeywords.map((keyword) => (
                     <button
                       onClick={() => handleKeyword([{ label: keyword, value: keyword }])}
@@ -159,11 +168,11 @@ export const IPFullReport = () => {
                       {keyword}
                     </button>
                   ))}
-                </div>
+                </div> */}
               </div>
-              <div ref={printRef} className="space-y-5">
+              <div ref={printRef} className="space-y-5 w-full">
                 {/* Exexutive Summary */}
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-4 w-full space-y-2">
+                {/* <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-4 w-full space-y-2">
                   <h2 className="text-lg font-bold text-primary-900">Executive Summary</h2>
                   <BarChart
                     data={demoData}
@@ -172,7 +181,6 @@ export const IPFullReport = () => {
                     groupMode="stacked"
                     legendY="Number of Patents"
                   />
-                  {/*  */}
                   <div className="text-secondary-800 font-medium space-y-3">
                     <div>
                       <h6>Market Growth:</h6>
@@ -226,15 +234,15 @@ export const IPFullReport = () => {
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/*Patents by year  */}
                 <div id="patent_families" className="page-break">
                   <PatentYear keywords={keywords} />
                 </div>
                 {/* Top 10 Patents by patent references */}
-                <div id="patent_references" className="page-break">
+                {/* <div id="patent_references" className="page-break">
                   <PatentReference keywords={keywords} />
-                </div>
+                </div> */}
                 {/* legal status */}
                 <div id="patent_legal_status" className="page-break">
                   <PatentLegalStatus keywords={keywords} />
@@ -255,30 +263,42 @@ export const IPFullReport = () => {
                 <div id="wipo_field_analysis" className="page-break">
                   <WipoAnalysis keywords={keywords} />
                 </div>
+                <TrendExaminationYear keywords={keywords} />
+                <PatentAssignment keywords={keywords} />
+                <GeographicalDistributionAssignment keywords={keywords} />
+                <GeographicalDistributionInventors keywords={keywords} />
+                <InventorTrendOverTime keywords={keywords} />
+                <ClassificationCPC keywords={keywords} />
+                <PatentIPC keywords={keywords} />
+                <PatentWipo keywords={keywords} />
+                <PCTApplication keywords={keywords} />
+                {/* <div id="patent_classification" className="page-break">
+                  <PatentClassificationAnalysis keywords={keywords} />
+                </div> */}
                 {/*  */}
-                <div id="technology_lifecycle" className="page-break">
+                {/* <div id="technology_lifecycle" className="page-break">
                   <TechnologyLifeCycleAnalysis keywords={keywords} />
-                </div>
+                </div> */}
                 {/*  */}
-                <div id="emerging_technology" className="page-break">
+                {/* <div id="emerging_technology" className="page-break">
                   <EmergingTechnologyTrend keywords={keywords} />
-                </div>
+                </div> */}
                 {/*  */}
-                <div id="patent_competitior_depth" className="page-break">
+                {/* <div id="patent_competitior_depth" className="page-break">
                   <PatentPortfolioCompetitor keywords={keywords} />
-                </div>
+                </div> */}
                 {/*  */}
-                <div id="patent_portfolio_depth" className="page-break">
+                {/* <div id="patent_portfolio_depth" className="page-break">
                   <PatentPortfolioDepth keywords={keywords} />
-                </div>
+                </div> */}
                 {/*  */}
-                <div id="competitior_patenting_activity" className="page-break">
+                {/* <div id="competitior_patenting_activity" className="page-break">
                   <PatentCompetitorActivity keywords={keywords} />
-                </div>
+                </div> */}
                 {/*  */}
-                <div id="competitior_patenting_activity_class" className="page-break">
+                {/* <div id="competitior_patenting_activity_class" className="page-break">
                   <PatentCompetitorClass keywords={keywords} />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -333,7 +353,7 @@ export const IPFullReport = () => {
                   topic.id === "related_technology"
                     ? "border-l-4 border-primary-600 pl-0.5"
                     : "pl-1",
-                  "text-start text-primary-900 font-sm truncate",
+                  "text-start text-primary-900 text-sm truncate font-medium",
                 )}
               >
                 {topic.name}
@@ -347,152 +367,39 @@ export const IPFullReport = () => {
 };
 
 const topics = [
-  { name: "Related technology", id: "related_technology" },
-  { name: "1. Patent Families", id: "patent_families" },
-  { name: "2. Patent References", id: "patent_references" },
-  { name: "3. Legal Staus of Patent", id: "patent_legal_status" },
-  { name: "4. Inventors and Asignees", id: "inventors_asignees" },
-  { name: "5. Geographical Distribution", id: "geographical_distribution" },
-  { name: "6. Patent Classification", id: "patent_classification" },
-  { name: "7. WIPO Field Analysis", id: "wipo_field_analysis" },
-  { name: "8. Technology Lifecycle", id: "technology_lifecycle" },
-  { name: "9. Emerging Technology", id: "emerging_technology" },
-  { name: "10. Patent Portfolio Depth", id: "patent_portfolio_depth" },
-  { name: "11. Patent Portfolio Depth Competitor", id: "patent_competitior_depth" },
-  { name: "12. Competitor Patenting Activity", id: "competitior_patenting_activity" },
-  { name: "13. Competitor Patenting Activity Class", id: "competitior_patenting_activity_class" },
+  // { name: "Related technology", id: "related_technology" },
+  { name: "1. Total Patents Filed Over Time", id: "patent_families" },
+  { name: "2. Distribution of Patent Types", id: "patent_references" },
+  { name: "3. Size of Patent Families Over Time", id: "patent_legal_status" },
+  { name: "4. Geographical Distribution of Patent Families", id: "inventors_asignees" },
+  { name: "5. Number of Applications by Applicant Type", id: "geographical_distribution" },
+  { name: "6. Geographic Distribution of Applicants", id: "patent_classification" },
+  { name: "7. Distribution of Examiner Workload", id: "wipo_field_analysis" },
+  { name: "8. Trends in Examination Times Over Years", id: "technology_lifecycle" },
+  { name: "9. Top Organizations by Number of Patent Assignments", id: "emerging_technology" },
+  { name: "10. Geographical Distribution of Assignments", id: "patent_portfolio_depth" },
+  { name: "11. Geographical Distribution of Inventors", id: "patent_competitior_depth" },
+  { name: "12. Trends in Inventor Collaborations Over Time", id: "competitior_patenting_activity" },
+  {
+    name: "13. Distribution of Patents by CPC Classifications",
+    id: "competitior_patenting_activity_class",
+  },
+  { name: "14. Top IPC Classes in Patent Applications", id: "" },
+  { name: "15. Distribution of Patents Across WIPO Sectors", id: "" },
+  { name: "16. Trends in PCT Applications Over Time", id: "" },
 ];
 
 const List = [
-  "IP Landscaping",
-  "Freedom to operate",
-  "M&A licensing",
-  "Technology landscaping",
-  "Competitive intelligence",
-  "Infringement analysis",
-  "Database Search",
-];
-const relatedKeywords = [
-  "Machine learning",
-  "Neural networks",
-  "Robotics",
-  "Deep learning",
-  "Computer vision",
-  "Data mining",
-];
-const demoData = [
   {
-    country: "AD",
-    "hot dog": 33,
-    "hot dogColor": "hsl(313, 70%, 50%)",
-    burger: 21,
-    burgerColor: "hsl(285, 70%, 50%)",
-    sandwich: 112,
-    sandwichColor: "hsl(80, 70%, 50%)",
-    kebab: 117,
-    kebabColor: "hsl(121, 70%, 50%)",
-    fries: 15,
-    friesColor: "hsl(13, 70%, 50%)",
-    donut: 146,
-    donutColor: "hsl(34, 70%, 50%)",
+    title: "IP Landscaping",
+    key: "/ip-landscaping/full-report",
   },
   {
-    country: "AE",
-    "hot dog": 32,
-    "hot dogColor": "hsl(158, 70%, 50%)",
-    burger: 68,
-    burgerColor: "hsl(264, 70%, 50%)",
-    sandwich: 170,
-    sandwichColor: "hsl(12, 70%, 50%)",
-    kebab: 147,
-    kebabColor: "hsl(99, 70%, 50%)",
-    fries: 48,
-    friesColor: "hsl(325, 70%, 50%)",
-    donut: 154,
-    donutColor: "hsl(114, 70%, 50%)",
+    title: "Market intelligence",
+    key: "market-intelligence",
   },
   {
-    country: "AF",
-    "hot dog": 152,
-    "hot dogColor": "hsl(12, 70%, 50%)",
-    burger: 5,
-    burgerColor: "hsl(9, 70%, 50%)",
-    sandwich: 28,
-    sandwichColor: "hsl(2, 70%, 50%)",
-    kebab: 70,
-    kebabColor: "hsl(199, 70%, 50%)",
-    fries: 160,
-    friesColor: "hsl(129, 70%, 50%)",
-    donut: 93,
-    donutColor: "hsl(178, 70%, 50%)",
-  },
-  {
-    country: "AG",
-    "hot dog": 101,
-    "hot dogColor": "hsl(306, 70%, 50%)",
-    burger: 197,
-    burgerColor: "hsl(270, 70%, 50%)",
-    sandwich: 199,
-    sandwichColor: "hsl(200, 70%, 50%)",
-    kebab: 66,
-    kebabColor: "hsl(138, 70%, 50%)",
-    fries: 97,
-    friesColor: "hsl(215, 70%, 50%)",
-    donut: 120,
-    donutColor: "hsl(297, 70%, 50%)",
-  },
-  {
-    country: "AI",
-    "hot dog": 15,
-    "hot dogColor": "hsl(310, 70%, 50%)",
-    burger: 126,
-    burgerColor: "hsl(271, 70%, 50%)",
-    sandwich: 38,
-    sandwichColor: "hsl(271, 70%, 50%)",
-    kebab: 65,
-    kebabColor: "hsl(173, 70%, 50%)",
-    fries: 114,
-    friesColor: "hsl(135, 70%, 50%)",
-    donut: 66,
-    donutColor: "hsl(155, 70%, 50%)",
-  },
-  {
-    country: "AL",
-    "hot dog": 86,
-    "hot dogColor": "hsl(299, 70%, 50%)",
-    burger: 96,
-    burgerColor: "hsl(323, 70%, 50%)",
-    sandwich: 87,
-    sandwichColor: "hsl(151, 70%, 50%)",
-    kebab: 73,
-    kebabColor: "hsl(298, 70%, 50%)",
-    fries: 159,
-    friesColor: "hsl(62, 70%, 50%)",
-    donut: 102,
-    donutColor: "hsl(247, 70%, 50%)",
-  },
-  {
-    country: "AM",
-    "hot dog": 132,
-    burger: 59,
-    sandwich: 76,
-    kebab: 104,
-    fries: 112,
-    donut: 11,
-  },
-];
-
-[
-  {
-    patent_id: "",
-    value: "",
-  },
-  {
-    patent_id: "",
-    value: "",
-  },
-  {
-    patent_id: "",
-    value: "",
+    title: "Financial Investments",
+    key: "financial-investments",
   },
 ];

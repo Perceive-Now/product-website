@@ -47,7 +47,7 @@ export const PatentReference: FunctionComponent<Props> = ({ keywords }) => {
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="2. Top 10 Patents by patent references"
+            title="2. Distribution of Patent Types"
             // subTitle="Heat map of patents location in USA"
             // sideTitleOption={
             //   <RadioButtons

@@ -11,7 +11,6 @@ import { getGeoFiling } from "../../../../utils/api/charts";
 import StatesCodes from "../../../../utils/extra/us-states-codes";
 //
 import USMap from "../../../@product/us-map";
-import BarChart from "../../../@product/bar-chart";
 
 interface Props {
   keywords: string[];
@@ -35,8 +34,10 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
 
   const mapData = (data ?? []).map((item) => ({
     country: StatesCodes[item.state],
-    patents: item.cout,
+    patents: item.count,
   }));
+
+  // console.log(mapData)
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -49,8 +50,8 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
           <PageTitle
             // info={`This geographical hLegal Status of Patentseat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="5. Geographical Distribution of Filings"
-            // subTitle="Top 5 Inventors"
+            title="4. Geographical Distribution of Patent Families"
+            subTitle="Top 5 Inventors"
             // sideTitleOption={
             //   <RadioButtons
             //     options={[
@@ -87,7 +88,7 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
           </div>
         </div>
         {/* bar chart */}
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <h5 className="font-bold text-primary-900 text-lg">
             Top 5 states based on patent filings
           </h5>
@@ -115,7 +116,7 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
               fitness, aging population, and the advancement in wearable technology.
             </li>
           </ul>
-        </div>
+        </div> */}
       </DataSection>
     </div>
   );

@@ -13,7 +13,7 @@ interface DataList {
 
 const CommonList: FunctionComponent<Props> = ({ dataList }) => {
   return (
-    <div className="space-y-2 h-[400px] overflow-y-auto custom-scroller">
+    <div className="space-y-2 h-[400px] overflow-y-auto pn_scroller">
       {dataList.map((list, idx) => (
         <div key={idx} className=" p-1 bg-appGray-100 rounded-lg text-secondary-800">
           <p className="text-lg text-secondary-800 font-medium">{list.description}</p>

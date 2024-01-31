@@ -2,34 +2,39 @@ import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
-import { getPatentClassificationCPC } from "../../../../utils/api/charts";
-import TreeMap from "../../../@product/tree-map";
-import RelatedKeywords from "../../related-keywords";
+import { getGeographicDistributionApplicant } from "../../../../utils/api/charts";
 
 interface Props {
   keywords: string[];
 }
 
 interface IPatentClassification {
-  cpc_subclass: string;
+  cpc_class: string;
   count: number;
 }
 
+interface IGeoApplicant {
+  location_id: string;
+  count: number;
+  country: string;
+  city: string;
+}
+
 // interface ITreeData {
-//   cpc_subclass: string;
+//   cpc_class: string;
 //   children: any[];
 // }
 
 interface GroupedData {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: { cpc_subclass: string; children: any[] };
+  [key: string]: { city: string; children: any[] };
 }
 
 export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["patents-cpc", ...keywords],
     async () => {
-      return await getPatentClassificationCPC(keywords);
+      return await getGeographicDistributionApplicant(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -41,26 +46,29 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
     //
   }, [data]);
 
-  const transformData = (data: IPatentClassification[] | undefined) => {
+  const transformData = (data: IGeoApplicant[] | undefined) => {
     if (!data) {
       return [];
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result: { cpc_subclass: string; children: any[] } = {
-      cpc_subclass: "data",
-      children: [],
-    };
+    // const result: { cpc_class: string; children: any[] } = {
+    //   cpc_class: "data",
+    //   children: [],
+    // };
+    const result: { city: string; children: { city: string; count: number }[] }[] = [];
 
-    // Group data by the first letter and second letter of cpc_subclass
+    // Group data by the first letter and second letter of cpc_class
     const groupedData: GroupedData = data.reduce((acc: GroupedData, item) => {
-      const firstLetter = item.cpc_subclass.charAt(0).toUpperCase();
-      const secondLetter = item.cpc_subclass.charAt(1).toLowerCase();
+      const firstLetter =
+        item.city !== null && item.city !== "" ? item.city.charAt(0).toUpperCase() : "";
+      const secondLetter =
+        item.city !== null && item.city.length > 1 ? item.city.charAt(1).toLowerCase() : "";
       const groupName = firstLetter + secondLetter;
 
-      acc[groupName] = acc[groupName] || { cpc_subclass: groupName, children: [] };
+      acc[groupName] = acc[groupName] || { city: groupName, children: [] };
       acc[groupName].children.push({
-        cpc_subclass: item.cpc_subclass,
+        city: item.city,
         count: item.count,
       });
       return acc;
@@ -68,14 +76,51 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
 
     // Transform grouped data into the desired format
     for (const key in groupedData) {
-      result.children.push(groupedData[key]);
+      result.push(groupedData[key]);
     }
-    result.children = result.children.slice(0, 3);
+    // result.children = result.children.slice(0, 3);
     return result;
   };
 
   const result = transformData(data);
-  // console.log(result)
+
+  // const Category_A = {
+  //   cpc_class: "A",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "A"))
+  // }
+  // const Category_B = {
+  //   cpc_class: "B",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "B"))
+  // }
+  // const Category_C = {
+  //   cpc_class: "C",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "C"))
+  // }
+  // const Category_D = {
+  //   cpc_class: "D",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "D"))
+  // }
+  // const Category_E = {
+  //   cpc_class: "E",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "E"))
+  // }
+  // const Category_F = {
+  //   cpc_class: "F",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "F"))
+  // }
+  // const Category_G = {
+  //   cpc_class: "G",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "G"))
+  // }
+  // const Category_H = {
+  //   cpc_class: "H",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "H"))
+  // }
+  // const Category_Y = {
+  //   cpc_class: "Y",
+  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "Y"))
+  // }
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -87,7 +132,7 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="6. Patent Classification Analysis"
+            title="6. Geographic Distribution of Applicants"
 
             // subTitle="Heat map of patents location in USA"
             // sideTitleOption={
@@ -105,7 +150,41 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
         }
       >
         <div>
-          {<TreeMap data={result} />}
+          <div className="space-y-8">
+            <div>
+              {/* <p className="font-bold text-primary-900 text-lg">A</p> */}
+              {/* <TreeMap
+                data={result}
+                name={"A: Human Necessities"}
+                identity="country"
+                value="count"
+              /> */}
+            </div>
+            {/* <div>
+              <TreeMap data={Category_B} name={"B: Performing Operations &Transporting"} />
+            </div>
+            <div>
+              <TreeMap data={Category_C} name={"C: Chemistry & Metallurgy"} />
+            </div>
+            <div>
+              <TreeMap data={Category_D} name={"D: Textiles & Paper"} />
+            </div>
+            <div>
+              <TreeMap data={Category_E} name={"E: Fixed Constructions"} />
+            </div>
+            <div>
+              <TreeMap data={Category_F} name={"F: Mechanical Engineering"} />
+            </div>
+            <div>
+              <TreeMap data={Category_G} name={"G: Physics"} />
+            </div>
+            <div>
+              <TreeMap data={Category_H} name={"H: Electricity"} />
+            </div>
+            <div>
+              <TreeMap data={Category_Y} name={"Y: General Tagging of New Technological Developments"} />
+            </div> */}
+          </div>
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -128,16 +207,137 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
             </div>
           </div>
         </div>
-        <div className="mt-4">
-          {/* <PageTitle
+        {/* <div className="mt-4">
+          <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
             title="Associated technologies "
-          /> */}
+          />
           <RelatedKeywords title="Associated technologies" keywords={keywords} />
-        </div>
+        </div> */}
       </DataSection>
-      <div></div>
     </div>
   );
 };
+// let data = [
+//   cpc_class: "data",
+//   children: [
+//     { cpc_class: 'A0', children: Array(5) },
+//     { cpc_class: 'A2', children: Array(6) },
+//     { cpc_class: 'A4', children: Array(15) },
+//     { cpc_class: 'B2', children: Array(13) },
+//     { cpc_class: 'B3', children: Array(4) },
+//     { cpc_class: 'C0', children: Array(4) }
+
+//   ]
+// ]
+
+// let Category_A = [
+//   cpc_class: "A",
+//   children: [
+//     { cpc_class: 'A0', children: Array(5) },
+//     { cpc_class: 'A2', children: Array(6) },
+//     { cpc_class: 'A4', children: Array(15) },
+//     { cpc_class: 'B2', children: Array(13) },
+//     { cpc_class: 'B3', children: Array(4) },
+//     { cpc_class: 'C0', children: Array(4) }
+//   ]
+// ]
+
+// let category_B = [
+//   cpc_class: "B",
+//   children: [
+
+//     { cpc_class: 'B2', children: Array(13) },
+//     { cpc_class: 'B3', children: Array(4) },
+//   ]
+// ]
+
+// 2
+// :
+// { cpc_class: 'A4', children: Array(15) }
+// 3
+// :
+// { cpc_class: 'A6', children: Array(19) }
+// 4
+// :
+// { cpc_class: 'B0', children: Array(6) }
+// 5
+// :
+
+// 6
+// : { cpc_class: 'B2', children: Array(13) },
+// { cpc_class: 'B3', children: Array(4) },
+// { cpc_class: 'B3', children: Array(4) }
+// 7
+// :
+// { cpc_class: 'B4', children: Array(3) }
+// 8
+// :
+// { cpc_class: 'B6', children: Array(26) }
+// 9
+// :
+// { cpc_class: 'B8', children: Array(1) }
+// 10
+// :
+// { cpc_class: 'C0', children: Array(4) }
+// 11
+// :
+// { cpc_class: 'C1', children: Array(3) }
+// 12
+// :
+// { cpc_class: 'D0', children: Array(9) }
+// 13
+// :
+// { cpc_class: 'D1', children: Array(1) }
+// 14
+// :
+// { cpc_class: 'D2', children: Array(1) }
+// 15
+// :
+// { cpc_class: 'E0', children: Array(5) }
+// 16
+// :
+// { cpc_class: 'E2', children: Array(3) }
+// 17
+// :
+// { cpc_class: 'F0', children: Array(3) }
+// 18
+// :
+// { cpc_class: 'F1', children: Array(5) }
+// 19
+// :
+// { cpc_class: 'F2', children: Array(7) }
+// 20
+// :
+// { cpc_class: 'F4', children: Array(3) }
+// 21
+// :
+// { cpc_class: 'G0', children: Array(43) }
+// 22
+// :
+// { cpc_class: 'G1', children: Array(11) }
+// 23
+// :
+// { cpc_class: 'G2', children: Array(2) }
+// 24
+// :
+// { cpc_class: 'H0', children: Array(29) }
+// 25
+// :
+// { cpc_class: 'H1', children: Array(2) }
+// 26
+// :
+// { cpc_class: 'Y0', children: Array(7) }
+// 27
+// :
+// { cpc_class: 'Y1', children: Array(2) }
+// length
+// :
+// 28
+// [[Prototype]]
+// :
+// Array(0)
+// cpc_class
+// :
+// "data"

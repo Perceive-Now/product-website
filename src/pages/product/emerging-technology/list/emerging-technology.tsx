@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
@@ -45,6 +45,7 @@ export default function DeepSearchCompaniesListPage() {
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   // const joinedkeywords = keywords.join(", ");
 

@@ -1,6 +1,6 @@
-import { FunctionComponent, useEffect, useMemo } from "react";
+import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
-import { getWIPOAnalysis } from "../../../../utils/api/charts";
+import { getPatentApplicantType, getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
@@ -11,9 +11,9 @@ interface Props {
 
 export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["wipo-analysis", ...keywords],
+    ["patent-portfolio", ...keywords],
     async () => {
-      return await getWIPOAnalysis(keywords);
+      return await getPatentApplicantType(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -25,12 +25,17 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
     //
   }, [data]);
 
-  const sortedData = useMemo(() => {
-    if (data) {
-      return [...data].sort((a, b) => a.count - b.count);
-    }
-    return [];
-  }, [data]);
+  // const sortedData = useMemo(() => {
+  //   if (data) {
+  //     return [...data].sort((a, b) => a.count - b.count);
+  //   }
+  //   return [];
+  // }, [data]);
+
+  const barChartData = (data ?? []).map((item) => ({
+    label: item.applicant_type,
+    value: item.count,
+  }));
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -43,51 +48,22 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="7. WIPO Field Analysis"
+            title="7. Number of Applications by Applicant Type"
           />
         }
       >
         <div>
-          {data && (
-            <BarChart
-              data={sortedData}
-              keys={["count"]}
-              indexBy="title"
-              groupMode={"stacked"}
-              legendX="Number of Patents"
-              legendY="WIPO FIELD"
-              innerPadding={0}
-              borderRadius={4}
-              layout={"horizontal"}
-              height={"h-[1000px]"}
-
-              // legends={[
-              //   {
-              //     dataFrom: 'keys',
-              //     anchor: 'bottom-right',
-              //     direction: 'column',
-              //     justify: false,
-              //     translateX: 100,
-              //     translateY: -20,
-              //     itemsSpacing: 0,
-              //     itemWidth: 83,
-              //     itemHeight: 45,
-              //     itemDirection: 'left-to-right',
-              //     itemOpacity: 0.85,
-              //     symbolSize: 20,
-              //     effects: [
-              //       {
-              //         on: 'hover',
-              //         style: {
-              //           itemOpacity: 1
-              //         }
-              //       }
-              //     ],
-              //     legendClassName: 'custom-legend'
-              //   }
-              // ]}
-            />
-          )}
+          {/* {data && ( */}
+          <BarChart
+            data={barChartData.slice(0, 5)}
+            keys={["value"]}
+            indexBy="label"
+            groupMode={"stacked"}
+            // innerPadding={0}
+            borderRadius={4}
+            // layout={"vertical"}
+          />
+          {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>

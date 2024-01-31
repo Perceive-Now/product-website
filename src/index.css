@@ -14,17 +14,17 @@
     @apply text-primary-500;
   }
 
-  .custom-scroller::-webkit-scrollbar {
-    width: 0.65em;
+  .pn_scroller::-webkit-scrollbar {
+    width: 4px;
   }
 
-  .custom-scroller::-webkit-scrollbar-track {
+  .pn_scroller::-webkit-scrollbar-track {
     /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
     border-radius: 100px;
     background: #efefef;
   }
 
-  .custom-scroller::-webkit-scrollbar-thumb {
+  .pn_scroller::-webkit-scrollbar-thumb {
     background-color: #533f73;
     border-radius: 100px;
   }

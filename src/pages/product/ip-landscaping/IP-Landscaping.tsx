@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 //
 import Breadcrumb from "../../../components/reusable/breadcrumb";
@@ -24,6 +24,7 @@ import classNames from "classnames";
  */
 export function IPLandscaping() {
   const [activeStep, setActiveStep] = useState(0);
+  const [sliderHeight, setSliderHeight] = useState("400px");
 
   //
   const changeActiveStep = useCallback((stepValue: number) => {
@@ -34,6 +35,7 @@ export function IPLandscaping() {
   }, []);
 
   //
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const steps: IStep[] = [
     {
       label: "",
@@ -76,6 +78,19 @@ export function IPLandscaping() {
       component: <StepSeven changeActiveStep={changeActiveStep} />,
     },
   ];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // const calculateMaxHeight = () => {
+  //   const maxHeight = Math.max(...steps.map(step => {
+  //     const componentHeight = step.component.props.style?.minHeight || '0px';
+  //     return parseInt(componentHeight.replace('px', ''), 10);
+  //   }));
+  //   setSliderHeight(`${maxHeight}px`);
+  // };
+
+  // // Calculate the maximum height whenever the activeStep or steps change
+  // useEffect(() => {
+  //   calculateMaxHeight();
+  // }, [activeStep, steps, calculateMaxHeight]);
 
   //
   // const activeComponent = useMemo(() => {
@@ -87,48 +102,49 @@ export function IPLandscaping() {
 
   return (
     <>
-      <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md">
+      {/* <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md">
         <div className="flex items-start justify-center gap-0.5 py-1">
-          {/* <p className="text-lg text-primary-900 fw-600">IP Landscaping</p> */}
+          <p className="text-lg text-primary-900 fw-600">IP Landscaping</p>
           <Breadcrumb breadCrumbs={breadcrumbs} />
         </div>
-      </div>
-      <div className="flex flex-col md:flex-row mt-12 justify-between">
-        <MoreNavOption />
-        <div className="xl:w-[620px] md:w-[400px]">
-          {/* <div className="overflow-hidde h-[calc(100vh-600px)]"> */}
-          <div className="overflow-hidden min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-200px)] 2xl:min-h-[calc(100vh-400px)] max-h-[500px]">
-            <div
-              className={`translate-y-[${
-                activeStep * 12.5
-              }% flex flex-col gap-y- transition duration-500 ease-in-out`}
-              style={{
-                transform: `translateY(-${activeStep * 12.5}%)`,
-              }}
-            >
-              {steps.map((step, idx) => (
-                <div
-                  key={idx}
-                  className={classNames(
-                    // activeStep !== step.value && "hidden",
-                    "px-1 h-[600px] overflow-hidden",
-                  )}
-                >
-                  {step.component}
-                </div>
-              ))}
-            </div>
+      </div> */}
+      {/* <div className="flex flex-col md:flex-row mt-12 justify-between">
+        <MoreNavOption /> */}
+      <div className="xl:w-[829px] md:w-[400px]">
+        {/* <div className="overflow-hidde h-[calc(100vh-600px)]"> */}
+        <div className="overflow-hidden min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-[400px]">
+          {/* <div className={`overflow-hidden min-h-[${sliderHeight}] md:min-h-[${sliderHeight}] xl:min-h-[${sliderHeight}] 2xl:min-h-full max-h-[400px]`}> */}
+          <div
+            className={`translate-y-[${
+              activeStep * 12.5
+            }% flex flex-col gap-y-5 transition duration-500 ease-in-out`}
+            style={{
+              transform: `translateY(-${activeStep * 12.5}%)`,
+            }}
+          >
+            {steps.map((step, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  // activeStep !== step.value && "hidden",
+                  "px-1  h-[400px] overflow-y-auto overflow-x-hidden pn_scroller",
+                )}
+              >
+                {step.component}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="flex-shrink-0">
-          {/* // className={`transition-transform duration-500 ease-in-out ${stepperClass}`} */}
-          <Stepper
-            steps={steps}
-            activeStep={activeStep}
-            // changeActiveStep={changeActiveStep}
-          />
-        </div>
       </div>
+      <div className="flex-shrink-0">
+        {/* // className={`transition-transform duration-500 ease-in-out ${stepperClass}`} */}
+        <Stepper
+          steps={steps}
+          activeStep={activeStep}
+          // changeActiveStep={changeActiveStep}
+        />
+      </div>
+      {/* </div> */}
     </>
   );
 }

@@ -22,7 +22,7 @@ export default function RadioButtons(props: IRadioButtons) {
             )}
           </span>
 
-          <span className={`${props?.classNames} text-gray-800`}>{mode.label}</span>
+          <span className={`text-gray-800 ${props?.classNames}`}>{mode.label}</span>
         </div>
       ))}
     </div>

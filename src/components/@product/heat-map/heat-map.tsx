@@ -1,30 +1,46 @@
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { FunctionComponent } from "react";
 
-// import { COLORS } from "../../../utils/constants";
+import { COLORS } from "../../../utils/constants";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   legend?: any;
+  legendY?: string;
 }
 
-export const HeatMap: FunctionComponent<Props> = ({ data, legend }) => {
+export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => {
+  // const colors = data.map((item) => optionKeys.map((key) => item[`${key}Color`]))
+  //   .flat()
+  // console.log(colors)
+
+  // function scale() { }
+
+  // scale.domain = () => {
+  //   const _colors = colors.slice(0)
+
+  //   return () => {
+  //     return _colors.shift()
+  //   }
+  // }
+
   return (
-    <div className="h-[600px] 3xl:w-[1000px] mx-auto">
+    <div className="h-[1600px] 3xl:w-[1000px] mx-auto">
       <ResponsiveHeatMap
         data={data}
         margin={{ top: 60, right: 200, bottom: 60, left: 200 }}
         borderWidth={2}
         borderColor="#ffffff"
-        inactiveOpacity={1}
+        inactiveOpacity={0.15}
         axisTop={{
-          tickSize: 5,
+          tickSize: 10,
           tickPadding: 5,
-          tickRotation: -90,
-          legend: "",
-          legendOffset: 46,
+          tickRotation: 0,
+          legend: `${legendY !== undefined && legendY}`,
+          legendOffset: -46,
+          legendPosition: "middle",
         }}
         axisLeft={{
           tickSize: 5,
@@ -36,12 +52,12 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend }) => {
         // colors={COLORS}
         colors={{
           type: "sequential",
-          scheme: "purples",
-          // minValue: 100000,
-          // maxValue: -100000
+          scheme: "blues",
+          // minValue: -100000,
+          // maxValue: 100000
         }}
         emptyColor="#7F4BD8"
-        hoverTarget="row"
+        // hoverTarget="row"
         legends={legend}
       />
     </div>

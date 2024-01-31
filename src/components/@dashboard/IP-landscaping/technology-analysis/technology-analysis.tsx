@@ -1,20 +1,28 @@
 import { FunctionComponent, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+//
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
-import { useQuery } from "@tanstack/react-query";
+
+//
 import { getTechnlogyLifeCycleAnalysis } from "../../../../utils/api/charts";
+
+//
 import ScatterChart from "../../../@product/scatter-chart";
 
+//
 interface Props {
   keywords: string[];
 }
+
 interface IScholaryPublicationData {
   count: number;
-  date: string;
+  year: number;
 }
 
 interface IScatterItem {
-  x: string;
+  x: number;
   y: number;
 }
 
@@ -22,7 +30,12 @@ interface IScatterList {
   id: string;
   data: IScatterItem[];
 }
+
+/**
+ *
+ */
 export const TechnologyLifeCycleAnalysis: FunctionComponent<Props> = ({ keywords }) => {
+  //
   const { data, isLoading, isError, error } = useQuery(
     ["lifecycle-analysis", ...keywords],
     async () => {
@@ -38,33 +51,33 @@ export const TechnologyLifeCycleAnalysis: FunctionComponent<Props> = ({ keywords
     //
   }, [data]);
 
+  //
   const finalScatterDataFormatHelper = (data: IScholaryPublicationData[]) => {
     if (!data) return [];
 
     const openAccessCountObj: IScatterList = { id: "Stage", data: [] };
-    // const closedAccessCountObj: IScatterList = {
-    //   id: "Closed access",
-    //   data: [],
-    // };
-
-    const openAccessData: IScatterItem[] = [];
-    // const closedAccessData: IScatterItem[] = [];
-
+    let openAccessData: IScatterItem[] = [];
     //
     data.forEach((d) => {
-      openAccessData.push({ x: d.date, y: d.count });
-      // closedAccessData.push({ x: d.year.toString(), y: d.closed_source });
+      openAccessData.push({ x: d.year, y: d.count });
     });
 
+    // For checking and sorting past 10years
+    const uniqueYears = Array.from(new Set(openAccessData.map((entry) => entry.x)));
+    const sortedYears = uniqueYears.sort((a, b) => b - a);
+    const recentYears = sortedYears.slice(0, 10);
     //
-    openAccessCountObj.data = openAccessData.slice(0, 10);
-    // closedAccessCountObj.data = closedAccessData;
 
+    // filter
+    openAccessData = openAccessData.filter((item) => recentYears.includes(item.x));
+    openAccessCountObj.data = openAccessData.slice(0, 10);
     //
     return [openAccessCountObj];
   };
+
   const scatterChartData = finalScatterDataFormatHelper(data ?? []);
 
+  //
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection

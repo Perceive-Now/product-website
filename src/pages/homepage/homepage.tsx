@@ -76,9 +76,9 @@ export default function HomePage() {
   return (
     <div className="min-h-[calc(100vh-120px)] flex flex-col">
       <div className="grow flex justify-center items-center md:px-4 py-7">
-        <div className="my-auto justify-center text-center">
-          <h6 className="text-primary-900 text-xl md:text-3xl font-semibold">Type any Keyword</h6>
-          <div className="md:max-w-[1024px] mx-auto">
+        <div className="w-full flex flex-col items-center">
+          <h6 className="text-primary-900 text-xl md:text-3xl font-semibold">Search any keyword</h6>
+          <div className="md:max-w-[1024px] mx- w-full">
             <div className="mt-3">
               <Search
                 required
@@ -87,7 +87,7 @@ export default function HomePage() {
                 onSubmit={handleSearch}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-7 mt-4 gap-4 content-start">
+            <div className="flex mt-4 gap-4 items-center justify-center ">
               {SearchType.map((type, index) => (
                 <div
                   key={index}
@@ -173,40 +173,40 @@ export default function HomePage() {
 
 const SearchType = [
   {
-    name: "IP Landscaping",
-    icon: PatentsIcon,
+    name: "IP Analysis",
+    icon: PortfolioIcon,
     key: "ip-landscaping",
   },
+  // {
+  //   name: "Freedom to operate",
+  //   icon: HookIcon,
+  //   key: "freedom-to-operate",
+  // },
+  // {
+  //   name: "M&A licensing",
+  //   icon: DocumentIcon,
+  //   key: "m&a-licensing",
+  // },
+  // {
+  //   name: "Technology landscaping",
+  //   icon: TechnologyIcon,
+  //   key: "technology-landscaping",
+  // },
   {
-    name: "Freedom to operate",
-    icon: HookIcon,
-    key: "freedom-to-operate",
-  },
-  {
-    name: "M&A licensing",
-    icon: DocumentIcon,
-    key: "m&a-licensing",
-  },
-  {
-    name: "Technology landscaping",
-    icon: TechnologyIcon,
-    key: "technology-landscaping",
-  },
-  {
-    name: "Competitive intelligence",
+    name: "Market intelligence",
     icon: BulbIcon,
     key: "competitive-intelligence",
   },
   {
-    name: "Infringement analysis",
+    name: "Financial  Investments",
     icon: PortfolioIcon,
     key: "infringement-analysis",
   },
-  {
-    name: "Database Search",
-    icon: ClaimIcon,
-    key: "database-search",
-  },
+  // {
+  //   name: "Database Search",
+  //   icon: ClaimIcon,
+  //   key: "database-search",
+  // },
 ];
 
 const DataSets = [

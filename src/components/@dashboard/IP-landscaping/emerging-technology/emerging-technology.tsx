@@ -91,7 +91,9 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
       entry.data = entry.data.filter((item) => recentYears.includes(item.x));
     });
 
-    return inputData;
+    const sortedData = inputData.sort((a, b) => a.id.localeCompare(b.id));
+
+    return sortedData;
   };
 
   const finalData = transformData(tree_data);
@@ -113,7 +115,8 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
       >
         <div>
           <HeatMap
-            data={finalData.slice(0, 5)}
+            data={finalData}
+            legendY={"Year"}
             legend={[
               {
                 anchor: "right",

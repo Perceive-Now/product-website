@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
-import { getInventorAssigneeAnalysis } from "../../../../utils/api/charts";
+import { getPatentFamilySize } from "../../../../utils/api/charts";
 import BarChart from "../../../@product/bar-chart";
 
 interface Props {
@@ -13,7 +13,7 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["inventor_analysis", ...keywords],
     async () => {
-      return await getInventorAssigneeAnalysis(keywords);
+      return await getPatentFamilySize(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -24,6 +24,11 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
 
     //
   }, [data]);
+
+  const barChartData = (data ?? []).map((item) => ({
+    label: item.year,
+    value: item.family_size,
+  }));
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -36,8 +41,8 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
           <PageTitle
             // info={`This geographical hLegal Status of Patentseat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="4. Inventor and Assignee Analysis"
-            subTitle="Top 5 Inventors"
+            title="3. Size of Patent Families Over Time"
+            // subTitle="Top 5 Inventors"
             // sideTitleOption={
             //   <RadioButtons
             //     options={[
@@ -52,15 +57,15 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
         }
       >
         <div className="space-y-2 text-secondary-800 mt-4">
-          {data && (
-            <BarChart
-              data={data}
-              keys={["count"]}
-              indexBy="filed_country"
-              groupMode="stacked"
-              legendY="Number of references"
-            />
-          )}
+          {/* {data && ( */}
+          <BarChart
+            data={barChartData}
+            keys={["value"]}
+            indexBy="label"
+            groupMode="stacked"
+            // legendY="Number of references"
+          />
+          {/* )} */}
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>

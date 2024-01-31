@@ -5,16 +5,19 @@ const COLORS = ["#7F4BD8", "#E1D5F2", "#FFB531"];
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
+  name?: string;
+  identity: string;
+  value: string;
 }
 
-export const TreeMap: FunctionComponent<Props> = ({ data }) => {
-  // console.log(data)
+export const TreeMap: FunctionComponent<Props> = ({ data, name, identity, value }) => {
   return (
-    <div className="h-[600px] 3xl:w-[1000px] mx-auto">
+    <div className="h-[500px] 3xl:w-[1000px] mx-auto">
+      {/* <div className="font-bold text-primary-900 text-lg text-center">{name}</div> */}
       <ResponsiveTreeMap
         data={data}
-        identity="cpc_subclass"
-        value="count"
+        identity={identity}
+        value={value}
         // valueFormat=".02s"
         // leavesOnly={true}
 
