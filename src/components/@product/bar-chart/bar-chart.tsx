@@ -29,18 +29,18 @@ export default function BarChart(props: IBarChartProps) {
     <div
       className={classNames(
         props.layout === "horizontal"
-          ? `${props.height !== undefined ? props.height : "h-[600px]"}`
+          ? `${props.height !== undefined ? props.height : "h-[400px]"}`
           : "h-[400px] ",
-        "3xl:w-[1000px] max-w-[] mx-auto overflow-x-auto whitespace-nowrap",
+        "3xl:w-[1000px] max-w-[] mx-auto whitespace-nowrap",
       )}
-      style={{ width: "100%", overflowX: "auto" }}
+      // style={{ width: "100%", overflowX: "auto" }}
     >
       <ResponsiveBar
         data={dataItems}
         keys={props.keys}
         indexBy={props.indexBy}
         margin={{
-          top: 50,
+          top: 20,
           right: 100,
           left: props.layout === "horizontal" ? 250 : 100,
           // bottom: props.legendX ? 50 : 30,
@@ -60,9 +60,25 @@ export default function BarChart(props: IBarChartProps) {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: props.legendX,
+            // legend: props.legendX,
             legendPosition: "middle",
             legendOffset: 40,
+            format: (v) => {
+              const label = v.substring(0, 10) + "...";
+              return (
+                <g transform={`translate(${v.x},${v.y})`}>
+                  <text
+                    textAnchor="middle"
+                    fontSize={12}
+                    fontWeight="bold"
+                    fill="green"
+                    fontFamily="Arial, sans-serif"
+                  >
+                    {label}
+                  </text>
+                </g>
+              );
+            },
           },
         })}
         {...(props.legendY && {

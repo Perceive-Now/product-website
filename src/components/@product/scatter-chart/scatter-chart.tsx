@@ -72,6 +72,7 @@ export default function ScatterChart(props: IScatterChartProps) {
         enableArea={false}
         areaBaselineValue={0}
         enableGridX={false}
+        isInteractive={true}
         // areaOpacity={1}
         // colors={{ scheme: "purples" }}
         colors={props.colors || COLORS}
@@ -82,6 +83,11 @@ export default function ScatterChart(props: IScatterChartProps) {
             },
           },
         }}
+        // tooltip={(tProps) => (
+        //   <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
+        //     <span className="capitalize">{tProps.point.data.xFormatted}</span>
+        //   </div>
+        // )}
         // legends={[
         //   {
         //     anchor: "top-left",

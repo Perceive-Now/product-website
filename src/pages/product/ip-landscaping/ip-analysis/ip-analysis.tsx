@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 //
 
@@ -89,16 +89,20 @@ export default function IPAnalysis() {
     {
       label: "",
       value: 10,
-      component: <IPFinal changeActiveStep={changeActiveStep} />,
+      component: <IPFinal changeActiveStep={changeActiveStep} activeStep={activeStep} />,
     },
   ];
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [activeStep]);
+
   return (
     <>
-      <div className="">
+      <div className="w-full">
         <div
           className={classNames(
-            "overflow-hidden min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-[calc(100vh-80px)]",
+            "overflow-hidden min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
             activeStep === 9 && "max-h-full",
           )}
           //   className="
@@ -108,7 +112,7 @@ export default function IPAnalysis() {
           <div
             className={`translate-y-[${
               activeStep * 9
-            }% flex flex-col gap-y-5 transition duration-500 ease-in-out overflow-hidden h-full`}
+            }% flex flex-col gap-y-5 transition duration-500 ease-in-out overflow-hidden h-full w-full`}
             style={{
               transform: `translateY(-${activeStep * 0}%)`,
             }}
@@ -118,7 +122,7 @@ export default function IPAnalysis() {
                 key={idx}
                 className={classNames(
                   activeStep !== step.value && "hidden",
-                  "px-1 h-[900px overflow-y-auto overflow-x-hidden pn_scroller",
+                  "px-1 h-full w-full overflow-y-auto overflow-x-hidden pn_scroller",
                   activeStep === 0 && "h-[calc(100vh-120px)]",
                   activeStep === 9 && "h-full",
                 )}

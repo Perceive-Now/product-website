@@ -24,7 +24,7 @@ export default function PieChart(props: IPieChartProps) {
     <div className="h-[300px] 3xl:w-[1000px] mx-auto flex justify-center items-center">
       <ResponsivePie
         data={dataItems}
-        margin={{ top: 40, right: 250, bottom: 40, left: 0 }}
+        margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
         innerRadius={0.5}
         padAngle={1.5}
         cornerRadius={0}
@@ -41,7 +41,7 @@ export default function PieChart(props: IPieChartProps) {
         enableArcLinkLabels={true}
         // arcLinkLabel="id"
         arcLinkLabel={(e) => e.id + " (" + e.value + ")"}
-        arcLinkLabelsSkipAngle={0}
+        arcLinkLabelsSkipAngle={5}
         arcLinkLabelsTextColor="#5C1FC4"
         arcLinkLabelsDiagonalLength={36}
         // arcLinkLabelsStraightLength={}
@@ -72,6 +72,7 @@ export default function PieChart(props: IPieChartProps) {
         onClick={(data) => props.onClick?.(data)}
         tooltip={(tProps) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
+            <span className="capitalize">{tProps.datum.label}</span>{" "}
             {formatNumber(tProps.datum.value)}
           </div>
         )}

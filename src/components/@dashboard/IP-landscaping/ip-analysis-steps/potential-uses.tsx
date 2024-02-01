@@ -7,14 +7,20 @@ import classNames from "classnames";
 
 import * as yup from "yup";
 import { useCallback } from "react";
+import { IAnswer } from "../../../../@types/entities/IPLandscape";
+import { setPotentialApplication } from "../../../../stores/IpSteps";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
 export default function IPPotentialUses({ changeActiveStep }: Props) {
+  const dispatch = useAppDispatch();
+  const answer = useAppSelector((state) => state.ipData.potential_application.answer) ?? "";
+
   const formResolver = yup.object().shape({
-    description: yup.string().required("Case is required"),
+    answer: yup.string().required("Case is required"),
   });
 
   const {
@@ -22,20 +28,26 @@ export default function IPPotentialUses({ changeActiveStep }: Props) {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    // defaultValues: formInitialValue,
+    defaultValues: {
+      answer: answer,
+    },
     resolver: yupResolver(formResolver),
     mode: "onBlur",
   });
-  const onContinue = useCallback(() => {
-    changeActiveStep(7);
-  }, [changeActiveStep]);
+  //
+  const onContinue = useCallback(
+    (value: IAnswer) => {
+      dispatch(setPotentialApplication(value));
+      changeActiveStep(7);
+    },
+    [changeActiveStep, dispatch],
+  );
+
   return (
     <>
       <div className="space-y-2.5">
         <KeywordSelected />
-        <div>
-          <IPUseCase />
-        </div>
+        <IPUseCase changeActiveStep={changeActiveStep} />
         <div className="py-0.5 px-1 bg-appGray-100 rounded-sm text-base text-secondary-800 ">
           Potential Applications and Uses
         </div>
@@ -68,10 +80,10 @@ export default function IPPotentialUses({ changeActiveStep }: Props) {
             <div className="mt-0.5 rounded-md shadow-sm">
               <textarea
                 rows={5}
-                {...register("description")}
+                {...register("answer")}
                 className={classNames(
                   "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                  errors.description
+                  errors.answer
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}

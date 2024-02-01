@@ -99,7 +99,7 @@ export async function getGeographicalDistributionAssignment(keywords: string[]) 
   return res.data.response;
 }
 
-export async function getGeographicalDistributionInvetors(keywords: string[]) {
+export async function getGeographicalDistributionInventors(keywords: string[]) {
   const res = await axiosInstance.get<IGeoInventor>(
     `/api/patent_inventor_country?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
   );
@@ -260,18 +260,21 @@ export interface IGeoApplicant {
     count: number;
     country: string;
     city: string;
+    year: number;
   }[];
 }
 export interface IGeoInventor {
   response: {
     count: number;
     country: string;
+    year: number;
   }[];
 }
 export interface IGeoAssignment {
   response: {
     count: number;
     country: string;
+    year: number;
   }[];
 }
 export interface IPatentClassification {

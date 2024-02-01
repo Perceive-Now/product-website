@@ -5,21 +5,16 @@ import { useNavigate } from "react-router-dom";
 import Search, { IKeywordOption } from "../../components/reusable/search";
 
 //
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setDashboardSearch } from "../../stores/dashboard";
 
 //
 // import PerceiveLogo from "../../assets/images/logo.svg";
-import { PatentsIcon } from "../../components/icons";
 import classNames from "classnames";
 import { useCallback, useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
-import HookIcon from "../../components/icons/sidenav/hook";
-import DocumentIcon from "../../components/icons/miscs/document";
-import TechnologyIcon from "../../components/icons/miscs/Technology";
 import BulbIcon from "../../components/icons/miscs/Bulb";
 import PortfolioIcon from "../../components/icons/sidenav/portfolio";
-import ClaimIcon from "../../components/icons/sidenav/claim";
 
 /**
  *
@@ -27,6 +22,8 @@ import ClaimIcon from "../../components/icons/sidenav/claim";
 export default function HomePage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
 
   const [selectSearch, setSelectSearch] = useState<string>("ip-landscaping");
 
@@ -36,7 +33,7 @@ export default function HomePage() {
 
     switch (selectSearch) {
       case "ip-landscaping":
-        navigate("/ip-landscaping", {
+        navigate("/ip-analysis", {
           state: { search: searchValue },
         });
         break;
@@ -85,6 +82,7 @@ export default function HomePage() {
                 size="large"
                 className="w-full home-search"
                 onSubmit={handleSearch}
+                initialValue={searchedKeywords}
               />
             </div>
             <div className="flex mt-4 gap-4 items-center justify-center ">

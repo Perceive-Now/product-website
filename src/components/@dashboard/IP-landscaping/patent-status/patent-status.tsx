@@ -48,7 +48,7 @@ export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="3. Distribution of Patent Types"
+            title="2. Distribution of Patent Types"
             // subTitle="Heat map of patents location in USA"
             // sideTitleOption={
             //   <RadioButtons

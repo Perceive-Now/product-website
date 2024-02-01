@@ -30,10 +30,11 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
     <div className="h-[1600px] 3xl:w-[1000px] mx-auto">
       <ResponsiveHeatMap
         data={data}
-        margin={{ top: 60, right: 200, bottom: 60, left: 200 }}
+        margin={{ top: 60, right: 100, bottom: 60, left: 100 }}
         borderWidth={2}
         borderColor="#ffffff"
         inactiveOpacity={0.15}
+        isInteractive={false}
         axisTop={{
           tickSize: 10,
           tickPadding: 5,
@@ -50,26 +51,39 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
           legendOffset: -72,
         }}
         // colors={COLORS}
-        colors={{
-          type: "sequential",
-          scheme: "blues",
-          // minValue: -100000,
-          // maxValue: 100000
+        colors={(cell) => {
+          const value = cell.value as number;
+          if (value <= 20) {
+            return "#CCBAED";
+          } else if (value <= 40) {
+            return "#B498E4";
+          } else if (value <= 50) {
+            return "#5C20C4";
+          } else if (value <= 100) {
+            return "#533F73";
+          } else {
+            return "#442873";
+          }
         }}
+        // colors={['#ff0000', '#00ff00', '#0000ff']}
+        // colors={{
+        //   type: "sequential",
+        //   scheme: "blues",
+        //   // minValue: -100000,
+        //   // maxValue: 100000
+        // }}
         emptyColor="#7F4BD8"
         // hoverTarget="row"
         legends={legend}
+        labelTextColor={(cell) => {
+          const value = cell.value as number;
+          if (value <= 100) {
+            return "#000";
+          } else {
+            return "#fff";
+          }
+        }}
       />
     </div>
   );
 };
-// const CenteredMetric = () => {
-//   // Your custom layer implementation goes here
-
-//   return (
-//     <div className="centered-metric text-black text-xl">
-//       {/* Content of your custom layer */}
-//       Centered
-//     </div>
-//   );
-// };

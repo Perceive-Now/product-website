@@ -1,9 +1,11 @@
-import React, { FunctionComponent, useCallback, useState } from "react";
+import { FunctionComponent, useCallback, useState } from "react";
 import KeywordSelected from "../KeywordSelected";
+//
 import Button from "../../../reusable/button";
 import RadioButtons from "../../../reusable/radio-buttons";
+//
 import { setIPUseCase } from "../../../../stores/IpSteps";
-import { useAppDispatch } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -11,15 +13,18 @@ interface Props {
 
 const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const dispatch = useAppDispatch();
-  const [active, setActive] = useState("ip-validity-analysis");
-
+  const radio_active =
+    useAppSelector((state) => state.ipData.use_case.label) ?? "IP Validity Analysis";
+  const [defaultValue] = radioOptions.filter((r) => r.label === radio_active);
+  const [active, setActive] = useState(defaultValue.value);
+  //
   const onContinue = useCallback(() => {
-    dispatch(setIPUseCase({ label: active }));
+    const [value] = radioOptions.filter((r) => r.value === active);
+    dispatch(setIPUseCase({ label: value.label }));
     changeActiveStep(1);
   }, [active, changeActiveStep, dispatch]);
   //
 
-  // const handleChange = ()=>{
   const handleChange = useCallback((mode: string) => {
     setActive(mode);
   }, []);
@@ -30,10 +35,8 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
       <h4 className="text-gray-600 text-4xl	mt-2.5">
         Please select one of the use cases and answer <br /> the subsequent questions.
       </h4>
-      {/* <h6 className="text-secondary-800 mt-2">Let’s add more info to create your report</h6> */}
       <div className="flex mt-7 items-center">
         {
-          // radioOptions.map(() => (
           <div>
             <RadioButtons
               options={radioOptions}

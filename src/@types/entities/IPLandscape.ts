@@ -18,3 +18,7 @@ export interface IStepThree {
 export interface IUSState {
   state: string[];
 }
+
+export interface IAnswer {
+  answer: string;
+}

@@ -1,41 +1,27 @@
 import { FunctionComponent, useEffect } from "react";
+import HeatMap from "../../../@product/heat-map";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
-import { getGeographicDistributionApplicant } from "../../../../utils/api/charts";
-import TreeMap from "../../../@product/tree-map";
+import { getGeographicalDistributionInventors } from "../../../../utils/api/charts";
 
 interface Props {
   keywords: string[];
 }
 
-interface IPatentClassification {
-  cpc_class: string;
-  count: number;
+interface ITransformedData {
+  [wipo_field_title: string]: ITransformedEntry;
 }
 
-interface IGeoApplicant {
-  location_id: string;
-  count: number;
-  country: string;
-  city: string;
+interface ITransformedEntry {
+  id: string;
+  data: { x: number; y: number | null }[];
 }
-
-// interface ITreeData {
-//   cpc_class: string;
-//   children: any[];
-// }
-
-interface GroupedData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: { city: string; children: any[] };
-}
-
 export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["geographical_inventors", ...keywords],
+    ["geographic_applicant", ...keywords],
     async () => {
-      return await getGeographicDistributionApplicant(keywords);
+      return await getGeographicalDistributionInventors(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -47,80 +33,72 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
     //
   }, [data]);
 
-  const transformData = (data: IGeoApplicant[] | undefined) => {
-    if (!data) {
-      return [];
-    }
+  const transformedData: ITransformedData = {};
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // const result: { cpc_class: string; children: any[] } = {
-    //   cpc_class: "data",
-    //   children: [],
-    // };
-    const result: { city: string; children: { city: string; count: number }[] }[] = [];
+  data &&
+    data.forEach((entry) => {
+      if (!transformedData[entry.country]) {
+        transformedData[entry.country] = { id: entry.country, data: [] };
+      }
 
-    // Group data by the first letter and second letter of cpc_class
-    const groupedData: GroupedData = data.reduce((acc: GroupedData, item) => {
-      const firstLetter =
-        item.city !== null && item.city !== "" ? item.city.charAt(0).toUpperCase() : "";
-      const secondLetter =
-        item.city !== null && item.city.length > 1 ? item.city.charAt(1).toLowerCase() : "";
-      const groupName = firstLetter + secondLetter;
+      if (entry.year && entry.count && transformedData[entry.country]) {
+        transformedData[entry.country].data.push({
+          x: entry.year,
+          y: entry.count,
+        });
+      }
+      // Object.values(transformedData).forEach((entry) => {
+      //   entry.data = entry.data.slice(0, 5);
+      // });
+    });
 
-      acc[groupName] = acc[groupName] || { city: groupName, children: [] };
-      acc[groupName].children.push({
-        city: item.city,
-        count: item.count,
-      });
-      return acc;
-    }, {});
+  const tree_data = Object.values(transformedData);
 
-    // Transform grouped data into the desired format
-    for (const key in groupedData) {
-      result.push(groupedData[key]);
-    }
-    // result.children = result.children.slice(0, 3);
-    return result;
+  // const transformData = (inputData: ITransformedEntry[]) => {
+  //   // Collect all unique years from the existing data
+  //   const uniqueYears = Array.from(
+  //     new Set(inputData.flatMap((entry) => entry.data.map((item) => item.x))),
+  //   );
+
+  //   inputData.forEach((entry) => {
+  //     // Check and add missing years
+  //     uniqueYears.forEach((year) => {
+  //       const existingYear = entry.data.find((item) => item.x === year);
+
+  //       if (!existingYear) {
+  //         entry.data.push({ x: year, y: null });
+  //       }
+  //     });
+  //   });
+  //   return inputData;
+  // };
+
+  // const finalData = transformData(tree_data);
+  const transformData = (inputData: ITransformedEntry[]) => {
+    // Collect all unique years from the existing data
+    const uniqueYears = Array.from(
+      new Set(inputData.flatMap((entry) => entry.data.map((item) => item.x))),
+    );
+
+    // Sort the years in descending order
+    const sortedYears = uniqueYears.sort((a, b) => b - a);
+
+    // Include only the recent five years
+    const recentYears = sortedYears.slice(0, 5);
+
+    inputData.forEach((entry) => {
+      // Filter data to include only the recent five years
+      entry.data = entry.data.filter((item) => recentYears.includes(item.x));
+    });
+
+    // console.log(inputData)
+
+    // const sortedData = inputData.sort((a, b) => a.id.localeCompare(b.id));
+
+    return inputData;
   };
 
-  const result = transformData(data);
-
-  // const Category_A = {
-  //   cpc_class: "A",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "A"))
-  // }
-  // const Category_B = {
-  //   cpc_class: "B",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "B"))
-  // }
-  // const Category_C = {
-  //   cpc_class: "C",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "C"))
-  // }
-  // const Category_D = {
-  //   cpc_class: "D",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "D"))
-  // }
-  // const Category_E = {
-  //   cpc_class: "E",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "E"))
-  // }
-  // const Category_F = {
-  //   cpc_class: "F",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "F"))
-  // }
-  // const Category_G = {
-  //   cpc_class: "G",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "G"))
-  // }
-  // const Category_H = {
-  //   cpc_class: "H",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "H"))
-  // }
-  // const Category_Y = {
-  //   cpc_class: "Y",
-  //   children: result.filter((s) => (s.cpc_class.charAt(0) === "Y"))
-  // }
+  const finalData = transformData(tree_data);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -134,58 +112,32 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
             title="11. Geographical Distribution of Inventors"
-
-            // subTitle="Heat map of patents location in USA"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: '2014-2018', value: '1st5year' },
-            //       { label: '2019-2023', value: '2nd5year' }
-            //     ]}
-            //     activeMode={yearChoose}
-            //     handleModeChange={changeYear}
-            //     classNames="text-sm font-semibold"
-            //   />
-            // }
           />
         }
       >
         <div>
-          <div className="space-y-8">
-            <div>
-              {/* <p className="font-bold text-primary-900 text-lg">A</p> */}
-              {/* <TreeMap
-                data={result}
-                name={"A: Human Necessities"}
-                identity="country"
-                value="count"
-              /> */}
-            </div>
-            {/* <div>
-              <TreeMap data={Category_B} name={"B: Performing Operations &Transporting"} />
-            </div>
-            <div>
-              <TreeMap data={Category_C} name={"C: Chemistry & Metallurgy"} />
-            </div>
-            <div>
-              <TreeMap data={Category_D} name={"D: Textiles & Paper"} />
-            </div>
-            <div>
-              <TreeMap data={Category_E} name={"E: Fixed Constructions"} />
-            </div>
-            <div>
-              <TreeMap data={Category_F} name={"F: Mechanical Engineering"} />
-            </div>
-            <div>
-              <TreeMap data={Category_G} name={"G: Physics"} />
-            </div>
-            <div>
-              <TreeMap data={Category_H} name={"H: Electricity"} />
-            </div>
-            <div>
-              <TreeMap data={Category_Y} name={"Y: General Tagging of New Technological Developments"} />
-            </div> */}
-          </div>
+          <HeatMap
+            data={finalData}
+            legendY={"Year"}
+            legend={[
+              {
+                anchor: "right",
+                translateX: 60,
+                translateY: -1,
+                length: 500,
+                thickness: 8,
+                direction: "column",
+                tickPosition: "after",
+                tickSize: 3,
+                tickSpacing: 4,
+                tickOverlap: false,
+                tickFormat: ">-.2s",
+                title: "Growth rate",
+                titleAlign: "end",
+                titleOffset: 8,
+              },
+            ]}
+          />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
@@ -208,137 +160,7 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
             </div>
           </div>
         </div>
-        {/* <div className="mt-4">
-          <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="Associated technologies "
-          />
-          <RelatedKeywords title="Associated technologies" keywords={keywords} />
-        </div> */}
       </DataSection>
     </div>
   );
 };
-// let data = [
-//   cpc_class: "data",
-//   children: [
-//     { cpc_class: 'A0', children: Array(5) },
-//     { cpc_class: 'A2', children: Array(6) },
-//     { cpc_class: 'A4', children: Array(15) },
-//     { cpc_class: 'B2', children: Array(13) },
-//     { cpc_class: 'B3', children: Array(4) },
-//     { cpc_class: 'C0', children: Array(4) }
-
-//   ]
-// ]
-
-// let Category_A = [
-//   cpc_class: "A",
-//   children: [
-//     { cpc_class: 'A0', children: Array(5) },
-//     { cpc_class: 'A2', children: Array(6) },
-//     { cpc_class: 'A4', children: Array(15) },
-//     { cpc_class: 'B2', children: Array(13) },
-//     { cpc_class: 'B3', children: Array(4) },
-//     { cpc_class: 'C0', children: Array(4) }
-//   ]
-// ]
-
-// let category_B = [
-//   cpc_class: "B",
-//   children: [
-
-//     { cpc_class: 'B2', children: Array(13) },
-//     { cpc_class: 'B3', children: Array(4) },
-//   ]
-// ]
-
-// 2
-// :
-// { cpc_class: 'A4', children: Array(15) }
-// 3
-// :
-// { cpc_class: 'A6', children: Array(19) }
-// 4
-// :
-// { cpc_class: 'B0', children: Array(6) }
-// 5
-// :
-
-// 6
-// : { cpc_class: 'B2', children: Array(13) },
-// { cpc_class: 'B3', children: Array(4) },
-// { cpc_class: 'B3', children: Array(4) }
-// 7
-// :
-// { cpc_class: 'B4', children: Array(3) }
-// 8
-// :
-// { cpc_class: 'B6', children: Array(26) }
-// 9
-// :
-// { cpc_class: 'B8', children: Array(1) }
-// 10
-// :
-// { cpc_class: 'C0', children: Array(4) }
-// 11
-// :
-// { cpc_class: 'C1', children: Array(3) }
-// 12
-// :
-// { cpc_class: 'D0', children: Array(9) }
-// 13
-// :
-// { cpc_class: 'D1', children: Array(1) }
-// 14
-// :
-// { cpc_class: 'D2', children: Array(1) }
-// 15
-// :
-// { cpc_class: 'E0', children: Array(5) }
-// 16
-// :
-// { cpc_class: 'E2', children: Array(3) }
-// 17
-// :
-// { cpc_class: 'F0', children: Array(3) }
-// 18
-// :
-// { cpc_class: 'F1', children: Array(5) }
-// 19
-// :
-// { cpc_class: 'F2', children: Array(7) }
-// 20
-// :
-// { cpc_class: 'F4', children: Array(3) }
-// 21
-// :
-// { cpc_class: 'G0', children: Array(43) }
-// 22
-// :
-// { cpc_class: 'G1', children: Array(11) }
-// 23
-// :
-// { cpc_class: 'G2', children: Array(2) }
-// 24
-// :
-// { cpc_class: 'H0', children: Array(29) }
-// 25
-// :
-// { cpc_class: 'H1', children: Array(2) }
-// 26
-// :
-// { cpc_class: 'Y0', children: Array(7) }
-// 27
-// :
-// { cpc_class: 'Y1', children: Array(2) }
-// length
-// :
-// 28
-// [[Prototype]]
-// :
-// Array(0)
-// cpc_class
-// :
-// "data"

@@ -4,7 +4,7 @@ import { useReactToPrint } from "react-to-print";
 
 import classNames from "classnames";
 //
-import { ChevronRight, CrossIcon } from "../../../../components/icons";
+import { ChevronRight, SearchIcon } from "../../../../components/icons";
 //
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import Button from "../../../../components/reusable/button";
@@ -21,10 +21,9 @@ import PatentLegalStatus from "../../../../components/@dashboard/IP-landscaping/
 import InventorAnalysis from "../../../../components/@dashboard/IP-landscaping/inventor-analysis";
 import GeographicalDistributionFiling from "../../../../components/@dashboard/IP-landscaping/geographical-filing";
 import WipoAnalysis from "../../../../components/@dashboard/IP-landscaping/wipo-analysis";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import TrendExaminationYear from "../../../../components/@dashboard/IP-landscaping/trends-examination-years";
 import ClassificationCPC from "../../../../components/@dashboard/IP-landscaping/cpc-classification";
-import PatentClassificationAnalysis from "../../../../components/@dashboard/IP-landscaping/patent-classification";
 import PatentAssignment from "../../../../components/@dashboard/IP-landscaping/patent-assignment";
 import InventorTrendOverTime from "../../../../components/@dashboard/IP-landscaping/inventor-trend";
 import PatentIPC from "../../../../components/@dashboard/IP-landscaping/patent-ipc-class";
@@ -32,8 +31,14 @@ import PatentWipo from "../../../../components/@dashboard/IP-landscaping/patent-
 import PCTApplication from "../../../../components/@dashboard/IP-landscaping/pct-application";
 import GeographicalDistributionAssignment from "../../../../components/@dashboard/IP-landscaping/geographic-assignment";
 import GeographicalDistributionInventors from "../../../../components/@dashboard/IP-landscaping/geographical-inventors";
+import GeographicalDistributionApplicant from "../../../../components/@dashboard/IP-landscaping/geographic-applicant";
+import SemanticSearch from "../../../../components/reusable/semantic-search";
+import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
+import RadioButtons from "../../../../components/reusable/radio-buttons";
 
 //
+
+type ISearchType = "or" | "and" | "custom";
 
 /**
  *
@@ -42,6 +47,9 @@ export const IPFullReport = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isSemantic, setISearchSemantic] = useState(false);
+  const [searchType, SetSearchType] = useState<ISearchType>("or");
 
   const printRef = useRef<HTMLDivElement>(null);
   //
@@ -76,6 +84,10 @@ export const IPFullReport = () => {
     content: () => printRef.current,
   });
 
+  const handleSearchType = (value: string) => {
+    SetSearchType(value as ISearchType);
+  };
+
   return (
     <>
       <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md ">
@@ -91,39 +103,79 @@ export const IPFullReport = () => {
       {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
       <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2 h-full w-full">
         <div className="mt-0.5 w-full">
-          {/* Search bar */}
-          <div>
-            <Search
-              required
-              size="small"
-              className="w-full bg-white"
-              onSubmit={handleSearch}
-              initialValue={searchedKeywords}
-              searchButton={true}
-              // isDisabled={true}
-            />
-            {keywords.length > 0 ? (
-              <div className="mt-2">
-                <span>Showing patents for: </span>
-                <span className="">"{joinedkeywords}"</span>&nbsp;
-                {filteredKeywords.length > 0 && (
-                  <>
-                    <span className="font-bold">in &nbsp;</span>
-                    <div className="inline-flex items-center p-1 rounded-xl border border-gray-500 gap-1">
-                      <span>{filterKeywords}</span>
-                      <button type="button" onClick={filterClear}>
-                        <CrossIcon />
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <p className="mt-[4px] text-appGray-900">
-                Search keywords e.g. “COVID-19” to see related patents.
-              </p>
-            )}
+          {isSemantic ? (
+            <>
+              <SemanticSearch initialValue={searchedKeywords} />
+            </>
+          ) : (
+            <div>
+              {/* Search bar */}
+              <Search
+                required
+                size="small"
+                className="w-full bg-white"
+                onSubmit={handleSearch}
+                initialValue={searchedKeywords}
+                searchButton={true}
+                // isDisabled={true}
+              />
+              {/* {keywords.length > 0 ? (
+                <div className="mt-2">
+                  <span>Showing patents for: </span>
+                  <span className="">"{joinedkeywords}"</span>&nbsp;
+                  {filteredKeywords.length > 0 && (
+                    <>
+                      <span className="font-bold">in &nbsp;</span>
+                      <div className="inline-flex items-center p-1 rounded-xl border border-gray-500 gap-1">
+                        <span>{filterKeywords}</span>
+                        <button type="button" onClick={filterClear}>
+                          <CrossIcon />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <p className="mt-[4px] text-appGray-900">
+                  Search keywords e.g. “COVID-19” to see related patents.
+                </p>
+              )} */}
+            </div>
+          )}
+          <div className="flex justify-end mt-2">
+            <button
+              type="button"
+              className="flex items-center gap-x-1"
+              onClick={() => setISearchSemantic(!isSemantic)}
+            >
+              {isSemantic ? (
+                <>
+                  <SearchIcon />
+                  <span>Regular Search</span>
+                </>
+              ) : (
+                <>
+                  <AdvancedSearchIcon />
+                  <span>Semantic Search</span>
+                </>
+              )}
+            </button>
           </div>
+          {isSemantic && (
+            <div className="flex items-center gap-x-1">
+              <span className="text-primary-900">Search logic:</span>
+              <RadioButtons
+                options={[
+                  { label: "OR", value: "or" },
+                  { label: "AND", value: "and" },
+                  { label: "Custom", value: "custom" },
+                ]}
+                activeMode={searchType}
+                handleModeChange={handleSearchType}
+                // classNames="text-sm"
+              />
+            </div>
+          )}
           {/* summary report */}
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 w-full">
             <div className="flex-shrink-0 w-auto">
@@ -171,70 +223,6 @@ export const IPFullReport = () => {
                 </div> */}
               </div>
               <div ref={printRef} className="space-y-5 w-full">
-                {/* Exexutive Summary */}
-                {/* <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-4 w-full space-y-2">
-                  <h2 className="text-lg font-bold text-primary-900">Executive Summary</h2>
-                  <BarChart
-                    data={demoData}
-                    keys={["hot dog"]}
-                    indexBy="country"
-                    groupMode="stacked"
-                    legendY="Number of Patents"
-                  />
-                  <div className="text-secondary-800 font-medium space-y-3">
-                    <div>
-                      <h6>Market Growth:</h6>
-                      <ul className="list-disc ml-4">
-                        <li>
-                          The wearable blood pressure sensor market is on a growth trajectory with a
-                          projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
-                          years. This could potentially elevate the market valuation from an
-                          estimated $1.5 billion to over $2.25 billion by the end of the forecast
-                          period.
-                        </li>
-                        <li>
-                          The driving factors behind this growth could be an increasing awareness of
-                          health and fitness, aging population, and the advancement in wearable
-                          technology.
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h6>Patent Landscape:</h6>
-                      <ul className="list-disc ml-4">
-                        <li>
-                          The wearable blood pressure sensor market is on a growth trajectory with a
-                          projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
-                          years. This could potentially elevate the market valuation from an
-                          estimated $1.5 billion to over $2.25 billion by the end of the forecast
-                          period.
-                        </li>
-                        <li>
-                          The driving factors behind this growth could be an increasing awareness of
-                          health and fitness, aging population, and the advancement in wearable
-                          technology.
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h6>Key Market Players:</h6>
-                      <ul className="list-disc ml-4">
-                        <li>
-                          The wearable blood pressure sensor market is on a growth trajectory with a
-                          projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five
-                          years. This could potentially elevate the market valuation from an
-                          estimated $1.5 billion to over $2.25 billion by the end of the forecast
-                          period.
-                        </li>
-                        <li>
-                          The driving factors behind this growth could be an increasing awareness of
-                          health and fitness, aging population, and the advancement in wearable
-                          technology.
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div> */}
                 {/*Patents by year  */}
                 <div id="patent_families" className="page-break">
                   <PatentYear keywords={keywords} />
@@ -257,7 +245,7 @@ export const IPFullReport = () => {
                 </div>
                 {/*  */}
                 <div id="patent_classification" className="page-break">
-                  <PatentClassificationAnalysis keywords={keywords} />
+                  <GeographicalDistributionApplicant keywords={keywords} />
                 </div>
                 {/*  */}
                 <div id="wipo_field_analysis" className="page-break">
@@ -265,6 +253,7 @@ export const IPFullReport = () => {
                 </div>
                 <TrendExaminationYear keywords={keywords} />
                 <PatentAssignment keywords={keywords} />
+                {/* <EmergingTechnologyTrend keywords={keywords}/> */}
                 <GeographicalDistributionAssignment keywords={keywords} />
                 <GeographicalDistributionInventors keywords={keywords} />
                 <InventorTrendOverTime keywords={keywords} />
@@ -391,11 +380,11 @@ const topics = [
 
 const List = [
   {
-    title: "IP Landscaping",
-    key: "/ip-landscaping/full-report",
+    title: "IP Analysis",
+    key: "/ip-analysis/full-report",
   },
   {
-    title: "Market intelligence",
+    title: "Market Research & IP",
     key: "market-intelligence",
   },
   {

@@ -96,6 +96,8 @@ export default function USMap(props: IUSMapProps) {
             (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
 
+        console.log(currentStateValue);
+
         if (currentStateValue === 0) return "#E1D5F2";
 
         //

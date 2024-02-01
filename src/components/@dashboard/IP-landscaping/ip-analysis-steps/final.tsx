@@ -1,23 +1,35 @@
-import { useCallback, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../reusable/button";
+
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
+  activeStep: number;
 }
 
-export default function IPFinal({ changeActiveStep }: Props) {
+export default function IPFinal({ changeActiveStep, activeStep }: Props) {
   const navigate = useNavigate();
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   navigate('/ip-landscaping/full-report')
-    // }, 10000);
-  }, [navigate]);
-
-  const onContinue = useCallback(() => {
-    navigate("/ip-landscaping/full-report");
-  }, [navigate]);
+    if (activeStep === 10) {
+      const interval = setInterval(() => {
+        setProgress((prevProgress) => {
+          const nextProgress = prevProgress + 1;
+          if (nextProgress <= 100) {
+            return nextProgress;
+          } else {
+            clearInterval(interval); // Stop the interval when progress reaches 100%
+            navigate("/ip-analysis/full-report"); // Navigate to the next page
+            return prevProgress; // Return the current progress (100%) to prevent further updates
+          }
+        });
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [activeStep, navigate]);
 
   return (
     <div>
@@ -27,10 +39,14 @@ export default function IPFinal({ changeActiveStep }: Props) {
         further assistance, feel free to reach out. We'll ensure the report aligns with your
         objectives and the specifics of your invention.
       </p>
-      <div className="">
-        <Button htmlType={"button"} rounded={"large"} handleClick={onContinue}>
+      <div className="mt-10">
+        <div className="h-[80px] w-[80px] mx-auto">
+          <CircularProgressbar value={progress} text={`${progress}%`} />
+        </div>
+        {/* <CircleLoader percentage={10} /> */}
+        {/* <Button htmlType={"button"} rounded={"large"} handleClick={onContinue}>
           Continue
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

@@ -75,8 +75,8 @@ import IpPortfolioPage from "./pages/account/ipPortfolio";
 // import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
 // import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
 
-import IPLandscaping from "./pages/product/ip-landscaping";
-import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+// import IPLandscaping from "./pages/product/ip-landscaping";
+// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
 import ProductLayout from "./layouts/product-layout";
@@ -108,10 +108,10 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route element={<ProductLayout />}>
-            <Route path="/ip-landscaping" element={<IPAnalysis />} />
+            <Route path="/ip-analysis" element={<IPAnalysis />} />
             {/* <Route path="/ip-landscaping/summary" element={<IPSummaryReport />} /> */}
           </Route>
-          <Route path="/ip-landscaping/full-report" element={<IPFullReport />} />
+          <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
 
           <Route path="/m&a-licensing" element={<MALicensing />} />
 

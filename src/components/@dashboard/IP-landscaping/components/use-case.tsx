@@ -1,8 +1,17 @@
+import { useCallback } from "react";
 import { useAppSelector } from "../../../../hooks/redux";
 import Button from "../../../reusable/button";
 
-export default function IPUseCase() {
+interface Props {
+  changeActiveStep: (steps: number) => void;
+}
+
+export default function IPUseCase({ changeActiveStep }: Props) {
   const selectedValue = useAppSelector((state) => state.ipData.use_case.label) ?? [];
+
+  const onChange = useCallback(() => {
+    changeActiveStep(0);
+  }, [changeActiveStep]);
 
   return (
     <div className="flex items-center gap-2.5">
@@ -12,10 +21,12 @@ export default function IPUseCase() {
       </div>
       <div>
         <Button
+          htmlType="button"
           type="secondary"
           size="small"
           rounded="medium"
           classname="px-0.5 py-[6px] text-xs font-semibold"
+          handleClick={onChange}
         >
           Change
         </Button>

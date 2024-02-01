@@ -106,12 +106,12 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
         <div>
           {data && (
             <BarChart
-              data={data.slice(1, 12)}
+              data={data.slice(2, 5)}
               keys={["count"]}
               indexBy="org"
               groupMode="stacked"
-              legendY="Number of Patents"
-              legendX=" of Patents"
+              // legendY="Number of Patents"
+              // legendX=" of Patents"
               innerPadding={0}
               borderRadius={4}
             />

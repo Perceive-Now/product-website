@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 import {
   // ExpertsIcon,
   // FundersIcon,
-  PatentsIcon,
+  // PatentsIcon,
   // PublicationsIcon,
   // UniversitiesIcon,
   DashboardIcon,
@@ -15,12 +15,12 @@ import {
   // SimilarityIcon,
   // MascotIcon,
 } from "../../icons";
-import HookIcon from "../../icons/sidenav/hook";
-import DOcumentIcon from "../../icons/miscs/document";
-import TechnologyIcon from "../../icons/miscs/Technology";
+// import HookIcon from "../../icons/sidenav/hook";
+// import DOcumentIcon from "../../icons/miscs/document";
+// import TechnologyIcon from "../../icons/miscs/Technology";
 import BulbIcon from "../../icons/miscs/Bulb";
 import PortfolioIcon from "../../icons/sidenav/portfolio";
-import ClaimIcon from "../../icons/sidenav/claim";
+// import ClaimIcon from "../../icons/sidenav/claim";
 // import ChatIcon from "../../icons/sidenav/chat";
 // import InventorIcon from "../../icons/sidenav/inventors";
 // import PortfolioIcon from "../../icons/sidenav/portfolio";
@@ -35,47 +35,59 @@ const sidebarItems: ISidebarListItem[] = [
     to: "/",
   },
   {
-    title: "IP Landscaping",
+    title: "IP Analysis",
     key: "ip-landscaping",
-    icon: <PatentsIcon />,
-    to: "/ip-landscaping",
+    icon: <PortfolioIcon />,
+    to: "/ip-analysis",
   },
+  // {
+  //   title: "Freedom to operate",
+  //   key: "freedom-to-operate",
+  //   icon: <HookIcon />,
+  //   to: "/patents",
+  // },
   {
-    title: "Freedom to operate",
+    title: "Market intelligence",
     key: "freedom-to-operate",
-    icon: <HookIcon />,
+    icon: <BulbIcon />,
     to: "/patents",
   },
   {
-    title: "M&A Licensing",
-    key: "m&a-licensing",
-    icon: <DOcumentIcon />,
-    to: "/m&a-licensing",
-  },
-  {
-    title: "Technology landscaping",
-    key: "technology-landscaping",
-    icon: <TechnologyIcon />,
-    to: "/b",
-  },
-  {
-    title: "Competitive intelligence",
-    key: "competitive-intelligence",
-    icon: <BulbIcon />,
-    to: "/c",
-  },
-  {
-    title: "Infringement analysis",
+    title: "Market intelligence",
+    key: "freedom-to-operate",
     icon: <PortfolioIcon />,
-    key: "infringement-analysis",
-    to: "/infringement-analysis",
+    to: "/patents",
   },
-  {
-    title: "Database Search",
-    icon: <ClaimIcon />,
-    key: "database-search",
-    to: "/database-search",
-  },
+  // {
+  //   title: "M&A Licensing",
+  //   key: "m&a-licensing",
+  //   icon: <DOcumentIcon />,
+  //   to: "/m&a-licensing",
+  // },
+  // {
+  //   title: "Technology landscaping",
+  //   key: "technology-landscaping",
+  //   icon: <TechnologyIcon />,
+  //   to: "/b",
+  // },
+  // {
+  //   title: "Competitive intelligence",
+  //   key: "competitive-intelligence",
+  //   icon: <BulbIcon />,
+  //   to: "/c",
+  // },
+  // {
+  //   title: "Infringement analysis",
+  //   icon: <PortfolioIcon />,
+  //   key: "infringement-analysis",
+  //   to: "/infringement-analysis",
+  // },
+  // {
+  //   title: "Database Search",
+  //   icon: <ClaimIcon />,
+  //   key: "database-search",
+  //   to: "/database-search",
+  // },
 ];
 
 export interface ISidebarItem {

@@ -3,7 +3,7 @@ import HeatMap from "../../../@product/heat-map";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
-import { getGeographicalDistributionAssignment } from "../../../../utils/api/charts";
+import { getGeographicDistributionApplicant } from "../../../../utils/api/charts";
 
 interface Props {
   keywords: string[];
@@ -17,11 +17,11 @@ interface ITransformedEntry {
   id: string;
   data: { x: number; y: number | null }[];
 }
-export const GeographicalDistributionAssignment: FunctionComponent<Props> = ({ keywords }) => {
+export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["geographical_assignments", ...keywords],
+    ["geographical_inventors", ...keywords],
     async () => {
-      return await getGeographicalDistributionAssignment(keywords);
+      return await getGeographicDistributionApplicant(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -111,7 +111,7 @@ export const GeographicalDistributionAssignment: FunctionComponent<Props> = ({ k
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="10. Geographical Distribution of Assignments"
+            title="11. Geographical Distribution of Inventors"
           />
         }
       >

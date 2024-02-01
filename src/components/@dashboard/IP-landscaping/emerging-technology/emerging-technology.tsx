@@ -3,7 +3,10 @@ import HeatMap from "../../../@product/heat-map";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
-import { getEmergingTechnologyTrend } from "../../../../utils/api/charts";
+import {
+  getEmergingTechnologyTrend,
+  getGeographicalDistributionAssignment,
+} from "../../../../utils/api/charts";
 
 interface Props {
   keywords: string[];
@@ -21,7 +24,7 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
   const { data, isLoading, isError, error } = useQuery(
     ["emerging-technology-trend", ...keywords],
     async () => {
-      return await getEmergingTechnologyTrend(keywords);
+      return await getGeographicalDistributionAssignment(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -37,12 +40,12 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
 
   data &&
     data.forEach((entry) => {
-      if (!transformedData[entry.wipo_field_title]) {
-        transformedData[entry.wipo_field_title] = { id: entry.wipo_field_title, data: [] };
+      if (!transformedData[entry.country]) {
+        transformedData[entry.country] = { id: entry.country, data: [] };
       }
 
-      if (entry.year && entry.count && transformedData[entry.wipo_field_title]) {
-        transformedData[entry.wipo_field_title].data.push({
+      if (entry.year && entry.count && transformedData[entry.country]) {
+        transformedData[entry.country].data.push({
           x: entry.year,
           y: entry.count,
         });
@@ -91,9 +94,11 @@ export const EmergingTechnologyTrend: FunctionComponent<Props> = ({ keywords }) 
       entry.data = entry.data.filter((item) => recentYears.includes(item.x));
     });
 
-    const sortedData = inputData.sort((a, b) => a.id.localeCompare(b.id));
+    // console.log(inputData)
 
-    return sortedData;
+    // const sortedData = inputData.sort((a, b) => a.id.localeCompare(b.id));
+
+    return inputData;
   };
 
   const finalData = transformData(tree_data);
