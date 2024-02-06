@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
-import { getPatentApplicantType, getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
+import { getPatentExaminerWorkload } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
@@ -9,11 +9,11 @@ interface Props {
   keywords: string[];
 }
 
-export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
+export const DistributionWorkload: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
-    ["patent-portfolio", ...keywords],
+    ["patent-examiner-workload", ...keywords],
     async () => {
-      return await getPatentApplicantType(keywords);
+      return await getPatentExaminerWorkload(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -33,7 +33,7 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
   // }, [data]);
 
   const barChartData = (data ?? []).map((item) => ({
-    label: item.applicant_type,
+    label: item.examiner,
     value: item.count,
   }));
 
@@ -48,20 +48,21 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="5. Number of Applications by Applicant Type"
+            title="7. Distribution of Examiner Workload"
           />
         }
       >
         <div>
           {/* {data && ( */}
           <BarChart
-            data={barChartData.slice(0, 5)}
+            data={barChartData.slice(0, 10)}
             keys={["value"]}
             indexBy="label"
             groupMode={"stacked"}
             // innerPadding={0}
             borderRadius={4}
             // layout={"vertical"}
+            legendX="iii"
           />
           {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">

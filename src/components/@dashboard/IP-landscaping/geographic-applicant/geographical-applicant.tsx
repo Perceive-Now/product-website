@@ -111,7 +111,7 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
           <PageTitle
             // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
-            title="11. Geographical Distribution of Inventors"
+            title="6. Geographical Distribution of Applicants"
           />
         }
       >

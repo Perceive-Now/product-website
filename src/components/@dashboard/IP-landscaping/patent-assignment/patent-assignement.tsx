@@ -111,7 +111,7 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
               indexBy="org"
               groupMode="stacked"
               // legendY="Number of Patents"
-              // legendX=" of Patents"
+              legendX=" of Patents"
               innerPadding={0}
               borderRadius={4}
             />

@@ -50,7 +50,7 @@ export default function BarChart(props: IBarChartProps) {
         innerPadding={props.innerPadding !== undefined ? props.innerPadding : 4}
         groupMode={props.groupMode || "grouped"}
         borderRadius={props.borderRadius !== undefined ? props.borderRadius : 4}
-        valueScale={{ type: "linear" }}
+        valueScale={{ type: "linear", clamp: true }}
         indexScale={{ type: "band", round: true }}
         axisTop={null}
         axisRight={null}
@@ -63,22 +63,31 @@ export default function BarChart(props: IBarChartProps) {
             // legend: props.legendX,
             legendPosition: "middle",
             legendOffset: 40,
-            format: (v) => {
-              const label = v.substring(0, 10) + "...";
-              return (
-                <g transform={`translate(${v.x},${v.y})`}>
-                  <text
-                    textAnchor="middle"
-                    fontSize={12}
-                    fontWeight="bold"
-                    fill="green"
-                    fontFamily="Arial, sans-serif"
-                  >
-                    {label}
-                  </text>
-                </g>
-              );
-            },
+            truncateTickAt: 10,
+            // truncateTickAt: (tick) => {
+            //   // Split the label at the first space
+            //   const spaceIndex = tick.indexOf(' ');
+            //   if (spaceIndex !== -1) {
+            //     return tick.slice(0, spaceIndex);
+            //   }
+            //   return tick;
+            // },
+            // format: (v) => {
+            //   const label = v.substring(0, 10) + "...";
+            //   return (
+            //     <g transform={`translate(${v.x},${v.y})`}>
+            //       <text
+            //         textAnchor="middle"
+            //         fontSize={12}
+            //         fontWeight="bold"
+            //         fill="green"
+            //         fontFamily="Arial, sans-serif"
+            //       >
+            //         {label}
+            //       </text>
+            //     </g>
+            //   );
+            // },
           },
         })}
         {...(props.legendY && {

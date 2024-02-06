@@ -35,6 +35,7 @@ import GeographicalDistributionApplicant from "../../../../components/@dashboard
 import SemanticSearch from "../../../../components/reusable/semantic-search";
 import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
 import RadioButtons from "../../../../components/reusable/radio-buttons";
+import DistributionWorkload from "../../../../components/@dashboard/IP-landscaping/distribution-workload";
 
 //
 
@@ -243,13 +244,16 @@ export const IPFullReport = () => {
                 <div id="geographical_distribution" className="page-break">
                   <GeographicalDistributionFiling keywords={keywords} />
                 </div>
+                <div id="wipo_field_analysis" className="page-break">
+                  <WipoAnalysis keywords={keywords} />
+                </div>
                 {/*  */}
                 <div id="patent_classification" className="page-break">
                   <GeographicalDistributionApplicant keywords={keywords} />
                 </div>
                 {/*  */}
-                <div id="wipo_field_analysis" className="page-break">
-                  <WipoAnalysis keywords={keywords} />
+                <div>
+                  <DistributionWorkload keywords={keywords} />
                 </div>
                 <TrendExaminationYear keywords={keywords} />
                 <PatentAssignment keywords={keywords} />

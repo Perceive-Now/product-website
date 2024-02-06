@@ -113,6 +113,15 @@ export async function getPatentApplicantType(keywords: string[]) {
   return res.data.response;
 }
 
+export async function getPatentExaminerWorkload(keywords: string[]) {
+  const res = await axiosInstance.get<IExaminerWorkload>(
+    `/api/patent_examiner_workload?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
 export async function getWIPOSector(keywords: string[]) {
   const res = await axiosInstance.get<IWipoSector>(
     `/api/patent_wipo_sectors?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
@@ -307,6 +316,13 @@ export interface IEmergingTechnologyTrend {
     wipo_field_title: string;
     count: number;
     year: number;
+  }[];
+}
+
+export interface IExaminerWorkload {
+  response: {
+    examiner: string;
+    count: number;
   }[];
 }
 
