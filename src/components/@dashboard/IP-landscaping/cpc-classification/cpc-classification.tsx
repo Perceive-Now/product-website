@@ -64,19 +64,31 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            <h6 className="font-semibold text-primary-900">
+            {/* <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6>
+            </h6> */}
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
-                The wearable blood pressure sensor market is on a growth trajectory with a projected
-                Compound Annual Growth Rate (CAGR) of 8.5% over the next five years. This could
-                potentially elevate the market valuation from an estimated $1.5 billion to over
-                $2.25 billion by the end of the forecast period.
+                Leading IPC Class: "IPC Class R leads with X% of patent applications, marking it as
+                the most focused area of innovation."
               </li>
               <li>
-                The driving factors behind this growth could be an increasing awareness of health
-                and fitness, aging population, and the advancement in wearable technology.
+                Growth Trend in IPC Class Applications: "Applications in IPC Class S have grown by
+                X% in the last Y years, indicating a rising trend in this technological field."
+              </li>
+              <li>
+                Comparison of IPC Class Dominance: "IPC Class T's share of patent applications has
+                increased from X% to Y% over the past decade, demonstrating shifting innovation
+                priorities."
+              </li>
+              <li>
+                Sector Analysis for IPC Classes: "The electronics sector predominantly applies for
+                patents in IPC Class U, accounting for X% of the sector's applications."
+              </li>
+              <li>
+                Year with Most Diverse IPC Class Filings: "Year Z recorded the most diverse range of
+                IPC Class filings, with significant applications in over X different classes,
+                reflecting a broad innovation landscape."
               </li>
             </ul>
           </div>

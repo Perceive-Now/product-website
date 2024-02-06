@@ -141,20 +141,35 @@ export const GeographicalDistributionAssignment: FunctionComponent<Props> = ({ k
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              <h6 className="font-semibold text-primary-900">
+              {/* <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6>
+              </h6> */}
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
-                  The wearable blood pressure sensor market is on a growth trajectory with a
-                  projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five years.
-                  This could potentially elevate the market valuation from an estimated $1.5 billion
-                  to over $2.25 billion by the end of the forecast period.
+                  Country Leading in Patent Assignments: "Country D holds the highest number of
+                  patent assignments, accounting for X% of the global total, marking it as a key
+                  player in technology transfer."
                 </li>
                 <li>
-                  The driving factors behind this growth could be an increasing awareness of health
-                  and fitness, aging population, and the advancement in wearable technology.
+                  Regional Growth in Patent Assignments: "Region E saw a X% increase in patent
+                  assignments over the last Y years, indicating a surge in its technological
+                  development."
+                </li>
+                <li>
+                  City-Level Concentration of Patent Assignments: "City F is the leading city for
+                  patent assignments, with X% of the total, highlighting its strategic importance in
+                  innovation and technology commercialization."
+                </li>
+                <li>
+                  Shifts in Geographical Patterns of Assignments: "The geographical pattern of
+                  patent assignments has shifted towards Country G in the recent decade, with an
+                  increase of X%, reflecting changes in global innovation dynamics."
+                </li>
+                <li>
+                  International Collaboration in Patent Assignments: "X% of all patent assignments
+                  involve international collaboration, demonstrating the global interconnectedness
+                  of technology development and transfer."
                 </li>
               </ul>
             </div>

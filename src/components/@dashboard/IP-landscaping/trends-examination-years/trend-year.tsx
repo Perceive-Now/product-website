@@ -1,9 +1,7 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import BarChart from "../../../@product/bar-chart";
+import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
-import RadioButtons from "../../../reusable/radio-buttons";
 import { useQuery } from "@tanstack/react-query";
-import { getExamincationTrend, getPatentsYearly } from "../../../../utils/api/charts";
+import { getExamincationTrend } from "../../../../utils/api/charts";
 import PageTitle from "../../../reusable/page-title";
 import ScatterChart from "../../../@product/scatter-chart";
 
@@ -156,20 +154,33 @@ export const TrendExaminationYear: FunctionComponent<Props> = ({ keywords }) => 
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              <h6 className="font-semibold text-primary-900">
+              {/* <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6>
+              </h6> */}
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
-                  The wearable blood pressure sensor market is on a growth trajectory with a
-                  projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five years.
-                  This could potentially elevate the market valuation from an estimated $1.5 billion
-                  to over $2.25 billion by the end of the forecast period.
+                  Reduction in Average Examination Time: "The average time to examine a patent has
+                  decreased by X% over the last Y years, improving the patent examination process
+                  efficiency."
                 </li>
                 <li>
-                  The driving factors behind this growth could be an increasing awareness of health
-                  and fitness, aging population, and the advancement in wearable technology.
+                  Year with Shortest Examination Time: "Year Z recorded the shortest average
+                  examination time of X days, indicating an efficient operational period."
+                </li>
+                <li>
+                  Trend of Increasing/Decreasing Examination Times: "Examination times have shown a
+                  trend of decreasing by an average of X days per year over the last decade."
+                </li>
+                <li>
+                  Impact of Technological Advances on Examination Times: "The introduction of new
+                  examination technologies in year Y contributed to a reduction in average
+                  examination time by X%."
+                </li>
+                <li>
+                  Comparison of Examination Times Across Decades: "The 2010s saw a X% decrease in
+                  average examination times compared to the 2000s, highlighting process
+                  improvements."
                 </li>
               </ul>
             </div>

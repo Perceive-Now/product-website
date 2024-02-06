@@ -70,19 +70,35 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            <h6 className="font-semibold text-primary-900">
+            {/* <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6>
+            </h6> */}
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
-                The wearable blood pressure sensor market is on a growth trajectory with a projected
-                Compound Annual Growth Rate (CAGR) of 8.5% over the next five years. This could
-                potentially elevate the market valuation from an estimated $1.5 billion to over
-                $2.25 billion by the end of the forecast period.
+                Regional Market Share of Patent Families: The concentration of patent families by
+                region, e.g., "Region A accounts for X% of global patent families, indicating a
+                major innovation hub."
               </li>
               <li>
-                The driving factors behind this growth could be an increasing awareness of health
-                and fitness, aging population, and the advancement in wearable technology.
+                Growth Trends in Regional Patent Family Concentrations: Year-over-year growth in
+                patent family concentrations by region, e.g., "Region B's share of global patent
+                families grew by X% in the last Y years."
+              </li>
+              <li>
+                Comparison of Urban vs. Rural Patent Family Distributions: The disparity in patent
+                family locations, suggesting, "Urban areas account for X% of patent families,
+                compared to Y% in rural areas."
+              </li>
+              <li>
+                Impact of Regulatory Changes on Geographical Distribution: Shifts in patent family
+                concentrations following major patent policy changes, indicating, "Following policy
+                change X, region C saw a Y% increase in patent family concentration."
+              </li>
+              <li>
+                International Collaboration Indicated by Patent Family Locations: Instances of
+                international patent families, with metrics like, "X% of patent families have
+                members in more than one country, indicating high levels of international
+                collaboration."
               </li>
             </ul>
           </div>

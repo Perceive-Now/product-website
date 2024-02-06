@@ -141,20 +141,33 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              <h6 className="font-semibold text-primary-900">
+              {/* <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6>
+              </h6> */}
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
-                  The wearable blood pressure sensor market is on a growth trajectory with a
-                  projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five years.
-                  This could potentially elevate the market valuation from an estimated $1.5 billion
-                  to over $2.25 billion by the end of the forecast period.
+                  Top Country for Patent Applicants: "Country A accounts for X% of all patent
+                  applicants, demonstrating its leading role in global innovation."
                 </li>
                 <li>
-                  The driving factors behind this growth could be an increasing awareness of health
-                  and fitness, aging population, and the advancement in wearable technology.
+                  Rapid Growth in Applicant Numbers by Region: "Region B's number of patent
+                  applicants grew by X% in the last Y years, marking it as an emerging innovation
+                  hotspot."
+                </li>
+                <li>
+                  City with Highest Concentration of Applicants: "City C is home to X% of patent
+                  applicants, highlighting its significance as a local innovation center."
+                </li>
+                <li>
+                  Shift in Geographical Focus of Applicants: "Over the past decade, the geographical
+                  focus of patent applicants shifted towards Region D, with a growth rate of X%,
+                  indicating changing innovation landscapes."
+                </li>
+                <li>
+                  International Diversity of Patent Applicants: "Patent applications exhibit a high
+                  degree of international diversity, with applicants from over X different
+                  countries, emphasizing the global nature of innovation."
                 </li>
               </ul>
             </div>

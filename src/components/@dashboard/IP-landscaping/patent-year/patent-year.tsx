@@ -1,7 +1,5 @@
-import { FunctionComponent, useEffect, useState } from "react";
-import BarChart from "../../../@product/bar-chart";
+import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
-import RadioButtons from "../../../reusable/radio-buttons";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentsYearly } from "../../../../utils/api/charts";
 import PageTitle from "../../../reusable/page-title";
@@ -156,20 +154,35 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              <h6 className="font-semibold text-primary-900">
+              {/* <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6>
+              </h6> */}
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
-                  The wearable blood pressure sensor market is on a growth trajectory with a
-                  projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five years.
-                  This could potentially elevate the market valuation from an estimated $1.5 billion
-                  to over $2.25 billion by the end of the forecast period.
+                  Annual Patent Filing Trend: The total number of patents filed each year, with
+                  year-over-year growth rates indicating innovation trends. For instance, a YOY
+                  growth rate of X% suggests increasing/decreasing innovation activities.
                 </li>
                 <li>
-                  The driving factors behind this growth could be an increasing awareness of health
-                  and fitness, aging population, and the advancement in wearable technology.
+                  Market Share of Patent Filings by Sector: Identification of sectors contributing
+                  most to patent filings, e.g., "Technology sector accounts for X% of total filings
+                  in year Y," highlighting sectoral innovation focus.
+                </li>
+                <li>
+                  Comparison of Patent Filings Across Decades: Contrast in patent filing volumes
+                  across different decades, showing shifts in innovation intensity, e.g., "Filings
+                  in the 2010s increased by X% compared to the 2000s."
+                </li>
+                <li>
+                  Impact of Legislative Changes on Patent Filings: Analysis of filing trends before
+                  and after significant patent law changes, e.g., "Patent filings increased by X%
+                  following the introduction of the America Invents Act."
+                </li>
+                <li>
+                  Patent Filing Patterns Related to Economic Cycles: Correlation between economic
+                  indicators and patent filings, suggesting, "During economic upturns/downturns,
+                  patent filings increase/decrease by X%."
                 </li>
               </ul>
             </div>

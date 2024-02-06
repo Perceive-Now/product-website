@@ -67,19 +67,33 @@ export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
           {<PieChart data={pieChartData} />}
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            <h6 className="font-semibold text-primary-900">
+            {/* <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6>
+            </h6> */}
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
-                The wearable blood pressure sensor market is on a growth trajectory with a projected
-                Compound Annual Growth Rate (CAGR) of 8.5% over the next five years. This could
-                potentially elevate the market valuation from an estimated $1.5 billion to over
-                $2.25 billion by the end of the forecast period.
+                Proportion of Patent Types: Breakdown of patents by type (utility, design, plant),
+                e.g., "Utility patents represent X% of all filings," indicating the predominant form
+                of innovation.
               </li>
               <li>
-                The driving factors behind this growth could be an increasing awareness of health
-                and fitness, aging population, and the advancement in wearable technology.
+                Yearly Change in Patent Type Distribution: Yearly fluctuation in the distribution of
+                patent types, showing shifts in innovation focus, e.g., "Design patents increased by
+                X% in market share from year Y to Z."
+              </li>
+              <li>
+                Sector-Specific Patent Type Trends: The distribution of patent types within key
+                industry sectors, e.g., "In the biotech sector, plant patents constitute X% of
+                filings."
+              </li>
+              <li>
+                Geographical Variation in Patent Types: Differences in patent type popularity by
+                region, e.g., "Region A favors design patents, making up X% of its total patents."
+              </li>
+              <li>
+                Impact of Patent Type on Examination Times: Average examination times for each
+                patent type, indicating, "Utility patents take X% longer to examine than design
+                patents on average."
               </li>
             </ul>
           </div>

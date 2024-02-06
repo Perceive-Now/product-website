@@ -69,19 +69,34 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            <h6 className="font-semibold text-primary-900">
+            {/* <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6>
+            </h6> */}
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
-                The wearable blood pressure sensor market is on a growth trajectory with a projected
-                Compound Annual Growth Rate (CAGR) of 8.5% over the next five years. This could
-                potentially elevate the market valuation from an estimated $1.5 billion to over
-                $2.25 billion by the end of the forecast period.
+                Growth Rate of Patent Family Size: Average size of patent families each year, with
+                changes indicating trends in protection scope, e.g., "Average family size increased
+                by X% over the last Y years."
               </li>
               <li>
-                The driving factors behind this growth could be an increasing awareness of health
-                and fitness, aging population, and the advancement in wearable technology.
+                Market Share of Large Patent Families: Proportion of large patent families (e.g.,
+                those with more than 10 related documents) in the total, suggesting, "Large families
+                represent X% of the total, indicating strategic depth in filings."
+              </li>
+              <li>
+                Sector Analysis of Patent Family Sizes: Average patent family size within key
+                sectors, e.g., "The pharmaceutical sector shows an average family size of X,
+                highlighting extensive global protection efforts."
+              </li>
+              <li>
+                Temporal Stability of Patent Families: Stability of family sizes over time, with
+                significant variations suggesting shifts in filing strategies, e.g., "Variability in
+                family size increased by X% from decade Y to Z."
+              </li>
+              <li>
+                Geographical Distribution of Patent Family Sizes: Regional differences in patent
+                family sizes, indicating, "Region A's patent families are X% larger than the global
+                average, suggesting focused innovation protection efforts."
               </li>
             </ul>
           </div>

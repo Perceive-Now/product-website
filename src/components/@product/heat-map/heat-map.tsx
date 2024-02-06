@@ -2,6 +2,7 @@ import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { FunctionComponent } from "react";
 
 import { COLORS } from "../../../utils/constants";
+import classNames from "classnames";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,9 +26,22 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
   //     return _colors.shift()
   //   }
   // }
+  const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+  const HEATMAP_COLORS = [
+    { range: "180+", color: "bg-[#442873]" },
+    { range: "160", color: "bg-[#533F73]" },
+    { range: "140", color: "bg-[#41178B]" },
+    { range: "120", color: "bg-[#541DB2]" },
+    { range: "100", color: "bg-[#5C20C4]" },
+    { range: "80", color: "bg-[#7D4DD0]" },
+    { range: "60", color: "bg-[#926AD7]" },
+    { range: "40", color: "bg-[#B498E4]" },
+    { range: "20", color: "bg-[#CCBAED]" },
+    { range: "0", color: "bg-[#EFE9F9]" },
+  ];
   return (
-    <div className="h-[1600px] 3xl:w-[1000px] mx-auto">
+    <div className="h-[1600px] w-[800px] mx-auto relative">
       <ResponsiveHeatMap
         data={data}
         margin={{ top: 60, right: 100, bottom: 60, left: 100 }}
@@ -53,7 +67,9 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
         // colors={COLORS}
         colors={(cell) => {
           const value = cell.value as number;
-          if (value <= 20) {
+          if (value === 0) {
+            return "#EFE9F9";
+          } else if (value <= 20) {
             return "#CCBAED";
           } else if (value <= 40) {
             return "#B498E4";
@@ -65,7 +81,6 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
             return "#442873";
           }
         }}
-        // colors={['#ff0000', '#00ff00', '#0000ff']}
         // colors={{
         //   type: "sequential",
         //   scheme: "blues",
@@ -84,6 +99,17 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
           }
         }}
       />
+      {/* <div className="absolute top-0 z-50 bg-black w-full"> */}
+
+      <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-0 z- bg-blac w-full h-full gap-[0.5px]">
+        {COLOR_GROUPS.map((grp) => (
+          <div key={grp} className="flex items-center gap-2">
+            <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
+            <div className={classNames("h-10 w-1 shadow shrink-0", HEATMAP_COLORS[grp].color)} />
+          </div>
+        ))}
+      </div>
+      {/* </div> */}
     </div>
   );
 };

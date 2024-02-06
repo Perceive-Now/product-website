@@ -40,7 +40,7 @@ export default function PageTitle(props: PropsWithChildren<IPageTitleProps>) {
       </div>
 
       <div className="flex justify-between mt-1">
-        <p className="text-md text-gray-700">
+        <p className="text-md text-primary-900 pt-1">
           <span>{props.subTitle ?? ""}</span>
         </p>
 

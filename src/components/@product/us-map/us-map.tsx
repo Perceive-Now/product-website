@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import classNames from "classnames";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 //
 import { LocationIcon } from "../../icons";
+import MapNavigation from "../../../assets/images/map-navigation.svg";
 
 //
 import { IWorldMapDataItem, TooltipGroupItem } from "../world-map/world-map";
@@ -96,14 +98,12 @@ export default function USMap(props: IUSMapProps) {
             (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
           )?.patents ?? 0;
 
-        console.log(currentStateValue);
-
         if (currentStateValue === 0) return "#E1D5F2";
 
         //
-        for (let i = 1; i <= COLOR_RANGE.length; i++) {
+        for (let i = 0; i <= COLOR_RANGE.length; i++) {
           if (currentStateValue < allValues[i]) {
-            return COLOR_RANGE[i - 1];
+            return COLOR_RANGE[i];
           }
         }
 
@@ -148,16 +148,34 @@ export default function USMap(props: IUSMapProps) {
 
     return [0, ...values];
   };
+  //
+  const elementRef = useRef<any>(null);
 
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      // If the document is not currently in full screen, request full screen
+      elementRef.current.requestFullscreen().catch((err: any) => {
+        console.error("Error attempting to enable full-screen mode:", err);
+      });
+    } else {
+      // If the document is currently in full screen, exit full screen
+      document.exitFullscreen();
+    }
+  };
   //
   return (
     <>
-      <div className="overflow-y-hidden h-[610px] relative">
+      <div className="overflow-y-hidden h-[610px] relative w-[610px] mx-auto">
+        <div className="text-end">
+          <button type="button" onClick={toggleFullScreen}>
+            <img src={MapNavigation} />
+          </button>
+        </div>
         {/* Actual Map */}
-        <div className="flex justify-center w-full object-cover" id="us-map">
+        <div className="flex justify-center w-full object-cover" id="us-map" ref={elementRef}>
           <ComposableMap
             projection="geoAlbersUsa"
-            className="bg-white h-[610px] lg:w-[610px] xl:w-full"
+            className="bg-white h-[610px w-full"
             projectionConfig={{ scale: 1000 }}
           >
             <Geographies geography={geoUrl}>

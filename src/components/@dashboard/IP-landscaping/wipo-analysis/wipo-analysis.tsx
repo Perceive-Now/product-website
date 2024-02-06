@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
-import { getPatentApplicantType, getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
+import { getPatentApplicantType } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
@@ -67,20 +67,30 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              <h6 className="font-semibold text-primary-900">
+              {/* <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6>
+              </h6> */}
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
-                  The wearable blood pressure sensor market is on a growth trajectory with a
-                  projected Compound Annual Growth Rate (CAGR) of 8.5% over the next five years.
-                  This could potentially elevate the market valuation from an estimated $1.5 billion
-                  to over $2.25 billion by the end of the forecast period.
+                  Market Share of Applications by Applicant Type: Breakdown of patent applications
+                  by applicant type (individual, corporation, etc.), e.g., "Corporations filed for
+                  X% of all patents, highlighting the commercial drive of innovation."
                 </li>
                 <li>
-                  The driving factors behind this growth could be an increasing awareness of health
-                  and fitness, aging population, and the advancement in wearable technology.
+                  Trend in Applicant Type Over Time: Evolution of applicant type proportions,
+                  indicating shifts in who is driving innovation, e.g., "Applications by individuals
+                  have increased by X% over the last Y years."
+                </li>
+                <li>
+                  Sector-Specific Applicant Type Dominance: Dominance of certain applicant types
+                  within specific sectors, suggesting, "In the renewable energy sector, universities
+                  account for X% of applications."
+                </li>
+                <li>
+                  Geographical Variations in Applicant Types: Regional differences in the
+                  distribution of applicant types, e.g., "Region A has a notably high proportion of
+                  corporate applicants at X%."
                 </li>
               </ul>
             </div>
