@@ -6,6 +6,8 @@ import RadioButtons from "../../../reusable/radio-buttons";
 //
 import { setIPUseCase } from "../../../../stores/IpSteps";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import MultipleCheckbox from "../../../reusable/multiple-checkbox";
+import CheckBoxButtons from "../../../reusable/checkbox/checkbox";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -16,37 +18,34 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const radio_active =
     useAppSelector((state) => state.ipData.use_case.label) ?? "IP Validity Analysis";
   const [defaultValue] = radioOptions.filter((r) => r.label === radio_active);
-  const [active, setActive] = useState(defaultValue.value);
+  // const [active, setActive] = useState<any>({});
+  const [selected, setSelected] = useState<any>([]);
   //
   const onContinue = useCallback(() => {
-    const [value] = radioOptions.filter((r) => r.value === active);
-    dispatch(setIPUseCase({ label: value.label }));
+    // const [value] = radioOptions.filter((r) => r.value === active);
+    dispatch(setIPUseCase(selected));
     changeActiveStep(1);
-  }, [active, changeActiveStep, dispatch]);
+  }, [changeActiveStep, dispatch, selected]);
   //
 
-  const handleChange = useCallback((mode: string) => {
-    setActive(mode);
+  const handleChange = useCallback((mode: any) => {
+    setSelected(mode);
   }, []);
 
   return (
     <div className="xl:w-[620px h-[600px">
-      <KeywordSelected />
-      <h4 className="text-gray-600 text-4xl	mt-2.5">
-        Please select one of the use cases and answer <br /> the subsequent questions.
-      </h4>
-      <div className="flex mt-7 items-center">
-        {
-          <div>
-            <RadioButtons
-              options={radioOptions}
-              activeMode={active}
-              handleModeChange={handleChange}
-              classNames={active ? "text-primary-500" : ""}
-            />
-          </div>
-          // ))
-        }
+      {/* <KeywordSelected /> */}
+      <p className="text-gray-600 text-xl font-semibold">Please select use case for your report.</p>
+      <div className="mt-5 items-center">
+        <CheckBoxButtons
+          options={radioOptions}
+          activeModes={selected}
+          handleModeChange={handleChange}
+          classNames={{
+            component: "flex flex-col gap-1",
+            label: "font-semibold text-primary-900",
+          }}
+        />
       </div>
       <div className="mt-7">
         <Button htmlType={"button"} rounded={"large"} handleClick={onContinue}>

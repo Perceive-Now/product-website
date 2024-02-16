@@ -19,6 +19,7 @@ import IPEstimatedMarket from "../../../../components/@dashboard/IP-landscaping/
 import IPInventiveSteps from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invemtive-steps";
 import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/review";
 import IPFinal from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/final";
+import KeywordSelection from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/keyword-selection";
 
 /**
  *
@@ -42,9 +43,9 @@ export default function IPAnalysis() {
       component: <DefaultStep changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Introduction and Purpose Identification",
+      label: "",
       value: 1,
-      component: <Identification changeActiveStep={changeActiveStep} />,
+      component: <KeywordSelection changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Novelty and Innovation Aspects",

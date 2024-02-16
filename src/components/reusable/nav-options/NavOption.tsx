@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { ChevronRight } from "../../icons";
 import { Link } from "react-router-dom";
+import KeywordSelected from "../../@dashboard/IP-landscaping/KeywordSelected";
 
 export const MoreNavOption = () => {
   return (
@@ -14,19 +15,21 @@ export const MoreNavOption = () => {
         </Link>
         <div>
           {List.map((name) => (
-            <button
-              key={name.key}
-              type="button"
-              className={classNames(
-                " text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between border-b",
-                name.key === location.pathname
-                  ? "bg-primary-900 text-white"
-                  : "text-secondary-800 hover:bg-primary-50",
-              )}
-            >
-              <span>{name.title}</span>
-              <ChevronRight />
-            </button>
+            <div key={name.key}>
+              <button
+                type="button"
+                className={classNames(
+                  " text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between border-b",
+                  name.key === location.pathname
+                    ? "bg-primary-900 text-white"
+                    : "text-secondary-800 hover:bg-primary-50",
+                )}
+              >
+                <span>{name.title}</span>
+                <ChevronRight />
+              </button>
+              {name.key === location.pathname && <KeywordSelected />}
+            </div>
           ))}
         </div>
       </div>

@@ -70,7 +70,7 @@ export const MultipleCheckbox: FunctionComponent<Props> = ({
             onChange={handleOnChange}
             checked={value.some((item) => item.value === data.value && item.label === data.label)}
             type="checkbox"
-            className="w-2 h-2 text-primary-600 bg-gray-100 border-gray-300  focus:ring-0 focus:outline-none focus:ring-white"
+            className="w-2 h-2 text-primary-600 bg-gray-100 border-primary-900 border focus:ring-0 focus:outline-none focus:ring-primary-900"
           />
           <label htmlFor={data.label} className="ml-1 text-sm font-medium text-gray-500 ">
             {data.label}

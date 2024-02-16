@@ -15,6 +15,7 @@ import { useCallback, useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import BulbIcon from "../../components/icons/miscs/Bulb";
 import PortfolioIcon from "../../components/icons/sidenav/portfolio";
+import DollarIcon from "../../components/icons/miscs/Dollar";
 
 /**
  *
@@ -197,7 +198,7 @@ const SearchType = [
   },
   {
     name: "Financial  Investments",
-    icon: PortfolioIcon,
+    icon: DollarIcon,
     key: "infringement-analysis",
   },
   // {
