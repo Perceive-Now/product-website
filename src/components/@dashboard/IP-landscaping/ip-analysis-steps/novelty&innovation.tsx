@@ -46,14 +46,13 @@ export default function IPNovelty({ changeActiveStep }: Props) {
   return (
     <>
       <div className="space-y-2.5">
-        <KeywordSelected />
-        <IPUseCase changeActiveStep={changeActiveStep} />
+        {/* <KeywordSelected /> */}
+        {/* <IPUseCase changeActiveStep={changeActiveStep} />
         <div className="py-0.5 px-1 bg-appGray-100 rounded-sm text-base text-secondary-800 ">
           Novelty and Innovation Aspects
-        </div>
+        </div> */}
         <h4 className="text-gray-600 text-xl font-semibold">
-          To understand the uniqueness of SkinCheck, could you elaborate on the novel aspects of
-          your invention compared to existing solutions?
+          What is the full name of the company developing Smart sensor?
         </h4>
         <p className="text-gray-600 text-sm">
           E.g. I'm aiming to assess the patentability of SkinCheck and identify potential areas
@@ -70,7 +69,7 @@ export default function IPNovelty({ changeActiveStep }: Props) {
           Use this example
         </Button>
       </div>
-      <form onSubmit={handleSubmit(onContinue)} className="mt-13">
+      <form onSubmit={handleSubmit(onContinue)} className="mt-5">
         <fieldset className="mt-3">
           <label className=" text-sm font-medium leading-5 text-gray-700">
             {/* Technology / Sector Description* */}

@@ -105,7 +105,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
           </div>
         ))}
       </div>
-      <form onSubmit={handleSubmit(addKeyword)} className="mt-4">
+      <form onSubmit={handleSubmit(addKeyword)} className="mt-2">
         <fieldset className="mt-">
           <label className=" text-sm font-medium leading-5 text-gray-700">
             {/* Technology / Sector Description* */}

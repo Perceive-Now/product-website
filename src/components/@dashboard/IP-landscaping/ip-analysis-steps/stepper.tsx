@@ -11,7 +11,7 @@ const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
   const isStepComplete = (currentStep: number) => activeStep > currentStep;
   return (
     <>
-      <ol className="mb-8 space-y-[1px] rounded-md overflow-hidden">
+      <ol className="space-y-[1px] flex overflow-hidden absolute">
         {steps.map((step, idx, arr) => (
           <li
             key={idx}
@@ -20,7 +20,7 @@ const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
               (idx === 0 || idx === 10) && "hidden",
               isStepComplete(step.value) && "bg-primary-800 text-white",
               activeStep === step.value
-                ? "text-black bg-primary-100"
+                ? "text-black bg-primary-800"
                 : " bg-appGray-100 text-primary-900",
             )}
           >
@@ -35,7 +35,7 @@ const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
               >
                 {step.value}
               </div> */}
-              <span className={classNames("text-center truncate text-sm")}>{step.label}</span>
+              {/* <span className={classNames("text-center truncate text-sm")}>{step.label}</span> */}
             </div>
           </li>
         ))}

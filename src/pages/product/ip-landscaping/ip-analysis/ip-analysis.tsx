@@ -8,15 +8,15 @@ import { IStep } from "../../../../@types/entities/IStep";
 //
 import classNames from "classnames";
 import DefaultStep from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/DefaultStep";
-import Identification from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/Identification";
+// import Identification from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/Identification";
 import IPStepper from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/stepper";
 import IPNovelty from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/novelty&innovation";
-import IPPriorArt from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/prior-art";
-import IPTechnicalInvention from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/technical-invention";
-import IPInventionContribution from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invention-contribution";
-import IPPotentialUses from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/potential-uses";
-import IPEstimatedMarket from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/estimated-market";
-import IPInventiveSteps from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invemtive-steps";
+// import IPPriorArt from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/prior-art";
+// import IPTechnicalInvention from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/technical-invention";
+// import IPInventionContribution from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invention-contribution";
+// import IPPotentialUses from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/potential-uses";
+// import IPEstimatedMarket from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/estimated-market";
+// import IPInventiveSteps from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invemtive-steps";
 import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/review";
 import IPFinal from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/final";
 import KeywordSelection from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/keyword-selection";
@@ -55,32 +55,32 @@ export default function IPAnalysis() {
     {
       label: "Prior Art Research Findings",
       value: 3,
-      component: <IPPriorArt changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Technical Field of the Invention",
       value: 4,
-      component: <IPTechnicalInvention changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Identification of Inventors and Contributions",
       value: 5,
-      component: <IPInventionContribution changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Potential Applications and Uses",
       value: 6,
-      component: <IPPotentialUses changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Estimated Market Potential",
       value: 7,
-      component: <IPEstimatedMarket changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Inventive Step or Non-Obviousness Discussion",
       value: 8,
-      component: <IPInventiveSteps changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Review",
@@ -103,17 +103,15 @@ export default function IPAnalysis() {
       <div className="w-full">
         <div
           className={classNames(
-            "overflow-hidden min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
+            "overflow-hidden relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
             activeStep === 9 && "max-h-full",
+            activeStep !== 0 && activeStep !== 1 && "shadow border rounded-md p-2",
           )}
-          //   className="
-          // overflow-hidden min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-[calc(100vh-80px)]"
         >
-          {/* <div className={`overflow-hidden min-h-[${sliderHeight}] md:min-h-[${sliderHeight}] xl:min-h-[${sliderHeight}] 2xl:min-h-full max-h-[400px]`}> */}
           <div
             className={`translate-y-[${
               activeStep * 9
-            }% flex flex-col gap-y-5 transition duration-500 ease-in-out overflow-hidden h-full w-full`}
+            }% flex flex-col gap-y-5 transition duration-500 ease-in-out overflow-hidden h-full w-full `}
             style={{
               transform: `translateY(-${activeStep * 0}%)`,
             }}
@@ -132,13 +130,19 @@ export default function IPAnalysis() {
               </div>
             ))}
           </div>
+          {activeStep !== 0 && (
+            <div className="absolute bottom-0 left-0 right-0">
+              <IPStepper steps={steps} activeStep={activeStep} />
+            </div>
+          )}
         </div>
       </div>
-      {activeStep !== 0 && (
-        <div className="flex-shrink-0 w-[200px]">
+      <div className="flex-shrink-0 w-[200px]" />
+      {/* {activeStep !== 0 && (
+        
           <IPStepper steps={steps} activeStep={activeStep} />
-        </div>
-      )}
+        // </div>
+      )} */}
     </>
   );
 }
