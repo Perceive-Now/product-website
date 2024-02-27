@@ -265,9 +265,9 @@ export const IPFullReport = () => {
                 <PatentIPC keywords={keywords} />
                 <PatentWipo keywords={keywords} />
                 <PCTApplication keywords={keywords} />
-                {/* <div id="patent_classification" className="page-break">
-                  <PatentClassificationAnalysis keywords={keywords} />
-                </div> */}
+                <div id="patent_classification" className="page-break">
+                  {/* <PatentClassificationAnalysis keywords={keywords} /> */}
+                </div>
                 {/*  */}
                 {/* <div id="technology_lifecycle" className="page-break">
                   <TechnologyLifeCycleAnalysis keywords={keywords} />
