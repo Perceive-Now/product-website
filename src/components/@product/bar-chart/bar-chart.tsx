@@ -3,19 +3,18 @@ import { ResponsiveBar } from "@nivo/bar";
 import { useEffect, useState } from "react";
 
 //
-import { COLORS } from "../../../utils/constants";
-
-//
 import { formatNumber } from "../../../utils/helpers";
 import classNames from "classnames";
 
+interface BarLabelColors {
+  [key: string]: string;
+}
 /**
  *
  */
 export default function BarChart(props: IBarChartProps) {
   const [dataItems, setDataItems] = useState(props.data);
 
-  //
   useEffect(() => {
     setDataItems(props.data);
   }, [props.data]);
@@ -24,6 +23,37 @@ export default function BarChart(props: IBarChartProps) {
   // const barPadding = props.groupMode === "stacked" ? 0.8 : 0.4;
   const barPadding = props.layout === "horizontal" ? 0.7 : 0.7;
 
+  const colorByLabel: BarLabelColors = {
+    "2024": "#442873",
+    "2023": "#533F73",
+    "2022": "#41178B",
+    "2021": "#541DB2",
+    "2020": "#5C20C4",
+    "2019": "#7D4DD0",
+    "2018": "#926AD7",
+    "2017": "#B498E4",
+    "2016": "#CCBAED",
+    "2014": "#EFE9F9",
+    "2015": "#EFE9F9",
+  };
+
+  const getColor = (bar: any) => colorByLabel[bar.data.label];
+
+  const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  const HEATMAP_COLORS = [
+    { range: "180+", color: "bg-[#442873]" },
+    { range: "160", color: "bg-[#533F73]" },
+    { range: "140", color: "bg-[#41178B]" },
+    { range: "120", color: "bg-[#541DB2]" },
+    { range: "100", color: "bg-[#5C20C4]" },
+    { range: "80", color: "bg-[#7D4DD0]" },
+    { range: "60", color: "bg-[#926AD7]" },
+    { range: "40", color: "bg-[#B498E4]" },
+    { range: "20", color: "bg-[#CCBAED]" },
+    { range: "0", color: "bg-[#EFE9F9]" },
+  ];
+
   //
   return (
     <div
@@ -31,7 +61,7 @@ export default function BarChart(props: IBarChartProps) {
         props.layout === "horizontal"
           ? `${props.height !== undefined ? props.height : "h-[400px]"}`
           : "h-[400px] ",
-        "3xl:w-[1000px] max-w-[] mx-auto whitespace-nowrap",
+        "3xl:w-[1000px] max-w-[] mx-auto whitespace-nowrap relative",
       )}
       // style={{ width: "100%", overflowX: "auto" }}
     >
@@ -111,7 +141,17 @@ export default function BarChart(props: IBarChartProps) {
         labelSkipHeight={12}
         animate={false}
         role="application"
-        colors={COLORS.slice(9 - props.keys.length)}
+        colors={getColor}
+        // colors={props.color || COLORS.slice(9 - props.keys.length)}
+        // colors={(bar) => {
+        //   const value = bar.data.;
+        //   if (value < 10) return colorRange[0];
+        //   else if (value < 20) return colorRange[1];
+        //   else if (value < 30) return colorRange[2];
+        //   else if (value < 40) return colorRange[3];
+        //   else return colorRange[4];
+        // }}
+        // colors={COLORS.slice(9 - 2)}
         tooltip={(item: { value: number; label: string }) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
             {formatNumber(item.value)}
@@ -125,6 +165,14 @@ export default function BarChart(props: IBarChartProps) {
           },
         }}
       />
+      <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-0 z- bg-blac w-full h-full gap-[0.5px]">
+        {COLOR_GROUPS.map((grp) => (
+          <div key={grp} className="flex items-center gap-2">
+            <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
+            <div className={classNames("h-4 w-1 shadow shrink-0", HEATMAP_COLORS[grp].color)} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -145,57 +193,5 @@ interface IBarChartProps {
   onClick?: (item: any) => void;
   label?: boolean;
   height?: string;
+  color?: any;
 }
-
-// [
-//   {
-//     "name": "a",
-//     "year": 2000,
-//     "count":10
-//   },
-//   {
-//     "name": "b",
-//     "year": 1999,
-//     "count":10
-
-//   },
-//   {
-//     "name": "a",
-//     "year": 2023,
-//     "count":10
-
-//   },
-//   {
-//     "name": "b",
-//     "year": 2022,
-
-//   }
-// ]
-
-// [
-//   {
-//     name: "a",
-//     data: [
-//      {
-//       year: "2000",
-//       count: 10
-//      },
-//      {
-//       year: "2023",
-//       count: 10
-//      },
-//     ]
-//    },
-//    {
-//     name:"b",
-//     data: [
-//       {
-//        year: "1999",
-//        count: 10
-//       },
-//       {
-//        year: "2022",
-//        count: 10
-//       },
-//    }
-// ]

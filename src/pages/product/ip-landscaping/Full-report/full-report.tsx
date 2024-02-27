@@ -1,19 +1,21 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
 import { useReactToPrint } from "react-to-print";
 
 import classNames from "classnames";
 //
-import { ChevronRight, SearchIcon } from "../../../../components/icons";
+// import { ChevronRight, SearchIcon } from "../../../../components/icons";
 //
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import Button from "../../../../components/reusable/button";
 //
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 //
-import { setFilter } from "../../../../stores/country";
+// import { setFilter } from "../../../../stores/country";
 import { setDashboardSearch } from "../../../../stores/dashboard";
 //
+
+import { useRef } from "react";
 
 //
 import PatentYear from "../../../../components/@dashboard/IP-landscaping/patent-year";
@@ -21,7 +23,6 @@ import PatentLegalStatus from "../../../../components/@dashboard/IP-landscaping/
 import InventorAnalysis from "../../../../components/@dashboard/IP-landscaping/inventor-analysis";
 import GeographicalDistributionFiling from "../../../../components/@dashboard/IP-landscaping/geographical-filing";
 import WipoAnalysis from "../../../../components/@dashboard/IP-landscaping/wipo-analysis";
-import { useRef, useState } from "react";
 import TrendExaminationYear from "../../../../components/@dashboard/IP-landscaping/trends-examination-years";
 import ClassificationCPC from "../../../../components/@dashboard/IP-landscaping/cpc-classification";
 import PatentAssignment from "../../../../components/@dashboard/IP-landscaping/patent-assignment";
@@ -32,15 +33,15 @@ import PCTApplication from "../../../../components/@dashboard/IP-landscaping/pct
 import GeographicalDistributionAssignment from "../../../../components/@dashboard/IP-landscaping/geographic-assignment";
 import GeographicalDistributionInventors from "../../../../components/@dashboard/IP-landscaping/geographical-inventors";
 import GeographicalDistributionApplicant from "../../../../components/@dashboard/IP-landscaping/geographic-applicant";
-import SemanticSearch from "../../../../components/reusable/semantic-search";
-import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
-import RadioButtons from "../../../../components/reusable/radio-buttons";
+// import SemanticSearch from "../../../../components/reusable/semantic-search";
+// import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
+// import RadioButtons from "../../../../components/reusable/radio-buttons";
 import DistributionWorkload from "../../../../components/@dashboard/IP-landscaping/distribution-workload";
 import MoreNavOption from "../../../../components/reusable/nav-options";
 
 //
 
-type ISearchType = "or" | "and" | "custom";
+// type ISearchType = "or" | "and" | "custom";
 
 /**
  *
@@ -48,24 +49,24 @@ type ISearchType = "or" | "and" | "custom";
 export const IPFullReport = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
-  const [isSemantic, setISearchSemantic] = useState(false);
-  const [searchType, SetSearchType] = useState<ISearchType>("or");
+  // const [isSemantic, setISearchSemantic] = useState(false);
+  // const [searchType, SetSearchType] = useState<ISearchType>("or");
 
   const printRef = useRef<HTMLDivElement>(null);
   //
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
-  const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
-  const selectedValue = useAppSelector((state) => state.ipData.use_case.label) ?? [];
+  // const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
+  // const selectedValue = useAppSelector((state) => state.ipData.use_case.label) ?? [];
 
   //
   const keywords = searchedKeywords.map((kwd) => kwd.value);
-  const filterKeywords = filteredKeywords.map((flt) => flt).join(" - ");
+  // const filterKeywords = filteredKeywords.map((flt) => flt).join(" - ");
 
   //
-  const joinedkeywords = keywords.join(", ");
+  // const joinedkeywords = keywords.join(", ");
 
   //
   const handleSearch = (value: IKeywordOption[]) => {
@@ -73,22 +74,22 @@ export const IPFullReport = () => {
   };
 
   //
-  const filterClear = () => {
-    dispatch(setFilter([]));
-  };
+  // const filterClear = () => {
+  //   dispatch(setFilter([]));
+  // };
 
   //
-  const handleKeyword = (keyword: IKeywordOption[]) => {
-    dispatch(setDashboardSearch(keyword));
-  };
+  // const handleKeyword = (keyword: IKeywordOption[]) => {
+  //   dispatch(setDashboardSearch(keyword));
+  // };
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
   });
 
-  const handleSearchType = (value: string) => {
-    SetSearchType(value as ISearchType);
-  };
+  // const handleSearchType = (value: string) => {
+  //   SetSearchType(value as ISearchType);
+  // };
 
   return (
     <>
@@ -105,23 +106,23 @@ export const IPFullReport = () => {
       {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
       <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2 h-full w-full">
         <div className="mt-0.5 w-full">
-          {isSemantic ? (
+          {/* {isSemantic ? (
             <>
               <SemanticSearch initialValue={searchedKeywords} />
             </>
-          ) : (
-            <div>
-              {/* Search bar */}
-              <Search
-                required
-                size="small"
-                className="w-full bg-white"
-                onSubmit={handleSearch}
-                initialValue={searchedKeywords}
-                searchButton={true}
-                // isDisabled={true}
-              />
-              {/* {keywords.length > 0 ? (
+          ) : ( */}
+          <div>
+            {/* Search bar */}
+            <Search
+              required
+              size="small"
+              className="w-full bg-white"
+              onSubmit={handleSearch}
+              initialValue={searchedKeywords}
+              searchButton={true}
+              // isDisabled={true}
+            />
+            {/* {keywords.length > 0 ? (
                 <div className="mt-2">
                   <span>Showing patents for: </span>
                   <span className="">"{joinedkeywords}"</span>&nbsp;
@@ -142,8 +143,8 @@ export const IPFullReport = () => {
                   Search keywords e.g. “COVID-19” to see related patents.
                 </p>
               )} */}
-            </div>
-          )}
+          </div>
+          {/* )} */}
           {/* <div className="flex justify-end mt-2">
             <button
               type="button"
@@ -384,20 +385,20 @@ const topics = [
   { name: "16. Trends in PCT Applications Over Time", id: "" },
 ];
 
-const List = [
-  {
-    title: "IP Analysis",
-    key: "/ip-analysis/full-report",
-  },
-  {
-    title: "Market Research & IP",
-    key: "market-intelligence",
-  },
-  {
-    title: "Financial Investments",
-    key: "financial-investments",
-  },
-];
+// const List = [
+//   {
+//     title: "IP Analysis",
+//     key: "/ip-analysis/full-report",
+//   },
+//   {
+//     title: "Market Research & IP",
+//     key: "market-intelligence",
+//   },
+//   {
+//     title: "Financial Investments",
+//     key: "financial-investments",
+//   },
+// ];
 
 const relatedKeywords = [
   "Sensor technology",

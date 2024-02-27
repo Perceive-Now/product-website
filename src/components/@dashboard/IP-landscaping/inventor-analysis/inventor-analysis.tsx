@@ -30,6 +30,14 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
     value: item.family_size,
   }));
 
+  const colorByLabel = {
+    A: "#FF5733",
+    B: "#FFC300",
+    C: "#4CAF50",
+    D: "#00BCD4",
+    E: "#6200EA",
+  };
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -63,10 +71,9 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
             keys={["value"]}
             indexBy="label"
             groupMode="stacked"
-            // legendY="Number of references"
+            legendY="Average family size (n)"
+            legendX="Year"
           />
-          {/* )} */}
-
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
             {/* <h6 className="font-semibold text-primary-900">
