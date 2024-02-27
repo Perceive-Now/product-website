@@ -40,6 +40,7 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
     { range: "20", color: "bg-[#CCBAED]" },
     { range: "0", color: "bg-[#EFE9F9]" },
   ];
+  // console.log(data[20])
   return (
     <div className="h-[1600px] w-[800px] mx-auto relative">
       <ResponsiveHeatMap
@@ -92,7 +93,7 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
         legends={legend}
         labelTextColor={(cell) => {
           const value = cell.value as number;
-          if (value <= 100) {
+          if (value <= 40) {
             return "#000";
           } else {
             return "#fff";

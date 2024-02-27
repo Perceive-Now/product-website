@@ -20,17 +20,30 @@ const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const HEATMAP_SECTIONS = 10;
 
 //handleButtonClick
+// const COLOR_RANGE = [
+//   "#533F73",
+//   "#442873",
+//   "#5C1FC4",
+//   "#5C20C4",
+//   "#7D4DD0",
+//   "#B6A2D8",
+//   "#7F4BD8",
+//   "#926AD7",
+//   "#CCBAED",
+//   "#5C1FC4",
+// ];
+
 const COLOR_RANGE = [
-  "#533F73",
-  "#442873",
   "#5C1FC4",
-  "#5C20C4",
-  "#7D4DD0",
-  "#B6A2D8",
-  "#7F4BD8",
-  "#926AD7",
   "#CCBAED",
+  "#926AD7",
+  "#7F4BD8",
+  "#B6A2D8",
+  "#7D4DD0",
+  "#5C20C4",
   "#5C1FC4",
+  "#442873",
+  "#533F73",
 ];
 
 const HEATMAP_COLORS = [
@@ -61,6 +74,7 @@ const COLOR_RANGE2 = [
 ];
 
 const HEATMAP_COLORS2 = [
+  "bg-[#032454]",
   "bg-[#EBF5FF]",
   "bg-[#DEEBF7]",
   "bg-[#C6DBEF]",
@@ -70,7 +84,6 @@ const HEATMAP_COLORS2 = [
   "bg-[#225EA8]",
   "bg-[#08529C]",
   "bg-[#113B8F]",
-  "bg-[#032454]",
 ];
 
 /**
@@ -89,7 +102,6 @@ export default function USMap(props: IUSMapProps) {
   const getFillColor = (geo?: any) => {
     let currentStateValue = 0;
     const allValues = getRangeForPatents(props.data);
-
     //
     switch (props.type) {
       case "heatmap_industry":
@@ -99,7 +111,6 @@ export default function USMap(props: IUSMapProps) {
           )?.patents ?? 0;
 
         if (currentStateValue === 0) return "#E1D5F2";
-
         //
         for (let i = 0; i <= COLOR_RANGE.length; i++) {
           if (currentStateValue < allValues[i]) {
@@ -109,22 +120,22 @@ export default function USMap(props: IUSMapProps) {
 
         return;
 
-      case "heatmap_universities":
-        currentStateValue =
-          props.data?.find(
-            (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
-          )?.patents ?? 0;
+      // case "heatmap_universities":
+      //   currentStateValue =
+      //     props.data?.find(
+      //       (itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase(),
+      //     )?.patents ?? 0;
 
-        if (currentStateValue === 0) return "#E1D5F2";
+      //   if (currentStateValue === 0) return "#E1D5F2";
 
-        //
-        for (let i = 1; i <= COLOR_RANGE2.length; i++) {
-          if (currentStateValue < allValues[i]) {
-            return COLOR_RANGE2[i - 1];
-          }
-        }
+      //   //
+      //   for (let i = 1; i <= COLOR_RANGE2.length; i++) {
+      //     if (currentStateValue < allValues[i]) {
+      //       return COLOR_RANGE2[i - 1];
+      //     }
+      //   }
 
-        return;
+      //   return;
 
       default:
         return "#D7D7D7";

@@ -36,6 +36,7 @@ import SemanticSearch from "../../../../components/reusable/semantic-search";
 import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
 import RadioButtons from "../../../../components/reusable/radio-buttons";
 import DistributionWorkload from "../../../../components/@dashboard/IP-landscaping/distribution-workload";
+import MoreNavOption from "../../../../components/reusable/nav-options";
 
 //
 
@@ -143,7 +144,7 @@ export const IPFullReport = () => {
               )} */}
             </div>
           )}
-          <div className="flex justify-end mt-2">
+          {/* <div className="flex justify-end mt-2">
             <button
               type="button"
               className="flex items-center gap-x-1"
@@ -161,8 +162,8 @@ export const IPFullReport = () => {
                 </>
               )}
             </button>
-          </div>
-          {isSemantic && (
+          </div> */}
+          {/* {isSemantic && (
             <div className="flex items-center gap-x-1">
               <span className="text-primary-900">Search logic:</span>
               <RadioButtons
@@ -173,14 +174,13 @@ export const IPFullReport = () => {
                 ]}
                 activeMode={searchType}
                 handleModeChange={handleSearchType}
-                // classNames="text-sm"
               />
             </div>
-          )}
+          )} */}
           {/* summary report */}
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 w-full">
             <div className="flex-shrink-0 w-auto">
-              <div className="flex flex-col border rounded-t-lg shadow">
+              {/* <div className="flex flex-col border rounded-t-lg shadow">
                 <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
                   Back
                 </div>
@@ -201,27 +201,29 @@ export const IPFullReport = () => {
                     </button>
                   ))}
                 </div>
-              </div>
+              </div> */}
+              <MoreNavOption />
             </div>
             <div className="space-y-4 lg:w-[920px] xl:w-full ">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                <h2 className="text-lg font-bold text-primary-900">Report On {joinedkeywords}</h2>
-                <div>
+                {/* <h2 className="text-lg font-bold text-primary-900">Report On {joinedkeywords}</h2> */}
+                <h2 className="text-lg font-bold text-primary-900">Related technologies</h2>
+                {/* <div>
                   <span className="text-gray-500">Use Case :&nbsp;</span>
                   <span>{selectedValue}</span>
-                </div>
-                {/* <div className="flex flex-wrap item-center gap-2">
+                </div> */}
+                <div className="flex flex-wrap item-center gap-2">
                   {relatedKeywords.map((keyword) => (
                     <button
-                      onClick={() => handleKeyword([{ label: keyword, value: keyword }])}
+                      // onClick={() => handleKeyword([{ label: keyword, value: keyword }])}
                       key={keyword}
-                      className="rounded-full bg-appGray-100 py-1 px-2 text-primary-900 font-semibold text-sm"
+                      className="rounde bg-appGray-100 py-1 px-2 text-primary-900 font-semibold text-sm"
                     >
                       {keyword}
                     </button>
                   ))}
-                </div> */}
+                </div>
               </div>
               <div ref={printRef} className="space-y-5 w-full">
                 {/*Patents by year  */}
@@ -395,4 +397,12 @@ const List = [
     title: "Financial Investments",
     key: "financial-investments",
   },
+];
+
+const relatedKeywords = [
+  "Sensor technology",
+  "Data analytics",
+  "Gyroscopes",
+  "Energy harvesting",
+  "Healthcare sensors",
 ];

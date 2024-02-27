@@ -86,16 +86,27 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
     // Include only the recent five years
     const recentYears = sortedYears.slice(0, 5);
 
-    inputData.forEach((entry) => {
-      // Filter data to include only the recent five years
-      entry.data = entry.data.filter((item) => recentYears.includes(item.x));
+    const newData = inputData.map((entry) => {
+      const newDataPoints = recentYears.map((year) => {
+        const existingDataPoint = entry.data.find((item) => item.x === year);
+        return existingDataPoint ? existingDataPoint : { x: year, y: 0 }; // If year doesn't exist, create a new data point with value 0
+      });
+
+      return { ...entry, data: newDataPoints };
     });
+
+    return newData;
+
+    // inputData.forEach((entry) => {
+    //   // Filter data to include only the recent five years
+    //   entry.data = entry.data.filter((item) => recentYears.includes(item.x));
+    // });
 
     // console.log(inputData)
 
     // const sortedData = inputData.sort((a, b) => a.id.localeCompare(b.id));
 
-    return inputData;
+    // return inputData;
   };
 
   const finalData = transformData(tree_data);
