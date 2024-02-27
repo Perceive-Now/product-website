@@ -89,6 +89,7 @@ export function PatentWipo({ keywords }: Props) {
               // legendY="WIPO FIELD"
               innerPadding={0}
               borderRadius={4}
+              legends={"range"}
             />
           )}
           <div className="space-y-2 text-secondary-800 mt-4">

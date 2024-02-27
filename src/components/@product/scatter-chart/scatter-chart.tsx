@@ -106,7 +106,7 @@ export default function ScatterChart(props: IScatterChartProps) {
             tickRotation: 0,
             legend: props.legendX,
             legendPosition: "middle",
-            legendOffset: 36,
+            legendOffset: 42,
             format: (value) => {
               if (props.abbreviateLegendX) {
                 return abbreviateString(value);

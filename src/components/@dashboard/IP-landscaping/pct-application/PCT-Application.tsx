@@ -105,8 +105,8 @@ export function PCTApplication({ keywords }: Props) {
           {data && (
             <ScatterChart
               data={scatterChartData}
-              // legendX="Year"
-              // legendY="Publications"
+              legendX="Year"
+              legendY="Average days to grant patents"
               // abbreviateLegendX={true}
               colors={["#7F4BD8", "#442873"]}
             />

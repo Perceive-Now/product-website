@@ -24,18 +24,35 @@ export default function BarChart(props: IBarChartProps) {
   const barPadding = props.layout === "horizontal" ? 0.7 : 0.7;
 
   const colorByLabel: BarLabelColors = {
-    "2024": "#442873",
-    "2023": "#533F73",
-    "2022": "#41178B",
-    "2021": "#541DB2",
-    "2020": "#5C20C4",
-    "2019": "#7D4DD0",
-    "2018": "#926AD7",
-    "2017": "#B498E4",
-    "2016": "#CCBAED",
+    "2023": "#442873",
+    "2022": "#533F73",
+    "2021": "#41178B",
+    "2020": "#541DB2",
+    "2019": "#5C20C4",
+    "2018": "#7D4DD0",
+    "2017": "#926AD7",
+    "2016": "#B498E4",
+    "2015": "#CCBAED",
     "2014": "#EFE9F9",
-    "2015": "#EFE9F9",
+    // "2015": "#EFE9F9",
   };
+
+  // const customLegend =[
+  //   {
+  //     label
+  //   }
+  //   "2023":
+  //    "#442873",
+  //   "2022": "#533F73",
+  //   "2021": "#41178B",
+  //   "2020": "#541DB2",
+  //   "2019": "#5C20C4",
+  //   "2018": "#7D4DD0",
+  //   "2017": "#926AD7",
+  //   "2016": "#B498E4",
+  //   "2015": "#CCBAED",
+  //   "2014": "#EFE9F9",
+  // ]
 
   const getColor = (bar: any) => colorByLabel[bar.data.label];
 
@@ -131,7 +148,7 @@ export default function BarChart(props: IBarChartProps) {
             legendOffset: props.layout === "horizontal" ? -200 : -70,
           },
         })}
-        legends={props.legends}
+        // legends={props.legends}
         enableLabel={props.label !== undefined ? props.label : false}
         labelTextColor={{
           from: "color",
@@ -165,14 +182,28 @@ export default function BarChart(props: IBarChartProps) {
           },
         }}
       />
-      <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-0 z- bg-blac w-full h-full gap-[0.5px]">
-        {COLOR_GROUPS.map((grp) => (
-          <div key={grp} className="flex items-center gap-2">
-            <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
-            <div className={classNames("h-4 w-1 shadow shrink-0", HEATMAP_COLORS[grp].color)} />
-          </div>
-        ))}
-      </div>
+      {props.legends === "range" && (
+        <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-0 z- bg-blac w-full h-full gap-[0.5px]">
+          {COLOR_GROUPS.map((grp) => (
+            <div key={grp} className="flex items-center gap-2">
+              <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
+              <div className={classNames("h-4 w-1 shadow shrink-0", HEATMAP_COLORS[grp].color)} />
+            </div>
+          ))}
+        </div>
+      )}
+      {props.legends === "legend" && (
+        <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-0 bg-blac w-full h-full gap-1">
+          {dataItems.map((grp) => (
+            <div key={grp} className="flex items-center gap-1">
+              <div
+                className={classNames("h-2 w-2 shadow shrink-0", `bg-[${colorByLabel[grp.label]}]`)}
+              />
+              <span className="text-[8px] font-medium italic">{grp.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -187,7 +218,7 @@ interface IBarChartProps {
   indexBy: string;
   legendY?: string;
   legendX?: string;
-  legends?: any;
+  legends?: "range" | "legend" | any;
   layout?: "horizontal" | "vertical";
   groupMode?: "grouped" | "stacked" | undefined;
   onClick?: (item: any) => void;
