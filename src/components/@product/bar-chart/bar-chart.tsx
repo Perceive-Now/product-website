@@ -10,8 +10,8 @@ import classNames from "classnames";
 interface BarLabelColors {
   [key: string]: string;
 }
-const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const HEATMAP_SECTIONS = 10;
+// const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const HEATMAP_SECTIONS = 10;
 
 type GetColorFunction = (bar: ComputedDatum<any>) => string;
 
@@ -53,42 +53,42 @@ export default function BarChart(props: IBarChartProps) {
     "#442873",
   ];
 
-  const getRangeForPatents = (data?: any) => {
-    if (!data?.length) return [];
+  // const getRangeForPatents = (data?: any) => {
+  //   if (!data?.length) return [];
 
-    const maxVal =
-      (data ?? []).sort((a: any, b: any) => (b.patents ?? 0) - (a.patents ?? 0))[0].patents ?? 0;
-    const maxValue = Math.ceil(maxVal / 100) * 100;
+  //   const maxVal =
+  //     (data ?? []).sort((a: any, b: any) => (b.patents ?? 0) - (a.patents ?? 0))[0].patents ?? 0;
+  //   const maxValue = Math.ceil(maxVal / 100) * 100;
 
-    const tempValue = maxValue / HEATMAP_SECTIONS;
+  //   const tempValue = maxValue / HEATMAP_SECTIONS;
 
-    const midValues = [];
-    for (let i = 1; i < HEATMAP_SECTIONS; i++) {
-      midValues.push(Math.floor(tempValue * i));
-    }
+  //   const midValues = [];
+  //   for (let i = 1; i < HEATMAP_SECTIONS; i++) {
+  //     midValues.push(Math.floor(tempValue * i));
+  //   }
 
-    const values = [...midValues, maxValue];
+  //   const values = [...midValues, maxValue];
 
-    return [0, ...values];
-  };
+  //   return [0, ...values];
+  // };
 
-  const getFillColor = (geo?: any) => {
-    let currentStateValue = 0;
-    const allValues = getRangeForPatents(props.data);
-    //
-    currentStateValue =
-      props.data?.find((itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase())
-        ?.patents ?? 0;
+  // const getFillColor = (geo?: any) => {
+  //   let currentStateValue = 0;
+  //   const allValues = getRangeForPatents(props.data);
+  //   //
+  //   currentStateValue =
+  //     props.data?.find((itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase())
+  //       ?.patents ?? 0;
 
-    if (currentStateValue === 0) return "#E1D5F2";
-    //
-    for (let i = 0; i <= COLOR_RANGE.length; i++) {
-      if (currentStateValue < allValues[i]) {
-        return COLOR_RANGE[i];
-      }
-    }
-    return;
-  };
+  //   if (currentStateValue === 0) return "#E1D5F2";
+  //   //
+  //   for (let i = 0; i <= COLOR_RANGE.length; i++) {
+  //     if (currentStateValue < allValues[i]) {
+  //       return COLOR_RANGE[i];
+  //     }
+  //   }
+  //   return;
+  // };
 
   //
   // const barPadding = props.groupMode === "stacked" ? 0.8 : 0.4;
@@ -154,7 +154,7 @@ export default function BarChart(props: IBarChartProps) {
           props.layout === "horizontal"
             ? `${props.height !== undefined ? props.height : "h-[500px]"}`
             : "h-[400px] ",
-          "3xl:w-[1000px] max-w-[800px] mx-auto whitespace-nowrap ",
+          "3xl:w-[1000px] w-[700px] 2xl:max-w-[800px] mx-auto whitespace-nowrap ",
         )}
         // style={{ width: "100%", overflowX: "auto" }}
       >
@@ -225,7 +225,19 @@ export default function BarChart(props: IBarChartProps) {
           theme={{
             axis: {
               legend: {
-                text: { fontSize: 16 },
+                text: {
+                  fontSize: 12,
+                  color: "#373D3F",
+                  fontWeight: 400,
+                },
+              },
+              ticks: {
+                text: {
+                  fontSize: 10,
+                  fontStyle: "italic",
+                  color: "#373D3F",
+                  fontWeight: 400,
+                },
               },
             },
           }}
@@ -243,20 +255,22 @@ export default function BarChart(props: IBarChartProps) {
         </div>
       )}
       {props.legends === "legend" && (
-        <div className="flex flex-col w-[140px] justify-center items-start mt-1 absolute top-0 right-5 h-full gap-1">
-          {dataItems.slice(0, 20).map((grp) => (
-            <div key={grp} className="flex items-center gap-1">
-              <div
-                className={classNames(
-                  "h-2 w-2 rounded-sm shadow shrink-0 bg-black",
-                  `bg-[${colorByLabel[grp.label]}]`,
-                )}
-              />
-              <span className="text-[8px] font-medium italic text-black line-clamp-1 w-full">
-                {grp.label || "label"}
-              </span>
-            </div>
-          ))}
+        <div className="flex flex-col w-[140px] justify-center items-end mt-1 absolute top-0 right-5 h-full ">
+          <div className="flex items-start flex-col gap-1">
+            {dataItems.slice(0, 20).map((grp) => (
+              <div key={grp} className="flex items-center gap-1">
+                <div
+                  className={classNames(
+                    "h-2 w-2 rounded-sm shadow shrink-0 bg-black",
+                    `bg-[${colorByLabel[grp.label]}]`,
+                  )}
+                />
+                <span className="text-[8px] font-medium italic text-black line-clamp-1 w-full">
+                  {grp.label || "label"}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

@@ -19,8 +19,8 @@ const StepSeven: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const navigate = useNavigate();
   //
   const {
-    register,
-    formState: { errors },
+    // register,
+    // formState: { errors },
     handleSubmit,
   } = useForm({
     // defaultValues: formInitialValue,
@@ -49,6 +49,7 @@ const StepSeven: FunctionComponent<Props> = ({ changeActiveStep }) => {
           Who are your <b>competitors</b>?
         </h4>
       </div>
+      {keyword}
       <form onSubmit={handleSubmit(onContinue)}>
         <p className="text-secondary-800 mb-4">
           Select Competitors from the suggestions or enter below

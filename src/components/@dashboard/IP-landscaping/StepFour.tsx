@@ -2,7 +2,7 @@ import { FunctionComponent, useCallback, useState } from "react";
 import RadioButtons from "../../reusable/radio-buttons";
 import KeywordSelected from "./KeywordSelected";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../reusable/button";
 import { IUSState } from "../../../@types/entities/IPLandscape";
 import USStateModal from "./StateModal";
@@ -46,8 +46,8 @@ const StepFour: FunctionComponent<Props> = ({ changeActiveStep }) => {
   };
 
   const {
-    register,
-    formState: { errors },
+    // register,
+    // formState: { errors },
     handleSubmit,
   } = useForm({
     defaultValues: formInitialValue,

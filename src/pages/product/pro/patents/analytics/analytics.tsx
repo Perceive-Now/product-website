@@ -3,7 +3,7 @@ import SubHeader from "../../../../../components/app/sub-header";
 import Search, { IKeywordOption } from "../../../../../components/reusable/search";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { setDashboardSearch } from "../../../../../stores/dashboard";
-import Patents from "../../../../../components/@dashboard/patents";
+// import Patents from "../../../../../components/@dashboard/patents";
 import CommonList from "../../../../../components/@dashboard/common-list";
 import { DummyData } from "../../../../../components/@dashboard/common-list/dummy_data";
 import FootprintHeatmap from "../../../../../components/@dashboard/footprint-heatmap";
@@ -19,7 +19,7 @@ const Analytics = () => {
   const joinedkeywords = keywords.join(", ");
 
   //
-  const joinedKeywords = searchedKeywords.map((kwd) => `"${kwd.value}"`).join(", ");
+  // const joinedKeywords = searchedKeywords.map((kwd) => `"${kwd.value}"`).join(", ");
 
   const keywordValue = searchedKeywords.map((kwd) => kwd.value);
 

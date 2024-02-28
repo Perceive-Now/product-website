@@ -13,19 +13,6 @@ interface Props {
 }
 
 export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => {
-  // const colors = data.map((item) => optionKeys.map((key) => item[`${key}Color`]))
-  //   .flat()
-  // console.log(colors)
-
-  // function scale() { }
-
-  // scale.domain = () => {
-  //   const _colors = colors.slice(0)
-
-  //   return () => {
-  //     return _colors.shift()
-  //   }
-  // }
   const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const HEATMAP_COLORS = [
@@ -40,68 +27,86 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
     { range: "20", color: "bg-[#CCBAED]" },
     { range: "0", color: "bg-[#EFE9F9]" },
   ];
-  // console.log(data[20])
   return (
-    <div className="h-[1600px] w-[800px] mx-auto relative">
-      <ResponsiveHeatMap
-        data={data}
-        margin={{ top: 60, right: 100, bottom: 60, left: 100 }}
-        borderWidth={2}
-        borderColor="#ffffff"
-        inactiveOpacity={0.15}
-        isInteractive={false}
-        axisTop={{
-          tickSize: 10,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: `${legendY !== undefined && legendY}`,
-          legendOffset: -46,
-          legendPosition: "middle",
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendPosition: "middle",
-          legendOffset: -72,
-        }}
-        // colors={COLORS}
-        colors={(cell) => {
-          const value = cell.value as number;
-          if (value === 0) {
-            return "#EFE9F9";
-          } else if (value <= 20) {
-            return "#CCBAED";
-          } else if (value <= 40) {
-            return "#B498E4";
-          } else if (value <= 50) {
-            return "#5C20C4";
-          } else if (value <= 100) {
-            return "#533F73";
-          } else {
-            return "#442873";
-          }
-        }}
-        // colors={{
-        //   type: "sequential",
-        //   scheme: "blues",
-        //   // minValue: -100000,
-        //   // maxValue: 100000
-        // }}
-        emptyColor="#7F4BD8"
-        // hoverTarget="row"
-        legends={legend}
-        labelTextColor={(cell) => {
-          const value = cell.value as number;
-          if (value <= 40) {
-            return "#000";
-          } else {
-            return "#fff";
-          }
-        }}
-      />
-      {/* <div className="absolute top-0 z-50 bg-black w-full"> */}
-
+    <div className="relative">
+      <div className="h-[1600px] w-[620px] xl:w-[680px] 2xl:w-[800px] mx-auto ">
+        <ResponsiveHeatMap
+          data={data}
+          margin={{ top: 60, right: 60, bottom: 60, left: 60 }}
+          borderWidth={2}
+          borderColor="#ffffff"
+          inactiveOpacity={0.15}
+          isInteractive={false}
+          axisTop={{
+            tickSize: 10,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: `${legendY !== undefined && legendY}`,
+            legendOffset: -46,
+            legendPosition: "middle",
+          }}
+          axisLeft={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legendPosition: "middle",
+            legendOffset: -72,
+          }}
+          // colors={COLORS}
+          colors={(cell) => {
+            const value = cell.value as number;
+            if (value === 0) {
+              return "#EFE9F9";
+            } else if (value <= 20) {
+              return "#CCBAED";
+            } else if (value <= 40) {
+              return "#B498E4";
+            } else if (value <= 50) {
+              return "#5C20C4";
+            } else if (value <= 100) {
+              return "#533F73";
+            } else {
+              return "#442873";
+            }
+          }}
+          // colors={{
+          //   type: "sequential",
+          //   scheme: "blues",
+          //   // minValue: -100000,
+          //   // maxValue: 100000
+          // }}
+          emptyColor="#7F4BD8"
+          // hoverTarget="row"
+          legends={legend}
+          labelTextColor={(cell) => {
+            const value = cell.value as number;
+            if (value <= 40) {
+              return "#000";
+            } else {
+              return "#fff";
+            }
+          }}
+          theme={{
+            axis: {
+              legend: {
+                text: {
+                  fontSize: 12,
+                  color: "#373D3F",
+                  fontWeight: 400,
+                },
+              },
+              ticks: {
+                text: {
+                  fontSize: 10,
+                  fontStyle: "italic",
+                  color: "#373D3F",
+                  fontWeight: 400,
+                },
+              },
+            },
+          }}
+        />
+      </div>
       <div className="flex flex-col justify-center items-start mt-1 absolute top-0 right-0 h-full gap-1">
         {COLOR_GROUPS.map((grp) => (
           <div key={grp} className="flex items-center gap-2">
@@ -112,7 +117,6 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
           </div>
         ))}
       </div>
-      {/* </div> */}
     </div>
   );
 };

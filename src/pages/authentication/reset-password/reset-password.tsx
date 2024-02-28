@@ -98,7 +98,7 @@ export default function ResetPasswordPage() {
     if (!uid || !token) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate, token, uid]);
 
   if (!uid || !token) return <></>;
 

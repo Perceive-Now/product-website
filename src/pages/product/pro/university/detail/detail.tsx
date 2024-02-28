@@ -32,6 +32,7 @@ export default function DeepSearchAcademicPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
 

@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-undef
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
@@ -105,7 +106,7 @@ module.exports = {
           // md: '728px',
           // lg: '984px',
           // xl: '1240px',
-          // '3xl': '1240px',
+          '2xl': '1440px',
         },
       },
       // boxShadow: {
@@ -113,10 +114,8 @@ module.exports = {
       // },
     },
   },
-  plugins: [
-    // https://github.com/tailwindlabs/tailwindcss-forms
-    require("@tailwindcss/forms"),
-    // https://github.com/tailwindlabs/tailwindcss-line-clamp
-    require("@tailwindcss/line-clamp"),
-  ],
+  // plugins: [
+  //   require("@tailwindcss/forms"),
+  //   require("@tailwindcss/line-clamp"),
+  // ],
 };

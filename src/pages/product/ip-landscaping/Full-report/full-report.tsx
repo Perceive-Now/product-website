@@ -92,15 +92,10 @@ export const IPFullReport = () => {
   // };
 
   return (
-    <>
+    <div className="">
       <div className="bg-appGray-200 flex justify-between items-center mb-1 pl-2 rounded-md ">
         <div className="flex items-start justify-center gap-0.5 py-1">
-          <p className="text-lg text-primary-900 font-semibold">
-            IP Analysis
-            {/* <span className="font-bold text-secondary-800 text-sm">
-              (407, 046 Patents & 431,402 Companies)
-            </span> */}
-          </p>
+          <p className="text-lg text-primary-900 font-semibold">IP Analysis</p>
         </div>
       </div>
       {/* <div className="grid grid-cols-8 mb-2 gap-x-3 mt-2"> */}
@@ -180,32 +175,10 @@ export const IPFullReport = () => {
           )} */}
           {/* summary report */}
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 w-full">
-            <div className="flex-shrink-0 w-auto">
-              {/* <div className="flex flex-col border rounded-t-lg shadow">
-                <div className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg">
-                  Back
-                </div>
-                <div>
-                  {List.map((name) => (
-                    <button
-                      key={name.title}
-                      type="button"
-                      className={classNames(
-                        "hover:bg-primary-50 text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between border-b",
-                        name.key === location.pathname
-                          ? "bg-primary-900 text-white"
-                          : "text-secondary-800",
-                      )}
-                    >
-                      <span>{name.title}</span>
-                      <ChevronRight />
-                    </button>
-                  ))}
-                </div>
-              </div> */}
+            <div className="shrink-0">
               <MoreNavOption />
             </div>
-            <div className="space-y-4 lg:w-[920px] xl:w-full ">
+            <div className="space-y-4 w-full grow-0">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
                 {/* <h2 className="text-lg font-bold text-primary-900">Report On {joinedkeywords}</h2> */}
@@ -268,9 +241,9 @@ export const IPFullReport = () => {
                 <PatentIPC keywords={keywords} />
                 <PatentWipo keywords={keywords} />
                 <PCTApplication keywords={keywords} />
-                <div id="patent_classification" className="page-break">
-                  {/* <PatentClassificationAnalysis keywords={keywords} /> */}
-                </div>
+                {/* <div id="patent_classification" className="page-break">
+                  <PatentClassificationAnalysis keywords={keywords} />
+                </div> */}
                 {/*  */}
                 {/* <div id="technology_lifecycle" className="page-break">
                   <TechnologyLifeCycleAnalysis keywords={keywords} />
@@ -299,7 +272,7 @@ export const IPFullReport = () => {
             </div>
           </div>
         </div>
-        <div className="md:w-[200px] flex-shrink-0 sticky top-[100px]">
+        <div className="md:w-[200px] shrink-0 sticky top-[100px]">
           <div className="flex flex-col gap-y-1">
             {/* <ReactToPrint
               bodyClass="print-agreement"
@@ -358,7 +331,7 @@ export const IPFullReport = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

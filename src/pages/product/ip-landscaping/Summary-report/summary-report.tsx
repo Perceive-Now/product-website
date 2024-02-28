@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import classNames from "classnames";
+// import classNames from "classnames";
 //
-import { ChevronRight, CrossIcon, SearchIcon } from "../../../../components/icons";
+import { SearchIcon } from "../../../../components/icons";
 //
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import Button from "../../../../components/reusable/button";
 //
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 //
-import { setFilter } from "../../../../stores/country";
+// import { setFilter } from "../../../../stores/country";
 import { setDashboardSearch } from "../../../../stores/dashboard";
 //
 
 import BarChart from "../../../../components/@product/bar-chart";
-import RadarChart from "../../../../components/@product/radar";
+// import RadarChart from "../../../../components/@product/radar";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentsYearly } from "../../../../utils/api/charts";
 import { useEffect, useState } from "react";
@@ -41,14 +41,14 @@ export const IPSummaryReport = () => {
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
-  const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
+  // const filteredKeywords = useAppSelector((state) => state.date?.filter) ?? [];
 
   //
   const keywords = searchedKeywords.map((kwd) => kwd.value);
-  const filterKeywords = filteredKeywords.map((flt) => flt).join(" - ");
+  // const filterKeywords = filteredKeywords.map((flt) => flt).join(" - ");
 
   //
-  const joinedkeywords = keywords.join(", ");
+  // const joinedkeywords = keywords.join(", ");
 
   // console.log(filterKeywords)
 
@@ -76,9 +76,9 @@ export const IPSummaryReport = () => {
   };
 
   //
-  const filterClear = () => {
-    dispatch(setFilter([]));
-  };
+  // const filterClear = () => {
+  //   dispatch(setFilter([]));
+  // };
 
   const handleSearchType = (value: string) => {
     SetSearchType(value as ISearchType);

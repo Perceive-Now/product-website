@@ -24,15 +24,7 @@ interface IScatterList {
   data: IScatterItem[];
 }
 
-// type IYear = "1st5year" | "2nd5year";
-
 export const TrendExaminationYear: FunctionComponent<Props> = ({ keywords }) => {
-  // const [yearChoose, setYearChoose] = useState<IYear>("1st5year");
-
-  // const changeYear = (mode: string) => {
-  //   setYearChoose(mode as IYear);
-  // };
-
   const { data, isLoading, isError, error } = useQuery(
     ["patents-year-e", ...keywords],
     async () => {
@@ -103,50 +95,10 @@ export const TrendExaminationYear: FunctionComponent<Props> = ({ keywords }) => 
       >
         <div>
           {data && (
-            // <BarChart
-            //   data={data}
-            //   keys={[
-            //     "count",
-            //     // 'burger',
-            //     // 'sandwich',
-            //     // 'kebab',
-            //     // 'fries',
-            //     // 'donut'
-            //   ]}
-            //   indexBy="year"
-            //   groupMode="stacked"
-            //   legendY="Number of Patents"
-            //   innerPadding={0}
-            //   borderRadius={4}
-            // // legends={[
-            // //   {
-            // //     dataFrom: "keys",
-            // //     anchor: "bottom-right",
-            // //     direction: "column",
-            // //     justify: false,
-            // //     translateX: 100,
-            // //     translateY: -20,
-            // //     itemsSpacing: 0,
-            // //     itemWidth: 83,
-            // //     itemHeight: 45,
-            // //     itemDirection: "left-to-right",
-            // //     itemOpacity: 0.85,
-            // //     symbolSize: 20,
-            // //     effects: [
-            // //       {
-            // //         on: "hover",
-            // //         style: {
-            // //           itemOpacity: 1,
-            // //         },
-            // //       },
-            // //     ],
-            // //   },
-            // // ]}
-            // />
             <ScatterChart
               data={scatterChartData}
               // legendX="Year"
-              // legendY="Publications"
+              legendY="Average days to grant patents"
               // abbreviateLegendX={true}
               colors={["#7F4BD8", "#442873"]}
             />

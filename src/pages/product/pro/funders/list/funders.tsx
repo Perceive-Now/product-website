@@ -44,6 +44,7 @@ export default function DeepSearchFundersListPage() {
   const dispatch = useAppDispatch();
 
   //
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");

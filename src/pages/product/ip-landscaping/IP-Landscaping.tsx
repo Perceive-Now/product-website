@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 //
-import Breadcrumb from "../../../components/reusable/breadcrumb";
+// import Breadcrumb from "../../../components/reusable/breadcrumb";
 import { Stepper } from "../../../components/reusable/Stepper/Stepper";
-import MoreNavOption from "../../../components/reusable/nav-options";
+// import MoreNavOption from "../../../components/reusable/nav-options";
 
 //
 import { IStep } from "../../../@types/entities/IStep";
@@ -24,7 +24,7 @@ import classNames from "classnames";
  */
 export function IPLandscaping() {
   const [activeStep, setActiveStep] = useState(0);
-  const [sliderHeight, setSliderHeight] = useState("400px");
+  // const [sliderHeight, setSliderHeight] = useState("400px");
 
   //
   const changeActiveStep = useCallback((stepValue: number) => {
@@ -32,6 +32,7 @@ export function IPLandscaping() {
       // Ensure the stepValue is within valid range
       setActiveStep(stepValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //
@@ -149,7 +150,7 @@ export function IPLandscaping() {
   );
 }
 
-const breadcrumbs = [
-  { title: "IP Landscaping", link: "/companies" },
-  { title: "Report Details", link: "/patents/1" },
-];
+// const breadcrumbs = [
+//   { title: "IP Landscaping", link: "/companies" },
+//   { title: "Report Details", link: "/patents/1" },
+// ];

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 //
 
 import Button from "../../reusable/button";
-import DateRangePick from "../../reusable/date-range";
+// import DateRangePick from "../../reusable/date-range";
 import RadioButtons from "../../reusable/radio-buttons";
 
 //
@@ -13,10 +13,10 @@ import KeywordSelected from "./KeywordSelected";
 //
 type selectDate = "recent" | "specific";
 
-interface IDate {
-  start_date: string;
-  end_date: string;
-}
+// interface IDate {
+//   start_date: string;
+//   end_date: string;
+// }
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -27,7 +27,7 @@ interface Props {
  */
 const StepFive: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const [date, setDate] = useState<selectDate>("recent");
-  const [valueDate, setValues] = useState<IDate>();
+  // const [setValues] = useState<IDate>('');
   //
 
   const dateOptions = (mode: string) => {
@@ -36,8 +36,8 @@ const StepFive: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   //
   const {
-    register,
-    formState: { errors },
+    // register,
+    // formState: { errors },
     handleSubmit,
   } = useForm({
     // defaultValues: formInitialValue,
@@ -79,7 +79,7 @@ const StepFive: FunctionComponent<Props> = ({ changeActiveStep }) => {
             ]}
             classNames={"text-sm"}
           />
-          <DateRangePick classification={date} getValues={setValues} />
+          {/* <DateRangePick classification={date} getValues={setValues}/> */}
         </fieldset>
 
         <div className="mt-4">

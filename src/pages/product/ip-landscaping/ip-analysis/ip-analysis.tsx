@@ -32,6 +32,7 @@ export default function IPAnalysis() {
       // Ensure the stepValue is within valid range
       setActiveStep(stepValue);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //

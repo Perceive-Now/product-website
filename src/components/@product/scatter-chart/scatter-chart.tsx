@@ -8,6 +8,17 @@ import { abbreviateString, formatNumber } from "../../../utils/helpers";
 /*
  *
  **/
+const theme = {
+  axis: {
+    textColor: "#eee",
+    fontSize: "14px",
+    tickColor: "#eee",
+  },
+  grid: {
+    stroke: "#888",
+    strokeWidth: 1,
+  },
+};
 export default function ScatterChart(props: IScatterChartProps) {
   const [dataItems, setDataItems] = useState(props.data);
 
@@ -16,7 +27,7 @@ export default function ScatterChart(props: IScatterChartProps) {
   }, [props.data]);
 
   return (
-    <div className="h-[400px] w-[668px] mx-auto">
+    <div className="h-[400px] w-[500px] 2xl:w-[668px] mx-auto">
       {/* <ResponsiveLine
         data={dataItems}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
@@ -96,6 +107,11 @@ export default function ScatterChart(props: IScatterChartProps) {
         // enableSlices="x"
         axisTop={null}
         axisBottom={{
+          tickSize: 0,
+          tickPadding: 20,
+        }}
+        axisLeft={{
+          tickSize: 0,
           tickPadding: 20,
         }}
         axisRight={null}
@@ -119,7 +135,7 @@ export default function ScatterChart(props: IScatterChartProps) {
         {...(props.legendY && {
           axisLeft: {
             // format: (value) => formatNumber(value),
-            tickSize: 5,
+            tickSize: 0,
             tickPadding: 5,
             tickRotation: 0,
             legend: props.legendY,
@@ -144,7 +160,19 @@ export default function ScatterChart(props: IScatterChartProps) {
         theme={{
           axis: {
             legend: {
-              text: { fontSize: 16 },
+              text: {
+                fontSize: 12,
+                color: "#373D3F",
+                fontWeight: 400,
+              },
+            },
+            ticks: {
+              text: {
+                fontSize: 10,
+                fontStyle: "italic",
+                color: "#373D3F",
+                fontWeight: 400,
+              },
             },
           },
         }}
