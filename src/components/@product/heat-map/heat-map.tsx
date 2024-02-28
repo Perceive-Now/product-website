@@ -102,11 +102,13 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
       />
       {/* <div className="absolute top-0 z-50 bg-black w-full"> */}
 
-      <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-0 z- bg-blac w-full h-full gap-[0.5px]">
+      <div className="flex flex-col justify-center items-start mt-1 absolute top-0 right-0 h-full gap-1">
         {COLOR_GROUPS.map((grp) => (
           <div key={grp} className="flex items-center gap-2">
+            <div
+              className={classNames("h-2 w-2 rounded-[2px] shrink-0", HEATMAP_COLORS[grp].color)}
+            />
             <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
-            <div className={classNames("h-10 w-1 shadow shrink-0", HEATMAP_COLORS[grp].color)} />
           </div>
         ))}
       </div>

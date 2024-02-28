@@ -48,6 +48,7 @@ export function PatentWipo({ keywords }: Props) {
     //
   }, [data]);
 
+  const finalData = data && data.map((item) => ({ label: item.title, count: item.count }));
   //
 
   return (
@@ -80,13 +81,13 @@ export function PatentWipo({ keywords }: Props) {
         <div>
           {data && (
             <BarChart
-              data={data.slice(1, 5)}
+              data={finalData as any}
               keys={["count"]}
-              indexBy="title"
+              indexBy="label"
               groupMode={"stacked"}
               layout={"horizontal"}
               // legendX="Number of Patents"
-              // legendY="WIPO FIELD"
+              legendY="WIPO FIELD"
               innerPadding={0}
               borderRadius={4}
               legends={"range"}

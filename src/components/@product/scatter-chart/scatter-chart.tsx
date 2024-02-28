@@ -101,12 +101,12 @@ export default function ScatterChart(props: IScatterChartProps) {
         axisRight={null}
         {...(props.legendX && {
           axisBottom: {
-            tickSize: 10,
-            tickPadding: 5,
+            tickSize: 0,
+            tickPadding: 10,
             tickRotation: 0,
             legend: props.legendX,
             legendPosition: "middle",
-            legendOffset: 42,
+            legendOffset: 44,
             format: (value) => {
               if (props.abbreviateLegendX) {
                 return abbreviateString(value);
@@ -124,7 +124,7 @@ export default function ScatterChart(props: IScatterChartProps) {
             tickRotation: 0,
             legend: props.legendY,
             legendPosition: "middle",
-            legendOffset: -50,
+            legendOffset: -55,
           },
         })}
         lineWidth={1}

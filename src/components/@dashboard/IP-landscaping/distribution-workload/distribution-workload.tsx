@@ -55,14 +55,16 @@ export const DistributionWorkload: FunctionComponent<Props> = ({ keywords }) => 
         <div>
           {/* {data && ( */}
           <BarChart
-            data={barChartData.slice(0, 10)}
+            data={barChartData.slice(0, 50)}
             keys={["value"]}
             indexBy="label"
             groupMode={"stacked"}
             // innerPadding={0}
             borderRadius={4}
             // layout={"vertical"}
-            legendX="iii"
+            legendX="Examiner"
+            legendY="No. of patents examined "
+            legends={"legend"}
           />
           {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">

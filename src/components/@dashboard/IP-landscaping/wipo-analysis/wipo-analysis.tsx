@@ -55,12 +55,15 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
         <div>
           {/* {data && ( */}
           <BarChart
-            data={barChartData.slice(0, 5)}
+            data={barChartData}
             keys={["value"]}
             indexBy="label"
             groupMode={"stacked"}
             // innerPadding={0}
             borderRadius={4}
+            legends={"legend"}
+            legendY="Average family size (n)"
+            legendX="Application type"
             // layout={"vertical"}
           />
           {/* )} */}

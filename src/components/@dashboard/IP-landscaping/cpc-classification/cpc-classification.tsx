@@ -25,6 +25,8 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
     //
   }, [data]);
 
+  const finalData = data && data.map((item) => ({ label: item.cpc_class, count: item.count }));
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -54,11 +56,13 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
         <div className="space-y-2 text-secondary-800 mt-4">
           {data && (
             <BarChart
-              data={data.slice(0, 20)}
+              data={finalData as any}
               keys={["count"]}
-              indexBy="cpc_class"
+              indexBy="label"
               groupMode="stacked"
-              // legendY="Number of references"
+              legends={"legend"}
+              legendX="CPC Class"
+              legendY="No. of patent count"
             />
           )}
 

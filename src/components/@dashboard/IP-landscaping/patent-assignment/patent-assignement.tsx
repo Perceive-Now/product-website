@@ -27,12 +27,6 @@ interface IScatterList {
 // type IYear = "1st5year" | "2nd5year";
 
 export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
-  // const [yearChoose, setYearChoose] = useState<IYear>("1st5year");
-
-  // const changeYear = (mode: string) => {
-  //   setYearChoose(mode as IYear);
-  // };
-
   const { data, isLoading, isError, error } = useQuery(
     ["patents-portfolio1", ...keywords],
     async () => {
@@ -76,6 +70,8 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
 
   // const scatterChartData = finalScatterDataFormatHelper(data ?? []);
 
+  const finalData = data && data.map((item) => ({ label: item.org, count: item.count }));
+
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
       <DataSection
@@ -106,14 +102,15 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
         <div>
           {data && (
             <BarChart
-              data={data.slice(1, 10)}
+              data={finalData?.slice(0, 20) as any}
               keys={["count"]}
-              indexBy="org"
+              indexBy="label"
               groupMode="stacked"
-              // legendY="Number of Patents"
-              legendX=" of Patents"
+              legendY="Average family size (n)"
+              legendX="Organizations"
               innerPadding={0}
               borderRadius={4}
+              legends={"legend"}
             />
           )}
           <div className="space-y-2 text-secondary-800 mt-4">
