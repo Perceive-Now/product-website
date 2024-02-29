@@ -4,6 +4,7 @@ import { getPatentExaminerWorkload } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
+// import ScrollableBarChart from "../../../@product/bar-scroll/scroll-bar";
 
 interface Props {
   keywords: string[];
@@ -66,6 +67,9 @@ export const DistributionWorkload: FunctionComponent<Props> = ({ keywords }) => 
             legendY="No. of patents examined "
             legends={"legend"}
           />
+          {/* <ScrollableBarChart
+            data={barChartData.slice(0, 50)}
+          /> */}
           {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>

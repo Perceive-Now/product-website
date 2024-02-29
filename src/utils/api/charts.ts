@@ -21,6 +21,15 @@ export async function getExamincationTrend(keywords: string[]) {
   return response.data.response;
 }
 
+export async function getPatentInventorColab(keywords: string[]) {
+  const response = await axiosInstance.get<IPatentInventorOverTime>(
+    `/api/patent_inventor_colab_over_time?keywords=${keywords.join(
+      "|",
+    )}&code=${authCode}&clientId=default`,
+  );
+  return response.data.response;
+}
+
 export async function getPatent(keywords: string[]) {
   const response = await axiosInstance.get<IExaminationTrend>(
     `/api/patent_grant_trend?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
@@ -81,6 +90,13 @@ export async function getPatentIPC(keywords: string[]) {
     `/api/patent_classification_ipc_class?keywords=${keywords.join(
       "|",
     )}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getPCTApplication(keywords: string[]) {
+  const res = await axiosInstance.get<IPCTApplication>(
+    `/api/patent_pct102_over_time?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
   );
   return res.data.response;
 }
@@ -229,6 +245,12 @@ export interface IExaminationTrend {
     grant_days: number;
   }[];
 }
+export interface IPatentInventorOverTime {
+  response: {
+    year: number;
+    count: number;
+  }[];
+}
 export interface IPatentCitation {
   response: {
     patent_id: string;
@@ -295,6 +317,13 @@ export interface IPatentClassification {
 export interface IPatentClassificationIPC {
   response: {
     ipc_class: string;
+    count: number;
+  }[];
+}
+
+export interface IPCTApplication {
+  response: {
+    year: number;
     count: number;
   }[];
 }

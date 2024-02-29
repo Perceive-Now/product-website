@@ -8,17 +8,17 @@ import { abbreviateString, formatNumber } from "../../../utils/helpers";
 /*
  *
  **/
-const theme = {
-  axis: {
-    textColor: "#eee",
-    fontSize: "14px",
-    tickColor: "#eee",
-  },
-  grid: {
-    stroke: "#888",
-    strokeWidth: 1,
-  },
-};
+// const theme = {
+//   axis: {
+//     textColor: "#eee",
+//     fontSize: "14px",
+//     tickColor: "#eee",
+//   },
+//   grid: {
+//     stroke: "#888",
+//     strokeWidth: 1,
+//   },
+// };
 export default function ScatterChart(props: IScatterChartProps) {
   const [dataItems, setDataItems] = useState(props.data);
 

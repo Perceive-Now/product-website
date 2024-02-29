@@ -1,7 +1,7 @@
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 import { FunctionComponent } from "react";
 
-import { COLORS } from "../../../utils/constants";
+// import { COLORS } from "../../../utils/constants";
 import classNames from "classnames";
 
 interface Props {
@@ -10,9 +10,10 @@ interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   legend?: any;
   legendY?: string;
+  cell?: "circle" | "rect";
 }
 
-export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => {
+export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell = "rect" }) => {
   const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const HEATMAP_COLORS = [
@@ -27,9 +28,15 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
     { range: "20", color: "bg-[#CCBAED]" },
     { range: "0", color: "bg-[#EFE9F9]" },
   ];
+
   return (
     <div className="relative">
-      <div className="h-[1600px] w-[620px] xl:w-[680px] 2xl:w-[800px] mx-auto ">
+      <div
+        className={classNames(
+          cell === "rect" ? "h-[1600px]" : "h-[300px] ",
+          "w-[620px] xl:w-[680px] 2xl:w-[800px] mx-auto ",
+        )}
+      >
         <ResponsiveHeatMap
           data={data}
           margin={{ top: 60, right: 60, bottom: 60, left: 60 }}
@@ -37,6 +44,9 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
           borderColor="#ffffff"
           inactiveOpacity={0.15}
           isInteractive={false}
+          cellComponent={cell}
+          forceSquare={cell === "circle" && true}
+          // yInnerPadding={-0.1}
           axisTop={{
             tickSize: 10,
             tickPadding: 5,
@@ -111,7 +121,11 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY }) => 
         {COLOR_GROUPS.map((grp) => (
           <div key={grp} className="flex items-center gap-2">
             <div
-              className={classNames("h-2 w-2 rounded-[2px] shrink-0", HEATMAP_COLORS[grp].color)}
+              className={classNames(
+                "h-2 w-2  shrink-0",
+                cell === "circle" ? "rounded-full" : "rounded-[2px]",
+                HEATMAP_COLORS[grp].color,
+              )}
             />
             <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
           </div>

@@ -154,11 +154,12 @@ export default function BarChart(props: IBarChartProps) {
           props.layout === "horizontal"
             ? `${props.height !== undefined ? props.height : "h-[500px]"}`
             : "h-[400px] ",
-          "3xl:w-[1000px] w-[700px] 2xl:max-w-[800px] mx-auto whitespace-nowrap ",
+          "3xl:w-[1000px] w-[700px] 2xl:max-w-[800px] mx-auto whitespace-nowrap overflow-x-auto pn_scroller",
         )}
-        // style={{ width: "100%", overflowX: "auto" }}
       >
         <ResponsiveBar
+          // height={400}
+          // width={dataItems.length > 10 ? 2000 : 800}
           data={dataItems}
           keys={props.keys}
           indexBy={props.indexBy}

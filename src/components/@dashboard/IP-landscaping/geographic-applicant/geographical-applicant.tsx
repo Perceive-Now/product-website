@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useEffect } from "react";
 import HeatMap from "../../../@product/heat-map";
 import DataSection from "../../../reusable/data-section";
@@ -14,8 +15,8 @@ interface ITransformedData {
 }
 
 interface ITransformedEntry {
-  id: string;
-  data: { x: number; y: number | null }[];
+  id: string | number;
+  data: { x: any; y: number | null }[];
 }
 export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
@@ -34,6 +35,7 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
   }, [data]);
 
   const transformedData: ITransformedData = {};
+  const transformedDataReverse: ITransformedData = {};
 
   data &&
     data.forEach((entry) => {
@@ -49,9 +51,23 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
       }
     });
 
-  const tree_data = Object.values(transformedData);
+  data &&
+    data.forEach((entry) => {
+      if (!transformedDataReverse[entry.year]) {
+        transformedDataReverse[entry.year] = { id: entry.year, data: [] };
+      }
 
-  // const finalData = transformData(tree_data);
+      if (entry.year && entry.count && transformedDataReverse[entry.year]) {
+        transformedDataReverse[entry.year].data.push({
+          x: entry.country,
+          y: entry.count,
+        });
+      }
+    });
+
+  const tree_data = Object.values(transformedData);
+  const tree_data_reverse = Object.values(transformedDataReverse);
+
   const transformData = (inputData: ITransformedEntry[]) => {
     // Collect all unique years from the existing data
     const uniqueYears = Array.from(
@@ -77,6 +93,7 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
   };
 
   const finalData = transformData(tree_data);
+  // const finalDataReverse = transformDataReverse(tree_data_reverse);
 
   return (
     <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
@@ -94,6 +111,32 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
         }
       >
         <div>
+          <div>
+            <HeatMap
+              data={tree_data_reverse.slice(0, 6)}
+              legendY={"Year"}
+              cell="circle"
+              legend={[
+                {
+                  anchor: "right",
+                  translateX: 60,
+                  translateY: -1,
+                  length: 500,
+                  thickness: 8,
+                  direction: "column",
+                  tickPosition: "after",
+                  tickSize: 3,
+                  tickSpacing: 4,
+                  tickOverlap: false,
+                  tickFormat: ">-.2s",
+                  title: "Growth rate",
+                  titleAlign: "end",
+                  titleOffset: 8,
+                },
+              ]}
+            />
+          </div>
+          <div className="italic text-[36px] text-center my-2 font-normal">VS</div>
           <HeatMap
             data={finalData}
             legendY={"Year"}

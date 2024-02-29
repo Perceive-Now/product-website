@@ -1,7 +1,7 @@
-import { FunctionComponent, useEffect } from "react";
+import { useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
 import { useQuery } from "@tanstack/react-query";
-import { getExamincationTrend } from "../../../../utils/api/charts";
+import { getPatentInventorColab } from "../../../../utils/api/charts";
 import PageTitle from "../../../reusable/page-title";
 import ScatterChart from "../../../@product/scatter-chart";
 
@@ -9,9 +9,9 @@ interface Props {
   keywords: string[];
 }
 
-interface IScholaryPublicationData {
-  grant_days: number;
-  years: number;
+interface IPatentColab {
+  count: number;
+  year: number;
 }
 
 interface IScatterItem {
@@ -24,19 +24,11 @@ interface IScatterList {
   data: IScatterItem[];
 }
 
-// type IYear = "1st5year" | "2nd5year";
-
 export function InventorTrendOverTime({ keywords }: Props) {
-  // const [yearChoose, setYearChoose] = useState<IYear>("1st5year");
-
-  // const changeYear = (mode: string) => {
-  //   setYearChoose(mode as IYear);
-  // };
-
   const { data, isLoading, isError, error } = useQuery(
-    ["patents-year-e", ...keywords],
+    ["patent-invenotr-colab", ...keywords],
     async () => {
-      return await getExamincationTrend(keywords);
+      return await getPatentInventorColab(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
@@ -49,14 +41,14 @@ export function InventorTrendOverTime({ keywords }: Props) {
   }, [data]);
 
   //
-  const finalScatterDataFormatHelper = (data: IScholaryPublicationData[]) => {
+  const finalScatterDataFormatHelper = (data: IPatentColab[]) => {
     if (!data) return [];
 
     const openAccessCountObj: IScatterList = { id: "Stage", data: [] };
     let openAccessData: IScatterItem[] = [];
     //
     data.forEach((d) => {
-      openAccessData.push({ x: d.years, y: d.grant_days });
+      openAccessData.push({ x: d.year, y: d.count });
     });
 
     // For checking and sorting past 10years
@@ -102,15 +94,15 @@ export function InventorTrendOverTime({ keywords }: Props) {
         }
       >
         <div>
-          {data && (
-            <ScatterChart
-              data={scatterChartData}
-              // legendX="Year"
-              // legendY="Publications"
-              // abbreviateLegendX={true}
-              colors={["#7F4BD8", "#442873"]}
-            />
-          )}
+          {/* {data && ( */}
+          <ScatterChart
+            data={scatterChartData}
+            // legendX="Year"
+            // legendY="Publications"
+            // abbreviateLegendX={true}
+            colors={["#7F4BD8", "#442873"]}
+          />
+          {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
