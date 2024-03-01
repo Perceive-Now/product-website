@@ -5,6 +5,7 @@ import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getGeographicDistributionApplicant } from "../../../../utils/api/charts";
+import countryNames from "../../../../utils/extra/country-2-names";
 
 interface Props {
   keywords: string[];
@@ -34,11 +35,16 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
     //
   }, [data]);
 
+  const dataItems = data?.map((d) => ({
+    country: countryNames[d.country],
+    year: d.year,
+    count: d.count,
+  }));
   const transformedData: ITransformedData = {};
   const transformedDataReverse: ITransformedData = {};
 
-  data &&
-    data.forEach((entry) => {
+  dataItems &&
+    dataItems.forEach((entry) => {
       if (!transformedData[entry.country]) {
         transformedData[entry.country] = { id: entry.country, data: [] };
       }
@@ -103,61 +109,59 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
         isError={isError}
         error={error}
         title={
-          <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="6. Geographical Distribution of Applicants"
-          />
+          <PageTitle titleClass="font-bold" title="6. Geographical Distribution of Applicants" />
         }
       >
         <div>
           <div>
             <HeatMap
-              data={tree_data_reverse.slice(0, 6)}
+              data={tree_data_reverse}
               legendY={"Year"}
               cell="circle"
-              legend={[
-                {
-                  anchor: "right",
-                  translateX: 60,
-                  translateY: -1,
-                  length: 500,
-                  thickness: 8,
-                  direction: "column",
-                  tickPosition: "after",
-                  tickSize: 3,
-                  tickSpacing: 4,
-                  tickOverlap: false,
-                  tickFormat: ">-.2s",
-                  title: "Growth rate",
-                  titleAlign: "end",
-                  titleOffset: 8,
-                },
-              ]}
+              legentType="legend"
+              // legend={[
+              //   {
+              //     anchor: "right",
+              //     translateX: 60,
+              //     translateY: -1,
+              //     length: 500,
+              //     thickness: 8,
+              //     direction: "column",
+              //     tickPosition: "after",
+              //     tickSize: 3,
+              //     tickSpacing: 4,
+              //     tickOverlap: false,
+              //     tickFormat: ">-.2s",
+              //     title: "Growth rate",
+              //     titleAlign: "end",
+              //     titleOffset: 8,
+              //   },
+              // ]}
             />
           </div>
           <div className="italic text-[36px] text-center my-2 font-normal">VS</div>
           <HeatMap
             data={finalData}
             legendY={"Year"}
-            legend={[
-              {
-                anchor: "right",
-                translateX: 60,
-                translateY: -1,
-                length: 500,
-                thickness: 8,
-                direction: "column",
-                tickPosition: "after",
-                tickSize: 3,
-                tickSpacing: 4,
-                tickOverlap: false,
-                tickFormat: ">-.2s",
-                title: "Growth rate",
-                titleAlign: "end",
-                titleOffset: 8,
-              },
-            ]}
+            legentType="legend"
+            // legend={[
+            //   {
+            //     anchor: "right",
+            //     translateX: 60,
+            //     translateY: -1,
+            //     length: 500,
+            //     thickness: 8,
+            //     direction: "column",
+            //     tickPosition: "after",
+            //     tickSize: 3,
+            //     tickSpacing: 4,
+            //     tickOverlap: false,
+            //     tickFormat: ">-.2s",
+            //     title: "Growth rate",
+            //     titleAlign: "end",
+            //     titleOffset: 8,
+            //   },
+            // ]}
           />
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>

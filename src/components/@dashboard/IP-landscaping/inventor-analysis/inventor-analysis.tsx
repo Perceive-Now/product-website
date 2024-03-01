@@ -69,9 +69,9 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
           />
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            {/* <h6 className="font-semibold text-primary-900">
+            <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6> */}
+            </h6>
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
                 Growth Rate of Patent Family Size: Average size of patent families each year, with

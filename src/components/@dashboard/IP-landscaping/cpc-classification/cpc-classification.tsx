@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
@@ -36,20 +37,8 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
         error={error}
         title={
           <PageTitle
-            // info={`This geographical hLegal Status of Patentseat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
             title="13. Distribution of Patents by CPC Classifications"
-            // subTitle="Top 5 Inventors"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: "Industries", value: "Industry" },
-            //       { label: "Universities", value: "Academic" },
-            //     ]}
-            //     activeMode={currentMode}
-            //     handleModeChange={handleModeChange}
-            //   />
-            // }
           />
         }
       >
@@ -68,9 +57,9 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            {/* <h6 className="font-semibold text-primary-900">
+            <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6> */}
+            </h6>
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
                 Leading IPC Class: "IPC Class R leads with X% of patent applications, marking it as

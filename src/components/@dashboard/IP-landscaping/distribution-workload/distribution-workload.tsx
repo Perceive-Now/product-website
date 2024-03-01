@@ -45,16 +45,9 @@ export const DistributionWorkload: FunctionComponent<Props> = ({ keywords }) => 
         isLoading={isLoading}
         isError={isError}
         error={error}
-        title={
-          <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="7. Distribution of Examiner Workload"
-          />
-        }
+        title={<PageTitle titleClass="font-bold" title="7. Distribution of Examiner Workload" />}
       >
         <div>
-          {/* {data && ( */}
           <BarChart
             data={barChartData.slice(0, 50)}
             keys={["value"]}
@@ -70,14 +63,13 @@ export const DistributionWorkload: FunctionComponent<Props> = ({ keywords }) => 
           {/* <ScrollableBarChart
             data={barChartData.slice(0, 50)}
           /> */}
-          {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              {/* <h6 className="font-semibold text-primary-900">
+              <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6> */}
+              </h6>
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
                   Examiner Workload Distribution: "Examiner A handled X% of all patent examinations

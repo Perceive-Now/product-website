@@ -11,7 +11,7 @@ import DefaultStep from "../../../../components/@dashboard/IP-landscaping/ip-ana
 // import Identification from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/Identification";
 import IPStepper from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/stepper";
 import IPNovelty from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/novelty&innovation";
-// import IPPriorArt from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/prior-art";
+import IPPriorArt from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/prior-art";
 // import IPTechnicalInvention from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/technical-invention";
 // import IPInventionContribution from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invention-contribution";
 // import IPPotentialUses from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/potential-uses";

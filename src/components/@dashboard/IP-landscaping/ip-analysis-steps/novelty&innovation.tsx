@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import Button from "../../../reusable/button";
-import KeywordSelected from "../KeywordSelected";
-import IPUseCase from "../components/use-case";
+// import KeywordSelected from "../KeywordSelected";
+// import IPUseCase from "../components/use-case";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 import * as yup from "yup";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { IAnswer } from "../../../../@types/entities/IPLandscape";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setNoveltyAspect } from "../../../../stores/IpSteps";
@@ -18,6 +18,9 @@ interface Props {
 export default function IPNovelty({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const answer = useAppSelector((state) => state.ipData.novelty_aspect.answer) ?? "";
+  const [exampleText, setExampleText] = useState("");
+
+  console.log(answer);
 
   const formResolver = yup.object().shape({
     answer: yup.string().required("Case is required"),
@@ -42,6 +45,18 @@ export default function IPNovelty({ changeActiveStep }: Props) {
     },
     [changeActiveStep, dispatch],
   );
+  // State to store the text content
+
+  const useExample = useCallback(() => {
+    // Get the text content of the <p> element
+    const pElement = document.getElementById("exampleText");
+    if (pElement) {
+      const pText = pElement.textContent;
+      // Set the example text in state
+      dispatch(setNoveltyAspect({ answer: pText || "" }));
+      setExampleText(pText || "");
+    }
+  }, [dispatch]);
 
   return (
     <>
@@ -54,7 +69,7 @@ export default function IPNovelty({ changeActiveStep }: Props) {
         <h4 className="text-gray-600 text-xl font-semibold">
           What is the full name of the company developing Smart sensor?
         </h4>
-        <p className="text-gray-600 text-sm">
+        <p id="exampleText" className="text-gray-600 text-sm">
           E.g. I'm aiming to assess the patentability of SkinCheck and identify potential areas
           where it might face challenges in terms of IP validity. My goal is to strengthen our
           patent application by preemptively addressing these areas, ensuring that our technology
@@ -65,6 +80,7 @@ export default function IPNovelty({ changeActiveStep }: Props) {
           size="small"
           rounded="medium"
           classname="px-0.5 py-[6px] text-xs font-semibold"
+          handleClick={useExample}
         >
           Use this example
         </Button>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 //
 import { COLORS } from "../../../utils/constants";
-import { abbreviateString, formatNumber } from "../../../utils/helpers";
+import { abbreviateString } from "../../../utils/helpers";
 
 /*
  *
@@ -27,72 +27,7 @@ export default function ScatterChart(props: IScatterChartProps) {
   }, [props.data]);
 
   return (
-    <div className="h-[400px] w-[500px] 2xl:w-[668px] mx-auto">
-      {/* <ResponsiveLine
-        data={dataItems}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: 'point' }}
-        yScale={{
-          type: 'linear',
-          min: 'auto',
-          max: 'auto',
-          stacked: true,
-          reverse: false
-        }}
-        yFormat=" >-.2f"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 20,
-          tickPadding: 10,
-          tickRotation: 0,
-          legend: props.legendX,
-          legendOffset: 29,
-          legendPosition: 'middle'
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: props.legendY,
-          legendOffset: -40,
-          legendPosition: 'middle'
-        }}
-        {...(props.legendX && {
-          axisBottom: {
-            tickSize: 10,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: props.legendX,
-            legendPosition: "middle",
-            legendOffset: 29,
-            // format: (value) => {
-            //   if (props.abbreviateLegendX) {
-            //     return abbreviateString(value);
-            //   } else {
-            //     return value;
-            //   }
-            // },
-          },
-        })}
-        {...(props.legendY && {
-          axisLeft: {
-            // format: (value) => formatNumber(value),
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: props.legendY,
-            legendPosition: "middle",
-            legendOffset: -50,
-          },
-        })}
-        pointSize={10}
-        pointColor={{ theme: 'background' }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: 'serieColor' }}
-        pointLabelYOffset={-12}
-        useMesh={true}
-      /> */}
+    <div className="h-[400px] w-[450px] 2xl:w-[668px] mx-auto">
       <ResponsiveLine
         data={dataItems}
         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}

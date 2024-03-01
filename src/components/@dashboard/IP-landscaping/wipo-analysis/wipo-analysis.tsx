@@ -45,15 +45,10 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
         isError={isError}
         error={error}
         title={
-          <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="5. Number of Applications by Applicant Type"
-          />
+          <PageTitle titleClass="font-bold" title="5. Number of Applications by Applicant Type" />
         }
       >
         <div>
-          {/* {data && ( */}
           <BarChart
             data={barChartData}
             keys={["value"]}
@@ -64,16 +59,14 @@ export const WipoAnalysis: FunctionComponent<Props> = ({ keywords }) => {
             legends={"legend"}
             legendY="Average family size (n)"
             legendX="Application type"
-            // layout={"vertical"}
           />
-          {/* )} */}
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              {/* <h6 className="font-semibold text-primary-900">
+              <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6> */}
+              </h6>
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
                   Market Share of Applications by Applicant Type: Breakdown of patent applications

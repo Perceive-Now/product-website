@@ -44,32 +44,15 @@ export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
         isLoading={isLoading}
         isError={isError}
         error={error}
-        title={
-          <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="2. Distribution of Patent Types"
-            // subTitle="Heat map of patents location in USA"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: "Industries", value: "Industry" },
-            //       { label: "Universities", value: "Academic" },
-            //     ]}
-            //     activeMode={currentMode}
-            //     handleModeChange={handleModeChange}
-            //   />
-            // }
-          />
-        }
+        title={<PageTitle titleClass="font-bold" title="2. Distribution of Patent Types" />}
       >
         <div className="space-y-2 text-secondary-800 mt-4">
           {<PieChart data={pieChartData} />}
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            {/* <h6 className="font-semibold text-primary-900">
+            <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6> */}
+            </h6>
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
                 Proportion of Patent Types: Breakdown of patents by type (utility, design, plant),

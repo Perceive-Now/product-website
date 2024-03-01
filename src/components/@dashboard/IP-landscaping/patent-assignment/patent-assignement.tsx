@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useEffect } from "react";
 import BarChart from "../../../@product/bar-chart";
 import DataSection from "../../../reusable/data-section";
@@ -9,20 +10,20 @@ interface Props {
   keywords: string[];
 }
 
-interface IScholaryPublicationData {
-  count: number;
-  year: number;
-}
+// interface IScholaryPublicationData {
+//   count: number;
+//   year: number;
+// }
 
-interface IScatterItem {
-  x: number;
-  y: number;
-}
+// interface IScatterItem {
+//   x: number;
+//   y: number;
+// }
 
-interface IScatterList {
-  id: string;
-  data: IScatterItem[];
-}
+// interface IScatterList {
+//   id: string;
+//   data: IScatterItem[];
+// }
 
 // type IYear = "1st5year" | "2nd5year";
 
@@ -81,21 +82,8 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
         error={error}
         title={
           <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
             title="9. Top Organizations by Number of Patent Assignments"
-            // subTitle="Heat map of patents location in USA"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: "2014-2018", value: "1st5year" },
-            //       { label: "2019-2023", value: "2nd5year" },
-            //     ]}
-            //     activeMode={yearChoose}
-            //     handleModeChange={changeYear}
-            //     classNames="text-sm font-semibold"
-            //   />
-            // }
           />
         }
       >
@@ -116,10 +104,10 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              {/* <h6 className="font-semibold text-primary-900">
+              <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6> */}
+              </h6>
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
                   Leading Organization in Patent Assignments: "Organization A leads with X% of all

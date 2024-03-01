@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
 import { useQuery } from "@tanstack/react-query";
@@ -9,30 +10,22 @@ interface Props {
   keywords: string[];
 }
 
-interface IScholaryPublicationData {
-  grant_days: number;
-  years: number;
-}
+// interface IScholaryPublicationData {
+//   grant_days: number;
+//   years: number;
+// }
 
-interface IScatterItem {
-  x: number;
-  y: number;
-}
+// interface IScatterItem {
+//   x: number;
+//   y: number;
+// }
 
-interface IScatterList {
-  id: string;
-  data: IScatterItem[];
-}
-
-// type IYear = "1st5year" | "2nd5year";
+// interface IScatterList {
+//   id: string;
+//   data: IScatterItem[];
+// }
 
 export function PatentWipo({ keywords }: Props) {
-  // const [yearChoose, setYearChoose] = useState<IYear>("1st5year");
-
-  // const changeYear = (mode: string) => {
-  //   setYearChoose(mode as IYear);
-  // };
-
   const { data, isLoading, isError, error } = useQuery(
     ["wipo_sector", ...keywords],
     async () => {
@@ -60,21 +53,8 @@ export function PatentWipo({ keywords }: Props) {
         error={error}
         title={
           <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
             title="15. Distribution of Patents Across WIPO Sectors"
-            // subTitle="Heat map of patents location in USA"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: "2014-2018", value: "1st5year" },
-            //       { label: "2019-2023", value: "2nd5year" },
-            //     ]}
-            //     activeMode={yearChoose}
-            //     handleModeChange={changeYear}
-            //     classNames="text-sm font-semibold"
-            //   />
-            // }
           />
         }
       >

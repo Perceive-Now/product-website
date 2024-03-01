@@ -48,20 +48,9 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
         error={error}
         title={
           <PageTitle
-            // info={`This geographical hLegal Status of Patentseat map network was extracted from "X" no of publications and "Y" no of patents`}
             titleClass="font-bold"
             title="4. Geographical Distribution of Patent Families"
             subTitle="Top 5 Inventors"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: "Industries", value: "Industry" },
-            //       { label: "Universities", value: "Academic" },
-            //     ]}
-            //     activeMode={currentMode}
-            //     handleModeChange={handleModeChange}
-            //   />
-            // }
           />
         }
       >

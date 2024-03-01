@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
@@ -34,22 +35,7 @@ export function PatentIPC({ keywords }: Props) {
         isError={isError}
         error={error}
         title={
-          <PageTitle
-            // info={`This geographical hLegal Status of Patentseat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="14. Top IPC Classes in Patent Applications"
-            // subTitle="Top 5 Inventors"
-            // sideTitleOption={
-            //   <RadioButtons
-            //     options={[
-            //       { label: "Industries", value: "Industry" },
-            //       { label: "Universities", value: "Academic" },
-            //     ]}
-            //     activeMode={currentMode}
-            //     handleModeChange={handleModeChange}
-            //   />
-            // }
-          />
+          <PageTitle titleClass="font-bold" title="14. Top IPC Classes in Patent Applications" />
         }
       >
         <div className="space-y-2 text-secondary-800 mt-4">
@@ -67,9 +53,9 @@ export function PatentIPC({ keywords }: Props) {
 
           <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
           <div>
-            {/* <h6 className="font-semibold text-primary-900">
+            <h6 className="font-semibold text-primary-900">
               Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-            </h6> */}
+            </h6>
             <ul className="list-disc ml-3 text-sm mt-1 font-medium">
               <li>
                 Leading IPC Class: "IPC Class R leads with X% of patent applications, marking it as

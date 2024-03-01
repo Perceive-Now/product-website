@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form";
 import Button from "../../../reusable/button";
-import KeywordSelected from "../KeywordSelected";
-import IPUseCase from "../components/use-case";
+// import KeywordSelected from "../KeywordSelected";
+// import IPUseCase from "../components/use-case";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 import * as yup from "yup";
 import { useCallback, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { setPurposeIdentification } from "../../../../stores/IpSteps";
+import { useAppSelector } from "../../../../hooks/redux";
+// import { setPurposeIdentification } from "../../../../stores/IpSteps";
 import { CrossIcon } from "../../../icons";
 
 interface Props {
@@ -20,7 +20,7 @@ interface IAnswer {
 }
 
 export default function KeywordSelection({ changeActiveStep }: Props) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const answer = useAppSelector((state) => state.ipData.purpose_identification.answer) ?? "";
 
   const [hasKeywords, setHasKeywords] = useState(false);
@@ -45,12 +45,11 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
   //
   const addKeyword = useCallback(
     (value: IAnswer) => {
-      if (keywords.length >= 5) {
+      if (keywords.length >= 4) {
         setHasKeywords(true);
-      } else {
-        setKeywords((prevKeywords) => [...prevKeywords, { ...value, answer: value.answer }]);
-        reset();
       }
+      setKeywords((prevKeywords) => [...prevKeywords, { ...value, answer: value.answer }]);
+      reset();
     },
     [keywords.length, reset],
   );
@@ -120,6 +119,15 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Enter Keyword"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Prevent default behavior of Enter key
+                    const keyword = (e.target as HTMLTextAreaElement).value.trim(); // Get the keyword and remove leading/trailing spaces
+                    if (keyword) {
+                      addKeyword({ answer: keyword });
+                    }
+                  }
+                }}
               />
             </div>
           </label>

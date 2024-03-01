@@ -4,6 +4,7 @@ import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getGeographicalDistributionInventors } from "../../../../utils/api/charts";
+import countryNames from "../../../../utils/extra/country-2-names";
 
 interface Props {
   keywords: string[];
@@ -34,9 +35,14 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
   }, [data]);
 
   const transformedData: ITransformedData = {};
+  const dataItems = data?.map((d) => ({
+    country: countryNames[d.country],
+    year: d.year,
+    count: d.count,
+  }));
 
-  data &&
-    data.forEach((entry) => {
+  dataItems &&
+    dataItems.forEach((entry) => {
       if (!transformedData[entry.country]) {
         transformedData[entry.country] = { id: entry.country, data: [] };
       }
@@ -119,11 +125,7 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
         isError={isError}
         error={error}
         title={
-          <PageTitle
-            // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-            titleClass="font-bold"
-            title="11. Geographical Distribution of Inventors"
-          />
+          <PageTitle titleClass="font-bold" title="11. Geographical Distribution of Inventors" />
         }
       >
         <div>
@@ -152,10 +154,10 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
           <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
-              {/* <h6 className="font-semibold text-primary-900">
+              <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
-              </h6> */}
+              </h6>
               <ul className="list-disc ml-3 text-sm mt-1 font-medium">
                 <li>
                   Top Country for Inventor Activity: "Country H leads in inventor activity,

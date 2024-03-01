@@ -11,9 +11,16 @@ interface Props {
   legend?: any;
   legendY?: string;
   cell?: "circle" | "rect";
+  legentType?: "legend" | "range";
 }
 
-export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell = "rect" }) => {
+export const HeatMap: FunctionComponent<Props> = ({
+  data,
+  legend,
+  legendY,
+  legentType = "range",
+  cell = "rect",
+}) => {
   const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const HEATMAP_COLORS = [
@@ -34,12 +41,12 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell 
       <div
         className={classNames(
           cell === "rect" ? "h-[1600px]" : "h-[300px] ",
-          "w-[620px] xl:w-[680px] 2xl:w-[800px] mx-auto ",
+          "w-[620px] 2xl:w-[800px] mx-auto ",
         )}
       >
         <ResponsiveHeatMap
           data={data}
-          margin={{ top: 60, right: 60, bottom: 60, left: 60 }}
+          margin={{ top: 60, right: 60, bottom: 60, left: cell === "rect" ? 120 : 60 }}
           borderWidth={2}
           borderColor="#ffffff"
           inactiveOpacity={0.15}
@@ -48,7 +55,7 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell 
           forceSquare={cell === "circle" && true}
           // yInnerPadding={-0.1}
           axisTop={{
-            tickSize: 10,
+            tickSize: 0,
             tickPadding: 5,
             tickRotation: 0,
             legend: `${legendY !== undefined && legendY}`,
@@ -56,13 +63,12 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell 
             legendPosition: "middle",
           }}
           axisLeft={{
-            tickSize: 5,
+            tickSize: 0,
             tickPadding: 5,
             tickRotation: 0,
             legendPosition: "middle",
             legendOffset: -72,
           }}
-          // colors={COLORS}
           colors={(cell) => {
             const value = cell.value as number;
             if (value === 0) {
@@ -79,12 +85,6 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell 
               return "#442873";
             }
           }}
-          // colors={{
-          //   type: "sequential",
-          //   scheme: "blues",
-          //   // minValue: -100000,
-          //   // maxValue: 100000
-          // }}
           emptyColor="#7F4BD8"
           // hoverTarget="row"
           legends={legend}
@@ -117,17 +117,28 @@ export const HeatMap: FunctionComponent<Props> = ({ data, legend, legendY, cell 
           }}
         />
       </div>
-      <div className="flex flex-col justify-center items-start mt-1 absolute top-0 right-0 h-full gap-1">
+      <div
+        className={classNames(
+          legentType === "range" ? "items-end right-2" : "items-start right-0 gap-1",
+          "flex flex-col justify-center  mt-1 absolute top-0 h-full ",
+        )}
+      >
         {COLOR_GROUPS.map((grp) => (
           <div key={grp} className="flex items-center gap-2">
+            {legentType === "range" && (
+              <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
+            )}
             <div
               className={classNames(
-                "h-2 w-2  shrink-0",
+                " shrink-0",
+                legentType === "range" ? "h-[35px] w-1 rounded-none" : "h-2  w-2 ",
                 cell === "circle" ? "rounded-full" : "rounded-[2px]",
                 HEATMAP_COLORS[grp].color,
               )}
             />
-            <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
+            {legentType === "legend" && (
+              <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
+            )}
           </div>
         ))}
       </div>

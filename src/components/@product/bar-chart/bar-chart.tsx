@@ -25,7 +25,7 @@ export default function BarChart(props: IBarChartProps) {
     setDataItems(props.data);
   }, [props.data]);
 
-  const barPadding = props.layout === "horizontal" ? 0.7 : 0.7;
+  const barPadding = props.layout === "horizontal" ? 0.5 : 0.5;
 
   const colorByLabel: BarLabelColors = {
     "2023": "#442873",
@@ -152,9 +152,9 @@ export default function BarChart(props: IBarChartProps) {
       <div
         className={classNames(
           props.layout === "horizontal"
-            ? `${props.height !== undefined ? props.height : "h-[500px]"}`
+            ? `${props.height !== undefined ? props.height : "h-[400px]"}`
             : "h-[400px] ",
-          "3xl:w-[1000px] w-[700px] 2xl:max-w-[800px] mx-auto whitespace-nowrap overflow-x-auto pn_scroller",
+          "3xl:w-[1000px] w-[600px] 2xl:max-w-[800px] mx-auto whitespace-nowrap overflow-x-auto pn_scroller",
         )}
       >
         <ResponsiveBar
@@ -246,7 +246,7 @@ export default function BarChart(props: IBarChartProps) {
       </div>
 
       {props.legends === "range" && (
-        <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-10 h-full gap-[0.5px]">
+        <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-5 xl:right-10 h-full gap-[0.5px]">
           {COLOR_GROUPS.map((grp) => (
             <div key={grp} className="flex items-center gap-2">
               <span className="text-[8px] font-medium italic">{HEATMAP_COLORS[grp].range}</span>
