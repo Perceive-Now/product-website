@@ -1,9 +1,16 @@
 import classNames from "classnames";
 import { ChevronRight } from "../../icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import KeywordSelected from "../../@dashboard/IP-landscaping/KeywordSelected";
 
 export const MoreNavOption = () => {
+  const location = useLocation();
+  const locationArr = location.pathname.split("/");
+
+  const isLocationMatched = (key: string, locationArr: string[]) => {
+    return locationArr.some((part) => part.startsWith(key));
+  };
+
   return (
     <div className="flex-shrink-0 w-[228px] ">
       <div className="flex flex-col border rounded-t-sm shadow gap-[2px]">
@@ -20,7 +27,7 @@ export const MoreNavOption = () => {
                 type="button"
                 className={classNames(
                   " text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between border-b",
-                  name.key === location.pathname
+                  isLocationMatched(name.key, locationArr)
                     ? "bg-primary-900 text-white"
                     : "text-secondary-800 hover:bg-primary-50",
                 )}
@@ -28,7 +35,7 @@ export const MoreNavOption = () => {
                 <span>{name.title}</span>
                 <ChevronRight />
               </button>
-              {name.key === location.pathname && <KeywordSelected />}
+              {isLocationMatched(name.key, locationArr) && <KeywordSelected />}
             </div>
           ))}
         </div>
@@ -40,7 +47,7 @@ export const MoreNavOption = () => {
 const List = [
   {
     title: "IP Analysis",
-    key: "/ip-analysis",
+    key: "ip-analysis",
   },
   {
     title: "Market Research & IP",

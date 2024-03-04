@@ -60,7 +60,7 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
 
 //
 interface IDataSectionProps {
-  title: ReactElement;
+  title?: ReactElement;
   keywords: string[];
   isLoading: boolean;
   isError: boolean;

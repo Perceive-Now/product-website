@@ -81,6 +81,7 @@ import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
 import ProductLayout from "./layouts/product-layout";
 import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
+import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 
 /**
  *
@@ -109,7 +110,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route element={<ProductLayout />}>
             <Route path="/ip-analysis" element={<IPAnalysis />} />
-            {/* <Route path="/ip-landscaping/summary" element={<IPSummaryReport />} /> */}
+            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
           </Route>
           <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
 

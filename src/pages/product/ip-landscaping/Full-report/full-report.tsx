@@ -888,7 +888,7 @@ export const IPFullReport = () => {
             >
               Save
             </Button>
-            <Button
+            {/* <Button
               htmlType={"button"}
               type={"secondary"}
               rounded={"medium"}
@@ -898,7 +898,7 @@ export const IPFullReport = () => {
               handleClick={() => navigate("/ip-landscaping")}
             >
               Change report details
-            </Button>
+            </Button> */}
           </div>
           <div className="rounded-lg shadow-custom flex flex-col mt-4 p-2 gap-1">
             {topics.map((topic) => (
