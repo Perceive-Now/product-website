@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 // import classNames from "classnames";
 //
-import { SearchIcon } from "../../../../components/icons";
+// import { SearchIcon } from "../../../../components/icons";
 //
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import Button from "../../../../components/reusable/button";
@@ -16,30 +16,32 @@ import BarChart from "../../../../components/@product/bar-chart";
 // import RadarChart from "../../../../components/@product/radar";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentsYearly } from "../../../../utils/api/charts";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import DataSection from "../../../../components/reusable/data-section";
-import PageTitle from "../../../../components/reusable/page-title";
-import SemanticSearch from "../../../../components/reusable/semantic-search";
-import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
-import RadioButtons from "../../../../components/reusable/radio-buttons";
-import MoreNavOption from "../../../../components/reusable/nav-options";
+// import PageTitle from "../../../../components/reusable/page-title";
+// import SemanticSearch from "../../../../components/reusable/semantic-search";
+// import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
+// import RadioButtons from "../../../../components/reusable/radio-buttons";
+// import MoreNavOption from "../../../../components/reusable/nav-options";
 import ScatterChart from "../../../../components/@product/scatter-chart";
 import TreeMap from "../../../../components/@product/tree-map";
+import { Link } from "react-router-dom";
+import classNames from "classnames";
 
-type ISearchType = "or" | "and" | "custom";
+// type ISearchType = "or" | "and" | "custom";
 /**
  *
  */
 export const IPSummaryReport = () => {
-  const [searchType, SetSearchType] = useState<ISearchType>("or");
+  // const [searchType, SetSearchType] = useState<ISearchType>("or");
 
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
   //
-  const [isSemantic, setISearchSemantic] = useState(false);
-  const ipDetails = useAppSelector((state) => state.ipData) ?? {};
+  // const [isSemantic, setISearchSemantic] = useState(false);
+  // const ipDetails = useAppSelector((state) => state.ipData) ?? {};
 
   //
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -54,7 +56,7 @@ export const IPSummaryReport = () => {
 
   // console.log(filterKeywords)
 
-  const { data, isLoading, isError, error } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ["patents-year", ...keywords],
     async () => {
       return await getPatentsYearly(keywords);
@@ -82,9 +84,9 @@ export const IPSummaryReport = () => {
   //   dispatch(setFilter([]));
   // };
 
-  const handleSearchType = (value: string) => {
-    SetSearchType(value as ISearchType);
-  };
+  // const handleSearchType = (value: string) => {
+  //   SetSearchType(value as ISearchType);
+  // };
 
   return (
     <>
@@ -103,19 +105,19 @@ export const IPSummaryReport = () => {
       <div className="flex flex-col md:flex-row mb-2 gap-x-3 mt-2">
         <div className="mt-0.5">
           {/* Search bar */}
-          {isSemantic ? (
-            <>{/* <SemanticSearch initialValue={searchedKeywords} /> */}</>
-          ) : (
-            <div>
-              <Search
-                required
-                size="small"
-                className="w-full bg-white"
-                onSubmit={handleSearch}
-                initialValue={searchedKeywords}
-                searchButton={true}
-              />
-              {/* {keywords.length > 0 ? (
+          {/* {isSemantic ? (
+            <><SemanticSearch initialValue={searchedKeywords} /> </>
+          ) : ( */}
+          <div>
+            <Search
+              required
+              size="small"
+              className="w-full bg-white"
+              onSubmit={handleSearch}
+              initialValue={searchedKeywords}
+              searchButton={true}
+            />
+            {/* {keywords.length > 0 ? (
               <div className="mt-2">
                 <span>Showing patents for: </span>
                 <span className="">"{joinedkeywords}"</span>&nbsp;
@@ -136,8 +138,8 @@ export const IPSummaryReport = () => {
                 Search keywords e.g. “COVID-19” to see related patents.
               </p>
             )} */}
-            </div>
-          )}
+          </div>
+          {/* )} */}
           {/* <div className="flex justify-end mt-2">
             <button
               type="button"
@@ -177,6 +179,20 @@ export const IPSummaryReport = () => {
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 ">
             {/* <MoreNavOption /> */}
             <div className="space-y-4 lg:w-[920px] xl:w-full">
+              <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
+                <h2 className="text-lg font-bold text-primary-900">Related technologies</h2>
+
+                <div className="flex flex-wrap item-center gap-2">
+                  {relatedKeywords.map((keyword) => (
+                    <button
+                      key={keyword}
+                      className="rounde bg-appGray-100 py-1 px-2 text-primary-900 font-semibold text-sm"
+                    >
+                      {keyword}
+                    </button>
+                  ))}
+                </div>
+              </div>
               {/* report details */}
               {/* <div className="border-gray-200 shadow-custom border px-2 py-1 w-full space-y-2">
                 <h2 className="text-lg font-bold text-primary-900">Report Details</h2>
@@ -923,18 +939,53 @@ export const IPSummaryReport = () => {
               Change report details
             </Button>
           </div>
+          <div className="rounded-lg shadow-custom flex flex-col mt-4 p-2 gap-1">
+            {topics.map((topic) => (
+              <Link
+                key={topic.id}
+                // smooth
+                // onClick={() => handleButtonClick(topic.id)}
+                to={`#${topic.id}`}
+                className={classNames(
+                  topic.id === "related_technology"
+                    ? "border-l-4 border-primary-600 pl-0.5"
+                    : "pl-1",
+                  "text-start text-primary-900 text-sm truncate font-medium",
+                )}
+              >
+                {topic.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-const List = [
-  "IP Landscaping",
-  "Freedom to operate",
-  "M&A licensing",
-  "Technology landscaping",
-  "Competitive intelligence",
-  "Infringement analysis",
-  "Database Search",
+const topics = [
+  // { name: "Related technology", id: "related_technology" },
+  { name: "Related technologies", id: "1" },
+  { name: "Executive summary", id: "2" },
+  { name: "Introduction", id: "3" },
+  { name: "IP licensing  analysis", id: "4" },
+  { name: "National IP licensing trends", id: "5" },
+  { name: "Buyers trend", id: "6" },
+  { name: "Top 10 Key Buyer Trends: ", id: "7" },
+  { name: "Distribution of Sellers and Buyers (2014-2023)", id: "8" },
+  { name: "Deeper zoom on key buyers", id: "9" },
+  { name: "Top Inventors/Assignors/Sellers", id: "10" },
+  { name: "Quarterly trends", id: "11" },
+  { name: "Yearly licensing momentum", id: "12" },
+  { name: "Deeper zoom on key buyers", id: "13" },
+  { name: "Timeline of earliest assignments to publishing", id: "14" },
+  { name: "Recommendations for actionable steps", id: "15" },
+];
+
+const relatedKeywords = [
+  "Sensor technology",
+  "Data analytics",
+  "Gyroscopes",
+  "Energy harvesting",
+  "Healthcare sensors",
 ];
