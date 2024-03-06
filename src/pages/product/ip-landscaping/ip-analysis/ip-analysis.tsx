@@ -20,6 +20,7 @@ import IPPriorArt from "../../../../components/@dashboard/IP-landscaping/ip-anal
 import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/review";
 import IPFinal from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/final";
 import KeywordSelection from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/keyword-selection";
+import IPNewStep from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-two";
 
 /**
  *
@@ -29,7 +30,6 @@ export default function IPAnalysis() {
   //
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {
-      // Ensure the stepValue is within valid range
       setActiveStep(stepValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +56,7 @@ export default function IPAnalysis() {
     {
       label: "Prior Art Research Findings",
       value: 3,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
+      component: <IPNewStep changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Technical Field of the Invention",

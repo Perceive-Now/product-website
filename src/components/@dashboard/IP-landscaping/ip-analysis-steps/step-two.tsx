@@ -11,14 +11,12 @@ import { IAnswer } from "../../../../@types/entities/IPLandscape";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setNoveltyAspect } from "../../../../stores/IpSteps";
 import { getChatBotAnswer } from "../../../../utils/api/chat";
-import axiosInstance from "../../../../utils/axios";
-import toast from "react-hot-toast";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
-export default function IPNovelty({ changeActiveStep }: Props) {
+export default function IPNewStep({ changeActiveStep }: Props) {
   const answ =
     "E.g. I'm aiming to assess the patentability of SkinCheck and identify potential areas where it might face challenges in terms of IP validity. My goal is to strengthen our patent application by preemptively addressing these areas, ensuring that our technology stands out in the competitive field of AI-driven healthcare solutions.";
 
@@ -44,7 +42,7 @@ export default function IPNovelty({ changeActiveStep }: Props) {
   //
 
   const onContinue = useCallback(
-    async (value: IAnswer) => {
+    (value: IAnswer) => {
       const userInput = {
         message: {
           user_input: "Please provide a concise description of the Smart sensor technology.",
@@ -54,19 +52,9 @@ export default function IPNovelty({ changeActiveStep }: Props) {
         },
       };
 
-      try {
-        const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/`,
-          userInput,
-        );
-        console.log(response);
-        dispatch(setNoveltyAspect(value));
-        changeActiveStep(3);
-        return response.data.data;
-      } catch (error: any) {
-        toast.error(error.message);
-        console.log(error);
-      }
+      getChatBotAnswer(userInput);
+      dispatch(setNoveltyAspect(value));
+      changeActiveStep(3);
     },
     [changeActiveStep, dispatch],
   );
