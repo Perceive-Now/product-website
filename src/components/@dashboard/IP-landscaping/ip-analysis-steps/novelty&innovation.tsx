@@ -8,22 +8,23 @@ import classNames from "classnames";
 import * as yup from "yup";
 import { useCallback, useState } from "react";
 import { IAnswer } from "../../../../@types/entities/IPLandscape";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { useAppDispatch } from "../../../../hooks/redux";
 import { setNoveltyAspect } from "../../../../stores/IpSteps";
-import { getChatBotAnswer } from "../../../../utils/api/chat";
 import axiosInstance from "../../../../utils/axios";
 import toast from "react-hot-toast";
+import Loading from "../../../reusable/loading";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
 export default function IPNovelty({ changeActiveStep }: Props) {
-  const answ =
-    "E.g. I'm aiming to assess the patentability of SkinCheck and identify potential areas where it might face challenges in terms of IP validity. My goal is to strengthen our patent application by preemptively addressing these areas, ensuring that our technology stands out in the competitive field of AI-driven healthcare solutions.";
+  const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
+
+  const [exampleAnswer, setExampleAnswer] = useState("");
 
   const dispatch = useAppDispatch();
-  const [answer, setAnswer] = useState("");
+  const [isloading, setIsLoading] = useState(false);
   // const answer = useAppSelector((state) => state.ipData.novelty_aspect.answer) ?? "";
 
   const formResolver = yup.object().shape({
@@ -34,9 +35,10 @@ export default function IPNovelty({ changeActiveStep }: Props) {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm({
     defaultValues: {
-      answer: answer,
+      answer: "",
     },
     resolver: yupResolver(formResolver),
     mode: "onBlur",
@@ -45,51 +47,49 @@ export default function IPNovelty({ changeActiveStep }: Props) {
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
+      setIsLoading(true);
       const userInput = {
         message: {
-          user_input: "Please provide a concise description of the Smart sensor technology.",
-        },
-        answeredQuestion: {
           user_input: value.answer,
         },
+        answeredQuestion: {
+          user_input: "What is the full name of the company developing Smart sensor?",
+        },
       };
-
       try {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/`,
           userInput,
         );
-        console.log(response);
-        dispatch(setNoveltyAspect(value));
-        changeActiveStep(3);
-        return response.data.data;
+        const apiData = response.data.question;
+        setIsLoading(false);
+        if (apiData !== null && apiData.length > 0) {
+          dispatch(setNoveltyAspect({ answer: apiData }));
+          changeActiveStep(3);
+        } else {
+          toast.error("null");
+        }
       } catch (error: any) {
+        setIsLoading(false);
         toast.error(error.message);
-        console.log(error);
       }
     },
     [changeActiveStep, dispatch],
   );
 
   const useExample = useCallback(() => {
-    setAnswer(answ);
-  }, []);
-
-  // const handleChange = (event: any) => {
-  //   setAnswer(event.target.value);
-  // };
+    setValue("answer", example); // Set the value of the 'answer' field to the example text
+  }, [setValue]);
 
   return (
     <>
+      <Loading isLoading={isloading} />
       <div className="space-y-2.5">
         <h4 className="text-gray-600 text-xl font-semibold">
           What is the full name of the company developing Smart sensor?
         </h4>
         <p id="exampleText" className="text-gray-600 text-sm">
-          E.g. I'm aiming to assess the patentability of SkinCheck and identify potential areas
-          where it might face challenges in terms of IP validity. My goal is to strengthen our
-          patent application by preemptively addressing these areas, ensuring that our technology
-          stands out in the competitive field of AI-driven healthcare solutions.
+          Eg. {example}
         </p>
         <Button
           type="secondary"

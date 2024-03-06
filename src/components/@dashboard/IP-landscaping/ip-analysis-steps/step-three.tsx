@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "../../../reusable/button";
-
+// import KeywordSelected from "../KeywordSelected";
+// import IPUseCase from "../components/use-case";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
@@ -8,7 +9,7 @@ import * as yup from "yup";
 import { useCallback, useState } from "react";
 import { IAnswer } from "../../../../@types/entities/IPLandscape";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { setPriorArtResearchfinding } from "../../../../stores/IpSteps";
+import { setTechnicalFieldInvention } from "../../../../stores/IpSteps";
 import axiosInstance from "../../../../utils/axios";
 import toast from "react-hot-toast";
 import Loading from "../../../reusable/loading";
@@ -17,14 +18,11 @@ interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
-export default function IPNewStep({ changeActiveStep }: Props) {
+export default function IPNewStepThree({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   // const [answer, setAnswer] = useState("");
-  const question = useAppSelector((state) => state.ipData.novelty_aspect.answer) ?? "";
+  const answer = useAppSelector((state) => state.ipData.prior_art_research.answer) ?? "";
   const [isloading, setIsLoading] = useState(false);
-
-  const example =
-    "I'm aiming to assess the patentability of SkinCheck and identify potential areas where it might face challenges in terms of IP validity. My goal is to strengthen our patent application by preemptively addressing these areas, ensuring that our technology stands out in the competitive field of AI-driven healthcare solutions.";
 
   const formResolver = yup.object().shape({
     answer: yup.string().required("Case is required"),
@@ -52,7 +50,7 @@ export default function IPNewStep({ changeActiveStep }: Props) {
           user_input: value.answer,
         },
         answeredQuestion: {
-          user_input: question,
+          user_input: answer,
         },
       };
       try {
@@ -65,10 +63,10 @@ export default function IPNewStep({ changeActiveStep }: Props) {
         setIsLoading(false);
 
         if (apiData !== null && apiData.length > 0) {
-          dispatch(setPriorArtResearchfinding({ answer: apiData }));
-          changeActiveStep(4);
+          dispatch(setTechnicalFieldInvention({ answer: apiData }));
+          changeActiveStep(5);
         } else {
-          toast.error("null");
+          toast.error(null);
         }
 
         // return response.data.data;
@@ -78,22 +76,21 @@ export default function IPNewStep({ changeActiveStep }: Props) {
         // console.log(error);
       }
     },
-    [changeActiveStep, dispatch, question],
+    [answer, changeActiveStep, dispatch],
   );
 
-  const useExample = useCallback(() => {
-    setValue("answer", example); // Set the value of the 'answer' field to the example text
-  }, [setValue]);
+  const example =
+    "I'm aiming to assess the patentability of SkinCheck and identify potential areas where it might face challenges in terms of IP validity. My goal is to strengthen our patent application by preemptively addressing these areas, ensuring that our technology stands out in the competitive field of AI-driven healthcare solutions.";
 
-  // const handleChange = (event: any) => {
-  //   setAnswer(event.target.value);
-  // };
+  const useExample = useCallback(() => {
+    setValue("answer", example);
+  }, [setValue]);
 
   return (
     <>
       <Loading isLoading={isloading} />
       <div className="space-y-2.5">
-        <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
+        <h4 className="text-gray-600 text-xl font-semibold">{answer}</h4>
         <p id="exampleText" className="text-gray-600 text-sm">
           E.g. {example}
         </p>

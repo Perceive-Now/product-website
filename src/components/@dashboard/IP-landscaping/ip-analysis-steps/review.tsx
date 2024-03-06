@@ -19,17 +19,19 @@ export default function IPReview({ changeActiveStep }: Props) {
 
   return (
     <div className="space-y-2.5 w-full shrink-0">
-      <KeywordSelected />
-      <IPUseCase changeActiveStep={changeActiveStep} />
+      {/* <KeywordSelected />
+      <IPUseCase changeActiveStep={changeActiveStep} /> */}
       <div className="w-full">
         <div>
-          <h5 className="text-xl font-semibold text-appGray-600">
-            These are the answers you provided.
+          <h5 className="text-xl font-semibold text-black">
+            Here's a quick look at the answers you gave.
           </h5>
-          <p className="text-base text-secondary-800">Please review your answers and continue.</p>
+          <p className="text-base text-secondary-800">
+            Take a moment to review them, and when you're ready, you can keep going.
+          </p>
         </div>
         <div className="mt-7 space-y-2.5 w-full">
-          <div className="rounded-lg overflow-hidden">
+          {/* <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
               Introduction and Purpose Identification
             </div>
@@ -51,10 +53,10 @@ export default function IPReview({ changeActiveStep }: Props) {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
           <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Novelty and Innovation Aspects
+              {answer_select.novelty_aspect.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -77,7 +79,7 @@ export default function IPReview({ changeActiveStep }: Props) {
           </div>
           <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Prior Art Research Findings
+              {answer_select.prior_art_research.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -100,7 +102,7 @@ export default function IPReview({ changeActiveStep }: Props) {
           </div>
           <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Technical Field of the Invention
+              {answer_select.technical_field_invention.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -123,7 +125,7 @@ export default function IPReview({ changeActiveStep }: Props) {
           </div>
           <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Identification of Inventors and Contributions
+              {answer_select.inventor_identification.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -146,7 +148,7 @@ export default function IPReview({ changeActiveStep }: Props) {
           </div>
           <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Potential Applications and Uses
+              {answer_select.potential_application.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -167,9 +169,9 @@ export default function IPReview({ changeActiveStep }: Props) {
               </ul>
             </div>
           </div>
-          <div className="rounded-lg overflow-hidden">
+          {/* <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Estimated Market Potential
+              {answer_select.estimated_market_potential.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -192,7 +194,7 @@ export default function IPReview({ changeActiveStep }: Props) {
           </div>
           <div className="rounded-lg overflow-hidden">
             <div className="bg-primary-900 font-medium text-white px-2 py-1">
-              Inventive Step or Non-Obviousness Discussion
+              {answer_select.inventive_step.answer}
             </div>
             <div className="bg-appGray-100">
               <ul className="list-disc px-2.5 ml-2 mr-6 py-1">
@@ -212,7 +214,7 @@ export default function IPReview({ changeActiveStep }: Props) {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="">

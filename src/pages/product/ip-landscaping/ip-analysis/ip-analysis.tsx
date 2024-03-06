@@ -21,6 +21,10 @@ import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analys
 import IPFinal from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/final";
 import KeywordSelection from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/keyword-selection";
 import IPNewStep from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-two";
+import IPNewStepThree from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-three";
+import IPNewStepFour from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-four";
+import IPNewStepFive from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-five";
+import IPNewStepSix from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-six";
 
 /**
  *
@@ -61,36 +65,36 @@ export default function IPAnalysis() {
     {
       label: "Technical Field of the Invention",
       value: 4,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
+      component: <IPNewStepThree changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Identification of Inventors and Contributions",
       value: 5,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
+      component: <IPNewStepFour changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Potential Applications and Uses",
       value: 6,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
+      component: <IPNewStepFive changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Estimated Market Potential",
       value: 7,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
+      component: <IPNewStepSix changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "Inventive Step or Non-Obviousness Discussion",
-      value: 8,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "Inventive Step or Non-Obviousness Discussion",
+    //   value: 8,
+    //   component: <IPNovelty changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "Review",
-      value: 9,
+      value: 8,
       component: <IPReview changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
-      value: 10,
+      value: 9,
       component: <IPFinal changeActiveStep={changeActiveStep} activeStep={activeStep} />,
     },
   ];
