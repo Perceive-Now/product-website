@@ -7,9 +7,13 @@ import classNames from "classnames";
 
 import * as yup from "yup";
 import { useCallback, useState } from "react";
-import { useAppSelector } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 // import { setPurposeIdentification } from "../../../../stores/IpSteps";
 import { CrossIcon } from "../../../icons";
+import axiosInstance from "../../../../utils/axios";
+import Loading from "../../../reusable/loading";
+import toast from "react-hot-toast";
+import { setIPDetail, setInventiveStep } from "../../../../stores/IpSteps";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -20,11 +24,12 @@ interface IAnswer {
 }
 
 export default function KeywordSelection({ changeActiveStep }: Props) {
-  // const dispatch = useAppDispatch();
-  const answer = useAppSelector((state) => state.ipData.purpose_identification.answer) ?? "";
+  const dispatch = useAppDispatch();
+  // const answer = useAppSelector((state) => state.ipData.purpose_identification.answer) ?? "";
 
   const [hasKeywords, setHasKeywords] = useState(false);
   const [keywords, setKeywords] = useState<IAnswer[]>([]);
+  const [isloading, setIsLoading] = useState(false);
 
   const formResolver = yup.object().shape({
     answer: yup.string().required("Case is required"),
@@ -37,7 +42,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
     reset,
   } = useForm({
     defaultValues: {
-      answer: answer,
+      answer: "",
     },
     resolver: yupResolver(formResolver),
     mode: "onBlur",
@@ -54,9 +59,40 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
     [keywords.length, reset],
   );
 
-  const onContinue = useCallback(() => {
-    changeActiveStep(2);
-  }, [changeActiveStep]);
+  const onContinue = useCallback(async () => {
+    const keywordString = keywords.map((keyword) => keyword.answer).join(", ");
+    setIsLoading(true);
+    const userInput = {
+      message: {
+        user_input: keywordString,
+      },
+      answeredQuestion: {
+        user_input: "",
+      },
+    };
+    try {
+      const response = await axiosInstance.post(
+        `https://pn-chatbot.azurewebsites.net/generate/`,
+        userInput,
+      );
+      // console.log(response.data.question);
+      const apiData = response.data.question;
+      setIsLoading(false);
+
+      if (apiData !== null && apiData.length > 0) {
+        dispatch(setInventiveStep({ answer: apiData }));
+        changeActiveStep(2);
+      } else {
+        toast.error(null);
+      }
+
+      // return response.data.data;
+    } catch (error: any) {
+      setIsLoading(false);
+      toast.error(error.message);
+      // console.log(error);
+    }
+  }, [changeActiveStep, dispatch, keywords]);
 
   const removeKeyword = useCallback(
     (value: string) => {
@@ -67,27 +103,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
 
   return (
     <>
-      {/* <div className="space-y-2.5">
-        <KeywordSelected />
-        <IPUseCase changeActiveStep={changeActiveStep} />
-        <div className="py-0.5 px-1 bg-appGray-100 rounded-sm text-base text-secondary-800 ">
-          Introduction and Purpose Identification
-        </div>
-        <p className="text-gray-600 text-sm">
-          E.g. I'm aiming to assess the patentability of SkinCheck and identify potential areas
-          where it might face challenges in terms of IP validity. My goal is to strengthen our
-          patent application by preemptively addressing these areas, ensuring that our technology
-          stands out in the competitive field of AI-driven healthcare solutions.
-        </p>
-        <Button
-          type="secondary"
-          size="small"
-          rounded="medium"
-          classname="px-0.5 py-[6px] text-xs font-semibold"
-        >
-          Use this example
-        </Button>
-      </div> */}
+      <Loading isLoading={isloading} />
       <h4 className="text-gray-600 text-xl font-semibold">
         Please provide at least 5 keywords associated to your technology.
       </h4>

@@ -39,9 +39,31 @@ export default function IPAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // const [steps, setSteps] = useState([
+  //   {
+  //     label: "",
+  //     value: 0,
+  //     component: <DefaultStep changeActiveStep={changeActiveStep} />,
+  //   },
+  //   {
+  //     label: "",
+  //     value: 1,
+  //     component: <KeywordSelection changeActiveStep={changeActiveStep} />,
+  //   },
+  //   {
+  //     label: "Novelty and Innovation Aspects",
+  //     value: 2,
+  //     component: <IPNovelty changeActiveStep={changeActiveStep} />,
+  //   },
+  // ]);
+
+  const addStep = useCallback((step: IStep) => {
+    setSteps((prevSteps) => [...prevSteps, step]);
+  }, []);
+
   //
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const steps: IStep[] = [
+  const [steps, setSteps] = useState([
     {
       label: "",
       value: 0,
@@ -53,40 +75,35 @@ export default function IPAnalysis() {
       component: <KeywordSelection changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Novelty and Innovation Aspects",
+      label: "",
       value: 2,
-      component: <IPNovelty changeActiveStep={changeActiveStep} />,
+      component: <IPNovelty changeActiveStep={changeActiveStep} addStep={addStep} />,
     },
     {
-      label: "Prior Art Research Findings",
+      label: "",
       value: 3,
       component: <IPNewStep changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Technical Field of the Invention",
+      label: "",
       value: 4,
       component: <IPNewStepThree changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Identification of Inventors and Contributions",
+      label: "",
       value: 5,
       component: <IPNewStepFour changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Potential Applications and Uses",
+      label: "",
       value: 6,
       component: <IPNewStepFive changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Estimated Market Potential",
+      label: "",
       value: 7,
       component: <IPNewStepSix changeActiveStep={changeActiveStep} />,
     },
-    // {
-    //   label: "Inventive Step or Non-Obviousness Discussion",
-    //   value: 8,
-    //   component: <IPNovelty changeActiveStep={changeActiveStep} />,
-    // },
     {
       label: "Review",
       value: 8,
@@ -97,7 +114,7 @@ export default function IPAnalysis() {
       value: 9,
       component: <IPFinal changeActiveStep={changeActiveStep} activeStep={activeStep} />,
     },
-  ];
+  ]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });

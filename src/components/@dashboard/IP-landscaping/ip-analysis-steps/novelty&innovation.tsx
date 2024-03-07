@@ -8,7 +8,7 @@ import classNames from "classnames";
 import * as yup from "yup";
 import { useCallback, useState } from "react";
 import { IAnswer } from "../../../../@types/entities/IPLandscape";
-import { useAppDispatch } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setNoveltyAspect } from "../../../../stores/IpSteps";
 import axiosInstance from "../../../../utils/axios";
 import toast from "react-hot-toast";
@@ -16,16 +16,15 @@ import Loading from "../../../reusable/loading";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
+  addStep?: (step: any) => void;
 }
 
-export default function IPNovelty({ changeActiveStep }: Props) {
+export default function IPNovelty({ changeActiveStep, addStep }: Props) {
   const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
-
-  const [exampleAnswer, setExampleAnswer] = useState("");
 
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
-  // const answer = useAppSelector((state) => state.ipData.novelty_aspect.answer) ?? "";
+  const question = useAppSelector((state) => state.ipData.inventive_step.answer) ?? "";
 
   const formResolver = yup.object().shape({
     answer: yup.string().required("Case is required"),
@@ -53,7 +52,7 @@ export default function IPNovelty({ changeActiveStep }: Props) {
           user_input: value.answer,
         },
         answeredQuestion: {
-          user_input: "What is the full name of the company developing Smart sensor?",
+          user_input: question,
         },
       };
       try {
@@ -66,6 +65,11 @@ export default function IPNovelty({ changeActiveStep }: Props) {
         if (apiData !== null && apiData.length > 0) {
           dispatch(setNoveltyAspect({ answer: apiData }));
           changeActiveStep(3);
+          // addStep({
+          //   label: "",
+          //   value: 2,
+          //   component: <IPNovelty changeActiveStep={changeActiveStep} addStep={addStep} />,
+          // })
         } else {
           toast.error("null");
         }
@@ -74,20 +78,18 @@ export default function IPNovelty({ changeActiveStep }: Props) {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, dispatch],
+    [changeActiveStep, dispatch, question],
   );
 
   const useExample = useCallback(() => {
-    setValue("answer", example); // Set the value of the 'answer' field to the example text
+    setValue("answer", example);
   }, [setValue]);
 
   return (
     <>
       <Loading isLoading={isloading} />
       <div className="space-y-2.5">
-        <h4 className="text-gray-600 text-xl font-semibold">
-          What is the full name of the company developing Smart sensor?
-        </h4>
+        <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
         <p id="exampleText" className="text-gray-600 text-sm">
           Eg. {example}
         </p>
