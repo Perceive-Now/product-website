@@ -6,24 +6,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 import * as yup from "yup";
-import { useCallback, useState } from "react";
-import { IAnswer } from "../../../../@types/entities/IPLandscape";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { setInventiveStep, setNoveltyAspect } from "../../../../stores/IpSteps";
-import axiosInstance from "../../../../utils/axios";
-import toast from "react-hot-toast";
+import { useCallback } from "react";
+import Loading from "../../../reusable/loading";
 
 interface Props {
-  changeActiveStep: (steps: number) => void;
+  onContinue: any;
+  question: string;
+  isLoading: boolean;
 }
 
-export default function IPNewStepSix({ changeActiveStep }: Props) {
-  const dispatch = useAppDispatch();
-
-  const example =
-    "The company behind Smart sensor is 'DermAI Tech Inc.' We specialize in developing advanced AI-driven solutions for dermatological applications. Our focus is on leveraging cutting-edge technology to improve skin health and diagnostics, and Smart sensor is our flagship product.";
-
-  const answer = useAppSelector((state) => state.ipData.potential_application.answer) ?? "";
+export default function NewComponent({ onContinue, question, isLoading }: Props) {
+  const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
 
   const formResolver = yup.object().shape({
     answer: yup.string().required("Case is required"),
@@ -43,48 +36,15 @@ export default function IPNewStepSix({ changeActiveStep }: Props) {
   });
   //
 
-  const onContinue = useCallback(
-    async (value: IAnswer) => {
-      const userInput = {
-        message: {
-          user_input: value.answer,
-        },
-        answeredQuestion: {
-          user_input: answer,
-        },
-      };
-      try {
-        const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/`,
-          userInput,
-        );
-        // console.log(response.data.question);
-        const apiData = response.data.question;
-
-        if (apiData !== null && apiData.length > 0) {
-          dispatch(setInventiveStep({ answer: apiData }));
-          changeActiveStep(2);
-        } else {
-          toast.error(null);
-        }
-
-        // return response.data.data;
-      } catch (error: any) {
-        toast.error(error.message);
-        // console.log(error);
-      }
-    },
-    [answer, changeActiveStep, dispatch],
-  );
-
   const useExample = useCallback(() => {
     setValue("answer", example);
   }, [setValue]);
 
   return (
     <>
+      <Loading isLoading={isLoading} />
       <div className="space-y-2.5">
-        <h4 className="text-gray-600 text-xl font-semibold">{answer}</h4>
+        <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
         <p id="exampleText" className="text-gray-600 text-sm">
           Eg. {example}
         </p>

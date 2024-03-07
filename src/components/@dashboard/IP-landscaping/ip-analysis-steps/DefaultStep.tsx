@@ -1,12 +1,9 @@
 import { FunctionComponent, useCallback, useState } from "react";
-import KeywordSelected from "../KeywordSelected";
 //
 import Button from "../../../reusable/button";
-import RadioButtons from "../../../reusable/radio-buttons";
 //
 import { setIPUseCase } from "../../../../stores/IpSteps";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import MultipleCheckbox from "../../../reusable/multiple-checkbox";
 import CheckBoxButtons from "../../../reusable/checkbox/checkbox";
 
 interface Props {
@@ -18,7 +15,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const radio_active =
     useAppSelector((state) => state.ipData.use_case.label) ?? "IP Validity Analysis";
   const [defaultValue] = radioOptions.filter((r) => r.label === radio_active);
-  // const [active, setActive] = useState<any>({});
   const [selected, setSelected] = useState<any>([]);
   //
   const onContinue = useCallback(() => {
@@ -28,9 +24,29 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   }, [changeActiveStep, dispatch, selected]);
   //
 
-  const handleChange = useCallback((mode: any) => {
-    setSelected(mode);
-  }, []);
+  const handleChange = useCallback(
+    (mode: string[]) => {
+      if (mode.includes("all")) {
+        if (selected.length >= 4) {
+          const filteredOptions = radioOptions.filter(
+            (option) => mode.includes(option.value) && option.value !== "all",
+          );
+          setSelected(filteredOptions.map((option) => option.value));
+        } else {
+          setSelected(radioOptions.map(({ value }) => value));
+        }
+      } else {
+        if (!mode.includes("all") && selected.length >= 4) {
+          setSelected([]);
+        } else if (mode.length >= 4) {
+          setSelected(radioOptions.map(({ value }) => value));
+        } else {
+          setSelected(mode);
+        }
+      }
+    },
+    [selected],
+  );
 
   return (
     <div className="xl:w-[620px h-[600px">
@@ -59,6 +75,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 export default DefaultStep;
 
 const radioOptions = [
+  { label: "Include all use cases", value: "all" },
   { label: "IP Validity Analysis", value: "ip-validity-analysis" },
   { label: "IP Licensing Opportunities", value: "ip-licensing-opportunity" },
   { label: "IP Landscaping & FTO", value: "ip-landscaping&fto" },
