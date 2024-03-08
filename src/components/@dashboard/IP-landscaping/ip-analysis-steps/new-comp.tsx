@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
 import Button from "../../../reusable/button";
-// import KeywordSelected from "../KeywordSelected";
-// import IPUseCase from "../components/use-case";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 import * as yup from "yup";
-import { useCallback } from "react";
 import Loading from "../../../reusable/loading";
 
 interface Props {
@@ -16,7 +14,7 @@ interface Props {
 }
 
 export default function NewComponent({ onContinue, question, isLoading }: Props) {
-  const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
+  // const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
 
   const formResolver = yup.object().shape({
     answer: yup.string().required("Case is required"),
@@ -26,7 +24,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
+    // setValue,
   } = useForm({
     defaultValues: {
       answer: "",
@@ -36,16 +34,16 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
   });
   //
 
-  const useExample = useCallback(() => {
-    setValue("answer", example);
-  }, [setValue]);
+  // const useExample = useCallback(() => {
+  //   setValue("answer", "");
+  // }, [setValue]);
 
   return (
     <>
       <Loading isLoading={isLoading} />
       <div className="space-y-2.5">
         <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
-        <p id="exampleText" className="text-gray-600 text-sm">
+        {/* <p id="exampleText" className="text-gray-600 text-sm">
           Eg. {example}
         </p>
         <Button
@@ -56,7 +54,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
           handleClick={useExample}
         >
           Use this example
-        </Button>
+        </Button> */}
       </div>
       <form onSubmit={handleSubmit(onContinue)} className="mt-5">
         <fieldset className="mt-3">
@@ -78,8 +76,8 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
               />
             </div>
           </label>
-          {/* {errors.description?.message && (
-            <div className="mt-1 text-xs text-danger-500">{errors.description?.message}</div>
+          {/* {errors.answer?.message && (
+            <div className="mt-1 text-xs text-danger-500">{errors.answer?.message}</div>
           )} */}
         </fieldset>
         <div className="mt-4 pb-4">

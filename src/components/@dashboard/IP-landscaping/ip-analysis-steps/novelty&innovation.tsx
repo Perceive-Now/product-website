@@ -61,10 +61,6 @@ export default function IPNovelty({ changeActiveStep, addStep }: Props) {
     [changeActiveStep, dispatch, question],
   );
 
-  // const useExample = useCallback(() => {
-  //   setValue("answer", example);
-  // }, [setValue]);
-
   return (
     <>
       <NewComponent isLoading={isloading} onContinue={onContinue} question={question} />
