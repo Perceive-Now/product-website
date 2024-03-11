@@ -32,7 +32,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
   const [isloading, setIsLoading] = useState(false);
 
   const formResolver = yup.object().shape({
-    answer: yup.string().required("Case is required"),
+    answer: yup.string().required("Please provide Keyword"),
   });
 
   const {
@@ -50,7 +50,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
   //
   const addKeyword = useCallback(
     (value: IAnswer) => {
-      if (keywords.length >= 4) {
+      if (keywords.length >= 0) {
         setHasKeywords(true);
       }
       setKeywords((prevKeywords) => [...prevKeywords, { ...value, answer: value.answer }]);
@@ -147,9 +147,9 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
               />
             </div>
           </label>
-          {/* {errors.description?.message && (
-            <div className="mt-1 text-xs text-danger-500">{errors.description?.message}</div>
-          )} */}
+          {errors.answer?.message && (
+            <div className="text-xs text-danger-500">{errors.answer?.message}</div>
+          )}
         </fieldset>
         {hasKeywords ? (
           <div className="mt-4 pb-4">

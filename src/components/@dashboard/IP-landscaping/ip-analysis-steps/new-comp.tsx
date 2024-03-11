@@ -17,7 +17,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
   // const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
 
   const formResolver = yup.object().shape({
-    answer: yup.string().required("Case is required"),
+    answer: yup.string().required("Please provide your answer"),
   });
 
   const {
@@ -76,9 +76,9 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
               />
             </div>
           </label>
-          {/* {errors.answer?.message && (
-            <div className="mt-1 text-xs text-danger-500">{errors.answer?.message}</div>
-          )} */}
+          {errors.answer?.message && (
+            <div className="text-xs text-danger-500">{errors.answer?.message}</div>
+          )}
         </fieldset>
         <div className="mt-4 pb-4">
           <Button htmlType={"submit"} rounded={"large"}>
