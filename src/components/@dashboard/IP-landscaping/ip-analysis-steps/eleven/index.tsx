@@ -18,9 +18,9 @@ export default function ChatEleventhQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
-  const keywords = searchedKeywords.map((kwd) => kwd.label);
+  const keywords = searchedKeywords.map((kwd) => kwd);
 
   const defaultQuestion = `Can you provide the exact claims that will be present in the patent application for your ${keywords}?`;
 

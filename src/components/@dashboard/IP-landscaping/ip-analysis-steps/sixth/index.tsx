@@ -15,9 +15,9 @@ export default function ChatSixthQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
-  const keywords = searchedKeywords.map((kwd) => kwd.label);
+  const keywords = searchedKeywords.map((kwd) => kwd);
 
   const defaultQuestion = `Can you explain why the features of the ${keywords} are considered non-obvious to someone skilled in the field?`;
   const [question, setQuestion] = useState("");

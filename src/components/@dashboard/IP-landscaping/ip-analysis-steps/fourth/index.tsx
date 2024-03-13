@@ -18,9 +18,9 @@ export default function ChatFourthQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
-  const keywords = searchedKeywords.map((kwd) => kwd.label);
+  const keywords = searchedKeywords.map((kwd) => kwd);
 
   const defaultQuestion = `Can you tell me more about the specific patents or prior art you may have encountered during your research? What similarities or differences did you find?`;
 

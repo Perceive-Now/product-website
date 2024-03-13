@@ -14,9 +14,10 @@ interface Props {
 export default function ChatThirdQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
-  const keywords = searchedKeywords.map((kwd) => kwd.label);
+  const keywords = searchedKeywords.map((kwd) => kwd);
 
   const defaultQuestion = `Describe the technical aspects and unique features of the ${keywords}?`;
 
