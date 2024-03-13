@@ -14,14 +14,14 @@ const KeywordSelected = () => {
   const [searchedKeywords, setSearchedKeywords] = useState<IKeywordOption[]>([]);
 
   const keywords = useAppSelector((state) => state.dashboard.search);
-  const searchKeywords = location.state.search;
+  const searchKeywords = location.state;
 
   useEffect(() => {
     if (keywords && keywords.length > 0) {
       setSearchedKeywords(keywords);
-    } else if (searchKeywords > 0) {
-      dispatch(setDashboardSearch(searchKeywords));
-      setSearchedKeywords(searchKeywords);
+    } else if (searchKeywords !== null) {
+      dispatch(setDashboardSearch(searchKeywords.search));
+      setSearchedKeywords(searchKeywords.search);
     } else {
       setSearchedKeywords([]);
     }
