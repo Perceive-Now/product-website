@@ -13,7 +13,7 @@ export default function IPFinal({ activeStep }: Props) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (activeStep === 14) {
+    if (activeStep === 444) {
       const interval = setInterval(() => {
         setProgress((prevProgress) => {
           const nextProgress = prevProgress + 1;

@@ -34,7 +34,7 @@ export default function IPAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [steps] = useState([
+  const steps = [
     {
       label: "",
       value: 0,
@@ -50,11 +50,11 @@ export default function IPAnalysis() {
       value: 2,
       component: <NewQuestion changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "",
-      value: 33,
-      component: <NewQuestion changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "",
+    //   value: 33,
+    //   component: <NewQuestion changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "",
       value: 3,
@@ -125,7 +125,7 @@ export default function IPAnalysis() {
       value: 16,
       component: <IPFinal activeStep={activeStep} />,
     },
-  ]);
+  ];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -162,8 +162,8 @@ export default function IPAnalysis() {
               </div>
             ))}
           </div>
-          {activeStep !== 0 && (
-            <div className="absolute bottom-0 left-0 right-0">
+          {activeStep > 1 && (
+            <div className="absolute bottom-0 left-0 right-0 w-full">
               <IPStepper steps={steps} activeStep={activeStep} />
             </div>
           )}
