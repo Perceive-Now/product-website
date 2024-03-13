@@ -14,16 +14,18 @@ const KeywordSelected = () => {
   const [searchedKeywords, setSearchedKeywords] = useState<IKeywordOption[]>([]);
 
   const keywords = useAppSelector((state) => state.dashboard.search);
+  const searchKeywords = location.state.search;
 
   useEffect(() => {
     if (keywords && keywords.length > 0) {
       setSearchedKeywords(keywords);
-    } else {
-      const searchKeywords = location.state.search;
+    } else if (searchKeywords > 0) {
       dispatch(setDashboardSearch(searchKeywords));
       setSearchedKeywords(searchKeywords);
+    } else {
+      setSearchedKeywords([]);
     }
-  }, [location.state, keywords, dispatch]);
+  }, [location, keywords, dispatch, searchKeywords]);
 
   return (
     <div className="flex flex-col justify-center items-start p-1 bg-gray-100">
