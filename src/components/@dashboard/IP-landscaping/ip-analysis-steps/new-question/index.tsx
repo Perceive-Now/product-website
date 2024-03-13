@@ -2,38 +2,29 @@
 // import IPUseCase from "../components/use-case";
 
 import { useCallback, useEffect, useState } from "react";
-import { IAnswer } from "../../../../@types/entities/IPLandscape";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { setNoveltyAspect } from "../../../../stores/IpSteps";
-import axiosInstance from "../../../../utils/axios";
+import { IAnswer } from "../../../../../@types/entities/IPLandscape";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
+import { setNoveltyAspect } from "../../../../../stores/IpSteps";
+import axiosInstance from "../../../../../utils/axios";
 import toast from "react-hot-toast";
-import NewComponent from "./new-comp";
+import NewComponent from "../new-comp";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
   addStep?: any;
 }
 
-export default function IPNovelty({ changeActiveStep }: Props) {
+export default function NewQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
-
-  const apiQuestion = useAppSelector((state) => state.ipData.inventive_step.answer) ?? "";
+  const apiQuestion = useAppSelector((state) => state.ipData.novelty_aspect.answer) ?? "";
   //
-  const keywords = searchedKeywords.map((kwd) => kwd.value);
-
-  const defaultQuestion = `What is the full name of the company developing the ${keywords}?`;
-
   const [question, setQuestion] = useState("");
 
   useEffect(() => {
-    if (apiQuestion) {
-      setQuestion(apiQuestion);
-    }
-    setQuestion(defaultQuestion);
-  }, [apiQuestion, defaultQuestion]);
+    setQuestion(apiQuestion);
+  }, [apiQuestion]);
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
@@ -54,10 +45,11 @@ export default function IPNovelty({ changeActiveStep }: Props) {
         const apiData = response.data.question;
         const status = response.data.status;
 
-        if (status === true) {
-          changeActiveStep(3);
+        if (status === "true" || status == true) {
+          changeActiveStep(4);
         } else {
           dispatch(setNoveltyAspect({ answer: apiData }));
+          changeActiveStep(33);
         }
         setIsLoading(false);
       } catch (error: any) {

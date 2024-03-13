@@ -5,16 +5,15 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 interface Props {
-  changeActiveStep: (steps: number) => void;
   activeStep: number;
 }
 
-export default function IPFinal({ changeActiveStep, activeStep }: Props) {
+export default function IPFinal({ activeStep }: Props) {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (activeStep === 10) {
+    if (activeStep === 14) {
       const interval = setInterval(() => {
         setProgress((prevProgress) => {
           const nextProgress = prevProgress + 1;
@@ -41,7 +40,11 @@ export default function IPFinal({ changeActiveStep, activeStep }: Props) {
       </p>
       <div className="mt-10">
         <div className="h-[80px] w-[80px] mx-auto">
-          <CircularProgressbar value={progress} text={`${progress}%`} />
+          <CircularProgressbar
+            value={progress}
+            text={`${progress}%`}
+            className="text-primary-900"
+          />
         </div>
         {/* <CircleLoader percentage={10} /> */}
         {/* <Button htmlType={"button"} rounded={"large"} handleClick={onContinue}>

@@ -1,30 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
 
 //
-
-//
-import { IStep } from "../../../../@types/entities/IStep";
-
-//
 import classNames from "classnames";
 import DefaultStep from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/DefaultStep";
-// import Identification from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/Identification";
 import IPStepper from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/stepper";
-import IPNovelty from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/novelty&innovation";
-import IPPriorArt from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/prior-art";
-// import IPTechnicalInvention from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/technical-invention";
-// import IPInventionContribution from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invention-contribution";
-// import IPPotentialUses from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/potential-uses";
-// import IPEstimatedMarket from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/estimated-market";
-// import IPInventiveSteps from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/invemtive-steps";
-import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/review";
+import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/review/review";
 import IPFinal from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/final";
 import KeywordSelection from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/keyword-selection";
-import IPNewStep from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-two";
-import IPNewStepThree from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-three";
-import IPNewStepFour from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-four";
-import IPNewStepFive from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-five";
-import IPNewStepSix from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/step-six";
+import ChatFirstQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/first-question";
+import NewQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/new-question";
+import ChatSecondQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/second-question";
+import ChatThirdQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/third-question";
+import ChatFourthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/fourth";
+import ChatFifthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/fifth";
+import ChatSixthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/sixth";
+import ChatSeventhQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/seventh";
+import ChatEightQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/eigth";
+import ChatNinthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/ninth";
+import ChatTenthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/ten";
+import ChatEleventhQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/eleven";
+import Thankyou from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/thank-you";
 
 /**
  *
@@ -39,31 +34,7 @@ export default function IPAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const [steps, setSteps] = useState([
-  //   {
-  //     label: "",
-  //     value: 0,
-  //     component: <DefaultStep changeActiveStep={changeActiveStep} />,
-  //   },
-  //   {
-  //     label: "",
-  //     value: 1,
-  //     component: <KeywordSelection changeActiveStep={changeActiveStep} />,
-  //   },
-  //   {
-  //     label: "Novelty and Innovation Aspects",
-  //     value: 2,
-  //     component: <IPNovelty changeActiveStep={changeActiveStep} />,
-  //   },
-  // ]);
-
-  const addStep = useCallback((step: IStep) => {
-    setSteps((prevSteps) => [...prevSteps, step]);
-  }, []);
-
-  //
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const [steps, setSteps] = useState([
+  const [steps] = useState([
     {
       label: "",
       value: 0,
@@ -77,42 +48,82 @@ export default function IPAnalysis() {
     {
       label: "",
       value: 2,
-      component: <IPNovelty changeActiveStep={changeActiveStep} addStep={addStep} />,
+      component: <NewQuestion changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 33,
+      component: <NewQuestion changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
       value: 3,
-      component: <IPNewStep changeActiveStep={changeActiveStep} />,
+      component: <ChatFirstQuestion changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
       value: 4,
-      component: <IPNewStepThree changeActiveStep={changeActiveStep} />,
+      component: <ChatSecondQuestion changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
       value: 5,
-      component: <IPNewStepFour changeActiveStep={changeActiveStep} />,
+      component: <ChatThirdQuestion changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
       value: 6,
-      component: <IPNewStepFive changeActiveStep={changeActiveStep} />,
+      component: <ChatFourthQuestion changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
       value: 7,
-      component: <IPNewStepSix changeActiveStep={changeActiveStep} />,
+      component: <ChatFifthQuestion changeActiveStep={changeActiveStep} />,
     },
     {
-      label: "Review",
+      label: "",
       value: 8,
-      component: <IPReview changeActiveStep={changeActiveStep} />,
+      component: <ChatSixthQuestion changeActiveStep={changeActiveStep} />,
     },
     {
       label: "",
       value: 9,
-      component: <IPFinal changeActiveStep={changeActiveStep} activeStep={activeStep} />,
+      component: <ChatSeventhQuestion changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 10,
+      component: <ChatEightQuestion changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 11,
+      component: <ChatNinthQuestion changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 12,
+      component: <ChatTenthQuestion changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 13,
+      component: <ChatEleventhQuestion changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 14,
+      component: <Thankyou changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "Review",
+      value: 15,
+      component: <IPReview changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "",
+      value: 16,
+      component: <IPFinal activeStep={activeStep} />,
     },
   ]);
 
@@ -126,7 +137,6 @@ export default function IPAnalysis() {
         <div
           className={classNames(
             "overflow-hidden relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
-            activeStep === 9 && "max-h-full",
             activeStep !== 0 && activeStep !== 1 && "shadow border rounded-md p-2",
           )}
         >
@@ -160,11 +170,6 @@ export default function IPAnalysis() {
         </div>
       </div>
       <div className="flex-shrink-0 w-[200px]" />
-      {/* {activeStep !== 0 && (
-        
-          <IPStepper steps={steps} activeStep={activeStep} />
-        // </div>
-      )} */}
     </>
   );
 }

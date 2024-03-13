@@ -13,10 +13,10 @@ export const MoreNavOption = () => {
 
   return (
     <div className="flex-shrink-0 w-[228px] ">
-      <div className="flex flex-col border rounded-t-sm shadow gap-[2px]">
+      <div className="flex flex-col rounded-t-sm gap-[2px]">
         <Link
           to="/"
-          className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-l"
+          className="bg-gray-200 text-sm font-semibold text-secondary-800 py-1 px-2 rounded-t-lg"
         >
           Home
         </Link>
@@ -26,13 +26,13 @@ export const MoreNavOption = () => {
               <button
                 type="button"
                 className={classNames(
-                  " text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between border-b",
+                  " text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between",
                   isLocationMatched(name.key, locationArr)
                     ? "bg-primary-900 text-white"
                     : "text-secondary-800 hover:bg-primary-50",
                 )}
               >
-                <span>{name.title}</span>
+                <span className="">{name.title}</span>
                 <ChevronRight />
               </button>
               {isLocationMatched(name.key, locationArr) && <KeywordSelected />}
@@ -53,8 +53,8 @@ const List = [
     title: "Market Research & IP",
     key: "market-intelligence",
   },
-  {
-    title: "Financial Investments",
-    key: "financial-investments",
-  },
+  // {
+  //   title: "Financial Investments",
+  //   key: "financial-investments",
+  // },
 ];

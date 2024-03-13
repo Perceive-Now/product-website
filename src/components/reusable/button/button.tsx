@@ -44,8 +44,10 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
           "primary-button": buttonType === "primary",
           "secondary-button": buttonType === "secondary",
           "optional-button": buttonType === "optional",
+          white: buttonType === "default",
           "full-width": isFullWidth,
         },
+        "font-semibold",
         props.classname,
       )}
       onClick={handleSubmit}
@@ -69,7 +71,7 @@ interface IButtonProps {
   classname?: string;
   // Custom
   rounded?: "small" | "medium" | "large" | "full";
-  type?: "primary" | "secondary" | "optional";
+  type?: "primary" | "secondary" | "optional" | "default";
   icon?: ReactElement;
   loading?: boolean;
   fullWidth?: boolean;

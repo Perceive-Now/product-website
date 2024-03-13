@@ -7,6 +7,7 @@ import type { IKeywordOption } from "../components/reusable/search";
 //
 const initialState: ISearchState = {
   search: undefined,
+  keywords: undefined,
 };
 
 /**
@@ -20,9 +21,9 @@ export const DashboardSlice = createSlice({
       // console.log(action.payload)
       state.search = action.payload;
     },
-    // setFilter: (state, action: PayloadAction<IKeywordOption[]>) => {
-    //   state.search
-    // },
+    setDashboardKeywords: (state, action: PayloadAction<string[]>) => {
+      state.keywords = action.payload;
+    },
     clearDashboardSearch: (state) => {
       state.search = undefined;
     },
@@ -30,10 +31,12 @@ export const DashboardSlice = createSlice({
 });
 
 //
-export const { setDashboardSearch, clearDashboardSearch } = DashboardSlice.actions;
+export const { setDashboardSearch, clearDashboardSearch, setDashboardKeywords } =
+  DashboardSlice.actions;
 export default DashboardSlice.reducer;
 
 //
 interface ISearchState {
   search: IKeywordOption[] | undefined;
+  keywords: string[] | undefined;
 }

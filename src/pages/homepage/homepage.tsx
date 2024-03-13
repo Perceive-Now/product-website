@@ -34,7 +34,7 @@ export default function HomePage() {
 
     switch (selectSearch) {
       case "ip-landscaping":
-        navigate("/ip-analysis", {
+        navigate(`/ip-analysis?keywords=${searchValue.map((s) => s.label)}`, {
           state: { search: searchValue },
         });
         break;
