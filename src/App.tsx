@@ -82,6 +82,9 @@ import MALicensing from "./pages/product/m&a-licensing";
 import ProductLayout from "./layouts/product-layout";
 import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
 import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+import SignupPage from "./pages/authentication/signup";
+import AuthDefaultLayout from "./layouts/auth/default";
+import VerificationConfirm from "./pages/authentication/signup/confirmation";
 
 /**
  *
@@ -90,7 +93,11 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route element={<AuthDefaultLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/verify-email" element={<VerificationConfirm />} />
+        </Route>
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />

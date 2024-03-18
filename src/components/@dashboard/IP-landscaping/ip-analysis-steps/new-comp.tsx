@@ -39,7 +39,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
 
   return (
     <>
-      <Loading isLoading={isLoading} />
+      <Loading isLoading={true} />
       <div className="space-y-2.5">
         <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
         {/* <p id="exampleText" className="text-gray-600 text-sm">

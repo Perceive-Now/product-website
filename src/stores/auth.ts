@@ -19,16 +19,17 @@ const initialState: AuthState = {
 //
 const API_URL = process.env.REACT_APP_API_URL;
 
+const authCode = process.env.REACT_APP_AUTH_CODE;
+
 // Cognitor Auth functions
 export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const { data } = await axios.post(`${API_URL}/api/v1/user/login/`, {
+      const { data } = await axios.post(`${API_URL}/api/login?code=${authCode}&clientId=default`, {
         email: payload.email,
         password: payload.password,
       });
-
       //
       jsCookie.set("pn_refresh", data.refresh);
       sessionStorage.setItem("pn_access", data.access);

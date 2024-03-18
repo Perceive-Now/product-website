@@ -42,9 +42,9 @@ export default function ConfirmSignup() {
   };
 
   //
-  useEffect(() => {
-    activateAccount();
-  }, []);
+  // useEffect(() => {
+  //   activateAccount();
+  // }, []);
 
   //
   return (
