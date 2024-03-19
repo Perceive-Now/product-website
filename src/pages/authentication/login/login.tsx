@@ -48,7 +48,7 @@ export default function LoginPage() {
     username: yup
       .string()
       // .username("Username is required")
-      .required("Email address is required"),
+      .required("Username is required"),
     password: yup.string().required("Password is required"),
   });
 
@@ -176,7 +176,13 @@ export default function LoginPage() {
         </div>
 
         <div className="flex justify-center mt-3 w-full">
-          <Button classname="w-full" htmlType="submit" disabled={!userNameValue || !passwordValue} loading={isSubmitting} type="gray">
+          <Button
+            classname="w-full"
+            htmlType="submit"
+            disabled={!userNameValue || !passwordValue}
+            loading={isSubmitting}
+            type="gray"
+          >
             Login
           </Button>
         </div>
@@ -185,7 +191,7 @@ export default function LoginPage() {
 
         <p className="text-center">
           <span>Don't have an account?</span>
-          <a href={`${WEBSITE_URL}/signup`} className="ml-2">
+          <a href={`${WEBSITE_URL}/signup`} className="ml-2 font-bold text-primary-500">
             Create a free account
           </a>
         </p>

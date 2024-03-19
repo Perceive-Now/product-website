@@ -67,8 +67,8 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
     <div>
       <SidebarTransition show={show} handleShow={handleShow}>
-        <Dialog.Panel className=" bg-white shadow w-[270px] overflow-auto">
-          <div className="flex justify-center items-end py-3 gap-2 bg-appGray-100">
+        <Dialog.Panel className=" bg-appGray-100 shadow w-[270px] overflow-auto">
+          <div className="flex justify-center items-center py-3 gap-2 bg-appGray-100">
             {/* {open && ( */}
             <button type="button" className="" onClick={handleShow}>
               <ToggleBarIcon />
@@ -83,7 +83,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
               {item.children && (
                 <div>
                   <div
-                    className="px-2 py-2 flex items-center cursor-pointer"
+                    className="px-2.5 py-2 flex items-center cursor-pointer"
                     onClick={() => updateActiveGroup(item.key)}
                   >
                     <div className="mr-1">
@@ -115,7 +115,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                                     <NavLinkItem
                                       key={`sub-content-${kndex}`}
                                       to={subChild.to}
-                                      icon={subChild.icon}
+                                      // icon={subChild.icon}
                                       title={subChild.title}
                                       isTopLevel={false}
                                       value={subChild.key}
@@ -129,7 +129,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                             <NavLinkItem
                               key={`main-content-${jndex}`}
                               to={child.to}
-                              icon={child.icon}
+                              // icon={child.icon}
                               title={child.title}
                               isTopLevel={false}
                               value={child.key}
@@ -145,7 +145,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
                 <NavLinkItem
                   key={`top-${index}`}
                   to={item.to}
-                  icon={item.icon}
+                  // icon={item.icon}
                   title={item.title}
                   isTopLevel={true}
                   value={item.key}
@@ -180,28 +180,27 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900 pr-2",
-            props.isTopLevel ? "pl-2" : "pl-4",
+            "flex items-center py-2 text-gray-900 px-2.5",
+            // props.isTopLevel ? "pl-2" : "pl-4",
             isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-50",
           )}
         >
-          {props.icon && (
+          {/* {props.icon && (
             <div
               className={classNames(
                 "mr-1 text-gray-600 fill-gray-600",
 
                 {
-                  // "text-gray-600": !props.isTopLevel,
                   "text-white": isActive || hasKey,
                 },
               )}
             >
               {props.icon}
             </div>
-          )}
+          )} */}
           <span
             className={classNames(
-              "flex items-center text-lg ",
+              "flex items-center text-sm font-semibold",
               isActive || hasKey ? "text-white " : "text-gray-900",
             )}
           >

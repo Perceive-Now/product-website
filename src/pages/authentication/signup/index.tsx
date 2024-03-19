@@ -46,9 +46,7 @@ export default function SignupPage() {
       .string()
       .email("Please enter a valid email address")
       .required("Email address is required"),
-    password: 
-    yup.string().
-    required("Password is required"),
+    password: yup.string().required("Password is required"),
   });
 
   const { watch, register, formState, handleSubmit } = useForm({

@@ -21,7 +21,6 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
 
-
 export const signUpUser = createAsyncThunk(
   "login",
   async (payload: ISignupParams): Promise<IResponse> => {
@@ -220,7 +219,7 @@ export const AuthSlice = createSlice({
     },
     setUserEmail: (state, action: PayloadAction<ISignupParams>) => {
       // state.user.email = action.payload;
-      console.log(state)
+      console.log(state);
     },
   },
 

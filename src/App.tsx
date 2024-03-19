@@ -107,7 +107,6 @@ function App() {
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
-
           {/* Need to ask for profile details before allowing to use */}
           <Route path="/signup/complete" element={<CompleteSignup />} />
           <Route path="/welcome/success" element={<WelcomePage />} />

@@ -29,16 +29,16 @@ import PortfolioIcon from "../../icons/sidenav/portfolio";
 
 const sidebarItems: ISidebarListItem[] = [
   {
-    title: "Home",
-    key: "home",
+    title: "Generate new report",
+    key: "generate",
     icon: <DashboardIcon />,
     to: "/",
   },
   {
-    title: "IP Analysis",
-    key: "ip-landscaping",
+    title: "User info",
+    key: "user-info",
     icon: <PortfolioIcon />,
-    to: "/ip-analysis",
+    to: "/info",
   },
   // {
   //   title: "Freedom to operate",
@@ -47,16 +47,16 @@ const sidebarItems: ISidebarListItem[] = [
   //   to: "/patents",
   // },
   {
-    title: "Market intelligence",
-    key: "freedom-to-operate",
+    title: "Report",
+    key: "report",
     icon: <BulbIcon />,
-    to: "/patents",
+    to: "/reports",
   },
   {
-    title: "Market intelligence",
-    key: "freedom-to-operate",
+    title: "Settings",
+    key: "setting",
     icon: <PortfolioIcon />,
-    to: "/patents",
+    to: "/setting",
   },
   // {
   //   title: "M&A Licensing",

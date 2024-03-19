@@ -196,11 +196,11 @@ const SearchType = [
     icon: BulbIcon,
     key: "competitive-intelligence",
   },
-  {
-    name: "Financial  Investments",
-    icon: DollarIcon,
-    key: "infringement-analysis",
-  },
+  // {
+  //   name: "Financial  Investments",
+  //   icon: DollarIcon,
+  //   key: "infringement-analysis",
+  // },
   // {
   //   name: "Database Search",
   //   icon: ClaimIcon,
