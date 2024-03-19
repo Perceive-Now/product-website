@@ -16,7 +16,7 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
-import { loginUser } from "../../../stores/auth";
+import { loginUser, signUpUser } from "../../../stores/auth";
 import GoogleIcon from "../../../components/icons/social/google";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 
@@ -46,7 +46,9 @@ export default function SignupPage() {
       .string()
       .email("Please enter a valid email address")
       .required("Email address is required"),
-    password: yup.string().required("Password is required"),
+    password: 
+    yup.string().
+    required("Password is required"),
   });
 
   const { watch, register, formState, handleSubmit } = useForm({
@@ -61,7 +63,7 @@ export default function SignupPage() {
     setIsSubmitting(true);
 
     // Login user
-    const response = await dispatch(loginUser(values)).unwrap();
+    const response = await dispatch(signUpUser(values)).unwrap();
     if (response.success) {
       if (callbackPath) {
         navigate(callbackPath);

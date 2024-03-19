@@ -40,14 +40,14 @@ export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: ILoginFormValues = {
-    email: "",
+    username: "",
     password: "",
   };
 
   const formResolver = yup.object().shape({
-    email: yup
+    username: yup
       .string()
-      .email("Please enter a valid email address")
+      // .username("Username is required")
       .required("Email address is required"),
     password: yup.string().required("Password is required"),
   });
@@ -78,7 +78,7 @@ export default function LoginPage() {
     setIsSubmitting(false);
   };
 
-  const emailValue = watch("email");
+  const userNameValue = watch("username");
   const passwordValue = watch("password");
 
   const getSession = async () => {
@@ -96,43 +96,43 @@ export default function LoginPage() {
   if (isLoading) return <></>;
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-2">
-      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[480px] py-10">
+    <div className="flex justify-center items-center px-2 h-full">
+      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px]">
         <div className="flex flex-col items-center">
-          <img
+          {/* <img
             src={Logo}
             width={76}
             height={60}
             alt="PerceiveNow logo"
             className="w-9 h-8 object-contain"
-          />
-          <h1 className="text-4xl font-semibold mt-5">Welcome back</h1>
+          /> */}
+          <h1 className="text-4xl font-extrabold text-secondary-800 mt-5">Welcome back</h1>
           <p className="mt-1 font-normal">Let’s get back to innovating!</p>
         </div>
 
         <div>
           <fieldset className="mt-3">
             <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
-              Email
+              Username
             </label>
 
             <div className="mt-0.5 rounded-md shadow-sm">
               <input
-                id="email"
-                {...register("email")}
+                id="username"
+                {...register("username")}
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                  errors.email
+                  errors.username
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Enter your email address"
+                placeholder="Username"
               />
             </div>
 
-            {errors.email?.message && (
-              <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
+            {errors.username?.message && (
+              <div className="mt-1 text-xs text-danger-500">{errors.username?.message}</div>
             )}
           </fieldset>
 
@@ -175,8 +175,8 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex justify-center mt-3">
-          <Button htmlType="submit" disabled={!emailValue || !passwordValue} loading={isSubmitting}>
+        <div className="flex justify-center mt-3 w-full">
+          <Button classname="w-full" htmlType="submit" disabled={!userNameValue || !passwordValue} loading={isSubmitting} type="gray">
             Login
           </Button>
         </div>
@@ -195,6 +195,6 @@ export default function LoginPage() {
 }
 
 interface ILoginFormValues {
-  email: string;
+  username: string;
   password: string;
 }

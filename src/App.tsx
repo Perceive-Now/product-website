@@ -85,6 +85,7 @@ import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 import SignupPage from "./pages/authentication/signup";
 import AuthDefaultLayout from "./layouts/auth/default";
 import VerificationConfirm from "./pages/authentication/signup/confirmation";
+import AuthLayout from "./layouts/auth";
 
 /**
  *
@@ -105,29 +106,29 @@ function App() {
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
         {/* All the routes below are protected */}
-        {/* <Route element={<AuthLayout />}> */}
+        <Route element={<AuthLayout />}>
 
-        {/* Need to ask for profile details before allowing to use */}
-        <Route path="/signup/complete" element={<CompleteSignup />} />
-        <Route path="/welcome/success" element={<WelcomePage />} />
+          {/* Need to ask for profile details before allowing to use */}
+          <Route path="/signup/complete" element={<CompleteSignup />} />
+          <Route path="/welcome/success" element={<WelcomePage />} />
 
-        {/* Actual product pages */}
-        <Route element={<DefaultLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route element={<ProductLayout />}>
-            <Route path="/ip-analysis" element={<IPAnalysis />} />
-            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
-          </Route>
-          <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
+          {/* Actual product pages */}
+          <Route element={<DefaultLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route element={<ProductLayout />}>
+              <Route path="/ip-analysis" element={<IPAnalysis />} />
+              <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
+            </Route>
+            <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
 
-          <Route path="/m&a-licensing" element={<MALicensing />} />
+            <Route path="/m&a-licensing" element={<MALicensing />} />
 
-          {/* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
+            {/* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
           <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */}
 
-          {/* Deep Search pages */}
-          {/* <Route path="/patents" element={<PatentAnalyticPage />} />
+            {/* Deep Search pages */}
+            {/* <Route path="/patents" element={<PatentAnalyticPage />} />
           <Route path="/patents/table" element={<PatentListPage />} />
           <Route path="/patents/:id" element={<PatentDetailPage />} />
 
@@ -146,8 +147,8 @@ function App() {
 
           <Route path="/universities" element={<UniversityAnalyticPage />} />
           <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */}
-          {/* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */}
-          {/* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
+            {/* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */}
+            {/* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
           <Route
             path="/universities/publication/:id"
             element={<UniversityPublicationDetailPage />}
@@ -158,18 +159,18 @@ function App() {
           <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
           <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} /> */}
 
-          {/* Account section */}
-          <Route element={<AccountLayout />}>
-            <Route path="/account/user-profile" element={<UserProfilePage />} />
-            <Route path="/account/company-profile" element={<CompanyProfilePage />} />
-            <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
-          </Route>
+            {/* Account section */}
+            <Route element={<AccountLayout />}>
+              <Route path="/account/user-profile" element={<UserProfilePage />} />
+              <Route path="/account/company-profile" element={<CompanyProfilePage />} />
+              <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
+            </Route>
 
-          {/* Miscs pages */}
-          <Route path="/feedback" element={<FeedbackPage />} />
-          <Route path="/help" element={<HelpPage />} />
+            {/* Miscs pages */}
+            <Route path="/feedback" element={<FeedbackPage />} />
+            <Route path="/help" element={<HelpPage />} />
+          </Route>
         </Route>
-        {/* </Route> */}
         {/* 404 not found */}
         <Route path="*" element={<PageNotFound404 />} />
       </Routes>

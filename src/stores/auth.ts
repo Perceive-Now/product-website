@@ -19,26 +19,58 @@ const initialState: AuthState = {
 //
 const API_URL = process.env.REACT_APP_API_URL;
 
-const authCode = process.env.REACT_APP_AUTH_CODE;
+const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
+
+
+export const signUpUser = createAsyncThunk(
+  "login",
+  async (payload: ISignupParams): Promise<IResponse> => {
+    try {
+      const { data } = await axios.post(`${API_URL}/api/register?code=${authCode}`, {
+        email: payload.email,
+        password: payload.password,
+      });
+
+      //
+      // jsCookie.set("pn_refresh", data.token);
+      // sessionStorage.setItem("pn_access", data.token);
+
+      //
+      return {
+        success: true,
+        message: "Successfull",
+        // data: { token: data.token },
+      };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail ?? error.message;
+
+      return {
+        success: false,
+        message: errorMessage,
+      };
+    }
+  },
+);
 
 // Cognitor Auth functions
 export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
     try {
-      const { data } = await axios.post(`${API_URL}/api/login?code=${authCode}&clientId=default`, {
-        email: payload.email,
+      const { data } = await axios.post(`${API_URL}/api/login?code=${authCode}`, {
+        username: payload.username,
         password: payload.password,
       });
       //
-      jsCookie.set("pn_refresh", data.refresh);
-      sessionStorage.setItem("pn_access", data.access);
+      jsCookie.set("pn_refresh", data.token);
+      sessionStorage.setItem("pn_access", data.token);
 
       //
       return {
         success: true,
         message: "Successfully logged in!",
-        data: { token: data.access },
+        data: { token: data.token },
       };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -186,6 +218,10 @@ export const AuthSlice = createSlice({
     removeUser: (state) => {
       state.user = undefined;
     },
+    setUserEmail: (state, action: PayloadAction<ISignupParams>) => {
+      // state.user.email = action.payload;
+      console.log(state)
+    },
   },
 
   /**
@@ -227,7 +263,7 @@ export const AuthSlice = createSlice({
 /**
  * Action creators are generated for each case reducer function
  */
-export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
+export const { setUser, setAuthToken, removeUser, setUserEmail } = AuthSlice.actions;
 export default AuthSlice.reducer;
 
 /**
@@ -297,6 +333,11 @@ interface AuthState {
 
 //
 interface ILoginParams {
+  username: string;
+  password: string;
+}
+
+interface ISignupParams {
   email: string;
   password: string;
 }
