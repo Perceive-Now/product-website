@@ -118,77 +118,75 @@ export const GeographicalDistributionAssignment: FunctionComponent<Props> = ({ k
   const finalData = transformData(tree_data);
 
   return (
-    <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
-      <DataSection
-        keywords={keywords}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        title={
-          <PageTitle titleClass="font-bold" title="10. Geographical Distribution of Assignments" />
-        }
-      >
-        <div>
-          <HeatMap
-            data={finalData}
-            legendY={"Year"}
-            legend={[
-              {
-                anchor: "right",
-                translateX: 60,
-                translateY: -1,
-                length: 500,
-                thickness: 8,
-                direction: "column",
-                tickPosition: "after",
-                tickSize: 3,
-                tickSpacing: 4,
-                tickOverlap: false,
-                tickFormat: ">-.2s",
-                title: "Growth rate",
-                titleAlign: "end",
-                titleOffset: 8,
-              },
-            ]}
-          />
-          <div className="space-y-2 text-secondary-800 mt-4">
-            <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-            <div>
-              <h6 className="font-semibold text-primary-900">
-                Family A: California (100 patents), Texas (50 patents); Family B: New York (80
-                patents), Florida (70 patents)
-              </h6>
-              <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-                <li>
-                  Country Leading in Patent Assignments: "Country D holds the highest number of
-                  patent assignments, accounting for X% of the global total, marking it as a key
-                  player in technology transfer."
-                </li>
-                <li>
-                  Regional Growth in Patent Assignments: "Region E saw a X% increase in patent
-                  assignments over the last Y years, indicating a surge in its technological
-                  development."
-                </li>
-                <li>
-                  City-Level Concentration of Patent Assignments: "City F is the leading city for
-                  patent assignments, with X% of the total, highlighting its strategic importance in
-                  innovation and technology commercialization."
-                </li>
-                <li>
-                  Shifts in Geographical Patterns of Assignments: "The geographical pattern of
-                  patent assignments has shifted towards Country G in the recent decade, with an
-                  increase of X%, reflecting changes in global innovation dynamics."
-                </li>
-                <li>
-                  International Collaboration in Patent Assignments: "X% of all patent assignments
-                  involve international collaboration, demonstrating the global interconnectedness
-                  of technology development and transfer."
-                </li>
-              </ul>
-            </div>
+    <DataSection
+      keywords={keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle titleClass="font-bold" subTitle="Geographical Distribution of Assignments" />
+      }
+    >
+      <div>
+        <HeatMap
+          data={finalData}
+          legendY={"Year"}
+          legend={[
+            {
+              anchor: "right",
+              translateX: 60,
+              translateY: -1,
+              length: 500,
+              thickness: 8,
+              direction: "column",
+              tickPosition: "after",
+              tickSize: 3,
+              tickSpacing: 4,
+              tickOverlap: false,
+              tickFormat: ">-.2s",
+              title: "Growth rate",
+              titleAlign: "end",
+              titleOffset: 8,
+            },
+          ]}
+        />
+        <div className="space-y-2 text-secondary-800 mt-4">
+          <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
+          <div>
+            <h6 className="font-semibold text-primary-900">
+              Family A: California (100 patents), Texas (50 patents); Family B: New York (80
+              patents), Florida (70 patents)
+            </h6>
+            <ul className="list-disc ml-3 text-sm mt-1 font-medium">
+              <li>
+                Country Leading in Patent Assignments: "Country D holds the highest number of patent
+                assignments, accounting for X% of the global total, marking it as a key player in
+                technology transfer."
+              </li>
+              <li>
+                Regional Growth in Patent Assignments: "Region E saw a X% increase in patent
+                assignments over the last Y years, indicating a surge in its technological
+                development."
+              </li>
+              <li>
+                City-Level Concentration of Patent Assignments: "City F is the leading city for
+                patent assignments, with X% of the total, highlighting its strategic importance in
+                innovation and technology commercialization."
+              </li>
+              <li>
+                Shifts in Geographical Patterns of Assignments: "The geographical pattern of patent
+                assignments has shifted towards Country G in the recent decade, with an increase of
+                X%, reflecting changes in global innovation dynamics."
+              </li>
+              <li>
+                International Collaboration in Patent Assignments: "X% of all patent assignments
+                involve international collaboration, demonstrating the global interconnectedness of
+                technology development and transfer."
+              </li>
+            </ul>
           </div>
         </div>
-      </DataSection>
-    </div>
+      </div>
+    </DataSection>
   );
 };

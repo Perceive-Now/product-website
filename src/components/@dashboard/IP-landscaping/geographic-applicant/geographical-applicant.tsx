@@ -19,6 +19,7 @@ interface ITransformedEntry {
   id: string | number;
   data: { x: any; y: number | null }[];
 }
+
 export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["geographical_inventors", ...keywords],
@@ -40,6 +41,7 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
     year: d.year,
     count: d.count,
   }));
+
   const transformedData: ITransformedData = {};
   const transformedDataReverse: ITransformedData = {};
 
@@ -72,7 +74,7 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
     });
 
   const tree_data = Object.values(transformedData);
-  const tree_data_reverse = Object.values(transformedDataReverse);
+  // const tree_data_reverse = Object.values(transformedDataReverse);
 
   const transformData = (inputData: ITransformedEntry[]) => {
     // Collect all unique years from the existing data
@@ -102,103 +104,82 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
   // const finalDataReverse = transformDataReverse(tree_data_reverse);
 
   return (
-    <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
-      <DataSection
-        keywords={keywords}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        title={
-          <PageTitle titleClass="font-bold" title="6. Geographical Distribution of Applicants" />
-        }
-      >
-        <div>
-          <div>
-            <HeatMap
-              data={tree_data_reverse}
-              legendY={"Year"}
-              cell="circle"
-              legentType="legend"
-              // legend={[
-              //   {
-              //     anchor: "right",
-              //     translateX: 60,
-              //     translateY: -1,
-              //     length: 500,
-              //     thickness: 8,
-              //     direction: "column",
-              //     tickPosition: "after",
-              //     tickSize: 3,
-              //     tickSpacing: 4,
-              //     tickOverlap: false,
-              //     tickFormat: ">-.2s",
-              //     title: "Growth rate",
-              //     titleAlign: "end",
-              //     titleOffset: 8,
-              //   },
-              // ]}
-            />
-          </div>
-          <div className="italic text-[36px] text-center my-2 font-normal">VS</div>
+    <DataSection
+      keywords={keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={
+        <PageTitle titleClass="font-bold" subTitle="Geographical Distribution of Applicants" />
+      }
+    >
+      <div>
+        {/* <div>
           <HeatMap
-            data={finalData}
+            data={tree_data_reverse}
             legendY={"Year"}
+            cell="circle"
             legentType="legend"
-            // legend={[
-            //   {
-            //     anchor: "right",
-            //     translateX: 60,
-            //     translateY: -1,
-            //     length: 500,
-            //     thickness: 8,
-            //     direction: "column",
-            //     tickPosition: "after",
-            //     tickSize: 3,
-            //     tickSpacing: 4,
-            //     tickOverlap: false,
-            //     tickFormat: ">-.2s",
-            //     title: "Growth rate",
-            //     titleAlign: "end",
-            //     titleOffset: 8,
-            //   },
-            // ]}
           />
-          <div className="space-y-2 text-secondary-800 mt-4">
-            <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-            <div>
-              {/* <h6 className="font-semibold text-primary-900">
+        </div> */}
+        {/* <div className="italic text-[36px] text-center my-2 font-normal">VS</div> */}
+        <HeatMap
+          data={finalData}
+          legendY={"Year"}
+          legentType="legend"
+          // legend={[
+          //   {
+          //     anchor: "right",
+          //     translateX: 60,
+          //     translateY: -1,
+          //     length: 500,
+          //     thickness: 8,
+          //     direction: "column",
+          //     tickPosition: "after",
+          //     tickSize: 3,
+          //     tickSpacing: 4,
+          //     tickOverlap: false,
+          //     tickFormat: ">-.2s",
+          //     title: "Growth rate",
+          //     titleAlign: "end",
+          //     titleOffset: 8,
+          //   },
+          // ]}
+        />
+        <div className="space-y-2 text-secondary-800 mt-4">
+          <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
+          <div>
+            {/* <h6 className="font-semibold text-primary-900">
                 Family A: California (100 patents), Texas (50 patents); Family B: New York (80
                 patents), Florida (70 patents)
               </h6> */}
-              <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-                <li>
-                  Top Country for Patent Applicants: "Country A accounts for X% of all patent
-                  applicants, demonstrating its leading role in global innovation."
-                </li>
-                <li>
-                  Rapid Growth in Applicant Numbers by Region: "Region B's number of patent
-                  applicants grew by X% in the last Y years, marking it as an emerging innovation
-                  hotspot."
-                </li>
-                <li>
-                  City with Highest Concentration of Applicants: "City C is home to X% of patent
-                  applicants, highlighting its significance as a local innovation center."
-                </li>
-                <li>
-                  Shift in Geographical Focus of Applicants: "Over the past decade, the geographical
-                  focus of patent applicants shifted towards Region D, with a growth rate of X%,
-                  indicating changing innovation landscapes."
-                </li>
-                <li>
-                  International Diversity of Patent Applicants: "Patent applications exhibit a high
-                  degree of international diversity, with applicants from over X different
-                  countries, emphasizing the global nature of innovation."
-                </li>
-              </ul>
-            </div>
+            <ul className="list-disc ml-3 text-sm mt-1 font-medium">
+              <li>
+                Top Country for Patent Applicants: "Country A accounts for X% of all patent
+                applicants, demonstrating its leading role in global innovation."
+              </li>
+              <li>
+                Rapid Growth in Applicant Numbers by Region: "Region B's number of patent applicants
+                grew by X% in the last Y years, marking it as an emerging innovation hotspot."
+              </li>
+              <li>
+                City with Highest Concentration of Applicants: "City C is home to X% of patent
+                applicants, highlighting its significance as a local innovation center."
+              </li>
+              <li>
+                Shift in Geographical Focus of Applicants: "Over the past decade, the geographical
+                focus of patent applicants shifted towards Region D, with a growth rate of X%,
+                indicating changing innovation landscapes."
+              </li>
+              <li>
+                International Diversity of Patent Applicants: "Patent applications exhibit a high
+                degree of international diversity, with applicants from over X different countries,
+                emphasizing the global nature of innovation."
+              </li>
+            </ul>
           </div>
         </div>
-      </DataSection>
-    </div>
+      </div>
+    </DataSection>
   );
 };

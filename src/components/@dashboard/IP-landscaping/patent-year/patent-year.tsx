@@ -67,17 +67,18 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
   const scatterChartData = finalScatterDataFormatHelper(data ?? []);
 
   return (
-    <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
-      <DataSection
-        keywords={keywords}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        title={<PageTitle titleClass="font-bold" title="1. Total Patents Filed Over Time" />}
-      >
-        <div>
-          {data && <ScatterChart data={scatterChartData} colors={["#7F4BD8", "#442873"]} />}
-          <div className="space-y-2 text-secondary-800 mt-4">
+    // <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
+    <DataSection
+      keywords={keywords}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      title={<PageTitle titleClass="font-bold" title="1. Patents" />}
+    >
+      <div>
+        <p className="text-primary-900 font-bolf text-sm">Total Patent Filed Over Time</p>
+        {data && <ScatterChart data={scatterChartData} colors={["#7F4BD8", "#442873"]} />}
+        {/* <div className="space-y-2 text-secondary-800 mt-4">
             <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
             <div>
               <h6 className="font-semibold text-primary-900">
@@ -112,9 +113,9 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-      </DataSection>
-    </div>
+          </div> */}
+      </div>
+    </DataSection>
+    // </div>
   );
 };

@@ -16,7 +16,7 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
-import { loginUser, signUpUser } from "../../../stores/auth";
+import { signUpUser } from "../../../stores/auth";
 import GoogleIcon from "../../../components/icons/social/google";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 

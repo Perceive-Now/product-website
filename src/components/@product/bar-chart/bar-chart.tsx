@@ -7,9 +7,6 @@ import { ComputedDatum } from "@nivo/bar";
 import { formatNumber } from "../../../utils/helpers";
 import classNames from "classnames";
 
-interface BarLabelColors {
-  [key: string]: string;
-}
 // const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 // const HEATMAP_SECTIONS = 10;
 
@@ -27,19 +24,6 @@ export default function BarChart(props: IBarChartProps) {
 
   const barPadding = props.layout === "horizontal" ? 0.5 : 0.5;
 
-  const colorByLabel: BarLabelColors = {
-    "2023": "#442873",
-    "2022": "#533F73",
-    "2021": "#41178B",
-    "2020": "#541DB2",
-    "2019": "#5C20C4",
-    "2018": "#7D4DD0",
-    "2017": "#926AD7",
-    "2016": "#B498E4",
-    "2015": "#CCBAED",
-    "2014": "#EFE9F9",
-  };
-
   const COLOR_RANGE = [
     "#5C1FC4",
     "#CCBAED",
@@ -53,99 +37,35 @@ export default function BarChart(props: IBarChartProps) {
     "#442873",
   ];
 
-  // const getRangeForPatents = (data?: any) => {
-  //   if (!data?.length) return [];
-
-  //   const maxVal =
-  //     (data ?? []).sort((a: any, b: any) => (b.patents ?? 0) - (a.patents ?? 0))[0].patents ?? 0;
-  //   const maxValue = Math.ceil(maxVal / 100) * 100;
-
-  //   const tempValue = maxValue / HEATMAP_SECTIONS;
-
-  //   const midValues = [];
-  //   for (let i = 1; i < HEATMAP_SECTIONS; i++) {
-  //     midValues.push(Math.floor(tempValue * i));
-  //   }
-
-  //   const values = [...midValues, maxValue];
-
-  //   return [0, ...values];
-  // };
-
-  // const getFillColor = (geo?: any) => {
-  //   let currentStateValue = 0;
-  //   const allValues = getRangeForPatents(props.data);
-  //   //
-  //   currentStateValue =
-  //     props.data?.find((itm) => itm.country?.toLowerCase() === geo?.properties?.name?.toLowerCase())
-  //       ?.patents ?? 0;
-
-  //   if (currentStateValue === 0) return "#E1D5F2";
-  //   //
-  //   for (let i = 0; i <= COLOR_RANGE.length; i++) {
-  //     if (currentStateValue < allValues[i]) {
-  //       return COLOR_RANGE[i];
-  //     }
-  //   }
-  //   return;
-  // };
-
-  //
-  // const barPadding = props.groupMode === "stacked" ? 0.8 : 0.4;
-
-  // const customLegend =[
-  //   {
-  //     label
-  //   }
-  //   "2023":
-  //    "#442873",
-  //   "2022": "#533F73",
-  //   "2021": "#41178B",
-  //   "2020": "#541DB2",
-  //   "2019": "#5C20C4",
-  //   "2018": "#7D4DD0",
-  //   "2017": "#926AD7",
-  //   "2016": "#B498E4",
-  //   "2015": "#CCBAED",
-  //   "2014": "#EFE9F9",
-  // ]
-
   const getColor: GetColorFunction = (bar) => {
-    if (props.legends === "legend") {
-      return colorByLabel[bar.data.label] || "";
-    } else if (props.legends === "range") {
-      const value = bar.data.count;
-      if (value < 10) return COLOR_RANGE[0];
-      else if (value < 20) return COLOR_RANGE[1];
-      else if (value < 40) return COLOR_RANGE[2];
-      else if (value < 60) return COLOR_RANGE[3];
-      else if (value < 80) return COLOR_RANGE[4];
-      else if (value < 100) return COLOR_RANGE[5];
-      else if (value < 120) return COLOR_RANGE[6];
-      else if (value < 140) return COLOR_RANGE[7];
-      else if (value < 160) return COLOR_RANGE[8];
-      else if (value < 180) return COLOR_RANGE[9];
-      else return COLOR_RANGE[9];
-    } else {
-      return "";
-    }
+    const value = bar.data.value;
+    if (value > 0 && value <= 100) return COLOR_RANGE[0];
+    else if (value > 100 && value <= 200) return COLOR_RANGE[1];
+    else if (value > 200 && value <= 300) return COLOR_RANGE[2];
+    else if (value > 300 && value <= 400) return COLOR_RANGE[3];
+    else if (value > 400 && value <= 500) return COLOR_RANGE[4];
+    else if (value > 500 && value <= 600) return COLOR_RANGE[5];
+    else if (value > 600 && value <= 700) return COLOR_RANGE[6];
+    else if (value > 700 && value <= 800) return COLOR_RANGE[7];
+    else if (value > 800 && value <= 900) return COLOR_RANGE[8];
+    else if (value > 900 && value <= 1000) return COLOR_RANGE[9];
+    else return COLOR_RANGE[9];
   };
 
   const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const HEATMAP_COLORS = [
-    { range: "180+", color: "bg-[#442873]" },
-    { range: "160", color: "bg-[#533F73]" },
-    { range: "140", color: "bg-[#41178B]" },
-    { range: "120", color: "bg-[#541DB2]" },
-    { range: "100", color: "bg-[#5C20C4]" },
-    { range: "80", color: "bg-[#7D4DD0]" },
-    { range: "60", color: "bg-[#926AD7]" },
-    { range: "40", color: "bg-[#B498E4]" },
-    { range: "20", color: "bg-[#CCBAED]" },
-    { range: "0", color: "bg-[#EFE9F9]" },
+    { range: "901-1000", color: "bg-[#442873]" },
+    { range: "801-900", color: "bg-[#533F73]" },
+    { range: "701-800", color: "bg-[#41178B]" },
+    { range: "601-700", color: "bg-[#541DB2]" },
+    { range: "501-600", color: "bg-[#5C20C4]" },
+    { range: "401-500", color: "bg-[#7D4DD0]" },
+    { range: "301-400", color: "bg-[#926AD7]" },
+    { range: "201-300", color: "bg-[#B498E4]" },
+    { range: "101-200", color: "bg-[#CCBAED]" },
+    { range: "0-100", color: "bg-[#EFE9F9]" },
   ];
-
   //
   return (
     <div className="relative">
@@ -154,7 +74,7 @@ export default function BarChart(props: IBarChartProps) {
           props.layout === "horizontal"
             ? `${props.height !== undefined ? props.height : "h-[400px]"}`
             : "h-[400px] ",
-          "3xl:w-[1000px] w-[600px] 2xl:max-w-[800px] mx-auto whitespace-nowrap overflow-x-auto pn_scroller",
+          "w-[700px] 2xl:max-w-[800px] 3xl:w-[1000px] mx-auto whitespace-nowrap overflow-x-auto pn_scroller",
         )}
       >
         <ResponsiveBar
@@ -245,7 +165,23 @@ export default function BarChart(props: IBarChartProps) {
         />
       </div>
 
-      {props.legends === "range" && (
+      <div className="flex flex-col justify-center items-start mt-1  h-full gap-[0.5px] shrink-0 absolute top-0 right-5 xl:right-10">
+        {COLOR_GROUPS.map((grp) => (
+          <div key={grp} className="flex items-center gap-1">
+            <div
+              className={classNames(
+                "h-1 w-1 shadow shrink-0 rounded-sm",
+                HEATMAP_COLORS[grp].color,
+              )}
+            />
+            <span className="text-[8px] text-appGray-500 font-bold italic">
+              {HEATMAP_COLORS[grp].range}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* {props.legends === "range" && (
         <div className="flex flex-col justify-center items-end mt-1 absolute top-0 right-5 xl:right-10 h-full gap-[0.5px]">
           {COLOR_GROUPS.map((grp) => (
             <div key={grp} className="flex items-center gap-2">
@@ -254,8 +190,9 @@ export default function BarChart(props: IBarChartProps) {
             </div>
           ))}
         </div>
-      )}
-      {props.legends === "legend" && (
+      )} */}
+
+      {/* {props.legends === "legend" && (
         <div className="flex flex-col w-[140px] justify-center items-end mt-1 absolute top-0 right-5 h-full ">
           <div className="flex items-start flex-col gap-1">
             {dataItems.slice(0, 20).map((grp) => (
@@ -273,7 +210,7 @@ export default function BarChart(props: IBarChartProps) {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
