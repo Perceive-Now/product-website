@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useEffect } from "react";
-import BarChart from "../../../@product/bar-chart";
 import DataSection from "../../../reusable/data-section";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";

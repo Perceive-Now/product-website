@@ -3,7 +3,6 @@ import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentFamilySize } from "../../../../utils/api/charts";
-import BarChart from "../../../@product/bar-chart";
 import ScatterChart from "../../../@product/scatter-chart";
 
 interface Props {

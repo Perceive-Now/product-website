@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
 import { useReactToPrint } from "react-to-print";
 
@@ -49,7 +49,7 @@ import { NumberApplicationsByApplicant } from "../../../../components/@dashboard
  */
 export const IPFullReport = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const location = useLocation();
 
   // const [isSemantic, setISearchSemantic] = useState(false);
@@ -205,9 +205,6 @@ export const IPFullReport = () => {
                   <div id="2" className="page-break">
                     <PatentLegalStatus keywords={keywords} />
                   </div>
-                  {/* <div id="2" className="page-break">
-                    <PatentLegalStatus keywords={keywords} />
-                  </div> */}
                 </div>
 
                 <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">

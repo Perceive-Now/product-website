@@ -31,8 +31,8 @@ export const signUpUser = createAsyncThunk(
       });
 
       //
-      // jsCookie.set("pn_refresh", data.token);
-      // sessionStorage.setItem("pn_access", data.token);
+      jsCookie.set("pn_refresh", data.token);
+      sessionStorage.setItem("pn_access", data.token);
 
       //
       return {
@@ -217,10 +217,10 @@ export const AuthSlice = createSlice({
     removeUser: (state) => {
       state.user = undefined;
     },
-    setUserEmail: (state, action: PayloadAction<ISignupParams>) => {
-      // state.user.email = action.payload;
-      console.log(state);
-    },
+    // setUserEmail: (state, action: PayloadAction<ISignupParams>) => {
+    //   state.user?.email = action.payload;
+    //   // console.log(state);
+    // },
   },
 
   /**
@@ -262,7 +262,7 @@ export const AuthSlice = createSlice({
 /**
  * Action creators are generated for each case reducer function
  */
-export const { setUser, setAuthToken, removeUser, setUserEmail } = AuthSlice.actions;
+export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
 export default AuthSlice.reducer;
 
 /**

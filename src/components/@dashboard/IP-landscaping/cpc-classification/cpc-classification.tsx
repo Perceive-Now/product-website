@@ -4,7 +4,6 @@ import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getPatentClassificationCPC } from "../../../../utils/api/charts";
-import BarChart from "../../../@product/bar-chart";
 import ScrollableBarChart from "../../../@product/bar-scroll";
 
 interface Props {

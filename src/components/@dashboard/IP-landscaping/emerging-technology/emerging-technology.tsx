@@ -3,10 +3,7 @@ import HeatMap from "../../../@product/heat-map";
 import DataSection from "../../../reusable/data-section";
 import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
-import {
-  getEmergingTechnologyTrend,
-  getGeographicalDistributionAssignment,
-} from "../../../../utils/api/charts";
+import { getGeographicalDistributionAssignment } from "../../../../utils/api/charts";
 
 interface Props {
   keywords: string[];

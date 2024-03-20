@@ -115,10 +115,12 @@ function App() {
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+
             <Route element={<ProductLayout />}>
               <Route path="/ip-analysis" element={<IPAnalysis />} />
               <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
             </Route>
+
             <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
 
             <Route path="/m&a-licensing" element={<MALicensing />} />

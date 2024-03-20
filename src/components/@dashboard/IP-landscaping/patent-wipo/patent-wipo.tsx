@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getWIPOSector } from "../../../../utils/api/charts";
 import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
-import ScrollableBarChart from "../../../@product/bar-scroll";
 
 interface Props {
   keywords: string[];

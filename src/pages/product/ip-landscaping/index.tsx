@@ -1,2 +1,2 @@
-import { IPLandscaping } from "./IP-Landscaping";
-export default IPLandscaping;
+import IP from "./IP-Landscaping";
+export default IP;
