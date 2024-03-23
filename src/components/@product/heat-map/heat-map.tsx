@@ -1,4 +1,4 @@
-import { ResponsiveHeatMap } from "@nivo/heatmap";
+import { HeatMapCanvas } from "@nivo/heatmap";
 import { FunctionComponent } from "react";
 
 // import { COLORS } from "../../../utils/constants";
@@ -18,42 +18,55 @@ export const HeatMap: FunctionComponent<Props> = ({
   data,
   legend,
   legendY,
-  legentType = "range",
+  // legentType = "range",
   cell = "rect",
 }) => {
-  const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  // const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  const HEATMAP_COLORS = [
-    { range: "180+", color: "bg-[#442873]" },
-    { range: "160", color: "bg-[#533F73]" },
-    { range: "140", color: "bg-[#41178B]" },
-    { range: "120", color: "bg-[#541DB2]" },
-    { range: "100", color: "bg-[#5C20C4]" },
-    { range: "80", color: "bg-[#7D4DD0]" },
-    { range: "60", color: "bg-[#926AD7]" },
-    { range: "40", color: "bg-[#B498E4]" },
-    { range: "20", color: "bg-[#CCBAED]" },
-    { range: "0", color: "bg-[#EFE9F9]" },
-  ];
+  // const HEATMAP_COLORS = [
+  //   { range: "180+", color: "bg-[#442873]" },
+  //   { range: "160", color: "bg-[#533F73]" },
+  //   { range: "140", color: "bg-[#41178B]" },
+  //   { range: "120", color: "bg-[#541DB2]" },
+  //   { range: "100", color: "bg-[#5C20C4]" },
+  //   { range: "80", color: "bg-[#7D4DD0]" },
+  //   { range: "60", color: "bg-[#926AD7]" },
+  //   { range: "40", color: "bg-[#B498E4]" },
+  //   { range: "20", color: "bg-[#CCBAED]" },
+  //   { range: "0", color: "bg-[#EFE9F9]" },
+  // ];
 
   return (
-    <div className="relative">
+    <div className="flex items-center">
       <div
         className={classNames(
-          cell === "rect" ? "h-[1600px]" : "h-[300px] ",
-          "w-[620px] 2xl:w-[800px] mx-auto ",
+          cell === "rect" ? "h-[600px]" : "h-[300px] ",
+          "w-[600px] 2xl:w-[800px] mx-auto  overflow-y-auto graph_scroller",
         )}
       >
-        <ResponsiveHeatMap
+        <HeatMapCanvas
           data={data}
-          margin={{ top: 60, right: 60, bottom: 60, left: cell === "rect" ? 120 : 60 }}
+          margin={{
+            top: 60,
+            right: 120,
+            bottom: 60,
+            left: cell === "rect" ? 20 : 60,
+          }}
           borderWidth={2}
           borderColor="#ffffff"
           inactiveOpacity={0.15}
           isInteractive={false}
-          cellComponent={cell}
+          // cellComponent={cell}
           forceSquare={cell === "circle" && true}
           // yInnerPadding={-0.1}
+          axisBottom={{
+            tickSize: 0,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: `${legendY !== undefined && legendY}`,
+            legendOffset: -46,
+            legendPosition: "middle",
+          }}
           axisTop={{
             tickSize: 0,
             tickPadding: 5,
@@ -62,7 +75,8 @@ export const HeatMap: FunctionComponent<Props> = ({
             legendOffset: -46,
             legendPosition: "middle",
           }}
-          axisLeft={{
+          axisLeft={null}
+          axisRight={{
             tickSize: 0,
             tickPadding: 5,
             tickRotation: 0,
@@ -115,9 +129,11 @@ export const HeatMap: FunctionComponent<Props> = ({
               },
             },
           }}
+          height={1600}
+          width={800}
         />
       </div>
-      <div
+      {/* <div
         className={classNames(
           legentType === "range" ? "items-end right-2" : "items-start right-0 gap-1",
           "flex flex-col justify-center  mt-1 absolute top-0 h-full ",
@@ -141,7 +157,7 @@ export const HeatMap: FunctionComponent<Props> = ({
             )}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

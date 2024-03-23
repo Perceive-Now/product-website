@@ -8,16 +8,31 @@ interface Props {
   legendX?: string;
 }
 
-interface BarLabelColors {
-  [key: string]: string;
-}
+// interface BarLabelColors {
+//   [key: string]: string;
+// }
 // const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 // const HEATMAP_SECTIONS = 10;
+
+const formatAxisLabel = (value: any) => {
+  const firstWord = value.split(" ")[0];
+  return firstWord;
+};
 
 type GetColorFunction = (bar: ComputedDatum<any>) => string;
 
 export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
-  const width = data.length > 10 ? 2000 : 400;
+  // const width = data.length > 10 ? 3000 : 400;
+
+  const barWidth = () => {
+    if (data.length > 50) {
+      return 3000;
+    } else if (data.length > 10 && data.length < 50) {
+      return 2000;
+    } else {
+      return 3000;
+    }
+  };
 
   const props = {
     data,
@@ -26,14 +41,24 @@ export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
     height: 400,
     margin: ["bottom", "left", "right", "top"].reduce((acc, key) => ({ ...acc, [key]: 40 }), {}),
     // colors: { scheme: 'spectral' },
-    width: width,
+    width: barWidth(),
+    enableTotals: true,
     axisTop: null, // Correct syntax for disabling the top axis
     axisRight: null, // Correct syntax for disabling the right axis
+    // axisBottom: {
+    //   // format: (value) => '', // Use custom legend component for axis bottom
+    //   legend: <CustomAxisBottom />,
+    // }
     axisBottom: {
       legend: legendX,
-      legendOffset: 20,
+      legendOffset: 10,
       truncateTickAt: 0,
-      tickValues: [],
+      format: (value: any) => formatAxisLabel(value), // Custom format function for tick values
+      // legendTextStyle: {
+      //   fill: 'blue', // Fill color of the label text
+      //   fontSize: 14, // Font size of the label text
+      //   fontWeight: 'bold', // Font weight of the label text
+      // },
     },
   };
 
@@ -49,6 +74,7 @@ export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
     "#533F73",
     "#442873",
   ];
+
   const getColor: GetColorFunction = (bar) => {
     const value = bar.data.value;
     if (value > 0 && value <= 100) return COLOR_RANGE[0];
@@ -80,7 +106,7 @@ export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
   ];
 
   return (
-    <div className="flex items-center">
+    <div className=" flex ">
       <div className="3xl:w-[1000px] w-[700px] 2xl:max-w-[800px] mx-auto whitespace-nowrap overflow-auto graph_scroller">
         <Bar
           {...props}
@@ -90,10 +116,11 @@ export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
             </div>
           )}
           colors={getColor}
+          enableGridY={false}
           padding={0.25}
           innerPadding={4}
           borderRadius={4}
-          enableLabel
+          enableLabel={false}
           theme={{
             axis: {
               legend: {
@@ -105,7 +132,7 @@ export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
               },
               ticks: {
                 text: {
-                  fontSize: 10,
+                  fontSize: 8,
                   fontStyle: "italic",
                   color: "#373D3F",
                   fontWeight: 400,
@@ -116,7 +143,7 @@ export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
         />
       </div>
       {/*  */}
-      <div className="flex flex-col justify-center items-start mt-1  h-full gap-[0.5px] shrink-0">
+      <div className="flex flex-col justify-center items-start mt-1  h-full gap-[0.5px] shrink-0 absolut right-6 top-0">
         {COLOR_GROUPS.map((grp) => (
           <div key={grp} className="flex items-center gap-1">
             <div

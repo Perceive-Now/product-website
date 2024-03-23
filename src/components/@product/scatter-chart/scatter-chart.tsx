@@ -27,7 +27,7 @@ export default function ScatterChart(props: IScatterChartProps) {
   }, [props.data]);
 
   return (
-    <div className="h-[400px] w-[450px] 2xl:w-[668px] mx-auto">
+    <div className="h-[400px] w-[668px] mx-auto">
       <ResponsiveLine
         data={dataItems}
         margin={{ top: 50, right: 30, bottom: 50, left: 60 }}

@@ -23,6 +23,7 @@ import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 /**
  *
  */
+
 export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

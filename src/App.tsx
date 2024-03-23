@@ -82,10 +82,11 @@ import MALicensing from "./pages/product/m&a-licensing";
 import ProductLayout from "./layouts/product-layout";
 import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
 import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
-import SignupPage from "./pages/authentication/signup";
 import AuthDefaultLayout from "./layouts/auth/default";
 import VerificationConfirm from "./pages/authentication/signup/confirmation";
 import AuthLayout from "./layouts/auth";
+import UserDetails from "./pages/authentication/signup/user-details";
+import SignupPage from "./pages/authentication/signup";
 
 /**
  *
@@ -102,7 +103,7 @@ function App() {
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-
+        <Route path="/user-profile" element={<UserDetails />} />
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
         {/* All the routes below are protected */}
@@ -120,45 +121,9 @@ function App() {
               <Route path="/ip-analysis" element={<IPAnalysis />} />
               <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
             </Route>
-
             <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
 
             <Route path="/m&a-licensing" element={<MALicensing />} />
-
-            {/* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
-          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */}
-
-            {/* Deep Search pages */}
-            {/* <Route path="/patents" element={<PatentAnalyticPage />} />
-          <Route path="/patents/table" element={<PatentListPage />} />
-          <Route path="/patents/:id" element={<PatentDetailPage />} />
-
-          <Route path="/publications" element={<PublicationAnalyticPage />} />
-          <Route path="/publications/table" element={<PublicationListPage />} />
-          <Route path="/publications/:id" element={<PublicationDetailPage />} />
-
-          <Route path="/companies" element={<CompanyAnalyticPage />} />
-          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
-          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
-          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
-
-          <Route path="/inventors" element={<InventorAnalyticPage />} />
-          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
-          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
-
-          <Route path="/universities" element={<UniversityAnalyticPage />} />
-          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */}
-            {/* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */}
-            {/* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
-          <Route
-            path="/universities/publication/:id"
-            element={<UniversityPublicationDetailPage />}
-          />
-
-          <Route path="/funders" element={<FunderAnalyticPage />} />
-          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
-          <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
-          <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} /> */}
 
             {/* Account section */}
             <Route element={<AccountLayout />}>
@@ -180,3 +145,88 @@ function App() {
 }
 
 export default App;
+
+{
+  /* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
+          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */
+}
+
+{
+  /* Deep Search pages */
+}
+{
+  /* <Route path="/patents" element={<PatentAnalyticPage />} />
+          <Route path="/patents/table" element={<PatentListPage />} />
+          <Route path="/patents/:id" element={<PatentDetailPage />} />
+
+          <Route path="/publications" element={<PublicationAnalyticPage />} />
+          <Route path="/publications/table" element={<PublicationListPage />} />
+          <Route path="/publications/:id" element={<PublicationDetailPage />} />
+
+          <Route path="/companies" element={<CompanyAnalyticPage />} />
+          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
+          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
+
+          <Route path="/inventors" element={<InventorAnalyticPage />} />
+          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
+          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
+
+          <Route path="/universities" element={<UniversityAnalyticPage />} />
+          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */
+}
+{
+  /* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} />{/* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
+          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */
+}
+
+{
+  /* Deep Search pages */
+}
+{
+  /* <Route path="/patents" element={<PatentAnalyticPage />} />
+          <Route path="/patents/table" element={<PatentListPage />} />
+          <Route path="/patents/:id" element={<PatentDetailPage />} />
+
+          <Route path="/publications" element={<PublicationAnalyticPage />} />
+          <Route path="/publications/table" element={<PublicationListPage />} />
+          <Route path="/publications/:id" element={<PublicationDetailPage />} />
+
+          <Route path="/companies" element={<CompanyAnalyticPage />} />
+          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
+          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
+
+          <Route path="/inventors" element={<InventorAnalyticPage />} />
+          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
+          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
+
+          <Route path="/universities" element={<UniversityAnalyticPage />} />
+          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */
+}
+{
+  /* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */
+}
+{
+  /* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
+          <Route
+            path="/universities/publication/:id"
+            element={<UniversityPublicationDetailPage />}
+          />
+
+          <Route path="/funders" element={<FunderAnalyticPage />} />
+          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
+          <Route path="/funders/:id" element={<DeepSearchFunderPage />} /> */
+}
+{
+  /* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
+          <Route
+            path="/universities/publication/:id"
+            element={<UniversityPublicationDetailPage />}
+          />
+
+          <Route path="/funders" element={<FunderAnalyticPage />} />
+          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
+          <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
+          <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} /> */
+}

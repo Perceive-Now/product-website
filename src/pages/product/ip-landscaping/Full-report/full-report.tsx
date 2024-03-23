@@ -176,9 +176,9 @@ export const IPFullReport = () => {
           )} */}
           {/* summary report */}
           <div className="flex flex-col md:flex-row gap-x-4 mt-6 w-full">
-            <div className="shrink-0">
+            {/* <div className="shrink-0">
               <MoreNavOption />
-            </div>
+            </div> */}
             <div className="space-y-4 w-full grow-0">
               {/* report details */}
               <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">

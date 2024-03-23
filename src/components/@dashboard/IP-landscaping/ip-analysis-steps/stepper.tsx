@@ -17,7 +17,7 @@ const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
             key={idx}
             className={classNames(
               "py-0.5 px-[10px] bg-appGray-100 w-full",
-              (idx === 0 || idx === 1) && "hidden",
+              // (idx === 0 || idx === 1) && "hidden",
               isStepComplete(step.value) && "bg-primary-800",
             )}
           ></li>

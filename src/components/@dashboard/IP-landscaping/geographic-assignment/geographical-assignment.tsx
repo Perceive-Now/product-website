@@ -18,6 +18,7 @@ interface ITransformedEntry {
   id: string;
   data: { x: number; y: number | null }[];
 }
+
 export const GeographicalDistributionAssignment: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["geographical_assignments", ...keywords],

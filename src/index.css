@@ -31,8 +31,8 @@
   }
 
   .graph_scroller::-webkit-scrollbar {
-    width: 4px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
 
   .graph_scroller::-webkit-scrollbar-track {

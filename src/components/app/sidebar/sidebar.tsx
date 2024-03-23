@@ -67,7 +67,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
     <div>
       <SidebarTransition show={show} handleShow={handleShow}>
-        <Dialog.Panel className=" bg-appGray-100 shadow w-[270px] overflow-auto">
+        <Dialog.Panel className=" bg-appGray-100 shadow w-[270px] overflow-auto px-2.5">
           <div className="flex justify-center items-center py-3 gap-2 bg-appGray-100">
             {/* {open && ( */}
             <button type="button" className="" onClick={handleShow}>
@@ -77,6 +77,9 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
             <Link to="/">
               <img src={PerceiveLogo} alt="PerceiveNow logo" />
             </Link>
+          </div>
+          <div className="border border-appGray-600 text-sm text-secondary-800 px-2.5 py-0.5 rounded-md font-semibold">
+            Start new conversation
           </div>
           {sidebarItems.map((item, index) => (
             <div key={index}>
@@ -180,9 +183,9 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900 px-2.5",
+            "flex items-center py-0.5 text-gray-900 px-2.5",
             // props.isTopLevel ? "pl-2" : "pl-4",
-            isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-50",
+            isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-",
           )}
         >
           {/* {props.icon && (

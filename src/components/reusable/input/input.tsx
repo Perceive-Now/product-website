@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import "./input.css";
 
 /**
@@ -34,7 +35,12 @@ export default function Input(props: IInput) {
           id={id}
           name={name}
           {...(register ? register(name) : {})}
-          className="input-field"
+          className={classNames(
+            "rounded-lg w-full placeholder:text-sm",
+            error
+              ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+              : "input-field",
+          )}
           type={inputType}
           placeholder={placeholder}
           value={value}
@@ -50,7 +56,12 @@ export default function Input(props: IInput) {
           id={id}
           name={name}
           {...(register ? register(name) : {})}
-          className="input-field"
+          className={classNames(
+            "w-full rounded-lg placeholder:text-sm",
+            error
+              ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+              : "input-field",
+          )}
           placeholder={placeholder}
           value={value}
           onChange={handleInputChange}
