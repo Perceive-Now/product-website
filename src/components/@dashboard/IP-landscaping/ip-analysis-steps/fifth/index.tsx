@@ -8,7 +8,8 @@ import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 import axiosInstance from "../../../../../utils/axios";
 import toast from "react-hot-toast";
 import NewComponent from "../new-comp";
-import { setFifthChat } from "../../../../../stores/chat";
+import { setFifthChat, setQuestionId } from "../../../../../stores/chat";
+import jsCookie from "js-cookie";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -17,6 +18,8 @@ interface Props {
 export default function ChatFifthQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
+
+  jsCookie.set("chatId", String(7));
 
   const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
@@ -43,17 +46,23 @@ export default function ChatFifthQuestion({ changeActiveStep }: Props) {
       };
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/`,
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${
+            value.answer
+          }&userID=${5}&sessionID=1111111111&QuestionID=${1}`,
           userInput,
         );
         const apiData = response.data.question;
         const status = response.data.status;
+
+        dispatch(setQuestionId({ questionId: 5 }));
+        jsCookie.set("questionId", String(5));
 
         if (status === "true" || status == true) {
           dispatch(
             setFifthChat({
               answer: value.answer,
               question: question,
+              questionId: 5,
             }),
           );
           changeActiveStep(8);

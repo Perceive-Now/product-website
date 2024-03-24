@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 //
 import AppHeader from "../../components/app/header";
 import AppFooter from "../../components/app/footer";
+import AppSidebar from "../../components/app/sidebar";
 // import AppSidebar from "../../components/app/sidebar";
 // import { useState } from "react";
 
@@ -19,19 +20,13 @@ export default function DefaultLayout() {
 
       <div className="w-full flex flex-col">
         <div className="sticky top-0 w-full z- bg-appGray-100 z-10">
-          <div className="px-4">
-            <AppHeader />
-          </div>
+          <div className="px-4">{/* <AppHeader /> */}</div>
         </div>
         <div className="flex">
-          <div className="fixe h-scree overflow-y-auto shadow">
-            {/* <AppSidebar
-              show={open}
-              handleShow={() => setOpen(false)}
-              
-            /> */}
+          <div className="fixed h-screen shadow">
+            <AppSidebar />
           </div>
-          <div className="relative flex-grow py-3 px-4 z-0 min-h-[calc(100vh-200px)]">
+          <div className="relative ml-[260px] py-3 px-4 z-0 min-h-[calc(100vh-200px)] w-full">
             <Outlet />
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
 
   return (
     <>
-      <Loading isLoading={true} />
+      <Loading isLoading={isLoading} />
       <div className="space-y-2.5">
         <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
         {/* <p id="exampleText" className="text-gray-600 text-sm">
@@ -62,11 +62,9 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
             <div className="mt-0.5 rounded-md shadow-sm">
               <textarea
                 rows={5}
-                // onChange={handleChange}
-                // value={answer}
                 {...register("answer")}
                 className={classNames(
-                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px]",
+                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller",
                   errors.answer
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",

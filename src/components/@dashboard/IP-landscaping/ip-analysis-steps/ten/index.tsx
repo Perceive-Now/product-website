@@ -8,7 +8,8 @@ import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 import axiosInstance from "../../../../../utils/axios";
 import toast from "react-hot-toast";
 import NewComponent from "../new-comp";
-import { setTenthChat } from "../../../../../stores/chat";
+import { setQuestionId, setTenthChat } from "../../../../../stores/chat";
+import jsCookie from "js-cookie";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -17,6 +18,7 @@ interface Props {
 export default function ChatTenthQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
+  jsCookie.set("chatId", String(12));
 
   const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
@@ -43,17 +45,23 @@ export default function ChatTenthQuestion({ changeActiveStep }: Props) {
       };
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/`,
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${
+            value.answer
+          }&userID=${6}&sessionID=1111111111&QuestionID=${10}`,
           userInput,
         );
         const apiData = response.data.question;
         const status = response.data.status;
+
+        dispatch(setQuestionId({ questionId: 10 }));
+        jsCookie.set("questionId", String(10));
 
         if (status === "true" || status == true) {
           dispatch(
             setTenthChat({
               answer: value.answer,
               question: question,
+              questionId: 4,
             }),
           );
           changeActiveStep(13);

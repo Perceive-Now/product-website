@@ -20,8 +20,8 @@ const Loading = ({ width, height, isLoading }: Props) => {
 
   return (
     <>
-      {!isLoading && (
-        <div className="fixed inset-0 z-50  flex justify-center items-center w-full">
+      {isLoading && (
+        <div className="fixed inset-0 z-50 bg-black0 h-full  flex justify-center items-center w-full">
           <LoadingIcon fontSize={52} className="animate-spin text-primary-900" />
         </div>
       )}

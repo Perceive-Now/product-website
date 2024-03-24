@@ -197,80 +197,110 @@ export const IPFullReport = () => {
               </div>
               <div ref={printRef} className="space-y-5 w-full">
                 {/*Patents by year  */}
-                <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
-                  <div id="p1" className="page-break">
+                <div
+                  id="1"
+                  className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <PatentYear keywords={keywords} />
                   </div>
                   <hr />
-                  <div id="2" className="page-break">
+                  <div className="page-break">
                     <PatentLegalStatus keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="3" className="page-break">
+                <div
+                  id="2"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <InventorAnalysis keywords={keywords} />
                   </div>
-                  <div id="4" className="page-break">
+                  <div className="page-break">
                     <GeographicalDistributionFiling keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="5" className="page-break">
+                <div
+                  id="3"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <NumberApplicationsByApplicant keywords={keywords} />
                   </div>
-                  <div id="6" className="page-break">
+                  <div className="page-break">
                     <GeographicalDistributionApplicant keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="7" className="page-break">
+                <div
+                  id="4"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <DistributionWorkload keywords={keywords} />
                   </div>
-                  <div id="8" className="page-break">
+                  <div className="page-break">
                     <TrendExaminationYear keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="9" className="page-break">
+                <div
+                  id="5"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <PatentAssignment keywords={keywords} />
                   </div>
-                  <div id="10" className="page-break">
+                  <div className="page-break">
                     <GeographicalDistributionAssignment keywords={keywords} />
                   </div>
                 </div>
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="11" className="page-break">
+                <div
+                  id="6"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <GeographicalDistributionInventors keywords={keywords} />
                   </div>
-                  <div id="12" className="page-break">
+                  <div className="page-break">
                     <InventorTrendOverTime keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="13" className="page-break">
+                <div
+                  id="7"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <ClassificationCPC keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="14" className="page-break">
+                <div
+                  id="8"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <PatentIPC keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="14" className="page-break">
+                <div
+                  id="9"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <PatentWipo keywords={keywords} />
                   </div>
                 </div>
 
-                <div className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2">
-                  <div id="14" className="page-break">
+                <div
+                  id="10"
+                  className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
+                >
+                  <div className="page-break">
                     <PCTApplication keywords={keywords} />
                   </div>
                 </div>
@@ -941,26 +971,17 @@ export const IPFullReport = () => {
 };
 
 const topics = [
-  // { name: "Related technology", id: "related_technology" },
-  { name: "1. Total Patents Filed Over Time", id: "1" },
-  { name: "2. Distribution of Patent Types", id: "2" },
-  { name: "3. Size of Patent Families Over Time", id: "3" },
+  { name: "Related technology", id: "related_technology" },
+  { name: "1. Patents", id: "1" },
+  { name: "2. Patent Families", id: "2" },
+  { name: "3. Applicants", id: "3" },
   { name: "4. Geographical Distribution of Patent Families", id: "4" },
-  { name: "5. Number of Applications by Applicant Type", id: "5" },
-  { name: "6. Geographic Distribution of Applicants", id: "6" },
-  { name: "7. Distribution of Examiner Workload", id: "7" },
-  { name: "8. Trends in Examination Times Over Years", id: "8" },
-  { name: "9. Top Organizations by Number of Patent Assignments", id: "9" },
-  { name: "10. Geographical Distribution of Assignments", id: "10" },
-  { name: "11. Geographical Distribution of Inventors", id: "11" },
-  { name: "12. Trends in Inventor Collaborations Over Time", id: "12" },
-  {
-    name: "13. Distribution of Patents by CPC Classifications",
-    id: "13",
-  },
-  { name: "14. Top IPC Classes in Patent Applications", id: "14" },
-  { name: "15. Distribution of Patents Across WIPO Sectors", id: "15" },
-  { name: "16. Trends in PCT Applications Over Time", id: "16" },
+  { name: "5. Assignees", id: "5" },
+  { name: "6. Inventors", id: "6" },
+  { name: "7. CPC", id: "7" },
+  { name: "8. IPC", id: "8" },
+  { name: "9. WIPO", id: "9" },
+  { name: "10. PCT", id: "10" },
 ];
 
 // const List = [

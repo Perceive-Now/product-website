@@ -78,7 +78,7 @@ export default function AppHeader() {
         </div>
         <UserIcon />
       </div>
-      <AppSidebar show={open} handleShow={toggleSideBar} />
+      {/* <AppSidebar show={open} handleShow={toggleSideBar} /> */}
     </>
   );
 }

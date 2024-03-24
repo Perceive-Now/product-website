@@ -3,12 +3,13 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { IAnswer } from "../../../../../@types/entities/IPLandscape";
-import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
+import { useAppDispatch } from "../../../../../hooks/redux";
 import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 import axiosInstance from "../../../../../utils/axios";
 import toast from "react-hot-toast";
 import NewComponent from "../new-comp";
-import { setFourthChat } from "../../../../../stores/chat";
+import { setFourthChat, setQuestionId } from "../../../../../stores/chat";
+import jsCookie from "js-cookie";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -17,10 +18,11 @@ interface Props {
 export default function ChatFourthQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
+  jsCookie.set("chatId", String(6));
 
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
+  // const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   //
-  const keywords = searchedKeywords.map((kwd) => kwd);
+  // const keywords = searchedKeywords.map((kwd) => kwd);
 
   const defaultQuestion = `Can you tell me more about the specific patents or prior art you may have encountered during your research? What similarities or differences did you find?`;
 
@@ -43,17 +45,23 @@ export default function ChatFourthQuestion({ changeActiveStep }: Props) {
       };
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/`,
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${
+            value.answer
+          }&userID=${4}&sessionID=1111111111&QuestionID=${1}`,
           userInput,
         );
         const apiData = response.data.question;
         const status = response.data.status;
+
+        dispatch(setQuestionId({ questionId: 4 }));
+        jsCookie.set("questionId", String(4));
 
         if (status === "true" || status == true) {
           dispatch(
             setFourthChat({
               answer: value.answer,
               question: question,
+              questionId: 4,
             }),
           );
           changeActiveStep(7);

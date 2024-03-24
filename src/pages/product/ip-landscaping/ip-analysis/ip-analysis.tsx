@@ -26,7 +26,7 @@ import Thankyou from "../../../../components/@dashboard/IP-landscaping/ip-analys
  */
 export default function IPAnalysis() {
   const [activeStep, setActiveStep] = useState(0);
-  //
+
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {
       setActiveStep(stepValue);

@@ -52,9 +52,11 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
   );
 
   const onContinue = useCallback(async () => {
-    dispatch(setDashboardKeywords(keywords));
+    dispatch(
+      setDashboardKeywords(["Artificial Intelligence-based Predictive Analytics for Healthcare"]),
+    );
     changeActiveStep(3);
-  }, [changeActiveStep, dispatch, keywords]);
+  }, [changeActiveStep, dispatch]);
 
   const removeKeyword = useCallback(
     (value: string) => {
