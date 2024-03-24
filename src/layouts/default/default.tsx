@@ -28,10 +28,10 @@ export default function DefaultLayout() {
           </div>
           <div className="relative ml-[260px] py-3 px-4 z-0 min-h-[calc(100vh-200px)] w-full">
             <Outlet />
+            <AppFooter />
           </div>
         </div>
       </div>
-      <AppFooter />
     </div>
   );
 }

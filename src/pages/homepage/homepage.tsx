@@ -118,9 +118,8 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="text-center px-4 pt-7">
+      {/* <div className="text-center px-4 pt-7">
         <Disclosure as="div" className="mt-2">
-          {/* {({ open }) => ( */}
           <>
             <Disclosure.Button className="">
               <h6 className="flex justify-center items-center">
@@ -151,7 +150,6 @@ export default function HomePage() {
               leaveFrom="transform scale-100 opacity-100"
               leaveTo="transform scale-95 opacity-0"
             >
-              {/* <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500"> */}
               <Disclosure.Panel className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 mt-2">
                 {DataSets.map((item, idx) => (
                   <div key={idx + 1} className="">
@@ -161,11 +159,9 @@ export default function HomePage() {
                 ))}
               </Disclosure.Panel>
             </Transition>
-            {/* </Disclosure.Panel> */}
           </>
-          {/* )} */}
         </Disclosure>
-      </div>
+      </div> */}
     </div>
   );
 }

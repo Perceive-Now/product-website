@@ -185,7 +185,7 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-0.5 text-gray-900 px-2.5",
+            "flex items-center py-1 text-gray-900 px-2.5 rounded",
             // props.isTopLevel ? "pl-2" : "pl-4",
             isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-",
           )}
