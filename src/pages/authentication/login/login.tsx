@@ -19,6 +19,7 @@ import { WEBSITE_URL } from "../../../utils/constants";
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
+import GoogleIcon from "../../../components/icons/social/google";
 
 /**
  *
@@ -40,15 +41,15 @@ export default function LoginPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: ILoginFormValues = {
-    email: "",
+    username: "",
     password: "",
   };
 
   const formResolver = yup.object().shape({
-    email: yup
+    username: yup
       .string()
-      .email("Please enter a valid email address")
-      .required("Email address is required"),
+      // .username("Username is required")
+      .required("Username is required"),
     password: yup.string().required("Password is required"),
   });
 
@@ -78,7 +79,7 @@ export default function LoginPage() {
     setIsSubmitting(false);
   };
 
-  const emailValue = watch("email");
+  const userNameValue = watch("username");
   const passwordValue = watch("password");
 
   const getSession = async () => {
@@ -96,50 +97,49 @@ export default function LoginPage() {
   if (isLoading) return <></>;
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-2">
-      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[480px] py-10">
+    <div className="flex justify-center items-center px-2 h-full">
+      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px] h-full">
         <div className="flex flex-col items-center">
-          <img
+          {/* <img
             src={Logo}
             width={76}
             height={60}
             alt="PerceiveNow logo"
             className="w-9 h-8 object-contain"
-          />
-          <h1 className="text-4xl font-semibold mt-5">Welcome back</h1>
-          <p className="mt-1 font-normal">Let’s get back to innovating!</p>
+          /> */}
+          <h1 className="text-4xl font-extrabold text-secondary-800 mt-5">Sign In</h1>
         </div>
 
         <div>
           <fieldset className="mt-3">
-            <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
-              Email
-            </label>
+            {/* <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
+              Username
+            </label> */}
 
             <div className="mt-0.5 rounded-md shadow-sm">
               <input
-                id="email"
-                {...register("email")}
+                id="username"
+                {...register("username")}
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                  errors.email
+                  errors.username
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Enter your email address"
+                placeholder="Username"
               />
             </div>
 
-            {errors.email?.message && (
-              <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
+            {errors.username?.message && (
+              <div className="mt-1 text-xs text-danger-500">{errors.username?.message}</div>
             )}
           </fieldset>
 
           <fieldset className="mt-2">
-            <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">
+            {/* <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">
               Password
-            </label>
+            </label> */}
 
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
@@ -152,7 +152,7 @@ export default function LoginPage() {
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Enter your password"
+                placeholder="Password"
               />
 
               {passwordValue && (
@@ -170,31 +170,39 @@ export default function LoginPage() {
             )}
           </fieldset>
 
-          <div className="mt-2 text-sm">
+          <div className="text-sm text-primary-500 font-bold mt-0.5">
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
         </div>
 
-        <div className="flex justify-center mt-3">
-          <Button htmlType="submit" disabled={!emailValue || !passwordValue} loading={isSubmitting}>
-            Login
+        <div className="flex justify-center w-full mt-3">
+          <Button
+            classname="w-full"
+            htmlType="submit"
+            disabled={!userNameValue || !passwordValue}
+            loading={isSubmitting}
+            type="gray"
+          >
+            Sign In
           </Button>
         </div>
 
-        <hr className="mt-6 mb-3 border-gray-300" />
-
-        <p className="text-center">
-          <span>Don't have an account?</span>
-          <a href={`${WEBSITE_URL}/signup`} className="ml-2">
-            Create a free account
-          </a>
+        <p className="text-center mt-2.5">
+          <span>Don’t have an account?</span>
+          <Link to={"/signup"} className="ml-2 font-bold text-primary-500">
+            Sign Up
+          </Link>
         </p>
+        <hr className="mt-4 mb-4 border-gray-300" />
+        <Button classname="w-full" htmlType="button" type="gray" startIcon={<GoogleIcon />}>
+          Sign up with Google
+        </Button>
       </form>
     </div>
   );
 }
 
 interface ILoginFormValues {
-  email: string;
+  username: string;
   password: string;
 }

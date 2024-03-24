@@ -1,21 +1,42 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-undef
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
       sm: "428px",
       md: "834px",
-      lg: "1280px",
-      xl: "1440px",
-      "2xl": "1728px",
+      lg: "1080px",
+      xl: "1280px",
+      "2xl": "1440px",
+      "3xl": "1600px",
     },
+    // screens: {
+    //   'sm': '640px',
+    //   // => @media (min-width: 640px) { ... }
+
+    //   'md': '768px',
+    //   // => @media (min-width: 768px) { ... }
+
+    //   'lg': '1024px',
+    //   // => @media (min-width: 1024px) { ... }
+
+    //   'xl': '1280px',
+    //   // => @media (min-width: 1280px) { ... }
+
+    //   '2xl': '1440px',
+    //   // => @media (min-width: 1536px) { ... }
+    //   '3xl': '1800px'
+    // },
     spacing: {
       0: 0,
       0.5: "0.25rem",
       1: "0.5rem",
       2: "1rem",
+      2.5:"1.25rem",
       3: "1.5rem",
       4: "2rem",
+      4.5:"2.25rem",
       5: "2.5rem",
       6: "3rem",
       7: "3.5rem",
@@ -64,6 +85,7 @@ module.exports = {
           400: "#FFB531",
           500: "#FFA300",
           700: "#CC8300",
+          800: "#373D3F"
         },
         success: {
           500: "#40A140",
@@ -77,12 +99,23 @@ module.exports = {
       ringWidth: {
         0.5: "0.5px",
       },
+      container: {
+        center: true,
+        screens: {
+          // sm: '600px',
+          // md: '728px',
+          // lg: '984px',
+          // xl: '1240px',
+          '2xl': '1440px',
+        },
+      },
+      // boxShadow: {
+      //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      // },
     },
   },
   plugins: [
-    // https://github.com/tailwindlabs/tailwindcss-forms
     require("@tailwindcss/forms"),
-    // https://github.com/tailwindlabs/tailwindcss-line-clamp
     require("@tailwindcss/line-clamp"),
   ],
 };

@@ -8,6 +8,7 @@ import { SearchIcon } from "../../icons";
 
 //
 import "./search.css";
+import Button from "../button";
 
 const MAX_KEYWORD = 3;
 
@@ -93,8 +94,9 @@ export default function Search(props: ISearchProps) {
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-      <div className="relative">
+      <div className="relative flex items-center gap-x-1">
         <AsyncCreateableSelect
+          isDisabled={props.isDisabled}
           loadOptions={fetchOptions}
           formatCreateLabel={(inputValue: string) => inputValue}
           isMulti
@@ -124,11 +126,23 @@ export default function Search(props: ISearchProps) {
           value={selectedKeywords}
           onChange={handleKeywordChange}
         />
-
-        <div className="absolute top-0 right-0 h-full cursor-pointer" onClick={handleSubmit}>
-          <div className="flex h-full items-center mx-2">
-            <SearchIcon className="text-gray-600" />
-          </div>
+        <div onClick={handleSubmit}>
+          {props.searchButton ? (
+            <Button
+              htmlType={"button"}
+              rounded={"small"}
+              size={"small"}
+              classname={"px-3 py-1 text-sm font-semibold"}
+            >
+              Search
+            </Button>
+          ) : (
+            <div className="absolute top-0 right-0 h-full cursor-pointer">
+              <div className="flex h-full items-center mx-2">
+                <SearchIcon className="text-gray-600" />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -148,6 +162,8 @@ interface ISearchProps {
   size?: "small" | "large";
   onSubmit: (value: IKeywordOption[]) => void;
   onKeywordsChange?: (value: IKeywordOption[]) => void;
+  searchButton?: boolean;
+  isDisabled?: boolean;
 }
 
 // remove once api is received

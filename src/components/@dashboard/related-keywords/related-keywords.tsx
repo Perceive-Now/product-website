@@ -33,7 +33,7 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
       isLoading={isLoading}
       isError={isError}
       error={error}
-      title={<PageTitle title="Most Related Keywords" titleClass="font-semibold" />}
+      title={<PageTitle title={props.title} titleClass="font-semibold" />}
     >
       <div className="mt-2 min-h-[324px]">
         <div className="flex flex-wrap gap-x-2 gap-y-1">
@@ -48,4 +48,5 @@ export default function RelatedKeywords(props: IRelatedKeywordsProps) {
 
 interface IRelatedKeywordsProps {
   keywords: string[];
+  title: string;
 }

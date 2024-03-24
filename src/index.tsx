@@ -11,6 +11,7 @@ import { store } from "./store";
 
 // App's global style
 import "./index.css";
+import "./styles/input.scss";
 
 // Tooltip styles
 import "react-tooltip/dist/react-tooltip.css";

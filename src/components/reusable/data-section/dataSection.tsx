@@ -14,7 +14,9 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
   //
   const isEmpty = props.keywords.length === 0;
   const isLoading = !isEmpty && props.isLoading;
-  const isErrorState = !isLoading && props.isError;
+  const isErrorState = !isLoading && props.isError && !isEmpty;
+
+  // console.log(isLoading)
 
   //
   const errorMessage = props.error
@@ -25,12 +27,7 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
 
   //
   return (
-    <div
-      className={classNames(
-        "px-3 pt-1 pb-3 rounded-lg border bg-white border-gray-200 shadow",
-        props.className,
-      )}
-    >
+    <div className={classNames(" pt-1 pb-3 rounded-lg bg-white font-bold", props.className)}>
       {/* Title */}
       {props.title}
 
@@ -63,7 +60,7 @@ export default function DataSection(props: PropsWithChildren<IDataSectionProps>)
 
 //
 interface IDataSectionProps {
-  title: ReactElement;
+  title?: ReactElement;
   keywords: string[];
   isLoading: boolean;
   isError: boolean;

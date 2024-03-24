@@ -7,7 +7,7 @@ import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
 //
 import PageTitle from "../../reusable/page-title";
 import DataSection from "../../reusable/data-section";
-import RadioButtons from "../../reusable/radio-buttons";
+// import RadioButtons from "../../reusable/radio-buttons";
 
 //
 import { getExpertsTable } from "../../../utils/api/dashboard";
@@ -47,6 +47,7 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
       .slice(0, 5) ?? [];
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleModeChange = (mode: string) => {
     setExpertMode(mode as modes);
   };
@@ -62,18 +63,18 @@ export default function ExpertsNetwork(props: IExpertsNetworkProps) {
         className={props.keywords?.length > 0 ? "pb-0 rounded-b-none" : ""}
         title={
           <PageTitle
-            title="Inventors"
-            subTitle="Top list of inventors with maximum number of publications and patents "
-            sideTitleOption={
-              <RadioButtons
-                options={[
-                  { label: "Industry", value: "industry" },
-                  { label: "Academic", value: "academic" },
-                ]}
-                activeMode={expertMode}
-                handleModeChange={handleModeChange}
-              />
-            }
+            title="Ip Landscape"
+            // subTitle="Top list of inventors with maximum number of publications and patents "
+            // sideTitleOption={
+            //   <RadioButtons
+            //     options={[
+            //       { label: "Industry", value: "industry" },
+            //       { label: "Academic", value: "academic" },
+            //     ]}
+            //     activeMode={expertMode}
+            //     handleModeChange={handleModeChange}
+            //   />
+            // }
           />
         }
       >

@@ -23,6 +23,7 @@ import { getCurrentSession } from "../../../stores/auth";
 
 //
 import axiosInstance from "../../../utils/axios";
+import InsertLinkIcon from "../../../components/icons/social/insert-link";
 
 //
 const formSchema = yup.object().shape({
@@ -90,26 +91,20 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="flex justify-center items-center min-h-screen px-2">
-      {!isSubmitted && (
+      {/* {!isSubmitted && (
         <div className="fixed top-0 w-full flex justify-start mt-5 mb-2 pl-3">
           <Link to="/login" className="flex text-gray-900">
             <BackIcon />
             <p className="ml-1">Go back to Login</p>
           </Link>
         </div>
-      )}
+      )} */}
 
-      <form onSubmit={handleSubmit(handleForgotPassword)} className="w-full md:w-[480px] py-10">
+      <form onSubmit={handleSubmit(handleForgotPassword)} className="w-full md:w-[400px] py-10">
         <div className="flex flex-col items-center">
-          <img
-            src={Logo}
-            width={76}
-            height={60}
-            alt="PerceiveNow logo"
-            className="w-9 h-8 object-contain"
-          />
+          <InsertLinkIcon />
 
-          <div className="mt-5 text-sm text-center max-w-[320px]">
+          <div className="mt-5 text-sm text-center max-w-[320px] text-secondary-800">
             {!isSubmitted && (
               <p>Enter your email and we will send you a link to reset your password!</p>
             )}
@@ -126,12 +121,12 @@ export default function ForgotPasswordPage() {
           <>
             <div>
               <fieldset className="mt-3">
-                <label
+                {/* <label
                   htmlFor="email"
                   className="block text-sm font-medium leading-5 text-gray-700"
                 >
                   Email
-                </label>
+                </label> */}
 
                 <div className="mt-0.5 rounded-md shadow-sm">
                   <input
@@ -154,9 +149,9 @@ export default function ForgotPasswordPage() {
               </fieldset>
             </div>
 
-            <div className="flex justify-center mt-3">
-              <Button htmlType="submit" disabled={!emailValue}>
-                Send link to email
+            <div className="flex justify-center mt-3 w-full">
+              <Button htmlType="submit" disabled={!emailValue} classname="w-full">
+                Send Now
               </Button>
             </div>
           </>

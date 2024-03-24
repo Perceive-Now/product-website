@@ -1,7 +1,21 @@
 export const WEBSITE_URL = process.env.REACT_APP_WEBSITE_URL;
 export const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY ?? "";
 
-export const COLORS = ["#B6A2D8", "#7F4BD8", "#442873", "#d6d6d6", "#e0d4f2", "#b5a2d8"];
+export const COLORS = [
+  "#442873",
+  "#533F73",
+  "#41178B",
+  "#541DB2",
+  "#7F4BD8",
+  "#926AD7",
+  "#B498E4",
+  "#CCBAED",
+  "#442873",
+  "#d6d6d6",
+  "#e0d4f2",
+  "#b5a2d8",
+  "#FFF",
+];
 
 export const YEAR_DIFFERENCE = 4;
 export const DEFAULT_TIME_PERIOD_END_YEAR = new Date().getFullYear();

@@ -179,7 +179,7 @@ export default function ExpertsGraph(props: IExpertsGraphProps) {
       error={error}
       title={
         <PageTitle
-          title="Inventor’s Trend"
+          title="Leading inventors working in related technologies"
           titleClass="font-semibold"
           // info={`This list was extracted from "X" total number of inventors and researchers worldwide`}
         />

@@ -2,136 +2,92 @@ import type { ReactElement } from "react";
 
 //
 import {
-  ExpertsIcon,
-  FundersIcon,
-  PatentsIcon,
-  PublicationsIcon,
-  UniversitiesIcon,
+  // ExpertsIcon,
+  // FundersIcon,
+  // PatentsIcon,
+  // PublicationsIcon,
+  // UniversitiesIcon,
   DashboardIcon,
   //
-  TechnologyIcon,
-  CompaniesIcon,
-  Universities2Icon,
-  SummaryIcon,
-  SimilarityIcon,
-  MascotIcon,
+  // CompaniesIcon,
+  // Universities2Icon,
+  // SummaryIcon,
+  // SimilarityIcon,
+  // MascotIcon,
 } from "../../icons";
+// import HookIcon from "../../icons/sidenav/hook";
+// import DOcumentIcon from "../../icons/miscs/document";
+// import TechnologyIcon from "../../icons/miscs/Technology";
+import BulbIcon from "../../icons/miscs/Bulb";
+import PortfolioIcon from "../../icons/sidenav/portfolio";
+// import ClaimIcon from "../../icons/sidenav/claim";
+// import ChatIcon from "../../icons/sidenav/chat";
+// import InventorIcon from "../../icons/sidenav/inventors";
+// import PortfolioIcon from "../../icons/sidenav/portfolio";
+// import ClaimIcon from "../../icons/sidenav/claim";
+// import SummarizeIcon from "../../icons/sidenav/summarize";
 
 const sidebarItems: ISidebarListItem[] = [
   {
-    title: "Dashboard",
-    key: "dashboard",
+    title: "Generate new report",
+    key: "generate",
     icon: <DashboardIcon />,
-    to: "/dashboard",
+    to: "/",
   },
   {
-    title: "Deep Search",
-    key: "deep-search",
-    children: [
-      {
-        title: "Emerging technology",
-        key: "emerging-technology",
-        icon: <TechnologyIcon />,
-        to: "/#",
-      },
-      {
-        title: "Publications",
-        key: "publications",
-        icon: <PublicationsIcon />,
-        to: "/deep-search/publications",
-      },
-      {
-        title: "Patents",
-        key: "patents",
-        icon: <PatentsIcon />,
-        to: "/deep-search/patents",
-      },
-      {
-        title: "Companies",
-        key: "companies",
-        icon: <CompaniesIcon />,
-        to: "/deep-search/companies",
-      },
-      {
-        title: "Inventors",
-        key: "inventors",
-        icon: <ExpertsIcon />,
-        to: "/deep-search/inventors",
-      },
-      {
-        title: "Universities",
-        key: "universities",
-        icon: <UniversitiesIcon />,
-        to: "deep-search/university",
-      },
-      {
-        title: "Funders",
-        key: "funders",
-        icon: <FundersIcon />,
-        to: "deep-search/funders",
-      },
-    ],
+    title: "User info",
+    key: "user-info",
+    icon: <PortfolioIcon />,
+    to: "/info",
+  },
+  // {
+  //   title: "Freedom to operate",
+  //   key: "freedom-to-operate",
+  //   icon: <HookIcon />,
+  //   to: "/patents",
+  // },
+  {
+    title: "Report",
+    key: "report",
+    icon: <BulbIcon />,
+    to: "/reports",
   },
   {
-    title: "Diligence 360°",
-    key: "dilligence-360",
-    children: [
-      {
-        title: "Connected trends",
-        key: "connected-trends",
-        children: [
-          {
-            title: "Companies",
-            key: "connected-trend-companies",
-            icon: <CompaniesIcon />,
-            to: "/#",
-          },
-          {
-            title: "Universities",
-            key: "connected-trend-universities",
-            icon: <Universities2Icon />,
-            to: "/#",
-          },
-        ],
-      },
-      {
-        title: "M&A Insights",
-        key: "ma-insights",
-        children: [
-          {
-            title: "Companies",
-            key: "ma-insights-companies",
-            icon: <CompaniesIcon />,
-            to: "/#",
-          },
-          {
-            title: "Universities",
-            key: "ma-insights-universities",
-            icon: <Universities2Icon />,
-            to: "/#",
-          },
-        ],
-      },
-      {
-        title: "Summarize",
-        key: "summarize",
-        icon: <SummaryIcon />,
-        to: "/#",
-      },
-      {
-        title: "Similarity check",
-        key: "similarity-check",
-        icon: <SimilarityIcon />,
-        to: "/#",
-      },
-      {
-        title: "Ask our AI mascot",
-        key: "ask-our-ai-mascot",
-        icon: <MascotIcon />,
-        to: "/#",
-      },
-    ],
+    title: "Settings",
+    key: "setting",
+    icon: <PortfolioIcon />,
+    to: "/setting",
   },
+  // {
+  //   title: "M&A Licensing",
+  //   key: "m&a-licensing",
+  //   icon: <DOcumentIcon />,
+  //   to: "/m&a-licensing",
+  // },
+  // {
+  //   title: "Technology landscaping",
+  //   key: "technology-landscaping",
+  //   icon: <TechnologyIcon />,
+  //   to: "/b",
+  // },
+  // {
+  //   title: "Competitive intelligence",
+  //   key: "competitive-intelligence",
+  //   icon: <BulbIcon />,
+  //   to: "/c",
+  // },
+  // {
+  //   title: "Infringement analysis",
+  //   icon: <PortfolioIcon />,
+  //   key: "infringement-analysis",
+  //   to: "/infringement-analysis",
+  // },
+  // {
+  //   title: "Database Search",
+  //   icon: <ClaimIcon />,
+  //   key: "database-search",
+  //   to: "/database-search",
+  // },
 ];
 
 export interface ISidebarItem {
@@ -144,7 +100,7 @@ export interface ISidebarListItem {
   title: string;
   key: string;
   icon?: ReactElement;
-  to?: string;
+  to: string;
   children?: ISidebarListItem[];
 }
 

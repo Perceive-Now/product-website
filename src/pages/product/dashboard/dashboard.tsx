@@ -78,7 +78,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="col-span-1">
-          <Patents key={joinedKeywords} keywords={keywordValue} />
+          {/* <Patents key={joinedKeywords} keywords={keywordValue} title={"Funding"} /> */}
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="col-span-1">
-            <RelatedKeywords keywords={keywordValue} />
+            <RelatedKeywords keywords={keywordValue} title="aaa" />
           </div>
         </div>
       </div>

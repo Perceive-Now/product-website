@@ -1,5 +1,5 @@
-import { useState, Fragment } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useState, Fragment, FunctionComponent } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import classNames from "classnames";
 
@@ -11,18 +11,24 @@ import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
 import { sidebarItems, ISidebarListItem } from "./_data";
 
 // Redux
-import { logoutUser } from "../../../stores/auth";
-import { useAppDispatch } from "../../../hooks/redux";
+// import { logoutUser } from "../../../stores/auth";
+// import { useAppDispatch } from "../../../hooks/redux";
+import { Dialog } from "@headlessui/react";
+import SidebarTransition from "./sidebarTransition";
+import ToggleBarIcon from "../../icons/sidenav/bars";
 
 /**
  *
  */
-export default function AppSidebar() {
-  const navigate = useNavigate();
-  const dispath = useAppDispatch();
+interface Props {
+  show?: boolean;
+  handleShow?: () => void;
+}
+export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
+  // const navigate = useNavigate();
+  // const dispath = useAppDispatch();
 
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-
+  // const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
     sidebarItems.map((itm) => itm.key),
   );
@@ -47,41 +53,49 @@ export default function AppSidebar() {
     }
   };
 
-  const handleLogout = async () => {
-    if (isLoggingOut) return;
-    setIsLoggingOut(true);
+  // const handleLogout = async () => {
+  //   if (isLoggingOut) return;
+  //   setIsLoggingOut(true);
 
-    await dispath(logoutUser()).unwrap();
-    navigate("/login");
+  //   await dispath(logoutUser()).unwrap();
+  //   navigate("/login");
 
-    setIsLoggingOut(false);
-  };
+  //   setIsLoggingOut(false);
+  // };
 
   return (
-    <div className="w-[256px] h-full flex flex-col justify-between my-auto">
-      <div>
-        <div className="flex justify-center py-3">
+    // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
+    <div>
+      {/* <SidebarTransition show={show} handleShow={handleShow}> */}
+      <div className=" bg-appGray-100 shadow w-[270px] overflow-auto px-2.5 h-screen sticky top-0">
+        <div className="flex justify-center items-center py-3 gap-2 bg-appGray-100">
+          {/* {open && ( */}
+          <button type="button" className="" onClick={handleShow}>
+            <ToggleBarIcon />
+          </button>
+          {/* )} */}
           <Link to="/">
             <img src={PerceiveLogo} alt="PerceiveNow logo" />
           </Link>
         </div>
-
-        <div>
+        <div className="space-y-2.5">
+          <div className="border border-appGray-600 text-sm text-secondary-800 px-2.5 py-1 rounded-md font-semibold bg-white">
+            Start new conversation
+          </div>
           {sidebarItems.map((item, index) => (
             <div key={index}>
               {item.children && (
-                <Fragment>
+                <div>
                   <div
-                    className="px-2 py-2 flex items-center text-primary-600 cursor-pointer"
+                    className="px-2.5 py-2 flex items-center cursor-pointer"
                     onClick={() => updateActiveGroup(item.key)}
                   >
                     <div className="mr-1">
                       {expandedGroups.includes(item.key) && <ChevronUp />}
                       {!expandedGroups.includes(item.key) && <ChevronDown />}
                     </div>
-                    <span>{item.title}</span>
+                    <span className="text-lg">{item.title}</span>
                   </div>
-
                   {expandedGroups.includes(item.key) && (
                     <div>
                       {item.children?.map((child, jndex) => (
@@ -96,7 +110,7 @@ export default function AppSidebar() {
                                   {expandedSubGroups.includes(child.key) && <ChevronUp />}
                                   {!expandedSubGroups.includes(child.key) && <ChevronDown />}
                                 </div>
-                                <span>{child.title}</span>
+                                <span className="text-lg">{child.title}</span>
                               </div>
 
                               {expandedSubGroups.includes(child.key) &&
@@ -105,9 +119,10 @@ export default function AppSidebar() {
                                     <NavLinkItem
                                       key={`sub-content-${kndex}`}
                                       to={subChild.to}
-                                      icon={subChild.icon}
+                                      // icon={subChild.icon}
                                       title={subChild.title}
                                       isTopLevel={false}
+                                      value={subChild.key}
                                     />
                                   </div>
                                 ))}
@@ -118,35 +133,37 @@ export default function AppSidebar() {
                             <NavLinkItem
                               key={`main-content-${jndex}`}
                               to={child.to}
-                              icon={child.icon}
+                              // icon={child.icon}
                               title={child.title}
                               isTopLevel={false}
+                              value={child.key}
                             />
                           )}
                         </div>
                       ))}
                     </div>
                   )}
-                </Fragment>
+                </div>
               )}
-
               {!item.children && (
                 <NavLinkItem
                   key={`top-${index}`}
                   to={item.to}
-                  icon={item.icon}
+                  // icon={item.icon}
                   title={item.title}
                   isTopLevel={true}
+                  value={item.key}
                 />
               )}
             </div>
           ))}
         </div>
       </div>
-
-      {/* Logout */}
       <div className="pb-3 text-gray-900">
-        <div className="px-2 py-2 flex items-center cursor-pointer" onClick={() => handleLogout()}>
+        <div
+          className="px-2 py-2 flex items-center cursor-pointer"
+          // onClick={() => handleLogout()}
+        >
           <div className="mr-2">
             <LogoutIcon />
           </div>
@@ -155,32 +172,45 @@ export default function AppSidebar() {
       </div>
     </div>
   );
-}
+};
 
 function NavLinkItem(props: INavLinkItemProps) {
   const { pathname } = useLocation();
-  const match = props.to ? pathname.includes(props.to) : false;
+  // const match = props.to ? pathname.includes(props.key) : false;
+  const titles = pathname?.split("/").slice(1);
+  const hasKey = titles.includes(props.value);
 
   return (
     <NavLink to={props.to ?? ""} end>
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-2 text-gray-900 hover:bg-primary-50 pr-2",
-            props.isTopLevel ? "pl-2" : "pl-4",
-            { "bg-appGray-200": isActive || match },
+            "flex items-center py-0.5 text-gray-900 px-2.5",
+            // props.isTopLevel ? "pl-2" : "pl-4",
+            isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-",
           )}
         >
-          {props.icon && (
+          {/* {props.icon && (
             <div
-              className={classNames("mr-1", {
-                "text-gray-600": !props.isTopLevel,
-              })}
+              className={classNames(
+                "mr-1 text-gray-600 fill-gray-600",
+
+                {
+                  "text-white": isActive || hasKey,
+                },
+              )}
             >
               {props.icon}
             </div>
-          )}
-          <span className="h-4 flex items-center">{props.title}</span>
+          )} */}
+          <span
+            className={classNames(
+              "flex items-center text-sm font-semibold",
+              isActive || hasKey ? "text-white " : "text-gray-900",
+            )}
+          >
+            {props.title}
+          </span>
         </div>
       )}
     </NavLink>
@@ -189,4 +219,5 @@ function NavLinkItem(props: INavLinkItemProps) {
 
 interface INavLinkItemProps extends ISidebarListItem {
   isTopLevel: boolean;
+  value: string;
 }

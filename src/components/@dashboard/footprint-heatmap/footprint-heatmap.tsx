@@ -12,7 +12,7 @@ import USMap from "../../@product/us-map";
 import Button from "../../reusable/button";
 import PageTitle from "../../reusable/page-title";
 import DataSection from "../../reusable/data-section";
-import RadioButtons from "../../reusable/radio-buttons";
+// import RadioButtons from "../../reusable/radio-buttons";
 
 //
 import { getPatentHeatmap } from "../../../utils/api/map";
@@ -22,7 +22,7 @@ import StatesCodes from "../../../utils/extra/us-states-codes";
 import { ChevronRight, LocationIcon } from "../../icons";
 
 //
-import { classificationMode } from "../../../pages/product/deep-search/patents/list/patents";
+import { classificationMode } from "../../../pages/product/pro/patents/list/patents";
 
 /**
  *
@@ -53,6 +53,7 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
     (currentMode === "Industry" ? data?.Industries : data?.Universities)?.titles ?? [];
 
   //
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleModeChange = (mode: string) => {
     setCurrentMode(mode as classificationMode);
   };
@@ -71,19 +72,19 @@ export default function FootprintHeatmap(props: IFootprintHeatmapProps) {
       title={
         <PageTitle
           // info={`This geographical heat map network was extracted from "X" no of publications and "Y" no of patents`}
-          titleClass="font-semibold"
-          title="Geographical Footprint of Patents"
-          subTitle="Heat map of patents location in USA"
-          sideTitleOption={
-            <RadioButtons
-              options={[
-                { label: "Industries", value: "Industry" },
-                { label: "Universities", value: "Academic" },
-              ]}
-              activeMode={currentMode}
-              handleModeChange={handleModeChange}
-            />
-          }
+          titleClass="font-bold"
+          title="Geographical distribution"
+          // subTitle="Heat map of patents location in USA"
+          // sideTitleOption={
+          //   <RadioButtons
+          //     options={[
+          //       { label: "Industries", value: "Industry" },
+          //       { label: "Universities", value: "Academic" },
+          //     ]}
+          //     activeMode={currentMode}
+          //     handleModeChange={handleModeChange}
+          //   />
+          // }
         />
       }
     >

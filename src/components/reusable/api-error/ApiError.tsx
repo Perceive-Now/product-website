@@ -8,7 +8,7 @@ export default function ApiErrorMessage(props: IErrorMessageProps) {
 
   return (
     <div className="w-full text-center h-[200px] flex flex-col justify-center items-center">
-      <div className="mb-2 text-red-700 drop-shadow">
+      <div className="mb-2 text-red-700">
         <ErrorIcon width={48} height={48} />
       </div>
 

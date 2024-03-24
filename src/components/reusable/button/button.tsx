@@ -31,26 +31,32 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
       type={props.htmlType}
       className={classNames(
         {
-          "py-1 px-2": buttonSize === "small",
+          "p-0": buttonSize === "default",
+          "py-1 px-3": buttonSize === "small",
           "py-[12px] px-[24px]": buttonSize === "medium",
         },
         {
           "rounded-md": roundValue === "small",
-          "rounded-2xl": roundValue === "medium",
+          "rounded-lg": roundValue === "medium",
+          "rounded-2xl": roundValue === "large",
           "rounded-full": roundValue === "full",
         },
         {
           "primary-button": buttonType === "primary",
           "secondary-button": buttonType === "secondary",
           "optional-button": buttonType === "optional",
+          "gray-button": buttonType === "gray",
+          white: buttonType === "default",
           "full-width": isFullWidth,
         },
+        "font-semibold",
         props.classname,
       )}
       onClick={handleSubmit}
     >
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center gap-1">
         {props.loading && <LoadingIcon width={24} height={24} className="mr-1" />}
+        {props.startIcon && <div className="">{props.startIcon}</div>}
 
         <div>{props.children}</div>
 
@@ -64,13 +70,14 @@ interface IButtonProps {
   // Built in
   disabled?: boolean;
   htmlType?: "button" | "submit" | "reset";
-  size?: "small" | "medium";
+  size?: "small" | "medium" | "default";
   classname?: string;
   // Custom
-  rounded?: "small" | "medium" | "full";
-  type?: "primary" | "secondary" | "optional";
+  rounded?: "small" | "medium" | "large" | "full";
+  type?: "primary" | "secondary" | "optional" | "default" | "gray";
   icon?: ReactElement;
   loading?: boolean;
   fullWidth?: boolean;
   handleClick?: () => void;
+  startIcon?: ReactElement;
 }

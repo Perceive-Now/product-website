@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ResponsivePie } from "@nivo/pie";
 import { useEffect, useState } from "react";
 
@@ -20,13 +21,13 @@ export default function PieChart(props: IPieChartProps) {
 
   //
   return (
-    <div className="h-[300px]">
+    <div className="h-[300px] 3xl:w-[1000px] mx-auto flex justify-center items-center">
       <ResponsivePie
         data={dataItems}
-        margin={{ top: 40, right: 250, bottom: 40, left: 0 }}
-        innerRadius={0.25}
-        padAngle={2}
-        cornerRadius={5}
+        margin={{ top: 40, right: 0, bottom: 80, left: 0 }}
+        innerRadius={0.5}
+        padAngle={1.5}
+        cornerRadius={0}
         // If the value below is changed, we will be zoomed effect on hovering
         activeOuterRadiusOffset={0}
         borderWidth={1}
@@ -37,27 +38,41 @@ export default function PieChart(props: IPieChartProps) {
         animate={false}
         sortByValue={true}
         enableArcLabels={false}
-        enableArcLinkLabels={false}
-        legends={[
-          {
-            anchor: "right",
-            direction: "column",
-            justify: false,
-            translateX: 130,
-            translateY: 0,
-            itemsSpacing: 16,
-            itemWidth: 100,
-            itemHeight: 16,
-            itemDirection: "left-to-right",
-            itemOpacity: 1,
-            symbolSize: 16,
-            symbolShape: "circle",
-          },
-        ]}
+        enableArcLinkLabels={true}
+        // arcLinkLabel="id"
+        arcLinkLabel={(e) => e.id + " (" + e.value + ")"}
+        arcLinkLabelsSkipAngle={5}
+        arcLinkLabelsTextColor="#5C1FC4"
+        arcLinkLabelsDiagonalLength={36}
+        // arcLinkLabelsStraightLength={}
+        arcLinkLabelsThickness={1.5}
+        arcLinkLabelsColor={{ from: "color" }}
+        arcLabelsSkipAngle={40}
+        arcLabelsTextColor={{
+          from: "color",
+          modifiers: [["darker", 2]],
+        }}
+        // legends={[
+        //   {
+        //     anchor: "right",
+        //     direction: "column",
+        //     justify: false,
+        //     translateX: 130,
+        //     translateY: 0,
+        //     itemsSpacing: 16,
+        //     itemWidth: 100,
+        //     itemHeight: 16,
+        //     itemDirection: "left-to-right",
+        //     itemOpacity: 1,
+        //     symbolSize: 16,
+        //     symbolShape: "circle",
+        //   },
+        // ]}
         colors={props.colors || COLORS.slice(5 - props.data.length)}
         onClick={(data) => props.onClick?.(data)}
         tooltip={(tProps) => (
           <div className="bg-white border border-gray-400 rounded-lg text-sm px-2 py-1">
+            <span className="capitalize">{tProps.datum.label}</span>{" "}
             {formatNumber(tProps.datum.value)}
           </div>
         )}
@@ -72,10 +87,7 @@ export default function PieChart(props: IPieChartProps) {
 }
 
 interface IPieChartProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   colors?: string[] | ((bar: any) => string);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick?: (data: any) => void;
 }

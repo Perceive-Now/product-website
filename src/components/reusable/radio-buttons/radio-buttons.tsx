@@ -7,7 +7,7 @@ export default function RadioButtons(props: IRadioButtons) {
   const { options, activeMode, handleModeChange } = props;
 
   return (
-    <div className="flex gap-x-3">
+    <div className="flex gap-x-3 flex-column">
       {options.map((mode) => (
         <div
           className="flex items-center cursor-pointer group"
@@ -22,7 +22,7 @@ export default function RadioButtons(props: IRadioButtons) {
             )}
           </span>
 
-          <span className="text-gray-600">{mode.label}</span>
+          <span className={`text-gray-800 ${props?.classNames}`}>{mode.label}</span>
         </div>
       ))}
     </div>
@@ -39,4 +39,5 @@ interface IRadioButtons {
   options: RadioButtonOption[];
   activeMode: string;
   handleModeChange: (mode: string) => void;
+  classNames?: string;
 }

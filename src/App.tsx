@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
 //
-import AuthLayout from "./layouts/auth";
+// import AuthLayout from "./layouts/auth";
 import DefaultLayout from "./layouts/default";
 import AccountLayout from "./layouts/account";
 
@@ -26,28 +26,32 @@ import FeedbackPage from "./pages/miscs/feedback";
 import DashboardPage from "./pages/product/dashboard";
 
 // Deep search - Patent
-import PatentListPage from "./pages/product/deep-search/patents/list";
-import PatentDetailPage from "./pages/product/deep-search/patents/detail";
 
-// Deep search - Publication
-import PublicationListPage from "./pages/product/deep-search/publications/list";
-import PublicationDetailPage from "./pages/product/deep-search/publications/detail";
+// import EmergingTechnologiesAnalytics from "./pages/product/emerging-technology/analytics";
+// import EmergingTechnologyListPage from "./pages/product/emerging-technology/list";
 
-// Deep search - Companies
-import DeepSearchCompaniesListPage from "./pages/product/deep-search/companies/list";
-import DeepSearchCompanyPatenPage from "./pages/product/deep-search/companies/patent";
+// import PatentListPage from "./pages/product/pro/patents/list";
+// import PatentDetailPage from "./pages/product/pro/patents/detail";
 
-// Deep search - Inventors
-import DeepSearchInventorsListPage from "./pages/product/deep-search/inventors/list";
-import DeepSearchInventorPage from "./pages/product/deep-search/inventors/detail";
+// // Deep search - Publication
+// import PublicationListPage from "./pages/product/pro/publications/list";
+// import PublicationDetailPage from "./pages/product/pro/publications/detail";
 
-//
-import DeepSearchUniversityListPage from "./pages/product/deep-search/university/list";
-import DeepSearchAcademicPage from "./pages/product/deep-search/university/detail/detail";
+// // Deep search - Companies
+// import DeepSearchCompaniesListPage from "./pages/product/pro/companies/list";
+// import DeepSearchCompanyPatenPage from "./pages/product/pro/companies/patent";
 
-//
-import DeepSearchFundersListPage from "./pages/product/deep-search/funders/list";
-import DeepSearchFunderPage from "./pages/product/deep-search/funders/detail";
+// // Deep search - Inventors
+// import DeepSearchInventorsListPage from "./pages/product/pro/inventors/list";
+// import DeepSearchInventorPage from "./pages/product/pro/inventors/detail";
+
+// //
+// import DeepSearchUniversityListPage from "./pages/product/pro/university/list";
+// // import DeepSearchAcademicPage from "./pages/product/pro/university/detail/detail";
+
+// //
+// import DeepSearchFundersListPage from "./pages/product/pro/funders/list";
+// import DeepSearchFunderPage from "./pages/product/pro/funders/detail";
 
 //
 import UserProfilePage from "./pages/account/userProfile";
@@ -59,6 +63,30 @@ import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 //
 import { WelcomePage } from "./components/@signup-complete";
 import IpPortfolioPage from "./pages/account/ipPortfolio";
+// import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
+// import PublicationAnalyticPage from "./pages/product/pro/publications/analytics";
+// import CompanyAnalyticPage from "./pages/product/pro/companies/analytics";
+// import UniversityAnalyticPage from "./pages/product/pro/university/analytics";
+// import FunderAnalyticPage from "./pages/product/pro/funders/analytics";
+// import InventorAnalyticPage from "./pages/product/pro/inventors/analytics";
+
+// import CompanyPublicationDetailPage from "./pages/product/pro/companies/publication";
+// import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
+// import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
+// import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
+
+// import IPLandscaping from "./pages/product/ip-landscaping";
+// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+import IPFullReport from "./pages/product/ip-landscaping/Full-report";
+import MALicensing from "./pages/product/m&a-licensing";
+import ProductLayout from "./layouts/product-layout";
+import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
+import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+import AuthDefaultLayout from "./layouts/auth/default";
+import VerificationConfirm from "./pages/authentication/signup/confirmation";
+import AuthLayout from "./layouts/auth";
+import UserDetails from "./pages/authentication/signup/user-details";
+import SignupPage from "./pages/authentication/signup";
 
 /**
  *
@@ -67,43 +95,36 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route element={<AuthDefaultLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/verify-email" element={<VerificationConfirm />} />
+        </Route>
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-
+        <Route path="/user-profile" element={<UserDetails />} />
         <Route path="/signup/confirm" element={<ConfirmSignup />} />
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
-          <Route path="/" element={<HomePage />} />
-
           {/* Need to ask for profile details before allowing to use */}
           <Route path="/signup/complete" element={<CompleteSignup />} />
           <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
+          <Route element={<ProductLayout />}>
+            <Route path="/ip-analysis" element={<IPAnalysis />} />
+            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
+          </Route>
+
           <Route element={<DefaultLayout />}>
+            <Route path="/" element={<HomePage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
 
-            {/* Deep Search pages */}
-            <Route path="/deep-search/patents" element={<PatentListPage />} />
-            <Route path="/deep-search/patents/:id" element={<PatentDetailPage />} />
+            <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
 
-            <Route path="/deep-search/publications" element={<PublicationListPage />} />
-            <Route path="/deep-search/publications/:id" element={<PublicationDetailPage />} />
-
-            <Route path="/deep-search/companies" element={<DeepSearchCompaniesListPage />} />
-            <Route path="/deep-search/companies/patent" element={<DeepSearchCompanyPatenPage />} />
-
-            <Route path="/deep-search/inventors" element={<DeepSearchInventorsListPage />} />
-            <Route path="/deep-search/inventors/:type" element={<DeepSearchInventorPage />} />
-
-            <Route path="/deep-search/university" element={<DeepSearchUniversityListPage />} />
-            <Route path="/deep-search/university/:type" element={<DeepSearchAcademicPage />} />
-
-            <Route path="/deep-search/funders" element={<DeepSearchFundersListPage />} />
-            <Route path="/deep-search/funders/:id" element={<DeepSearchFunderPage />} />
+            <Route path="/m&a-licensing" element={<MALicensing />} />
 
             {/* Account section */}
             <Route element={<AccountLayout />}>
@@ -125,3 +146,88 @@ function App() {
 }
 
 export default App;
+
+{
+  /* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
+          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */
+}
+
+{
+  /* Deep Search pages */
+}
+{
+  /* <Route path="/patents" element={<PatentAnalyticPage />} />
+          <Route path="/patents/table" element={<PatentListPage />} />
+          <Route path="/patents/:id" element={<PatentDetailPage />} />
+
+          <Route path="/publications" element={<PublicationAnalyticPage />} />
+          <Route path="/publications/table" element={<PublicationListPage />} />
+          <Route path="/publications/:id" element={<PublicationDetailPage />} />
+
+          <Route path="/companies" element={<CompanyAnalyticPage />} />
+          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
+          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
+
+          <Route path="/inventors" element={<InventorAnalyticPage />} />
+          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
+          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
+
+          <Route path="/universities" element={<UniversityAnalyticPage />} />
+          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */
+}
+{
+  /* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} />{/* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
+          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */
+}
+
+{
+  /* Deep Search pages */
+}
+{
+  /* <Route path="/patents" element={<PatentAnalyticPage />} />
+          <Route path="/patents/table" element={<PatentListPage />} />
+          <Route path="/patents/:id" element={<PatentDetailPage />} />
+
+          <Route path="/publications" element={<PublicationAnalyticPage />} />
+          <Route path="/publications/table" element={<PublicationListPage />} />
+          <Route path="/publications/:id" element={<PublicationDetailPage />} />
+
+          <Route path="/companies" element={<CompanyAnalyticPage />} />
+          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
+          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
+          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
+
+          <Route path="/inventors" element={<InventorAnalyticPage />} />
+          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
+          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
+
+          <Route path="/universities" element={<UniversityAnalyticPage />} />
+          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */
+}
+{
+  /* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */
+}
+{
+  /* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
+          <Route
+            path="/universities/publication/:id"
+            element={<UniversityPublicationDetailPage />}
+          />
+
+          <Route path="/funders" element={<FunderAnalyticPage />} />
+          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
+          <Route path="/funders/:id" element={<DeepSearchFunderPage />} /> */
+}
+{
+  /* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
+          <Route
+            path="/universities/publication/:id"
+            element={<UniversityPublicationDetailPage />}
+          />
+
+          <Route path="/funders" element={<FunderAnalyticPage />} />
+          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
+          <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
+          <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} /> */
+}
