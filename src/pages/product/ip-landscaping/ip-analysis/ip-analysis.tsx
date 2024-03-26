@@ -20,12 +20,19 @@ import ChatNinthQuestion from "../../../../components/@dashboard/IP-landscaping/
 import ChatTenthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/ten";
 import ChatEleventhQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/eleven";
 import Thankyou from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/thank-you";
+// import jsCookie from "js-cookie";
 
 /**
  *
  */
 export default function IPAnalysis() {
   const [activeStep, setActiveStep] = useState(0);
+
+  // const chatId = jsCookie.get("chatId");
+
+  // useEffect(() => {
+  //   setActiveStep(Number(chatId))
+  // }, [chatId]);
 
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {

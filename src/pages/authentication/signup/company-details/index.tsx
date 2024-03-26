@@ -3,11 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Label from "../../../../components/reusable/label";
 import Input from "../../../../components/reusable/input";
-import ProfileIcon from "../../../../components/icons/common/profile";
-import EditIcon from "../../../../components/icons/miscs/Edit";
 import Button from "../../../../components/reusable/button";
 import { useCallback } from "react";
-import { ChevronLeft } from "../../../../components/icons";
 import AdduserIcon from "../../../../components/icons/common/add-user";
 import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
 
@@ -29,18 +26,14 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
   };
 
   const formResolver = yup.object().shape({
-    // username: yup
-    //   .string()
-    //   // .username("Username is required")
-    //   .required("Username is required"),
-    // first_name: yup.string().required("First Name is required"),
-    // last_name: yup.string().required("Last Name is required"),
-    // phone_number: yup.string().required("Phone Number is required"),
-    // country: yup.string().required("Country is required"),
+    first_name: yup.string().required("First Name is required"),
+    last_name: yup.string().required("Last Name is required"),
+    phone_number: yup.string().required("Phone Number is required"),
+    country: yup.string().required("Country is required"),
   });
 
   const {
-    watch,
+    // watch,
     register,
     formState: { errors },
     handleSubmit,
@@ -64,22 +57,13 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
       </div>
       <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
         <div className=" p-5 bg-appGray-100 rounded-lg">
-          {/* <div className="">
-            <p className="text-secondary-800 font-semibold">Profile Image</p>
-            <div className="rounded-full w-[80px] h-[80px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
-              <ProfileIcon />
-              <div className="bottom-0 right-0 rounded-full w-[24px] h-[24px] bg-appGray-200 flex items-center justify-center absolute">
-                <EditIcon />
-              </div>
-            </div>
-          </div> */}
           <div className="grid grid-cols-2 gap-x-5 gap-y-2 w-full">
             <fieldset className="col-span-1">
               <Label required className="font-semibold text-secondary-800">
                 Company name
               </Label>
               <Input
-                {...register("company_name")}
+                register={register("company_name")}
                 type="text"
                 error={errors.company_name}
                 placeholder="Company name"
@@ -90,7 +74,7 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
                 Job Position
               </Label>
               <Input
-                {...register("job_position")}
+                register={register("job_position")}
                 type="text"
                 error={errors.job_position}
                 placeholder="Job Position"
@@ -105,7 +89,7 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
                   Member 1
                 </Label>
                 <Input
-                  {...register("member_email")}
+                  register={register("member_email")}
                   type="text"
                   error={errors.member_email}
                   placeholder="Enter email address to invite"

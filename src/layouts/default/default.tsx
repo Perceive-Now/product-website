@@ -23,10 +23,10 @@ export default function DefaultLayout() {
           <div className="px-4">{/* <AppHeader /> */}</div>
         </div>
         <div className="flex">
-          <div className="fixed h-screen shadow">
-            <AppSidebar />
-          </div>
-          <div className="relative ml-[260px] py-3 px-4 z-0 min-h-[calc(100vh-200px)] w-full">
+          {/* <div className="fixed h-screen shadow"> */}
+          <AppSidebar />
+          {/* </div> */}
+          <div className="relative ml-[260px]  py-3 px-4 z-0 min-h-[calc(100vh-200px)] w-full">
             <Outlet />
             <AppFooter />
           </div>

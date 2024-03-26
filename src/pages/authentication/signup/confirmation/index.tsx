@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import classNames from "classnames";
 
 interface IConfirmEmail {
   verification_code: string;
@@ -16,11 +17,7 @@ const VerificationConfirm = () => {
   };
 
   const formResolver = yup.object().shape({
-    username: yup
-      .string()
-      // .username("Username is required")
-      .required("Username is required"),
-    password: yup.string().required("Password is required"),
+    verification_code: yup.string().required("Code is required"),
   });
 
   const {
@@ -47,7 +44,12 @@ const VerificationConfirm = () => {
         <div className="relative w-1/4 mx-auto">
           <input
             type="text"
-            className="block pt-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-900 peer"
+            className={classNames(
+              "block pt-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary-900 peer",
+              errors.verification_code
+                ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+            )}
             placeholder=" "
           />
         </div>

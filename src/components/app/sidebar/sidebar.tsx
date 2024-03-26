@@ -13,8 +13,8 @@ import { sidebarItems, ISidebarListItem } from "./_data";
 // Redux
 // import { logoutUser } from "../../../stores/auth";
 // import { useAppDispatch } from "../../../hooks/redux";
-import { Dialog } from "@headlessui/react";
-import SidebarTransition from "./sidebarTransition";
+// import { Dialog } from "@headlessui/react";
+// import SidebarTransition from "./sidebarTransition";
 import ToggleBarIcon from "../../icons/sidenav/bars";
 
 /**
@@ -27,6 +27,7 @@ interface Props {
 export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
   // const navigate = useNavigate();
   // const dispath = useAppDispatch();
+  const [open, setOpen] = useState(true);
 
   // const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
@@ -67,10 +68,15 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
     <div>
       {/* <SidebarTransition show={show} handleShow={handleShow}> */}
-      <div className=" bg-appGray-100 shadow w-[270px] overflow-auto px-2.5 h-screen sticky top-0">
+      <div
+        className={classNames(
+          open ? "w-[270px]" : "w-[270px]",
+          " bg-appGray-100 shadow  overflow-auto px-2.5 min-h-screen fixed ",
+        )}
+      >
         <div className="flex justify-center items-center py-3 gap-2 bg-appGray-100">
           {/* {open && ( */}
-          <button type="button" className="" onClick={handleShow}>
+          <button type="button" className="" onClick={() => setOpen(!open)}>
             <ToggleBarIcon />
           </button>
           {/* )} */}
@@ -159,17 +165,17 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
           ))}
         </div>
       </div>
-      <div className="pb-3 text-gray-900">
+      {/* <div className="pb-3 text-gray-900">
         <div
           className="px-2 py-2 flex items-center cursor-pointer"
-          // onClick={() => handleLogout()}
+        // onClick={() => handleLogout()}
         >
           <div className="mr-2">
             <LogoutIcon />
           </div>
           <span>Logout</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

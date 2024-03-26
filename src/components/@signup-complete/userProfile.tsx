@@ -133,13 +133,13 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
       preferred_journals: values.preferred_journals.split(",").map((value) => ({ name: value })),
       strategic_goals: values.strategic_goals,
     };
-    mutate(
-      { body: body },
-      {
-        onSuccess: handleOnSuccess,
-        onError: handleOnError,
-      },
-    );
+    // mutate(
+    //   { body: body },
+    //   {
+    //     onSuccess: handleOnSuccess,
+    //     onError: handleOnError,
+    //   },
+    // );
   };
 
   //

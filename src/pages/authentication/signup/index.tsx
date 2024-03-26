@@ -37,9 +37,10 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const formInitialValue: ILoginFormValues = {
+  const formInitialValue: IRegisterForm = {
     email: "",
     password: "",
+    agree: false,
   };
 
   const formResolver = yup.object().shape({
@@ -48,6 +49,7 @@ export default function SignupPage() {
       .email("Please enter a valid email address")
       .required("Email address is required"),
     password: yup.string().required("Password is required"),
+    agree: yup.boolean().required(""),
   });
 
   const { watch, register, formState, handleSubmit } = useForm({
@@ -58,11 +60,20 @@ export default function SignupPage() {
 
   const { errors } = formState;
 
-  const handleLogin = async (values: ILoginFormValues) => {
+  const handleLogin = async (values: IRegisterForm) => {
     setIsSubmitting(true);
 
+    const params = {
+      username: "user",
+      email: values.email,
+      password: values.password,
+      first_name: "user",
+      last_name: "user",
+      company_id: 2,
+    };
+
     // Login user
-    const response = await dispatch(signUpUser(values)).unwrap();
+    const response = await dispatch(signUpUser(params)).unwrap();
     if (response.success) {
       if (callbackPath) {
         navigate(callbackPath);
@@ -161,9 +172,10 @@ export default function SignupPage() {
         </div>
         <div className="mt-2.5 flex items-center justify-center gap-2.5">
           <CheckboxInput
+            {...register("agree")}
             label="I agree with Terms and Conditions & Privacy Policy"
             style={{
-              label: "text-base",
+              label: errors.agree ? "text-base text-danger-500" : "text-base",
             }}
           />
         </div>
@@ -172,7 +184,8 @@ export default function SignupPage() {
   );
 }
 
-interface ILoginFormValues {
+interface IRegisterForm {
   email: string;
   password: string;
+  agree: boolean;
 }

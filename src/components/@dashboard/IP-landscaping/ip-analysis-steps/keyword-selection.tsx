@@ -52,11 +52,9 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
   );
 
   const onContinue = useCallback(async () => {
-    dispatch(
-      setDashboardKeywords(["Artificial Intelligence-based Predictive Analytics for Healthcare"]),
-    );
+    dispatch(setDashboardKeywords(keywords));
     changeActiveStep(3);
-  }, [changeActiveStep, dispatch]);
+  }, [changeActiveStep, dispatch, keywords]);
 
   const removeKeyword = useCallback(
     (value: string) => {
@@ -111,8 +109,12 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
               />
             </div>
           </label>
-          {errors.keyword?.message && (
-            <div className="text-xs text-danger-500">{errors.keyword?.message}</div>
+          {keywords.length < 1 && (
+            <>
+              {errors.keyword?.message && (
+                <div className="text-xs text-danger-500">{errors.keyword?.message}</div>
+              )}
+            </>
           )}
         </fieldset>
         {hasKeywords ? (

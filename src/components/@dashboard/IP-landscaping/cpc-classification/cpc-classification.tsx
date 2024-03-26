@@ -28,7 +28,6 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
 
   const finalData = data && data.map((item) => ({ label: item.cpc_class, value: item.count }));
 
-  console.log(finalData);
   return (
     <DataSection
       keywords={keywords}

@@ -55,8 +55,8 @@ export default function FeedbackPage() {
             type="textarea"
             placeholder="Enter your feedback"
             label="Comment"
-            value={feedback}
-            handleChange={handleFeedbackChange}
+            // value={feedback}
+            // handleChange={handleFeedbackChange}
           />
         </div>
 

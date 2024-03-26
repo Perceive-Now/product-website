@@ -1,31 +1,50 @@
 import { ICompanyDetailProfile } from "../../components/@signup-complete/companyDetails";
-import { IUserProfile } from "../../components/@signup-complete/userProfile";
 import axiosInstance from "../axios";
 
 /**
  *
  */
-export async function getUserProfile() {
-  const response = await axiosInstance.get<IUserProfileResponse>(`/api/v1/profile/profiles/me/`);
+export async function updateUserProfile(value: any) {
+  const response = await axiosInstance.post<IUserProfile>(
+    `/api/user_profile?code=kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==&clientId=default&u&username=admin&password=Admin123`,
+    value,
+  );
 
   return response.data;
 }
 
-interface IUserProfileResponse {
-  username: string;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  email: string;
-  id: number;
-  pkid: string;
-  phone_number: null | number;
-  profile_photo: string;
-  about_me: string;
-  user_location: string;
-  is_customer: boolean;
-  user_company: null | string;
-  job_position: null | string;
+export async function getUserProfile() {
+  const response = await axiosInstance.get<IUserProfile>(
+    `/api/user_profile?code=kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==&clientId=default&username=admin&password=Admin123`,
+  );
+
+  return response;
+}
+
+// interface IUserProfileResponse {
+//   username: string;
+//   first_name: string;
+//   last_name: string;
+//   full_name: string;
+//   email: string;
+//   id: number;
+//   pkid: string;
+//   phone_number: null | number;
+//   profile_photo: string;
+//   about_me: string;
+//   user_location: string;
+//   is_customer: boolean;
+//   user_company: null | string;
+//   job_position: null | string;
+// }
+
+export interface IUserProfile {
+  "First Name": string;
+  "Last Name": string;
+  Username: string;
+  "Phone Number": string;
+  country_id: number;
+  "Topics of Interest": string[];
 }
 
 export async function patchUserProfile({ body }: IPatchUserProfileProps) {

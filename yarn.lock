@@ -8898,6 +8898,11 @@ react-hot-toast@^2.4.0:
   dependencies:
     goober "^2.1.10"
 
+react-international-phone@^4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/react-international-phone/-/react-international-phone-4.2.6.tgz#a92518b66b44015f5e32c96b646e0355056ae809"
+  integrity sha512-El/ZVYmov5uGuk07nrfxe7M3/4Y8HhA9c3aCpAwilbPU8DekISwNSZMplqxzvxS+TIavIh28ZMDDx1u/4GqULg==
+
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
