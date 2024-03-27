@@ -7,7 +7,7 @@ import classNames from "classnames";
 import PerceiveLogo from "../../../assets/images/logo.svg";
 
 //
-import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
+import { ChevronDown, ChevronUp } from "../../icons";
 import { sidebarItems, ISidebarListItem } from "./_data";
 
 // Redux
@@ -24,7 +24,7 @@ interface Props {
   show?: boolean;
   handleShow?: () => void;
 }
-export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
+export const AppSidebar: FunctionComponent<Props> = () => {
   // const navigate = useNavigate();
   // const dispath = useAppDispatch();
   const [open, setOpen] = useState(true);

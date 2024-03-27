@@ -14,7 +14,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const dispatch = useAppDispatch();
   const radio_active =
     useAppSelector((state) => state.ipData.use_case.label) ?? "IP Validity Analysis";
-  const [defaultValue] = radioOptions.filter((r) => r.label === radio_active);
+  radioOptions.filter((r) => r.label === radio_active);
   const [selected, setSelected] = useState<any>([]);
   //
   const onContinue = useCallback(() => {

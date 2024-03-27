@@ -13,7 +13,7 @@ import PerceiveLogo from "../../../assets/images/logo.svg";
 // import BarIcon from "../../icons/sidenav/bars";
 import ToggleBarIcon from "../../icons/sidenav/bars";
 import { useEffect, useState } from "react";
-import AppSidebar from "../sidebar";
+// import AppSidebar from "../sidebar";
 
 //
 // const SPECIAL_PATHS = ["/feedback", "/help", "/faq"];

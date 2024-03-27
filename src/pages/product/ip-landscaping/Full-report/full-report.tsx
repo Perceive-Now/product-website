@@ -36,7 +36,7 @@ import GeographicalDistributionApplicant from "../../../../components/@dashboard
 // import AdvancedSearchIcon from "../../../../components/icons/miscs/AdvancedSearch";
 // import RadioButtons from "../../../../components/reusable/radio-buttons";
 import DistributionWorkload from "../../../../components/@dashboard/IP-landscaping/distribution-workload";
-import MoreNavOption from "../../../../components/reusable/nav-options";
+// import MoreNavOption from "../../../../components/reusable/nav-options";
 import KeyDetail from "../../../../components/@dashboard/IP-landscaping/key-detail";
 import { NumberApplicationsByApplicant } from "../../../../components/@dashboard/IP-landscaping/Applicants/number-applicants";
 

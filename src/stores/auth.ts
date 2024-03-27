@@ -25,7 +25,7 @@ export const signUpUser = createAsyncThunk(
   "login",
   async (payload: ISignupParams): Promise<IResponse> => {
     try {
-      const { data } = await axios.post(
+      await axios.post(
         `${API_URL}/api/register?code=${authCode}`,
         payload,
         //  {
@@ -35,8 +35,8 @@ export const signUpUser = createAsyncThunk(
       );
 
       //
-      jsCookie.set("pn_refresh", data.token);
-      sessionStorage.setItem("pn_access", data.token);
+      // jsCookie.set("pn_refresh", data.token);
+      // sessionStorage.setItem("pn_access", data.token);
 
       //
       return {

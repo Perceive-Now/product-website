@@ -57,7 +57,7 @@ export default function CompanyDetailsStep(props: ISignupStepProps) {
 
   useEffect(() => {
     reset(props.values);
-  }, [props.values]);
+  }, [props, reset]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { fields, append, remove } = useFieldArray<any>({

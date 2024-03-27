@@ -21,10 +21,7 @@ const VerificationConfirm = () => {
   });
 
   const {
-    watch,
-    register,
     formState: { errors },
-    handleSubmit,
   } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),

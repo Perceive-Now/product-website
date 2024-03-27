@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
 //
-import AppHeader from "../../components/app/header";
+// import AppHeader from "../../components/app/header";
 import AppFooter from "../../components/app/footer";
 import AppSidebar from "../../components/app/sidebar";
 // import AppSidebar from "../../components/app/sidebar";

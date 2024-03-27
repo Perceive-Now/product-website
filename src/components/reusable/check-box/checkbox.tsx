@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { InputHTMLAttributes } from "react";
+import React from "react";
 // extends InputHTMLAttributes<HTMLInputElement>
 
 interface Props {

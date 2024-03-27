@@ -10,7 +10,7 @@ interface Props {
   value: string;
 }
 
-export const TreeMap: FunctionComponent<Props> = ({ data, name, identity, value }) => {
+export const TreeMap: FunctionComponent<Props> = ({ data, identity, value }) => {
   return (
     <div className="h-[500px] 3xl:w-[1000px] mx-auto">
       {/* <div className="font-bold text-primary-900 text-lg text-center">{name}</div> */}

@@ -10,24 +10,24 @@ import Button from "../../../components/reusable/button";
  */
 export default function FeedbackPage() {
   const [feedbackNumber, setFeedbackNumber] = useState<number | null>(null);
-  const [feedback, setFeedback] = useState<string | undefined>();
+  // const [feedback, setFeedback] = useState<string | undefined>();
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   useEffect(() => {
-    if (feedbackNumber && feedback) {
+    if (feedbackNumber) {
       setIsSubmitDisabled(false);
     } else {
       setIsSubmitDisabled(true);
     }
-  }, [feedbackNumber, feedback]);
+  }, [feedbackNumber]);
 
   const handleFeedbackNumberChange = (number: number) => {
     setFeedbackNumber(number);
   };
 
-  const handleFeedbackChange = (value: string) => {
-    setFeedback(value);
-  };
+  // const handleFeedbackChange = (value: string) => {
+  //   setFeedback(value);
+  // };
 
   const handleSubmit = () => {
     // TODO: submit feedback

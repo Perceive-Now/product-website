@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 //
@@ -25,7 +25,7 @@ export default function AuthLayout() {
   const [isLoading, setIsLoading] = useState(true);
 
   //
-  const getSession = async () => {
+  const getSession = useCallback(async () => {
     if (authStore.token) {
       await dispatch(getUserDetails());
       setIsLoading(false);
@@ -49,11 +49,11 @@ export default function AuthLayout() {
 
     // Stop loading
     setIsLoading(false);
-  };
+  }, [authStore.token, dispatch, navigate]);
 
   useEffect(() => {
     getSession();
-  }, []);
+  }, [getSession]);
 
   useEffect(() => {
     if (user) {
@@ -65,7 +65,7 @@ export default function AuthLayout() {
         navigate("/signup/complete");
       }
     }
-  }, [user]);
+  }, [navigate, user]);
 
   // Do not show the content initially
   if (isLoading) return <PageLoading />;

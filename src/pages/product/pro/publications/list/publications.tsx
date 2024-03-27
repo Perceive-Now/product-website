@@ -43,7 +43,9 @@ const PAGE_SIZE = 10;
 export default function PublicationListPage() {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
+
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+
   const keywords = searchedKeywords.map((kwd) => kwd.value);
   const joinedkeywords = keywords.join(", ");
 
@@ -277,7 +279,7 @@ export default function PublicationListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, classification]);
+  }, [classification]);
 
   //
   return (

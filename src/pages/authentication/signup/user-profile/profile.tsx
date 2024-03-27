@@ -74,8 +74,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
         Country: value.country,
       };
       try {
-        const response = await updateUserProfile(values);
-        console.log(response);
+        await updateUserProfile(values);
       } catch (error: any) {
         toast.error(error.message);
       }

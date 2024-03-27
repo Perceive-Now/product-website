@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 //
 // import AuthLayout from "./layouts/auth";
 import DefaultLayout from "./layouts/default";
-import AccountLayout from "./layouts/account";
+// import AccountLayout from "./layouts/account";
 
 //
 import HomePage from "./pages/homepage";

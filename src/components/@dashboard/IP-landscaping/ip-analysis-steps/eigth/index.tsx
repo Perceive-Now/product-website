@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import KeywordSelected from "../KeywordSelected";
 // import IPUseCase from "../components/use-case";
 
@@ -72,7 +73,7 @@ export default function ChatEightQuestion({ changeActiveStep }: Props) {
         setIsLoading(false);
       } catch (error: any) {
         setIsLoading(false);
-        toast.error(error.message);
+        toast.error(error?.message);
       }
     },
     [changeActiveStep, dispatch, question],

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { MultiValue } from "react-select";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncCreateableSelect from "react-select/async-creatable";
 
 //
@@ -24,7 +24,7 @@ export default function MultiKeywords(props: ISearchProps) {
       setSelectedKeywords(props.initialValue);
     }
     props.changeKeyword(selectedKeywords);
-  }, [props.initialValue]);
+  }, [props, selectedKeywords]);
 
   const hasKeywordReachedMaxLimit = !!((selectedKeywords?.length || 0) >= MAX_KEYWORD);
 

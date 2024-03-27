@@ -14,7 +14,7 @@ export const Stepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
   const isStepComplete = (currentStep: number) => activeStep > currentStep;
   return (
     <ol className="mb-8 flex justify-center items-center gap-x-5">
-      {steps.map((step, idx, arr) => (
+      {steps.map((step, idx) => (
         <li
           key={idx}
           className={classNames(

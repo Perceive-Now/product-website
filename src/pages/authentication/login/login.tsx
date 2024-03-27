@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 //
@@ -13,13 +13,13 @@ import Button from "../../../components/reusable/button";
 import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
 //
-import Logo from "../../../assets/images/logo-small.svg";
-import { WEBSITE_URL } from "../../../utils/constants";
+// import Logo from "../../../assets/images/logo-small.svg";
+// import { WEBSITE_URL } from "../../../utils/constants";
 
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
-import GoogleIcon from "../../../components/icons/social/google";
+import GoogleAuth from "../../../components/@auth/google";
 
 /**
  *
@@ -82,16 +82,16 @@ export default function LoginPage() {
   const userNameValue = watch("username");
   const passwordValue = watch("password");
 
-  const getSession = async () => {
+  const getSession = useCallback(async () => {
     const session = await dispatch(getCurrentSession()).unwrap();
     if (session.success) navigate("/");
 
     setIsLoading(false);
-  };
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     getSession();
-  }, []);
+  }, [getSession]);
 
   // Do not show login page content on initial load
   if (isLoading) return <></>;
@@ -194,9 +194,7 @@ export default function LoginPage() {
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <Button classname="w-full" htmlType="button" type="gray" startIcon={<GoogleIcon />}>
-          Sign up with Google
-        </Button>
+        <GoogleAuth title="Sign in with Google" />
       </form>
     </div>
   );

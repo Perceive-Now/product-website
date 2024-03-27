@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ICompanyDetailProfile } from "../../components/@signup-complete/companyDetails";
 import axiosInstance from "../axios";
 
@@ -47,7 +49,7 @@ export interface IUserProfile {
   "Topics of Interest": string[];
 }
 
-export async function patchUserProfile({ body }: IPatchUserProfileProps) {
+export async function patchUserProfile({ body }: any) {
   const response = await axiosInstance.patch(`api/v1/profile/profiles/me/`, body);
 
   return response.data;
@@ -65,9 +67,9 @@ export async function inviteEmail(body: IEmailProps) {
   return response.data;
 }
 
-interface IPatchUserProfileProps {
-  body: IUserProfile;
-}
+// interface IPatchUserProfileProps {
+//   body: IUserProfile;
+// }
 interface IPatchCompanyDetailProfileProps {
   body: ICompanyDetailProfile;
 }

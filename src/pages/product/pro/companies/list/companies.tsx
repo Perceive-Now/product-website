@@ -266,7 +266,7 @@ export default function DeepSearchCompaniesListPage() {
   //
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchedKeywords, category, publishedYear]);
+  }, [category, publishedYear]);
 
   //
   return (

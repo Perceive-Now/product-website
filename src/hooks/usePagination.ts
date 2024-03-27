@@ -88,7 +88,7 @@ export function usePagination({
       DOTS,
       ...range(_total - boundaries + 1, _total),
     ];
-  }, [_total, siblings, activePage]);
+  }, [siblings, boundaries, _total, activePage]);
 
   return {
     range: paginationRange,

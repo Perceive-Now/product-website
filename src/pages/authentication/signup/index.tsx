@@ -17,8 +17,8 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
 import { signUpUser } from "../../../stores/auth";
-import GoogleIcon from "../../../components/icons/social/google";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
+import GoogleAuth from "../../../components/@auth/google";
 
 /**
  *
@@ -166,9 +166,8 @@ export default function SignupPage() {
             </Link>
           </p>
           <hr className="mt-4 mb-4 border-gray-300" />
-          <Button classname="w-full" htmlType="button" type="gray" startIcon={<GoogleIcon />}>
-            Sign up with Google
-          </Button>
+
+          <GoogleAuth title="Sign up with Google" />
         </div>
         <div className="mt-2.5 flex items-center justify-center gap-2.5">
           <CheckboxInput

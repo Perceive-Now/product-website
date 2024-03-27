@@ -6,7 +6,7 @@ interface Props {
   width?: string;
   isLoading?: boolean;
 }
-const Loading = ({ width, height, isLoading }: Props) => {
+const Loading = ({ isLoading }: Props) => {
   useEffect(() => {
     if (isLoading) {
       document.body.style.overflow = "hidden";

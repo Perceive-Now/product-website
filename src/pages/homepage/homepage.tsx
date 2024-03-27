@@ -12,10 +12,10 @@ import { setDashboardSearch } from "../../stores/dashboard";
 // import PerceiveLogo from "../../assets/images/logo.svg";
 import classNames from "classnames";
 import { useCallback, useState } from "react";
-import { Disclosure, Transition } from "@headlessui/react";
+// import { Disclosure, Transition } from "@headlessui/react";
 import BulbIcon from "../../components/icons/miscs/Bulb";
 import PortfolioIcon from "../../components/icons/sidenav/portfolio";
-import DollarIcon from "../../components/icons/miscs/Dollar";
+// import DollarIcon from "../../components/icons/miscs/Dollar";
 
 /**
  *
@@ -204,29 +204,29 @@ const SearchType = [
   // },
 ];
 
-const DataSets = [
-  {
-    type: "Patents",
-    value: "5 MM+",
-  },
-  {
-    type: "Publications",
-    value: "231 MM+",
-  },
-  {
-    type: "Patents",
-    value: "231+",
-  },
-  {
-    type: "Patents",
-    value: "220+",
-  },
-  {
-    type: "Patents",
-    value: "11 MM+",
-  },
-  {
-    type: "Patents",
-    value: "231 MM+",
-  },
-];
+// const DataSets = [
+//   {
+//     type: "Patents",
+//     value: "5 MM+",
+//   },
+//   {
+//     type: "Publications",
+//     value: "231 MM+",
+//   },
+//   {
+//     type: "Patents",
+//     value: "231+",
+//   },
+//   {
+//     type: "Patents",
+//     value: "220+",
+//   },
+//   {
+//     type: "Patents",
+//     value: "11 MM+",
+//   },
+//   {
+//     type: "Patents",
+//     value: "231 MM+",
+//   },
+// ];
