@@ -15,6 +15,7 @@ import { useCallback, useState } from "react";
 // import { Disclosure, Transition } from "@headlessui/react";
 import BulbIcon from "../../components/icons/miscs/Bulb";
 import PortfolioIcon from "../../components/icons/sidenav/portfolio";
+import toast from "react-hot-toast";
 // import DollarIcon from "../../components/icons/miscs/Dollar";
 
 /**
@@ -24,45 +25,51 @@ export default function HomePage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  // const [error, setError] = useState('')
+
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
 
   const [selectSearch, setSelectSearch] = useState<string>("ip-landscaping");
 
   //
   const handleSearch = (searchValue: IKeywordOption[]) => {
-    dispatch(setDashboardSearch(searchValue));
-
-    switch (selectSearch) {
-      case "ip-landscaping":
-        navigate(`/ip-analysis?keywords=${searchValue.map((s) => s.label)}`, {
-          state: { search: searchValue },
-        });
-        break;
-      case "companies":
-        navigate("/companies", {
-          state: { search: searchValue },
-        });
-        break;
-      case "m&a-licensing":
-        navigate("/m&a-licensing", {
-          state: { search: searchValue },
-        });
-        break;
-      case "inventors":
-        navigate("/inventors", {
-          state: { search: searchValue },
-        });
-        break;
-      case "funding":
-        navigate("/funding", {
-          state: { search: searchValue },
-        });
-        break;
-      default:
-        navigate("/patents", {
-          state: { search: searchValue },
-        });
-        break;
+    if (searchValue.length <= 0) {
+      toast.error("Please add keyword to continue");
+      // setError("Please add keyword to continue")
+    } else {
+      dispatch(setDashboardSearch(searchValue));
+      switch (selectSearch) {
+        case "ip-landscaping":
+          navigate(`/ip-analysis?keywords=${searchValue.map((s) => s.label)}`, {
+            state: { search: searchValue },
+          });
+          break;
+        case "companies":
+          navigate("/companies", {
+            state: { search: searchValue },
+          });
+          break;
+        case "m&a-licensing":
+          navigate("/m&a-licensing", {
+            state: { search: searchValue },
+          });
+          break;
+        case "inventors":
+          navigate("/inventors", {
+            state: { search: searchValue },
+          });
+          break;
+        case "funding":
+          navigate("/funding", {
+            state: { search: searchValue },
+          });
+          break;
+        default:
+          navigate("/patents", {
+            state: { search: searchValue },
+          });
+          break;
+      }
     }
   };
 

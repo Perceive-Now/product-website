@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 //
 import PageLoading from "../../components/app/pageLoading";
@@ -7,18 +7,25 @@ import PageLoading from "../../components/app/pageLoading";
 //
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
+import toast from "react-hot-toast";
 
 /**
  *
  */
 export default function AuthLayout() {
   const navigate = useNavigate();
+  const pathname = useLocation();
+
   const PathPersistRef = useRef<PathPersistRefProps>({
     path: `${window.location.pathname}${window.location.search}`,
   });
 
   const dispatch = useAppDispatch();
   const authStore = useAppSelector((state) => state.auth);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+
   const { user } = authStore;
 
   //
@@ -66,6 +73,13 @@ export default function AuthLayout() {
       }
     }
   }, [navigate, user]);
+
+  useEffect(() => {
+    if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {
+      toast.error("Please add keyword to continue");
+      navigate("/");
+    }
+  }, [navigate, pathname, searchedKeywords]);
 
   // Do not show the content initially
   if (isLoading) return <PageLoading />;

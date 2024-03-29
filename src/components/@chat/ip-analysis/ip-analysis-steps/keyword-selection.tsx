@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { CrossIcon } from "../../../icons";
 import { useAppDispatch } from "../../../../hooks/redux";
 import { setDashboardKeywords } from "../../../../stores/dashboard";
+import jsCookie from "js-cookie";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -54,7 +55,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
   );
 
   const onContinue = useCallback(async () => {
-    // jsCookie.set("questionId", String(1));
+    jsCookie.set("questionId", String(1));
     dispatch(setDashboardKeywords(keywords));
     changeActiveStep(3);
   }, [changeActiveStep, dispatch, keywords]);
