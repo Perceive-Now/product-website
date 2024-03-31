@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 //
 import PageLoading from "../../components/app/pageLoading";
@@ -7,14 +7,14 @@ import PageLoading from "../../components/app/pageLoading";
 //
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 /**
  *
  */
 export default function AuthLayout() {
   const navigate = useNavigate();
-  const pathname = useLocation();
+  // const pathname = useLocation();
 
   const PathPersistRef = useRef<PathPersistRefProps>({
     path: `${window.location.pathname}${window.location.search}`,
@@ -24,7 +24,7 @@ export default function AuthLayout() {
   const authStore = useAppSelector((state) => state.auth);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  // const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
 
   const { user } = authStore;
 
