@@ -34,11 +34,11 @@ import { useAppSelector } from "../../../../hooks/redux";
 export default function IPAnalysis() {
   const [activeStep, setActiveStep] = useState(0);
 
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   // const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
 
   //
-  const keywords = searchedKeywords.map((kwd) => kwd.label);
+  const keywords = searchedKeywords.map((kwd) => kwd);
 
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {

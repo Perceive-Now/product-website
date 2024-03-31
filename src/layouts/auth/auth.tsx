@@ -74,12 +74,12 @@ export default function AuthLayout() {
     }
   }, [navigate, user]);
 
-  useEffect(() => {
-    if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {
-      toast.error("Please add keyword to continue");
-      navigate("/");
-    }
-  }, [navigate, pathname, searchedKeywords]);
+  // useEffect(() => {
+  //   if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {
+  //     toast.error("Please add keyword to continue");
+  //     navigate("/");
+  //   }
+  // }, [navigate, pathname, searchedKeywords]);
 
   // Do not show the content initially
   if (isLoading) return <PageLoading />;
