@@ -5,6 +5,7 @@ import Button from "../../../reusable/button";
 import { useAppDispatch } from "../../../../hooks/redux";
 import CheckBoxButtons from "../../../reusable/checkbox/checkbox";
 import { setUseCase } from "../../../../stores/use-case";
+import jsCookie from "js-cookie";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -13,23 +14,34 @@ interface Props {
 const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<string[]>([]);
-
-  //
-  // const radio_active =
-  //   useAppSelector((state) => state.usecase.usecases) ?? "IP Validity Analysis";
-  // radioOptions.filter((r) => r.label === radio_active);
+  const [error, setError] = useState("");
 
   //
   const onContinue = useCallback(() => {
-    // const [value] = radioOptions.filter((r) => r.value === active);
-    dispatch(setUseCase({ usecases: selected }));
-    changeActiveStep(1);
+    if (selected.length > 0) {
+      if (selected[0] === "infringement-analysis") {
+        jsCookie.set("questionId", String(34));
+      } else if (selected[0] === "ip-licensing-opportunity") {
+        jsCookie.set("questionId", String(12));
+      } else if (selected[0] === "ip-landscaping&fto") {
+        jsCookie.set("questionId", String(25));
+      } else {
+        jsCookie.set("questionId", String(1));
+      }
+
+      dispatch(setUseCase({ usecases: selected }));
+      changeActiveStep(1);
+      setError("");
+    } else {
+      setError("Please select one of the use cases");
+    }
   }, [changeActiveStep, dispatch, selected]);
   //
 
   // checkbox selection
   const handleChange = useCallback(
     (mode: string[]) => {
+      setError("");
       if (mode.includes("all")) {
         if (selected.length >= 4) {
           const filteredOptions = radioOptions.filter(
@@ -66,6 +78,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
             label: "font-semibold text-primary-900",
           }}
         />
+        {error && <p className="text-danger-500 text-sm mt-2">{error}</p>}
       </div>
       <div className="mt-7">
         <Button htmlType={"button"} rounded={"large"} handleClick={onContinue}>

@@ -40,6 +40,7 @@ Props) {
   const questionId = question.questionId;
 
   // const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
+  // console.log(useCases)
 
   // const useCase = useCases.find((u) => u === question.usecase)
 
@@ -71,13 +72,16 @@ Props) {
               questionId: 1,
             }),
           );
+
+          jsCookie.set("questionId", String(questionId + 1));
+          changeActiveStep(activeStep + 1);
           //
-          if (questionId === 11) {
-            changeActiveStep(14);
-          } else {
-            jsCookie.set("questionId", String(questionId + 1));
-            changeActiveStep(activeStep + 1);
-          }
+          // if (questionId === 11) {
+          //   changeActiveStep(14);
+          // } else {
+          //   jsCookie.set("questionId", String(questionId + 1));
+          //   changeActiveStep(activeStep + 1);
+          // }
         } else {
           jsCookie.set("questionId", String(questionId));
           dispatch(setNoveltyAspect({ answer: apiData }));

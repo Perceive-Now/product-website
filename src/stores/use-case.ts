@@ -13,7 +13,7 @@ export const UseCaseSlice = createSlice({
   initialState,
   reducers: {
     setUseCase: (state, action: PayloadAction<IUseCase>) => {
-      state.usecases === action.payload.usecases;
+      state.usecases = action.payload.usecases;
     },
   },
 });
