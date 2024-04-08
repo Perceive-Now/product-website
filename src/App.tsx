@@ -93,7 +93,8 @@ import SignupPage from "./pages/authentication/signup";
  */
 function App() {
   return (
-    <div className="App">
+    // <div className="App">
+    <div>
       <Routes>
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />

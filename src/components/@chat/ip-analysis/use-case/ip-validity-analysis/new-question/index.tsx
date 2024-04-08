@@ -45,26 +45,30 @@ export default function NewQuestion({ changeActiveStep, activeStep }: Props) {
             value.answer
           }&userID=${3}&sessionID=1111111111&QuestionID=${questionId}`,
         );
-
+        const resError = response.data.error;
         const apiData = response.data.question;
         const status = response.data.status;
 
-        if (status === "true" || status == true) {
-          if (questionId === 11) {
-            changeActiveStep(14);
-          } else {
-            jsCookie.set("questionId", String(questionId + 1));
-            changeActiveStep(activeStep + 1);
-          }
-
-          jsCookie.set("questionId", String(questionId + 1));
-
-          // changeActiveStep(Number(chatId) + 1);
+        if (resError || resError !== undefined) {
+          toast.error(resError);
         } else {
-          jsCookie.set("chatId", chatId || "");
-          jsCookie.set("questionId", String(questionId));
-          dispatch(setNoveltyAspect({ answer: apiData }));
-          changeActiveStep(2);
+          if (status === "true" || status == true) {
+            if (questionId === 11) {
+              changeActiveStep(14);
+            } else {
+              jsCookie.set("questionId", String(questionId + 1));
+              changeActiveStep(activeStep + 1);
+            }
+
+            jsCookie.set("questionId", String(questionId + 1));
+
+            // changeActiveStep(Number(chatId) + 1);
+          } else {
+            jsCookie.set("chatId", chatId || "");
+            jsCookie.set("questionId", String(questionId));
+            dispatch(setNoveltyAspect({ answer: apiData }));
+            changeActiveStep(2);
+          }
         }
 
         setIsLoading(false);

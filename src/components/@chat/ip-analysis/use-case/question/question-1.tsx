@@ -58,38 +58,43 @@ Props) {
 
         const apiData = response.data.question;
         const status = response.data.status;
+        const resError = response.data.error;
 
         setIsLoading(false);
         dispatch(setQuestionId({ questionId: 1 }));
 
-        if (status === "true" || status == true) {
-          jsCookie.set("questionId", String(questionId + 1));
-
-          dispatch(
-            setFirstChat({
-              answer: value.answer,
-              question: question.question,
-              questionId: 1,
-            }),
-          );
-
-          jsCookie.set("questionId", String(questionId + 1));
-          changeActiveStep(activeStep + 1);
-          //
-          // if (questionId === 11) {
-          //   changeActiveStep(14);
-          // } else {
-          //   jsCookie.set("questionId", String(questionId + 1));
-          //   changeActiveStep(activeStep + 1);
-          // }
+        if (resError || resError !== undefined) {
+          toast.error(resError);
         } else {
-          jsCookie.set("questionId", String(questionId));
-          dispatch(setNoveltyAspect({ answer: apiData }));
-          changeActiveStep(2);
+          if (status === "true" || status == true) {
+            jsCookie.set("questionId", String(questionId + 1));
+
+            dispatch(
+              setFirstChat({
+                answer: value.answer,
+                question: question.question,
+                questionId: 1,
+              }),
+            );
+
+            jsCookie.set("questionId", String(questionId + 1));
+            changeActiveStep(activeStep + 1);
+            //
+            // if (questionId === 11) {
+            //   changeActiveStep(14);
+            // } else {
+            //   jsCookie.set("questionId", String(questionId + 1));
+            //   changeActiveStep(activeStep + 1);
+            // }
+          } else {
+            jsCookie.set("questionId", String(questionId));
+            dispatch(setNoveltyAspect({ answer: apiData }));
+            changeActiveStep(2);
+          }
         }
       } catch (error: any) {
         setIsLoading(false);
-        toast.error(error.message);
+        toast.error(error || error.message);
       }
     },
     [activeStep, changeActiveStep, dispatch, question.question, questionId],
