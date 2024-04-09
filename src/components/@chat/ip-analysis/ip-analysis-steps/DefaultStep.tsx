@@ -23,7 +23,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
         jsCookie.set("questionId", String(34));
       } else if (selected[0] === "ip-licensing-opportunity") {
         jsCookie.set("questionId", String(12));
-      } else if (selected[0] === "ip-landscaping&fto") {
+      } else if (selected[0] === "ip-valuation") {
         jsCookie.set("questionId", String(25));
       } else {
         jsCookie.set("questionId", String(1));
@@ -66,7 +66,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   return (
     <div className="xl:w-[620px h-[600px">
-      {/* <KeywordSelected /> */}
       <p className="text-gray-600 text-xl font-semibold">Please select use case for your report.</p>
       <div className="mt-5 items-center">
         <CheckBoxButtons
@@ -95,6 +94,7 @@ const radioOptions = [
   { label: "Include all use cases", value: "all" },
   { label: "IP Validity Analysis", value: "ip-validity-analysis" },
   { label: "IP Licensing Opportunities", value: "ip-licensing-opportunity" },
-  { label: "IP Landscaping & FTO", value: "ip-landscaping&fto" },
   { label: "Infringement Analysis", value: "infringement-analysis" },
+  { label: "Prior art search", value: "prior-art-search" },
+  { label: "IP Valuation", value: "ip-valuation" },
 ];

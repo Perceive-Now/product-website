@@ -115,15 +115,18 @@ function App() {
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
-            <Route path="/ip-analysis" element={<IPAnalysis />} />
+            <Route path="/ip-analysis/chat" element={<IPAnalysis />} />
             <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
           </Route>
 
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />
+
+            <Route path="/my-account" element={<HomePage />} />
+
             <Route path="/dashboard" element={<DashboardPage />} />
 
-            <Route path="/ip-analysis/full-report" element={<IPFullReport />} />
+            <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
 
             <Route path="/m&a-licensing" element={<MALicensing />} />
 

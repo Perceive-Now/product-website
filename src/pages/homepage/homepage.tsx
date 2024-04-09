@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useCallback, useState } from "react";
+import classNames from "classnames";
 
 //
-// import UserIcon from "../../components/app/userIcon";
 import Search, { IKeywordOption } from "../../components/reusable/search";
 
 //
@@ -9,14 +10,10 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setDashboardSearch } from "../../stores/dashboard";
 
 //
-// import PerceiveLogo from "../../assets/images/logo.svg";
-import classNames from "classnames";
-import { useCallback, useState } from "react";
-// import { Disclosure, Transition } from "@headlessui/react";
+
 import BulbIcon from "../../components/icons/miscs/Bulb";
 import PortfolioIcon from "../../components/icons/sidenav/portfolio";
 import toast from "react-hot-toast";
-// import DollarIcon from "../../components/icons/miscs/Dollar";
 
 /**
  *
@@ -40,7 +37,7 @@ export default function HomePage() {
       dispatch(setDashboardSearch(searchValue));
       switch (selectSearch) {
         case "ip-landscaping":
-          navigate(`/ip-analysis?keywords=${searchValue.map((s) => s.label)}`, {
+          navigate(`/ip-analysis/chat?keywords=${searchValue.map((s) => s.label)}`, {
             state: { search: searchValue },
           });
           break;

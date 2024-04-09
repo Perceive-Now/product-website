@@ -226,57 +226,57 @@ export default function IPAnalysis() {
       question:
         "How do you plan to handle sublicensing rights, audit rights, and quality control provisions to safeguard the integrity and value of your licensed IP?",
       // question: `What is the pricing strategy for your product or service?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 26,
       question:
         "Are there any particular fields of use you are considering for NeuraWear's licensing agreements, and how do these choices reflect market demands and opportunities?",
       // question: `How do you calculate the gross margin for your offerings?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 27,
       question: "What is the pricing strategy for your product or service?",
       // question: `What are the total development costs incurred for your product or service?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 28,
       question: "How do you calculate the gross margin for your offerings?",
       // question: `What future costs do you anticipate for full development and market launch?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 29,
       question: "What are the total development costs incurred for your product or service?",
       // question: `What discount rate do you apply to future cash flows and why?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 30,
       question: "What future costs do you anticipate for full development and market launch?",
       // question: `What is the projected annual revenue growth rate, and how did you arrive at this figure?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 31,
       question: "What discount rate do you apply to future cash flows and why?",
       // question: `What are the anticipated operating expenses, and how are they allocated?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 32,
       question:
         "What is the projected annual revenue growth rate, and how did you arrive at this figure?",
       // question: `How do you project sales revenue for your products or services over the next 5 years?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     {
       questionId: 33,
       question: "What are the anticipated operating expenses, and how are they allocated?",
       // question: `What market and competitive analysis data have you gathered, and how does it influence your strategy?`,
-      usecase: "ip-landscaping&fto",
+      usecase: "ip-valuation",
     },
     // Infringement Analysis
     {
