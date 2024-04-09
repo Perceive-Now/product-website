@@ -16,16 +16,16 @@ import classNames from "classnames";
 // import ChatTenthQuestion from "../../../../components/@chat/ip-analysis/use-case/ip-validity-analysis/ten";
 // import ChatEleventhQuestion from "../../../../components/@chat/ip-analysis/use-case/ip-validity-analysis/eleven";
 
-import IPStepper from "../../../../components/@chat/ip-analysis/stepper";
-import IPReview from "../../../../components/@chat/ip-analysis/use-case/ip-validity-analysis/review/review";
-import NewQuestion from "../../../../components/@chat/ip-analysis/use-case/ip-validity-analysis/new-question";
-import Thankyou from "../../../../components/@chat/ip-analysis/use-case/ip-validity-analysis/thank-you";
-import DefaultStep from "../../../../components/@chat/ip-analysis/ip-analysis-steps/DefaultStep";
-import KeywordSelection from "../../../../components/@chat/ip-analysis/ip-analysis-steps/keyword-selection";
-import IPFinal from "../../../../components/@chat/ip-analysis/ip-analysis-steps/final";
-import ChatQuestionAnswer from "../../../../components/@chat/ip-analysis/use-case/question/question-1";
+import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
+import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/review/review";
+import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/new-question";
+import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/thank-you";
+import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
+import KeywordSelection from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/keyword-selection";
+import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
+import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import jsCookie from "js-cookie";
-import ChatQuestionAnswer2 from "../../../../components/@chat/ip-analysis/use-case/question/question-2";
+import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
 import { useAppSelector } from "../../../../hooks/redux";
 
 /**

@@ -87,6 +87,7 @@ import VerificationConfirm from "./pages/authentication/signup/confirmation";
 import AuthLayout from "./layouts/auth";
 import UserDetails from "./pages/authentication/signup/user-details";
 import SignupPage from "./pages/authentication/signup";
+import ChatWithAI from "./pages/product/chat";
 
 /**
  *
@@ -115,19 +116,18 @@ function App() {
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
-            <Route path="/ip-analysis/chat" element={<IPAnalysis />} />
+            <Route path="/ip-analysis" element={<IPAnalysis />} />
             <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
           </Route>
 
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />
-
-            <Route path="/my-account" element={<HomePage />} />
-
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/my-account" />
+            <Route path="/chat" element={<ChatWithAI />} />
 
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
 
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/m&a-licensing" element={<MALicensing />} />
 
             {/* Account section */}
