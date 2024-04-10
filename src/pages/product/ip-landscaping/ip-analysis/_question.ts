@@ -61,10 +61,7 @@ export const questionList = [
     question:
       "How is the key product or technology developed by the company applicable to industrial needs in its domain?",
     usecase: "ip-validity-analysis",
-    answer: `ARSight addresses industrial needs by enhancing efficiency, safety, and learning:\n
-    • Manufacturing and Maintenance: Provides step-by-step instructions overlay on machinery, reducing errors and improving safety.\n
-    • Education and Training: Offers immersive, interactive simulations for better engagement and information retention.\n
-    • Design and Architecture: Enables professionals to visualize projects in their environment, improving planning and presentations.\nARSight’s practical applications across industries demonstrate its capacity to meet the digital age's challenges and demands.`,
+    answer: `ARSight addresses industrial needs by enhancing efficiency, safety, and learning:\n• Manufacturing and Maintenance: Provides step-by-step instructions overlay on machinery, reducing errors and improving safety.\n• Education and Training: Offers immersive, interactive simulations for better engagement and information retention.\n• Design and Architecture: Enables professionals to visualize projects in their environment, improving planning and presentations.\n ARSight’s practical applications across industries demonstrate its capacity to meet the digital age's challenges and demands.`,
   },
   {
     questionId: 10,
