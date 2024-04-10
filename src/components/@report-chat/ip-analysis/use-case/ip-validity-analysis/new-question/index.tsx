@@ -80,5 +80,12 @@ export default function NewQuestion({ changeActiveStep, activeStep }: Props) {
     [activeStep, changeActiveStep, chatId, dispatch, questionId],
   );
 
-  return <NewComponent isLoading={isloading} onContinue={onContinue} question={question} />;
+  return (
+    <NewComponent
+      isLoading={isloading}
+      onContinue={onContinue}
+      question={question}
+      exampleAnswer=""
+    />
+  );
 }

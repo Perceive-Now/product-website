@@ -6,15 +6,16 @@ import classNames from "classnames";
 import * as yup from "yup";
 import Loading from "../../reusable/loading";
 import Button from "../../reusable/button";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 interface Props {
   onContinue: any;
   question: string;
+  exampleAnswer: string;
   isLoading: boolean;
 }
 
-export default function NewComponent({ onContinue, question, isLoading }: Props) {
+export default function NewComponent({ onContinue, question, isLoading, exampleAnswer }: Props) {
   // const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
 
   const formResolver = yup.object().shape({
@@ -26,7 +27,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
     formState: { errors },
     handleSubmit,
     reset,
-    // setValue,
+    setValue,
   } = useForm({
     defaultValues: {
       answer: "",
@@ -35,9 +36,9 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
     mode: "onBlur",
   });
   //
-  // const useExample = useCallback(() => {
-  //   setValue("answer", "");
-  // }, [setValue]);
+  const useExample = useCallback(() => {
+    setValue("answer", exampleAnswer); // Update the form value
+  }, [exampleAnswer, setValue]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -50,9 +51,11 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
       <Loading isLoading={isLoading} />
       <div className="space-y-2.5">
         <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
-        {/* <p id="exampleText" className="text-gray-600 text-sm">
-          Eg. {example}
-        </p>
+        <p
+          id="exampleText"
+          className="text-gray-600 text-sm"
+          dangerouslySetInnerHTML={{ __html: `Eg: ${exampleAnswer}` }}
+        />
         <Button
           type="secondary"
           size="small"
@@ -61,7 +64,7 @@ export default function NewComponent({ onContinue, question, isLoading }: Props)
           handleClick={useExample}
         >
           Use this example
-        </Button> */}
+        </Button>
       </div>
       <form onSubmit={handleSubmit(onContinue)} className="mt-5">
         <fieldset className="mt-3">

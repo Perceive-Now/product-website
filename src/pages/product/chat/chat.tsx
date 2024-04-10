@@ -30,10 +30,10 @@ export function ChatWithAI() {
           Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
         },
       });
+
       const answer = res.data.ai_message;
 
       setIsloading(false);
-
       setQuery("");
 
       const newChat = {

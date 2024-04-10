@@ -20,6 +20,7 @@ interface Props {
     question: string;
     questionId: number;
     usecase?: any;
+    answer: string;
     // "all" | "ip-validity-analysis" | "ip-licensing-opportunity" | "ip-landscaping&fto" | "infringement-analysis"
   };
 }
@@ -102,7 +103,12 @@ Props) {
 
   return (
     <>
-      <NewComponent isLoading={isloading} onContinue={onContinue} question={question.question} />
+      <NewComponent
+        isLoading={isloading}
+        onContinue={onContinue}
+        question={question.question}
+        exampleAnswer={question.answer}
+      />
     </>
   );
 }

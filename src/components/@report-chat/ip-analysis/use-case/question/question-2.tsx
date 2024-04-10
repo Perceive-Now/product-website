@@ -18,7 +18,7 @@ interface Props {
     question: string;
     questionId: number;
     usecase?: any;
-    // "all" | "ip-validity-analysis" | "ip-licensing-opportunity" | "ip-landscaping&fto" | "infringement-analysis"
+    answer: string;
   };
 }
 
@@ -82,7 +82,12 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
 
   return (
     <>
-      <NewComponent isLoading={isloading} onContinue={onContinue} question={question.question} />
+      <NewComponent
+        isLoading={isloading}
+        onContinue={onContinue}
+        question={question.question}
+        exampleAnswer={question.answer}
+      />
     </>
   );
 }
