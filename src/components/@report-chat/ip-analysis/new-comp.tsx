@@ -46,6 +46,8 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
     }
   }, [isLoading, reset]);
 
+  const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
+
   return (
     <>
       <Loading isLoading={isLoading} />
@@ -54,7 +56,7 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
         <p
           id="exampleText"
           className="text-gray-600 text-sm"
-          dangerouslySetInnerHTML={{ __html: `Eg: ${exampleAnswer}` }}
+          dangerouslySetInnerHTML={{ __html: `Eg: ${formattedAnswer}` }}
         />
         <Button
           type="secondary"
