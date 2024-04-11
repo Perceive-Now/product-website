@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 import * as yup from "yup";
-import Loading from "../../reusable/loading";
+// import Loading from "../../reusable/loading";
 import Button from "../../reusable/button";
 import { useCallback, useEffect } from "react";
 
@@ -50,7 +50,7 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
 
   return (
     <>
-      <Loading isLoading={isLoading} />
+      {/* <Loading isLoading={isLoading} /> */}
       <div className="space-y-2.5">
         <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
         <p
@@ -74,6 +74,7 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
             <div className="mt-0.5 rounded-md shadow-sm">
               <textarea
                 rows={5}
+                disabled={isLoading}
                 {...register("answer")}
                 className={classNames(
                   "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller",
@@ -90,7 +91,7 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
           )}
         </fieldset>
         <div className="mt-4 pb-4">
-          <Button htmlType={"submit"} rounded={"large"}>
+          <Button htmlType={"submit"} rounded={"large"} loading={isLoading} disabled={isLoading}>
             Continue
           </Button>
         </div>

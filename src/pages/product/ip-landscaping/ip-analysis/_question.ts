@@ -53,8 +53,7 @@ export const questionList = [
     question:
       "Can you explain why the features of the key product or technology developed by the company are considered non-obvious to someone skilled in the field?",
     usecase: "ip-validity-analysis",
-    answer: `The non-obviousness of ARSight stems from:
-    • Integrated Technology Approach: The combination of high-resolution display, spatial computing, and adaptive learning in one device offers a novel user experience.\n• Algorithmic Efficiency: Our spatial computing algorithm facilitates real-time content overlay in complex settings, a significant advancement over existing technologies.\n• Battery Life Innovation: Extending battery life in high-performance AR glasses challenges current wearable tech limitations, demonstrating our innovative solution to a common problem.\nThese features represent significant technological advancements that were not anticipated by existing AR solutions.`,
+    answer: `The non-obviousness of ARSight stems from:\n• Integrated Technology Approach: The combination of high-resolution display, spatial computing, and adaptive learning in one device offers a novel user experience.\n• Algorithmic Efficiency: Our spatial computing algorithm facilitates real-time content overlay in complex settings, a significant advancement over existing technologies.\n• Battery Life Innovation: Extending battery life in high-performance AR glasses challenges current wearable tech limitations, demonstrating our innovative solution to a common problem.\nThese features represent significant technological advancements that were not anticipated by existing AR solutions.`,
   },
   {
     questionId: 9,
