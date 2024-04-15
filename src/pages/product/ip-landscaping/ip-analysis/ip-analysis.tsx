@@ -64,7 +64,13 @@ export default function IPAnalysis() {
     {
       label: "",
       value: 2,
-      component: <NewQuestion changeActiveStep={changeActiveStep} activeStep={activeStep} />,
+      component: (
+        <NewQuestion
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          exampleAnswer={question.answer}
+        />
+      ),
     },
     {
       label: "",

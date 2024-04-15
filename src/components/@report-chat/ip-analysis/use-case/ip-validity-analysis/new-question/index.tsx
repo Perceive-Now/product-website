@@ -14,9 +14,10 @@ import NewComponent from "../../../new-comp";
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
+  exampleAnswer: string;
 }
 
-export default function NewQuestion({ changeActiveStep, activeStep }: Props) {
+export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswer }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
@@ -85,7 +86,7 @@ export default function NewQuestion({ changeActiveStep, activeStep }: Props) {
       isLoading={isloading}
       onContinue={onContinue}
       question={question}
-      exampleAnswer=""
+      exampleAnswer={exampleAnswer}
     />
   );
 }
