@@ -30,7 +30,7 @@ export function IconButton({
       {...rest}
       className={classNames(
         className,
-        "capitalize flex items-center justify-center gap-2 text-white",
+        "capitalize flex items-center justify-center gap-2 text-white h-3 w-3",
         rounded && "rounded-full",
         ButtonColorStyle[color],
       )}

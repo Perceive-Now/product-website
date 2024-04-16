@@ -41,10 +41,11 @@ export function KnowNowIP() {
 
     try {
       const res = await axios.post(
-        `https://knownowapi-ip.azurewebsites.net/query_to_response/`,
+        `https://knownowapi-ip.azurewebsites.net/query_to_response`,
         queries,
         {
           headers: {
+            "Content-Type": "application/json",
             Authorization:
               "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
           },
@@ -52,13 +53,13 @@ export function KnowNowIP() {
       );
 
       const answer = res.data.ai_message;
-
       setIsloading(false);
 
       const newChat = {
         query: query,
         answer: answer,
       };
+
       setChats((prevChats) => [...prevChats, newChat]);
     } catch (errror) {
       setIsError(true);

@@ -31,6 +31,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
       type={props.htmlType}
       className={classNames(
         {
+          "py-0.5 px-2": buttonSize === "xs",
           "p-0": buttonSize === "default",
           "py-1 px-3": buttonSize === "small",
           "py-[12px] px-[24px]": buttonSize === "medium",
@@ -70,7 +71,7 @@ interface IButtonProps {
   // Built in
   disabled?: boolean;
   htmlType?: "button" | "submit" | "reset";
-  size?: "small" | "medium" | "default";
+  size?: "small" | "medium" | "default" | "xs";
   classname?: string;
   // Custom
   rounded?: "small" | "medium" | "large" | "full";
