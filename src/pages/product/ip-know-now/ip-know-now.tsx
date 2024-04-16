@@ -55,12 +55,16 @@ export function KnowNowIP() {
       const answer = res.data.ai_message;
       setIsloading(false);
 
-      const newChat = {
-        query: query,
-        answer: answer,
-      };
+      // const newChat = {
+      //   query: query,
+      //   answer: answer,
+      // };
 
-      setChats((prevChats) => [...prevChats, newChat]);
+      setChats((prevChats) => {
+        const updatedChats = [...prevChats];
+        updatedChats[updatedChats.length - 1].answer = answer;
+        return updatedChats;
+      });
     } catch (errror) {
       setIsError(true);
       setErrorMessage("Error while generating the response");
