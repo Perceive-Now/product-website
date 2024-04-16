@@ -27,7 +27,7 @@ export default function AppFooter() {
 
   //
   return (
-    <div className="px-4 flex flex-col sm:flex-row  justify-center items-center">
+    <div className="px-4 flex flex-col sm:flex-row  justify-center items-center ">
       {/* <div className="flex flex-col md:flex-row gap-x-4 font-normal text-sm">
         <Link to="/help" className="text-primary-900">
           Help

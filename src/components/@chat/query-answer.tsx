@@ -1,6 +1,6 @@
 import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import ThumbsDownIcon from "../icons/common/ThumbsDown";
-import { ShareIcon } from "../icons";
+import { ErrorIcon, LoadingIcon, ShareIcon } from "../icons";
 import CopyIcon from "../icons/common/copy";
 
 import PN from "../../assets/images/pn.svg";
@@ -10,9 +10,12 @@ import classNames from "classnames";
 
 interface Props {
   answer: string;
+  isLoading: boolean;
+  error: string;
+  isError: boolean;
 }
 
-const QueryAnswer = ({ answer }: Props) => {
+const QueryAnswer = ({ answer, isLoading, isError, error }: Props) => {
   const copyRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -44,9 +47,26 @@ const QueryAnswer = ({ answer }: Props) => {
         <img className="h-full w-full" src={PN} alt={"Pn"} />
       </div>
       <div>
-        <p ref={copyRef} className="text-secondary-800">
-          {answer}
-        </p>
+        {isLoading ? (
+          <span className="animate-spin">
+            <LoadingIcon className="text-primary-900" />
+          </span>
+        ) : (
+          <>
+            {isError ? (
+              <span className="text-danger-500 font-bold text flex items-center gap-0.5">
+                <ErrorIcon className="h-3 w-3" />
+                {error}
+              </span>
+            ) : (
+              <p
+                ref={copyRef}
+                className="text-secondary-800"
+                dangerouslySetInnerHTML={{ __html: answer }}
+              />
+            )}
+          </>
+        )}
         <div className="flex items-center gap-3 mt-5">
           <div className="flex items-center gap-2">
             <IconButton color="default">

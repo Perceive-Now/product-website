@@ -1,5 +1,6 @@
-import classNames from "classnames";
 import SentIcon from "../icons/common/send";
+//
+import classNames from "classnames";
 import { LoaderIcon } from "react-hot-toast";
 
 interface Props {
@@ -30,10 +31,10 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
       />
       <div className="absolute right-2">
         <button
-          className="bg-appGray-200 rounded-full h-4 w-4 flex items-center justify-center"
+          className="bg-appGray-200 rounded-full h-4 w-4 flex items-center justify-center disabled:cursor-not-allowed"
           type="button"
           onClick={sendQuery}
-          disabled={isLoading}
+          disabled={isLoading || !query}
         >
           {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2" />}
         </button>

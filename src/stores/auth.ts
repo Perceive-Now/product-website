@@ -127,11 +127,15 @@ export const getCurrentSession = createAsyncThunk(
 
     //
     try {
-      const response = await axios.post<IRefreshResponse>(`${API_URL}/api/v1/user/refresh-token/`, {
-        refresh: refreshToken,
-      });
+      // api/v1/user/refresh-token/
+      const response = await axios.post<IRefreshResponse>(
+        `${API_URL}/
+      `,
+        {
+          refresh: refreshToken,
+        },
+      );
 
-      //
       jsCookie.set("pn_refresh", response.data.refresh);
       sessionStorage.setItem("pn_access", response.data.access);
 
@@ -154,9 +158,9 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
     // TODO:: Make an API call to get user profile
     // After that add user's name and image to the response object
     const [userResponse, userProfileResponse, subscriptionResponse] = await Promise.all([
-      axiosInstance.get("/api/v1/user/me/"),
-      axiosInstance.get("/api/v1/profile/profiles/me/"),
-      axiosInstance.get("/api/v1/payment/subscription/"),
+      axiosInstance.get(""),
+      axiosInstance.get(""),
+      axiosInstance.get(""),
     ]);
     const subscriptionData = subscriptionResponse?.data ?? {};
     return {

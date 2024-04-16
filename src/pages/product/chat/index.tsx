@@ -1,2 +1,2 @@
-import { ChatWithAI } from "./chat";
-export default ChatWithAI;
+import { KnowNow } from "./chat";
+export default KnowNow;

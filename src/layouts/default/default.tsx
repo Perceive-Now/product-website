@@ -13,25 +13,27 @@ import AppSidebar from "../../components/app/sidebar";
 export default function DefaultLayout() {
   // const [open, setOpen] = useState(true)
   return (
-    <div className="">
+    <>
       {/* <div className="min-w-min h-screen overflow-y-auto shadow">
         <AppSidebar />
       </div> */}
 
-      <div className="w-full flex flex-col">
+      <div className="w-full h-full flex flex-col">
         <div className="sticky top-0 w-full z- bg-appGray-100 z-10">
           <div className="px-4">{/* <AppHeader /> */}</div>
         </div>
-        <div className="flex">
+        <div className="flex h-full">
           {/* <div className="fixed h-screen shadow"> */}
           <AppSidebar />
           {/* </div> */}
-          <div className="relative ml-[260px]  py-3 px-4 z-0 min-h-[calc(100vh-200px)] w-full">
-            <Outlet />
+          <div className="relative ml-[260px] py-3 px-4 z-0 h-full w-full">
+            <div className="h-full">
+              <Outlet />
+            </div>
             <AppFooter />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

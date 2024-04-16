@@ -16,9 +16,8 @@ import { sidebarItems, ISidebarListItem } from "./_data";
 // import { Dialog } from "@headlessui/react";
 // import SidebarTransition from "./sidebarTransition";
 import ToggleBarIcon from "../../icons/sidenav/bars";
-import { History } from "./__dummy";
 // import Button from "../../reusable/button";
-import VerticalEllipsis from "../../icons/common/vertical-ellipsis";
+import KnowNowHistory from "./chat-history";
 
 /**
  *
@@ -36,7 +35,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname === "/chat") {
+    if (pathname.includes("/know-now")) {
       setIsChat(true);
     }
   }, [pathname]);
@@ -100,10 +99,12 @@ export const AppSidebar: FunctionComponent<Props> = () => {
           </Link>
         </div>
         <div className="space-y-2.5">
-          <Link to={"/chat"}>
+          <Link to={"/know-now/ip-analysis"}>
             <div
               className={classNames(
-                pathname === "/chat" ? "bg-primary-900 text-white" : "bg-white text-secondary-800",
+                pathname.includes("/know-now")
+                  ? "bg-primary-900 text-white"
+                  : "bg-white text-secondary-800",
                 "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
               )}
             >
@@ -111,25 +112,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             </div>
           </Link>
           {isChat ? (
-            <div className="px-0.5 space-y-2">
-              <h6>History</h6>
-              <div>
-                {History.map((h, idx) => (
-                  <div key={idx * 100} className="flex ">
-                    <div className="text-sm py-1">
-                      <span className="line-clamp-1">{h.title}</span>
-                    </div>
-                    <button
-                      type="button"
-                      className=""
-                      // onClick={() => setOpen(!open)}
-                    >
-                      <VerticalEllipsis />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <KnowNowHistory />
           ) : (
             <>
               {sidebarItems.map((item, index) => (

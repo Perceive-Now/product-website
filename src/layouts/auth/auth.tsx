@@ -26,7 +26,7 @@ export default function AuthLayout() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
 
-  const { user } = authStore;
+  // const { user } = authStore;
 
   //
   const [isLoading, setIsLoading] = useState(true);
@@ -62,17 +62,17 @@ export default function AuthLayout() {
     getSession();
   }, [getSession]);
 
-  useEffect(() => {
-    if (user) {
-      if (user.subscription.has_subscription && user.subscription?.data) {
-        if (user.subscription.data?.subscription_status === "unpaid") {
-          navigate("/signup/complete");
-        }
-      } else {
-        navigate("/signup/complete");
-      }
-    }
-  }, [navigate, user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     if (user.subscription.has_subscription && user.subscription?.data) {
+  //       if (user.subscription.data?.subscription_status === "unpaid") {
+  //         navigate("/signup/complete");
+  //       }
+  //     } else {
+  //       navigate("/signup/complete");
+  //     }
+  //   }
+  // }, [navigate, user]);
 
   // useEffect(() => {
   //   if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {

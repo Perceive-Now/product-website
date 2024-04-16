@@ -87,7 +87,8 @@ import VerificationConfirm from "./pages/authentication/signup/confirmation";
 import AuthLayout from "./layouts/auth";
 import UserDetails from "./pages/authentication/signup/user-details";
 import SignupPage from "./pages/authentication/signup";
-import ChatWithAI from "./pages/product/chat";
+import KnowNow from "./pages/product/chat";
+import KnowNowIP from "./pages/product/ip-know-now";
 
 /**
  *
@@ -117,13 +118,16 @@ function App() {
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
             <Route path="/ip-analysis" element={<IPAnalysis />} />
+            <Route path="/market-intelligence" element={<IPAnalysis />} />
+
             <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
           </Route>
 
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/my-account" />
-            <Route path="/chat" element={<ChatWithAI />} />
+            <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
+            <Route path="/know-now/market-intelligence" element={<KnowNow />} />
 
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
 
