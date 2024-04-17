@@ -114,9 +114,9 @@ export function KnowNow() {
   }, [chats]);
 
   return (
-    <div className="p-3 flex">
+    <div className="p-3 pb-6 flex">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2 pr-2">
+        <div ref={chatRef} className="h-[calc(100vh-205px)] overflow-auto pn_scroller pb-2">
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
