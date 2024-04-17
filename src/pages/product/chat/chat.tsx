@@ -10,6 +10,8 @@ import ChatQuery from "../../../components/@chat/chat-question";
 interface IChat {
   query: string;
   answer: string;
+  response_time?: string;
+  error?: string;
 }
 
 export function KnowNow() {
@@ -17,12 +19,7 @@ export function KnowNow() {
 
   const [query, setQuery] = useState("");
   const [chats, setChats] = useState<IChat[]>([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
-  // const [isErrorIndex, setIsErrorindex] = useState(false);
-
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
-
   const [isLoading, setIsloading] = useState(false);
 
   const onSendQuery = useCallback(async () => {
@@ -54,36 +51,49 @@ export function KnowNow() {
           },
         },
       );
-
-      // console.log(res.data.message)
-      const responseCode = res.data.code;
       const answer = res.data.message;
 
-      setIsloading(false);
+      // For development only
+      const responseTime = res.data.time;
 
-      if (responseCode === 500) {
-        setIsError(true);
-        setErrorMessage("Error while generating the response");
-      } else {
-        setChats((prevChats) => {
-          const updatedChats = [...prevChats];
-          updatedChats[updatedChats.length - 1].answer = answer;
-          return updatedChats;
-        });
-        // const updatedChats = .;
-        // console.log(updatedChats[updatedChats.length - 1].answer)
-        // updatedChats[updatedChats.length - 1].answer = answer;
-        // console.log(updatedChats)
-        // setChats(updatedChats);
-      }
+      setIsloading(false);
+      setChats((prevChats) => {
+        const updatedChats = [...prevChats];
+        updatedChats[updatedChats.length - 1].answer = answer;
+        updatedChats[updatedChats.length - 1].response_time = responseTime;
+
+        return updatedChats;
+      });
+
+      // if (responseCode === 500) {
+      // setIsError(true);
+      // setErrorMessage("Error while generating the response");
+      // } else {
+
+      //   // const updatedChats = .;
+      //   // console.log(updatedChats[updatedChats.length - 1].answer)
+      //   // updatedChats[updatedChats.length - 1].answer = answer;
+      //   // console.log(updatedChats)
+      //   // setChats(updatedChats);
+      // }
 
       // setChats((prevChats) => [...prevChats, newChat]);
-    } catch (error) {
+    } catch (error: any) {
+      const errorMsg = error.response.statusText;
       setIsloading(false);
-      setErrorMessage("Error");
+
+      setChats((prevChats) => {
+        const updatedChats = [...prevChats];
+        updatedChats[updatedChats.length - 1].error =
+          errorMsg || "Error while generating the response";
+        return updatedChats;
+      });
+
+      // setErrorMessage("Error while generating the response");
       // console.log(error)
     } finally {
       setLoadingIndex(null);
+      // setIsError(false)
     }
 
     // console.log('')
@@ -112,14 +122,14 @@ export function KnowNow() {
               <div key={idx * 5} className="space-y-3">
                 <ChatQuery
                   query={chat.query}
-                  updateQuery={onSendQuery}
+                  // updateQuery={onSendQuery}
                   // setChats={setChats}
                 />
                 <QueryAnswer
+                  responseTime={chat.response_time}
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}
-                  error={errorMessage}
-                  isError={isError}
+                  error={chat.error && chat.error}
                 />
               </div>
             ))}

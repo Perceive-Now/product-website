@@ -4,15 +4,14 @@ import Input from "../reusable/input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useCallback } from "react";
-import axios from "axios";
 
 interface Props {
   setEdit: (edit: boolean) => void;
   query: string;
-  updateQuery: () => void;
+  // updateQuery: () => void;
 }
 
-const EditQuery = ({ setEdit, updateQuery, query }: Props) => {
+const EditQuery = ({ setEdit, query }: Props) => {
   const formInitialValue = {
     query: query || "",
   };
@@ -23,13 +22,17 @@ const EditQuery = ({ setEdit, updateQuery, query }: Props) => {
 
   const {
     register,
-    formState: { errors, isLoading },
+    formState: { errors },
     handleSubmit,
   } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
     mode: "onChange",
   });
+
+  const updateQuery = useCallback(() => {
+    setEdit(false);
+  }, [setEdit]);
 
   return (
     <form onSubmit={handleSubmit(updateQuery)} className="w-full">
@@ -45,7 +48,7 @@ const EditQuery = ({ setEdit, updateQuery, query }: Props) => {
           htmlType="button"
           type={"default"}
           size="default"
-          classname="text-primary-900"
+          classname="text-primary-900 text-xs"
         >
           Cancel
         </Button>
@@ -53,7 +56,7 @@ const EditQuery = ({ setEdit, updateQuery, query }: Props) => {
           htmlType="submit"
           type={"primary"}
           size={"small"}
-          classname="text-sm"
+          classname="text-xs"
           rounded="small"
         >
           Update

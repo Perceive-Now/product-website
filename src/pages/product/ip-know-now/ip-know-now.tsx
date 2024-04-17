@@ -7,6 +7,7 @@ import ChatQuery from "../../../components/@chat/chat-question";
 interface IChat {
   query: string;
   answer: string;
+  error?: string;
 }
 
 export function KnowNowIP() {
@@ -14,9 +15,7 @@ export function KnowNowIP() {
 
   const [query, setQuery] = useState("");
   const [chats, setChats] = useState<IChat[]>([]);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [isError, setIsError] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
@@ -55,20 +54,21 @@ export function KnowNowIP() {
       const answer = res.data.ai_message;
       setIsloading(false);
 
-      // const newChat = {
-      //   query: query,
-      //   answer: answer,
-      // };
-
       setChats((prevChats) => {
         const updatedChats = [...prevChats];
         updatedChats[updatedChats.length - 1].answer = answer;
         return updatedChats;
       });
-    } catch (errror) {
-      setIsError(true);
-      setErrorMessage("Error while generating the response");
+    } catch (error: any) {
+      const errorMsg = error.response.statusText;
       setIsloading(false);
+
+      setChats((prevChats) => {
+        const updatedChats = [...prevChats];
+        updatedChats[updatedChats.length - 1].error =
+          errorMsg || "Error while generating the response";
+        return updatedChats;
+      });
       // console.log(error)
     } finally {
       setLoadingIndex(null);
@@ -92,12 +92,14 @@ export function KnowNowIP() {
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
-                <ChatQuery query={chat.query} updateQuery={onSendQuery} />
+                <ChatQuery
+                  query={chat.query}
+                  // updateQuery={onSendQuery}
+                />
                 <QueryAnswer
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}
-                  error={errorMessage}
-                  isError={isError}
+                  error={chat.error}
                 />
               </div>
             ))}

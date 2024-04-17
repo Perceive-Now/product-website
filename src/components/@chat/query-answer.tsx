@@ -11,11 +11,11 @@ import classNames from "classnames";
 interface Props {
   answer: string;
   isLoading: boolean;
-  error: string;
-  isError: boolean;
+  error?: string;
+  responseTime?: string;
 }
 
-const QueryAnswer = ({ answer, isLoading, isError, error }: Props) => {
+const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
   const copyRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -53,18 +53,24 @@ const QueryAnswer = ({ answer, isLoading, isError, error }: Props) => {
           </span>
         ) : (
           <>
-            {isError ? (
-              <span className="text-danger-500 font-bold text flex items-center gap-0.5">
+            {error || error !== undefined ? (
+              <span className="text-danger-500 font-semibold text flex items-center gap-0.5 text-sm">
                 <ErrorIcon className="h-3 w-3" />
                 {error}
               </span>
             ) : (
-              <p
-                ref={copyRef}
-                style={{ textAlign: "justify" }}
-                className="text-secondary-800"
-                dangerouslySetInnerHTML={{ __html: answer }}
-              />
+              <>
+                <p
+                  ref={copyRef}
+                  style={{ textAlign: "justify" }}
+                  className="text-secondary-800"
+                  dangerouslySetInnerHTML={{ __html: answer }}
+                />
+                <p className="text-xs text-secondary-800 font-bold mt-1">
+                  ResponseTime:{" "}
+                  <span className="text-primary-500">{responseTime && responseTime}</span>
+                </p>
+              </>
             )}
           </>
         )}
