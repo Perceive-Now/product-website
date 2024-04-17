@@ -73,7 +73,6 @@ export function KnowNowIP() {
     } finally {
       setLoadingIndex(null);
     }
-    // console.log('')
   }, [chats, query]);
 
   const scrollToBottom = () => {
@@ -93,7 +92,7 @@ export function KnowNowIP() {
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
-                <ChatQuery query={chat.query} />
+                <ChatQuery query={chat.query} updateQuery={onSendQuery} />
                 <QueryAnswer
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}

@@ -19,6 +19,7 @@ export function KnowNow() {
   const [chats, setChats] = useState<IChat[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  // const [isErrorIndex, setIsErrorindex] = useState(false);
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
 
@@ -46,6 +47,7 @@ export function KnowNow() {
         queries,
         {
           headers: {
+            "Content-Type": "application/json",
             "x-token": "secret-token",
             "x-user-id": "user123",
             // Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
@@ -53,7 +55,7 @@ export function KnowNow() {
         },
       );
 
-      // console.log(res)
+      // console.log(res.data.message)
       const responseCode = res.data.code;
       const answer = res.data.message;
 
@@ -63,9 +65,16 @@ export function KnowNow() {
         setIsError(true);
         setErrorMessage("Error while generating the response");
       } else {
-        const updatedChats = [...chats];
-        updatedChats[updatedChats.length - 1].answer = answer;
-        setChats(updatedChats);
+        setChats((prevChats) => {
+          const updatedChats = [...prevChats];
+          updatedChats[updatedChats.length - 1].answer = answer;
+          return updatedChats;
+        });
+        // const updatedChats = .;
+        // console.log(updatedChats[updatedChats.length - 1].answer)
+        // updatedChats[updatedChats.length - 1].answer = answer;
+        // console.log(updatedChats)
+        // setChats(updatedChats);
       }
 
       // setChats((prevChats) => [...prevChats, newChat]);
@@ -97,11 +106,15 @@ export function KnowNow() {
   return (
     <div className="p-3 flex">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2">
+        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2 pr-2">
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
-                <ChatQuery query={chat.query} />
+                <ChatQuery
+                  query={chat.query}
+                  updateQuery={onSendQuery}
+                  // setChats={setChats}
+                />
                 <QueryAnswer
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}

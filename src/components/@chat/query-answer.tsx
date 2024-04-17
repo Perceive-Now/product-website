@@ -61,6 +61,7 @@ const QueryAnswer = ({ answer, isLoading, isError, error }: Props) => {
             ) : (
               <p
                 ref={copyRef}
+                style={{ textAlign: "justify" }}
                 className="text-secondary-800"
                 dangerouslySetInnerHTML={{ __html: answer }}
               />
