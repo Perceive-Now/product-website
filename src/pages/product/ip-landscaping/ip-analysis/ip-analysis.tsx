@@ -24,11 +24,8 @@ import { questionList } from "./_question";
  */
 export default function IPAnalysis() {
   const [activeStep, setActiveStep] = useState(0);
-
-  // const searchedKeywords = useAppSelector((state) => state.dashboard?.keywords) ?? [];
   const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
   //
-  // const keywords = searchedKeywords.map((kwd) => kwd);
 
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {
@@ -44,12 +41,14 @@ export default function IPAnalysis() {
     jsCookie.set("chatId", chatId || "");
   }, [chatId]);
 
+  //
   const questionWithUsecase = questionList.filter((q) => useCases.includes(q.usecase));
 
   const question = questionWithUsecase.find((q) => {
     return q.questionId === Number(questionId);
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
+  //
   const steps = [
     {
       label: "",
@@ -111,6 +110,7 @@ export default function IPAnalysis() {
     },
   ];
 
+  //
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeStep]);

@@ -237,7 +237,7 @@ export const questionList = [
     questionId: 34,
     question:
       "How do you project sales revenue for your products or services over the next 5 years?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Sales Revenue Projections:
     • First Year: Targeting $5 million in sales revenue as we establish market presence.\n• Year 5: Projecting to reach $20 million in sales revenue, based on a compounded annual growth rate of 25%, driven by expanding market reach, product line extensions, and strategic partnerships.`,
   },
@@ -245,32 +245,32 @@ export const questionList = [
     questionId: 35,
     question:
       "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Market and Competitive Analysis:
     • Data Gathered: Comprehensive analysis reveals a growing wearable market valued at $50 billion, with an annual growth rate of 15%. Competitive analysis indicates a gap in neuro-adaptive technology offerings.\n• Strategy Influence: This data guides our focus on differentiating NeuraWear through innovation, targeting underserved segments, and positioning our product as a premium offering within the wearable and neurotech spaces.`,
   },
   {
     questionId: 36,
     question: "What specific problem does your product or service solve for your target audience?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
   },
   {
     questionId: 37,
     question: "How does your product or service stand out from existing market offerings?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
   },
   {
     questionId: 38,
     question: "What pricing strategy has your company adopted for its product or service?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Pricing Strategy:\n• Adopting a value-based pricing strategy, NeuraWear's products are priced to reflect the significant value and unique benefits they offer to users, positioned slightly above the market average for wearable tech. This strategy underscores the premium features and advanced technology of our offerings, targeting consumers who prioritize quality and innovation.`,
   },
   {
     questionId: 39,
     question: "What are the primary and potential secondary revenue streams for your company?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
     • Secondary: Licensing our technology to other manufacturers, offering professional services for custom integration, and developing a marketplace for third-party applications that can enhance the NeuraWear experience.`,
   },
@@ -278,21 +278,86 @@ export const questionList = [
     questionId: 40,
     question:
       "How is your company's cost structure organized, and what impact does it have on pricing and profitability?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `• Organization: NeuraWear's cost structure is heavily weighted towards R&D and innovation, reflecting our commitment to leading the market in technological advancements. Manufacturing and marketing are the next significant expenses, aligning with our strategy to produce high-quality products and create brand recognition.\n• Impact: This structure supports our value-based pricing strategy, ensuring profitability by delivering superior products that command premium prices, while the ongoing investment in R&D is designed to sustain long-term competitive advantage and market leadership.`,
   },
   {
     questionId: 41,
     question: "Which sales and distribution channels is your company planning to use?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
     answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
-This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
+    This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
   },
   {
     questionId: 42,
     question:
       "Who are your main competitors, and what differentiates your product or service from theirs?",
-    usecase: "infringement-analysis",
+    usecase: "market-research",
+    answer: `Main Competitors:\n • Leading players in the wearable technology market, such as Fitbit, Apple Watch, and niche neurotechnology startups.\nDifferentiation:\n• Neuro-Adaptive Technology: Unlike competitors focusing on general fitness or notification management, NeuraWear specializes in neuro-adaptive interfaces, providing a more intuitive and personalized user experience.\n• Customization and Privacy: Offering higher levels of customization while ensuring user data privacy and security, addressing a key consumer concern in wearable tech.\n• Integration and Compatibility: Designed for seamless integration with a wide range of devices and platforms, enhancing usability across the consumer's digital ecosystem.`,
+  },
+];
+
+export const MarketQuestionList = [
+  {
+    questionId: 34,
+    question:
+      "How do you project sales revenue for your products or services over the next 5 years?",
+    usecase: "market-research",
+    answer: `Sales Revenue Projections:
+    • First Year: Targeting $5 million in sales revenue as we establish market presence.\n• Year 5: Projecting to reach $20 million in sales revenue, based on a compounded annual growth rate of 25%, driven by expanding market reach, product line extensions, and strategic partnerships.`,
+  },
+  {
+    questionId: 35,
+    question:
+      "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
+    usecase: "market-research",
+    answer: `Market and Competitive Analysis:
+    • Data Gathered: Comprehensive analysis reveals a growing wearable market valued at $50 billion, with an annual growth rate of 15%. Competitive analysis indicates a gap in neuro-adaptive technology offerings.\n• Strategy Influence: This data guides our focus on differentiating NeuraWear through innovation, targeting underserved segments, and positioning our product as a premium offering within the wearable and neurotech spaces.`,
+  },
+  {
+    questionId: 36,
+    question: "What specific problem does your product or service solve for your target audience?",
+    usecase: "market-research",
+    answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
+  },
+  {
+    questionId: 37,
+    question: "How does your product or service stand out from existing market offerings?",
+    usecase: "market-research",
+    answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
+  },
+  {
+    questionId: 38,
+    question: "What pricing strategy has your company adopted for its product or service?",
+    usecase: "market-research",
+    answer: `Pricing Strategy:\n• Adopting a value-based pricing strategy, NeuraWear's products are priced to reflect the significant value and unique benefits they offer to users, positioned slightly above the market average for wearable tech. This strategy underscores the premium features and advanced technology of our offerings, targeting consumers who prioritize quality and innovation.`,
+  },
+  {
+    questionId: 39,
+    question: "What are the primary and potential secondary revenue streams for your company?",
+    usecase: "market-research",
+    answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
+    • Secondary: Licensing our technology to other manufacturers, offering professional services for custom integration, and developing a marketplace for third-party applications that can enhance the NeuraWear experience.`,
+  },
+  {
+    questionId: 40,
+    question:
+      "How is your company's cost structure organized, and what impact does it have on pricing and profitability?",
+    usecase: "market-research",
+    answer: `• Organization: NeuraWear's cost structure is heavily weighted towards R&D and innovation, reflecting our commitment to leading the market in technological advancements. Manufacturing and marketing are the next significant expenses, aligning with our strategy to produce high-quality products and create brand recognition.\n• Impact: This structure supports our value-based pricing strategy, ensuring profitability by delivering superior products that command premium prices, while the ongoing investment in R&D is designed to sustain long-term competitive advantage and market leadership.`,
+  },
+  {
+    questionId: 41,
+    question: "Which sales and distribution channels is your company planning to use?",
+    usecase: "market-research",
+    answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
+    This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
+  },
+  {
+    questionId: 42,
+    question:
+      "Who are your main competitors, and what differentiates your product or service from theirs?",
+    usecase: "market-research",
     answer: `Main Competitors:\n • Leading players in the wearable technology market, such as Fitbit, Apple Watch, and niche neurotechnology startups.\nDifferentiation:\n• Neuro-Adaptive Technology: Unlike competitors focusing on general fitness or notification management, NeuraWear specializes in neuro-adaptive interfaces, providing a more intuitive and personalized user experience.\n• Customization and Privacy: Offering higher levels of customization while ensuring user data privacy and security, addressing a key consumer concern in wearable tech.\n• Integration and Compatibility: Designed for seamless integration with a wide range of devices and platforms, enhancing usability across the consumer's digital ecosystem.`,
   },
 ];

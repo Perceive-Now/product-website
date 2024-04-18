@@ -59,13 +59,14 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
                 questionId: 1,
               }),
             );
+            jsCookie.set("questionId", String(questionId + 1));
+            changeActiveStep(activeStep - 1);
 
-            if (questionId === 11) {
-              changeActiveStep(14);
-            } else {
-              jsCookie.set("questionId", String(questionId + 1));
-              changeActiveStep(activeStep - 1);
-            }
+            // if (questionId === 11) {
+            //   changeActiveStep(14);
+            // } else {
+
+            // }
           } else {
             jsCookie.set("questionId", String(questionId));
             dispatch(setNoveltyAspect({ answer: apiData }));

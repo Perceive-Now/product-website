@@ -118,6 +118,8 @@ function App() {
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
             <Route path="/ip-analysis" element={<IPAnalysis />} />
+            <Route path="/market-research" element={<IPAnalysis />} />
+
             <Route path="/market-intelligence" element={<IPAnalysis />} />
 
             <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
