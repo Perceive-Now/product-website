@@ -40,7 +40,7 @@ export function KnowNow() {
 
     try {
       const res = await axios.post(
-        `https://perceivenowchat.azurewebsites.net/ask-question`,
+        `https://percievenowchat2.azurewebsites.net/ask-question`,
         queries,
         {
           headers: {
