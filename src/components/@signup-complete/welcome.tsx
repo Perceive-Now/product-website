@@ -37,7 +37,7 @@ export default function WelcomePage() {
           You're now a part of a community of innovative businesses harnessing the power of AI
           technology.
         </div>
-        <Link to="/ip-analysis">
+        <Link to="/">
           <Button type="primary" handleClick={handleBtnClick}>
             Start Innovating
           </Button>

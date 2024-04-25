@@ -60,7 +60,8 @@ export const questionList = [
     question:
       "How is the key product or technology developed by the company applicable to industrial needs in its domain?",
     usecase: "ip-validity-analysis",
-    answer: `ARSight addresses industrial needs by enhancing efficiency, safety, and learning:\n• Manufacturing and Maintenance: Provides step-by-step instructions overlay on machinery, reducing errors and improving safety.\n• Education and Training: Offers immersive, interactive simulations for better engagement and information retention.\n• Design and Architecture: Enables professionals to visualize projects in their environment, improving planning and presentations.\n ARSight’s practical applications across industries demonstrate its capacity to meet the digital age's challenges and demands.`,
+    // ARSight addresses industrial needs by enhancing efficiency, safety, and learning:
+    answer: `• Manufacturing and Maintenance: Provides step-by-step instructions overlay on machinery, reducing errors and improving safety.\n• Education and Training: Offers immersive, interactive simulations for better engagement and information retention.\n• Design and Architecture: Enables professionals to visualize projects in their environment, improving planning and presentations.\n ARSight’s practical applications across industries demonstrate its capacity to meet the digital age's challenges and demands.`,
   },
   {
     questionId: 10,
@@ -103,13 +104,15 @@ export const questionList = [
     question:
       "Who are your ideal licensees for NeuraWear's technology, and in which industries or sectors do they primarily operate?",
     usecase: "ip-licensing-opportunity",
-    answer: `Ideal Licensees:\n• Consumer Electronics: Targeting 100+ companies with a focus on wearable devices, holding a combined market share of 40% in the global wearable tech industry.\n• Healthcare and Medical Devices: Aiming for 50+ leading companies specializing in non-invasive monitoring tools, contributing to a sector with an annual growth rate of 7%.\n• Gaming and VR: Engaging with 30+ innovators in VR hardware, tapping into a VR market expected to reach $12 billion by 2024.`,
+    // Ideal Licensees:\n
+    answer: `• Consumer Electronics: Targeting 100+ companies with a focus on wearable devices, holding a combined market share of 40% in the global wearable tech industry.\n• Healthcare and Medical Devices: Aiming for 50+ leading companies specializing in non-invasive monitoring tools, contributing to a sector with an annual growth rate of 7%.\n• Gaming and VR: Engaging with 30+ innovators in VR hardware, tapping into a VR market expected to reach $12 billion by 2024.`,
   },
   {
     questionId: 16,
     question: "What business goals are you aiming to achieve through IP licensing?",
     usecase: "ip-licensing-opportunity",
-    answer: `Business Goals Metrics:\n• Revenue Generation: Targeting $10 million in licensing fees within the first 3 years.\n• Market Penetration: Aiming for NeuraWear technology adoption in 20% of devices in targeted sectors by 2025.\n• Innovation and Collaboration: Establishing 5+ joint development projects with major industry players by 2023.\n• Brand Recognition: Achieving top 5 status in "Innovative Wearable Technology Providers" industry rankings by 2024.`,
+    // Business Goals Metrics:\n
+    answer: `• Revenue Generation: Targeting $10 million in licensing fees within the first 3 years.\n• Market Penetration: Aiming for NeuraWear technology adoption in 20% of devices in targeted sectors by 2025.\n• Innovation and Collaboration: Establishing 5+ joint development projects with major industry players by 2023.\n• Brand Recognition: Achieving top 5 status in "Innovative Wearable Technology Providers" industry rankings by 2024.`,
   },
   {
     questionId: 17,
@@ -124,7 +127,8 @@ export const questionList = [
     question:
       "Are there specific geographic regions you are targeting for licensing NeuraWear's technology?",
     usecase: "ip-licensing-opportunity",
-    answer: `Geographic Targets:\n• North America and Europe: Capturing 60% of licensing initiatives, with an aim to penetrate 30% of the wearable market by 2025.\n• Asia-Pacific: Focusing on 30% of efforts to leverage high consumer electronics growth, aiming for a 25% adoption rate in targeted sectors.\n• Emerging Markets: Allocating 10% of licensing strategies to tap into fast-growing tech adoption, with a goal of 10% market penetration by 2025.`,
+    // Geographic Targets:\n
+    answer: `• North America and Europe: Capturing 60% of licensing initiatives, with an aim to penetrate 30% of the wearable market by 2025.\n• Asia-Pacific: Focusing on 30% of efforts to leverage high consumer electronics growth, aiming for a 25% adoption rate in targeted sectors.\n• Emerging Markets: Allocating 10% of licensing strategies to tap into fast-growing tech adoption, with a goal of 10% market penetration by 2025.`,
   },
   {
     questionId: 19,

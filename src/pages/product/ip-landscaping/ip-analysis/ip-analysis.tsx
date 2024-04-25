@@ -47,6 +47,13 @@ export default function IPAnalysis() {
     return q.questionId === Number(questionId);
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
+  // console.log(questionWithUsecase.length-1 )
+
+  useEffect(() => {
+    if (questionWithUsecase.length === Number(questionId)) {
+      changeActiveStep(14);
+    }
+  }, [changeActiveStep, question.question, questionId, questionWithUsecase.length]);
   //
   const steps = [
     {
