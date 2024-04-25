@@ -6,7 +6,7 @@ import DefaultLayout from "./layouts/default";
 // import AccountLayout from "./layouts/account";
 
 //
-import HomePage from "./pages/homepage";
+// import HomePage from "./pages/homepage";
 
 import LoginPage from "./pages/authentication/login";
 
@@ -110,22 +110,22 @@ function App() {
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
-          <Route path="/welcome" element={<WelcomePage />} />
           <Route path="/user-registration" element={<UserDetails />} />
+          <Route path="/welcome" element={<WelcomePage />} />
           {/* Need to ask for profile details before allowing to use */}
           {/* <Route path="/signup/complete" element={<CompleteSignup />} /> */}
           <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
-            <Route path="/ip-analysis" element={<IPAnalysis />} />
+            <Route path="/" element={<IPAnalysis />} />
             {/* <Route path="/market-research" element={<IPAnalysis />} />
             <Route path="/market-intelligence" element={<IPAnalysis />} />
             <Route path="/ip-analysis/summary" element={<IPSummaryReport />} /> */}
           </Route>
 
           <Route element={<DefaultLayout />}>
-            <Route path="/" element={<HomePage />} />
+            {/* <Route path="/" element={<HomePage />} /> */}
             <Route path="/my-account" />
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
             <Route path="/know-now/market-intelligence" element={<KnowNow />} />

@@ -8,10 +8,11 @@ import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import { useAppDispatch } from "../../../../../hooks/redux";
 
-import { setFirstChat, setQuestionId } from "../../../../../stores/chat";
+import { setQuestionId } from "../../../../../stores/chat";
 import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 
 import NewComponent from "../../new-comp";
+// import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -23,6 +24,13 @@ interface Props {
     answer: string;
     // "all" | "ip-validity-analysis" | "ip-licensing-opportunity" | "ip-landscaping&fto" | "infringement-analysis"
   };
+}
+
+interface IAnswers {
+  question_id: number;
+  session_id: number;
+  user_id: string;
+  answer: string;
 }
 
 /**
@@ -38,6 +46,10 @@ Props) {
   // jsCookie.set("chatId", String(3));
 
   const [isloading, setIsLoading] = useState(false);
+  const [answers, setAnswers] = useState<IAnswers[]>([]);
+
+  // console.log(answers)
+
   const questionId = question.questionId;
 
   const userId = jsCookie.get("user_id");
@@ -67,13 +79,30 @@ Props) {
           if (status === "true" || status == true) {
             jsCookie.set("questionId", String(questionId + 1));
 
-            dispatch(
-              setFirstChat({
-                answer: value.answer,
-                question: question.question,
-                questionId: 1,
-              }),
-            );
+            const updateAnswer = {
+              question_id: questionId || 1,
+              session_id: 111111111,
+              user_id: userId || "",
+              answer: value.answer || "",
+            };
+
+            setAnswers((prev) => [...prev, updateAnswer]);
+
+            // addAnswer([...answers, updateAnswer]) // Send updated answers to the API
+            //   .then(response => {
+            //     console.log("Answers added successfully:", response);
+            //     // Handle success if needed
+            //   })
+            //   .catch(error => {
+            //     console.error("Failed to add answers:", error);
+            //     // Handle error if needed
+            //   });            // dispatch(
+            //   setFirstChat({
+            //     answer: value.answer,
+            //     question: question.question,
+            //     questionId: 1,
+            //   }),
+            // );
 
             jsCookie.set("questionId", String(questionId + 1));
             changeActiveStep(activeStep + 1);
@@ -95,7 +124,7 @@ Props) {
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, question.question, questionId, userId],
+    [activeStep, changeActiveStep, dispatch, questionId, userId],
   );
   return (
     <>

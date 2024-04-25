@@ -5,7 +5,8 @@ import Stepper from "../../../../components/reusable/Stepper";
 import CompanyProfile from "../company-details";
 // import SubscriptionPlan from "../subscription-plan";
 // import Prcing1 from "../subscription-plan/subcription-demo";
-import Finish from "../finish";
+// import Finish from "../finish";
+import { WelcomePage } from "../../../../components/@signup-complete";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -61,7 +62,7 @@ const UserDetails = () => {
     {
       label: "Finish",
       value: 3,
-      component: <Finish />,
+      component: <WelcomePage />,
     },
   ];
 

@@ -127,7 +127,7 @@ export default function LoginPage() {
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
-                placeholder="Username"
+                placeholder="Username/Email"
               />
             </div>
 

@@ -7,10 +7,9 @@ import ProfileIcon from "../../../../components/icons/common/profile";
 import EditIcon from "../../../../components/icons/miscs/Edit";
 import Button from "../../../../components/reusable/button";
 import { ChangeEvent, useCallback, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getUserProfile, updateUserProfile } from "../../../../utils/api/userProfile";
+import { updateUserProfile } from "../../../../utils/api/userProfile";
 import toast from "react-hot-toast";
-import Loading from "../../../../components/reusable/loading";
+// import Loading from "../../../../components/reusable/loading";
 import SelectBox from "../../../../components/reusable/select-box";
 import { Countries } from "../../../../utils/constants";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
@@ -39,9 +38,9 @@ const UserProfile = ({ changeActiveStep }: Props) => {
   const [previewImage, setPreviewImage] = useState<string>();
   const [country, setCountry] = useState<IOption>();
 
-  const { data: userProfile, isLoading } = useQuery(["user_profile"], async () => {
-    return await getUserProfile();
-  });
+  // const { data: userProfile, isLoading } = useQuery(["user_profile"], async () => {
+  //   return await getUserProfile();
+  // });
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
@@ -51,11 +50,11 @@ const UserProfile = ({ changeActiveStep }: Props) => {
   };
 
   const formInitialValue: IProfileForm = {
-    username: userProfile?.data["Username"] || "",
-    first_name: userProfile?.data["First Name"] || "",
-    last_name: userProfile?.data["Last Name"] || "",
-    phone_number: userProfile?.data["Phone Number"] || "",
-    country: country?.value || "",
+    username: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    country: "",
     topics_of_interest: "",
   };
 
@@ -107,7 +106,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
 
   return (
     <>
-      <Loading isLoading={isLoading} />
+      {/* <Loading isLoading={Loading} /> */}
       <div className="">
         <h4 className="font-bold text-[22px] text-primary-900">User Profile</h4>
         <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">

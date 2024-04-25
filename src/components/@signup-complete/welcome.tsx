@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import AppFooter from "../app/footer";
 
 //
-import PerceiveLogo from "../../assets/images/logo.svg";
+// import PerceiveLogo from "../../assets/images/logo.svg";
 import WelcomePerceiveLogo from "../../assets/images/logo-small.svg";
 import Button from "../reusable/button";
 
@@ -20,11 +20,11 @@ export default function WelcomePage() {
 
   return (
     <div className="h-screen bg-white">
-      <div className="my-auto h-8 py-1 px-2 bg-appGray-100">
+      {/* <div className="my-auto h-8 py-1 px-2 bg-appGray-100">
         <Link to="/">
           <img src={PerceiveLogo} alt="PerceiveNow logo" />
         </Link>
-      </div>
+      </div> */}
 
       <div className="py-5 mt-8 flex flex-col justify-center items-center bg-white">
         <div className="mb-5">
