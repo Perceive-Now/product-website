@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import MoreNavOption from "../../components/reusable/nav-options";
+// import MoreNavOption from "../../components/reusable/nav-options";
 import AppHeader from "../../components/app/header";
 
 export default function ProductLayout() {
@@ -13,7 +13,8 @@ export default function ProductLayout() {
         </div>
       </div>
       <div className="flex flex-col md:flex-row gap-4.5 py-3 px-4 ">
-        <MoreNavOption />
+        {/* <MoreNavOption /> */}
+        <div className="w-[228px]" />
         <Outlet />
       </div>
     </div>

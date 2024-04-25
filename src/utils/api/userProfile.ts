@@ -8,11 +8,17 @@ import axiosInstance from "../axios";
  */
 export async function updateUserProfile(value: any) {
   const response = await axiosInstance.post<IUserProfile>(
-    `/api/user_profile?code=kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==&clientId=default&u&username=admin&password=Admin123`,
+    `/api/user_profile?code=kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==&clientId=default&u`,
     value,
+    // {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization:
+    //       `Bearer ${}`,
+    //   },
+    // },
   );
-
-  return response.data;
+  return response;
 }
 
 export async function getUserProfile() {

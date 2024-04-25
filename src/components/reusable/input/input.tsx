@@ -5,7 +5,7 @@ interface IInput {
   label?: string;
   id?: string;
   name?: string;
-  type?: "text" | "email" | "textarea";
+  type?: "text" | "email" | "textarea" | "number";
   placeholder?: string;
   register?: any;
   error?: any;

@@ -81,7 +81,7 @@ import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
 import ProductLayout from "./layouts/product-layout";
 import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
-import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 import AuthDefaultLayout from "./layouts/auth/default";
 import VerificationConfirm from "./pages/authentication/signup/confirmation";
 import AuthLayout from "./layouts/auth";
@@ -98,19 +98,20 @@ function App() {
     // <div className="App">
     <div>
       <Routes>
+        <Route path="/verify-email" element={<VerificationConfirm />} />
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/verify-email" element={<VerificationConfirm />} />
         </Route>
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/user-profile" element={<UserDetails />} />
         {/* <Route path="/signup/confirm" element={<ConfirmSignup />} /> */}
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
+          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/user-registration" element={<UserDetails />} />
           {/* Need to ask for profile details before allowing to use */}
           {/* <Route path="/signup/complete" element={<CompleteSignup />} /> */}
           <Route path="/welcome/success" element={<WelcomePage />} />
@@ -118,11 +119,9 @@ function App() {
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
             <Route path="/ip-analysis" element={<IPAnalysis />} />
-            <Route path="/market-research" element={<IPAnalysis />} />
-
+            {/* <Route path="/market-research" element={<IPAnalysis />} />
             <Route path="/market-intelligence" element={<IPAnalysis />} />
-
-            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} />
+            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} /> */}
           </Route>
 
           <Route element={<DefaultLayout />}>

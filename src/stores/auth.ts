@@ -25,7 +25,7 @@ export const signUpUser = createAsyncThunk(
   "login",
   async (payload: ISignupParams): Promise<IResponse> => {
     try {
-      await axios.post(
+      const { data } = await axios.post(
         `${API_URL}/api/register?code=${authCode}`,
         payload,
         //  {
@@ -35,18 +35,19 @@ export const signUpUser = createAsyncThunk(
       );
 
       //
-      // jsCookie.set("pn_refresh", data.token);
+      jsCookie.set("pn_refresh", data.token);
+      jsCookie.set("session_id", data.session_id);
       // sessionStorage.setItem("pn_access", data.token);
 
       //
       return {
         success: true,
         message: "Successfull",
-        // data: { token: data.token },
+        data: { token: data.token },
       };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail ?? error.message;
+      const errorMessage = error.response?.data?.error ?? error.message;
 
       return {
         success: false,
@@ -68,6 +69,8 @@ export const loginUser = createAsyncThunk(
       //
       jsCookie.set("pn_refresh", data.token);
       sessionStorage.setItem("pn_access", data.token);
+      jsCookie.set("session_id", data.session_id);
+      jsCookie.set("user_id", data.user.id);
 
       //
       return {
@@ -77,7 +80,7 @@ export const loginUser = createAsyncThunk(
       };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      const errorMessage = error.response?.data?.detail ?? error.message;
+      const errorMessage = error.response?.data?.error ?? error.message;
 
       return {
         success: false,

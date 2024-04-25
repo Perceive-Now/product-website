@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import Label from "../../../../components/reusable/label";
 import Input from "../../../../components/reusable/input";
 import Button from "../../../../components/reusable/button";
-import { useCallback } from "react";
-import AdduserIcon from "../../../../components/icons/common/add-user";
+import { useCallback, useState } from "react";
+// import AdduserIcon from "../../../../components/icons/common/add-user";
 import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
+import AdduserIcon from "../../../../components/icons/common/add-user";
+import toast from "react-hot-toast";
 
 interface ICompanyForm {
   company_name: string;
@@ -18,7 +20,12 @@ interface Props {
   changeActiveStep: (step: number) => void;
 }
 
+type TeamMember = {
+  name: string;
+};
 const CompanyProfile = ({ changeActiveStep }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const formInitialValue: ICompanyForm = {
     company_name: "",
     job_position: "",
@@ -26,10 +33,8 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
   };
 
   const formResolver = yup.object().shape({
-    first_name: yup.string().required("First Name is required"),
-    last_name: yup.string().required("Last Name is required"),
-    phone_number: yup.string().required("Phone Number is required"),
-    country: yup.string().required("Country is required"),
+    company_name: yup.string().required("Company name is required"),
+    job_position: yup.string().required("Job position is required"),
   });
 
   const {
@@ -44,8 +49,18 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
   });
 
   const onContinue = useCallback(() => {
-    changeActiveStep(3);
+    setIsLoading(true);
+    setTimeout(() => {
+      toast.success("Company details added");
+      changeActiveStep(3);
+      setIsLoading(false);
+    }, 3000);
   }, [changeActiveStep]);
+
+  const addMembers = useCallback(() => {
+    const newMemberName = `Member${teamMembers.length + 1}`;
+    setTeamMembers((prevMembers: any) => [...prevMembers, { name: newMemberName }]);
+  }, [teamMembers]);
 
   return (
     <div className="">
@@ -84,25 +99,44 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
               <h6 className="text-secondary-800 font-semibold">
                 Invite Team members to collaborate.
               </h6>
-              <fieldset className="">
-                <Label required className="font-semibold text-secondary-800">
-                  Member 1
-                </Label>
-                <Input
-                  register={register("member_email")}
-                  type="text"
-                  error={errors.member_email}
-                  placeholder="Enter email address to invite"
-                />
-              </fieldset>
-              <Button startIcon={<AdduserIcon />} type="default" classname="mt-2.5" size="default">
+              <div className="space-y-2">
+                <fieldset className="">
+                  <Label className="font-semibold text-secondary-800">Member</Label>
+                  <Input
+                    register={register("member_email")}
+                    type="text"
+                    error={errors.member_email}
+                    placeholder="Enter email address to invite"
+                  />
+                </fieldset>
+                {teamMembers?.map((m: any, idx: any) => (
+                  <fieldset key={idx * 59} className="">
+                    <Label className="font-semibold text-secondary-800">{m.name}</Label>
+                    <Input
+                      register={register("member_email")}
+                      type="text"
+                      error={errors.member_email}
+                      placeholder="Enter email address to invite"
+                    />
+                  </fieldset>
+                ))}
+              </div>
+
+              <Button
+                htmlType="button"
+                startIcon={<AdduserIcon />}
+                type="default"
+                handleClick={addMembers}
+                classname="mt-2.5"
+                size="default"
+              >
                 <p className="text-primary-900 font-medium">Add more team members</p>
               </Button>
             </div>
           </div>
         </div>
         <div className="mt-5 flex items-center justify-center">
-          <Button htmlType="submit" size="small">
+          <Button loading={isLoading} htmlType="submit" size="small">
             Continue
           </Button>
         </div>

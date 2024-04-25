@@ -16,7 +16,7 @@ export const questionList = [
   {
     questionId: 3,
     question:
-      "Describe the technical aspects and unique features of the key product or technology      developed by the company. How does your product or technology introduce innovation or     novelty within its field?",
+      "Describe the technical aspects and unique features of the key product or technology developed by the company. How does your product or technology introduce innovation or     novelty within its field?",
     usecase: "ip-validity-analysis",
     answer: `ARSight stands out through its advanced spatial computing algorithms and lightweight AR glasses, distinguishing itself with several innovative features:\n• High-Resolution Display: Ensures crystal-clear imagery with minimal distortion for an immersive experience.\n• Adaptive Learning: Utilizes user interaction data to personalize content delivery, enhancing learning and engagement.\n• Energy Efficiency: Incorporates proprietary technology to significantly extend battery life, facilitating practical, all-day use.\nThese innovations position ARSight as a pioneer in AR technology by offering unparalleled real-time environmental mapping, digital information overlay with minimal latency, and dynamic content adaptation, setting a new standard in user interaction and immersion within the augmented reality landscape.`,
   },
@@ -103,15 +103,13 @@ export const questionList = [
     question:
       "Who are your ideal licensees for NeuraWear's technology, and in which industries or sectors do they primarily operate?",
     usecase: "ip-licensing-opportunity",
-    answer: `Ideal Licensees:\n• Consumer Electronics: Targeting 100+ companies with a focus on wearable devices, holding a combined market share of 40% in the global wearable tech industry.
-    • Healthcare and Medical Devices: Aiming for 50+ leading companies specializing in non-invasive monitoring tools, contributing to a sector with an annual growth rate of 7%.\n• Gaming and VR: Engaging with 30+ innovators in VR hardware, tapping into a VR market expected to reach $12 billion by 2024.`,
+    answer: `Ideal Licensees:\n• Consumer Electronics: Targeting 100+ companies with a focus on wearable devices, holding a combined market share of 40% in the global wearable tech industry.\n• Healthcare and Medical Devices: Aiming for 50+ leading companies specializing in non-invasive monitoring tools, contributing to a sector with an annual growth rate of 7%.\n• Gaming and VR: Engaging with 30+ innovators in VR hardware, tapping into a VR market expected to reach $12 billion by 2024.`,
   },
   {
     questionId: 16,
     question: "What business goals are you aiming to achieve through IP licensing?",
     usecase: "ip-licensing-opportunity",
-    answer: `Business Goals Metrics:\n• Revenue Generation: Targeting $10 million in licensing fees within the first 3 years.
-    • Market Penetration: Aiming for NeuraWear technology adoption in 20% of devices in targeted sectors by 2025.\n• Innovation and Collaboration: Establishing 5+ joint development projects with major industry players by 2023.\n• Brand Recognition: Achieving top 5 status in "Innovative Wearable Technology Providers" industry rankings by 2024.`,
+    answer: `Business Goals Metrics:\n• Revenue Generation: Targeting $10 million in licensing fees within the first 3 years.\n• Market Penetration: Aiming for NeuraWear technology adoption in 20% of devices in targeted sectors by 2025.\n• Innovation and Collaboration: Establishing 5+ joint development projects with major industry players by 2023.\n• Brand Recognition: Achieving top 5 status in "Innovative Wearable Technology Providers" industry rankings by 2024.`,
   },
   {
     questionId: 17,
@@ -200,8 +198,7 @@ export const questionList = [
     questionId: 29,
     question: "What are the total development costs incurred for your product or service?",
     usecase: "ip-valuation",
-    answer: `Development Costs Metrics:
-    • R&D Investment: $5 million spent on research and development over 3 years to bring NeuraWear technology to market.\n• Patent Costs: Additional $500,000 invested in patent filings and legal fees to protect IP globally.`,
+    answer: `Development Costs Metrics:\n• R&D Investment: $5 million spent on research and development over 3 years to bring NeuraWear technology to market.\n• Patent Costs: Additional $500,000 invested in patent filings and legal fees to protect IP globally.`,
   },
   {
     questionId: 30,

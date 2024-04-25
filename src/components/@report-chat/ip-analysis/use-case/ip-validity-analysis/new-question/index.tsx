@@ -1,13 +1,13 @@
-// import KeywordSelected from "../KeywordSelected";
-// import IPUseCase from "../components/use-case";
-
+import jsCookie from "js-cookie";
+import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
+
 import { IAnswer } from "../../../../../../@types/entities/IPLandscape";
+
 import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
+
 import { setNoveltyAspect } from "../../../../../../stores/IpSteps";
 import axiosInstance from "../../../../../../utils/axios";
-import toast from "react-hot-toast";
-import jsCookie from "js-cookie";
 
 import NewComponent from "../../../new-comp";
 
@@ -33,6 +33,9 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
   //
   const [question, setQuestion] = useState("");
 
+  const userId = jsCookie.get("user_id");
+  // const sessionId = jsCookie.get("session_id");
+
   useEffect(() => {
     setQuestion(apiQuestion);
   }, [apiQuestion]);
@@ -42,9 +45,9 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
       setIsLoading(true);
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${
-            value.answer
-          }&userID=${3}&sessionID=1111111111&QuestionID=${questionId}`,
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+            value.answer,
+          )}&userID=${userId}&sessionID=${Number(111111111)}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
@@ -54,14 +57,15 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            if (questionId === 11) {
-              changeActiveStep(14);
-            } else {
-              jsCookie.set("questionId", String(questionId + 1));
-              changeActiveStep(activeStep + 1);
-            }
+            // if (questionId === 11) {
+            //   changeActiveStep(14);
+            // } else {
+            //   jsCookie.set("questionId", String(questionId + 1));
+            //   changeActiveStep(activeStep + 1);
+            // }
 
             jsCookie.set("questionId", String(questionId + 1));
+            changeActiveStep(activeStep + 1);
 
             // changeActiveStep(Number(chatId) + 1);
           } else {
@@ -78,7 +82,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
         toast.error(error.message);
       }
     },
-    [activeStep, changeActiveStep, chatId, dispatch, questionId],
+    [activeStep, changeActiveStep, chatId, dispatch, questionId, userId],
   );
 
   return (

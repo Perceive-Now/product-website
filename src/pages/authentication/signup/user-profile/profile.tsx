@@ -6,12 +6,16 @@ import Input from "../../../../components/reusable/input";
 import ProfileIcon from "../../../../components/icons/common/profile";
 import EditIcon from "../../../../components/icons/miscs/Edit";
 import Button from "../../../../components/reusable/button";
-import { useCallback } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile, updateUserProfile } from "../../../../utils/api/userProfile";
 import toast from "react-hot-toast";
 import Loading from "../../../../components/reusable/loading";
+import SelectBox from "../../../../components/reusable/select-box";
+import { Countries } from "../../../../utils/constants";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
+
+// import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
 interface IProfileForm {
   username: string;
@@ -21,22 +25,37 @@ interface IProfileForm {
   country: string;
   topics_of_interest?: string;
 }
+interface IOption {
+  value: string;
+  label: string;
+}
 
 interface Props {
   changeActiveStep: (step: number) => void;
 }
 
 const UserProfile = ({ changeActiveStep }: Props) => {
+  const [photo, setPhoto] = useState<any>(null);
+  const [previewImage, setPreviewImage] = useState<string>();
+  const [country, setCountry] = useState<IOption>();
+
   const { data: userProfile, isLoading } = useQuery(["user_profile"], async () => {
     return await getUserProfile();
   });
+
+  const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const file: any = e?.target?.files?.[0];
+    setPhoto(file);
+    const selectFile = URL.createObjectURL(file);
+    setPreviewImage(selectFile);
+  };
 
   const formInitialValue: IProfileForm = {
     username: userProfile?.data["Username"] || "",
     first_name: userProfile?.data["First Name"] || "",
     last_name: userProfile?.data["Last Name"] || "",
     phone_number: userProfile?.data["Phone Number"] || "",
-    country: "",
+    country: country?.value || "",
     topics_of_interest: "",
   };
 
@@ -48,7 +67,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
     phone_number: yup.string().required("Phone Number is required"),
-    country: yup.string().required("Country is required"),
+    country: yup.string(),
   });
 
   const {
@@ -63,23 +82,27 @@ const UserProfile = ({ changeActiveStep }: Props) => {
 
   const onContinue = useCallback(
     async (value: IProfileForm) => {
-      changeActiveStep(2);
-
       const values = {
-        "First Name": value.first_name,
-        "Last Name": value.last_name,
-        Username: value.username,
-        "Phone Number": value.phone_number,
-        "Topics of Interest": value.topics_of_interest,
-        Country: value.country,
+        first_name: value.first_name,
+        last_name: value.last_name,
+        username: value.username,
+        phone_number: value.phone_number,
+        topics_of_interest: value.topics_of_interest,
+        country: value.country,
+        profile_photo: photo,
       };
       try {
-        await updateUserProfile(values);
+        await updateUserProfile(values).then((res: any) => {
+          if (res.status === 200) {
+            toast.success("User detail added");
+            changeActiveStep(2);
+          }
+        });
       } catch (error: any) {
         toast.error(error.message);
       }
     },
-    [changeActiveStep],
+    [changeActiveStep, photo],
   );
 
   return (
@@ -91,11 +114,20 @@ const UserProfile = ({ changeActiveStep }: Props) => {
           <div className=" p-5 bg-appGray-100 rounded-lg">
             <div className="">
               <p className="text-secondary-800 font-semibold">Profile Image</p>
-              <div className="rounded-full w-[80px] h-[80px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
-                <ProfileIcon />
-                <div className="bottom-0 right-0 rounded-full w-[24px] h-[24px] bg-appGray-200 flex items-center justify-center absolute">
+              <div className="rounded-full over w-[80px] h-[80px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
+                {previewImage ? (
+                  <img
+                    src={previewImage}
+                    alt="profile_picture"
+                    className="h-full w-full rounded-full"
+                  />
+                ) : (
+                  <ProfileIcon />
+                )}
+                <label className="hover:cursor-pointer bottom-0 right-0 rounded-full w-[24px] h-[24px] bg-appGray-200 flex items-center justify-center absolute">
                   <EditIcon />
-                </div>
+                  <input type="file" onChange={onSelectFile} accept="image/*" className="hidden" />
+                </label>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-x-5 gap-y-2 w-full mt-5">
@@ -140,7 +172,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
               </div>
               <fieldset className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>
-                <div className="mt-0.5 rounded-md shadow-sm">
+                <div className="mt-0.5">
                   <PhoneNumberInput
                     register={register("phone_number")}
                     // type="text"
@@ -155,13 +187,19 @@ const UserProfile = ({ changeActiveStep }: Props) => {
                   Country
                 </Label>
                 <div className="mt-0.5 rounded-md shadow-sm">
-                  <Input
+                  <SelectBox
+                    onChange={setCountry}
+                    options={Countries.map((country) => ({
+                      label: country,
+                      value: country,
+                    }))}
+                    value={country || null}
                     register={register("country")}
-                    type="text"
-                    placeholder="Select country"
-                    error={errors.country}
                   />
                 </div>
+                {errors.country?.message && (
+                  <div className="mt-1 text-xs text-danger-500">{errors.country.message}</div>
+                )}
               </fieldset>
               <div className="col-span-1 " />
               <fieldset className="col-span-2 w-full">
@@ -170,7 +208,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
                   <Input
                     register={register("topics_of_interest")}
                     type="textarea"
-                    placeholder="Enter topics of interest and hit enter."
+                    placeholder="Enter topics of interest"
                     error={errors.topics_of_interest}
                   />
                 </div>

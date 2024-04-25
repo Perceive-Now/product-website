@@ -17,7 +17,6 @@ interface Props {
 
 export default function NewComponent({ onContinue, question, isLoading, exampleAnswer }: Props) {
   // const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
-
   const formResolver = yup.object().shape({
     answer: yup.string().required("Please provide your answer"),
   });
@@ -52,7 +51,10 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
     <>
       {/* <Loading isLoading={isLoading} /> */}
       <div className="space-y-2.5">
-        <h4 className="text-gray-600 text-xl font-semibold">{question}</h4>
+        <h4
+          className="text-gray-600 text-xl font-semibold"
+          dangerouslySetInnerHTML={{ __html: `${question}` }}
+        />
         <p
           id="exampleText"
           className="text-gray-600 text-sm"

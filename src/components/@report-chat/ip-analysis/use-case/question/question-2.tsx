@@ -27,6 +27,9 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
   const [isloading, setIsLoading] = useState(false);
   const questionId = question.questionId;
 
+  const userId = jsCookie.get("user_id");
+  // const sessionId = jsCookie.get("session_id");
+
   // jsCookie.set("chatId", String(3));
 
   const onContinue = useCallback(
@@ -35,9 +38,9 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
 
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${
-            value.answer
-          }&userID=${1}&sessionID=1111111111&QuestionID=${questionId}`,
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+            value.answer,
+          )}&userID=${userId}&sessionID=1111111111&QuestionID=${questionId}`,
           // userInput,
         );
         const resError = response.data.error;
@@ -78,7 +81,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, question, questionId],
+    [activeStep, changeActiveStep, dispatch, question.question, questionId, userId],
   );
 
   return (

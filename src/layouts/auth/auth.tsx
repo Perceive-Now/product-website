@@ -7,6 +7,8 @@ import PageLoading from "../../components/app/pageLoading";
 //
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
+import Cookies from "universal-cookie";
+import jsCookie from "js-cookie";
 // import toast from "react-hot-toast";
 
 /**
@@ -22,6 +24,29 @@ export default function AuthLayout() {
 
   const dispatch = useAppDispatch();
   const authStore = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    // Create an instance of universal-cookie
+    const cookies = new Cookies();
+
+    // Retrieve session ID and user ID from cookies
+    const sessionID = cookies.get("sessionID");
+    const userID = cookies.get("userID");
+    const token = cookies.get("token");
+
+    jsCookie.set("pn_refresh", token);
+    jsCookie.set("session_id", sessionID);
+    jsCookie.set("user_id", userID);
+
+    sessionStorage.setItem("pn_access", token);
+
+    // Use session ID and user ID as needed
+    // console.log('Session ID:', sessionID);
+    // console.log('User ID:', userID);
+    // console.log('token:', token);
+
+    // Your code logic here
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -43,7 +68,8 @@ export default function AuthLayout() {
     const session = await dispatch(getCurrentSession()).unwrap();
     if (!session.success) {
       if (PathPersistRef.current.path) {
-        return navigate(`/login?callback_path=${encodeURIComponent(PathPersistRef.current.path)}`);
+        return navigate(`/login`);
+        // ?callback_path=${encodeURIComponent(PathPersistRef.current.path
       } else {
         return navigate("/login");
       }

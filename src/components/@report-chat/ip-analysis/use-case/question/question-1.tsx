@@ -40,20 +40,17 @@ Props) {
   const [isloading, setIsLoading] = useState(false);
   const questionId = question.questionId;
 
-  // const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
-  // console.log(useCases)
-
-  // const useCase = useCases.find((u) => u === question.usecase)
+  const userId = jsCookie.get("user_id");
+  // const sessionId = jsCookie.get("session_id");
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
-
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${
-            value.answer
-          }&userID=${1}&sessionID=1111111111&QuestionID=${questionId}`,
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+            value.answer,
+          )}&userID=${userId}&sessionID=${Number(111111111)}&QuestionID=${questionId}`,
           // userInput,
         );
 
@@ -98,9 +95,8 @@ Props) {
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, question.question, questionId],
+    [activeStep, changeActiveStep, dispatch, question.question, questionId, userId],
   );
-
   return (
     <>
       <NewComponent

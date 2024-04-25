@@ -9,7 +9,6 @@ import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/i
 import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/new-question";
 import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/thank-you";
 import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
-import KeywordSelection from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/keyword-selection";
 
 import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
 
@@ -55,11 +54,11 @@ export default function IPAnalysis() {
       value: 0,
       component: <DefaultStep changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "",
-      value: 1,
-      component: <KeywordSelection changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "",
+    //   value: 1,
+    //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "",
       value: 2,

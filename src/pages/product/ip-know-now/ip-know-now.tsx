@@ -39,17 +39,12 @@ export function KnowNowIP() {
     setChats((prevChats) => [...prevChats, newChat]);
 
     try {
-      const res = await axios.post(
-        `https://knownowapi-ip.azurewebsites.net/query_to_response`,
-        queries,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
-          },
+      const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
         },
-      );
+      });
 
       const answer = res.data.ai_message;
       setIsloading(false);

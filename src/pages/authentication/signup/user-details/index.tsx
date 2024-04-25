@@ -3,7 +3,9 @@ import UserProfile from "../user-profile/profile";
 import classNames from "classnames";
 import Stepper from "../../../../components/reusable/Stepper";
 import CompanyProfile from "../company-details";
-import SubscriptionPlan from "../subscription-plan";
+// import SubscriptionPlan from "../subscription-plan";
+// import Prcing1 from "../subscription-plan/subcription-demo";
+import Finish from "../finish";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -14,6 +16,26 @@ const UserDetails = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // useEffect(() => {
+  //   // Create an instance of universal-cookie
+  //   const cookies = new Cookies();
+
+  //   // Retrieve session ID and user ID from cookies
+  //   const sessionID = cookies.get('sessionID');
+  //   const userID = cookies.get('userID');
+  //   const token = cookies.get('token');
+
+  //   // jsCookie.set("pn_refresh", token);
+  //   // sessionStorage.setItem("pn_access", token);
+
+  //   // Use session ID and user ID as needed
+  //   console.log('Session ID:', sessionID);
+  //   console.log('User ID:', userID);
+  //   console.log('token:', token);
+
+  //   // Your code logic here
+  // }, []);
 
   const steps = [
     {
@@ -31,15 +53,15 @@ const UserDetails = () => {
       value: 2,
       component: <CompanyProfile changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "Choose a plan",
-      value: 3,
-      component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "Plan",
+    //   value: 3,
+    //   component: <Prcing1 changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "Finish",
-      value: 4,
-      component: <></>,
+      value: 3,
+      component: <Finish />,
     },
   ];
 
@@ -49,10 +71,7 @@ const UserDetails = () => {
       {steps.map((step, idx) => (
         <div
           key={idx}
-          className={classNames(
-            activeStep !== step.value && "hidden",
-            "px-1 h-full w-full overflow-y-auto overflow-x-hidden pn_scroller",
-          )}
+          className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
         >
           {step.component}
         </div>

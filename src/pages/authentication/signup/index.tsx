@@ -28,6 +28,8 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  const [isAgree, setIsAgree] = useState(false);
+
   const callbackPath = searchParams.get("callback_path");
 
   //
@@ -64,21 +66,28 @@ export default function SignupPage() {
     setIsSubmitting(true);
 
     const params = {
-      username: "user",
+      username: values.email,
       email: values.email,
       password: values.password,
-      first_name: "user",
-      last_name: "user",
-      company_id: 2,
+      first_name: "",
+      last_name: "",
+      accept_terms: true,
+      two_fa: false,
+      phone_number: "",
+      profile_photo: "",
+      about_me: "",
+      topics_of_interest: "",
     };
 
-    // Login user
+    // Signup user
     const response = await dispatch(signUpUser(params)).unwrap();
+
     if (response.success) {
       if (callbackPath) {
         navigate(callbackPath);
       } else {
-        navigate("/");
+        toast.success("User is registered");
+        navigate("/user-registration");
       }
     } else {
       toast.error(response.message);
@@ -152,7 +161,7 @@ export default function SignupPage() {
             <Button
               classname="w-full"
               htmlType="submit"
-              disabled={!emailValue || !passwordValue}
+              disabled={!emailValue || !passwordValue || !isAgree}
               loading={isSubmitting}
               type="gray"
             >
@@ -171,7 +180,8 @@ export default function SignupPage() {
         </div>
         <div className="mt-2.5 flex items-center justify-center gap-2.5">
           <CheckboxInput
-            {...register("agree")}
+            onChange={() => setIsAgree(true)}
+            // {...register("agree")}
             label="I agree with Terms and Conditions & Privacy Policy"
             style={{
               label: errors.agree ? "text-base text-danger-500" : "text-base",
