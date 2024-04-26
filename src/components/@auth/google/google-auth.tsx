@@ -46,7 +46,13 @@ export default function GoogleAuth({ title }: Props) {
           password: "pasword",
           first_name: userDetail?.given_name,
           last_name: userDetail?.family_name,
-          company_id: 2,
+          company_id: "",
+          accept_terms: true,
+          two_fa: false,
+          phone_number: "",
+          profile_photo: "",
+          about_me: "",
+          topics_of_interest: "",
         };
         // App API
         const apiLogin = await dispatch(loginUser(params)).unwrap();

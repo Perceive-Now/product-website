@@ -180,7 +180,7 @@ export default function SignupPage() {
         </div>
         <div className="mt-2.5 flex items-center justify-center gap-2.5">
           <CheckboxInput
-            onChange={() => setIsAgree(true)}
+            onChange={() => setIsAgree(!isAgree)}
             // {...register("agree")}
             label="I agree with Terms and Conditions & Privacy Policy"
             style={{

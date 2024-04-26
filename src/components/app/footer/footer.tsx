@@ -4,15 +4,15 @@
 const footerLinks: IFooterLink[] = [
   {
     title: "Privacy Statement",
-    url: "/privacy-policy",
+    url: "/terms",
   },
   {
     title: "Software License Agreement",
-    url: "/sla",
+    url: "/",
   },
   {
     title: "Terms of use",
-    url: "/terms-of-use",
+    url: "/terms",
   },
 ];
 
@@ -46,7 +46,7 @@ export default function AppFooter() {
         {footerLinks.map((item, index) => (
           <a
             key={index}
-            href={`${websiteUrl}${item.url}`}
+            href={`${websiteUrl}/${item.url}`}
             target="_blank"
             rel="noreferrer"
             className="text-primary-900 hover:underline"
