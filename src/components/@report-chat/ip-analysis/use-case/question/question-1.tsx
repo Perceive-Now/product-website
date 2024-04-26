@@ -12,6 +12,7 @@ import { setQuestionId } from "../../../../../stores/chat";
 import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 
 import NewComponent from "../../new-comp";
+import { addAnswer } from "../../../../../utils/api/chat";
 // import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
@@ -26,12 +27,12 @@ interface Props {
   };
 }
 
-interface IAnswers {
-  question_id: number;
-  session_id: number;
-  user_id: string;
-  answer: string;
-}
+// interface IAnswers {
+//   question_id: number;
+//   session_id: number;
+//   user_id: string;
+//   answer: string;
+// }
 
 /**
  *
@@ -46,9 +47,7 @@ Props) {
   // jsCookie.set("chatId", String(3));
 
   const [isloading, setIsLoading] = useState(false);
-  const [answers, setAnswers] = useState<IAnswers[]>([]);
-
-  // console.log(answers)
+  // const [answers, setAnswers] = useState<IAnswers[]>([]);
 
   const questionId = question.questionId;
 
@@ -77,34 +76,23 @@ Props) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            jsCookie.set("questionId", String(questionId + 1));
+            // jsCookie.set("questionId", String(questionId + 1));
 
             const updateAnswer = {
-              question_id: questionId || 1,
-              session_id: 111111111,
+              question_id: String(questionId) || "1",
+              session_id: "111111111",
               user_id: userId || "",
               answer: value.answer || "",
             };
 
-            setAnswers((prev) => [...prev, updateAnswer]);
+            addAnswer(updateAnswer); // Send updated answers to the API
+            if (Number(questionId) <= 5) {
+              jsCookie.set("commonQuestionId", String(questionId + 1));
+            } else {
+              jsCookie.set("questionId", String(questionId + 1));
+            }
 
-            // addAnswer([...answers, updateAnswer]) // Send updated answers to the API
-            //   .then(response => {
-            //     console.log("Answers added successfully:", response);
-            //     // Handle success if needed
-            //   })
-            //   .catch(error => {
-            //     console.error("Failed to add answers:", error);
-            //     // Handle error if needed
-            //   });            // dispatch(
-            //   setFirstChat({
-            //     answer: value.answer,
-            //     question: question.question,
-            //     questionId: 1,
-            //   }),
-            // );
-
-            jsCookie.set("questionId", String(questionId + 1));
+            // jsCookie.set("questionId", String(questionId + 1));
             changeActiveStep(activeStep + 1);
             //
             // if (questionId === 11) {

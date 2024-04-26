@@ -10,6 +10,7 @@ import { setFirstChat } from "../../../../../stores/chat";
 import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 
 import NewComponent from "../../new-comp";
+import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -55,6 +56,14 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
           // dispatch(setQuestionId({ questionId: 1 }));
 
           if (status === "true" || status == true) {
+            const updateAnswer = {
+              question_id: String(questionId) || "1",
+              session_id: "111111111",
+              user_id: userId || "",
+              answer: value.answer || "",
+            };
+
+            addAnswer(updateAnswer); // Send updated answers to the API
             dispatch(
               setFirstChat({
                 answer: value.answer,
@@ -62,14 +71,12 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
                 questionId: 1,
               }),
             );
-            jsCookie.set("questionId", String(questionId + 1));
+            if (Number(questionId) <= 5) {
+              jsCookie.set("commonQuestionId", String(questionId + 1));
+            } else {
+              jsCookie.set("questionId", String(questionId + 1));
+            }
             changeActiveStep(activeStep - 1);
-
-            // if (questionId === 11) {
-            //   changeActiveStep(14);
-            // } else {
-
-            // }
           } else {
             jsCookie.set("questionId", String(questionId));
             dispatch(setNoveltyAspect({ answer: apiData }));

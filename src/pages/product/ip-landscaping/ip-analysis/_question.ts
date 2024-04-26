@@ -2,14 +2,14 @@ export const questionList = [
   {
     questionId: 1,
     question: "What is the full name of the company, and what is its core mission?",
-    usecase: "ip-validity-analysis",
+    usecase: "common-question",
     answer: `Full Name: NextGen Innovations Inc.\nCore Mission: NextGen Innovations Inc.aims to revolutionize digital interaction through advanced augmented reality(AR) technologies.The mission centers on enhancing daily life by merging AR experiences seamlessly into physical reality, thereby providing individuals with enriched, instantaneous access to information and new communication avenues.This integration seeks to diminish the divide between digital and physical realms, offering innovative solutions that cater to both individual and collective needs across various sectors.`,
   },
   {
     questionId: 2,
     question:
       "Please provide a concise description of the technology or product your company has developed.",
-    usecase: "ip-validity-analysis",
+    usecase: "common-question",
     answer:
       "NextGen Innovations has developed ARSight, a cutting-edge augmented reality platform designed to transform user engagement with their surroundings. Combining sophisticated AR glasses with a versatile software ecosystem, ARSight facilitates real-time overlays of information, immersive 3D interactions, and enriched learning environments. Tailored for both individual consumers and enterprises, ARSight is poised to redefine fields such as education, entertainment, and industrial operations by integrating digital enhancements into real-world contexts seamlessly",
   },
@@ -17,21 +17,21 @@ export const questionList = [
     questionId: 3,
     question:
       "Describe the technical aspects and unique features of the key product or technology developed by the company. How does your product or technology introduce innovation or     novelty within its field?",
-    usecase: "ip-validity-analysis",
+    usecase: "common-question",
     answer: `ARSight stands out through its advanced spatial computing algorithms and lightweight AR glasses, distinguishing itself with several innovative features:\n• High-Resolution Display: Ensures crystal-clear imagery with minimal distortion for an immersive experience.\n• Adaptive Learning: Utilizes user interaction data to personalize content delivery, enhancing learning and engagement.\n• Energy Efficiency: Incorporates proprietary technology to significantly extend battery life, facilitating practical, all-day use.\nThese innovations position ARSight as a pioneer in AR technology by offering unparalleled real-time environmental mapping, digital information overlay with minimal latency, and dynamic content adaptation, setting a new standard in user interaction and immersion within the augmented reality landscape.`,
   },
   {
     questionId: 4,
     question:
       "Could you explain your company's business model and how it generates revenue? What are the different revenue streams for your company, including primary and potential ancillary streams?",
-    usecase: "ip-validity-analysis",
+    usecase: "common-question",
     answer: `Business Model: NextGen Innovations operates on a dual B2B and B2C model, leveraging ARSight to serve both the consumer market and enterprise needs. For businesses, ARSight is a transformative tool for training, design, and maintenance, enhancing operational efficiency and safety. Consumers find in ARSight a daily companion offering rich educational content and entertainment options.\nRevenue Streams:\n• Primary: The core revenue sources include the direct sales of ARSight hardware and ongoing subscription fees for access to the comprehensive software suite.\n• Ancillary: Additional revenue streams encompass custom content creation for enterprise clients, licensing of our proprietary spatial computing technology, and transaction fees from an AR content marketplace for independent developers.`,
   },
   {
     questionId: 5,
     question:
       "What is your strategy for protecting the intellectual property associated with your  product or technology? Are there specific patents or prior art that you have encountered during your research? What similarities or differences did you find?",
-    usecase: "ip-validity-analysis",
+    usecase: "common-question",
     answer: `To safeguard the intellectual property of ARSight, NextGen Innovations has pursued an aggressive patent filing strategy, focusing on our unique spatial computing algorithm, the ergonomic and technologically advanced design of our AR glasses, and the adaptive learning capabilities of our software. During our prior art search, we encountered patents related to AR display technologies but none that integrated our specific approach to spatial computing efficiency, display clarity, and dynamic user engagement. Our strategy revolves around continually innovating and expanding our IP portfolio to maintain a competitive edge, highlighting the novel integration and application of our technologies as distinct from existing precedents.`,
   },
   {

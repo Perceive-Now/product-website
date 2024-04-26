@@ -34,27 +34,34 @@ export default function IPAnalysis() {
   }, []);
 
   const chatId = jsCookie.get("chatId");
+
   const questionId = jsCookie.get("questionId");
+  const commonQuestionId = jsCookie.get("commonQuestionId");
 
   useEffect(() => {
     jsCookie.set("chatId", chatId || "");
   }, [chatId]);
 
   //
-  const questionWithUsecase = questionList.filter((q) => useCases.includes(q.usecase));
+  const questionWithUsecase = questionList.filter(
+    (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
+  );
 
   const question = questionWithUsecase.find((q) => {
-    return q.questionId === Number(questionId);
+    if (Number(commonQuestionId) > 5) {
+      return q.questionId === Number(questionId);
+    } else {
+      return q.questionId === Number(commonQuestionId);
+    }
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
-  // console.log(questionWithUsecase.length-1 )
-
   useEffect(() => {
-    if (questionWithUsecase.length === Number(questionId)) {
-      changeActiveStep(14);
+    if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
+      setActiveStep(14);
     }
-  }, [changeActiveStep, question.question, questionId, questionWithUsecase.length]);
+  }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
   //
+
   const steps = [
     {
       label: "",
@@ -154,7 +161,12 @@ export default function IPAnalysis() {
           </div>
           {activeStep > 1 && (
             <div className="absolute bottom-0 left-0 right-0 w-full">
-              <IPStepper steps={questionWithUsecase} activeStep={Number(questionId)} />
+              <IPStepper
+                steps={questionWithUsecase}
+                activeStep={
+                  Number(commonQuestionId) > 5 ? Number(questionId) : Number(commonQuestionId)
+                }
+              />
             </div>
           )}
         </div>

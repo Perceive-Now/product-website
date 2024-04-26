@@ -12,6 +12,10 @@ interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
+interface OptionMappings {
+  [key: string]: string;
+}
+
 interface IOption {
   label: string;
   value: string;
@@ -24,7 +28,11 @@ const radioOptionsIP = [
     value: "ip-licensing-opportunity",
     desc: "Identify potential licensing opportunities and strategic partners to enhance IP commercialization. Focus on sectors ripe for innovation and expansion through detailed market analysis.",
   },
-  { label: "IP valuation ", value: "ip-valuation", desc: "" },
+  {
+    label: "IP valuation ",
+    value: "ip-valuation",
+    desc: "",
+  },
   {
     label: "Freedom to Operate",
     value: "freedom-to-operate",
@@ -79,9 +87,10 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   //
   const onContinue = useCallback(() => {
+    jsCookie.set("commonQuestionId", String(1));
     if (selected.length > 0) {
       if (options.includes("ip-validity-analysis")) {
-        jsCookie.set("questionId", String(1));
+        jsCookie.set("questionId", String(6));
       } else if (options.includes("ip-licensing-opportunity")) {
         jsCookie.set("questionId", String(12));
       } else if (options.includes("ip-valuation")) {
@@ -90,51 +99,10 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
         jsCookie.set("questionId", String(34));
       }
 
-      // if (pathname === "/market-research") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-      // if (pathname === "/ip-analysis") {
-      //   jsCookie.set("questionId", String(1));
-
-      // if (option[0] === "freedom-to-operate") {
-      //   jsCookie.set("questionId", String(1));
-      // }
-      // if (selected[0] === "prior-art-search") {
-      //   jsCookie.set("questionId", String(1));
-      // }
-      // if (selected[0] === "patent-validity") {
-      //   jsCookie.set("questionId", String(1));
-      // }
-      // if (selected[0] === "patent-infringement") {
-      //   jsCookie.set("questionId", String(1));
-      // }
-      // if (selected[0] === "ip-licensing-opportunity") {
-      //   jsCookie.set("questionId", String(12));
-      // }
-      // if (selected[0] === "ip-valuation") {
-      //   jsCookie.set("questionId", String(25))
-      // }
-      // if (selected[0] === "m&a") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-      // if (selected[0] === "market-potential") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-      // if (selected[0] === "competitive-landscape") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-      // if (selected[0] === "consumer-landscape") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-      // if (selected[0] === "commercialization") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-      // if (selected[0] === "regulatory") {
-      //   jsCookie.set("questionId", String(34));
-      // }
-
       dispatch(setUseCase({ usecases: options }));
       changeActiveStep(3);
+      setSelected([]);
+
       setError("");
     } else {
       setError("Please select one of the use cases");
@@ -142,31 +110,31 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   }, [changeActiveStep, dispatch, options, selected]);
 
   useEffect(() => {
-    if (
-      selected.includes("m&a") ||
-      selected.includes("market-potential") ||
-      selected.includes("competitive-landscape") ||
-      selected.includes("consumer-landscape") ||
-      selected.includes("commercialization") ||
-      selected.includes("regulatory")
-    ) {
-      setOptions((prev) => [...prev, "market-research"]);
-    } else if (
-      selected.includes("freedom-to-operate") ||
-      selected.includes("prior-art-search") ||
-      selected.includes("patent-validity") ||
-      selected.includes("patent-infringement")
-    ) {
-      setOptions((prev) => [...prev, "ip-validity-analysis"]);
-    } else if (selected.includes("ip-licensing-opportunity")) {
-      setOptions(["ip-licensing-opportunity"]);
-    } else if (selected.includes("ip-valuation")) {
-      setOptions(["ip-valuation"]);
-    } else {
-      // Handle other cases or provide a default value for setOptions
-      // For example, you might want to clear setOptions if none of the conditions are met
-      setOptions([]); // Empty array or any other default value
-    }
+    const optionMappings: OptionMappings = {
+      "freedom-to-operate": "ip-validity-analysis",
+      "prior-art-search": "ip-validity-analysis",
+      "patent-validity": "ip-validity-analysis",
+      "patent-infringement": "ip-validity-analysis",
+      "m&a": "market-research",
+      "market-potential": "market-research",
+      "competitive-landscape": "market-research",
+      "consumer-landscape": "market-research",
+      commercialization: "market-research",
+      regulatory: "market-research",
+      "ip-licensing-opportunity": "ip-licensing-opportunity",
+      "ip-valuation": "ip-valuation",
+    };
+
+    const newOptions: any[] | ((prevState: string[]) => string[]) = [];
+
+    selected.forEach((option) => {
+      const mappedOption = optionMappings[option];
+      if (mappedOption && !newOptions.includes(mappedOption)) {
+        newOptions.push(mappedOption);
+      }
+    });
+
+    setOptions(newOptions);
   }, [selected]);
   //
 
@@ -187,7 +155,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
     // } else {
     //   if (!mode.includes("all") && selected.length >= 4) {
     //     setSelected([]);
-    //   } else if (mode.length >= 4) {
+    //   } else if (mode.lengOptionMappingsth >= 4) {
     //     setSelected(radioOptions.map(({ value }) => value));
     //   } else {
     //     setSelected(mode);
