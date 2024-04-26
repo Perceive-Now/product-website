@@ -63,11 +63,11 @@ const PricingList = [
     ],
   },
 ];
-interface Props {
-  changeActiveStep: (step: number) => void;
-}
+// interface Props {
+//   changeActiveStep?: (step: number) => void;
+// }
 
-const Prcing1 = ({ changeActiveStep }: Props) => {
+const Prcing1 = () => {
   const navigate = useNavigate();
   const onContinue = useCallback(() => {
     logoutUser();
