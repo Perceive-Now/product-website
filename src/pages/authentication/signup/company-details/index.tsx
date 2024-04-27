@@ -11,13 +11,13 @@ import Button from "../../../../components/reusable/button";
 
 import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
 import AdduserIcon from "../../../../components/icons/common/add-user";
-import SelectBox from "../../../../components/reusable/select-box";
+// import SelectBox from "../../../../components/reusable/select-box";
 
-import { IUserProfile, getCompanies } from "../../../../utils/api/userProfile";
+import { IUserProfile, getCompanies, getUserProfile } from "../../../../utils/api/userProfile";
 
 import Loading from "../../../../components/reusable/loading";
 
-import { IOption } from "../../../../@types/entities/IType";
+// import { IOption } from "../../../../@types/entities/IType";
 import axiosInstance from "../../../../utils/axios";
 
 interface ICompanyForm {
@@ -34,34 +34,38 @@ type TeamMember = {
   name: string;
 };
 
-const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
+const CompanyProfile = ({ changeActiveStep }: Props) => {
   const authCode = process.env.REACT_APP_AUTH_CODE;
 
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [company, setCompany] = useState<IOption>({
-    label: userDetail?.company_id || "",
-    value: "",
+  const { data: userDetail, isLoading: LoadingUser } = useQuery(["get-user-detail"], async () => {
+    return await getUserProfile();
   });
+
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  // const [company, setCompany] = useState<IOption>({
+  //   label: userDetail?.company_id || "",
+  //   value: "",
+  // });
 
   //
   const { data: companies, isLoading } = useQuery(["get-company"], async () => {
     return await getCompanies();
   });
+
   // Fetching time period
   useEffect(() => {
     if (!companies) return;
-
     //
   }, [companies]);
 
   const formInitialValue: ICompanyForm = {
-    company_name: "",
+    company_name: userDetail?.company_id || "",
     job_position: userDetail?.job_position || "",
     member_email: "",
   };
 
   const formResolver = yup.object().shape({
-    company_name: yup.string(),
+    company_name: yup.string().required(""),
     job_position: yup.string().required("Job position is required"),
   });
 
@@ -86,7 +90,8 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
         topics_of_interest: userDetail?.topics_of_interest,
         country: userDetail?.country,
         profile_photo: userDetail?.profile_photo,
-        company_id: company?.value,
+        company_id: value.company_name,
+        // company?.value,
         job_position: value.job_position,
         member_email: value.member_email,
       };
@@ -102,7 +107,7 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
         toast.error(error.response.data.error);
       }
     },
-    [authCode, company, changeActiveStep, reset, userDetail],
+    [authCode, changeActiveStep, reset, userDetail],
   );
 
   const addMembers = useCallback(() => {
@@ -118,7 +123,7 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
         </Button>
         <h4 className="font-bold text-[22px] text-primary-900">Company Details</h4>
       </div>
-      <Loading isLoading={isLoading} />
+      <Loading isLoading={isLoading || LoadingUser} />
       <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
         <div className=" p-5 bg-appGray-100 rounded-lg">
           <div className="grid grid-cols-2 gap-x-5 gap-y-2 w-full">
@@ -126,7 +131,13 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
               <Label required className="font-semibold text-secondary-800">
                 Company name
               </Label>
-              <SelectBox
+              <Input
+                register={register("company_name")}
+                type="text"
+                error={errors.company_name}
+                placeholder="Company Name"
+              />
+              {/* <SelectBox
                 onChange={setCompany}
                 options={(companies || [])?.map((company) => ({
                   label: company.name,
@@ -135,7 +146,7 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
                 value={company}
                 // register={register("country")}
                 placeholder={"Select a Company"}
-              />
+              /> */}
             </fieldset>
             <fieldset className="col-span-1">
               <Label required className="font-semibold text-secondary-800">
@@ -189,7 +200,7 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
           </div>
         </div>
         <div className="mt-5 flex items-center justify-center">
-          <Button loading={isSubmitting} htmlType="submit" size="small" disabled={!company}>
+          <Button loading={isSubmitting} htmlType="submit" size="small">
             Continue
           </Button>
         </div>
