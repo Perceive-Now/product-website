@@ -13,7 +13,8 @@ import PerceiveLogo from "../../../assets/images/logo.svg";
 // import BarIcon from "../../icons/sidenav/bars";
 import ToggleBarIcon from "../../icons/sidenav/bars";
 import { useEffect, useState } from "react";
-import AppSidebar from "../sidebar";
+import { useAppSelector } from "../../../hooks/redux";
+// import AppSidebar from "../sidebar";
 
 //
 // const SPECIAL_PATHS = ["/feedback", "/help", "/faq"];
@@ -26,8 +27,7 @@ export default function AppHeader() {
   const location = useLocation();
   // const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
-
-  // const searchedKeywords = useAppSelector((state) => state.dashboard?.search);
+  const userDetail = useAppSelector((state) => state.auth?.user);
 
   // const isMultiLevel = location.pathname.split("/").filter((itm) => itm).length > 1;
 
@@ -76,7 +76,11 @@ export default function AppHeader() {
             <img src={PerceiveLogo} alt="PerceiveNow logo" />
           </Link>
         </div>
-        <UserIcon />
+        <UserIcon
+          first_name={userDetail?.first_name || ""}
+          last_name={userDetail?.last_name || ""}
+          profile_photo={userDetail?.profile_photo || ""}
+        />
       </div>
       {/* <AppSidebar show={open} handleShow={toggleSideBar} /> */}
     </>

@@ -80,7 +80,7 @@ export default function ChoosePlanStep(props: ISignupStepProps) {
         }
       }
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   const handleAddOnClick = (addOnInfo: IAddOnInfo) => {
     const tempSelectedAddons = [...selectedAddons];

@@ -8,10 +8,10 @@ interface Props {
   keywords: string[];
 }
 
-interface IPatentClassification {
-  cpc_class: string;
-  count: number;
-}
+// interface IPatentClassification {
+//   cpc_class: string;
+//   count: number;
+// }
 
 interface IGeoApplicant {
   location_id: string;
@@ -82,7 +82,7 @@ export const PatentClassificationAnalysis: FunctionComponent<Props> = ({ keyword
     return result;
   };
 
-  const result = transformData(data);
+  transformData(data);
 
   // const Category_A = {
   //   cpc_class: "A",

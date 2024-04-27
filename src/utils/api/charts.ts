@@ -287,7 +287,7 @@ export interface IGeoFiling {
 }
 export interface IGeoApplicant {
   response: {
-    countryNames: any;
+    countryNames: unknown;
     location_id: string;
     count: number;
     country: string;

@@ -17,8 +17,8 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 // Store
 import { useAppDispatch } from "../../../hooks/redux";
 import { signUpUser } from "../../../stores/auth";
-import GoogleIcon from "../../../components/icons/social/google";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
+import GoogleAuth from "../../../components/@auth/google";
 
 /**
  *
@@ -27,6 +27,8 @@ import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  const [isAgree, setIsAgree] = useState(false);
 
   const callbackPath = searchParams.get("callback_path");
 
@@ -37,9 +39,10 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const formInitialValue: ILoginFormValues = {
+  const formInitialValue: IRegisterForm = {
     email: "",
     password: "",
+    agree: false,
   };
 
   const formResolver = yup.object().shape({
@@ -48,6 +51,7 @@ export default function SignupPage() {
       .email("Please enter a valid email address")
       .required("Email address is required"),
     password: yup.string().required("Password is required"),
+    agree: yup.boolean().required(""),
   });
 
   const { watch, register, formState, handleSubmit } = useForm({
@@ -58,16 +62,32 @@ export default function SignupPage() {
 
   const { errors } = formState;
 
-  const handleLogin = async (values: ILoginFormValues) => {
+  const handleLogin = async (values: IRegisterForm) => {
     setIsSubmitting(true);
 
-    // Login user
-    const response = await dispatch(signUpUser(values)).unwrap();
+    const params = {
+      username: values.email,
+      email: values.email,
+      password: values.password,
+      first_name: "",
+      last_name: "",
+      accept_terms: true,
+      two_fa: false,
+      phone_number: "",
+      profile_photo: "",
+      about_me: "",
+      topics_of_interest: "",
+    };
+
+    // Signup user
+    const response = await dispatch(signUpUser(params)).unwrap();
+
     if (response.success) {
       if (callbackPath) {
         navigate(callbackPath);
       } else {
-        navigate("/");
+        toast.success("User is registered");
+        navigate("/user-registration");
       }
     } else {
       toast.error(response.message);
@@ -141,7 +161,7 @@ export default function SignupPage() {
             <Button
               classname="w-full"
               htmlType="submit"
-              disabled={!emailValue || !passwordValue}
+              disabled={!emailValue || !passwordValue || !isAgree}
               loading={isSubmitting}
               type="gray"
             >
@@ -155,15 +175,16 @@ export default function SignupPage() {
             </Link>
           </p>
           <hr className="mt-4 mb-4 border-gray-300" />
-          <Button classname="w-full" htmlType="button" type="gray" startIcon={<GoogleIcon />}>
-            Sign up with Google
-          </Button>
+
+          <GoogleAuth title="Sign up with Google" />
         </div>
         <div className="mt-2.5 flex items-center justify-center gap-2.5">
           <CheckboxInput
+            onChange={() => setIsAgree(!isAgree)}
+            // {...register("agree")}
             label="I agree with Terms and Conditions & Privacy Policy"
             style={{
-              label: "text-base",
+              label: errors.agree ? "text-base text-danger-500" : "text-base",
             }}
           />
         </div>
@@ -172,7 +193,8 @@ export default function SignupPage() {
   );
 }
 
-interface ILoginFormValues {
+interface IRegisterForm {
   email: string;
   password: string;
+  agree: boolean;
 }

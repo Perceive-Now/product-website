@@ -21,7 +21,7 @@ const formatAxisLabel = (value: any) => {
 
 type GetColorFunction = (bar: ComputedDatum<any>) => string;
 
-export default function ScrollableBarChart({ data, legendY, legendX }: Props) {
+export default function ScrollableBarChart({ data, legendX }: Props) {
   // const width = data.length > 10 ? 3000 : 400;
 
   const barWidth = () => {

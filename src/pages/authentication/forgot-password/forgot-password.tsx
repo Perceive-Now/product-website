@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //
 import classNames from "classnames";
@@ -11,11 +11,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 //
-import { BackIcon } from "../../../components/icons";
+// import { BackIcon } from "../../../components/icons";
 import Button from "../../../components/reusable/button";
 
 //
-import Logo from "../../../assets/images/logo-small.svg";
+// import Logo from "../../../assets/images/logo-small.svg";
 
 //
 import { useAppDispatch } from "../../../hooks/redux";
@@ -74,17 +74,17 @@ export default function ForgotPasswordPage() {
   };
 
   //
-  const getSession = async () => {
+  const getSession = useCallback(async () => {
     const session = await dispatch(getCurrentSession()).unwrap();
     if (session.success) navigate("/");
 
     setIsLoading(false);
-  };
+  }, [dispatch, navigate]);
 
   //
   useEffect(() => {
     getSession();
-  }, []);
+  }, [getSession]);
 
   // Do not show login page content on initial load
   if (isLoading) return <></>;

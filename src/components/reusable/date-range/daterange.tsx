@@ -44,7 +44,7 @@ export default function DateRangePick({ classification, getValues }: Props) {
         end_date: endDate.toISOString().split("T")[0],
       });
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, getValues]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleStartDateChange = (date: any) => {

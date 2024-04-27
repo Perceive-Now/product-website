@@ -2,30 +2,29 @@ import { useCallback, useEffect, useState } from "react";
 
 //
 import classNames from "classnames";
-import DefaultStep from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/DefaultStep";
-import IPStepper from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/stepper";
-import IPReview from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/review/review";
-import IPFinal from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/final";
-import KeywordSelection from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/keyword-selection";
-import ChatFirstQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/first-question";
-import NewQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/new-question";
-import ChatSecondQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/second-question";
-import ChatThirdQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/third-question";
-import ChatFourthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/fourth";
-import ChatFifthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/fifth";
-import ChatSixthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/sixth";
-import ChatSeventhQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/seventh";
-import ChatEightQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/eigth";
-import ChatNinthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/ninth";
-import ChatTenthQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/ten";
-import ChatEleventhQuestion from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/eleven";
-import Thankyou from "../../../../components/@dashboard/IP-landscaping/ip-analysis-steps/thank-you";
+import jsCookie from "js-cookie";
+
+import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
+import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/review/review";
+import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/new-question";
+import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/thank-you";
+import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
+
+import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
+
+import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
+import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
+import { useAppSelector } from "../../../../hooks/redux";
+
+import { questionList } from "./_question";
 
 /**
  *
  */
 export default function IPAnalysis() {
   const [activeStep, setActiveStep] = useState(0);
+  const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
+  //
 
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {
@@ -34,81 +33,78 @@ export default function IPAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const chatId = jsCookie.get("chatId");
+
+  const questionId = jsCookie.get("questionId");
+  const commonQuestionId = jsCookie.get("commonQuestionId");
+
+  useEffect(() => {
+    jsCookie.set("chatId", chatId || "");
+  }, [chatId]);
+
+  //
+  const questionWithUsecase = questionList.filter(
+    (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
+  );
+
+  const question = questionWithUsecase.find((q) => {
+    if (Number(commonQuestionId) > 5) {
+      return q.questionId === Number(questionId);
+    } else {
+      return q.questionId === Number(commonQuestionId);
+    }
+  }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
+
+  useEffect(() => {
+    if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
+      setActiveStep(14);
+    }
+  }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
+  //
+
   const steps = [
     {
       label: "",
       value: 0,
       component: <DefaultStep changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "",
-      value: 1,
-      component: <KeywordSelection changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 2,
-      component: <NewQuestion changeActiveStep={changeActiveStep} />,
-    },
     // {
     //   label: "",
-    //   value: 33,
-    //   component: <NewQuestion changeActiveStep={changeActiveStep} />,
+    //   value: 1,
+    //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
     // },
     {
       label: "",
+      value: 2,
+      component: (
+        <NewQuestion
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          exampleAnswer={question.answer}
+        />
+      ),
+    },
+    {
+      label: "",
       value: 3,
-      component: <ChatFirstQuestion changeActiveStep={changeActiveStep} />,
+      component: (
+        <ChatQuestionAnswer
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          question={question}
+        />
+      ),
     },
     {
       label: "",
       value: 4,
-      component: <ChatSecondQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 5,
-      component: <ChatThirdQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 6,
-      component: <ChatFourthQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 7,
-      component: <ChatFifthQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 8,
-      component: <ChatSixthQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 9,
-      component: <ChatSeventhQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 10,
-      component: <ChatEightQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 11,
-      component: <ChatNinthQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 12,
-      component: <ChatTenthQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 13,
-      component: <ChatEleventhQuestion changeActiveStep={changeActiveStep} />,
+      component: (
+        <ChatQuestionAnswer2
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          question={question}
+        />
+      ),
     },
     {
       label: "",
@@ -127,6 +123,7 @@ export default function IPAnalysis() {
     },
   ];
 
+  //
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeStep]);
@@ -155,7 +152,7 @@ export default function IPAnalysis() {
                   activeStep !== step.value && "hidden",
                   "px-1 h-full w-full overflow-y-auto overflow-x-hidden pn_scroller",
                   activeStep === 0 && "h-[calc(100vh-120px)]",
-                  activeStep === 9 && "h-full",
+                  // activeStep === 9 && "h-full",
                 )}
               >
                 {step.component}
@@ -164,7 +161,12 @@ export default function IPAnalysis() {
           </div>
           {activeStep > 1 && (
             <div className="absolute bottom-0 left-0 right-0 w-full">
-              <IPStepper steps={steps} activeStep={activeStep} />
+              <IPStepper
+                steps={questionWithUsecase}
+                activeStep={
+                  Number(commonQuestionId) > 5 ? Number(questionId) : Number(commonQuestionId)
+                }
+              />
             </div>
           )}
         </div>

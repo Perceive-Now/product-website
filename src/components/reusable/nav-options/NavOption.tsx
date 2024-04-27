@@ -23,7 +23,8 @@ export const MoreNavOption = () => {
         <div>
           {List.map((name) => (
             <div key={name.key}>
-              <button
+              <Link
+                to={name.to}
                 type="button"
                 className={classNames(
                   " text-sm font-semibold  w-full text-start py-1 px-2 flex items-center justify-between",
@@ -34,7 +35,7 @@ export const MoreNavOption = () => {
               >
                 <span className="">{name.title}</span>
                 <ChevronRight />
-              </button>
+              </Link>
               {isLocationMatched(name.key, locationArr) && <KeywordSelected />}
             </div>
           ))}
@@ -48,10 +49,12 @@ const List = [
   {
     title: "IP Analysis",
     key: "ip-analysis",
+    to: "/ip-analysis",
   },
   {
     title: "Market Research & IP",
-    key: "market-intelligence",
+    key: "market-research",
+    to: "/market-research",
   },
   // {
   //   title: "Financial Investments",

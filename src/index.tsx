@@ -21,6 +21,7 @@ import App from "./App";
 
 //
 import reportWebVitals from "./reportWebVitals";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // React query client
 const queryclient = new QueryClient({
@@ -34,6 +35,8 @@ const queryclient = new QueryClient({
  */
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
+const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
+
 /**
  *
  */
@@ -43,9 +46,11 @@ root.render(
 
     <BrowserRouter>
       <Provider store={store}>
-        <QueryClientProvider client={queryclient}>
-          <App />
-        </QueryClientProvider>
+        <GoogleOAuthProvider clientId={googleAPIKey || ""}>
+          <QueryClientProvider client={queryclient}>
+            <App />
+          </QueryClientProvider>
+        </GoogleOAuthProvider>
       </Provider>
     </BrowserRouter>
   </StrictMode>,

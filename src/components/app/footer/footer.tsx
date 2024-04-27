@@ -1,18 +1,18 @@
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 //
 const footerLinks: IFooterLink[] = [
   {
     title: "Privacy Statement",
-    url: "/privacy-policy",
+    url: "/terms",
   },
   {
     title: "Software License Agreement",
-    url: "/sla",
+    url: "/",
   },
   {
     title: "Terms of use",
-    url: "/terms-of-use",
+    url: "/terms",
   },
 ];
 
@@ -22,13 +22,13 @@ const footerLinks: IFooterLink[] = [
 export default function AppFooter() {
   const websiteUrl = process.env.REACT_APP_WEBSITE_URL ?? "";
 
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
+  // const currentDate = new Date();
+  // const currentYear = currentDate.getFullYear();
 
   //
   return (
-    <div className="pt-8 pb-4 px-4 flex flex-col sm:flex-row  justify-between items-center">
-      <div className="flex flex-col md:flex-row gap-x-4 font-normal text-sm">
+    <div className="px-4 flex flex-col sm:flex-row  justify-center items-center ">
+      {/* <div className="flex flex-col md:flex-row gap-x-4 font-normal text-sm">
         <Link to="/help" className="text-primary-900">
           Help
         </Link>
@@ -38,15 +38,15 @@ export default function AppFooter() {
         <Link to="#" className="text-primary-900">
           FAQs
         </Link>
-      </div>
+      </div> */}
 
-      <div className="flex flex-col md:flex-row gap-x-3">
-        <p>&copy; {currentYear}</p>
+      <div className="flex flex-col justify-center md:flex-row gap-x-3">
+        {/* <p>&copy; {currentYear}</p> */}
 
         {footerLinks.map((item, index) => (
           <a
             key={index}
-            href={`${websiteUrl}${item.url}`}
+            href={`${websiteUrl}/${item.url}`}
             target="_blank"
             rel="noreferrer"
             className="text-primary-900 hover:underline"

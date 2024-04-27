@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Navigator from "../../../components/@dashboard/navigator";
 
 //
-import Patents from "../../../components/@dashboard/patents";
+// import Patents from "../../../components/@dashboard/patents";
 import ScholaryPublication from "../../../components/@dashboard/scholary-publication";
 
 //

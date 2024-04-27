@@ -14,6 +14,7 @@ import { IWorldMapDataItem, TooltipGroupItem } from "../world-map/world-map";
 
 //
 import geoUrl from "./topology.json";
+import toast from "react-hot-toast";
 
 //
 const COLOR_GROUPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -60,18 +61,18 @@ const HEATMAP_COLORS = [
 ];
 
 //
-const COLOR_RANGE2 = [
-  "#EBF5FF",
-  "#DEEBF7",
-  "#C6DBEF",
-  "#9ECAE1",
-  "#6BAED6",
-  "#4292C6",
-  "#225EA8",
-  "#08529C",
-  "#113B8F",
-  "#032454",
-];
+// const COLOR_RANGE2 = [
+//   "#EBF5FF",
+//   "#DEEBF7",
+//   "#C6DBEF",
+//   "#9ECAE1",
+//   "#6BAED6",
+//   "#4292C6",
+//   "#225EA8",
+//   "#08529C",
+//   "#113B8F",
+//   "#032454",
+// ];
 
 const HEATMAP_COLORS2 = [
   "bg-[#032454]",
@@ -166,7 +167,7 @@ export default function USMap(props: IUSMapProps) {
     if (!document.fullscreenElement) {
       // If the document is not currently in full screen, request full screen
       elementRef.current.requestFullscreen().catch((err: any) => {
-        console.error("Error attempting to enable full-screen mode:", err);
+        toast.error("Error attempting to enable full-screen mode:", err);
       });
     } else {
       // If the document is currently in full screen, exit full screen

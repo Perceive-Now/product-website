@@ -1,4 +1,4 @@
-import { useState, Fragment, FunctionComponent } from "react";
+import { useState, Fragment, FunctionComponent, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 import classNames from "classnames";
@@ -7,15 +7,17 @@ import classNames from "classnames";
 import PerceiveLogo from "../../../assets/images/logo.svg";
 
 //
-import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
+import { ChevronDown, ChevronUp } from "../../icons";
 import { sidebarItems, ISidebarListItem } from "./_data";
 
 // Redux
 // import { logoutUser } from "../../../stores/auth";
 // import { useAppDispatch } from "../../../hooks/redux";
-import { Dialog } from "@headlessui/react";
-import SidebarTransition from "./sidebarTransition";
+// import { Dialog } from "@headlessui/react";
+// import SidebarTransition from "./sidebarTransition";
 import ToggleBarIcon from "../../icons/sidenav/bars";
+// import Button from "../../reusable/button";
+import KnowNowHistory from "./chat-history";
 
 /**
  *
@@ -24,9 +26,22 @@ interface Props {
   show?: boolean;
   handleShow?: () => void;
 }
-export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
+export const AppSidebar: FunctionComponent<Props> = () => {
   // const navigate = useNavigate();
   // const dispath = useAppDispatch();
+  const [open, setOpen] = useState(true);
+  const [isChat, setIsChat] = useState(false);
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname.includes("/know-now")) {
+      setIsChat(true);
+    }
+  }, [pathname]);
+
+  // const match = props.to ? pathname.includes(props.key) : false;
+  // const titles = pathname?.split("/").slice(1);
 
   // const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
@@ -67,10 +82,15 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
     // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
     <div>
       {/* <SidebarTransition show={show} handleShow={handleShow}> */}
-      <div className=" bg-appGray-100 shadow w-[270px] overflow-auto px-2.5 h-screen sticky top-0">
+      <div
+        className={classNames(
+          open ? "w-[270px]" : "w-[270px]",
+          " bg-appGray-100 shadow  overflow-auto px-2.5 min-h-screen fixed ",
+        )}
+      >
         <div className="flex justify-center items-center py-3 gap-2 bg-appGray-100">
           {/* {open && ( */}
-          <button type="button" className="" onClick={handleShow}>
+          <button type="button" className="" onClick={() => setOpen(!open)}>
             <ToggleBarIcon />
           </button>
           {/* )} */}
@@ -79,97 +99,112 @@ export const AppSidebar: FunctionComponent<Props> = ({ show, handleShow }) => {
           </Link>
         </div>
         <div className="space-y-2.5">
-          <div className="border border-appGray-600 text-sm text-secondary-800 px-2.5 py-1 rounded-md font-semibold bg-white">
-            Start new conversation
-          </div>
-          {sidebarItems.map((item, index) => (
-            <div key={index}>
-              {item.children && (
-                <div>
-                  <div
-                    className="px-2.5 py-2 flex items-center cursor-pointer"
-                    onClick={() => updateActiveGroup(item.key)}
-                  >
-                    <div className="mr-1">
-                      {expandedGroups.includes(item.key) && <ChevronUp />}
-                      {!expandedGroups.includes(item.key) && <ChevronDown />}
-                    </div>
-                    <span className="text-lg">{item.title}</span>
-                  </div>
-                  {expandedGroups.includes(item.key) && (
+          <Link to={"/know-now/ip-analysis"}>
+            <div
+              className={classNames(
+                pathname.includes("/know-now")
+                  ? "bg-primary-900 text-white"
+                  : "bg-white text-secondary-800",
+                "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
+              )}
+            >
+              Start new conversation
+            </div>
+          </Link>
+          {isChat ? (
+            <KnowNowHistory />
+          ) : (
+            <>
+              {sidebarItems.map((item, index) => (
+                <div key={index}>
+                  {item.children && (
                     <div>
-                      {item.children?.map((child, jndex) => (
-                        <div key={jndex} className="">
-                          {child.children && (
-                            <Fragment>
-                              <div
-                                className="px-2 py-2 flex items-center cursor-pointer ml-2"
-                                onClick={() => updateActiveSubGroup(child.key)}
-                              >
-                                <div className="mr-1">
-                                  {expandedSubGroups.includes(child.key) && <ChevronUp />}
-                                  {!expandedSubGroups.includes(child.key) && <ChevronDown />}
-                                </div>
-                                <span className="text-lg">{child.title}</span>
-                              </div>
-
-                              {expandedSubGroups.includes(child.key) &&
-                                child.children.map((subChild, kndex) => (
-                                  <div className="ml-3" key={kndex}>
-                                    <NavLinkItem
-                                      key={`sub-content-${kndex}`}
-                                      to={subChild.to}
-                                      // icon={subChild.icon}
-                                      title={subChild.title}
-                                      isTopLevel={false}
-                                      value={subChild.key}
-                                    />
-                                  </div>
-                                ))}
-                            </Fragment>
-                          )}
-
-                          {!child.children && (
-                            <NavLinkItem
-                              key={`main-content-${jndex}`}
-                              to={child.to}
-                              // icon={child.icon}
-                              title={child.title}
-                              isTopLevel={false}
-                              value={child.key}
-                            />
-                          )}
+                      <div
+                        className="px-2.5 py-2 flex items-center cursor-pointer"
+                        onClick={() => updateActiveGroup(item.key)}
+                      >
+                        <div className="mr-1">
+                          {expandedGroups.includes(item.key) && <ChevronUp />}
+                          {!expandedGroups.includes(item.key) && <ChevronDown />}
                         </div>
-                      ))}
+                        <span className="text-lg">{item.title}</span>
+                      </div>
+                      {expandedGroups.includes(item.key) && (
+                        <div>
+                          {item.children?.map((child, jndex) => (
+                            <div key={jndex} className="">
+                              {child.children && (
+                                <Fragment>
+                                  <div
+                                    className="px-2 py-2 flex items-center cursor-pointer ml-2"
+                                    onClick={() => updateActiveSubGroup(child.key)}
+                                  >
+                                    <div className="mr-1">
+                                      {expandedSubGroups.includes(child.key) && <ChevronUp />}
+                                      {!expandedSubGroups.includes(child.key) && <ChevronDown />}
+                                    </div>
+                                    <span className="text-lg">{child.title}</span>
+                                  </div>
+
+                                  {expandedSubGroups.includes(child.key) &&
+                                    child.children.map((subChild, kndex) => (
+                                      <div className="ml-3" key={kndex}>
+                                        <NavLinkItem
+                                          key={`sub-content-${kndex}`}
+                                          to={subChild.to}
+                                          // icon={subChild.icon}
+                                          title={subChild.title}
+                                          isTopLevel={false}
+                                          value={subChild.key}
+                                        />
+                                      </div>
+                                    ))}
+                                </Fragment>
+                              )}
+
+                              {!child.children && (
+                                <NavLinkItem
+                                  key={`main-content-${jndex}`}
+                                  to={child.to}
+                                  // icon={child.icon}
+                                  title={child.title}
+                                  isTopLevel={false}
+                                  value={child.key}
+                                />
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
+                  {!item.children && (
+                    <NavLinkItem
+                      key={`top-${index}`}
+                      to={item.to}
+                      // icon={item.icon}
+                      title={item.title}
+                      isTopLevel={true}
+                      value={item.key}
+                    />
+                  )}
                 </div>
-              )}
-              {!item.children && (
-                <NavLinkItem
-                  key={`top-${index}`}
-                  to={item.to}
-                  // icon={item.icon}
-                  title={item.title}
-                  isTopLevel={true}
-                  value={item.key}
-                />
-              )}
-            </div>
-          ))}
+              ))}
+            </>
+          )}
         </div>
       </div>
-      <div className="pb-3 text-gray-900">
+      {/* <div className="pb-3 text-gray-900">
         <div
           className="px-2 py-2 flex items-center cursor-pointer"
-          // onClick={() => handleLogout()}
+        // onClick={() => handleLogout()}
         >
           <div className="mr-2">
             <LogoutIcon />
           </div>
           <span>Logout</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -185,7 +220,7 @@ function NavLinkItem(props: INavLinkItemProps) {
       {({ isActive }) => (
         <div
           className={classNames(
-            "flex items-center py-0.5 text-gray-900 px-2.5",
+            "flex items-center py-1 text-gray-900 px-2.5 rounded",
             // props.isTopLevel ? "pl-2" : "pl-4",
             isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-",
           )}

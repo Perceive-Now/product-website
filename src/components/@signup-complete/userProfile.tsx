@@ -101,7 +101,7 @@ export default function UserProfileStep(props: IUserProfileStepProps) {
       preferred_keywords: preferredKeywords,
       preferred_journals: preferredJournels,
     });
-  }, [props.values]);
+  }, [props.values, reset]);
 
   const { mutate } = useMutation(patchUserProfile);
 
