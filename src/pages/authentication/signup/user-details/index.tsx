@@ -7,9 +7,12 @@ import CompanyProfile from "../company-details";
 // import Prcing1 from "../subscription-plan/subcription-demo";
 // import Finish from "../finish";
 import { WelcomePage } from "../../../../components/@signup-complete";
+import { useAppSelector } from "../../../../hooks/redux";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
+
+  const userDetail = useAppSelector((state) => state.auth.user);
   //
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {
@@ -17,26 +20,6 @@ const UserDetails = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   // Create an instance of universal-cookie
-  //   const cookies = new Cookies();
-
-  //   // Retrieve session ID and user ID from cookies
-  //   const sessionID = cookies.get('sessionID');
-  //   const userID = cookies.get('userID');
-  //   const token = cookies.get('token');
-
-  //   // jsCookie.set("pn_refresh", token);
-  //   // sessionStorage.setItem("pn_access", token);
-
-  //   // Use session ID and user ID as needed
-  //   console.log('Session ID:', sessionID);
-  //   console.log('User ID:', userID);
-  //   console.log('token:', token);
-
-  //   // Your code logic here
-  // }, []);
 
   const steps = [
     {
@@ -47,12 +30,12 @@ const UserDetails = () => {
     {
       label: "User Profile",
       value: 1,
-      component: <UserProfile changeActiveStep={changeActiveStep} />,
+      component: <UserProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
     {
       label: "Company Details",
       value: 2,
-      component: <CompanyProfile changeActiveStep={changeActiveStep} />,
+      component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
     // {
     //   label: "Plan",
@@ -68,11 +51,16 @@ const UserDetails = () => {
 
   return (
     <div className="w-[927px] mx-auto p-5">
-      <Stepper steps={steps} activeStep={activeStep} />
+      <div className="sticky top-0 bg-white pt-2 pb-8 z-10">
+        <Stepper steps={steps} activeStep={activeStep} />
+      </div>
       {steps.map((step, idx) => (
         <div
           key={idx}
-          className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
+          className={classNames(
+            activeStep !== step.value && "hidden",
+            "px-1 h-full overflow-auto w-full pn_scroller",
+          )}
         >
           {step.component}
         </div>

@@ -7,6 +7,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
 import axiosInstance from "../utils/axios";
+import { IUserProfile } from "../utils/api/userProfile";
 
 /**
  *
@@ -160,48 +161,30 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
   try {
     // TODO:: Make an API call to get user profile
     // After that add user's name and image to the response object
-    const [userResponse, userProfileResponse, subscriptionResponse] = await Promise.all([
-      axiosInstance.get(""),
-      axiosInstance.get(""),
-      axiosInstance.get(""),
+    const [
+      // userResponse,
+      userProfileResponse,
+      // subscriptionResponse
+    ] = await Promise.all([
+      axiosInstance.get(`/api/user_profile?code=${authCode}&clientId=default `),
+      // axiosInstance.get(""),
+      // axiosInstance.get(""),
     ]);
-    const subscriptionData = subscriptionResponse?.data ?? {};
+    // const subscriptionData = subscriptionResponse?.data ?? {};
     return {
       success: true,
       message: "Successfully fetched user details",
       data: {
-        name: `${userProfileResponse.data.first_name} ${userProfileResponse.data.last_name} `,
-        firstName: userProfileResponse.data.first_name,
-        lastName: userProfileResponse.data.last_name,
-        phoneNumber: userProfileResponse.data.phone_number,
-        aboutMe: userProfileResponse.data.about_me,
-        userLocation: userProfileResponse.data.user_location,
-        userCompany: {
-          companyName: userProfileResponse.data.user_company?.company_name,
-          companyLocation: userProfileResponse.data.user_company?.company_location,
-          techSector: userProfileResponse.data.user_company?.tech_sector,
-          teamNumber: userProfileResponse.data.user_company?.team_number,
-        },
-        ipPortfolio: {
-          orcidId: userProfileResponse.data.user_company?.ip_portfolio?.orcid_id,
-          patents: userProfileResponse.data.user_company?.ip_portfolio?.patents,
-          publications: userProfileResponse.data.user_company?.ip_portfolio?.publications,
-          scholarlyProfile: userProfileResponse.data.user_company?.ip_portfolio?.scholarly_profile,
-        },
-        jobPosition: userProfileResponse.data.job_position,
-        email: userResponse.data.email,
-        username: userResponse.data.username,
-        image: userProfileResponse.data.profile_photo,
-        pkId: userProfileResponse.data.pkid,
-        preferredKeywords: userProfileResponse.data.preferred_keywords,
-        preferredJournals: userProfileResponse.data.preferred_journals,
-        strategicGoals: userProfileResponse.data.strategic_goals,
-        subscription: subscriptionData,
-        isProfileDetailCompleted: userProfileResponse.data.is_profile_detail_completed,
-        isCompanyDetailCompleted:
-          userProfileResponse.data.user_company?.is_company_detail_completed,
-        isIpPortfolioCompleted:
-          userProfileResponse.data._company?.ip_portfolio?.is_ip_portfolio_completed,
+        // name: `${ userProfileResponse.data.first_name } ${ userProfileResponse.data.last_name } `,
+        first_name: userProfileResponse.data.first_name,
+        last_name: userProfileResponse.data.last_name,
+        phone_number: userProfileResponse.data.phone_number,
+        about_me: userProfileResponse.data.about_me,
+        topics_of_interest: userProfileResponse.data.topics_of_interest,
+        country: userProfileResponse.data.country,
+        job_position: userProfileResponse.data.job_position,
+        profile_photo: userProfileResponse.data.profile_photo,
+        username: userProfileResponse.data.username,
       },
     };
   } catch (error) {
@@ -219,7 +202,7 @@ export const AuthSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IAuthuser>) => {
+    setUser: (state, action: PayloadAction<IUserProfile>) => {
       state.user = action.payload;
     },
     setAuthToken: (state, action: PayloadAction<string | undefined>) => {
@@ -287,57 +270,57 @@ interface IResponse<T = any> {
 }
 
 //
-interface IAuthuser {
-  email: string;
-  pkId: string;
-  username: string;
-  name: string;
-  image?: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: number | null;
-  aboutMe: string;
-  userLocation: string;
-  userCompany: {
-    companyName: string | null;
-    companyLocation?: string;
-    techSector?: string;
-    teamNumber?: string;
-  };
-  jobPosition: string | null;
-  preferredKeywords: {
-    name: string;
-  }[];
-  preferredJournals: {
-    name: string;
-  }[];
-  strategicGoals: string[];
-  subscription: {
-    has_subscription: boolean;
-    message: string;
-    data: {
-      subscription: string;
-      subscription_status: "unpaid" | "paid";
-      checkout_session_id: string;
-      products: {
-        name: string;
-      }[];
-    };
-  };
-  ipPortfolio: {
-    orcidId: string;
-    patents: { patent_name: string }[];
-    publications: { publication_name: string }[];
-    scholarlyProfile: string;
-  };
-  isProfileDetailCompleted?: boolean;
-  isCompanyDetailCompleted?: boolean;
-  isIpPortfolioCompleted: boolean;
-}
+// interface IAuthuser {
+//   email: string;
+//   pkId: string;
+//   username: string;
+//   name: string;
+//   image?: string;
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: number | null;
+//   aboutMe: string;
+//   userLocation: string;
+//   userCompany: {
+//     companyName: string | null;
+//     companyLocation?: string;
+//     techSector?: string;
+//     teamNumber?: string;
+//   };
+//   jobPosition: string | null;
+//   preferredKeywords: {
+//     name: string;
+//   }[];
+//   preferredJournals: {
+//     name: string;
+//   }[];
+//   strategicGoals: string[];
+//   subscription: {
+//     has_subscription: boolean;
+//     message: string;
+//     data: {
+//       subscription: string;
+//       subscription_status: "unpaid" | "paid";
+//       checkout_session_id: string;
+//       products: {
+//         name: string;
+//       }[];
+//     };
+//   };
+//   ipPortfolio: {
+//     orcidId: string;
+//     patents: { patent_name: string }[];
+//     publications: { publication_name: string }[];
+//     scholarlyProfile: string;
+//   };
+//   isProfileDetailCompleted?: boolean;
+//   isCompanyDetailCompleted?: boolean;
+//   isIpPortfolioCompleted: boolean;
+// }
 
 //
 interface AuthState {
-  user?: IAuthuser;
+  user?: IUserProfile;
   token?: string;
 }
 

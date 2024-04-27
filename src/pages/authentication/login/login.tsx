@@ -70,7 +70,7 @@ export default function LoginPage() {
       if (callbackPath) {
         navigate(callbackPath);
       } else {
-        navigate("/welcome");
+        navigate("/user-registration");
       }
     } else {
       toast.error(response.message);

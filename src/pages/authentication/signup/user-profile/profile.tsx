@@ -7,7 +7,7 @@ import ProfileIcon from "../../../../components/icons/common/profile";
 import EditIcon from "../../../../components/icons/miscs/Edit";
 import Button from "../../../../components/reusable/button";
 import { ChangeEvent, useCallback, useState } from "react";
-import { updateUserProfile } from "../../../../utils/api/userProfile";
+import { IUserProfile, updateUserProfile } from "../../../../utils/api/userProfile";
 import toast from "react-hot-toast";
 // import Loading from "../../../../components/reusable/loading";
 import SelectBox from "../../../../components/reusable/select-box";
@@ -31,31 +31,40 @@ interface IOption {
 
 interface Props {
   changeActiveStep: (step: number) => void;
+  userDetail?: IUserProfile;
 }
 
-const UserProfile = ({ changeActiveStep }: Props) => {
+const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   const [photo, setPhoto] = useState<any>(null);
   const [previewImage, setPreviewImage] = useState<string>();
-  const [country, setCountry] = useState<IOption>();
-
-  // const { data: userProfile, isLoading } = useQuery(["user_profile"], async () => {
-  //   return await getUserProfile();
-  // });
+  const [country, setCountry] = useState<IOption>({
+    label: userDetail?.country || "",
+    value: userDetail?.country || "",
+  });
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
     setPhoto(file);
     const selectFile = URL.createObjectURL(file);
+
     setPreviewImage(selectFile);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhoto(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const formInitialValue: IProfileForm = {
-    username: "",
-    first_name: "",
-    last_name: "",
-    phone_number: "",
-    country: "",
-    topics_of_interest: "",
+    username: userDetail?.username || "",
+    first_name: userDetail?.first_name || "",
+    last_name: userDetail?.last_name || "",
+    phone_number: userDetail?.phone_number || "",
+    country: userDetail?.country || "",
+    topics_of_interest: userDetail?.topics_of_interest || "",
   };
 
   const formResolver = yup.object().shape({
@@ -87,8 +96,10 @@ const UserProfile = ({ changeActiveStep }: Props) => {
         username: value.username,
         phone_number: value.phone_number,
         topics_of_interest: value.topics_of_interest,
-        country: value.country,
+        country: country?.value,
         profile_photo: photo,
+        company_id: userDetail?.company_id,
+        job_position: userDetail?.job_position,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
@@ -101,7 +112,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, photo],
+    [changeActiveStep, country?.value, photo, userDetail],
   );
 
   return (
@@ -175,6 +186,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
                   <PhoneNumberInput
                     register={register("phone_number")}
                     // type="text"
+                    value={userDetail?.phone_number || ""}
                     placeholder="Phone number"
                     error={errors.phone_number}
                   />
@@ -193,7 +205,7 @@ const UserProfile = ({ changeActiveStep }: Props) => {
                       value: country,
                     }))}
                     value={country || null}
-                    register={register("country")}
+                    // register={register("country")}
                   />
                 </div>
                 {errors.country?.message && (

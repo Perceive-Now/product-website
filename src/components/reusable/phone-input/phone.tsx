@@ -7,9 +7,10 @@ interface Props {
   placeholder?: string;
   register?: any;
   error?: any;
+  value?: string;
 }
 
-export default function PhoneNumberInput({ placeholder, register, error }: Props) {
+export default function PhoneNumberInput({ placeholder, register, error, value }: Props) {
   return (
     <>
       <PhoneInput
@@ -20,7 +21,7 @@ export default function PhoneNumberInput({ placeholder, register, error }: Props
         // defaultCountry="united-arab-emirates"
         placeholder={placeholder}
         // onChange={onChange}
-        // value={value}
+        value={value}
         className={classNames(
           "w-full rounded-lg placeholder:text-sm border",
           error

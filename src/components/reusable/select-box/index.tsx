@@ -20,7 +20,7 @@ const menuStyles =
   "p-1 mt-0 bg-white rounded-v1 text-black-50 text-sm font-500 vverse-scroller z-20";
 const groupHeadingStyles = "ml-3 mt-2 mb-1 text-black-50 text-sm";
 const optionStyles = {
-  base: "hover:cursor-pointer px-3 py-2 rounded",
+  base: "hover:cursor-pointer py-2 rounded",
   focus: "bg-gray-medium active:bg-gray-medium border-none",
   selected: "bg-gray-medium text-black-50",
   disabled: "opacity-50 cursor-not-allowed",
@@ -46,7 +46,7 @@ interface Props {
   name?: string;
   error?: any; // Add error prop here
   touched?: boolean; // Add touched prop here
-  register?: any;
+  placeholder?: any;
 }
 
 export default function SelectBox({
@@ -61,7 +61,7 @@ export default function SelectBox({
   name,
   error,
   touched,
-  register,
+  placeholder,
 }: Props) {
   const handleSelectChange = (selectedOption: IOption | IOption[] | null) => {
     onChange(selectedOption);
@@ -78,9 +78,7 @@ export default function SelectBox({
       isClearable={isClearable !== undefined ? isClearable : true}
       isDisabled={disabled}
       isSearchable={isSearchable || true}
-      placeholder="Select"
-      ref={register}
-      // menuIsOpen={true}
+      placeholder={placeholder || "Select an options"}
       menuPosition={position || ("" as MenuPosition)}
       styles={{
         input: (base) => ({
@@ -89,9 +87,6 @@ export default function SelectBox({
             boxShadow: "none",
           },
         }),
-        // menu: (base) => ({
-        //   boxShadow: "none",
-        // }),
         multiValueLabel: (base) => ({
           ...base,
           whiteSpace: "normal",
