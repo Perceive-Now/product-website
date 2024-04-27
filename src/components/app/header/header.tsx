@@ -28,7 +28,6 @@ export default function AppHeader() {
   // const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const userDetail = useAppSelector((state) => state.auth?.user);
-
   // const isMultiLevel = location.pathname.split("/").filter((itm) => itm).length > 1;
 
   // const isDashboardPage = location.pathname === "/dashboard";
