@@ -19,6 +19,7 @@ import { useAppDispatch } from "../../../hooks/redux";
 import { signUpUser } from "../../../stores/auth";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import GoogleAuth from "../../../components/@auth/google";
+import { WEBSITE_URL } from "../../../utils/constants";
 
 /**
  *
@@ -27,15 +28,13 @@ import GoogleAuth from "../../../components/@auth/google";
 export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-
-  const [isAgree, setIsAgree] = useState(false);
-
   const callbackPath = searchParams.get("callback_path");
 
   //
   const dispatch = useAppDispatch();
 
   //
+  const [isAgree, setIsAgree] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -178,16 +177,26 @@ export default function SignupPage() {
 
           <GoogleAuth title="Sign up with Google" />
         </div>
-        <div className="mt-2.5 flex items-center justify-center gap-2.5">
+        <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput
             onChange={() => setIsAgree(!isAgree)}
             // {...register("agree")}
-            label="I agree with Terms and Conditions & Privacy Policy"
+            // label="I agree with Terms and Conditions & Privacy Policy"
             style={{
               label: errors.agree ? "text-base text-danger-500" : "text-base",
             }}
           />
-        </div>
+          <p>
+            I agree with&nbsp;
+            <a target="_blank" rel="noreferrer noopener" href={`${WEBSITE_URL}/terms`}>
+              Terms and Conditions
+            </a>
+            &nbsp;&&nbsp;
+            <a target="_blank" rel="noreferrer noopener" href={`${WEBSITE_URL}/privacy-policy`}>
+              Privacy Policy
+            </a>
+          </p>
+        </label>
       </form>
     </div>
   );

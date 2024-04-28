@@ -38,6 +38,8 @@ export const signUpUser = createAsyncThunk(
       //
       jsCookie.set("pn_refresh", data.token);
       jsCookie.set("session_id", data.session_id);
+      sessionStorage.setItem("pn_access", data.token);
+      jsCookie.set("user_id", data.user.id);
       // sessionStorage.setItem("pn_access", data.token);
 
       //
