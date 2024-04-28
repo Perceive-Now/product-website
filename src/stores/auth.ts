@@ -169,7 +169,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       // subscriptionResponse
     ] = await Promise.all([
       axiosInstance.get(`/api/user_profile?code=${authCode}&clientId=default `),
-      // axiosInstance.get(""),
+      // axiosInstance.get(`/api/get_products?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
     // const subscriptionData = subscriptionResponse?.data ?? {};
@@ -187,6 +187,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         job_position: userProfileResponse.data.job_position,
         profile_photo: userProfileResponse.data.profile_photo,
         username: userProfileResponse.data.username,
+        //
       },
     };
   } catch (error) {

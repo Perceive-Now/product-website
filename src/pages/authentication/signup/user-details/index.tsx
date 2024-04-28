@@ -8,9 +8,11 @@ import CompanyProfile from "../company-details";
 // import Finish from "../finish";
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
+import Prcing1 from "../subscription-plan/subcription-demo";
+import SubscriptionPlan from "../subscription-plan";
 
 const UserDetails = () => {
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(3);
 
   const userDetail = useAppSelector((state) => state.auth.user);
   //
@@ -37,14 +39,14 @@ const UserDetails = () => {
       value: 2,
       component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
-    // {
-    //   label: "Plan",
-    //   value: 3,
-    //   component: <Prcing1 changeActiveStep={changeActiveStep} />,
-    // },
+    {
+      label: "Plan",
+      value: 3,
+      component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
+    },
     {
       label: "Finish",
-      value: 3,
+      value: 4,
       component: <WelcomePage />,
     },
   ];
@@ -57,10 +59,7 @@ const UserDetails = () => {
       {steps.map((step, idx) => (
         <div
           key={idx}
-          className={classNames(
-            activeStep !== step.value && "hidden",
-            "px-1 h-full overflow-auto w-full pn_scroller",
-          )}
+          className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
         >
           {step.component}
         </div>
