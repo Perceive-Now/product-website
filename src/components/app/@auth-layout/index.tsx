@@ -2,15 +2,15 @@
 const footerLinks: IFooterLink[] = [
   {
     title: "Privacy Statement",
-    url: "/terms",
+    url: "privacy-policy",
   },
-  {
-    title: "Software License Agreement",
-    url: "/",
-  },
+  // {
+  //   title: "Software License Agreement",
+  //   url: "/",
+  // },
   {
     title: "Terms of use",
-    url: "/terms",
+    url: "terms",
   },
 ];
 

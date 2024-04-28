@@ -10,12 +10,17 @@ import { setNoveltyAspect } from "../../../../../../stores/IpSteps";
 import axiosInstance from "../../../../../../utils/axios";
 
 import NewComponent from "../../../new-comp";
+import { addAnswer } from "../../../../../../utils/api/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
   exampleAnswer: string;
 }
+
+/**
+ *
+ */
 
 export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswer }: Props) {
   const dispatch = useAppDispatch();
@@ -32,9 +37,9 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
 
   //
   const [question, setQuestion] = useState("");
-
+  //
   const userId = jsCookie.get("user_id");
-  // const sessionId = jsCookie.get("session_id");
+  const sessionId = jsCookie.get("session_id");
 
   useEffect(() => {
     setQuestion(apiQuestion);
@@ -47,7 +52,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(111111111)}&QuestionID=${questionId}`,
+          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
@@ -57,17 +62,16 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            // if (questionId === 11) {
-            //   changeActiveStep(14);
-            // } else {
-            //   jsCookie.set("questionId", String(questionId + 1));
-            //   changeActiveStep(activeStep + 1);
-            // }
+            const updateAnswer = {
+              question_id: String(questionId) || "1",
+              session_id: "111111111",
+              user_id: userId || "",
+              answer: value.answer || "",
+            };
 
+            addAnswer(updateAnswer);
             jsCookie.set("questionId", String(questionId + 1));
             changeActiveStep(activeStep + 1);
-
-            // changeActiveStep(Number(chatId) + 1);
           } else {
             jsCookie.set("chatId", chatId || "");
             jsCookie.set("questionId", String(questionId));
@@ -82,7 +86,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
         toast.error(error.message);
       }
     },
-    [activeStep, changeActiveStep, chatId, dispatch, questionId, userId],
+    [activeStep, changeActiveStep, chatId, dispatch, questionId, sessionId, userId],
   );
 
   return (

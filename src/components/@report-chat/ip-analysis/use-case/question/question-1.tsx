@@ -44,15 +44,12 @@ export default function ChatQuestionAnswer({
 }: // questionId,
 Props) {
   const dispatch = useAppDispatch();
-  // jsCookie.set("chatId", String(3));
-
   const [isloading, setIsLoading] = useState(false);
-  // const [answers, setAnswers] = useState<IAnswers[]>([]);
 
   const questionId = question.questionId;
 
   const userId = jsCookie.get("user_id");
-  // const sessionId = jsCookie.get("session_id");
+  const sessionId = jsCookie.get("session_id");
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
@@ -61,8 +58,7 @@ Props) {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(111111111)}&QuestionID=${questionId}`,
-          // userInput,
+          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
         );
 
         const apiData = response.data.question;
@@ -76,11 +72,9 @@ Props) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            // jsCookie.set("questionId", String(questionId + 1));
-
             const updateAnswer = {
               question_id: String(questionId) || "1",
-              session_id: "111111111",
+              session_id: sessionId || "",
               user_id: userId || "",
               answer: value.answer || "",
             };
@@ -94,13 +88,6 @@ Props) {
 
             // jsCookie.set("questionId", String(questionId + 1));
             changeActiveStep(activeStep + 1);
-            //
-            // if (questionId === 11) {
-            //   changeActiveStep(14);
-            // } else {
-            //   jsCookie.set("questionId", String(questionId + 1));
-            //   changeActiveStep(activeStep + 1);
-            // }
           } else {
             jsCookie.set("questionId", String(questionId));
             dispatch(setNoveltyAspect({ answer: apiData }));
@@ -112,7 +99,7 @@ Props) {
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, questionId, userId],
+    [activeStep, changeActiveStep, dispatch, questionId, sessionId, userId],
   );
   return (
     <>

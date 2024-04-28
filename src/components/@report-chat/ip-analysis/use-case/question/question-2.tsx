@@ -29,7 +29,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
   const questionId = question.questionId;
 
   const userId = jsCookie.get("user_id");
-  // const sessionId = jsCookie.get("session_id");
+  const sessionId = jsCookie.get("session_id");
 
   // jsCookie.set("chatId", String(3));
 
@@ -41,7 +41,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=1111111111&QuestionID=${questionId}`,
+          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
           // userInput,
         );
         const resError = response.data.error;
@@ -57,8 +57,8 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
 
           if (status === "true" || status == true) {
             const updateAnswer = {
-              question_id: String(questionId) || "1",
-              session_id: "111111111",
+              question_id: String(questionId) || "",
+              session_id: sessionId || "",
               user_id: userId || "",
               answer: value.answer || "",
             };
@@ -88,7 +88,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, question.question, questionId, userId],
+    [activeStep, changeActiveStep, dispatch, question.question, questionId, sessionId, userId],
   );
 
   return (
