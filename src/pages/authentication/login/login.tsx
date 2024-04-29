@@ -194,7 +194,7 @@ export default function LoginPage() {
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <GoogleAuth title="Sign in with Google" />
+        <GoogleAuth isAgree={true} title="Sign in with Google" />
       </form>
     </div>
   );
