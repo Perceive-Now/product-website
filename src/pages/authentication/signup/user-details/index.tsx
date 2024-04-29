@@ -11,7 +11,7 @@ import { useAppSelector } from "../../../../hooks/redux";
 import SubscriptionPlan from "../subscription-plan";
 
 const UserDetails = () => {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(1);
 
   const userDetail = useAppSelector((state) => state.auth.user);
   //
