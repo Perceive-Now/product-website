@@ -13,7 +13,7 @@ import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
 import AdduserIcon from "../../../../components/icons/common/add-user";
 // import SelectBox from "../../../../components/reusable/select-box";
 
-import { IUserProfile, getCompanies, getUserProfile } from "../../../../utils/api/userProfile";
+import { IUserProfile, getCompanies } from "../../../../utils/api/userProfile";
 
 import Loading from "../../../../components/reusable/loading";
 
@@ -34,14 +34,12 @@ type TeamMember = {
   name: string;
 };
 
-const CompanyProfile = ({ changeActiveStep }: Props) => {
+const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
   const authCode = process.env.REACT_APP_AUTH_CODE;
 
-  const { data: userDetail, isLoading: LoadingUser } = useQuery(["get-user-detail"], async () => {
-    return await getUserProfile();
-  });
-
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+
+  // // For selecting compnay need to add
   // const [company, setCompany] = useState<IOption>({
   //   label: userDetail?.company_id || "",
   //   value: "",
@@ -51,7 +49,6 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
   const { data: companies, isLoading } = useQuery(["get-company"], async () => {
     return await getCompanies();
   });
-
   // Fetching time period
   useEffect(() => {
     if (!companies) return;
@@ -123,7 +120,7 @@ const CompanyProfile = ({ changeActiveStep }: Props) => {
         </Button>
         <h4 className="font-bold text-[22px] text-primary-900">Company Details</h4>
       </div>
-      <Loading isLoading={isLoading || LoadingUser} />
+      <Loading isLoading={isLoading} />
       <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
         <div className=" p-5 bg-appGray-100 rounded-lg">
           <div className="grid grid-cols-2 gap-x-5 gap-y-2 w-full">

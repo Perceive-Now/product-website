@@ -8,6 +8,7 @@ import CompanyProfile from "../company-details";
 // import Finish from "../finish";
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
+import SubscriptionPlan from "../subscription-plan";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -38,9 +39,9 @@ const UserDetails = () => {
       component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
     // {
-    //   label: "Plan",
+    //   label: "Choose a plan",
     //   value: 3,
-    //   component: <Prcing1 changeActiveStep={changeActiveStep} />,
+    //   component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
     // },
     {
       label: "Finish",
@@ -51,16 +52,13 @@ const UserDetails = () => {
 
   return (
     <div className="w-[927px] mx-auto p-5">
-      <div className="sticky top-0 bg-white pt-2 pb-8 z-10">
+      <div className="sticky top-0 bg-white pt-2 mb-6 pb-2 z-10 border-b border-appGray-400">
         <Stepper steps={steps} activeStep={activeStep} />
       </div>
       {steps.map((step, idx) => (
         <div
           key={idx}
-          className={classNames(
-            activeStep !== step.value && "hidden",
-            "px-1 h-full overflow-auto w-full pn_scroller",
-          )}
+          className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
         >
           {step.component}
         </div>

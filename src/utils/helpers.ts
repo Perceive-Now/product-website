@@ -93,3 +93,13 @@ export const getStateFullName = (code: string) => {
 export function isObjEmpty(obj: any) {
   return Object.keys(obj).length === 0;
 }
+
+//
+
+export function convertToBase64String(profile_photo?: string): string | undefined {
+  if (!profile_photo) return undefined;
+
+  const [dataType, base64Data] = profile_photo.split("base64/") as [string, string];
+  const photo = `data:${dataType};base64,/${base64Data}`;
+  return photo;
+}
