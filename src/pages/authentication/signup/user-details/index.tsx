@@ -38,14 +38,14 @@ const UserDetails = () => {
       value: 2,
       component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
-    {
-      label: "Choose a plan",
-      value: 3,
-      component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "Choose a plan",
+    //   value: 3,
+    //   component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "Finish",
-      value: 4,
+      value: 3,
       component: <WelcomePage />,
     },
   ];
