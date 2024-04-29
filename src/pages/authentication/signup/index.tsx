@@ -175,7 +175,7 @@ export default function SignupPage() {
           </p>
           <hr className="mt-4 mb-4 border-gray-300" />
 
-          <GoogleAuth title="Sign up with Google" />
+          <GoogleAuth isAgree={isAgree} title="Sign up with Google" />
         </div>
         <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput

@@ -14,7 +14,7 @@ interface IProductResponse {
   products: IProduct[];
 }
 
-interface IProduct {
+export interface IProduct {
   id: number;
   stripe_product_id: string;
   name: string;

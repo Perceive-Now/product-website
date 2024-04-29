@@ -19,7 +19,7 @@ export default function WelcomePage() {
   };
 
   return (
-    <div className="h-screen bg-white">
+    <div className=" bg-white">
       {/* <div className="my-auto h-8 py-1 px-2 bg-appGray-100">
         <Link to="/">
           <img src={PerceiveLogo} alt="PerceiveNow logo" />

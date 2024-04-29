@@ -18,9 +18,10 @@ interface IGoogleDetail {
 
 interface Props {
   title: string;
+  isAgree?: boolean;
 }
 
-export default function GoogleAuth({ title }: Props) {
+export default function GoogleAuth({ title, isAgree }: Props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -80,6 +81,7 @@ export default function GoogleAuth({ title }: Props) {
       classname="w-full"
       htmlType="button"
       type="gray"
+      disabled={!isAgree}
       startIcon={<GoogleIcon />}
     >
       {title}

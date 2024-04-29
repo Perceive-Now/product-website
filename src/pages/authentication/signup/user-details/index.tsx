@@ -8,7 +8,6 @@ import CompanyProfile from "../company-details";
 // import Finish from "../finish";
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
-import Prcing1 from "../subscription-plan/subcription-demo";
 import SubscriptionPlan from "../subscription-plan";
 
 const UserDetails = () => {
@@ -40,7 +39,7 @@ const UserDetails = () => {
       component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
     {
-      label: "Plan",
+      label: "Choose a plan",
       value: 3,
       component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
     },
@@ -53,7 +52,7 @@ const UserDetails = () => {
 
   return (
     <div className="w-[927px] mx-auto p-5">
-      <div className="sticky top-0 bg-white pt-2 pb-8 z-10">
+      <div className="sticky top-0 bg-white pt-2 mb-6 pb-2 z-10 border-b border-appGray-400">
         <Stepper steps={steps} activeStep={activeStep} />
       </div>
       {steps.map((step, idx) => (
