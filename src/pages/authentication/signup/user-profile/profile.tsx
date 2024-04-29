@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import SelectBox from "../../../../components/reusable/select-box";
 import { Countries } from "../../../../utils/constants";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
+import { convertToBase64String } from "../../../../utils/helpers";
 
 // import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
@@ -35,8 +36,7 @@ interface Props {
 }
 
 const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
-  const [photo, setPhoto] = useState<any>(null);
-  const [previewImage, setPreviewImage] = useState<string>();
+  const [photo, setPhoto] = useState<any>(convertToBase64String(userDetail?.profile_photo));
   const [country, setCountry] = useState<IOption>({
     label: userDetail?.country || "",
     value: userDetail?.country || "",
@@ -45,9 +45,6 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
     setPhoto(file);
-    const selectFile = URL.createObjectURL(file);
-
-    setPreviewImage(selectFile);
 
     if (file) {
       const reader = new FileReader();
@@ -125,12 +122,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
             <div className="">
               <p className="text-secondary-800 font-semibold">Profile Image</p>
               <div className="rounded-full over w-[80px] h-[80px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
-                {previewImage ? (
-                  <img
-                    src={previewImage}
-                    alt="profile_picture"
-                    className="h-full w-full rounded-full"
-                  />
+                {photo ? (
+                  <img src={photo} alt="profile_picture" className="h-full w-full rounded-full" />
                 ) : (
                   <ProfileIcon />
                 )}

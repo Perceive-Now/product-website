@@ -1,5 +1,7 @@
 // import { useAppSelector } from "../../../hooks/redux";
 
+import { convertToBase64String } from "../../../utils/helpers";
+
 interface Props {
   first_name: string;
   last_name: string;
@@ -11,24 +13,23 @@ interface Props {
 export default function UserIcon({
   first_name,
   last_name,
+  profile_photo,
 }: // profile_photo,
-// profile_photo
 Props) {
   const last = last_name.charAt(0);
   const first = first_name.charAt(0);
-
   return (
     <div className="flex items-center">
       <p className="text-primary-900 text-xl">
         {first}
         {last}
       </p>
-      {/* <img
-        src={standardBase64String}
+      <img
+        src={convertToBase64String(profile_photo)}
         alt={first_name}
         className="w-4 h-4 ml-1 rounded-full bg-primary-50"
-      /> */}
-      <div className="w-4 h-4 ml-1 rounded-full bg-primary-50" />
+      />
+      {/* <div className="w-4 h-4 ml-1 rounded-full bg-primary-50" /> */}
     </div>
   );
 }
