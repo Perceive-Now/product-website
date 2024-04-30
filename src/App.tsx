@@ -89,6 +89,7 @@ import UserDetails from "./pages/authentication/signup/user-details";
 import SignupPage from "./pages/authentication/signup";
 import KnowNow from "./pages/product/chat";
 import KnowNowIP from "./pages/product/ip-know-now";
+import Stream from "./pages/stream/stream";
 
 /**
  *
@@ -99,6 +100,8 @@ function App() {
     <div>
       <Routes>
         <Route path="/verify-email" element={<VerificationConfirm />} />
+        <Route path="/stream" element={<Stream />} />
+
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />

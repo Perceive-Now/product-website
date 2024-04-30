@@ -50,7 +50,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
           white: buttonType === "default",
           "full-width": isFullWidth,
         },
-        "font-semibold",
+        "font-semibold disabled:cursor-not-allowed",
         props.classname,
       )}
       onClick={handleSubmit}

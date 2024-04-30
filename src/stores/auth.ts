@@ -114,7 +114,7 @@ export const logoutUser = createAsyncThunk("logout", async (): Promise<IResponse
 export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
-    const accessToken = sessionStorage.getItem("pn_access");
+    const accessToken = jsCookie.get("pn_refresh");
     if (accessToken && accessToken !== "undefined")
       return {
         success: true,
@@ -177,7 +177,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       success: true,
       message: "Successfully fetched user details",
       data: {
-        // name: `${ userProfileResponse.data.first_name } ${ userProfileResponse.data.last_name } `,
+        full_name: `${userProfileResponse.data.first_name} ${userProfileResponse.data.last_name} `,
         first_name: userProfileResponse.data.first_name,
         last_name: userProfileResponse.data.last_name,
         phone_number: userProfileResponse.data.phone_number,

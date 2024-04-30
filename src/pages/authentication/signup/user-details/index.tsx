@@ -1,14 +1,15 @@
-import React, { useCallback, useState } from "react";
-import UserProfile from "../user-profile/profile";
+import { useCallback, useState } from "react";
 import classNames from "classnames";
+
+import UserProfile from "../user-profile/profile";
 import Stepper from "../../../../components/reusable/Stepper";
-import CompanyProfile from "../company-details";
+// import CompanyProfile from "../company-details";
 // import SubscriptionPlan from "../subscription-plan";
 // import Prcing1 from "../subscription-plan/subcription-demo";
 // import Finish from "../finish";
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
-import SubscriptionPlan from "../subscription-plan";
+// import SubscriptionPlan from "../subscription-plan";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -33,19 +34,19 @@ const UserDetails = () => {
       value: 1,
       component: <UserProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
-    {
-      label: "Company Details",
-      value: 2,
-      component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
-    },
-    {
-      label: "Choose a plan",
-      value: 3,
-      component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "Company Details",
+    //   value: 2,
+    //   component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
+    // },
+    // {
+    //   label: "Choose a plan",
+    //   value: 3,
+    //   component: <SubscriptionPlan changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "Finish",
-      value: 4,
+      value: 2,
       component: <WelcomePage />,
     },
   ];

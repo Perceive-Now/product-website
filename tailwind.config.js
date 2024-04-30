@@ -33,10 +33,10 @@ module.exports = {
       0.5: "0.25rem",
       1: "0.5rem",
       2: "1rem",
-      2.5:"1.25rem",
+      2.5: "1.25rem",
       3: "1.5rem",
       4: "2rem",
-      4.5:"2.25rem",
+      4.5: "2.25rem",
       5: "2.5rem",
       6: "3rem",
       7: "3.5rem",
@@ -102,12 +102,13 @@ module.exports = {
       container: {
         center: true,
         screens: {
-          // sm: '600px',
-          // md: '728px',
-          // lg: '984px',
-          // xl: '1240px',
           '2xl': '1440px',
         },
+      },
+      backgroundImage: {
+        "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%)",
+        // "gradient-conic":
+        //   "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       // boxShadow: {
       //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

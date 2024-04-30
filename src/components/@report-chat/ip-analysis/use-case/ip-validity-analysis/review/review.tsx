@@ -3,6 +3,9 @@ import Button from "../../../../../reusable/button";
 import { useCallback } from "react";
 import ReviewQuestionAnswer from "./review-answer-question";
 import { useAppSelector } from "../../../../../../hooks/redux";
+// import { useQuery } from "@tanstack/react-query";
+// import { getUserChats } from "../../../../../../utils/api/chat";
+import axios from "axios";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -11,9 +14,30 @@ interface Props {
 export default function IPReview({ changeActiveStep }: Props) {
   const chats = useAppSelector((values) => values.chat);
 
-  const onContinue = useCallback(() => {
-    changeActiveStep(16);
-  }, [changeActiveStep]);
+  const onContinue = useCallback(async () => {
+    try {
+      const response = await axios.post(`https://pn-chatbot.azurewebsites.net/get-answers`, {
+        user_id: "12345678",
+        sesion_id: "12345678",
+      });
+      console.log(response);
+    } catch (error: any) {
+      // console.log(error)
+    }
+    // getUserChats("12345678", "12345678")
+    // changeActiveStep(0);
+  }, []);
+
+  // const { data: userChats, isLoading } = useQuery(["get-user-chats"], async () => {
+  //   return await getUserChats("12345678", "12345678");
+  // });
+  // // Fetching time period
+  // useEffect(() => {
+  //   if (!userChats) return;
+  //   //
+  // }, [userChats]);
+
+  // console.log(userChats)
 
   return (
     <div className="space-y-2.5 w-full shrink-0">
@@ -30,56 +54,6 @@ export default function IPReview({ changeActiveStep }: Props) {
           <ReviewQuestionAnswer
             question={chats.first.question || ""}
             answer={chats.first.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.second.question || ""}
-            answer={chats.second.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.thrid.question || ""}
-            answer={chats.thrid.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.fourth.question || ""}
-            answer={chats.fourth.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.fifth.question || ""}
-            answer={chats.fifth.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.sixth.question || ""}
-            answer={chats.sixth.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.seventh.question || ""}
-            answer={chats.seventh.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.eight.question || ""}
-            answer={chats.eight.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.ninth.question || ""}
-            answer={chats.ninth.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.tenth.question || ""}
-            answer={chats.tenth.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
-          <ReviewQuestionAnswer
-            question={chats.eleventh.question || ""}
-            answer={chats.eleventh.answer || ""}
             onEdit={() => changeActiveStep(2)}
           />
         </div>

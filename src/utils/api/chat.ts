@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import toast from "react-hot-toast";
-import axiosInstance from "../axios";
+// import axiosInstance from "../axios";
 
 export async function getChatBotAnswer(body: IChat) {
   try {
@@ -25,10 +25,7 @@ export async function getUserChats(user_id: string, sesion_id: string) {
     user_id,
     sesion_id,
   };
-  const response = await axiosInstance.post(
-    `https://pn-chatbot.azurewebsites.net/get-answers`,
-    value,
-  );
+  const response = await axios.post(`https://pn-chatbot.azurewebsites.net/get-answers`, value);
 
   return response.data.data;
 }

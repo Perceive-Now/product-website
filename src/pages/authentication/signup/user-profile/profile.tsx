@@ -24,6 +24,8 @@ interface IProfileForm {
   phone_number: string;
   country: string;
   topics_of_interest?: string;
+  company_name: string;
+  job_position: string;
 }
 interface IOption {
   value: string;
@@ -62,6 +64,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     phone_number: userDetail?.phone_number || "",
     country: userDetail?.country || "",
     topics_of_interest: userDetail?.topics_of_interest || "",
+    company_name: userDetail?.company_id || "",
+    job_position: userDetail?.job_position || "",
   };
 
   const formResolver = yup.object().shape({
@@ -73,6 +77,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     last_name: yup.string().required("Last Name is required"),
     phone_number: yup.string().required("Phone Number is required"),
     country: yup.string(),
+    company_name: yup.string().required(""),
+    job_position: yup.string().required("Job position is required"),
   });
 
   const {
@@ -173,6 +179,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   </fieldset>
                 </div>
               </div>
+              {/* phone */}
               <fieldset className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>
                 <div className="mt-0.5">
@@ -185,7 +192,40 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   />
                 </div>
               </fieldset>
-              <div className="col-span-1" />
+              <div />
+              <fieldset className="col-span-1">
+                <Label required className="font-semibold text-secondary-800">
+                  Company name
+                </Label>
+                <Input
+                  register={register("company_name")}
+                  type="text"
+                  error={errors.company_name}
+                  placeholder="Company Name"
+                />
+                {/* <SelectBox
+                onChange={setCompany}
+                options={(companies || [])?.map((company) => ({
+                  label: company.name,
+                  value: company.id,
+                }))}
+                value={company}
+                // register={register("country")}
+                placeholder={"Select a Company"}
+              /> */}
+              </fieldset>
+              <fieldset className="col-span-1">
+                <Label required className="font-semibold text-secondary-800">
+                  Job Position
+                </Label>
+                <Input
+                  register={register("job_position")}
+                  type="text"
+                  error={errors.job_position}
+                  placeholder="Job Position"
+                />
+              </fieldset>
+              {/* <div className="col-span-1" /> */}
               <fieldset className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Country

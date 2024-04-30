@@ -17,6 +17,7 @@ import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis
 import { useAppSelector } from "../../../../hooks/redux";
 
 import { questionList } from "./_question";
+// import SubscriptionPlan from "../../../authentication/signup/subscription-plan";
 
 /**
  *
@@ -116,9 +117,16 @@ export default function IPAnalysis() {
       value: 15,
       component: <IPReview changeActiveStep={changeActiveStep} />,
     },
+    // {
+    //   label: "",
+    //   value: 16,
+    //   component: <SubscriptionPlan
+    //     changeActiveStep={changeActiveStep}
+    //   />,
+    // },
     {
       label: "",
-      value: 16,
+      value: 17,
       component: <IPFinal activeStep={activeStep} />,
     },
   ];
@@ -133,14 +141,14 @@ export default function IPAnalysis() {
       <div className="w-full">
         <div
           className={classNames(
-            "overflow-hidden relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
+            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
             activeStep !== 0 && activeStep !== 1 && "shadow border rounded-md p-2",
           )}
         >
           <div
             className={`translate-y-[${
               activeStep * 9
-            }% flex flex-col gap-y-5 transition duration-500 ease-in-out overflow-hidden h-full w-full `}
+            }% flex flex-col gap-y-5 transition duration-500 ease-in-out  h-full w-full `}
             style={{
               transform: `translateY(-${activeStep * 0}%)`,
             }}
@@ -150,8 +158,8 @@ export default function IPAnalysis() {
                 key={idx}
                 className={classNames(
                   activeStep !== step.value && "hidden",
-                  "px-1 h-full w-full overflow-y-auto overflow-x-hidden pn_scroller",
-                  activeStep === 0 && "h-[calc(100vh-120px)]",
+                  "px-1 h-full w-full",
+                  // activeStep === 0 && "h-[calc(100vh-120px)]",
                   // activeStep === 9 && "h-full",
                 )}
               >
@@ -160,7 +168,7 @@ export default function IPAnalysis() {
             ))}
           </div>
           {activeStep > 1 && (
-            <div className="absolute bottom-0 left-0 right-0 w-full">
+            <div className="absolute bottom-0 left-0 right-0 w-full rounded-b-md overflow-hidden">
               <IPStepper
                 steps={questionWithUsecase}
                 activeStep={
