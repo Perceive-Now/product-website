@@ -152,33 +152,33 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                 />
               </fieldset>
               <div className="col-span-1" />
-              <div className="col-span-2">
+
+              <fieldset className="">
                 <Label required className="font-semibold text-secondary-800">
-                  Name
+                  First Name
                 </Label>
-                <div className="grid grid-cols-2 gap-x-5 gap-y-2">
-                  <fieldset className="">
-                    <div className="mt-0.5 rounded-md shadow-sm">
-                      <Input
-                        register={register("first_name")}
-                        type="text"
-                        placeholder="First Name"
-                        error={errors.first_name}
-                      />
-                    </div>
-                  </fieldset>
-                  <fieldset className="">
-                    <div className="mt-0.5 rounded-md shadow-sm">
-                      <Input
-                        register={register("last_name")}
-                        type="text"
-                        placeholder="Last Name"
-                        error={errors.last_name}
-                      />
-                    </div>
-                  </fieldset>
+                <div className="mt-0.5 rounded-md shadow-sm">
+                  <Input
+                    register={register("first_name")}
+                    type="text"
+                    placeholder="First Name"
+                    error={errors.first_name}
+                  />
                 </div>
-              </div>
+              </fieldset>
+              <fieldset className="">
+                <Label required className="font-semibold text-secondary-800">
+                  Last Name
+                </Label>
+                <div className="mt-0.5 rounded-md shadow-sm">
+                  <Input
+                    register={register("last_name")}
+                    type="text"
+                    placeholder="Last Name"
+                    error={errors.last_name}
+                  />
+                </div>
+              </fieldset>
               {/* phone */}
               <fieldset className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>

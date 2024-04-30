@@ -39,6 +39,8 @@ export default function IPAnalysis() {
   const questionId = jsCookie.get("questionId");
   const commonQuestionId = jsCookie.get("commonQuestionId");
 
+  console.log("c" + commonQuestionId, "q" + questionId);
+
   useEffect(() => {
     jsCookie.set("chatId", chatId || "");
   }, [chatId]);

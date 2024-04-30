@@ -12,7 +12,7 @@ const Thankyou = ({ changeActiveStep }: Props) => {
   const onContinue = useCallback(() => {
     jsCookie.set("questionId", String(0));
     jsCookie.set("commonQuestionId", String(0));
-    changeActiveStep(16);
+    changeActiveStep(0);
     // getUserChats("12345678", "12345678")
   }, [changeActiveStep]);
 

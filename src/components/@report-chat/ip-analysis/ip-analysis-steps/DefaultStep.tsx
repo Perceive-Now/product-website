@@ -68,7 +68,7 @@ const radioOptionsIP = [
 const radioOptionsMarket = [
   {
     label: "Market Analysis",
-    value: "m&a",
+    value: "market-analysis",
     desc: "Dive deep into the dynamics of your target market with this report, which covers current trends and projections to help you anticipate future opportunities and challenges. It’s an essential tool for businesses looking to solidify their market understanding and strategic planning.",
     reportType: "pro",
   },
@@ -152,18 +152,18 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   useEffect(() => {
     const optionMappings: OptionMappings = {
-      "freedom-to-operate": "ip-validity-analysis",
+      // "freedom-to-operate": "ip-validity-analysis",
       "prior-art-search": "ip-validity-analysis",
       "patent-validity": "ip-validity-analysis",
       "patent-infringement": "ip-validity-analysis",
       "m&a": "market-research",
-      "market-potential": "market-research",
+      "market-analysis": "market-research",
       "competitive-landscape": "market-research",
       "consumer-landscape": "market-research",
       commercialization: "market-research",
       regulatory: "market-research",
       "ip-licensing-opportunity": "ip-licensing-opportunity",
-      "ip-valuation": "ip-valuation",
+      // "ip-valuation": "ip-valuation",
     };
 
     const newOptions: any[] | ((prevState: string[]) => string[]) = [];

@@ -62,7 +62,7 @@ export default function GoogleAuth({ title, isAgree }: Props) {
           if (callbackPath) {
             navigate(callbackPath);
           } else {
-            navigate("/");
+            navigate("/user-registration");
           }
         } else {
           toast.error(apiLogin.message);

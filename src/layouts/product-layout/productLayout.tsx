@@ -16,7 +16,7 @@ export default function ProductLayout() {
       </div> */}
       <div className="flex flex-col md:flex-row gap-4.5 ">
         <AppSidebar />
-        <div className="w-[228px]" />
+        <div className="w-[240px]" />
         <div className="py-3 px-4 w-full container">
           <Outlet />
         </div>
