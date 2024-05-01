@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import { useCallback, useEffect, useRef, useState } from "react";
 import AddQuery from "../../../components/@chat/add-query";
 import QueryAnswer from "../../../components/@chat/query-answer";
@@ -38,15 +40,39 @@ export function KnowNowIP() {
 
     setChats((prevChats) => [...prevChats, newChat]);
 
-    try {
-      const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
-        },
-      });
+    const streamSource = new EventSource("https://percievenowchat2.azurewebsites.net/gautam");
 
-      const answer = res.data.ai_message;
+    // Event listener for new data
+    streamSource.onmessage = (event) => {
+      // Parse the incoming data (assuming it's JSON)
+      const newData = JSON.parse(event.data);
+
+      console.log(newData);
+    };
+
+    // Update state with new data
+    // setStreamData((prevData: any) => [...prevData, newData]);
+
+    try {
+      const res = new EventSource("https://knownow.perceivenow.ai/query_to_response");
+
+      // Event listener for new data
+      res.onmessage = (event) => {
+        // Parse the incoming data (assuming it's JSON)
+        const newData = JSON.parse(event.data);
+
+        console.log(newData);
+      };
+      // const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
+      //   },
+      // });
+
+      // const answer = res.data.ai_message;
+      const answer = "";
+
       setIsloading(false);
 
       setChats((prevChats) => {

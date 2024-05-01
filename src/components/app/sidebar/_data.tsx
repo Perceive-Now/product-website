@@ -1,20 +1,19 @@
 import type { ReactElement } from "react";
 
 //
-import {
-  // ExpertsIcon,
-  // FundersIcon,
-  // PatentsIcon,
-  // PublicationsIcon,
-  // UniversitiesIcon,
-  DashboardIcon,
-  //
-  // CompaniesIcon,
-  // Universities2Icon,
-  // SummaryIcon,
-  // SimilarityIcon,
-  // MascotIcon,
-} from "../../icons";
+import // ExpertsIcon,
+// FundersIcon,
+// PatentsIcon,
+// PublicationsIcon,
+// UniversitiesIcon,
+// DashboardIcon,
+//
+// CompaniesIcon,
+// Universities2Icon,
+// SummaryIcon,
+// SimilarityIcon,
+// MascotIcon,
+"../../icons";
 // import HookIcon from "../../icons/sidenav/hook";
 // import DOcumentIcon from "../../icons/miscs/document";
 // import TechnologyIcon from "../../icons/miscs/Technology";
@@ -28,12 +27,12 @@ import {
 // import SummarizeIcon from "../../icons/sidenav/summarize";
 
 const sidebarItems: ISidebarListItem[] = [
-  {
-    title: "My Reports",
-    key: "generate",
-    icon: <DashboardIcon />,
-    to: "/",
-  },
+  // {
+  //   title: "My Reports",
+  //   key: "generate",
+  //   icon: <DashboardIcon />,
+  //   to: "/my-reports",
+  // },
   // {
   //   title: "User info",
   //   key: "user-info",

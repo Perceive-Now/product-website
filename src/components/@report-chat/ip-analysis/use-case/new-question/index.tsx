@@ -2,15 +2,15 @@ import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
 import { useCallback, useEffect, useState } from "react";
 
-import { IAnswer } from "../../../../../../@types/entities/IPLandscape";
+import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
-import { useAppDispatch, useAppSelector } from "../../../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
-import { setNoveltyAspect } from "../../../../../../stores/IpSteps";
-import axiosInstance from "../../../../../../utils/axios";
+import { setNoveltyAspect } from "../../../../../stores/IpSteps";
+import axiosInstance from "../../../../../utils/axios";
 
-import NewComponent from "../../../new-comp";
-import { addAnswer } from "../../../../../../utils/api/chat";
+import NewComponent from "../../new-comp";
+import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;

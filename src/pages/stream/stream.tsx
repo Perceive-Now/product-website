@@ -1,73 +1,78 @@
-// // Chat.js
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-// import axios from 'axios';
-// import React, { useState, useEffect, useCallback } from 'react';
-// import io from 'socket.io-client';
+function Stream() {
+  const [streamData, setStreamData] = useState<any>([]);
 
-// const socket = io('https://percievenowchat2.azurewebsites.net/gautam'); // Connect to your server
+  // const axios = require('axios');
 
-// const Stream = () => {
-//   // const [messages, setMessages] = useState<any>([]);
-//   // const [inputValue, setInputValue] = useState('');
+  // Function to fetch and stream data from the server with a bearer token
+  // async function fetchAndStreamData(url, token, requestData) {
+  //     try {
+  //         const response = await axios.post(url, requestData, {
+  //             headers: {
+  //                 'Authorization': `Bearer ${token}`,
+  //                 'Content-Type': 'application/json',
+  //             },
+  //             responseType: 'stream', // Set responseType to 'stream' to receive a readable stream
+  //         });
 
-//   useEffect(() => {
-//     socket.on('message', (message) => {
-//       response()
-//       // setMessages((prevMessages: any) => [...prevMessages, message]);
-//     });
-//   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = (await fetch("https://percievenowchat2.azurewebsites.net/gautam", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // body: JSON.stringify({
+          //   stream: true
+          // })
+        })) as any;
 
-//   const response = useCallback(async () => {
-//     try {
+        const responseData = await response.text(); // Get the response as text
 
-//       const response = await axios.get(
-//         `https://percievenowchat2.azurewebsites.net/gautam`,
-//       );
+        console.log(responseData); // Log the response data
 
-//       console.log(response)
-//     } catch (e: any) {
-//       console.log(e)
-//     }
+        // setStreamData((prevData: any) => [...prevData, newData]);
 
-//   }, [])
+        const reader = response.body.getReader() as any;
+        let done = false;
 
-//   // useEffect(() => {
-//   //   response()
-//   //   // return response.data.products;
+        while (!done) {
+          const { done: isDone, value } = await reader.read();
+          done = isDone;
+          if (!done) {
+            // Process the chunked data
+            console.log(value);
+            // Update state with chunked data if necessary
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-//   // }, [response])
+    fetchData();
+    // const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
 
-//   // const handleMessageSend = () => {
-//   //   if (inputValue.trim() !== '') {
-//   //     const message = { text: inputValue, timestamp: new Date() };
-//   //     socket.emit('message', message);
-//   //     setInputValue('');
-//   //   }
-//   // };
+    return () => {
+      // clearInterval(intervalId);
+    };
+  }, []);
 
-//   return (
-//     <div>
-//       {/* <div>
-//         {messages.map((message: any, index: any) => (
-//           <div key={index}>{message.text}</div>
-//         ))}
-//       </div>
-//       <input
-//         type="text"
-//         value={inputValue}
-//         onChange={(e) => setInputValue(e.target.value)}
-//       />
-//       <button onClick={handleMessageSend}>Send</button> */}
-//     </div>
-//   );
-// };
+  return (
+    <div>
+      <h1>Streaming Data</h1>
+      <ul>
+        {streamData.map((data: any, index: any) => (
+          <li key={index}>{data}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
-// export default Stream;
-
-import React from "react";
-
-const stream = () => {
-  return <div>stream</div>;
-};
-
-export default stream;
+export default Stream;

@@ -90,6 +90,7 @@ import SignupPage from "./pages/authentication/signup";
 import KnowNow from "./pages/product/chat";
 import KnowNowIP from "./pages/product/ip-know-now";
 import Stream from "./pages/stream/stream";
+import UserProfile from "./pages/my-account/profile";
 
 /**
  *
@@ -122,6 +123,9 @@ function App() {
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
             <Route path="/" element={<IPAnalysis />} />
+            <Route path="/profile" element={<UserProfile />} />
+            {/* <Route path="/my-reports" element={<UserProfile />} /> */}
+
             {/* <Route path="/market-research" element={<IPAnalysis />} />
             <Route path="/market-intelligence" element={<IPAnalysis />} />
             <Route path="/ip-analysis/summary" element={<IPSummaryReport />} /> */}

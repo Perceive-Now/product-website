@@ -1,5 +1,5 @@
 import React from "react";
-import EditIcon from "../../../../../icons/miscs/Edit";
+import EditIcon from "../../../../icons/miscs/Edit";
 
 interface Props {
   question: string;

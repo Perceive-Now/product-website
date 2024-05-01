@@ -5,19 +5,23 @@ import classNames from "classnames";
 import jsCookie from "js-cookie";
 
 import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
-import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/review/review";
-import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/new-question";
-import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/ip-validity-analysis/thank-you";
+
+import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/thank-you";
 import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
 
 import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
 
 import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
+
 import { useAppSelector } from "../../../../hooks/redux";
 
-import { questionList } from "./_question";
 // import SubscriptionPlan from "../../../authentication/signup/subscription-plan";
+
+import { questionList } from "./_question";
+import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/new-question";
+import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
+import Payment from "../../../../components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
@@ -39,7 +43,7 @@ export default function IPAnalysis() {
   const questionId = jsCookie.get("questionId");
   const commonQuestionId = jsCookie.get("commonQuestionId");
 
-  console.log("c" + commonQuestionId, "q" + questionId);
+  // console.log("c" + commonQuestionId, "q" + questionId);
 
   useEffect(() => {
     jsCookie.set("chatId", chatId || "");
@@ -58,12 +62,19 @@ export default function IPAnalysis() {
     }
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
+  // console.log(questionId);
+  // console.log(questionWithUsecase[questionWithUsecase.length - 1].questionId);
+
   useEffect(() => {
     if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
+      // console.log('true')
       setActiveStep(14);
     }
   }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
+
   //
+
+  // console.log(activeStep)
 
   const steps = [
     {
@@ -119,13 +130,15 @@ export default function IPAnalysis() {
       value: 15,
       component: <IPReview changeActiveStep={changeActiveStep} />,
     },
-    // {
-    //   label: "",
-    //   value: 16,
-    //   component: <SubscriptionPlan
-    //     changeActiveStep={changeActiveStep}
-    //   />,
-    // },
+    {
+      label: "",
+      value: 16,
+      component: (
+        <Payment
+        // changeActiveStep={changeActiveStep}
+        />
+      ),
+    },
     {
       label: "",
       value: 17,

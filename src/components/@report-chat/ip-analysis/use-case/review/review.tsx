@@ -1,10 +1,9 @@
-import Button from "../../../../../reusable/button";
-
 import { useCallback } from "react";
 import ReviewQuestionAnswer from "./review-answer-question";
-import { useAppSelector } from "../../../../../../hooks/redux";
 // import { useQuery } from "@tanstack/react-query";
 // import { getUserChats } from "../../../../../../utils/api/chat";
+import { useAppSelector } from "../../../../../hooks/redux";
+import Button from "../../../../reusable/button";
 import axios from "axios";
 
 interface Props {
@@ -17,8 +16,8 @@ export default function IPReview({ changeActiveStep }: Props) {
   const onContinue = useCallback(async () => {
     try {
       const response = await axios.post(`https://pn-chatbot.azurewebsites.net/get-answers`, {
-        user_id: "12345678",
-        sesion_id: "12345678",
+        user_id: "11111",
+        sesion_id: "11111",
       });
       console.log(response);
     } catch (error: any) {

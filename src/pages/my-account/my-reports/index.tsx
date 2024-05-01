@@ -1,7 +1,7 @@
 import React from "react";
 
-const UserInfo = () => {
+const MyReport = () => {
   return <div></div>;
 };
 
-export default UserInfo;
+export default MyReport;

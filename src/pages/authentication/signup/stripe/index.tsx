@@ -8,7 +8,7 @@ import { IProduct } from "../../../../utils/api/product";
 interface Props {
   clientSecret: string;
   changeActiveStep: (step: number) => void;
-  selectedPlan: IProduct;
+  selectedPlan: IProduct[];
 }
 
 const StripePayment = ({ clientSecret, changeActiveStep, selectedPlan }: Props) => {

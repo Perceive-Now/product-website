@@ -215,6 +215,20 @@ export const AppSidebar: FunctionComponent<Props> = () => {
               <LogoutIcon />
             </button>
           </div>
+          <div className="flex flex-col">
+            {SidebarBottom.map((s, idx) => (
+              <Link
+                to={s.href}
+                key={idx * 29}
+                className={classNames(
+                  "py-1  rounded px-2",
+                  s.href === pathname ? "bg-primary-900 text-white" : "text-gray-900",
+                )}
+              >
+                {s.title}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -268,3 +282,14 @@ interface INavLinkItemProps extends ISidebarListItem {
   isTopLevel: boolean;
   value: string;
 }
+
+const SidebarBottom = [
+  {
+    title: "Profile",
+    href: "/profile",
+  },
+  // {
+  //   title: "Settings",
+  //   href: "/setting"
+  // }
+];
