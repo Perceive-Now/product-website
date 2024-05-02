@@ -46,7 +46,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     phone_number: userDetail?.phone_number || "",
     country: userDetail?.country || "",
     topics_of_interest: userDetail?.topics_of_interest || "",
-    company_id: userDetail?.company_id || "",
+    company_id: userDetail?.company_id || "N/A",
     job_position: userDetail?.job_position || "",
   };
 
@@ -85,9 +85,10 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         profile_photo: photo,
         company_id: value?.company_id,
         job_position: value?.job_position,
-        email: "",
+        email: userDetail.email || "",
         about_me: "",
-        // id: userDetail.id,
+        id: userDetail.id || "",
+        full_name: userDetail.full_name || "",
       };
       try {
         await updateUserProfile(values).then((res: any) => {
@@ -101,13 +102,13 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         toast.error(error.message);
       }
     },
-    [country?.value, dispatch, onClose, photo],
+    [country?.value, dispatch, onClose, photo, userDetail],
   );
 
   return (
     <Modal open={open} handleOnClose={onClose}>
       <form onSubmit={handleSubmit(onContinue)}>
-        <div className=" p-2.5 bg-appGray-100 rounded-lg text-start w-full">
+        <div className=" p-2.5 bg-white rounded-lg text-start w-full">
           <div className="flex justify-between mb-2">
             <div className="text-2xl font-semibold text-secondary-800">
               {modalType === "interest" ? (
