@@ -1,11 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import StripePayment from "../../../../../pages/authentication/signup/stripe";
-import { getProducts } from "../../../../../utils/api/product";
 import { useEffect } from "react";
 
-const Payment = ({ changeActiveStep }: any) => {
-  const clientSecret = sessionStorage.getItem("clientSecret");
+import StripePayment from "../../../../../pages/authentication/signup/stripe";
+import { getProducts } from "../../../../../utils/api/product";
+import { useNavigate } from "react-router-dom";
 
+// interface Props {
+//   changeActiveStep: (step: number) => void;
+// }
+
+const Payment = () => {
+  const navigate = useNavigate();
+
+  const clientSecret = sessionStorage.getItem("clientSecret");
   const ItemId = sessionStorage.getItem("UseCaseId") as any;
 
   const { data: products } = useQuery(["get-product"], async () => {
@@ -20,14 +27,16 @@ const Payment = ({ changeActiveStep }: any) => {
 
   const selectedReports = products?.filter((p) => ItemId?.includes(p.id));
 
+  useEffect(() => {
+    if (!clientSecret && !selectedReports) {
+      navigate("/");
+    }
+  }, [clientSecret, navigate, selectedReports]);
+
   return (
     <div>
       {clientSecret && selectedReports && (
-        <StripePayment
-          clientSecret={clientSecret}
-          changeActiveStep={changeActiveStep}
-          selectedPlan={selectedReports}
-        />
+        <StripePayment clientSecret={clientSecret} selectedPlan={selectedReports} />
       )}
     </div>
   );

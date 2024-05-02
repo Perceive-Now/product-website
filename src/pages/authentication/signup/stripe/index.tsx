@@ -7,7 +7,7 @@ import { IProduct } from "../../../../utils/api/product";
 
 interface Props {
   clientSecret: string;
-  changeActiveStep: (step: number) => void;
+  changeActiveStep?: (step: number) => void;
   selectedPlan: IProduct[];
 }
 

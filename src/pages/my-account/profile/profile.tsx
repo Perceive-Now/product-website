@@ -1,22 +1,20 @@
-// import EditIcon from "../../../components/icons/miscs/Edit"
+import EditIcon from "../../../components/icons/miscs/Edit";
 
 interface Props {
   children: any;
   title: string;
+  onEdit: () => void;
 }
 
-const ProfileComponent = ({ children, title }: Props) => {
+const ProfileComponent = ({ children, title, onEdit }: Props) => {
   return (
     <div className="rounded-lg border border-primary-900 w-full">
       <div className="rounded-t-lg bg-primary-900 px-[20px] py-[12px] text-white font-semibold flex items-center justify-between">
         <span>{title}</span>
-        {/* <button
-          type="button"
-          className="flex items-center gap-0.5"
-        >
+        <button type="button" className="flex items-center gap-0.5" onClick={onEdit}>
           <EditIcon className="text-white" />
           <span className="text-sm">Edit</span>
-        </button> */}
+        </button>
       </div>
       <div className="">
         {/* {

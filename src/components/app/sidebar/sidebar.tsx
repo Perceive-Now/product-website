@@ -89,8 +89,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
       {/* <SidebarTransition show={show} handleShow={handleShow}> */}
       <div
         className={classNames(
-          open ? "w-[270px]" : "w-[270px]",
-          " bg-appGray-100 shadow  overflow-auto px-2.5 min-h-screen fixed flex flex-col justify-between",
+          // open ? "w-[270px]" : "w-[270px]",
+          " bg-appGray-100 shadow  overflow-auto px-2.5 min-h-screen fixed flex flex-col justify-between w-[270px]",
         )}
       >
         <div>
@@ -201,7 +201,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
           </div>
         </div>
         {/* sidebar bottom */}
-        <div className="pb-3 text-gray-900">
+        <div className="pb-3 text-gray-900 space-y-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <UserIcon

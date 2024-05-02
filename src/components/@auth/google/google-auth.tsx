@@ -1,7 +1,7 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "../../../hooks/redux";
-import { loginUser } from "../../../stores/auth";
+import { loginUser, signUpUser } from "../../../stores/auth";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "../../reusable/button";
@@ -19,9 +19,10 @@ interface IGoogleDetail {
 interface Props {
   title: string;
   isAgree?: boolean;
+  type: "signin" | "signup";
 }
 
-export default function GoogleAuth({ title, isAgree }: Props) {
+export default function GoogleAuth({ title, isAgree, type }: Props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -57,12 +58,18 @@ export default function GoogleAuth({ title, isAgree }: Props) {
         };
         // App API
         const apiLogin = await dispatch(loginUser(params)).unwrap();
+        // const response = await dispatch(signUpUser(params)).unwrap();
         setIsSubmitting(false);
         if (apiLogin.success) {
           if (callbackPath) {
             navigate(callbackPath);
           } else {
-            navigate("/user-registration");
+            if (type === "signin") {
+              navigate("/");
+            }
+            if (type === "signup") {
+              navigate("/user-registration");
+            }
           }
         } else {
           toast.error(apiLogin.message);

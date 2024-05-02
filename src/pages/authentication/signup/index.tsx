@@ -49,7 +49,14 @@ export default function SignupPage() {
       .string()
       .email("Please enter a valid email address")
       .required("Email address is required"),
-    password: yup.string().required("Password is required"),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/,
+        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+      ),
     agree: yup.boolean().required(""),
   });
 
@@ -175,7 +182,7 @@ export default function SignupPage() {
           </p>
           <hr className="mt-4 mb-4 border-gray-300" />
 
-          <GoogleAuth isAgree={isAgree} title="Sign up with Google" />
+          <GoogleAuth type="signup" isAgree={isAgree} title="Sign up with Google" />
         </div>
         <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput
@@ -193,7 +200,7 @@ export default function SignupPage() {
             </a>
             &nbsp;&&nbsp;
             <a target="_blank" rel="noreferrer noopener" href={`${WEBSITE_URL}/privacy-policy`}>
-              Privacy Policy
+              Privacy Policy.
             </a>
           </p>
         </label>

@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 //
 // import AppHeader from "../../components/app/header";
-import AppFooter from "../../components/app/footer";
+// import AppFooter from "../../components/app/footer";
 import AppSidebar from "../../components/app/sidebar";
 // import AppSidebar from "../../components/app/sidebar";
 // import { useState } from "react";
@@ -30,7 +30,7 @@ export default function DefaultLayout() {
             <div className="h-full">
               <Outlet />
             </div>
-            <AppFooter />
+            {/* <AppFooter /> */}
           </div>
         </div>
       </div>

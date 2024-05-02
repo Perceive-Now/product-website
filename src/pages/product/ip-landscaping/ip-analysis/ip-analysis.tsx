@@ -9,7 +9,7 @@ import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
 import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/thank-you";
 import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
 
-import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
+// import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
 
 import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
@@ -21,7 +21,7 @@ import { useAppSelector } from "../../../../hooks/redux";
 import { questionList } from "./_question";
 import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/new-question";
 import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
-import Payment from "../../../../components/@report-chat/ip-analysis/use-case/payment";
+// import Payment from "../../../../components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
@@ -62,19 +62,15 @@ export default function IPAnalysis() {
     }
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
-  // console.log(questionId);
-  // console.log(questionWithUsecase[questionWithUsecase.length - 1].questionId);
-
+  //
   useEffect(() => {
     if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
       // console.log('true')
-      setActiveStep(14);
+      changeActiveStep(5);
     }
   }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
 
   //
-
-  // console.log(activeStep)
 
   const steps = [
     {
@@ -122,28 +118,28 @@ export default function IPAnalysis() {
     },
     {
       label: "",
-      value: 14,
+      value: 5,
       component: <Thankyou changeActiveStep={changeActiveStep} />,
     },
     {
       label: "Review",
-      value: 15,
+      value: 6,
       component: <IPReview changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "",
-      value: 16,
-      component: (
-        <Payment
-        // changeActiveStep={changeActiveStep}
-        />
-      ),
-    },
-    {
-      label: "",
-      value: 17,
-      component: <IPFinal activeStep={activeStep} />,
-    },
+    // {
+    //   label: "",
+    //   value: 7,
+    //   component: (
+    //     <Payment
+    //       changeActiveStep={changeActiveStep}
+    //     />
+    //   ),
+    // },
+    // {
+    //   label: "",
+    //   value: 8,
+    //   component: <IPFinal activeStep={activeStep} />,
+    // },
   ];
 
   //
@@ -182,7 +178,7 @@ export default function IPAnalysis() {
               </div>
             ))}
           </div>
-          {activeStep > 1 && (
+          {activeStep > 1 && activeStep < 7 && (
             <div className="absolute bottom-0 left-0 right-0 w-full rounded-b-md overflow-hidden">
               <IPStepper
                 steps={questionWithUsecase}

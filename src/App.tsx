@@ -91,6 +91,9 @@ import KnowNow from "./pages/product/chat";
 import KnowNowIP from "./pages/product/ip-know-now";
 import Stream from "./pages/stream/stream";
 import UserProfile from "./pages/my-account/profile";
+import MyReport from "./pages/my-account/my-reports";
+import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
+import StayTuned from "./components/default";
 
 /**
  *
@@ -110,21 +113,23 @@ function App() {
 
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+
         {/* <Route path="/signup/confirm" element={<ConfirmSignup />} /> */}
 
         {/* All the routes below are protected */}
         <Route element={<AuthLayout />}>
           <Route path="/user-registration" element={<UserDetails />} />
           <Route path="/welcome" element={<WelcomePage />} />
+
           {/* Need to ask for profile details before allowing to use */}
           {/* <Route path="/signup/complete" element={<CompleteSignup />} /> */}
+
           <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
-            <Route path="/" element={<IPAnalysis />} />
-            <Route path="/profile" element={<UserProfile />} />
-            {/* <Route path="/my-reports" element={<UserProfile />} /> */}
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/stay-tuned" element={<StayTuned />} />
 
             {/* <Route path="/market-research" element={<IPAnalysis />} />
             <Route path="/market-intelligence" element={<IPAnalysis />} />
@@ -133,7 +138,13 @@ function App() {
 
           <Route element={<DefaultLayout />}>
             {/* <Route path="/" element={<HomePage />} /> */}
-            <Route path="/my-account" />
+            {/* <Route path="/my-account" /> */}
+
+            <Route path="/" element={<IPAnalysis />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/my-reports" element={<MyReport />} />
+
+            {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
             <Route path="/know-now/market-intelligence" element={<KnowNow />} />
 

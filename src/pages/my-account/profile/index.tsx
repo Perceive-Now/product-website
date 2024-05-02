@@ -1,19 +1,30 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
+
 import ProfileIcon from "../../../components/icons/common/profile";
 import EditIcon from "../../../components/icons/miscs/Edit";
-// import IconButton from "../../../components/reusable/icon-button";
+
 import ProfileComponent from "./profile";
 import { useAppSelector } from "../../../hooks/redux";
-// import { convertToBase64String } from "../../../utils/helpers";
+
+import { convertToBase64String } from "../../../utils/helpers";
+
+import ProfileModal from "../../../components/modal/profile-modal";
+import ChangePasswordModal from "../../../components/modal/changepassword";
+import Button from "../../../components/reusable/button";
+
+type IModal = "profile" | "password";
 
 const UserProfile = () => {
+  const [modal, setModal] = useState<IModal | null>(null);
+  const [modalType, setModalType] = useState<any>();
+
   const UserDetail = useAppSelector((state) => state.auth.user);
 
-  // convertToBase64String(userDetail?.profile_photo)
+  const TopicOfInterest = UserDetail?.topics_of_interest?.split(", ") ?? [];
   const [photo, setPhoto] = useState<any>();
 
   useEffect(() => {
-    setPhoto(UserDetail?.profile_photo);
+    setPhoto(convertToBase64String(UserDetail?.profile_photo));
   }, [UserDetail]);
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +72,7 @@ const UserProfile = () => {
   ];
 
   return (
-    <div>
+    <>
       <h6 className="text-2xl font-bold text-primary-900">Profile</h6>
       <div className="w-full">
         <div className="flex flex-col w-[900px] items-center justify-center">
@@ -77,7 +88,13 @@ const UserProfile = () => {
             </label>
           </div>
           <div className="space-y-[20px] w-full mt-2">
-            <ProfileComponent title={"Profile"}>
+            <ProfileComponent
+              title={"Profile"}
+              onEdit={() => {
+                setModal("profile");
+                setModalType("profile");
+              }}
+            >
               <div className="p-[20px] space-y-[8px]">
                 {ProfilesData.map((profile, idx) => (
                   <div key={idx * 79} className="flex items-center gap-[60px] text-secondary-800">
@@ -85,17 +102,49 @@ const UserProfile = () => {
                     <div>{profile.value}</div>
                   </div>
                 ))}
+                <div className="flex items-center justify-end">
+                  <Button
+                    startIcon={<EditIcon className="text-primary-900" />}
+                    htmlType="button"
+                    type={"default"}
+                    size="default"
+                    handleClick={() => setModal("password")}
+                    classname="text-primary-900 p-0"
+                  >
+                    <span>Change Password</span>
+                  </Button>
+                </div>
               </div>
             </ProfileComponent>
 
-            {/* <ProfileComponent title={"Topics of interest"}>
-              <div className="p-[20px] space-y-[8px]">
+            <ProfileComponent
+              title={"Topics of interest"}
+              onEdit={() => {
+                setModal("profile");
+                setModalType("interest");
+              }}
+            >
+              <div className="p-[20px] flex flex-wrap gap-2 items-center">
+                {TopicOfInterest?.map((topic, idx) => (
+                  <div key={idx * 35} className="border rounded-lg px-1 py-0.5 border-primary-900">
+                    {topic}
+                  </div>
+                ))}
               </div>
-            </ProfileComponent> */}
+            </ProfileComponent>
           </div>
         </div>
       </div>
-    </div>
+      {/* ----------------Modal--------------- */}
+      <ProfileModal
+        open={modal === "profile"}
+        onClose={() => setModal(null)}
+        userDetail={UserDetail}
+        modalType={modalType}
+        photo={photo ? photo : UserDetail?.profile_photo}
+      />
+      <ChangePasswordModal open={modal === "password"} onClose={() => setModal(null)} />
+    </>
   );
 };
 

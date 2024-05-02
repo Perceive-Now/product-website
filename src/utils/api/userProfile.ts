@@ -61,8 +61,8 @@ export interface IUserProfile {
   username: string;
   first_name: string;
   last_name: string;
-  full_name: string;
-  email: string;
+  full_name?: string;
+  email?: string;
   id: number;
   phone_number: null | string;
   profile_photo: string;
