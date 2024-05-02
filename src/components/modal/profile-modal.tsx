@@ -87,7 +87,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         job_position: value?.job_position,
         email: "",
         about_me: "",
-        id: userDetail.id,
+        // id: userDetail.id,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
@@ -101,7 +101,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         toast.error(error.message);
       }
     },
-    [country?.value, dispatch, onClose, photo, userDetail.id],
+    [country?.value, dispatch, onClose, photo],
   );
 
   return (
