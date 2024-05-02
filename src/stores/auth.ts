@@ -188,6 +188,8 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         profile_photo: userProfileResponse.data.profile_photo,
         username: userProfileResponse.data.username,
         company_id: userProfileResponse.data.company_id,
+        email: userProfileResponse.data.email,
+
         //
       },
     };

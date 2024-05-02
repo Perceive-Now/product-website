@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import Modal from "../reusable/modal";
 import Input from "../reusable/input";
@@ -10,6 +9,9 @@ import Button from "../reusable/button";
 import IconButton from "../reusable/icon-button";
 
 import { CrossIcon } from "../icons";
+import axiosInstance from "../../utils/axios";
+import { Auth_CODE } from "../../utils/constants";
+import toast from "react-hot-toast";
 
 interface Props {
   open: boolean;
@@ -23,6 +25,10 @@ interface IPassword {
 }
 
 const ChangePasswordModal = ({ open, onClose }: Props) => {
+  const [current, setCurrent] = useState(false);
+  const [newPassword, setNewPassword] = useState(false);
+  const [confirmPassword, setConfirmpassword] = useState(false);
+
   const formInitialValue: IPassword = {
     current_password: "",
     new_password: "",
@@ -49,15 +55,37 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
+    reset,
+    watch,
   } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
     mode: "onChange",
   });
 
-  const onContinue = useCallback(() => {
-    console.log("Password");
-  }, []);
+  const onContinue = useCallback(
+    async (value: IPassword) => {
+      const values = {
+        new_password: value.new_password,
+        current_password: value.current_password,
+      };
+      try {
+        const response = await axiosInstance.post(
+          `/api/reset_password?code=${Auth_CODE}&clientId=default`,
+          values,
+        );
+        reset();
+        toast.success(response.data.message || "Password updated successfully");
+      } catch (error: any) {
+        toast.error(error.response.data.message || "Something went wrong");
+      }
+    },
+    [reset],
+  );
+
+  const currentPassword = watch("current_password");
+  const NewPassword = watch("new_password");
+  const ConfirmPassword = watch("confirm_password");
 
   return (
     <Modal open={open} handleOnClose={onClose}>
@@ -80,25 +108,34 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
           <fieldset>
             <Input
               register={register("current_password")}
-              type="text"
+              type={current ? "text" : "password"}
               placeholder="Current password"
               error={errors.current_password}
+              showPassword={() => setCurrent(!current)}
+              watch={currentPassword}
+              visible={current}
             />
           </fieldset>
-          <fieldset>
+          <fieldset className="relative">
             <Input
               register={register("new_password")}
-              type="text"
+              type={newPassword ? "text" : "password"}
               placeholder="New password"
               error={errors.new_password}
+              showPassword={() => setNewPassword(!newPassword)}
+              watch={NewPassword}
+              visible={newPassword}
             />
           </fieldset>
           <fieldset>
             <Input
               register={register("confirm_password")}
-              type="text"
+              type={confirmPassword ? "text" : "password"}
               placeholder="Confirm password"
               error={errors.confirm_password}
+              showPassword={() => setConfirmpassword(!confirmPassword)}
+              watch={ConfirmPassword}
+              visible={confirmPassword}
             />
           </fieldset>
           <Button classname="w-full" loading={isSubmitting} htmlType="submit" size="small">

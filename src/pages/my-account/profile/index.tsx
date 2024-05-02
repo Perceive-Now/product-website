@@ -17,11 +17,11 @@ type IModal = "profile" | "password";
 const UserProfile = () => {
   const [modal, setModal] = useState<IModal | null>(null);
   const [modalType, setModalType] = useState<any>();
+  const [photo, setPhoto] = useState<any>();
 
   const UserDetail = useAppSelector((state) => state.auth.user);
 
   const TopicOfInterest = UserDetail?.topics_of_interest?.split(", ") ?? [];
-  const [photo, setPhoto] = useState<any>();
 
   useEffect(() => {
     setPhoto(convertToBase64String(UserDetail?.profile_photo));
@@ -29,7 +29,6 @@ const UserProfile = () => {
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
-
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {

@@ -19,7 +19,7 @@ import axiosInstance from "../axios";
 
 export async function updateUserProfile(value: any) {
   const response = await axiosInstance.put<IUserProfile>(
-    `/api/update_user_profile?code=${authCode}&clientId=default&u`,
+    `/api/update_user_profile?code=${authCode}&clientId=default`,
     value,
   );
   return response;
