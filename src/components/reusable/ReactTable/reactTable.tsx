@@ -40,15 +40,15 @@ export default function ReactTable(props: IReactTable) {
   //
   return (
     <div className="mt-1 w-full overflow-x-auto">
-      <table className="w-full">
-        <thead className="border-b-[2px] border-gray-400">
+      <table className="w-full rounded-lg overflow-hidden">
+        <thead className="bg-primary-900 rounded-t-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  className="pb-2 px-1 text-left text-primary-900 font-semibold text-base"
+                  className="py-1 px-1 text-left text-white font-semibold text-base"
                   {...{
                     style: {
                       minWidth: header.column.columnDef.minSize,
@@ -66,7 +66,7 @@ export default function ReactTable(props: IReactTable) {
                         className="ml-"
                         onClick={header.column.getToggleSortingHandler()}
                       >
-                        <TableSortIcon />
+                        <TableSortIcon className="text-white" />
                       </button>
                     )}
                   </div>

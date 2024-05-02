@@ -256,3 +256,13 @@
   left: 0 !important;
   right: 0 !important;
 }
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(146deg, #ffb531 26.94%, #fa6d08 113.34%);
+  cursor: pointer;
+}

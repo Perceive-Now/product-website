@@ -24,8 +24,6 @@ export default function AuthLayout() {
 
   const dispatch = useAppDispatch();
   const authStore = useAppSelector((state) => state.auth);
-
-  console;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
 
@@ -44,6 +42,7 @@ export default function AuthLayout() {
 
     // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
+
     if (!session.success) {
       if (PathPersistRef.current.path) {
         return navigate(`/login?callback_path=${encodeURIComponent(PathPersistRef.current.path)}`);

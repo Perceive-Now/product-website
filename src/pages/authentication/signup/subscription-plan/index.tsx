@@ -68,6 +68,8 @@ const SubscriptionPlan = ({ changeActiveStep }: Props) => {
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<IProduct>();
 
+  const ItemId = sessionStorage.getItem("UseCaseId");
+
   const { data: products, isLoading } = useQuery(["get-product"], async () => {
     return await getProducts();
   });
@@ -78,25 +80,28 @@ const SubscriptionPlan = ({ changeActiveStep }: Props) => {
     //
   }, [products]);
 
-  const handleSelectProduct = async (plan: IProduct) => {
-    setLoading(true);
-    setSelectedPlan(plan);
-    try {
-      const response = await axiosInstance.post<IPaymentIntent>(
-        `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
-        {
-          item_id: plan.id,
-        },
-      );
-      //
-      setLoading(false);
-      setClientSecret(response.data.clientSecret);
-      // setPaymentId(response.data.payment_intent_id);
-    } catch (error) {
-      setLoading(false);
-      toast.error("Failed to create payment intent");
-    }
-  };
+  const handleSelectProduct = useCallback(
+    async (plan: IProduct) => {
+      setLoading(true);
+      setSelectedPlan(plan);
+      try {
+        const response = await axiosInstance.post<IPaymentIntent>(
+          `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
+          {
+            item_id: ItemId,
+          },
+        );
+        //
+        setLoading(false);
+        setClientSecret(response.data.clientSecret);
+        // setPaymentId(response.data.payment_intent_id);
+      } catch (error) {
+        setLoading(false);
+        toast.error("Failed to create payment intent");
+      }
+    },
+    [ItemId],
+  );
 
   const handleChange = useCallback(() => {
     if (clientSecret) {
@@ -122,7 +127,7 @@ const SubscriptionPlan = ({ changeActiveStep }: Props) => {
           <StripePayment
             clientSecret={clientSecret}
             changeActiveStep={changeActiveStep}
-            selectedPlan={selectedPlan}
+            selectedPlan={selectedPlan as any}
           />
         ) : (
           <div className="grid grid-cols-3 gap-2.5">

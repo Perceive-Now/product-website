@@ -42,6 +42,7 @@ export default function KeywordSelection({ changeActiveStep }: Props) {
     mode: "onBlur",
   });
   //
+
   const addKeyword: SubmitHandler<FormData> = useCallback(
     (value: FormData) => {
       if (keywords.length >= 0) {

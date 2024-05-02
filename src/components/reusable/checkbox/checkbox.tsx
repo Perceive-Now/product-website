@@ -1,7 +1,8 @@
 import React from "react";
 import CheckBoxOnIcon from "../../icons/miscs/checkbox-on";
 import CheckBoxOffIcon from "../../icons/miscs/checkbox-off";
-// import PopOverHover from "../tooltip";
+import PopOverHover from "../tooltip";
+import classNames from "classnames";
 
 interface CheckBoxButtonsProps {
   options: RadioButtonOption[];
@@ -35,7 +36,7 @@ export default function CheckBoxButtons(props: CheckBoxButtonsProps) {
     <div className={props.classNames?.component}>
       {options.map((mode) => (
         <div
-          className="flex items-center cursor-pointer group"
+          className="flex  items-center cursor-pointer"
           key={mode.value}
           onClick={() => handleCheckboxChange(mode)}
         >
@@ -45,21 +46,18 @@ export default function CheckBoxButtons(props: CheckBoxButtonsProps) {
             onChange={() => handleCheckboxChange(mode)}
             className="hidden"
           />
-          <span className="inline-block mr-1">
+          <span className="mr-1">
             {activeModes.includes(mode.value) ? (
-              <CheckBoxOnIcon className="text-primary-500 group-hover:text-primary-600" />
+              <CheckBoxOnIcon className="text-white group-hover:text-primary-600" />
             ) : (
-              <CheckBoxOffIcon className="text-gray-600 group-hover:text-gray-700" />
+              <CheckBoxOffIcon className="text-white group-hover:text-gray-700" />
             )}
           </span>
 
-          <span className={`${props?.classNames?.label}`}>
+          <div className={classNames(props?.classNames?.label, "flex")}>
             {mode.label}
-            {/* {
-              mode.desc &&
-              <PopOverHover desc={mode.desc} />
-            } */}
-          </span>
+            {mode.desc && <PopOverHover desc={mode.desc} />}
+          </div>
         </div>
       ))}
     </div>

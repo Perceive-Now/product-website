@@ -1,14 +1,12 @@
-import React, { useCallback, useState } from "react";
-import UserProfile from "../user-profile/profile";
+import { useCallback, useState } from "react";
 import classNames from "classnames";
+
+import UserProfile from "../user-profile/profile";
+
 import Stepper from "../../../../components/reusable/Stepper";
-import CompanyProfile from "../company-details";
-// import SubscriptionPlan from "../subscription-plan";
-// import Prcing1 from "../subscription-plan/subcription-demo";
-// import Finish from "../finish";
+
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
-import SubscriptionPlan from "../subscription-plan";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -33,11 +31,11 @@ const UserDetails = () => {
       value: 1,
       component: <UserProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
     },
-    {
-      label: "Company Details",
-      value: 2,
-      component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
-    },
+    // {
+    //   label: "Company Details",
+    //   value: 2,
+    //   component: <CompanyProfile changeActiveStep={changeActiveStep} userDetail={userDetail} />,
+    // },
     // {
     //   label: "Choose a plan",
     //   value: 3,
@@ -45,15 +43,17 @@ const UserDetails = () => {
     // },
     {
       label: "Finish",
-      value: 3,
+      value: 2,
       component: <WelcomePage />,
     },
   ];
 
   return (
     <div className="w-[927px] mx-auto p-5">
-      <div className="sticky top-0 bg-white pt-2 mb-6 pb-2 z-10 border-b border-appGray-400">
-        <Stepper steps={steps} activeStep={activeStep} />
+      <div className="sticky top-0 bg-white pt-2 mb-6 z-10 ">
+        <div className="w-[428px] border-b border-appGray-400 mx-auto pb-2">
+          <Stepper steps={steps} activeStep={activeStep} />
+        </div>
       </div>
       {steps.map((step, idx) => (
         <div

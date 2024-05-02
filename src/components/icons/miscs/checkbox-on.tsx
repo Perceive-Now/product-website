@@ -13,12 +13,12 @@ export default function CheckBoxOnIcon(props: SVGProps<SVGSVGElement>) {
       <g clipPath="url(#clip0_2834_6980)">
         <path
           d="M19 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.11 21 21 20.1 21 19V5C21 3.9 20.11 3 19 3ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-          fill="#442873"
+          fill="currentColor"
         />
       </g>
       <defs>
         <clipPath id="clip0_2834_6980">
-          <rect width="24" height="24" fill="white" />
+          <rect width="24" height="24" fill="currentColor" />
         </clipPath>
       </defs>
     </svg>

@@ -70,7 +70,7 @@ export default function LoginPage() {
       if (callbackPath) {
         navigate(callbackPath);
       } else {
-        navigate("/user-registration");
+        navigate("/");
       }
     } else {
       toast.error(response.message);
@@ -194,7 +194,7 @@ export default function LoginPage() {
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <GoogleAuth isAgree={true} title="Sign in with Google" />
+        <GoogleAuth type="signin" isAgree={true} title="Sign in with Google" />
       </form>
     </div>
   );
