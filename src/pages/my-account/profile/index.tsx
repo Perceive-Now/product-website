@@ -29,7 +29,6 @@ const UserProfile = () => {
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
-    setPhoto(file);
 
     if (file) {
       const reader = new FileReader();
