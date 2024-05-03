@@ -2,35 +2,40 @@ import { useCallback, useEffect, useState } from "react";
 
 //
 import classNames from "classnames";
-import jsCookie from "js-cookie";
 
 import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
 
 import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/thank-you";
 import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
 
-// import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
-
 import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
 
 import { useAppSelector } from "../../../../hooks/redux";
 
-// import SubscriptionPlan from "../../../authentication/signup/subscription-plan";
-
 import { questionList } from "./_question";
 import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/new-question";
 import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
-// import Payment from "../../../../components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
  */
 export default function IPAnalysis() {
-  const [activeStep, setActiveStep] = useState(0);
-  const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
-  //
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
+  const [activeStep, setActiveStep] = useState<any>(sessionDetail?.step_id);
+  const [useCases, setUseCases] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (sessionDetail?.step_id) {
+      setActiveStep(sessionDetail?.step_id);
+    }
+    if (sessionDetail?.use_cases) {
+      setUseCases(sessionDetail?.use_cases);
+    }
+  }, [sessionDetail]);
+
+  //
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {
       setActiveStep(stepValue);
@@ -38,16 +43,14 @@ export default function IPAnalysis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const chatId = jsCookie.get("chatId");
+  const questionId = sessionDetail?.question_id;
+  // || jsCookie.get("questionId");
+  const commonQuestionId = sessionDetail?.common_question_id;
+  // || jsCookie.get("commonQuestionId");
 
-  const questionId = jsCookie.get("questionId");
-  const commonQuestionId = jsCookie.get("commonQuestionId");
-
-  // console.log("c" + commonQuestionId, "q" + questionId);
-
-  useEffect(() => {
-    jsCookie.set("chatId", chatId || "");
-  }, [chatId]);
+  // useEffect(() => {
+  //   jsCookie.set("chatId", chatId || "");
+  // }, [chatId]);
 
   //
   const questionWithUsecase = questionList.filter(
@@ -65,13 +68,12 @@ export default function IPAnalysis() {
   //
   useEffect(() => {
     if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
-      // console.log('true')
       changeActiveStep(5);
     }
-  }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
+    changeActiveStep(activeStep);
+  }, [activeStep, changeActiveStep, question.question, questionId, questionWithUsecase]);
 
   //
-
   const steps = [
     {
       label: "",
@@ -126,20 +128,6 @@ export default function IPAnalysis() {
       value: 6,
       component: <IPReview changeActiveStep={changeActiveStep} />,
     },
-    // {
-    //   label: "",
-    //   value: 7,
-    //   component: (
-    //     <Payment
-    //       changeActiveStep={changeActiveStep}
-    //     />
-    //   ),
-    // },
-    // {
-    //   label: "",
-    //   value: 8,
-    //   component: <IPFinal activeStep={activeStep} />,
-    // },
   ];
 
   //
@@ -167,12 +155,7 @@ export default function IPAnalysis() {
             {steps.map((step, idx) => (
               <div
                 key={idx}
-                className={classNames(
-                  activeStep !== step.value && "hidden",
-                  "px-1 h-full w-full",
-                  // activeStep === 0 && "h-[calc(100vh-120px)]",
-                  // activeStep === 9 && "h-full",
-                )}
+                className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
               >
                 {step.component}
               </div>

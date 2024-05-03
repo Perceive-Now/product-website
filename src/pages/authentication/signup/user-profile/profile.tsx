@@ -17,7 +17,6 @@ import SelectBox from "../../../../components/reusable/select-box";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
 import { Countries } from "../../../../utils/constants";
-import { convertToBase64String } from "../../../../utils/helpers";
 // import classNames from "classnames";
 // import { CrossIcon } from "../../../../components/icons";
 
@@ -44,7 +43,7 @@ interface Props {
 }
 
 const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
-  const [photo, setPhoto] = useState<any>(convertToBase64String(userDetail?.profile_photo));
+  const [photo, setPhoto] = useState<any>(userDetail?.profile_photo);
   const [country, setCountry] = useState<IOption>({
     label: userDetail?.country || "",
     value: userDetail?.country || "",

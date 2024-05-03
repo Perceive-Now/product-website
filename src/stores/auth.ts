@@ -10,6 +10,38 @@ import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
 
 /**
+ * Interfaces
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface IResponse<T = any> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+interface AuthState {
+  user?: IUserProfile;
+  token?: string;
+}
+
+//
+interface ILoginParams {
+  username: string;
+  password: string;
+}
+
+interface ISignupParams {
+  email: string;
+  password: string;
+}
+
+//
+interface IRefreshResponse {
+  access: string;
+  refresh: string;
+}
+
+/**
  *
  */
 const initialState: AuthState = {
@@ -264,85 +296,3 @@ export const AuthSlice = createSlice({
  */
 export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
 export default AuthSlice.reducer;
-
-/**
- * Interfaces
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface IResponse<T = any> {
-  success: boolean;
-  message: string;
-  data?: T;
-}
-
-//
-// interface IAuthuser {
-//   email: string;
-//   pkId: string;
-//   username: string;
-//   name: string;
-//   image?: string;
-//   firstName: string;
-//   lastName: string;
-//   phoneNumber: number | null;
-//   aboutMe: string;
-//   userLocation: string;
-//   userCompany: {
-//     companyName: string | null;
-//     companyLocation?: string;
-//     techSector?: string;
-//     teamNumber?: string;
-//   };
-//   jobPosition: string | null;
-//   preferredKeywords: {
-//     name: string;
-//   }[];
-//   preferredJournals: {
-//     name: string;
-//   }[];
-//   strategicGoals: string[];
-//   subscription: {
-//     has_subscription: boolean;
-//     message: string;
-//     data: {
-//       subscription: string;
-//       subscription_status: "unpaid" | "paid";
-//       checkout_session_id: string;
-//       products: {
-//         name: string;
-//       }[];
-//     };
-//   };
-//   ipPortfolio: {
-//     orcidId: string;
-//     patents: { patent_name: string }[];
-//     publications: { publication_name: string }[];
-//     scholarlyProfile: string;
-//   };
-//   isProfileDetailCompleted?: boolean;
-//   isCompanyDetailCompleted?: boolean;
-//   isIpPortfolioCompleted: boolean;
-// }
-
-//
-interface AuthState {
-  user?: IUserProfile;
-  token?: string;
-}
-
-//
-interface ILoginParams {
-  username: string;
-  password: string;
-}
-
-interface ISignupParams {
-  email: string;
-  password: string;
-}
-
-//
-interface IRefreshResponse {
-  access: string;
-  refresh: string;
-}

@@ -9,6 +9,7 @@ import IPStepSlice from "./stores/IpSteps";
 import StatesSlice from "./stores/US-states";
 import ChatSlice from "./stores/chat";
 import UseCaseSlice from "./stores/use-case";
+import SessionSlice from "./stores/session";
 
 //
 export const store = configureStore({
@@ -21,6 +22,7 @@ export const store = configureStore({
     states: StatesSlice,
     chat: ChatSlice,
     usecase: UseCaseSlice,
+    sessionDetail: SessionSlice,
   },
 });
 

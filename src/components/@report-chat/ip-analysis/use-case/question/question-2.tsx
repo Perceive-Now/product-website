@@ -5,12 +5,11 @@ import jsCookie from "js-cookie";
 import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import axiosInstance from "../../../../../utils/axios";
-import { useAppDispatch } from "../../../../../hooks/redux";
-import { setFirstChat } from "../../../../../stores/chat";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 
 import NewComponent from "../../new-comp";
-import { addAnswer } from "../../../../../utils/api/chat";
+import { setSession } from "../../../../../stores/session";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -25,6 +24,8 @@ interface Props {
 
 export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, question }: Props) {
   const dispatch = useAppDispatch();
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
   const [isloading, setIsLoading] = useState(false);
   const questionId = question.questionId;
 
@@ -56,31 +57,51 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
           // dispatch(setQuestionId({ questionId: 1 }));
 
           if (status === "true" || status == true) {
-            const updateAnswer = {
-              question_id: String(questionId) || "",
-              session_id: sessionId || "",
-              user_id: userId || "",
-              answer: value.answer || "",
-            };
-
-            addAnswer(updateAnswer); // Send updated answers to the API
+            if (Number(questionId) <= 5) {
+              // jsCookie.set("commonQuestionId", String(questionId + 1));
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    common_question_id: questionId + 1,
+                  },
+                }),
+              );
+            } else {
+              // jsCookie.set("questionId", String(questionId + 1));
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    question_id: questionId + 1,
+                    step_id: activeStep - 1,
+                  },
+                }),
+              );
+            }
+            //
             dispatch(
-              setFirstChat({
-                answer: value.answer,
-                question: question.question,
-                questionId: 1,
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  step_id: activeStep - 1,
+                },
               }),
             );
-            if (Number(questionId) <= 5) {
-              jsCookie.set("commonQuestionId", String(questionId + 1));
-            } else {
-              jsCookie.set("questionId", String(questionId + 1));
-            }
             changeActiveStep(activeStep - 1);
           } else {
             jsCookie.set("questionId", String(questionId));
+
             dispatch(setNoveltyAspect({ answer: apiData }));
             changeActiveStep(2);
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  step_id: 2,
+                },
+              }),
+            );
           }
         }
       } catch (error: any) {
@@ -88,7 +109,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, question.question, questionId, sessionId, userId],
+    [activeStep, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
   );
 
   return (

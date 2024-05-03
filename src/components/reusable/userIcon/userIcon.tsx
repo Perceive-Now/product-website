@@ -1,6 +1,6 @@
 // import { useAppSelector } from "../../../hooks/redux";
 
-import { convertToBase64String } from "../../../utils/helpers";
+// import { convertToBase64String } from "../../../utils/helpers";
 
 interface Props {
   first_name: string;
@@ -22,7 +22,7 @@ Props) {
     <>
       {profile_photo ? (
         <img
-          src={convertToBase64String(profile_photo)}
+          src={profile_photo}
           alt={first_name}
           className="w-4 h-4 ml-1 rounded-full bg-primary-50"
         />
