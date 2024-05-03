@@ -63,12 +63,12 @@ export default function IPAnalysis() {
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
   //
-  useEffect(() => {
-    if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
-      // console.log('true')
-      changeActiveStep(5);
-    }
-  }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
+  // useEffect(() => {
+  //   if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
+  //     // console.log('true')
+  //     changeActiveStep(5);
+  //   }
+  // }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
 
   //
 
