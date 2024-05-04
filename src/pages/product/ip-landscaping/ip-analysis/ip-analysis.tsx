@@ -9,30 +9,25 @@ import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
 import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/thank-you";
 import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
 
-// import IPFinal from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/final";
-
 import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
 
 import { useAppSelector } from "../../../../hooks/redux";
 
-// import SubscriptionPlan from "../../../authentication/signup/subscription-plan";
-
 import { questionList } from "./_question";
 import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/new-question";
 import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
-// import Payment from "../../../../components/@report-chat/ip-analysis/use-case/payment";
+import EditQuestion from "../../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 
 /**
  *
  */
 export default function IPAnalysis() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(6);
   const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
   //
-
   const changeActiveStep = useCallback((stepValue: number) => {
-    if (stepValue < steps.length && stepValue >= 0) {
+    if (stepValue < steps.length - 1 && stepValue >= 0) {
       setActiveStep(stepValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,7 +60,6 @@ export default function IPAnalysis() {
   //
   // useEffect(() => {
   //   if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
-  //     // console.log('true')
   //     changeActiveStep(5);
   //   }
   // }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
@@ -125,6 +119,13 @@ export default function IPAnalysis() {
       label: "Review",
       value: 6,
       component: <IPReview changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "Edit",
+      value: 7,
+      component: (
+        <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={question.answer} />
+      ),
     },
     // {
     //   label: "",

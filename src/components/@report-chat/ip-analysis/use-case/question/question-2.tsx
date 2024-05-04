@@ -6,11 +6,10 @@ import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import axiosInstance from "../../../../../utils/axios";
 import { useAppDispatch } from "../../../../../hooks/redux";
-import { setFirstChat } from "../../../../../stores/chat";
-import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 
 import NewComponent from "../../new-comp";
 import { addAnswer } from "../../../../../utils/api/chat";
+import { setChat } from "../../../../../stores/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -64,13 +63,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
             };
 
             addAnswer(updateAnswer); // Send updated answers to the API
-            dispatch(
-              setFirstChat({
-                answer: value.answer,
-                question: question.question,
-                questionId: 1,
-              }),
-            );
+
             if (Number(questionId) <= 5) {
               jsCookie.set("commonQuestionId", String(questionId + 1));
             } else {
@@ -79,7 +72,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
             changeActiveStep(activeStep - 1);
           } else {
             jsCookie.set("questionId", String(questionId));
-            dispatch(setNoveltyAspect({ answer: apiData }));
+            dispatch(setChat({ question: apiData }));
             changeActiveStep(2);
           }
         }
@@ -88,7 +81,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, question.question, questionId, sessionId, userId],
+    [activeStep, changeActiveStep, dispatch, questionId, sessionId, userId],
   );
 
   return (

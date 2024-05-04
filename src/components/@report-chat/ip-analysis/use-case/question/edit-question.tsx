@@ -6,22 +6,24 @@ import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
-import { setChat } from "../../../../../stores/chat";
 import axiosInstance from "../../../../../utils/axios";
 
 import NewComponent from "../../new-comp";
+import { setChat } from "../../../../../stores/chat";
 interface Props {
   changeActiveStep: (steps: number) => void;
-  activeStep: number;
+  // activeStep: number;
   exampleAnswer: string;
 }
 
-/**
+/**NewQuestion
  *
  */
 
-export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswer }: Props) {
+export default function EditQuestion({ changeActiveStep, exampleAnswer }: Props) {
   const dispatch = useAppDispatch();
+  const chatDetail = useAppSelector((state) => state.chat.chat);
+
   const [isloading, setIsLoading] = useState(false);
 
   const chatId = jsCookie.get("chatId");
@@ -61,7 +63,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
         } else {
           if (status === "true" || status == true) {
             jsCookie.set("questionId", String(questionId + 1));
-            changeActiveStep(activeStep + 1);
+            changeActiveStep(6);
           } else {
             jsCookie.set("chatId", chatId || "");
             jsCookie.set("questionId", String(questionId));
@@ -69,13 +71,14 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
             changeActiveStep(2);
           }
         }
+
         setIsLoading(false);
       } catch (error: any) {
         setIsLoading(false);
         toast.error(error.message);
       }
     },
-    [activeStep, changeActiveStep, chatId, dispatch, questionId, sessionId, userId],
+    [changeActiveStep, chatId, dispatch, questionId, sessionId, userId],
   );
 
   return (
@@ -84,6 +87,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
       onContinue={onContinue}
       question={question}
       exampleAnswer={exampleAnswer}
+      answer={chatDetail.answer}
     />
   );
 }

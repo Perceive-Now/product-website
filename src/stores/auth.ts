@@ -115,6 +115,7 @@ export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
     const accessToken = jsCookie.get("pn_refresh");
+
     if (accessToken && accessToken !== "undefined")
       return {
         success: true,
@@ -159,6 +160,38 @@ export const getCurrentSession = createAsyncThunk(
   },
 );
 
+export const getNewSession = createAsyncThunk("getNewSession", async (): Promise<IResponse> => {
+  // const sessionId = jsCookie.get("sessionID");
+
+  // if (accessToken && accessToken !== "undefined")
+  //   return {
+  //     success: true,
+  //     message: "Current session obtained",
+  //     data: { token: accessToken },
+  //   };
+
+  //
+  try {
+    const response = await axiosInstance.get<IRefreshResponse>(
+      `/api/user_profile?code=${authCode}&clientId=default`,
+    );
+
+    jsCookie.set("pn_refresh", response.data.refresh);
+    sessionStorage.setItem("pn_access", response.data.access);
+
+    return {
+      success: true,
+      message: "New session obtained",
+      data: { token: response.data.access },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Session failed",
+    };
+  }
+});
+
 export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promise<IResponse> => {
   try {
     // TODO:: Make an API call to get user profile
@@ -172,7 +205,6 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       // axiosInstance.get(`/api/get_products?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
-    // const subscriptionData = subscriptionResponse?.data ?? {};
     return {
       success: true,
       message: "Successfully fetched user details",

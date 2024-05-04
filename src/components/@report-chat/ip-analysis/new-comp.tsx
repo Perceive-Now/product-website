@@ -13,10 +13,16 @@ interface Props {
   question: string;
   exampleAnswer: string;
   isLoading: boolean;
+  answer?: string;
 }
 
-export default function NewComponent({ onContinue, question, isLoading, exampleAnswer }: Props) {
-  // const example = "The company behind Smart sensor is 'DermAI Tech Inc.'";
+export default function NewComponent({
+  onContinue,
+  question,
+  isLoading,
+  exampleAnswer,
+  answer,
+}: Props) {
   const formResolver = yup.object().shape({
     answer: yup.string().required("Please provide your answer"),
   });
@@ -29,7 +35,7 @@ export default function NewComponent({ onContinue, question, isLoading, exampleA
     setValue,
   } = useForm({
     defaultValues: {
-      answer: "",
+      answer: answer,
     },
     resolver: yupResolver(formResolver),
     mode: "onBlur",

@@ -1,18 +1,26 @@
 import { useCallback, useEffect } from "react";
-import ReviewQuestionAnswer from "./review-answer-question";
 import { useQuery } from "@tanstack/react-query";
+import jsCookie from "js-cookie";
+
+import ReviewQuestionAnswer from "./review-answer-question";
+
 import Button from "../../../../reusable/button";
+
 import { getUserChats } from "../../../../../utils/api/chat";
 import { questionList } from "../../../../../pages/product/ip-landscaping/ip-analysis/_question";
-import jsCookie from "js-cookie";
+
+import { useAppDispatch } from "../../../../../hooks/redux";
+import { setChat } from "../../../../../stores/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
 export default function IPReview({ changeActiveStep }: Props) {
-  const user_id = jsCookie.get("userId") ?? "";
-  const session_id = jsCookie.get("sessionId") ?? "";
+  const dispatch = useAppDispatch();
+  // const userDetails = use
+  const user_id = jsCookie.get("user_id") ?? "";
+  const session_id = jsCookie.get("session_id") ?? "";
 
   const onContinue = useCallback(async () => {
     changeActiveStep(0);
@@ -35,6 +43,15 @@ export default function IPReview({ changeActiveStep }: Props) {
       // You can include other properties from 'questionList' as needed
     };
   });
+
+  const handleEdit = useCallback(
+    (chat: any) => {
+      changeActiveStep(3);
+      dispatch(setChat(chat));
+    },
+    [changeActiveStep, dispatch],
+  );
+
   return (
     <div className="space-y-2.5 w-full shrink-0">
       <div className="w-full">
@@ -53,7 +70,7 @@ export default function IPReview({ changeActiveStep }: Props) {
               key={idx * 59}
               question={u.question || ""}
               answer={u.answer || ""}
-              onEdit={() => changeActiveStep(2)}
+              onEdit={() => handleEdit(u)}
             />
           ))}
         </div>

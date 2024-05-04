@@ -8,11 +8,9 @@ import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import { useAppDispatch } from "../../../../../hooks/redux";
 
-import { setQuestionId } from "../../../../../stores/chat";
-import { setNoveltyAspect } from "../../../../../stores/IpSteps";
-
 import NewComponent from "../../new-comp";
 import { addAnswer } from "../../../../../utils/api/chat";
+import { setChat } from "../../../../../stores/chat";
 // import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
@@ -66,7 +64,7 @@ Props) {
         const resError = response.data.error;
 
         setIsLoading(false);
-        dispatch(setQuestionId({ questionId: 1 }));
+        // dispatch(setQuestionId({ questionId: 1 }));
 
         if (resError || resError !== undefined) {
           toast.error(resError);
@@ -90,7 +88,7 @@ Props) {
             changeActiveStep(activeStep + 1);
           } else {
             jsCookie.set("questionId", String(questionId));
-            dispatch(setNoveltyAspect({ answer: apiData }));
+            dispatch(setChat({ question: apiData }));
             changeActiveStep(2);
           }
         }
