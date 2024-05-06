@@ -147,6 +147,7 @@ export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
     const accessToken = jsCookie.get("pn_refresh");
+
     if (accessToken && accessToken !== "undefined")
       return {
         success: true,
@@ -191,6 +192,29 @@ export const getCurrentSession = createAsyncThunk(
   },
 );
 
+export const getNewSession = createAsyncThunk("getNewSession", async (): Promise<IResponse> => {
+  // const sessionId = jsCookie.get("sessionID");
+  try {
+    const response = await axiosInstance.get<IRefreshResponse>(
+      `/api/new_session?code=${authCode}&clientId=default`,
+    );
+
+    jsCookie.set("pn_refresh", response.data.refresh);
+    sessionStorage.setItem("pn_access", response.data.access);
+
+    return {
+      success: true,
+      message: "New session obtained",
+      data: { token: response.data.access },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Session failed",
+    };
+  }
+});
+
 export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promise<IResponse> => {
   try {
     // TODO:: Make an API call to get user profile
@@ -198,13 +222,15 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
     const [
       // userResponse,
       userProfileResponse,
-      // subscriptionResponse
+      companyList,
     ] = await Promise.all([
       axiosInstance.get(`/api/user_profile?code=${authCode}&clientId=default `),
-      // axiosInstance.get(`/api/get_products?code=${authCode}&clientId=default `),
+      axiosInstance.get(`/api/get_company_list?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
-    // const subscriptionData = subscriptionResponse?.data ?? {};
+    const companyName = companyList.data.companies.find((c: any) =>
+      c.id === userProfileResponse.data.company_id ? c.name : "",
+    );
     return {
       success: true,
       message: "Successfully fetched user details",
@@ -219,7 +245,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         job_position: userProfileResponse.data.job_position,
         profile_photo: userProfileResponse.data.profile_photo,
         username: userProfileResponse.data.username,
-        company_id: userProfileResponse.data.company_id,
+        company_name: companyName.name || userProfileResponse.data.company_name,
         email: userProfileResponse.data.email,
 
         //

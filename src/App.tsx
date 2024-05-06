@@ -145,6 +145,7 @@ function App() {
             <Route path="/" element={<IPAnalysis />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
+            {/* <Route path="/settings" element={<MyReport />} /> */}
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />

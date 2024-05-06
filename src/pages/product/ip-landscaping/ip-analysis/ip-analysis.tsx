@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 //
 import classNames from "classnames";
@@ -11,19 +11,22 @@ import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-anal
 import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
 
-import { useAppSelector } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
 import { questionList } from "./_question";
 import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/new-question";
 import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
+import { setSession } from "../../../../stores/session";
+import EditQuestion from "../../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 
 /**
  *
  */
 export default function IPAnalysis() {
+  const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
-  const [activeStep, setActiveStep] = useState<any>(sessionDetail?.step_id);
+  const [activeStep, setActiveStep] = useState<any>(0);
   const [useCases, setUseCases] = useState<string[]>([]);
 
   useEffect(() => {
@@ -33,45 +36,59 @@ export default function IPAnalysis() {
     if (sessionDetail?.use_cases) {
       setUseCases(sessionDetail?.use_cases);
     }
-  }, [sessionDetail]);
+  }, [sessionDetail?.step_id, sessionDetail?.use_cases]);
 
   //
   const changeActiveStep = useCallback((stepValue: number) => {
-    if (stepValue < steps.length && stepValue >= 0) {
+    if (stepValue < steps.length - 1 && stepValue >= 0) {
       setActiveStep(stepValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const questionId = sessionDetail?.question_id;
-  // || jsCookie.get("questionId");
-  const commonQuestionId = sessionDetail?.common_question_id;
-  // || jsCookie.get("commonQuestionId");
-
-  // useEffect(() => {
-  //   jsCookie.set("chatId", chatId || "");
-  // }, [chatId]);
+  const questionId = useMemo(() => sessionDetail?.question_id, [sessionDetail?.question_id]);
+  const commonQuestionId = useMemo(
+    () => sessionDetail?.common_question_id,
+    [sessionDetail?.common_question_id],
+  );
 
   //
   const questionWithUsecase = questionList.filter(
     (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
   );
 
-  const question = questionWithUsecase.find((q) => {
-    if (Number(commonQuestionId) > 5) {
-      return q.questionId === Number(questionId);
-    } else {
-      return q.questionId === Number(commonQuestionId);
-    }
-  }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
+  const question = useMemo(
+    () =>
+      questionWithUsecase.find((q) => {
+        if (commonQuestionId && Number(commonQuestionId) > 5) {
+          return q.questionId === Number(questionId);
+        } else {
+          return q.questionId === Number(commonQuestionId);
+        }
+      }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
+    [commonQuestionId, questionId, questionWithUsecase],
+  );
 
   //
   useEffect(() => {
-    if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
+    // Check if the condition is met to update the session and active step
+    const isConditionMet =
+      useCases.length > 0 &&
+      activeStep < 5 &&
+      questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1;
+    if (isConditionMet) {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            step_id: 5,
+          },
+        }),
+      );
       changeActiveStep(5);
     }
-    changeActiveStep(activeStep);
-  }, [activeStep, changeActiveStep, question.question, questionId, questionWithUsecase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStep]);
 
   //
   const steps = [
@@ -127,6 +144,11 @@ export default function IPAnalysis() {
       label: "Review",
       value: 6,
       component: <IPReview changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "Edit",
+      value: 7,
+      component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
     },
   ];
 

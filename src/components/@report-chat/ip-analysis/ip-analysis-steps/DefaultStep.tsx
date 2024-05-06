@@ -29,7 +29,6 @@ interface OptionMappings {
 const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-
   // const { pathname } = useLocation();
 
   const [selected, setSelected] = useState<string[]>([]);
@@ -98,7 +97,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
           setSession({
             session_data: {
               ...sessionDetail,
-              question_id: 24,
+              question_id: 34,
               common_question_id: 1,
               step_id: 3,
               use_cases: options,

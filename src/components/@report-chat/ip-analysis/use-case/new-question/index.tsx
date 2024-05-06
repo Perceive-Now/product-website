@@ -6,7 +6,7 @@ import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
-import { setNoveltyAspect } from "../../../../../stores/IpSteps";
+import { setChat } from "../../../../../stores/chat";
 import axiosInstance from "../../../../../utils/axios";
 
 import NewComponent from "../../new-comp";
@@ -33,7 +33,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
     jsCookie.set("chatId", chatId || "");
   }, [chatId]);
 
-  const apiQuestion = useAppSelector((state) => state.ipData.novelty_aspect.answer) ?? "";
+  const apiQuestion = useAppSelector((state) => state.chat.chat.question) ?? "";
 
   //
   const [question, setQuestion] = useState("");
@@ -97,11 +97,10 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
           } else {
             // jsCookie.set("chatId", chatId || "");
             // jsCookie.set("questionId", String(questionId));
-            dispatch(setNoveltyAspect({ answer: apiData }));
+            dispatch(setChat({ question: apiData }));
             changeActiveStep(2);
           }
         }
-
         setIsLoading(false);
       } catch (error: any) {
         setIsLoading(false);

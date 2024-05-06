@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import StripePayment from "../../../../../pages/authentication/signup/stripe";
 import { getProducts } from "../../../../../utils/api/product";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../../../hooks/redux";
 
 // interface Props {
 //   changeActiveStep: (step: number) => void;
@@ -12,8 +13,10 @@ import { useNavigate } from "react-router-dom";
 const Payment = () => {
   const navigate = useNavigate();
 
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
   const clientSecret = sessionStorage.getItem("clientSecret");
-  const ItemId = sessionStorage.getItem("UseCaseId") as any;
+  const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
 
   const { data: products } = useQuery(["get-product"], async () => {
     return await getProducts();

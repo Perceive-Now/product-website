@@ -46,7 +46,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     phone_number: userDetail?.phone_number || "",
     country: userDetail?.country || "",
     topics_of_interest: userDetail?.topics_of_interest || "",
-    company_id: userDetail?.company_id || "N/A",
+    company_name: userDetail?.company_name || "N/A",
     job_position: userDetail?.job_position || "",
   };
 
@@ -83,7 +83,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         topics_of_interest: value.topics_of_interest,
         country: country?.value,
         profile_photo: photo,
-        company_id: value?.company_id,
+        company_name: value?.company_name,
         job_position: value?.job_position,
         email: userDetail.email || "",
         about_me: "",
@@ -200,9 +200,9 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                   Company name
                 </Label>
                 <Input
-                  register={register("company_id")}
+                  register={register("company_name")}
                   type="text"
-                  error={errors.company_id}
+                  error={errors.company_name}
                   placeholder="Company Name"
                 />
                 {/* <SelectBox

@@ -55,7 +55,7 @@ const UserProfile = () => {
     },
     {
       label: "Company",
-      value: UserDetail?.company_id || "",
+      value: UserDetail?.company_name || "",
     },
     {
       label: "Job title",

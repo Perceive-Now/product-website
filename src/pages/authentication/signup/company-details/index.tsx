@@ -56,7 +56,7 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
   }, [companies]);
 
   const formInitialValue: ICompanyForm = {
-    company_name: userDetail?.company_id || "",
+    company_name: userDetail?.company_name || "",
     job_position: userDetail?.job_position || "",
     member_email: "",
   };
@@ -87,7 +87,7 @@ const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
         topics_of_interest: userDetail?.topics_of_interest,
         country: userDetail?.country,
         profile_photo: userDetail?.profile_photo,
-        company_id: value.company_name,
+        company_name: value.company_name,
         // company?.value,
         job_position: value.job_position,
         member_email: value.member_email,

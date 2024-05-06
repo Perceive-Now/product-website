@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
@@ -6,10 +6,10 @@ import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
 import axiosInstance from "../../../../../utils/axios";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
-import { setNoveltyAspect } from "../../../../../stores/IpSteps";
 
 import NewComponent from "../../new-comp";
 import { setSession } from "../../../../../stores/session";
+import { setChat } from "../../../../../stores/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -27,7 +27,7 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
   const [isloading, setIsLoading] = useState(false);
-  const questionId = question.questionId;
+  const questionId = useMemo(() => question.questionId, [question.questionId]);
 
   const userId = jsCookie.get("user_id");
   const sessionId = jsCookie.get("session_id");
@@ -58,17 +58,16 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
 
           if (status === "true" || status == true) {
             if (Number(questionId) <= 5) {
-              // jsCookie.set("commonQuestionId", String(questionId + 1));
               dispatch(
                 setSession({
                   session_data: {
                     ...sessionDetail,
                     common_question_id: questionId + 1,
+                    step_id: activeStep - 1,
                   },
                 }),
               );
             } else {
-              // jsCookie.set("questionId", String(questionId + 1));
               dispatch(
                 setSession({
                   session_data: {
@@ -80,19 +79,19 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
               );
             }
             //
-            dispatch(
-              setSession({
-                session_data: {
-                  ...sessionDetail,
-                  step_id: activeStep - 1,
-                },
-              }),
-            );
+            // dispatch(
+            //   setSession({
+            //     session_data: {
+            //       ...sessionDetail,
+            //       step_id: activeStep - 1,
+            //     },
+            //   }),
+            // );
             changeActiveStep(activeStep - 1);
           } else {
             jsCookie.set("questionId", String(questionId));
 
-            dispatch(setNoveltyAspect({ answer: apiData }));
+            dispatch(setChat({ question: apiData }));
             changeActiveStep(2);
             dispatch(
               setSession({
