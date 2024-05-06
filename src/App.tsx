@@ -96,6 +96,7 @@ import MyReport from "./pages/my-account/my-reports";
 
 import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
+import Setting from "./pages/my-account/setting";
 
 /**
  *
@@ -145,7 +146,7 @@ function App() {
             <Route path="/" element={<IPAnalysis />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
-            {/* <Route path="/settings" element={<MyReport />} /> */}
+            <Route path="/setting" element={<Setting />} />
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />

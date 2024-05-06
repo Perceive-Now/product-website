@@ -41,6 +41,10 @@ import { NumberApplicationsByApplicant } from "../../../../components/@dashboard
 import PatentsKeyTakeaways from "../keytakeaways/patents";
 import SizeOfPatentFamilyKeyTakeaway from "../keytakeaways/patent-families";
 import PatentApplicantKeyTakeaways from "../keytakeaways/patent-applicants";
+import GeographicalDistributionPatentKeyTakeaway from "../keytakeaways/patent-families/geographical";
+import GeographicDistributionOfApplicantsTakeaways from "../keytakeaways/applicant-distribution";
+import ExaminerDistributionKeytakeaways from "../keytakeaways/examiners/distribution-examiner/keytakeaways";
+import ExaminerTrendKeytakeaways from "../keytakeaways/examiners/trends-examination/keytakeaway";
 
 //
 
@@ -210,6 +214,7 @@ export const IPFullReport = () => {
                   <div className="page-break">
                     <PatentLegalStatus keywords={keywords} />
                   </div>
+                  <PatentsKeyTakeaways />
                 </div>
 
                 <div
@@ -218,9 +223,11 @@ export const IPFullReport = () => {
                 >
                   <div className="page-break">
                     <InventorAnalysis keywords={keywords} />
+                    <SizeOfPatentFamilyKeyTakeaway />
                   </div>
                   <div className="page-break">
                     <GeographicalDistributionFiling keywords={keywords} />
+                    <GeographicalDistributionPatentKeyTakeaway />
                   </div>
                 </div>
 
@@ -230,9 +237,11 @@ export const IPFullReport = () => {
                 >
                   <div className="page-break">
                     <NumberApplicationsByApplicant keywords={keywords} />
+                    <PatentApplicantKeyTakeaways />
                   </div>
                   <div className="page-break">
                     <GeographicalDistributionApplicant keywords={keywords} />
+                    {/* <GeographicDistributionOfApplicantsTakeaways /> */}
                   </div>
                 </div>
 
@@ -242,9 +251,11 @@ export const IPFullReport = () => {
                 >
                   <div className="page-break">
                     <DistributionWorkload keywords={keywords} />
+                    <ExaminerDistributionKeytakeaways />
                   </div>
                   <div className="page-break">
                     <TrendExaminationYear keywords={keywords} />
+                    <ExaminerTrendKeytakeaways />
                   </div>
                 </div>
 
@@ -254,6 +265,7 @@ export const IPFullReport = () => {
                 >
                   <div className="page-break">
                     <PatentAssignment keywords={keywords} />
+                    <GeographicalDistributionPatentKeyTakeaway />
                   </div>
                   <div className="page-break">
                     <GeographicalDistributionAssignment keywords={keywords} />
@@ -306,10 +318,6 @@ export const IPFullReport = () => {
                     <PCTApplication keywords={keywords} />
                   </div>
                 </div>
-
-                <PatentsKeyTakeaways />
-                <SizeOfPatentFamilyKeyTakeaway />
-                <PatentApplicantKeyTakeaways />
               </div>
             </div>
           </div>

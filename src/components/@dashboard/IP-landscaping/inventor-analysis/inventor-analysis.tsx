@@ -104,7 +104,7 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
             legendX="Year"
             legends="legend"
           /> */}
-        <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
+        {/* <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
         <div>
           <h6 className="font-semibold text-primary-900">
             Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
@@ -136,7 +136,7 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
               average, suggesting focused innovation protection efforts."
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
     </DataSection>
   );

@@ -28,25 +28,25 @@ const PatentApplicantKeyTakeaways = () => {
   return (
     <>
       {data && (
-        <KeyDetail section="Applicants" subtitle="Number of Applications by Applicant Type">
+        <KeyDetail section="Key Takeaway">
           <Keytakeaway
             title={"Market Share of Applications by Applicant Type"}
             description={marketShareOfApplicationsByApplicantType(data)}
           />
           <Keytakeaway
             title={"Trend in Applicant Type Over Time"}
+            // description={marketShareOfApplicationsByApplicantType(data)}
+          />
+          <Keytakeaway
+            title={"Sector-Specific Applicant Type Dominance"}
+            // description={marketShareOfApplicationsByApplicantType(data)}
+          />
+          <Keytakeaway
+            title={"Geographical Variations in Applicant Types"}
             description={marketShareOfApplicationsByApplicantType(data)}
           />
           <Keytakeaway
-            title={"Market Share of Applications by Applicant Type"}
-            description={marketShareOfApplicationsByApplicantType(data)}
-          />
-          <Keytakeaway
-            title={"Market Share of Applications by Applicant Type"}
-            description={marketShareOfApplicationsByApplicantType(data)}
-          />
-          <Keytakeaway
-            title={"Market Share of Applications by Applicant Type"}
+            title={"Yearly Changes in Applicant Type Distribution"}
             description={marketShareOfApplicationsByApplicantType(data)}
           />
         </KeyDetail>

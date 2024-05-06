@@ -28,7 +28,7 @@ const PatentsKeyTakeaways = () => {
   }, [data]);
 
   return (
-    <KeyDetail section="Patents" subtitle="Key Takeaway">
+    <KeyDetail section="Size of Patent Families Over Time">
       <Keytakeaway
         title={"Annual Growth Rate in Patent Filings"}
         description={

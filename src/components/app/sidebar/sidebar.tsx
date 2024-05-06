@@ -298,8 +298,8 @@ const SidebarBottom = [
     title: "Profile",
     href: "/profile",
   },
-  // {
-  //   title: "Settings",
-  //   href: "/setting"
-  // }
+  {
+    title: "Settings",
+    href: "/setting",
+  },
 ];
