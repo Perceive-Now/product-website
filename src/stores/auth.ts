@@ -219,7 +219,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         job_position: userProfileResponse.data.job_position,
         profile_photo: userProfileResponse.data.profile_photo,
         username: userProfileResponse.data.username,
-        company_id: userProfileResponse.data.company_id,
+        company_name: userProfileResponse.data.company_name,
         email: userProfileResponse.data.email,
 
         //
@@ -306,55 +306,6 @@ interface IResponse<T = any> {
   message: string;
   data?: T;
 }
-
-//
-// interface IAuthuser {
-//   email: string;
-//   pkId: string;
-//   username: string;
-//   name: string;
-//   image?: string;
-//   firstName: string;
-//   lastName: string;
-//   phoneNumber: number | null;
-//   aboutMe: string;
-//   userLocation: string;
-//   userCompany: {
-//     companyName: string | null;
-//     companyLocation?: string;
-//     techSector?: string;
-//     teamNumber?: string;
-//   };
-//   jobPosition: string | null;
-//   preferredKeywords: {
-//     name: string;
-//   }[];
-//   preferredJournals: {
-//     name: string;
-//   }[];
-//   strategicGoals: string[];
-//   subscription: {
-//     has_subscription: boolean;
-//     message: string;
-//     data: {
-//       subscription: string;
-//       subscription_status: "unpaid" | "paid";
-//       checkout_session_id: string;
-//       products: {
-//         name: string;
-//       }[];
-//     };
-//   };
-//   ipPortfolio: {
-//     orcidId: string;
-//     patents: { patent_name: string }[];
-//     publications: { publication_name: string }[];
-//     scholarlyProfile: string;
-//   };
-//   isProfileDetailCompleted?: boolean;
-//   isCompanyDetailCompleted?: boolean;
-//   isIpPortfolioCompleted: boolean;
-// }
 
 //
 interface AuthState {

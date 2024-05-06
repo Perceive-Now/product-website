@@ -69,7 +69,7 @@ export interface IUserProfile {
   about_me: string;
   country: string;
   is_customer: boolean;
-  company_id: null | string;
+  company_name: null | string;
   job_position: null | string;
   topics_of_interest: string;
 }

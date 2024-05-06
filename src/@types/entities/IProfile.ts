@@ -5,7 +5,7 @@ export interface IProfile {
   phone_number: string;
   country: string;
   topics_of_interest?: string;
-  company_id: string;
+  company_name: string;
   job_position: string;
   profile_photo?: string;
   full_name?: string;

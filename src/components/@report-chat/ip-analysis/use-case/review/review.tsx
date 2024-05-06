@@ -22,8 +22,8 @@ export default function IPReview({ changeActiveStep }: Props) {
   const user_id = jsCookie.get("user_id") ?? "";
   const session_id = jsCookie.get("session_id") ?? "";
 
-  const onContinue = useCallback(async () => {
-    changeActiveStep(0);
+  const onContinue = useCallback(() => {
+    changeActiveStep(5);
   }, [changeActiveStep]);
 
   const { data: userChats } = useQuery(["get-user-chats"], async () => {
@@ -46,7 +46,7 @@ export default function IPReview({ changeActiveStep }: Props) {
 
   const handleEdit = useCallback(
     (chat: any) => {
-      changeActiveStep(3);
+      changeActiveStep(2);
       dispatch(setChat(chat));
     },
     [changeActiveStep, dispatch],

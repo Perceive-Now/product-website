@@ -23,7 +23,8 @@ import EditQuestion from "../../../../components/@report-chat/ip-analysis/use-ca
  *
  */
 export default function IPAnalysis() {
-  const [activeStep, setActiveStep] = useState(6);
+  const [activeStep, setActiveStep] = useState(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const useCases = useAppSelector((state) => state.usecase.usecases) ?? [];
   //
   const changeActiveStep = useCallback((stepValue: number) => {
@@ -58,11 +59,16 @@ export default function IPAnalysis() {
   }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" };
 
   //
-  // useEffect(() => {
-  //   if (questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1) {
-  //     changeActiveStep(5);
-  //   }
-  // }, [changeActiveStep, question.question, questionId, questionWithUsecase]);
+  useEffect(() => {
+    if (useCases.length > 0 && activeStep < 5) {
+      if (
+        questionWithUsecase[questionWithUsecase.length - 1].questionId ===
+        Number(questionId) - 1
+      ) {
+        changeActiveStep(5);
+      }
+    }
+  }, [activeStep, changeActiveStep, question.question, questionId, questionWithUsecase, useCases]);
 
   //
 

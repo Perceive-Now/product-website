@@ -20,7 +20,7 @@ const ReviewQuestionAnswer = ({ question, answer, onEdit }: Props) => {
                 className="text-secondary-800 font-medium text-justify"
                 dangerouslySetInnerHTML={{ __html: answer }}
               />
-              <button type="button" className="flex-shrink-0 w-[20px]" onClick={onEdit}>
+              <button type="button" className="hidden flex-shrink-0 w-[20px]" onClick={onEdit}>
                 <EditIcon className="w-2 h-2" />
               </button>
             </div>

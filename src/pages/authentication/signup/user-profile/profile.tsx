@@ -17,11 +17,6 @@ import SelectBox from "../../../../components/reusable/select-box";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
 import { Countries } from "../../../../utils/constants";
-import { convertToBase64String } from "../../../../utils/helpers";
-// import classNames from "classnames";
-// import { CrossIcon } from "../../../../components/icons";
-
-// import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
 interface IProfileForm {
   username: string;
@@ -44,7 +39,7 @@ interface Props {
 }
 
 const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
-  const [photo, setPhoto] = useState<any>(convertToBase64String(userDetail?.profile_photo));
+  const [photo, setPhoto] = useState<any>(userDetail?.profile_photo);
   const [country, setCountry] = useState<IOption>({
     label: userDetail?.country || "",
     value: userDetail?.country || "",
@@ -72,7 +67,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     phone_number: userDetail?.phone_number || "",
     country: userDetail?.country || "",
     topics_of_interest: userDetail?.topics_of_interest || "",
-    company_name: userDetail?.company_id || "",
+    company_name: userDetail?.company_name || "",
     job_position: userDetail?.job_position || "",
   };
 
@@ -109,7 +104,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
         topics_of_interest: value.topics_of_interest,
         country: country?.value,
         profile_photo: photo,
-        company_id: userDetail?.company_id,
+        company_name: value?.company_name,
         job_position: userDetail?.job_position,
       };
       try {
