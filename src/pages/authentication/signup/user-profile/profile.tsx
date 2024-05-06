@@ -105,7 +105,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
         country: country?.value,
         profile_photo: photo,
         company_name: value?.company_name,
-        job_position: userDetail?.job_position,
+        job_position: value?.job_position,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
@@ -118,7 +118,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, country?.value, photo, userDetail],
+    [changeActiveStep, country?.value, photo],
   );
 
   // const addKeyword = useCallback(
