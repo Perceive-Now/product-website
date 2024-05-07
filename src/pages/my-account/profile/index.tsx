@@ -19,7 +19,7 @@ const UserProfile = () => {
 
   const UserDetail = useAppSelector((state) => state.auth.user);
 
-  const TopicOfInterest = UserDetail?.topics_of_interest?.split(", ") ?? [];
+  const TopicOfInterest = UserDetail?.topics_of_interest?.split(",") ?? [];
 
   useEffect(() => {
     setPhoto(UserDetail?.profile_photo);
