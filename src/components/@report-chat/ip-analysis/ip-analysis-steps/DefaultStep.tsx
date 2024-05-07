@@ -2,12 +2,13 @@ import { FunctionComponent, useCallback, useEffect, useState } from "react";
 //
 import Button from "../../../reusable/button";
 //
-import { useAppDispatch } from "../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import CheckBoxButtons from "../../../reusable/checkbox/checkbox";
 import { setUseCase } from "../../../../stores/use-case";
 import jsCookie from "js-cookie";
 // import { useLocation } from "react-router-dom";
 import { UseCaseOptions } from "./__use-cases";
+import { setSession } from "../../../../stores/session";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -27,6 +28,7 @@ interface OptionMappings {
  */
 const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const dispatch = useAppDispatch();
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   // const { pathname } = useLocation();
 
   const [selected, setSelected] = useState<string[]>([]);
@@ -47,28 +49,71 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   //
   const onContinue = useCallback(() => {
-    jsCookie.set("commonQuestionId", String(1));
+    // jsCookie.set("commonQuestionId", String(1));
 
     if (selected.length > 0) {
       if (options.includes("ip-validity-analysis")) {
-        jsCookie.set("questionId", String(6));
+        // jsCookie.set("questionId", String(6));
+        dispatch(
+          setSession({
+            session_data: {
+              ...sessionDetail,
+              question_id: 6,
+              common_question_id: 1,
+              step_id: 3,
+              use_cases: options,
+            },
+          }),
+        );
       } else if (options.includes("ip-licensing-opportunity")) {
-        jsCookie.set("questionId", String(12));
+        // jsCookie.set("questionId", String(12));
+        dispatch(
+          setSession({
+            session_data: {
+              ...sessionDetail,
+              question_id: 12,
+              common_question_id: 1,
+              step_id: 3,
+              use_cases: options,
+            },
+          }),
+        );
       } else if (options.includes("ip-valuation")) {
-        jsCookie.set("questionId", String(25));
+        // jsCookie.set("questionId", String(25));
+        dispatch(
+          setSession({
+            session_data: {
+              ...sessionDetail,
+              question_id: 25,
+              common_question_id: 1,
+              step_id: 3,
+              use_cases: options,
+            },
+          }),
+        );
       } else {
-        jsCookie.set("questionId", String(34));
+        // jsCookie.set("questionId", String(34));
+        dispatch(
+          setSession({
+            session_data: {
+              ...sessionDetail,
+              question_id: 34,
+              common_question_id: 1,
+              step_id: 3,
+              use_cases: options,
+            },
+          }),
+        );
       }
-
-      dispatch(setUseCase({ usecases: options }));
       changeActiveStep(3);
+      dispatch(setUseCase({ usecases: options }));
       setSelected([]);
 
       setError("");
     } else {
       setError("Please select one of the use cases");
     }
-  }, [changeActiveStep, dispatch, options, selected]);
+  }, [changeActiveStep, dispatch, options, selected.length, sessionDetail]);
 
   useEffect(() => {
     const optionMappings: OptionMappings = {
@@ -101,36 +146,46 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   //
 
   // checkbox selection
-  const handleChange = useCallback((mode: string[]) => {
-    setError("");
-    // console.log(mode);
-    // setSelected(radioOptions.map(({ value }) => value));
-    setSelected(mode);
+  const handleChange = useCallback(
+    (mode: string[]) => {
+      setError("");
+      // console.log(mode);
+      // setSelected(radioOptions.map(({ value }) => value));
+      setSelected(mode);
 
-    const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
-      .map((r) => r.id);
+      const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
+        .map((r) => r.id);
 
-    sessionStorage.setItem("UseCaseId", JSON.stringify(matchingIds));
-
-    // if (mode.includes("all")) {
-    //   if (selected.length >= 4) {
-    //     const filteredOptions = radioOptions.filter(
-    //       (option) => mode.includes(option.value) && option.value !== "all",
-    //     );
-    //     setSelected(filteredOptions.map((option) => option.value));
-    //   } else {
-    //     setSelected(radioOptions.map(({ value }) => value));
-    //   }
-    // } else {
-    //   if (!mode.includes("all") && selected.length >= 4) {
-    //     setSelected([]);
-    //   } else if (mode.lengOptionMappingsth >= 4) {
-    //     setSelected(radioOptions.map(({ value }) => value));
-    //   } else {
-    //     setSelected(mode);
-    //   }
-    // }
-  }, []);
+      // sessionStorage.setItem("UseCaseId", JSON.stringify(matchingIds));
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            plans: matchingIds,
+          },
+        }),
+      );
+      // if (mode.includes("all")) {
+      //   if (selected.length >= 4) {
+      //     const filteredOptions = radioOptions.filter(
+      //       (option) => mode.includes(option.value) && option.value !== "all",
+      //     );
+      //     setSelected(filteredOptions.map((option) => option.value));
+      //   } else {
+      //     setSelected(radioOptions.map(({ value }) => value));
+      //   }
+      // } else {
+      //   if (!mode.includes("all") && selected.length >= 4) {
+      //     setSelected([]);
+      //   } else if (mode.lengOptionMappingsth >= 4) {
+      //     setSelected(radioOptions.map(({ value }) => value));
+      //   } else {
+      //     setSelected(mode);
+      //   }
+      // }
+    },
+    [dispatch, sessionDetail],
+  );
 
   return (
     <div className="xl:w-[620px h-[600px bg-primary-gradient rounded-lg p-6">

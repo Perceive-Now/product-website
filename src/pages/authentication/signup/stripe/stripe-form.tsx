@@ -1,10 +1,14 @@
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import Button from "../../../../components/reusable/button";
 import toast from "react-hot-toast";
+
+import Button from "../../../../components/reusable/button";
 import { IProduct } from "../../../../utils/api/product";
 import StripeImage from "../../../../assets/images/stripe.svg";
-import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { setSession } from "../../../../stores/session";
+import { getNewSession } from "../../../../stores/auth";
 
 interface Props {
   changeActiveStep?: (step: number) => void;
@@ -17,9 +21,14 @@ interface Props {
  */
 
 const StripePaymentForm = ({ selectedPlan }: Props) => {
+  const dispatch = useAppDispatch();
+
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session);
+
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const TotalPrice = selectedPlan.map((p) => p.price).reduce((acc, curr) => acc + curr, 0);
@@ -46,9 +55,26 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
       setIsLoading(false);
     } else {
       toast.success("Your Payment is Successful!");
-
       sessionStorage.setItem("clientSecret", "");
-      sessionStorage.setItem("UseCaseId", JSON.stringify([]));
+
+      dispatch(
+        setSession({
+          session_data: {
+            last_session_id: sessionDetail?.session_id,
+            use_cases: [],
+            user_chat: {
+              question: "",
+              question_id: 0,
+              example_answer: "",
+              answer: "",
+            },
+            step_id: 0,
+            common_question_id: 0,
+            question_id: 0,
+          },
+        }),
+      );
+      dispatch(getNewSession());
 
       navigate("/stay-tuned");
       setIsLoading(false);

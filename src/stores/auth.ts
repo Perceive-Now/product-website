@@ -10,6 +10,38 @@ import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
 
 /**
+ * Interfaces
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface IResponse<T = any> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+interface AuthState {
+  user?: IUserProfile;
+  token?: string;
+}
+
+//
+interface ILoginParams {
+  username: string;
+  password: string;
+}
+
+interface ISignupParams {
+  email: string;
+  password: string;
+}
+
+//
+interface IRefreshResponse {
+  access: string;
+  refresh: string;
+}
+
+/**
  *
  */
 const initialState: AuthState = {
@@ -115,6 +147,7 @@ export const getCurrentSession = createAsyncThunk(
   "getCurrentSession",
   async (): Promise<IResponse> => {
     const accessToken = jsCookie.get("pn_refresh");
+
     if (accessToken && accessToken !== "undefined")
       return {
         success: true,
@@ -159,6 +192,29 @@ export const getCurrentSession = createAsyncThunk(
   },
 );
 
+export const getNewSession = createAsyncThunk("getNewSession", async (): Promise<IResponse> => {
+  // const sessionId = jsCookie.get("sessionID");
+  try {
+    const response = await axiosInstance.get<IRefreshResponse>(
+      `/api/new_session?code=${authCode}&clientId=default`,
+    );
+
+    jsCookie.set("pn_refresh", response.data.refresh);
+    sessionStorage.setItem("pn_access", response.data.access);
+
+    return {
+      success: true,
+      message: "New session obtained",
+      data: { token: response.data.access },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Session failed",
+    };
+  }
+});
+
 export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promise<IResponse> => {
   try {
     // TODO:: Make an API call to get user profile
@@ -166,13 +222,15 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
     const [
       // userResponse,
       userProfileResponse,
-      // subscriptionResponse
+      companyList,
     ] = await Promise.all([
       axiosInstance.get(`/api/user_profile?code=${authCode}&clientId=default `),
-      // axiosInstance.get(`/api/get_products?code=${authCode}&clientId=default `),
+      axiosInstance.get(`/api/get_company_list?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
-    // const subscriptionData = subscriptionResponse?.data ?? {};
+    const companyName = companyList.data.companies.find((c: any) =>
+      c.id === userProfileResponse.data.company_id ? c.name : "",
+    );
     return {
       success: true,
       message: "Successfully fetched user details",
@@ -187,7 +245,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         job_position: userProfileResponse.data.job_position,
         profile_photo: userProfileResponse.data.profile_photo,
         username: userProfileResponse.data.username,
-        company_id: userProfileResponse.data.company_id,
+        company_name: companyName.name || userProfileResponse.data.company_name,
         email: userProfileResponse.data.email,
 
         //
@@ -264,85 +322,3 @@ export const AuthSlice = createSlice({
  */
 export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
 export default AuthSlice.reducer;
-
-/**
- * Interfaces
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface IResponse<T = any> {
-  success: boolean;
-  message: string;
-  data?: T;
-}
-
-//
-// interface IAuthuser {
-//   email: string;
-//   pkId: string;
-//   username: string;
-//   name: string;
-//   image?: string;
-//   firstName: string;
-//   lastName: string;
-//   phoneNumber: number | null;
-//   aboutMe: string;
-//   userLocation: string;
-//   userCompany: {
-//     companyName: string | null;
-//     companyLocation?: string;
-//     techSector?: string;
-//     teamNumber?: string;
-//   };
-//   jobPosition: string | null;
-//   preferredKeywords: {
-//     name: string;
-//   }[];
-//   preferredJournals: {
-//     name: string;
-//   }[];
-//   strategicGoals: string[];
-//   subscription: {
-//     has_subscription: boolean;
-//     message: string;
-//     data: {
-//       subscription: string;
-//       subscription_status: "unpaid" | "paid";
-//       checkout_session_id: string;
-//       products: {
-//         name: string;
-//       }[];
-//     };
-//   };
-//   ipPortfolio: {
-//     orcidId: string;
-//     patents: { patent_name: string }[];
-//     publications: { publication_name: string }[];
-//     scholarlyProfile: string;
-//   };
-//   isProfileDetailCompleted?: boolean;
-//   isCompanyDetailCompleted?: boolean;
-//   isIpPortfolioCompleted: boolean;
-// }
-
-//
-interface AuthState {
-  user?: IUserProfile;
-  token?: string;
-}
-
-//
-interface ILoginParams {
-  username: string;
-  password: string;
-}
-
-interface ISignupParams {
-  email: string;
-  password: string;
-}
-
-//
-interface IRefreshResponse {
-  access: string;
-  refresh: string;
-}

@@ -49,7 +49,7 @@ export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
       <div className="space-y-2 text-secondary-800 mt-4">
         {<PieChart data={pieChartData} />}
         {/* <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5> */}
-        <div>
+        {/* <div>
           <h6 className="font-semibold text-primary-900">Size of Patent Families Over Time</h6>
           <ul className="list-disc ml-3 text-sm mt-1 font-medium">
             <li>
@@ -77,7 +77,7 @@ export const PatentLegalStatus: FunctionComponent<Props> = ({ keywords }) => {
               average."
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
     </DataSection>
     // </div>

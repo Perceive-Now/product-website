@@ -7,6 +7,7 @@ import PageLoading from "../../components/app/pageLoading";
 //
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
+import { getSessionDetails } from "../../stores/session";
 // import Cookies from "universal-cookie";
 // import jsCookie from "js-cookie";
 // import toast from "react-hot-toast";
@@ -36,6 +37,7 @@ export default function AuthLayout() {
   const getSession = useCallback(async () => {
     if (authStore.token) {
       await dispatch(getUserDetails());
+      await dispatch(getSessionDetails());
       setIsLoading(false);
       return;
     }

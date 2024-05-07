@@ -32,13 +32,6 @@ export async function getUserProfile() {
   return response.data;
 }
 
-export async function get() {
-  const response = await axiosInstance.get<IUserProfile>(
-    `/api/user_profile?code=${authCode}&clientId=default`,
-  );
-  return response;
-}
-
 export async function getCompanies() {
   const response = await axiosInstance.get<IData>(
     `/api/get_company_list?code=${authCode}&clientId=default`,
@@ -69,7 +62,8 @@ export interface IUserProfile {
   about_me: string;
   country: string;
   is_customer: boolean;
-  company_id: null | string;
+  company_name: null | string;
+  company_id?: number;
   job_position: null | string;
   topics_of_interest: string;
 }

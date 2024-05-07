@@ -157,37 +157,6 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
         ]}
         /> */}
         {data && <USMap data={mapData} type={"heatmap_industry"} />}
-
-        <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-        <div>
-          <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-            <li>
-              Regional Market Share of Patent Families: The concentration of patent families by
-              region, e.g., "Region A accounts for X% of global patent families, indicating a major
-              innovation hub."
-            </li>
-            <li>
-              Growth Trends in Regional Patent Family Concentrations: Year-over-year growth in
-              patent family concentrations by region, e.g., "Region B's share of global patent
-              families grew by X% in the last Y years."
-            </li>
-            <li>
-              Comparison of Urban vs. Rural Patent Family Distributions: The disparity in patent
-              family locations, suggesting, "Urban areas account for X% of patent families, compared
-              to Y% in rural areas."
-            </li>
-            <li>
-              Impact of Regulatory Changes on Geographical Distribution: Shifts in patent family
-              concentrations following major patent policy changes, indicating, "Following policy
-              change X, region C saw a Y% increase in patent family concentration."
-            </li>
-            <li>
-              International Collaboration Indicated by Patent Family Locations: Instances of
-              international patent families, with metrics like, "X% of patent families have members
-              in more than one country, indicating high levels of international collaboration."
-            </li>
-          </ul>
-        </div>
       </div>
     </DataSection>
   );

@@ -62,6 +62,10 @@ import PageNotFound404 from "./pages/404";
 
 //
 import { WelcomePage } from "./components/@signup-complete";
+
+import ProductLayout from "./layouts/product-layout";
+import AuthDefaultLayout from "./layouts/auth/default";
+import AuthLayout from "./layouts/auth";
 // import IpPortfolioPage from "./pages/account/ipPortfolio";
 // import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
 // import PublicationAnalyticPage from "./pages/product/pro/publications/analytics";
@@ -79,12 +83,9 @@ import { WelcomePage } from "./components/@signup-complete";
 // import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
-import ProductLayout from "./layouts/product-layout";
 import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
 // import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
-import AuthDefaultLayout from "./layouts/auth/default";
 import VerificationConfirm from "./pages/authentication/signup/confirmation";
-import AuthLayout from "./layouts/auth";
 import UserDetails from "./pages/authentication/signup/user-details";
 import SignupPage from "./pages/authentication/signup";
 import KnowNow from "./pages/product/chat";
@@ -92,8 +93,10 @@ import KnowNowIP from "./pages/product/ip-know-now";
 import Stream from "./pages/stream/stream";
 import UserProfile from "./pages/my-account/profile";
 import MyReport from "./pages/my-account/my-reports";
+
 import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
+import Setting from "./pages/my-account/setting";
 
 /**
  *
@@ -143,6 +146,7 @@ function App() {
             <Route path="/" element={<IPAnalysis />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
+            <Route path="/setting" element={<Setting />} />
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />

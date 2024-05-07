@@ -10,6 +10,30 @@ export async function getProducts() {
   return response.data.products;
 }
 
+export async function getBillingHistory() {
+  const response = await axiosInstance.get<IPaymentResponse>(
+    `/api/get_payments?code=${authCode}&clientId=default`,
+  );
+
+  return response.data.status;
+}
+
+interface IPaymentResponse {
+  status: IPayment[];
+}
+
+interface IPayment {
+  id: number;
+  status: string;
+  final_payment_info: {
+    amount: number;
+    currency: string;
+  };
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+}
+
 interface IProductResponse {
   products: IProduct[];
 }

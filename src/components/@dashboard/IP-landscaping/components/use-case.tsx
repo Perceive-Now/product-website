@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useAppSelector } from "../../../../hooks/redux";
+// import { useAppSelector } from "../../../../hooks/redux";
 import Button from "../../../reusable/button";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function IPUseCase({ changeActiveStep }: Props) {
-  const selectedValue = useAppSelector((state) => state.ipData.use_case.label) ?? [];
+  // const selectedValue = useAppSelector((state) => state.use_case.label) ?? [];
 
   const onChange = useCallback(() => {
     changeActiveStep(0);
@@ -17,7 +17,7 @@ export default function IPUseCase({ changeActiveStep }: Props) {
     <div className="flex items-center gap-2.5">
       <div>
         <span className="text-gray-500">Use Case :&nbsp;</span>
-        <span>{selectedValue}</span>
+        {/* <span>{selectedValue}</span> */}
       </div>
       <div>
         <Button

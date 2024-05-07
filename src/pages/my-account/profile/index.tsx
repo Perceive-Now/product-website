@@ -6,8 +6,6 @@ import EditIcon from "../../../components/icons/miscs/Edit";
 import ProfileComponent from "./profile";
 import { useAppSelector } from "../../../hooks/redux";
 
-import { convertToBase64String } from "../../../utils/helpers";
-
 import ProfileModal from "../../../components/modal/profile-modal";
 import ChangePasswordModal from "../../../components/modal/changepassword";
 import Button from "../../../components/reusable/button";
@@ -24,7 +22,7 @@ const UserProfile = () => {
   const TopicOfInterest = UserDetail?.topics_of_interest?.split(", ") ?? [];
 
   useEffect(() => {
-    setPhoto(convertToBase64String(UserDetail?.profile_photo));
+    setPhoto(UserDetail?.profile_photo);
   }, [UserDetail]);
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +55,7 @@ const UserProfile = () => {
     },
     {
       label: "Company",
-      value: UserDetail?.company_id || "",
+      value: UserDetail?.company_name || "",
     },
     {
       label: "Job title",

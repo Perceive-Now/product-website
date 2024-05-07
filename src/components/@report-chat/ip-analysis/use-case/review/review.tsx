@@ -1,42 +1,78 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import jsCookie from "js-cookie";
+
 import ReviewQuestionAnswer from "./review-answer-question";
-// import { useQuery } from "@tanstack/react-query";
-// import { getUserChats } from "../../../../../../utils/api/chat";
-import { useAppSelector } from "../../../../../hooks/redux";
+
 import Button from "../../../../reusable/button";
-import axios from "axios";
+
+import { getUserChats } from "../../../../../utils/api/chat";
+import { questionList } from "../../../../../pages/product/ip-landscaping/ip-analysis/_question";
+
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
+
+import { setChat } from "../../../../../stores/chat";
+import { setSession } from "../../../../../stores/session";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
 }
 
 export default function IPReview({ changeActiveStep }: Props) {
-  const chats = useAppSelector((values) => values.chat);
+  const dispatch = useAppDispatch();
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
-  const onContinue = useCallback(async () => {
-    try {
-      const response = await axios.post(`https://pn-chatbot.azurewebsites.net/get-answers`, {
-        user_id: "11111",
-        sesion_id: "11111",
-      });
-      console.log(response);
-    } catch (error: any) {
-      // console.log(error)
-    }
-    // getUserChats("12345678", "12345678")
-    // changeActiveStep(0);
-  }, []);
+  const user_id = jsCookie.get("user_id") ?? "";
+  const session_id = jsCookie.get("session_id") ?? "";
 
-  // const { data: userChats, isLoading } = useQuery(["get-user-chats"], async () => {
-  //   return await getUserChats("12345678", "12345678");
-  // });
-  // // Fetching time period
-  // useEffect(() => {
-  //   if (!userChats) return;
-  //   //
-  // }, [userChats]);
+  const onContinue = useCallback(() => {
+    dispatch(
+      setSession({
+        session_data: {
+          ...sessionDetail,
+          step_id: 5,
+        },
+      }),
+    );
+    changeActiveStep(5);
+  }, [changeActiveStep, dispatch, sessionDetail]);
 
-  // console.log(userChats)
+  const { data: userChats } = useQuery(["get-user-chats"], async () => {
+    return await getUserChats(user_id, session_id);
+  });
+
+  // Fetching time period
+  useEffect(() => {
+    if (!userChats) return;
+    //
+  }, [userChats]);
+
+  const mergedData = userChats?.map((chat) => {
+    const question = questionList.find((q) => q.questionId == chat.question_id);
+    return {
+      ...chat,
+      question: question?.question,
+      example_answer: question?.answer, // Assuming 'question' is the property name for the question text
+      // You can include other properties from 'questionList' as needed
+    };
+  });
+
+  const onEdit = useCallback(
+    (chat: any) => {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            step_id: 7,
+            user_chat: chat,
+          },
+        }),
+      );
+      changeActiveStep(7);
+      dispatch(setChat(chat));
+    },
+    [changeActiveStep, dispatch, sessionDetail],
+  );
 
   return (
     <div className="space-y-2.5 w-full shrink-0">
@@ -49,12 +85,16 @@ export default function IPReview({ changeActiveStep }: Props) {
             Take a moment to review them, and when you're ready, you can keep going.
           </p>
         </div>
+
         <div className="mt-2 space-y-2.5 w-full">
-          <ReviewQuestionAnswer
-            question={chats.first.question || ""}
-            answer={chats.first.answer || ""}
-            onEdit={() => changeActiveStep(2)}
-          />
+          {mergedData?.map((u, idx) => (
+            <ReviewQuestionAnswer
+              key={idx * 59}
+              question={u.question || ""}
+              answer={u.answer || ""}
+              onEdit={() => onEdit(u)}
+            />
+          ))}
         </div>
       </div>
       <div className="flex justify-center items-center">

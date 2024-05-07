@@ -13,7 +13,8 @@ interface Props {
 
 export function KeyDetail({ section, subtitle, children, details }: Props) {
   return (
-    <div className="border-gray-200 shadow-custom border w-full space-y-1 px-2 p-2.5">
+    // border-gray-200 shadow-custom border
+    <div className="w-full space-y-1 px-2 p-2.5">
       <div>
         <div className="font-bold text-primary-900">Section: {section}</div>
         <div className="font-bold text-primary-900 text-sm">{subtitle}</div>

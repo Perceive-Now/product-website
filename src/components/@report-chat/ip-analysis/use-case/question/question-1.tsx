@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
@@ -6,13 +6,14 @@ import axiosInstance from "../../../../../utils/axios";
 
 import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
-import { useAppDispatch } from "../../../../../hooks/redux";
-
-import { setQuestionId } from "../../../../../stores/chat";
-import { setNoveltyAspect } from "../../../../../stores/IpSteps";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
 import NewComponent from "../../new-comp";
-import { addAnswer } from "../../../../../utils/api/chat";
+import { setSession } from "../../../../../stores/session";
+import { setChat } from "../../../../../stores/chat";
+
+// import { addAnswer } from "../../../../../utils/api/chat";
+// import { updateSession } from "../../../../../stores/session";
 // import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
@@ -46,7 +47,9 @@ Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
-  const questionId = question.questionId;
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
+  const questionId = useMemo(() => question.questionId, [question.questionId]);
 
   const userId = jsCookie.get("user_id");
   const sessionId = jsCookie.get("session_id");
@@ -66,31 +69,51 @@ Props) {
         const resError = response.data.error;
 
         setIsLoading(false);
-        dispatch(setQuestionId({ questionId: 1 }));
-
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            const updateAnswer = {
-              question_id: String(questionId) || "1",
-              session_id: sessionId || "",
-              user_id: userId || "",
-              answer: value.answer || "",
-            };
-
-            addAnswer(updateAnswer); // Send updated answers to the API
-            if (Number(questionId) <= 5) {
-              jsCookie.set("commonQuestionId", String(questionId + 1));
+            if (questionId && Number(questionId) <= 5) {
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    common_question_id: questionId + 1,
+                    step_id: activeStep + 1,
+                  },
+                }),
+              );
             } else {
-              jsCookie.set("questionId", String(questionId + 1));
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    question_id: questionId + 1,
+                    step_id: activeStep + 1,
+                  },
+                }),
+              );
             }
-
-            // jsCookie.set("questionId", String(questionId + 1));
+            // dispatch(
+            //   setSession({
+            //     session_data: {
+            //       ...sessionDetail,
+            //       step_id: activeStep + 1,
+            //     },
+            //   }),
+            // );
             changeActiveStep(activeStep + 1);
           } else {
-            jsCookie.set("questionId", String(questionId));
-            dispatch(setNoveltyAspect({ answer: apiData }));
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  question_id: questionId,
+                  step_id: 2,
+                },
+              }),
+            );
+            dispatch(setChat({ question: apiData }));
             changeActiveStep(2);
           }
         }
@@ -99,7 +122,7 @@ Props) {
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, questionId, sessionId, userId],
+    [activeStep, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
   );
   return (
     <>
