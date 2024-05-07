@@ -38,8 +38,8 @@ interface ISignupParams {
 
 //
 interface IRefreshResponse {
-  access: string;
-  refresh: string;
+  token: string;
+  session_id: string;
 }
 
 /**
@@ -174,13 +174,13 @@ export const getCurrentSession = createAsyncThunk(
         },
       );
 
-      jsCookie.set("pn_refresh", response.data.refresh);
-      sessionStorage.setItem("pn_access", response.data.access);
+      jsCookie.set("pn_refresh", response.data.token);
+      sessionStorage.setItem("session_id", response.data.session_id);
 
       return {
         success: true,
         message: "Current session obtained",
-        data: { token: response.data.access },
+        data: { token: response.data.token },
       };
     } catch (error) {
       return {
@@ -198,13 +198,14 @@ export const getNewSession = createAsyncThunk("getNewSession", async (): Promise
       `/api/new_session?code=${authCode}&clientId=default`,
     );
 
-    jsCookie.set("pn_refresh", response.data.refresh);
-    sessionStorage.setItem("pn_access", response.data.access);
+    jsCookie.set("pn_refresh", response.data.token);
+    sessionStorage.setItem("pn_access", response.data.token);
+    jsCookie.set("session_id", response.data.session_id);
 
     return {
       success: true,
       message: "New session obtained",
-      data: { token: response.data.access },
+      data: { token: response.data.token },
     };
   } catch (error) {
     return {

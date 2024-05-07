@@ -31,8 +31,6 @@ const Payment = () => {
 
   const selectedReports = products?.filter((p) => ItemId?.includes(p.id));
 
-  console.log(clientSecret);
-
   useEffect(() => {
     if (!clientSecret && !selectedReports) {
       navigate("/");
