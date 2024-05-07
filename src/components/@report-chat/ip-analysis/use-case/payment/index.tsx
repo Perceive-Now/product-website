@@ -15,8 +15,9 @@ const Payment = () => {
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
-  const clientSecret = sessionStorage.getItem("clientSecret");
+  // const clientSecret = sessionStorage.getItem("clientSecret");
   const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
+  const clientSecret = useMemo(() => sessionDetail?.client_secret, [sessionDetail?.client_secret]);
 
   const { data: products } = useQuery(["get-product"], async () => {
     return await getProducts();
@@ -29,6 +30,8 @@ const Payment = () => {
   }, [products]);
 
   const selectedReports = products?.filter((p) => ItemId?.includes(p.id));
+
+  console.log(clientSecret);
 
   useEffect(() => {
     if (!clientSecret && !selectedReports) {

@@ -76,6 +76,7 @@ export default function IPAnalysis() {
       useCases.length > 0 &&
       activeStep < 5 &&
       questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1;
+
     if (isConditionMet) {
       dispatch(
         setSession({
@@ -104,7 +105,7 @@ export default function IPAnalysis() {
     // },
     {
       label: "",
-      value: 2,
+      value: 8,
       component: (
         <NewQuestion
           changeActiveStep={changeActiveStep}

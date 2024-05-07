@@ -20,7 +20,7 @@ import { logoutUser } from "../../../stores/auth";
 import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
 import ToggleBarIcon from "../../icons/sidenav/bars";
 import UserIcon from "../../reusable/userIcon";
-import { setSession } from "../../../stores/session";
+// import { setSession } from "../../../stores/session";
 
 /**
  *
@@ -32,9 +32,6 @@ interface Props {
 export const AppSidebar: FunctionComponent<Props> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-  const session = useAppSelector((state) => state.sessionDetail.session);
 
   const [open, setOpen] = useState(true);
   const [isChat, setIsChat] = useState(false);
@@ -80,14 +77,6 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
-    dispatch(
-      setSession({
-        session_data: {
-          ...sessionDetail,
-          last_session_id: session?.session_id,
-        },
-      }),
-    );
     await dispatch(logoutUser());
     navigate("/login");
     setIsLoggingOut(false);

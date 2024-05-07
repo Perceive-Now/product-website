@@ -1,6 +1,6 @@
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
@@ -14,36 +14,32 @@ import { setSession } from "../../../../../stores/session";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
-  activeStep: number;
+  activeStep?: number;
   exampleAnswer: string;
 }
 
 /**
  *
  */
-export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswer }: Props) {
+export default function NewQuestion({ changeActiveStep, exampleAnswer }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
-  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
-  const chatId = jsCookie.get("chatId");
-  const questionId = Number(jsCookie.get("questionId"));
-
-  useEffect(() => {
-    jsCookie.set("chatId", chatId || "");
-  }, [chatId]);
-
-  const apiQuestion = useAppSelector((state) => state.chat.chat.question) ?? "";
-
-  //
-  const [question, setQuestion] = useState("");
   //
   const userId = jsCookie.get("user_id");
   const sessionId = jsCookie.get("session_id");
 
-  useEffect(() => {
-    setQuestion(apiQuestion);
-  }, [apiQuestion]);
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
+  const questionId = useMemo(
+    () => sessionDetail?.user_chat?.question_id,
+    [sessionDetail?.user_chat?.question_id],
+  );
+
+  const question = useMemo(
+    () => sessionDetail?.user_chat?.question,
+    [sessionDetail?.user_chat?.question],
+  );
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
@@ -52,7 +48,7 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
+          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${Number(questionId)}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
@@ -62,43 +58,45 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            if (Number(questionId) <= 5) {
-              // jsCookie.set("commonQuestionId", String(questionId + 1));
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    common_question_id: questionId + 1,
-                  },
-                }),
-              );
-            } else {
-              // jsCookie.set("questionId", String(questionId + 1));
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    question_id: questionId + 1,
-                  },
-                }),
-              );
+            if (questionId) {
+              if (Number(questionId) <= 5) {
+                dispatch(
+                  setSession({
+                    session_data: {
+                      ...sessionDetail,
+                      common_question_id: questionId + 1,
+                      step_id: 3,
+                    },
+                  }),
+                );
+              } else {
+                dispatch(
+                  setSession({
+                    session_data: {
+                      ...sessionDetail,
+                      question_id: questionId + 1,
+                      step_id: 3,
+                    },
+                  }),
+                );
+              }
+              changeActiveStep(3);
             }
-
+          } else {
             dispatch(
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: activeStep + 1,
+                  step_id: 8,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                  },
                 },
               }),
             );
-
-            changeActiveStep(activeStep + 1);
-          } else {
-            // jsCookie.set("chatId", chatId || "");
-            // jsCookie.set("questionId", String(questionId));
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
+            changeActiveStep(8);
           }
         }
         setIsLoading(false);
@@ -107,15 +105,19 @@ export default function NewQuestion({ changeActiveStep, activeStep, exampleAnswe
         toast.error(error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
   );
 
   return (
-    <NewComponent
-      isLoading={isloading}
-      onContinue={onContinue}
-      question={question}
-      exampleAnswer={exampleAnswer}
-    />
+    <>
+      {question && (
+        <NewComponent
+          isLoading={isloading}
+          onContinue={onContinue}
+          question={question}
+          exampleAnswer={exampleAnswer}
+        />
+      )}
+    </>
   );
 }

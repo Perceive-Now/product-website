@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
 import { setChat } from "../../../../../stores/chat";
 import { setSession } from "../../../../../stores/session";
+import Loading from "../../../../reusable/loading";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -37,15 +38,21 @@ export default function IPReview({ changeActiveStep }: Props) {
     changeActiveStep(5);
   }, [changeActiveStep, dispatch, sessionDetail]);
 
-  const { data: userChats } = useQuery(["get-user-chats"], async () => {
+  const {
+    data: userChats,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useQuery(["get-user-chats"], async () => {
     return await getUserChats(user_id, session_id);
   });
 
   // Fetching time period
   useEffect(() => {
+    refetch();
     if (!userChats) return;
     //
-  }, [userChats]);
+  }, [refetch, userChats]);
 
   const mergedData = userChats?.map((chat) => {
     const question = questionList.find((q) => q.questionId == chat.question_id);
@@ -73,6 +80,10 @@ export default function IPReview({ changeActiveStep }: Props) {
     },
     [changeActiveStep, dispatch, sessionDetail],
   );
+
+  if (isLoading || isFetching) {
+    return <Loading isLoading={isLoading || isFetching} />;
+  }
 
   return (
     <div className="space-y-2.5 w-full shrink-0">

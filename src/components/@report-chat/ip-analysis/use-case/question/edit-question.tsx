@@ -33,7 +33,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
 
   //
   const answer = useMemo(
-    () => sessionDetail?.user_chat?.answer,
+    () => sessionDetail?.user_chat?.answer || "",
     [sessionDetail?.user_chat?.answer],
   );
   const exampleAnswer = useMemo(
@@ -81,12 +81,18 @@ export default function EditQuestion({ changeActiveStep }: Props) {
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: 2,
+                  step_id: 7,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                    example_answer: exampleAnswer,
+                    answer: "",
+                  },
                 },
               }),
             );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
+            changeActiveStep(7);
           }
         }
         setIsLoading(false);
@@ -95,12 +101,14 @@ export default function EditQuestion({ changeActiveStep }: Props) {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [changeActiveStep, dispatch, exampleAnswer, questionId, sessionDetail, sessionId, userId],
   );
+
+  console.log(answer);
 
   return (
     <>
-      {question && exampleAnswer && answer && (
+      {question && exampleAnswer && (
         <NewComponent
           isLoading={isloading}
           onContinue={onContinue}

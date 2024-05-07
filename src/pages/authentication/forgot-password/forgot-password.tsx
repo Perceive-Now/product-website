@@ -90,16 +90,7 @@ export default function ForgotPasswordPage() {
   if (isLoading) return <></>;
 
   return (
-    <div className="flex justify-center items-center min-h-screen px-2">
-      {/* {!isSubmitted && (
-        <div className="fixed top-0 w-full flex justify-start mt-5 mb-2 pl-3">
-          <Link to="/login" className="flex text-gray-900">
-            <BackIcon />
-            <p className="ml-1">Go back to Login</p>
-          </Link>
-        </div>
-      )} */}
-
+    <div className="flex justify-center items-center h-[calc(100vh-120px)] px-2">
       <form onSubmit={handleSubmit(handleForgotPassword)} className="w-full md:w-[400px] py-10">
         <div className="flex flex-col items-center">
           <InsertLinkIcon />

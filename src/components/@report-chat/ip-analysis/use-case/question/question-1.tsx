@@ -94,27 +94,22 @@ Props) {
                 }),
               );
             }
-            // dispatch(
-            //   setSession({
-            //     session_data: {
-            //       ...sessionDetail,
-            //       step_id: activeStep + 1,
-            //     },
-            //   }),
-            // );
             changeActiveStep(activeStep + 1);
           } else {
             dispatch(
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  question_id: questionId,
-                  step_id: 2,
+                  step_id: 8,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                  },
                 },
               }),
             );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
+            changeActiveStep(8);
           }
         }
       } catch (error: any) {

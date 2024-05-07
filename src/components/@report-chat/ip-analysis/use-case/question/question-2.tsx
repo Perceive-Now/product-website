@@ -78,29 +78,24 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
                 }),
               );
             }
-            //
-            // dispatch(
-            //   setSession({
-            //     session_data: {
-            //       ...sessionDetail,
-            //       step_id: activeStep - 1,
-            //     },
-            //   }),
-            // );
             changeActiveStep(activeStep - 1);
           } else {
             jsCookie.set("questionId", String(questionId));
 
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
             dispatch(
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: 2,
+                  step_id: 8,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                  },
                 },
               }),
             );
+            changeActiveStep(8);
           }
         }
       } catch (error: any) {

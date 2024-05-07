@@ -112,10 +112,9 @@ function App() {
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
-
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* <Route path="/signup/confirm" element={<ConfirmSignup />} /> */}
 

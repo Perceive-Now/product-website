@@ -229,7 +229,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       // axiosInstance.get(""),
     ]);
     const companyName = companyList.data.companies.find((c: any) =>
-      c.id === userProfileResponse.data.company_id ? c.name : "",
+      c.id === userProfileResponse.data.company_id ? c.name : "N/A",
     );
     return {
       success: true,

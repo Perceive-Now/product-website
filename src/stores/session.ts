@@ -18,13 +18,14 @@ interface ISessionData {
   use_cases?: string[];
   last_session_id?: number;
   user_chat?: IUserChat;
+  client_secret?: string;
 }
 
 interface IUserChat {
-  question_id: number;
-  question: string;
-  answer: string;
-  example_answer: string;
+  question_id?: number;
+  question?: string;
+  answer?: string;
+  example_answer?: string;
 }
 
 interface ISession {
@@ -61,6 +62,8 @@ export const getSessionDetails = createAsyncThunk(
             common_question_id: response.data.session.session_data.common_question_id,
             use_cases: response.data.session.session_data?.use_cases,
             last_session_id: response.data.session.session_data.last_session_id,
+            user_chat: response.data.session.session_data.user_chat,
+            client_secret: response.data.session.session_data.client_secret,
           },
         },
       };
@@ -89,6 +92,7 @@ const updateSession = async (payload: ISession) => {
         step_id: payload.session_data?.step_id,
         use_cases: payload.session_data?.use_cases,
         last_session_id: payload.session_data?.last_session_id,
+        client_secret: payload.session_data?.client_secret,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,
