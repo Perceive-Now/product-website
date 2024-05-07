@@ -14,6 +14,7 @@ import { getSessionDetails } from "../../stores/session";
  */
 export default function AuthLayout() {
   const navigate = useNavigate();
+  const userDetails = useAppSelector((state) => state.auth.user);
   // const pathname = useLocation();
 
   // const PathPersistRef = useRef<PathPersistRefProps>({
@@ -60,17 +61,13 @@ export default function AuthLayout() {
     getSession();
   }, [getSession]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     if (user.subscription.has_subscription && user.subscription?.data) {
-  //       if (user.subscription.data?.subscription_status === "unpaid") {
-  //         navigate("/signup/complete");
-  //       }
-  //     } else {
-  //       navigate("/signup/complete");
-  //     }
-  //   }
-  // }, [navigate, user]);
+  useEffect(() => {
+    if (userDetails) {
+      if (!userDetails.registration_completed) {
+        navigate("/user-registration");
+      }
+    }
+  }, [navigate, userDetails]);
 
   // useEffect(() => {
   //   if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {

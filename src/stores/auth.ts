@@ -8,6 +8,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 //
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
+import { AppConfig } from "../utils/app.config";
 
 /**
  * Interfaces
@@ -50,9 +51,9 @@ const initialState: AuthState = {
 };
 
 //
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = AppConfig.API_URL;
 
-const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
+const authCode = AppConfig.Auth_CODE;
 
 export const signUpUser = createAsyncThunk(
   "login",
@@ -80,7 +81,6 @@ export const signUpUser = createAsyncThunk(
         message: "Successfull",
         data: { token: data.token },
       };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const errorMessage = error.response?.data?.error ?? error.message;
 
@@ -92,7 +92,7 @@ export const signUpUser = createAsyncThunk(
   },
 );
 
-// Cognitor Auth functions
+// Auth functions
 export const loginUser = createAsyncThunk(
   "login",
   async (payload: ILoginParams): Promise<IResponse> => {
@@ -113,7 +113,6 @@ export const loginUser = createAsyncThunk(
         message: "Successfully logged in!",
         data: { token: data.token },
       };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const errorMessage = error.response?.data?.error ?? error.message;
 
@@ -247,6 +246,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         username: userProfileResponse.data.username,
         company_name: companyName.name || userProfileResponse.data.company_name,
         email: userProfileResponse.data.email,
+        registration_completed: userProfileResponse.data.registration_completed,
 
         //
       },
@@ -259,9 +259,6 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
   }
 });
 
-/**
- *
- */
 export const AuthSlice = createSlice({
   name: "auth",
   initialState,
@@ -275,10 +272,6 @@ export const AuthSlice = createSlice({
     removeUser: (state) => {
       state.user = undefined;
     },
-    // setUserEmail: (state, action: PayloadAction<ISignupParams>) => {
-    //   state.user?.email = action.payload;
-    //   // console.log(state);
-    // },
   },
 
   /**
@@ -311,14 +304,10 @@ export const AuthSlice = createSlice({
     //
     builder.addCase(getUserDetails.fulfilled, (state, action) => {
       const payloadAttributes = action.payload.data;
-
       state.user = payloadAttributes;
     });
   },
 });
 
-/**
- * Action creators are generated for each case reducer function
- */
 export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
 export default AuthSlice.reducer;

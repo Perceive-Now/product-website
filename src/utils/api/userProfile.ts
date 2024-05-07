@@ -9,36 +9,6 @@ import axiosInstance from "../axios";
  *
  */
 
-// {
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization:
-//       `Bearer ${}`,
-//   },
-// },
-
-export async function updateUserProfile(value: any) {
-  const response = await axiosInstance.put<IUserProfile>(
-    `/api/update_user_profile?code=${authCode}&clientId=default`,
-    value,
-  );
-  return response;
-}
-
-export async function getUserProfile() {
-  const response = await axiosInstance.get<IUserProfile>(
-    `/api/user_profile?code=${authCode}&clientId=default`,
-  );
-  return response.data;
-}
-
-export async function getCompanies() {
-  const response = await axiosInstance.get<IData>(
-    `/api/get_company_list?code=${authCode}&clientId=default`,
-  );
-  return response.data.companies;
-}
-
 interface IData {
   companies: ICompany[];
 }
@@ -66,17 +36,30 @@ export interface IUserProfile {
   company_id?: number;
   job_position: null | string;
   topics_of_interest: string;
+  registration_completed: boolean;
 }
 
-// export interface IUserProfile {
-//   "First Name": string;
-//   "Last Name": string;
-//   Username: string;
-//   "Phone Number": string;
-//   country_id: number;
-//   "Topics of Interest": string[];
-// }
+export async function updateUserProfile(value: any) {
+  const response = await axiosInstance.put<IUserProfile>(
+    `/api/update_user_profile?code=${authCode}&clientId=default`,
+    value,
+  );
+  return response;
+}
 
+export async function getUserProfile() {
+  const response = await axiosInstance.get<IUserProfile>(
+    `/api/user_profile?code=${authCode}&clientId=default`,
+  );
+  return response.data;
+}
+
+export async function getCompanies() {
+  const response = await axiosInstance.get<IData>(
+    `/api/get_company_list?code=${authCode}&clientId=default`,
+  );
+  return response.data.companies;
+}
 export async function patchUserProfile({ body }: any) {
   const response = await axiosInstance.patch(``, body);
 
