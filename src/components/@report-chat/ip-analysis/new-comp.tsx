@@ -100,7 +100,7 @@ export default function NewComponent({
         </fieldset>
         <div className="mt-4 pb-4">
           <Button htmlType={"submit"} rounded={"large"} loading={isLoading} disabled={isLoading}>
-            Continue
+            Save & Continue
           </Button>
         </div>
       </form>
