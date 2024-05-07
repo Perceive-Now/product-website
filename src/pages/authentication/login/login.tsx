@@ -136,7 +136,6 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.username?.message}</div>
             )}
           </fieldset>
-          disabled
           <fieldset className="mt-2">
             {/* <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">
               Password
