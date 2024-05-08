@@ -167,7 +167,8 @@ export function PatentFamilyGrowthRate(data: IFamilyYear[]) {
   )}%, indicating an evolving approach to patent filings and protection strategies.`;
 }
 
-export function regionalMarketShareOfPatentFamily(data: IPatentLocation[]): string {
+// geographical patent families
+export function regionalMarketShareOfPatentFamily(data: IPatentLocation[]) {
   if (data.length === 0) {
     return "No data available.";
   }

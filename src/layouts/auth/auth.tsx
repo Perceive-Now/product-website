@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 //
 import PageLoading from "../../components/app/pageLoading";
@@ -8,6 +8,11 @@ import PageLoading from "../../components/app/pageLoading";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
 import { getSessionDetails } from "../../stores/session";
+import { setUI } from "../../stores/UI";
+
+// interface PathPersistRefProps {
+//   path: string | null;
+// }
 
 /**
  *
@@ -15,7 +20,7 @@ import { getSessionDetails } from "../../stores/session";
 export default function AuthLayout() {
   const navigate = useNavigate();
   const userDetails = useAppSelector((state) => state.auth.user);
-  // const pathname = useLocation();
+  const { pathname } = useLocation();
 
   // const PathPersistRef = useRef<PathPersistRefProps>({
   //   path: `${window.location.pathname}${window.location.search}`,
@@ -29,14 +34,6 @@ export default function AuthLayout() {
 
   //
   const getSession = useCallback(async () => {
-    if (authStore.token) {
-      await dispatch(getUserDetails());
-      await dispatch(getSessionDetails());
-      setIsLoading(false);
-      return;
-    }
-
-    // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
 
     if (!session.success) {
@@ -50,9 +47,13 @@ export default function AuthLayout() {
     // PathPersistRef.current.path = encodeURIComponent(
     //   `${window.location.pathname}${window.location.search}`,
     // );
-    // Getting user details
-    await dispatch(getUserDetails());
 
+    if (authStore.token) {
+      await dispatch(getUserDetails());
+      await dispatch(getSessionDetails());
+      setIsLoading(false);
+      return;
+    }
     // Stop loading
     setIsLoading(false);
   }, [authStore.token, dispatch, navigate]);
@@ -69,6 +70,12 @@ export default function AuthLayout() {
     }
   }, [navigate, userDetails]);
 
+  useEffect(() => {
+    if (pathname !== "/") {
+      dispatch(setUI({ home: false }));
+    }
+  }, [dispatch, pathname]);
+
   // useEffect(() => {
   //   if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {
   //     toast.error("Please add keyword to continue");
@@ -80,12 +87,8 @@ export default function AuthLayout() {
   if (isLoading) return <PageLoading />;
 
   return (
-    <div>
+    <div className="">
       <Outlet />
     </div>
   );
 }
-
-// interface PathPersistRefProps {
-//   path: string | null;
-// }

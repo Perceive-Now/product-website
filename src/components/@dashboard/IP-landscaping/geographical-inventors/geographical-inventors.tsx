@@ -5,6 +5,7 @@ import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getGeographicalDistributionInventors } from "../../../../utils/api/charts";
 import countryNames from "../../../../utils/extra/country-2-names";
+import GeographicalDistributionOfInventorsKeyTakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/inventors/distribution/keytakeaways";
 
 interface Props {
   keywords: string[];
@@ -127,7 +128,7 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
         <PageTitle
           titleClass="font-bold"
           subTitle="Geographical Distribution of Inventors"
-          title="5. Inventors "
+          title="6. Inventors "
         />
       }
     >
@@ -154,40 +155,8 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
             },
           ]}
         />
-        <div className="space-y-2 text-secondary-800 mt-4">
-          <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-          <div>
-            <h6 className="font-semibold text-primary-900">
-              Family A: California (100 patents), Texas (50 patents); Family B: New York (80
-              patents), Florida (70 patents)
-            </h6>
-            <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-              <li>
-                Top Country for Inventor Activity: "Country H leads in inventor activity,
-                contributing to X% of all patent filings, showcasing its pivotal role in global
-                innovation."
-              </li>
-              <li>
-                Rapid Increase in Inventor Numbers by Region: "Region I's inventor count has surged
-                by X% in the last Y years, emerging as a significant innovation hub."
-              </li>
-              <li>
-                City with Highest Number of Inventors: "City J has the highest concentration of
-                inventors, with X% of the total, underlining its status as a central innovation
-                locality."
-              </li>
-              <li>
-                Shift in Inventor Geographical Distribution: "Over the past decade, there has been a
-                notable shift towards Region K for inventor activity, with a growth rate of X%,
-                indicating evolving innovation ecosystems."
-              </li>
-              <li>
-                International Diversity Among Inventors: "The diversity of patent inventors is vast,
-                with contributions from over X different countries, highlighting the global
-                collaboration in innovation."
-              </li>
-            </ul>
-          </div>
+        <div className="mt-4">
+          <GeographicalDistributionOfInventorsKeyTakeaways />
         </div>
       </div>
     </DataSection>

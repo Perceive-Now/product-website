@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getExamincationTrend } from "../../../../utils/api/charts";
 import PageTitle from "../../../reusable/page-title";
 import ScatterChart from "../../../@product/scatter-chart";
+import ExaminerTrendKeytakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/examiners/trends-examination/keytakeaway";
 
 interface Props {
   keywords: string[];
@@ -84,6 +85,9 @@ export const TrendExaminationYear: FunctionComponent<Props> = ({ keywords }) => 
             colors={["#7F4BD8", "#442873"]}
           />
         )}
+        <div className="mt-4">
+          <ExaminerTrendKeytakeaways />
+        </div>
       </div>
     </DataSection>
   );

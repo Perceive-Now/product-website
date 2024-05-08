@@ -5,10 +5,10 @@ import Button from "../../../reusable/button";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import CheckBoxButtons from "../../../reusable/checkbox/checkbox";
 import { setUseCase } from "../../../../stores/use-case";
-import jsCookie from "js-cookie";
 // import { useLocation } from "react-router-dom";
 import { UseCaseOptions } from "./__use-cases";
 import { setSession } from "../../../../stores/session";
+import { setUI } from "../../../../stores/UI";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -35,25 +35,12 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const [options, setOptions] = useState<string[]>([]);
 
   const [error, setError] = useState("");
-  // const [, setRadioOptions] = useState<IOption[]>(radioOptionsIP);
-
-  // useEffect(() => {
-  //   if (pathname === "/ip-analysis") {
-  //     setRadioOptions(radioOptionsIP);
-  //   }
-
-  //   if (pathname === "/market-research") {
-  //     setRadioOptions(radioOptionsMarket);
-  //   }
-  // }, [pathname]);
 
   //
   const onContinue = useCallback(() => {
-    // jsCookie.set("commonQuestionId", String(1));
-
+    dispatch(setUI({ home: false }));
     if (selected.length > 0) {
       if (options.includes("ip-validity-analysis")) {
-        // jsCookie.set("questionId", String(6));
         dispatch(
           setSession({
             session_data: {
@@ -66,7 +53,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
           }),
         );
       } else if (options.includes("ip-licensing-opportunity")) {
-        // jsCookie.set("questionId", String(12));
         dispatch(
           setSession({
             session_data: {
@@ -79,7 +65,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
           }),
         );
       } else if (options.includes("ip-valuation")) {
-        // jsCookie.set("questionId", String(25));
         dispatch(
           setSession({
             session_data: {
@@ -92,7 +77,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
           }),
         );
       } else {
-        // jsCookie.set("questionId", String(34));
         dispatch(
           setSession({
             session_data: {
@@ -105,6 +89,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
           }),
         );
       }
+
       changeActiveStep(3);
       dispatch(setUseCase({ usecases: options }));
       setSelected([]);
@@ -155,8 +140,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
       const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
         .map((r) => r.id);
-
-      // sessionStorage.setItem("UseCaseId", JSON.stringify(matchingIds));
       dispatch(
         setSession({
           session_data: {
@@ -188,7 +171,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   );
 
   return (
-    <div className="xl:w-[620px h-[600px bg-primary-gradient rounded-lg p-6">
+    <div className="h-full rounded-lg p-6">
       <p className="text-white text-xl font-semibold ">Please select use case for your report.</p>
       <div className="w-[660px] 2xl:w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 ">

@@ -21,22 +21,22 @@ interface ICompany {
 }
 
 export interface IUserProfile {
-  username: string;
-  first_name: string;
-  last_name: string;
+  username?: string;
+  first_name?: string;
+  last_name?: string;
   full_name?: string;
   email?: string;
-  id: number;
-  phone_number: null | string;
-  profile_photo: string;
-  about_me: string;
-  country: string;
-  is_customer: boolean;
-  company_name: null | string;
+  id?: number;
+  phone_number?: null | string;
+  profile_photo?: string;
+  about_me?: string;
+  country?: string;
+  is_customer?: boolean;
+  company_name?: null | string;
   company_id?: number;
-  job_position: null | string;
-  topics_of_interest: string;
-  registration_completed: boolean;
+  job_position?: null | string;
+  topics_of_interest?: string;
+  registration_completed?: boolean;
 }
 
 export async function updateUserProfile(value: any) {

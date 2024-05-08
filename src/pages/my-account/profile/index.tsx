@@ -121,11 +121,20 @@ const UserProfile = () => {
               }}
             >
               <div className="p-[20px] flex flex-wrap gap-2 items-center">
-                {TopicOfInterest?.map((topic, idx) => (
-                  <div key={idx * 35} className="border rounded-lg px-1 py-0.5 border-primary-900">
-                    {topic}
-                  </div>
-                ))}
+                {TopicOfInterest.length > 1 ? (
+                  <>
+                    {TopicOfInterest?.map((topic, idx) => (
+                      <div
+                        key={idx * 35}
+                        className="border rounded-lg px-1 py-0.5 border-primary-900"
+                      >
+                        {topic}
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <div>N/A</div>
+                )}
               </div>
             </ProfileComponent>
           </div>

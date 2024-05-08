@@ -17,6 +17,8 @@ import SelectBox from "../../../../components/reusable/select-box";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
 import { Countries } from "../../../../utils/constants";
+import { useAppDispatch } from "../../../../hooks/redux";
+import { setUser } from "../../../../stores/auth";
 // import classNames from "classnames";
 // import { CrossIcon } from "../../../../components/icons";
 
@@ -48,6 +50,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     label: userDetail?.country || "",
     value: userDetail?.country || "",
   });
+
+  const dispatch = useAppDispatch();
 
   // const [keywords, setKeywords] = useState<string[]>([]);
 
@@ -112,6 +116,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
       try {
         await updateUserProfile(values).then((res: any) => {
           if (res.status === 200) {
+            dispatch(setUser({ ...values, registration_completed: false }));
             toast.success("User detail added");
             changeActiveStep(2);
           }
@@ -120,7 +125,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, country?.value, photo],
+    [changeActiveStep, country?.value, dispatch, photo],
   );
 
   // const addKeyword = useCallback(

@@ -1,6 +1,7 @@
 import axios from "axios";
 import jsCookie from "js-cookie";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
 //
 import type { PayloadAction } from "@reduxjs/toolkit";
@@ -142,54 +143,43 @@ export const logoutUser = createAsyncThunk("logout", async (): Promise<IResponse
   }
 });
 
-export const getCurrentSession = createAsyncThunk(
-  "getCurrentSession",
-  async (): Promise<IResponse> => {
-    const accessToken = jsCookie.get("pn_refresh");
-
-    if (accessToken && accessToken !== "undefined")
-      return {
-        success: true,
-        message: "Current session obtained",
-        data: { token: accessToken },
-      };
-
-    //
-    const refreshToken = jsCookie.get("pn_refresh");
-    if (!refreshToken || refreshToken === "undefined") {
-      return {
-        success: false,
-        message: "Current session is terminated!",
-      };
-    }
-
-    //
+export const getCurrentSession = createAsyncThunk("getCurrentSession", async (): Promise<any> => {
+  const accessToken = jsCookie.get("pn_refresh");
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  if (accessToken) {
     try {
-      // api/v1/user/refresh-token/
-      const response = await axios.post<IRefreshResponse>(
-        `${API_URL}/
-      `,
-        {
-          refresh: refreshToken,
-        },
-      );
+      const decodeToken = jwtDecode(accessToken || "");
+      const expTimestamp = decodeToken.exp;
 
-      jsCookie.set("pn_refresh", response.data.token);
-      sessionStorage.setItem("session_id", response.data.session_id);
-
-      return {
-        success: true,
-        message: "Current session obtained",
-        data: { token: response.data.token },
-      };
+      if (expTimestamp) {
+        if (currentTimestamp >= expTimestamp) {
+          jsCookie.set("pn_refresh", String(undefined));
+          return {
+            success: false,
+            message: "Current session is expired",
+            data: { token: accessToken },
+          };
+        } else {
+          return {
+            success: true,
+            message: "Current session obtained",
+            data: { token: accessToken },
+          };
+        }
+      }
     } catch (error) {
       return {
         success: false,
-        message: "Current session expired",
+        message: "Session is expired",
       };
     }
-  },
-);
+  } else {
+    return {
+      success: false,
+      message: "Current session is expired",
+    };
+  }
+});
 
 export const getNewSession = createAsyncThunk("getNewSession", async (): Promise<IResponse> => {
   // const sessionId = jsCookie.get("sessionID");

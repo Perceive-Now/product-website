@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 
 //
 
-import { DashboardIcon } from "../../icons";
+import AddIcon from "../../icons/common/add-icon";
 
 // import HookIcon from "../../icons/sidenav/hook";
 // import DOcumentIcon from "../../icons/miscs/document";
@@ -20,7 +20,7 @@ const sidebarItems: ISidebarListItem[] = [
   {
     title: "My Reports",
     key: "generate",
-    icon: <DashboardIcon />,
+    icon: <AddIcon />,
     to: "/my-reports",
   },
   // {

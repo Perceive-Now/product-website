@@ -9,9 +9,11 @@ const Setting = () => {
     data: billings,
     isLoading,
     isFetching,
-  } = useQuery(["get-user-chats"], async () => {
+  } = useQuery(["get-billings"], async () => {
     return await getBillingHistory();
   });
+
+  console.log(billings);
 
   // Fetching time period
   useEffect(() => {
@@ -37,7 +39,7 @@ const Setting = () => {
                       {billing.final_payment_info.amount === 99500 ? (
                         <span>Pro Plan</span>
                       ) : (
-                        <span>Prmium Plan</span>
+                        <span>Premium Plan</span>
                       )}
                     </div>
                     <div>{billing.status}</div>

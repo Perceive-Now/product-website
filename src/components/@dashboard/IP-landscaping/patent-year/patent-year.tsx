@@ -67,7 +67,6 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
   const scatterChartData = finalScatterDataFormatHelper(data ?? []);
 
   return (
-    // <div className="border-gray-200 shadow-custom border px-2 pt-2 pb-4 w-full space-y-2">
     <DataSection
       keywords={keywords}
       isLoading={isLoading}
@@ -78,44 +77,7 @@ export const PatentYear: FunctionComponent<Props> = ({ keywords }) => {
       <div>
         <p className="text-primary-900 font-bolf text-sm">Total Patent Filed Over Time</p>
         {data && <ScatterChart data={scatterChartData} colors={["#7F4BD8", "#442873"]} />}
-        {/* <div className="space-y-2 text-secondary-800 mt-4">
-            <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-            <div>
-              <h6 className="font-semibold text-primary-900">
-                Family A: California (100 patents), Texas (50 patents); Family B: New York (80
-                patents), Florida (70 patents)
-              </h6>
-              <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-                <li>
-                  Annual Patent Filing Trend: The total number of patents filed each year, with
-                  year-over-year growth rates indicating innovation trends. For instance, a YOY
-                  growth rate of X% suggests increasing/decreasing innovation activities.
-                </li>
-                <li>
-                  Market Share of Patent Filings by Sector: Identification of sectors contributing
-                  most to patent filings, e.g., "Technology sector accounts for X% of total filings
-                  in year Y," highlighting sectoral innovation focus.
-                </li>
-                <li>
-                  Comparison of Patent Filings Across Decades: Contrast in patent filing volumes
-                  across different decades, showing shifts in innovation intensity, e.g., "Filings
-                  in the 2010s increased by X% compared to the 2000s."
-                </li>
-                <li>
-                  Impact of Legislative Changes on Patent Filings: Analysis of filing trends before
-                  and after significant patent law changes, e.g., "Patent filings increased by X%
-                  following the introduction of the America Invents Act."
-                </li>
-                <li>
-                  Patent Filing Patterns Related to Economic Cycles: Correlation between economic
-                  indicators and patent filings, suggesting, "During economic upturns/downturns,
-                  patent filings increase/decrease by X%."
-                </li>
-              </ul>
-            </div>
-          </div> */}
       </div>
     </DataSection>
-    // </div>
   );
 };

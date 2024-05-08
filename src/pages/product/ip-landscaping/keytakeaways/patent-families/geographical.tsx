@@ -33,26 +33,11 @@ const GeographicalDistributionPatentKeyTakeaway = () => {
             title={"Regional Market Share of Patent Families"}
             description={patentLocation && regionalMarketShareOfPatentFamily(patentLocation)}
           />
-          <Keytakeaway
-            title={"Growth Rate of Patent Family Size"}
-            description={patentLocation && regionalMarketShareOfPatentFamily(patentLocation)}
-          />
+          <Keytakeaway title={"Growth Rate of Patent Family Size"} description={"N/A"} />
           <Keytakeaway
             title={"Growth Trends in Regional Patent Family Concentrations"}
-            description={patentLocation && regionalMarketShareOfPatentFamily(patentLocation)}
+            description={"N/A"}
           />
-          {/* <Keytakeaway
-            title={"Comparison of Urban vs. Rural Patent Family Distributions"}
-            description={patentLocation && regionalMarketShareOfPatentFamily(patentLocation)}
-          /> */}
-          {/* <Keytakeaway
-            title={"International Collaboration in Patent Families"}
-            description={patentLocation && regionalMarketShareOfPatentFamily(patentLocation)}
-          /> */}
-          {/* <Keytakeaway
-            title={"Impact of Regulatory Changes on Geographical Distribution"}
-            description={patentLocation && regionalMarketShareOfPatentFamily(patentLocation)}
-          /> */}
         </KeyDetail>
       )}
     </>
