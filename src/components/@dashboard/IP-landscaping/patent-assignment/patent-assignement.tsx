@@ -5,27 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getPatentCompetitorPortfolio } from "../../../../utils/api/charts";
 import PageTitle from "../../../reusable/page-title";
 import ScrollableBarChart from "../../../@product/bar-scroll";
+import OrganizationAssignmentTakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/assignees/organization-assigment/keytakeaways";
 
 interface Props {
   keywords: string[];
 }
-
-// interface IScholaryPublicationData {
-//   count: number;
-//   year: number;
-// }
-
-// interface IScatterItem {
-//   x: number;
-//   y: number;
-// }
-
-// interface IScatterList {
-//   id: string;
-//   data: IScatterItem[];
-// }
-
-// type IYear = "1st5year" | "2nd5year";
 
 export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
@@ -88,56 +72,9 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
       }
     >
       <div>
-        {data && (
-          <ScrollableBarChart
-            data={finalData} // data={{
-            //   keys: ["count"],
-            //   data: finalData as any
-            // }}
-            // keys={["count"]}
-            // indexBy="label"
-            // groupMode="stacked"
-            // legendY="No. of assignment"
-            // legendX="Organizations"
-            // innerPadding={0}
-            // borderRadius={4}
-            // legends={"range"}
-          />
-        )}
-        <div className="space-y-2 text-secondary-800 mt-4">
-          <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-          <div>
-            <h6 className="font-semibold text-primary-900">
-              Family A: California (100 patents), Texas (50 patents); Family B: New York (80
-              patents), Florida (70 patents)
-            </h6>
-            <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-              <li>
-                Leading Organization in Patent Assignments: "Organization A leads with X% of all
-                patent assignments, indicating its dominant position in innovation."
-              </li>
-              <li>
-                Growth in Patent Assignments for Top Organizations: "The top X organizations saw a
-                Y% increase in patent assignments over the last Z years, showing their growing
-                influence in technology development."
-              </li>
-              <li>
-                Organization with Largest Year-on-Year Increase: "Organization B experienced the
-                largest year-on-year increase in patent assignments, with a growth rate of X%,
-                highlighting its rapid expansion in innovation activities."
-              </li>
-              <li>
-                Comparison of Market Share Among Top Organizations: "The market share of patent
-                assignments among the top X organizations has become more concentrated, with the top
-                3 holding Y% of total assignments."
-              </li>
-              <li>
-                Sector Dominance by Organization: "In the renewable energy sector, Organization C
-                accounts for X% of patent assignments, underlining its leadership in this innovation
-                area."
-              </li>
-            </ul>
-          </div>
+        {data && <ScrollableBarChart data={finalData} />}
+        <div className="mt-4">
+          <OrganizationAssignmentTakeaways />
         </div>
       </div>
     </DataSection>

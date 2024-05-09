@@ -9,6 +9,7 @@ import StatesSlice from "./stores/US-states";
 import UseCaseSlice from "./stores/use-case";
 import SessionSlice from "./stores/session";
 import ChatSlice from "./stores/chat";
+import UISlice from "./stores/UI";
 
 //
 export const store = configureStore({
@@ -21,6 +22,7 @@ export const store = configureStore({
     chat: ChatSlice,
     usecase: UseCaseSlice,
     sessionDetail: SessionSlice,
+    UI: UISlice,
   },
 });
 

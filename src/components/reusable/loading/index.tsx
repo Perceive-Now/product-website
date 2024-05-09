@@ -21,7 +21,7 @@ const Loading = ({ isLoading }: Props) => {
   return (
     <>
       {isLoading && (
-        <div className="fixed inset-0 z-50 h-full  flex justify-center items-center w-full">
+        <div className="absolute inset-0 z-50 h-screen flex justify-center items-center w-full">
           <LoadingIcon fontSize={52} className="animate-spin text-primary-900" />
         </div>
       )}

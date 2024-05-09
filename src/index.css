@@ -22,6 +22,10 @@
     @apply text-primary-500;
   }
 
+  .secondary-transparent {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
   .pn_scroller::-webkit-scrollbar {
     width: 4px;
     height: 2px;
@@ -223,7 +227,7 @@
   padding: 0 !important;
 }
 
-.css-1xe1d5g-control{
+.css-1xe1d5g-control {
   border-radius: 8px !important;
   min-height: 40px !important;
 }

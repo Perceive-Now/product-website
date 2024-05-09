@@ -9,7 +9,7 @@ interface IPatentYear {
   count: number;
 }
 
-export function PatentFilingLatestYear(patentData: PatentInfo[]): string {
+export function PatentFilingLatestYear(patentData: PatentInfo[]) {
   if (patentData.length === 0) {
     return "No patent data available.";
   }

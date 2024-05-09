@@ -46,10 +46,6 @@ const SizeOfPatentFamilyKeyTakeaway = () => {
             description={findYearWithLargestAverage(patentFamilySize)}
           />
           <Keytakeaway
-            title={" Sector Leading in Patent Filings for the Latest Year"}
-            description={""}
-          />
-          <Keytakeaway
             title={"Growth Rate of Patent Family Size"}
             description={PatentFamilyGrowthRate(patentFamilySize)}
           />

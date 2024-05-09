@@ -4,6 +4,7 @@ import { getPatentExaminerWorkload } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../reusable/page-title";
 import ScrollableBarChart from "../../../@product/bar-scroll/scroll-bar";
+import ExaminerDistributionKeytakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/examiners/distribution-examiner/keytakeaways";
 // import ScrollableBarChart from "../../../@product/bar-scroll/scroll-bar";
 
 interface Props {
@@ -53,21 +54,8 @@ export const DistributionWorkload: FunctionComponent<Props> = ({ keywords }) => 
       }
     >
       <div>
-        <ScrollableBarChart
-          data={barChartData}
-          // keys={["value"]}
-          // indexBy="label"
-          // groupMode={"stacked"}
-          // // innerPadding={0}
-          // borderRadius={4}
-          // // layout={"vertical"}
-          // legendX="Examiner"
-          // legendY="No. of patents examined "
-          // legends={"legend"}
-        />
-        {/* <ScrollableBarChart
-            data={barChartData.slice(0, 50)}
-          /> */}
+        <ScrollableBarChart data={barChartData} />
+        <ExaminerDistributionKeytakeaways data={data} />
       </div>
     </DataSection>
   );

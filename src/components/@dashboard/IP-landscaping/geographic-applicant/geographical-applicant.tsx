@@ -6,6 +6,7 @@ import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getGeographicDistributionApplicant } from "../../../../utils/api/charts";
 import countryNames from "../../../../utils/extra/country-2-names";
+import GeographicalDistributionOfApplicantFamilyKeyTakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/patent-applicants/geographical-patent/keytakeaway";
 
 interface Props {
   keywords: string[];
@@ -114,38 +115,8 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
       }
     >
       <div>
-        {/* <div>
-          <HeatMap
-            data={tree_data_reverse}
-            legendY={"Year"}
-            cell="circle"
-            legentType="legend"
-          />
-        </div> */}
-        {/* <div className="italic text-[36px] text-center my-2 font-normal">VS</div> */}
-        <HeatMap
-          data={finalData}
-          legendY={"Year"}
-          legentType="legend"
-          // legend={[
-          //   {
-          //     anchor: "right",
-          //     translateX: 60,
-          //     translateY: -1,
-          //     length: 500,
-          //     thickness: 8,
-          //     direction: "column",
-          //     tickPosition: "after",
-          //     tickSize: 3,
-          //     tickSpacing: 4,
-          //     tickOverlap: false,
-          //     tickFormat: ">-.2s",
-          //     title: "Growth rate",
-          //     titleAlign: "end",
-          //     titleOffset: 8,
-          //   },
-          // ]}
-        />
+        <HeatMap data={finalData} legendY={"Year"} legentType="legend" />
+        <GeographicalDistributionOfApplicantFamilyKeyTakeaways data={data} />
       </div>
     </DataSection>
   );

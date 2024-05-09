@@ -4,6 +4,7 @@ import { getPatentApplicantType } from "../../../../utils/api/charts";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
+import PatentApplicantKeyTakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/patent-applicants/application-applicant/keytakeaway";
 
 interface Props {
   keywords: string[];
@@ -63,6 +64,7 @@ export const NumberApplicationsByApplicant: FunctionComponent<Props> = ({ keywor
           legendY="Average family size (n)"
           legendX="Application type"
         />
+        <PatentApplicantKeyTakeaways />
       </div>
     </DataSection>
   );

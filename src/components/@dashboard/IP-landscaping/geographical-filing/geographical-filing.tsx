@@ -11,6 +11,7 @@ import { getGeoFiling } from "../../../../utils/api/charts";
 import StatesCodes from "../../../../utils/extra/us-states-codes";
 //
 import USMap from "../../../@product/us-map";
+import GeographicalDistributionPatentKeyTakeaway from "../../../../pages/product/ip-landscaping/keytakeaways/patent-families/geographical";
 
 interface Props {
   keywords: string[];
@@ -132,31 +133,10 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
         />
       }
     >
-      <div className="space-y-2 text-secondary-800 mt-4">
-        {/* <HeatMap
-          data={tree_data}
-          legendY={"Year"}
-          legentType="legend"
-        legend={[
-          {
-            anchor: "right",
-            translateX: 60,
-            translateY: -1,
-            length: 500,
-            thickness: 8,
-            direction: "column",
-            tickPosition: "after",
-            tickSize: 3,
-            tickSpacing: 4,
-            tickOverlap: false,
-            tickFormat: ">-.2s",
-            title: "Growth rate",
-            titleAlign: "end",
-            titleOffset: 8,
-          },
-        ]}
-        /> */}
+      <div className="mt-4">
         {data && <USMap data={mapData} type={"heatmap_industry"} />}
+
+        <GeographicalDistributionPatentKeyTakeaway />
       </div>
     </DataSection>
   );

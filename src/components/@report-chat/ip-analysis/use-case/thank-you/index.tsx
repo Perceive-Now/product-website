@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from "react";
 import Button from "../../../../reusable/button";
 // import { getUserChats } from "../../../../../../utils/api/chat";
 // import axios from "axios";
-import jsCookie from "js-cookie";
 import axiosInstance from "../../../../../utils/axios";
 import { API_URL, Auth_CODE } from "../../../../../utils/constants";
 import toast from "react-hot-toast";
@@ -40,21 +39,28 @@ const Thankyou = ({ changeActiveStep }: Props) => {
       //
       setLoading(false);
       const clientSecret = response.data.clientSecret;
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            client_secret: clientSecret,
+          },
+        }),
+      );
       sessionStorage.setItem("clientSecret", clientSecret);
       navigate("/payment");
     } catch (error) {
       setLoading(false);
       toast.error("Failed to create payment intent");
     }
-  }, [ItemId, navigate]);
+  }, [ItemId, dispatch, navigate, sessionDetail]);
 
   //
   const onContinue = useCallback(async () => {
-    jsCookie.set("questionId", String(0));
-    jsCookie.set("commonQuestionId", String(0));
     handlePayment();
   }, [handlePayment]);
 
+  // review answer
   const reviewAnswer = useCallback(() => {
     dispatch(
       setSession({

@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
 
 import UserProfile from "../user-profile/profile";
@@ -7,11 +7,22 @@ import Stepper from "../../../../components/reusable/Stepper";
 
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
+import { useNavigate } from "react-router-dom";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
+  const navigate = useNavigate();
 
   const userDetail = useAppSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (userDetail) {
+      if (userDetail.registration_completed) {
+        navigate("/");
+      }
+    }
+  }, [navigate, userDetail]);
+
   //
   const changeActiveStep = useCallback((stepValue: number) => {
     if (stepValue < steps.length && stepValue >= 0) {

@@ -1,15 +1,21 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import WelcomePerceiveLogo from "../../assets/images/logo-small.svg";
 import Button from "../reusable/button";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setUser } from "../../stores/auth";
 
 /**
  *
  */
 export default function WelcomePage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const userDetail = useAppSelector((state) => state.auth.user);
 
   const handleBtnClick = () => {
+    dispatch(setUser({ ...userDetail, registration_completed: true }));
     navigate("/");
   };
 
@@ -26,11 +32,9 @@ export default function WelcomePage() {
           You're now a part of a community of innovative businesses harnessing the power of AI
           technology.
         </div>
-        <Link to="/">
-          <Button type="primary" handleClick={handleBtnClick}>
-            Start Innovating
-          </Button>
-        </Link>
+        <Button type="primary" handleClick={handleBtnClick}>
+          Start Innovating
+        </Button>
       </div>
     </div>
   );

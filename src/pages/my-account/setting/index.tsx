@@ -2,11 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import ProfileComponent from "../profile/profile";
 import { getBillingHistory } from "../../../utils/api/product";
 import { useEffect } from "react";
+import Loading from "../../../components/reusable/loading";
 
 const Setting = () => {
-  const { data: billings } = useQuery(["get-user-chats"], async () => {
+  const {
+    data: billings,
+    isLoading,
+    isFetching,
+  } = useQuery(["get-billings"], async () => {
     return await getBillingHistory();
   });
+
+  console.log(billings);
 
   // Fetching time period
   useEffect(() => {
@@ -14,8 +21,12 @@ const Setting = () => {
     //
   }, [billings]);
 
+  if (isLoading || isFetching) {
+    return <Loading isLoading={isLoading || isFetching} />;
+  }
+
   return (
-    <div>
+    <>
       <h6 className="text-2xl font-bold text-primary-900">My Account &gt; Settings</h6>
       <div className="flex flex-col w-[900px] items-center justify-center mt-4">
         <ProfileComponent showEdit={false} title={"Billing history"}>
@@ -28,7 +39,7 @@ const Setting = () => {
                       {billing.final_payment_info.amount === 99500 ? (
                         <span>Pro Plan</span>
                       ) : (
-                        <span>Prmium Plan</span>
+                        <span>Premium Plan</span>
                       )}
                     </div>
                     <div>{billing.status}</div>
@@ -42,7 +53,7 @@ const Setting = () => {
           </div>
         </ProfileComponent>
       </div>
-    </div>
+    </>
   );
 };
 

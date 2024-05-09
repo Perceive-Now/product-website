@@ -9,13 +9,35 @@ import axiosInstance from "../axios";
  *
  */
 
-// {
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization:
-//       `Bearer ${}`,
-//   },
-// },
+interface IData {
+  companies: ICompany[];
+}
+
+interface ICompany {
+  id: number;
+  name: string;
+  industry: string;
+  size: string;
+}
+
+export interface IUserProfile {
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  email?: string;
+  id?: number;
+  phone_number?: null | string;
+  profile_photo?: string;
+  about_me?: string;
+  country?: string;
+  is_customer?: boolean;
+  company_name?: null | string;
+  company_id?: number;
+  job_position?: null | string;
+  topics_of_interest?: string;
+  registration_completed?: boolean;
+}
 
 export async function updateUserProfile(value: any) {
   const response = await axiosInstance.put<IUserProfile>(
@@ -38,45 +60,6 @@ export async function getCompanies() {
   );
   return response.data.companies;
 }
-
-interface IData {
-  companies: ICompany[];
-}
-
-interface ICompany {
-  id: number;
-  name: string;
-  industry: string;
-  size: string;
-}
-
-export interface IUserProfile {
-  username: string;
-  first_name: string;
-  last_name: string;
-  full_name?: string;
-  email?: string;
-  id: number;
-  phone_number: null | string;
-  profile_photo: string;
-  about_me: string;
-  country: string;
-  is_customer: boolean;
-  company_name: null | string;
-  company_id?: number;
-  job_position: null | string;
-  topics_of_interest: string;
-}
-
-// export interface IUserProfile {
-//   "First Name": string;
-//   "Last Name": string;
-//   Username: string;
-//   "Phone Number": string;
-//   country_id: number;
-//   "Topics of Interest": string[];
-// }
-
 export async function patchUserProfile({ body }: any) {
   const response = await axiosInstance.patch(``, body);
 

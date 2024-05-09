@@ -1,13 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 interface PatentExaminerData {
   examiner: string;
   count: number;
   year: number;
 }
 
-export function examinerWithFastestGrowingWorkload(
-  data: PatentExaminerData[],
-  examinerName: string,
-): string {
+interface ExaminerEfficiency {
+  examiner_id: string;
+  examiner_name: string;
+  average_processing_days: number;
+}
+
+interface ExaminerEfficiency {
+  examiner_id: string;
+  examiner_name: string;
+  average_processing_days: number;
+}
+
+export function examinerWorkloadDistribution(data: PatentExaminerData[], examinerName: string) {
   if (data.length === 0) {
     return "No data available.";
   }
@@ -32,10 +42,53 @@ export function examinerWithFastestGrowingWorkload(
   )}% of the total examinations, indicating a high concentration of workload among a few examiners.`;
 }
 
-export function workloadDisparityAmongExaminers(
-  data: PatentExaminerData[],
-  topPercentage: number,
-): string {
+export function examinerWithFastestGrowingWorkload(data: PatentExaminerData[]) {
+  if (data.length === 0) {
+    return "No patent data available.";
+  }
+
+  // Group data by examiner, aggregate counts by year
+  const examinerData = data.reduce((acc, item) => {
+    if (!acc[item.examiner]) {
+      acc[item.examiner] = {};
+    }
+    if (!acc[item.examiner][item.year]) {
+      acc[item.examiner][item.year] = item.count;
+    } else {
+      acc[item.examiner][item.year] += item.count;
+    }
+    return acc;
+  }, {} as { [examiner: string]: { [year: number]: number } });
+
+  // Determine growth rates
+  const growthRates = Object.entries(examinerData).map(([examiner, counts]) => {
+    const years = Object.keys(counts)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const firstYear = years[0];
+    const lastYear = years[years.length - 1];
+    const firstYearCount = counts[firstYear];
+    const lastYearCount = counts[lastYear];
+    const growthRate = ((lastYearCount - firstYearCount) / firstYearCount) * 100;
+    return { examiner, growthRate, firstYear, lastYear };
+  });
+
+  // Find the examiner with the fastest growth
+  const fastestGrowth = growthRates.reduce(
+    (max, current) => (current.growthRate > max.growthRate ? current : max),
+    growthRates[0],
+  );
+
+  return `Over the past decade, Examiner ${
+    fastestGrowth.examiner
+  }'s workload increased by ${fastestGrowth.growthRate.toFixed(2)}% from year ${
+    fastestGrowth.firstYear
+  } to ${
+    fastestGrowth.lastYear
+  }, the fastest growth among all examiners, highlighting the dynamic shifts in examination responsibilities.`;
+}
+
+export function workloadDisparityAmongExaminers(data: PatentExaminerData[], topPercentage: number) {
   // Aggregate total counts by examiner
   const totalWorkload = data.reduce((acc, curr) => acc + curr.count, 0);
   const examinerWorkloads = data.reduce((acc, curr) => {
@@ -58,13 +111,7 @@ export function workloadDisparityAmongExaminers(
   )}% of the total patent examination workload, demonstrating significant workload disparities.`;
 }
 
-interface ExaminerEfficiency {
-  examiner_id: string;
-  examiner_name: string;
-  average_processing_days: number;
-}
-
-export function efficiencyIndicatorByExaminer(data: ExaminerEfficiency[]): string {
+export function efficiencyIndicatorByExaminer(data: ExaminerEfficiency[]) {
   if (data.length === 0) {
     return "No data available.";
   }
@@ -77,20 +124,4 @@ export function efficiencyIndicatorByExaminer(data: ExaminerEfficiency[]): strin
   } processes patents in an average of ${mostEfficient.average_processing_days.toFixed(
     2,
   )} days, marking them as the most efficient, with a significant impact on reducing examination backlog.`;
-}
-
-export function annualWorkloadTrendsAmongExaminers(
-  data: PatentExaminerData[],
-  year: number,
-): string {
-  const yearlyData = data.filter((d) => d.year === year);
-
-  if (yearlyData.length === 0) {
-    return `No data available for year ${year}.`;
-  }
-
-  const sortedByWorkload = yearlyData.sort((a, b) => b.count - a.count);
-  const topExaminer = sortedByWorkload[0];
-
-  return `In year ${year}, the examination workload trends shifted significantly, with ${topExaminer.examiner} handling the most patents, indicating changing priorities or capacity enhancements.`;
 }

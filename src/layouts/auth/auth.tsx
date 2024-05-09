@@ -8,41 +8,31 @@ import PageLoading from "../../components/app/pageLoading";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
 import { getSessionDetails } from "../../stores/session";
-// import Cookies from "universal-cookie";
-// import jsCookie from "js-cookie";
-// import toast from "react-hot-toast";
+
+interface PathPersistRefProps {
+  path: string | null;
+}
 
 /**
  *
  */
 export default function AuthLayout() {
   const navigate = useNavigate();
-  // const pathname = useLocation();
+  const userDetails = useAppSelector((state) => state.auth.user);
+  // const { pathname } = useLocation();
 
   const PathPersistRef = useRef<PathPersistRefProps>({
     path: `${window.location.pathname}${window.location.search}`,
   });
 
+  // console.log(PathPersistRef.current.path)
+
   const dispatch = useAppDispatch();
   const authStore = useAppSelector((state) => state.auth);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
-
-  // const { user } = authStore;
-
-  //
   const [isLoading, setIsLoading] = useState(true);
 
   //
   const getSession = useCallback(async () => {
-    if (authStore.token) {
-      await dispatch(getUserDetails());
-      await dispatch(getSessionDetails());
-      setIsLoading(false);
-      return;
-    }
-
-    // Getting current session details
     const session = await dispatch(getCurrentSession()).unwrap();
 
     if (!session.success) {
@@ -53,12 +43,16 @@ export default function AuthLayout() {
         return navigate("/login");
       }
     }
-    PathPersistRef.current.path = encodeURIComponent(
-      `${window.location.pathname}${window.location.search}`,
-    );
-    // Getting user details
-    await dispatch(getUserDetails());
+    // PathPersistRef.current.path = encodeURIComponent(
+    //   `${window.location.pathname}${window.location.search}`,
+    // );
 
+    if (authStore.token) {
+      await dispatch(getUserDetails());
+      await dispatch(getSessionDetails());
+      setIsLoading(false);
+      return;
+    }
     // Stop loading
     setIsLoading(false);
   }, [authStore.token, dispatch, navigate]);
@@ -67,17 +61,19 @@ export default function AuthLayout() {
     getSession();
   }, [getSession]);
 
+  useEffect(() => {
+    if (userDetails) {
+      if (!userDetails.registration_completed) {
+        navigate("/user-registration");
+      }
+    }
+  }, [navigate, userDetails]);
+
   // useEffect(() => {
-  //   if (user) {
-  //     if (user.subscription.has_subscription && user.subscription?.data) {
-  //       if (user.subscription.data?.subscription_status === "unpaid") {
-  //         navigate("/signup/complete");
-  //       }
-  //     } else {
-  //       navigate("/signup/complete");
-  //     }
+  //   if (pathname !== "/") {
+  //     dispatch(setUI({ home: false }));
   //   }
-  // }, [navigate, user]);
+  // }, [dispatch, pathname]);
 
   // useEffect(() => {
   //   if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {
@@ -90,12 +86,8 @@ export default function AuthLayout() {
   if (isLoading) return <PageLoading />;
 
   return (
-    <div>
+    <div className="">
       <Outlet />
     </div>
   );
-}
-
-interface PathPersistRefProps {
-  path: string | null;
 }

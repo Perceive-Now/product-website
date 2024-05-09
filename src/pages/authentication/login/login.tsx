@@ -17,9 +17,15 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 // import { WEBSITE_URL } from "../../../utils/constants";
 
 // Store
-import { useAppDispatch } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
 import GoogleAuth from "../../../components/@auth/google";
+import { setSession } from "../../../stores/session";
+
+interface ILoginFormValues {
+  username: string;
+  password: string;
+}
 
 /**
  *
@@ -27,6 +33,9 @@ import GoogleAuth from "../../../components/@auth/google";
 export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const session = useAppSelector((state) => state.sessionDetail.session);
 
   const callbackPath = searchParams.get("callback_path");
 
@@ -46,10 +55,7 @@ export default function LoginPage() {
   };
 
   const formResolver = yup.object().shape({
-    username: yup
-      .string()
-      // .username("Username is required")
-      .required("Username is required"),
+    username: yup.string().required("Username is required"),
     password: yup.string().required("Password is required"),
   });
 
@@ -67,6 +73,14 @@ export default function LoginPage() {
     // Login user
     const response = await dispatch(loginUser(values)).unwrap();
     if (response.success) {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            last_session_id: session?.session_id,
+          },
+        }),
+      );
       if (callbackPath) {
         navigate(callbackPath);
       } else {
@@ -112,10 +126,6 @@ export default function LoginPage() {
 
         <div>
           <fieldset className="mt-3">
-            {/* <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
-              Username
-            </label> */}
-
             <div className="mt-0.5 rounded-md shadow-sm">
               <input
                 id="username"
@@ -137,10 +147,6 @@ export default function LoginPage() {
             )}
           </fieldset>
           <fieldset className="mt-2">
-            {/* <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">
-              Password
-            </label> */}
-
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
@@ -198,9 +204,4 @@ export default function LoginPage() {
       </form>
     </div>
   );
-}
-
-interface ILoginFormValues {
-  username: string;
-  password: string;
 }

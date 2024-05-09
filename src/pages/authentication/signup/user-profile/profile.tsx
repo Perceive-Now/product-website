@@ -17,6 +17,8 @@ import SelectBox from "../../../../components/reusable/select-box";
 import PhoneNumberInput from "../../../../components/reusable/phone-input";
 
 import { Countries } from "../../../../utils/constants";
+import { useAppDispatch } from "../../../../hooks/redux";
+import { setUser } from "../../../../stores/auth";
 // import classNames from "classnames";
 // import { CrossIcon } from "../../../../components/icons";
 
@@ -49,6 +51,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     value: userDetail?.country || "",
   });
 
+  const dispatch = useAppDispatch();
+
   // const [keywords, setKeywords] = useState<string[]>([]);
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,10 +80,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   };
 
   const formResolver = yup.object().shape({
-    username: yup
-      .string()
-      // .username("Username is required")
-      .required("Username is required"),
+    username: yup.string().required("Username is required"),
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
     phone_number: yup.string().required("Phone Number is required"),
@@ -110,10 +111,12 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
         profile_photo: photo,
         company_name: value?.company_name,
         job_position: value?.job_position,
+        registration_completed: true,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
           if (res.status === 200) {
+            dispatch(setUser({ ...values, registration_completed: false }));
             toast.success("User detail added");
             changeActiveStep(2);
           }
@@ -122,7 +125,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, country?.value, photo],
+    [changeActiveStep, country?.value, dispatch, photo],
   );
 
   // const addKeyword = useCallback(

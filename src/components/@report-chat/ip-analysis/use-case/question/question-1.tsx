@@ -19,6 +19,7 @@ import { setChat } from "../../../../../stores/chat";
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
+  activeIndex: number;
   question: {
     question: string;
     questionId: number;
@@ -42,6 +43,7 @@ export default function ChatQuestionAnswer({
   changeActiveStep,
   activeStep,
   question,
+  activeIndex,
 }: // questionId,
 Props) {
   const dispatch = useAppDispatch();
@@ -73,48 +75,32 @@ Props) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            if (questionId && Number(questionId) <= 5) {
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    common_question_id: questionId + 1,
-                    step_id: activeStep + 1,
-                  },
-                }),
-              );
-            } else {
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    question_id: questionId + 1,
-                    step_id: activeStep + 1,
-                  },
-                }),
-              );
-            }
-            // dispatch(
-            //   setSession({
-            //     session_data: {
-            //       ...sessionDetail,
-            //       step_id: activeStep + 1,
-            //     },
-            //   }),
-            // );
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  question_id: questionId,
+                  step_id: activeStep + 1,
+                  active_index: activeIndex + 1,
+                },
+              }),
+            );
             changeActiveStep(activeStep + 1);
           } else {
             dispatch(
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  question_id: questionId,
-                  step_id: 2,
+                  step_id: 8,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                  },
                 },
               }),
             );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
+            changeActiveStep(8);
           }
         }
       } catch (error: any) {
@@ -122,7 +108,16 @@ Props) {
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [
+      activeIndex,
+      activeStep,
+      changeActiveStep,
+      dispatch,
+      questionId,
+      sessionDetail,
+      sessionId,
+      userId,
+    ],
   );
   return (
     <>

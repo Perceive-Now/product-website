@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import KeyDetail from "../../../../../components/@dashboard/IP-landscaping/key-detail";
-import Keytakeaway from "../../../../../components/reusable/keytakeaways";
-import { useAppSelector } from "../../../../../hooks/redux";
-import { getPatentApplicantType } from "../../../../../utils/api/charts";
+import KeyDetail from "../../../../../../components/@dashboard/IP-landscaping/key-detail";
+import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
+import { useAppSelector } from "../../../../../../hooks/redux";
+import { getPatentApplicantType } from "../../../../../../utils/api/charts";
 import { useEffect } from "react";
-import { marketShareOfApplicationsByApplicantType } from "./patent-applicant";
+import { marketShareOfApplicationsByApplicantType } from "../patent-applicant";
 
 const PatentApplicantKeyTakeaways = () => {
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
@@ -33,21 +33,11 @@ const PatentApplicantKeyTakeaways = () => {
             title={"Market Share of Applications by Applicant Type"}
             description={marketShareOfApplicationsByApplicantType(data)}
           />
-          <Keytakeaway
-            title={"Trend in Applicant Type Over Time"}
-            // description={marketShareOfApplicationsByApplicantType(data)}
-          />
-          <Keytakeaway
-            title={"Sector-Specific Applicant Type Dominance"}
-            // description={marketShareOfApplicationsByApplicantType(data)}
-          />
-          <Keytakeaway
-            title={"Geographical Variations in Applicant Types"}
-            description={marketShareOfApplicationsByApplicantType(data)}
-          />
+          <Keytakeaway title={"Trend in Applicant Type Over Time"} description={"N/A"} />
+          <Keytakeaway title={"Geographical Variations in Applicant Types"} description={"N/A"} />
           <Keytakeaway
             title={"Yearly Changes in Applicant Type Distribution"}
-            description={marketShareOfApplicationsByApplicantType(data)}
+            description={"N/A"}
           />
         </KeyDetail>
       )}

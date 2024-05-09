@@ -107,8 +107,7 @@ module.exports = {
       },
       backgroundImage: {
         "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%)",
-        // "gradient-conic":
-        //   "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "secondary-gradient": "linear-gradient(110deg, #E08236 0.32%, #423ABA 99.59%);",
       },
       // boxShadow: {
       //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

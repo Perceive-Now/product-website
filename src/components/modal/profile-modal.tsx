@@ -89,6 +89,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         about_me: "",
         id: userDetail.id || "",
         full_name: userDetail.full_name || "",
+        registration_completed: true,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
