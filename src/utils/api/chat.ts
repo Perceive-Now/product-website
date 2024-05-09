@@ -21,21 +21,11 @@ export async function addAnswer(value: IAnswers) {
 }
 
 export async function getUserChats(user_id: string, session_id: string) {
-  try {
-    const response = await axios.get<IAnswers[]>(
-      `https://pn-chatbot.azurewebsites.net/get-answers/?userID=${user_id}&sessionID=${session_id}`,
-    );
+  const response = await axios.get<IAnswers[]>(
+    `https://pn-chatbot.azurewebsites.net/get-answers/?userID=${user_id}&sessionID=${session_id}`,
+  );
 
-    return response.data;
-  } catch (error) {
-    // Handle error
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.message);
-    } else {
-      console.error("Error:", error);
-    }
-    throw error; // Rethrow the error
-  }
+  return response.data;
 }
 
 interface IChat {
@@ -46,7 +36,7 @@ interface IChat {
   answeredQuestion: string;
 }
 
-interface IAnswers {
+export interface IAnswers {
   question_id: string | number;
   session_id: string;
   user_id: string;

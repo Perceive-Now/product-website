@@ -72,6 +72,8 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
               );
               changeActiveStep(3);
             }
+          } else if (status === undefined) {
+            toast.error("Something went wrong");
           } else {
             dispatch(
               setSession({

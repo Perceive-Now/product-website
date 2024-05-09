@@ -171,7 +171,7 @@ export default function SignupPage() {
               htmlType="submit"
               disabled={!emailValue || !passwordValue || !isAgree}
               loading={isSubmitting}
-              type="gray"
+              type="auth"
             >
               Sign Up
             </Button>

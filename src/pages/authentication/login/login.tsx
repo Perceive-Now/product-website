@@ -187,7 +187,7 @@ export default function LoginPage() {
             htmlType="submit"
             disabled={!userNameValue || !passwordValue}
             loading={isSubmitting}
-            type="gray"
+            type="auth"
           >
             Sign In
           </Button>

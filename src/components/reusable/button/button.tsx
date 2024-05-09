@@ -46,6 +46,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
           "primary-button": buttonType === "primary",
           "secondary-button": buttonType === "secondary",
           "optional-button": buttonType === "optional",
+          "auth-button": buttonType === "auth",
           "gray-button": buttonType === "gray",
           white: buttonType === "default",
           "full-width": isFullWidth,
@@ -75,7 +76,7 @@ interface IButtonProps {
   classname?: string;
   // Custom
   rounded?: "small" | "medium" | "large" | "full";
-  type?: "primary" | "secondary" | "optional" | "default" | "gray";
+  type?: "primary" | "secondary" | "optional" | "default" | "gray" | "auth";
   icon?: ReactElement;
   loading?: boolean;
   fullWidth?: boolean;

@@ -139,9 +139,6 @@ function App() {
           </Route>
 
           <Route element={<DefaultLayout />}>
-            {/* <Route path="/" element={<HomePage />} /> */}
-            {/* <Route path="/my-account" /> */}
-
             <Route path="/" element={<IPAnalysis />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
@@ -155,13 +152,6 @@ function App() {
 
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/m&a-licensing" element={<MALicensing />} />
-
-            {/* Account section */}
-            {/* <Route element={<AccountLayout />}>
-              <Route path="/account/user-profile" element={<UserProfilePage />} />
-              <Route path="/account/company-profile" element={<CompanyProfilePage />} />
-              <Route path="/account/ip-portfolio" element={<IpPortfolioPage />} />
-            </Route> */}
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />

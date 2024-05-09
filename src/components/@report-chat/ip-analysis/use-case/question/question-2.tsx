@@ -60,8 +60,6 @@ export default function ChatQuestionAnswer2({
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {
-          // dispatch(setQuestionId({ questionId: 1 }));
-
           if (status === "true" || status == true) {
             dispatch(
               setSession({
@@ -74,6 +72,8 @@ export default function ChatQuestionAnswer2({
               }),
             );
             changeActiveStep(activeStep - 1);
+          } else if (status === undefined) {
+            toast.error("Something went wrong");
           } else {
             jsCookie.set("questionId", String(questionId));
 
