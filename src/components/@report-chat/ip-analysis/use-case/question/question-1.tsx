@@ -86,6 +86,8 @@ Props) {
               }),
             );
             changeActiveStep(activeStep + 1);
+          } else if (status === undefined) {
+            toast.error("Something went wrong");
           } else {
             dispatch(
               setSession({

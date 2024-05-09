@@ -169,7 +169,7 @@ export default function IPAnalysis() {
     {
       label: "Review",
       value: 6,
-      component: <IPReview changeActiveStep={changeActiveStep} />,
+      component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
     },
     {
       label: "Edit",

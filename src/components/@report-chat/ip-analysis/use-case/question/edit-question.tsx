@@ -76,6 +76,8 @@ export default function EditQuestion({ changeActiveStep }: Props) {
               }),
             );
             changeActiveStep(6);
+          } else if (status === undefined) {
+            toast.error("Something went wrong");
           } else {
             dispatch(
               setSession({
