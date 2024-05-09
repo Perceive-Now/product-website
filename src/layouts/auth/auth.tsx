@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 //
 import PageLoading from "../../components/app/pageLoading";
@@ -8,11 +8,10 @@ import PageLoading from "../../components/app/pageLoading";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
 import { getSessionDetails } from "../../stores/session";
-import { setUI } from "../../stores/UI";
 
-// interface PathPersistRefProps {
-//   path: string | null;
-// }
+interface PathPersistRefProps {
+  path: string | null;
+}
 
 /**
  *
@@ -20,11 +19,11 @@ import { setUI } from "../../stores/UI";
 export default function AuthLayout() {
   const navigate = useNavigate();
   const userDetails = useAppSelector((state) => state.auth.user);
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
-  // const PathPersistRef = useRef<PathPersistRefProps>({
-  //   path: `${window.location.pathname}${window.location.search}`,
-  // });
+  const PathPersistRef = useRef<PathPersistRefProps>({
+    path: `${window.location.pathname}${window.location.search}`,
+  });
 
   // console.log(PathPersistRef.current.path)
 
@@ -37,12 +36,12 @@ export default function AuthLayout() {
     const session = await dispatch(getCurrentSession()).unwrap();
 
     if (!session.success) {
-      return navigate("/login");
-      // if (PathPersistRef.current.path) {
-      //   return navigate(`/login?callback_path=${encodeURIComponent(PathPersistRef.current.path)}`);
-      //   // ?callback_path=${encodeURIComponent(PathPersistRef.current.path)}
-      // } else {
-      // }
+      if (PathPersistRef.current.path) {
+        return navigate(`/login?callback_path=${encodeURIComponent(PathPersistRef.current.path)}`);
+        // ?callback_path=${encodeURIComponent(PathPersistRef.current.path)}
+      } else {
+        return navigate("/login");
+      }
     }
     // PathPersistRef.current.path = encodeURIComponent(
     //   `${window.location.pathname}${window.location.search}`,
@@ -70,11 +69,11 @@ export default function AuthLayout() {
     }
   }, [navigate, userDetails]);
 
-  useEffect(() => {
-    if (pathname !== "/") {
-      dispatch(setUI({ home: false }));
-    }
-  }, [dispatch, pathname]);
+  // useEffect(() => {
+  //   if (pathname !== "/") {
+  //     dispatch(setUI({ home: false }));
+  //   }
+  // }, [dispatch, pathname]);
 
   // useEffect(() => {
   //   if (searchedKeywords.length <= 0 && pathname.pathname !== "/") {

@@ -18,11 +18,6 @@ interface OptionMappings {
   [key: string]: string;
 }
 
-// interface IOption {
-//   label: string;
-//   value: string;
-// }
-
 /**
  *
  */
@@ -46,9 +41,10 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
             session_data: {
               ...sessionDetail,
               question_id: 6,
-              common_question_id: 1,
+              active_index: 0,
               step_id: 3,
               use_cases: options,
+              is_home: false,
             },
           }),
         );
@@ -58,9 +54,10 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
             session_data: {
               ...sessionDetail,
               question_id: 12,
-              common_question_id: 1,
               step_id: 3,
+              active_index: 0,
               use_cases: options,
+              is_home: false,
             },
           }),
         );
@@ -70,9 +67,10 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
             session_data: {
               ...sessionDetail,
               question_id: 25,
-              common_question_id: 1,
               step_id: 3,
               use_cases: options,
+              active_index: 0,
+              is_home: false,
             },
           }),
         );
@@ -82,9 +80,10 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
             session_data: {
               ...sessionDetail,
               question_id: 34,
-              common_question_id: 1,
               step_id: 3,
               use_cases: options,
+              active_index: 0,
+              is_home: false,
             },
           }),
         );
@@ -171,7 +170,7 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
   );
 
   return (
-    <div className="h-full rounded-lg p-6">
+    <div className="h-full bg-primary-gradient rounded-lg p-6">
       <p className="text-white text-xl font-semibold ">Please select use case for your report.</p>
       <div className="w-[660px] 2xl:w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 ">

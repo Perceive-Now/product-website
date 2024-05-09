@@ -18,6 +18,7 @@ import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-cas
 import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
 import { setSession } from "../../../../stores/session";
 import EditQuestion from "../../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
+import Loading from "../../../../components/reusable/loading";
 
 /**
  *
@@ -25,18 +26,48 @@ import EditQuestion from "../../../../components/@report-chat/ip-analysis/use-ca
 export default function IPAnalysis() {
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const activeIndex = useMemo(
+    () => sessionDetail?.active_index || 0,
+    [sessionDetail?.active_index],
+  );
 
+  const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState<any>(0);
   const [useCases, setUseCases] = useState<string[]>([]);
 
   useEffect(() => {
-    if (sessionDetail?.step_id) {
-      setActiveStep(sessionDetail?.step_id);
+    if (sessionDetail === undefined) {
+      setLoading(true);
     }
-    if (sessionDetail?.use_cases) {
-      setUseCases(sessionDetail?.use_cases);
+    if (sessionDetail) {
+      if (sessionDetail?.step_id) {
+        setActiveStep(sessionDetail?.step_id);
+      }
+      if (sessionDetail?.use_cases) {
+        setUseCases(sessionDetail?.use_cases);
+      }
     }
-  }, [sessionDetail?.step_id, sessionDetail?.use_cases]);
+    setLoading(false);
+  }, [sessionDetail]);
+
+  useEffect(() => {
+    // setLoading(true)
+
+    if (sessionDetail !== undefined) {
+      if (activeStep !== 0) {
+        dispatch(
+          setSession({
+            session_data: {
+              ...sessionDetail,
+              is_home: false,
+            },
+          }),
+        );
+      }
+    }
+    // setLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStep]);
 
   //
   const changeActiveStep = useCallback((stepValue: number) => {
@@ -47,11 +78,6 @@ export default function IPAnalysis() {
   }, []);
 
   const questionId = useMemo(() => sessionDetail?.question_id, [sessionDetail?.question_id]);
-  const commonQuestionId = useMemo(
-    () => sessionDetail?.common_question_id,
-    [sessionDetail?.common_question_id],
-  );
-
   //
   const questionWithUsecase = questionList.filter(
     (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
@@ -59,23 +85,19 @@ export default function IPAnalysis() {
 
   const question = useMemo(
     () =>
-      questionWithUsecase.find((q) => {
-        if (commonQuestionId && Number(commonQuestionId) > 5) {
-          return q.questionId === Number(questionId);
-        } else {
-          return q.questionId === Number(commonQuestionId);
+      questionWithUsecase.find((q, idx) => {
+        if (idx === activeIndex) {
+          return q;
         }
       }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
-    [commonQuestionId, questionId, questionWithUsecase],
+    [activeIndex, questionId, questionWithUsecase],
   );
 
   //
   useEffect(() => {
     // Check if the condition is met to update the session and active step
     const isConditionMet =
-      useCases.length > 0 &&
-      activeStep < 5 &&
-      questionWithUsecase[questionWithUsecase.length - 1].questionId === Number(questionId) - 1;
+      useCases.length > 0 && activeStep < 5 && questionWithUsecase.length === activeIndex;
 
     if (isConditionMet) {
       dispatch(
@@ -111,6 +133,7 @@ export default function IPAnalysis() {
           changeActiveStep={changeActiveStep}
           activeStep={activeStep}
           exampleAnswer={question.answer}
+          activeIndex={activeIndex}
         />
       ),
     },
@@ -122,6 +145,7 @@ export default function IPAnalysis() {
           changeActiveStep={changeActiveStep}
           activeStep={activeStep}
           question={question}
+          activeIndex={activeIndex}
         />
       ),
     },
@@ -133,6 +157,7 @@ export default function IPAnalysis() {
           changeActiveStep={changeActiveStep}
           activeStep={activeStep}
           question={question}
+          activeIndex={activeIndex}
         />
       ),
     },
@@ -157,6 +182,10 @@ export default function IPAnalysis() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeStep]);
+
+  if (loading) {
+    return <Loading isLoading={loading} />;
+  }
 
   return (
     <>
@@ -186,12 +215,7 @@ export default function IPAnalysis() {
           </div>
           {activeStep > 1 && activeStep < 7 && (
             <div className="absolute bottom-0 left-0 right-0 w-full rounded-b-md overflow-hidden">
-              <IPStepper
-                steps={questionWithUsecase}
-                activeStep={
-                  Number(commonQuestionId) > 5 ? Number(questionId) : Number(commonQuestionId)
-                }
-              />
+              <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />
             </div>
           )}
         </div>

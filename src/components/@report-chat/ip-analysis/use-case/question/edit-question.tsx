@@ -104,8 +104,6 @@ export default function EditQuestion({ changeActiveStep }: Props) {
     [changeActiveStep, dispatch, exampleAnswer, questionId, sessionDetail, sessionId, userId],
   );
 
-  console.log(answer);
-
   return (
     <>
       {question && exampleAnswer && (

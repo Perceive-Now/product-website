@@ -11,7 +11,6 @@ interface IResponse<T = any> {
 }
 
 interface ISessionData {
-  common_question_id?: number;
   question_id?: number;
   step_id?: number;
   plans?: number[];
@@ -19,6 +18,8 @@ interface ISessionData {
   last_session_id?: number;
   user_chat?: IUserChat;
   client_secret?: string;
+  active_index?: number;
+  is_home?: boolean;
 }
 
 interface IUserChat {
@@ -59,11 +60,12 @@ export const getSessionDetails = createAsyncThunk(
             question_id: response.data.session.session_data.question_id,
             step_id: response.data.session.session_data.step_id,
             plans: response.data.session.session_data.plans,
-            common_question_id: response.data.session.session_data.common_question_id,
             use_cases: response.data.session.session_data?.use_cases,
             last_session_id: response.data.session.session_data.last_session_id,
             user_chat: response.data.session.session_data.user_chat,
             client_secret: response.data.session.session_data.client_secret,
+            active_index: response.data.session.session_data.active_index,
+            is_home: response.data.session.session_data.is_home || true,
           },
         },
       };
@@ -88,11 +90,12 @@ const updateSession = async (payload: ISession) => {
         question_id: payload.session_data?.question_id,
         user_id: payload.session_data?.step_id,
         plans: payload.session_data?.plans,
-        common_question_id: payload.session_data?.common_question_id,
         step_id: payload.session_data?.step_id,
         use_cases: payload.session_data?.use_cases,
         last_session_id: payload.session_data?.last_session_id,
         client_secret: payload.session_data?.client_secret,
+        active_index: payload.session_data?.active_index,
+        is_home: payload.session_data?.is_home || true,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,

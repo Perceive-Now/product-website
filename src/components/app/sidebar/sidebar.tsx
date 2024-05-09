@@ -20,6 +20,7 @@ import { logoutUser } from "../../../stores/auth";
 import { LogoutIcon } from "../../icons";
 import ToggleBarIcon from "../../icons/sidenav/bars";
 import UserIcon from "../../reusable/userIcon";
+import { setSession } from "../../../stores/session";
 // import { setSession } from "../../../stores/session";
 
 interface Props {
@@ -96,6 +97,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
     await dispatch(logoutUser());
+    dispatch(setSession({}));
     navigate("/login");
     setIsLoggingOut(false);
   };

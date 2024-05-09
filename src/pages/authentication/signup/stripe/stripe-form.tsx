@@ -1,6 +1,6 @@
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 import Button from "../../../../components/reusable/button";
@@ -32,6 +32,20 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const TotalPrice = selectedPlan.map((p) => p.price).reduce((acc, curr) => acc + curr, 0);
+
+  // useEffect(() => {
+  //   const pollPaymentStatus = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(`${AppConfig.API_URL}/get_payment_status?${AppConfig.Auth_CODE}&clientId=default&payment_intent_id="pi_3PE6vHKOLJKi8SxA0MoVYDPO"`)
+  //       // setPaymentStatus(response.data.status);
+  //       console.log(response)
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   const intervalId = setInterval(pollPaymentStatus, 5000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -69,8 +83,9 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
               answer: "",
             },
             step_id: 0,
-            common_question_id: 0,
             question_id: 0,
+            active_index: 0,
+            is_home: true,
           },
         }),
       );

@@ -16,12 +16,13 @@ interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep?: number;
   exampleAnswer: string;
+  activeIndex: number;
 }
 
 /**
  *
  */
-export default function NewQuestion({ changeActiveStep, exampleAnswer }: Props) {
+export default function NewQuestion({ changeActiveStep, exampleAnswer, activeIndex }: Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
@@ -55,31 +56,20 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer }: Props) 
         const status = response.data.status;
 
         if (resError || resError !== undefined) {
-          toast.error(resError);
+          toast.error(resError || "Something went wrong");
         } else {
           if (status === "true" || status == true) {
             if (questionId) {
-              if (Number(questionId) <= 5) {
-                dispatch(
-                  setSession({
-                    session_data: {
-                      ...sessionDetail,
-                      common_question_id: questionId + 1,
-                      step_id: 3,
-                    },
-                  }),
-                );
-              } else {
-                dispatch(
-                  setSession({
-                    session_data: {
-                      ...sessionDetail,
-                      question_id: questionId + 1,
-                      step_id: 3,
-                    },
-                  }),
-                );
-              }
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    question_id: questionId,
+                    step_id: 3,
+                    active_index: activeIndex + 1,
+                  },
+                }),
+              );
               changeActiveStep(3);
             }
           } else {
@@ -105,7 +95,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer }: Props) 
         toast.error(error.message);
       }
     },
-    [changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
   );
 
   return (

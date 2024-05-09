@@ -14,6 +14,7 @@ import { setChat } from "../../../../../stores/chat";
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
+  activeIndex: number;
   question: {
     question: string;
     questionId: number;
@@ -22,7 +23,12 @@ interface Props {
   };
 }
 
-export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, question }: Props) {
+export default function ChatQuestionAnswer2({
+  changeActiveStep,
+  activeStep,
+  question,
+  activeIndex,
+}: Props) {
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
@@ -57,27 +63,16 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
           // dispatch(setQuestionId({ questionId: 1 }));
 
           if (status === "true" || status == true) {
-            if (Number(questionId) <= 5) {
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    common_question_id: questionId + 1,
-                    step_id: activeStep - 1,
-                  },
-                }),
-              );
-            } else {
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    question_id: questionId + 1,
-                    step_id: activeStep - 1,
-                  },
-                }),
-              );
-            }
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  question_id: questionId,
+                  active_index: activeIndex + 1,
+                  step_id: activeStep - 1,
+                },
+              }),
+            );
             changeActiveStep(activeStep - 1);
           } else {
             jsCookie.set("questionId", String(questionId));
@@ -103,7 +98,16 @@ export default function ChatQuestionAnswer2({ changeActiveStep, activeStep, ques
         toast.error(error || error.message);
       }
     },
-    [activeStep, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [
+      activeIndex,
+      activeStep,
+      changeActiveStep,
+      dispatch,
+      questionId,
+      sessionDetail,
+      sessionId,
+      userId,
+    ],
   );
 
   return (
