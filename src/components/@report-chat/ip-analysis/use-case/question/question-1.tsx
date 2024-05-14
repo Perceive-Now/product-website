@@ -71,6 +71,11 @@ Props) {
         const resError = response.data.error;
 
         setIsLoading(false);
+
+        if (status === undefined) {
+          toast.error("Something went wrong");
+        }
+
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {

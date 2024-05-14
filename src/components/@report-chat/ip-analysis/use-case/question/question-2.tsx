@@ -57,6 +57,10 @@ export default function ChatQuestionAnswer2({
 
         setIsLoading(false);
 
+        if (status === undefined) {
+          toast.error("Something went wrong");
+        }
+
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {

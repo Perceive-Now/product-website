@@ -85,7 +85,7 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
           </div>
           <div className="flex items-center gap-2">
             <IconButton color="default">
-              <ShareIcon />
+              <ShareIcon className="text-[#87888C]" />
             </IconButton>
             <IconButton onClick={copyText} color="default">
               <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />

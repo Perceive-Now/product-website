@@ -149,7 +149,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
               </button>
             } */}
             {isChat ? (
-              <KnowNowHistory />
+              <>{open && <KnowNowHistory />}</>
             ) : (
               <>
                 {sidebarItems.map((item, index) => (

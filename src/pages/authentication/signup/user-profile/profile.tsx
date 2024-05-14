@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -46,14 +46,19 @@ interface Props {
 
 const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   const [photo, setPhoto] = useState<any>(userDetail?.profile_photo);
-  const [country, setCountry] = useState<IOption>({
-    label: userDetail?.country || "",
-    value: userDetail?.country || "",
-  });
+
+  const [country, setCountry] = useState<IOption | null>(null);
+
+  useEffect(() => {
+    if (userDetail?.country) {
+      setCountry({
+        label: userDetail?.country || "",
+        value: userDetail?.country || "",
+      });
+    }
+  }, [userDetail?.country]);
 
   const dispatch = useAppDispatch();
-
-  // const [keywords, setKeywords] = useState<string[]>([]);
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
@@ -265,6 +270,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                       value: country,
                     }))}
                     value={country || null}
+                    placeholder={"Select an options"}
                     // register={register("country")}
                   />
                 </div>

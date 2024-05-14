@@ -39,18 +39,17 @@ const OrganizationAssignmentTakeaways = () => {
           />
           <Keytakeaway
             title={"Market Share of Patent Assignments Among Top Organizations"}
-            description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any)}
+            description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any) || "N/A"}
             // }
           />
           <Keytakeaway
             title={"Organization with Largest Year-on-Year Increase in Assignments"}
-            // description={cityWithHighestConcentrationOfApplicants(data as any)}
+            description="N/A"
           />
           <Keytakeaway
-            title={"Sector Dominance by Organization in Patent Assignments"}
-            // description={shiftInGeographicalFocusOfApplicants(data as any)}
+            title={"Comparison of Assignment Concentration Among Organizations"}
+            description="N/A"
           />
-          <Keytakeaway title={"Comparison of Assignment Concentration Among Organizations"} />
         </KeyDetail>
       )}
     </>

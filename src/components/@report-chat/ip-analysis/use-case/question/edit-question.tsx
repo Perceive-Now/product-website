@@ -24,12 +24,15 @@ interface Props {
 
 export default function EditQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
+
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   //
   const userId = jsCookie.get("user_id");
   const sessionId = jsCookie.get("session_id");
 
   const [isloading, setIsLoading] = useState(false);
+
+  console.log(sessionDetail);
 
   //
   const answer = useMemo(
@@ -54,19 +57,26 @@ export default function EditQuestion({ changeActiveStep }: Props) {
       setIsLoading(true);
 
       try {
-        const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+        const response = await axiosInstance.put(
+          `https://pn-chatbot.azurewebsites.net/edit-answer/?newAnswer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${Number(questionId)}`,
+          )}&userID=${userId}&sessionID=${Number(sessionId)}&questionID=${Number(questionId)}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
-        const status = response.data.status;
+        const status = response.status;
+        const statusText = response.statusText;
+
+        const message = response.data.message;
+
+        if (status === undefined) {
+          toast.error("Something went wrong");
+        }
 
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {
-          if (status === "true" || status == true) {
+          if (status === 200 || statusText === "OK") {
             dispatch(
               setSession({
                 session_data: {
@@ -79,6 +89,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
           } else if (status === undefined) {
             toast.error("Something went wrong");
           } else {
+            toast.success(message || "Answer edited successfully");
             dispatch(
               setSession({
                 session_data: {
@@ -88,7 +99,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
                     question: apiData,
                     question_id: questionId,
                     example_answer: exampleAnswer,
-                    answer: "",
+                    answer: answer,
                   },
                 },
               }),
@@ -103,12 +114,21 @@ export default function EditQuestion({ changeActiveStep }: Props) {
         toast.error(error.message);
       }
     },
-    [changeActiveStep, dispatch, exampleAnswer, questionId, sessionDetail, sessionId, userId],
+    [
+      answer,
+      changeActiveStep,
+      dispatch,
+      exampleAnswer,
+      questionId,
+      sessionDetail,
+      sessionId,
+      userId,
+    ],
   );
 
   return (
     <>
-      {question && exampleAnswer && (
+      {question && exampleAnswer && answer && (
         <NewComponent
           isLoading={isloading}
           onContinue={onContinue}

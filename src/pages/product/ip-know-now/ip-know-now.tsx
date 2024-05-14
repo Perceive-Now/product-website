@@ -5,6 +5,7 @@ import AddQuery from "../../../components/@chat/add-query";
 import QueryAnswer from "../../../components/@chat/query-answer";
 import axios from "axios";
 import ChatQuery from "../../../components/@chat/chat-question";
+import jsCookie from "js-cookie";
 
 interface IChat {
   query: string;
@@ -15,8 +16,12 @@ interface IChat {
 export function KnowNowIP() {
   const chatRef = useRef<HTMLInputElement>(null);
 
+  const sessionID = jsCookie.get("session_id");
+  const userId = jsCookie.get("user_id");
+
   const [query, setQuery] = useState("");
   const [chats, setChats] = useState<IChat[]>([]);
+  const [value, setValue] = useState("");
   // const [errorMessage, setErrorMessage] = useState("");
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
@@ -24,7 +29,7 @@ export function KnowNowIP() {
 
   const onSendQuery = useCallback(async () => {
     setLoadingIndex(chats.length);
-    setIsloading(true);
+    // setIsloading(true);
     setQuery("");
 
     const newChat = {
@@ -35,66 +40,120 @@ export function KnowNowIP() {
     const queries = [
       {
         query: query,
+        user_id: userId,
+        session_id: sessionID,
       },
     ];
 
     setChats((prevChats) => [...prevChats, newChat]);
+    // setIsloading(false);
 
-    const streamSource = new EventSource("https://percievenowchat2.azurewebsites.net/gautam");
+    const streamEndpoint = "https://knownow.perceivenow.ai/query_to_response";
+    const token = "c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907";
 
-    // Event listener for new data
-    streamSource.onmessage = (event) => {
-      // Parse the incoming data (assuming it's JSON)
-      const newData = JSON.parse(event.data);
+    fetch(streamEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(queries),
+    })
+      .then((response: any) => {
+        const reader = response.body.getReader();
 
-      console.log(newData);
-    };
+        const readChunk = () => {
+          reader
+            .read()
+            .then(({ done, value }: any) => {
+              if (done) {
+                console.log("Stream ended");
+                return;
+              }
+              const textDecoder = new TextDecoder();
+              const answer = textDecoder.decode(value);
 
-    // Update state with new data
-    // setStreamData((prevData: any) => [...prevData, newData]);
+              setValue((prev) => prev + answer);
+              setChats((prevChats) => {
+                const updatedChats = [...prevChats];
+                updatedChats[updatedChats.length - 1].answer = answer;
+                return updatedChats;
+              });
+              // Process the chunk of data here
+              console.log("Received chunk of data:", value);
 
-    try {
-      const res = new EventSource("https://knownow.perceivenow.ai/query_to_response");
+              // Read the next chunk
+              readChunk();
+            })
+            .catch((error: any) => {
+              console.error("Error reading chunk:", error);
+            });
+        };
 
-      // Event listener for new data
-      res.onmessage = (event) => {
-        // Parse the incoming data (assuming it's JSON)
-        const newData = JSON.parse(event.data);
-
-        console.log(newData);
-      };
-      // const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
-      //   },
-      // });
-
-      // const answer = res.data.ai_message;
-      const answer = "";
-
-      setIsloading(false);
-
-      setChats((prevChats) => {
-        const updatedChats = [...prevChats];
-        updatedChats[updatedChats.length - 1].answer = answer;
-        return updatedChats;
+        // Start reading chunks
+        readChunk();
+      })
+      .catch((error) => {
+        console.error("Error occurred:", error);
       });
-    } catch (error: any) {
-      const errorMsg = error.response.statusText;
-      setIsloading(false);
 
-      setChats((prevChats) => {
-        const updatedChats = [...prevChats];
-        updatedChats[updatedChats.length - 1].error =
-          errorMsg || "Error while generating the response";
-        return updatedChats;
-      });
-      // console.log(error)
-    } finally {
-      setLoadingIndex(null);
-    }
-  }, [chats, query]);
+    // const response: any = await fetch(streamEndpoint, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify(queries),
+    // })
+    // console.log(response.body.Js)
+    // const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+
+    // // eslint-disable-next-line no-constant-condition
+    // while (true) {
+    //   const { value, done } = await reader.read();
+    //   if (done) break;
+
+    //   // Update UI with the received chunk of data
+    //   console.log('Received: ', value);
+    //   setValue(prev => prev + value);
+    // }
+
+    // try {
+    //   const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
+    //     },
+    //   });
+
+    //   console.log(res)
+
+    //   const answer = res.data;
+
+    //   setIsloading(false);
+
+    //   setChats((prevChats) => {
+    //     const updatedChats = [...prevChats];
+    //     updatedChats[updatedChats.length - 1].answer = answer;
+    //     return updatedChats;
+    //   });
+    // } catch (error: any) {
+    //   const errorMsg = error.response.statusText;
+    //   setIsloading(false);
+
+    //   setChats((prevChats) => {
+    //     const updatedChats = [...prevChats];
+    //     updatedChats[updatedChats.length - 1].error =
+    //       errorMsg || "Error while generating the response";
+    //     return updatedChats;
+    //   });
+    //   // console.log(error)
+    // } finally {
+    //   setLoadingIndex(null);
+    // }
+  }, [chats, query, sessionID, userId]);
+
+  console.log(value);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -110,6 +169,8 @@ export function KnowNowIP() {
     <div className="p-3 pb-6 flex">
       <div className="w-full">
         <div ref={chatRef} className="h-[calc(100vh-205px)] overflow-auto pn_scroller pb-2 pr-2">
+          {/* <div style={{ whiteSpace: 'pre-wrap' }}>{value}</div> */}
+
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
@@ -119,7 +180,8 @@ export function KnowNowIP() {
                 />
                 <QueryAnswer
                   answer={chat.answer}
-                  isLoading={loadingIndex === idx}
+                  // isLoading={loadingIndex === idx}
+                  isLoading={false}
                   error={chat.error}
                 />
               </div>
