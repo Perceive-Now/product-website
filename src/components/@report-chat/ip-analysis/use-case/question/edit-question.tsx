@@ -32,8 +32,6 @@ export default function EditQuestion({ changeActiveStep }: Props) {
 
   const [isloading, setIsLoading] = useState(false);
 
-  console.log(sessionDetail);
-
   //
   const answer = useMemo(
     () => sessionDetail?.user_chat?.answer || "",
@@ -77,11 +75,15 @@ export default function EditQuestion({ changeActiveStep }: Props) {
           toast.error(resError);
         } else {
           if (status === 200 || statusText === "OK") {
+            toast.success(message || "Answer edited successfully");
             dispatch(
               setSession({
                 session_data: {
                   ...sessionDetail,
                   step_id: 6,
+                  user_chat: {
+                    answer: answer,
+                  },
                 },
               }),
             );
@@ -89,7 +91,6 @@ export default function EditQuestion({ changeActiveStep }: Props) {
           } else if (status === undefined) {
             toast.error("Something went wrong");
           } else {
-            toast.success(message || "Answer edited successfully");
             dispatch(
               setSession({
                 session_data: {

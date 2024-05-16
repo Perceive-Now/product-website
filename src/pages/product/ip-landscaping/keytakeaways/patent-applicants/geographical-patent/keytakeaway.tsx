@@ -5,6 +5,7 @@ import {
   cityWithHighestConcentrationOfApplicants,
   internationalDiversityOfPatentApplicants,
   rapidGrowthInApplicantNumbersByRegion,
+  shiftInGeographicalFocusOfApplicants,
   topCountriesByNumberOfPatentApplicants,
 } from "./key";
 
@@ -27,10 +28,7 @@ const GeographicalDistributionOfApplicantFamilyKeyTakeaways = ({ data }: any) =>
           />
           <Keytakeaway
             title={"Shift in Geographical Focus of Applicants"}
-            description={
-              // shiftInGeographicalFocusOfApplicants() ||
-              "N/A"
-            }
+            description={shiftInGeographicalFocusOfApplicants(data) || "N/A"}
           />
           <Keytakeaway
             title={"International Diversity of Patent Applicants"}

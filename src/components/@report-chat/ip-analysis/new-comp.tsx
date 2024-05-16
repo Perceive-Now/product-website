@@ -23,8 +23,6 @@ export default function NewComponent({
   exampleAnswer,
   answer,
 }: Props) {
-  console.log(answer);
-
   const formResolver = yup.object().shape({
     answer: yup.string().required("Please provide your answer"),
   });

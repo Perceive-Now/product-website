@@ -5,7 +5,11 @@ import KeyDetail from "../../../../../components/@dashboard/IP-landscaping/key-d
 import Keytakeaway from "../../../../../components/reusable/keytakeaways";
 import { getPatentsYearly } from "../../../../../utils/api/charts";
 
-import { FiveYearMovingAverage, PatentFilingLatestYear } from "./patent";
+import {
+  FiveYearMovingAverage,
+  PatentFilingLatestYear,
+  annualGrowthRateInPatentFilings,
+} from "./patent";
 
 import { useAppSelector } from "../../../../../hooks/redux";
 
@@ -29,18 +33,29 @@ const PatentsKeyTakeaways = () => {
   }, [data]);
 
   return (
-    <KeyDetail section="Size of Patent Families Over Time">
-      <Keytakeaway title={"Annual Growth Rate in Patent Filings"} description={"N/A"} />
-      <Keytakeaway title={"Comparison of Patent Filings Across Decades"} description={"N/A"} />
-      <Keytakeaway
-        title={" Sector Leading in Patent Filings for the Latest Year"}
-        description={data && PatentFilingLatestYear(data as any)}
-      />
-      <Keytakeaway
-        title={"Five-Year Moving Average of Patent Filings"}
-        description={data && FiveYearMovingAverage(data as any)}
-      />
-    </KeyDetail>
+    <>
+      {data && (
+        <KeyDetail section="Size of Patent Families Over Time">
+          <Keytakeaway
+            title={"Annual Growth Rate in Patent Filings"}
+            description={annualGrowthRateInPatentFilings(data) || "N/A"}
+          />
+          <Keytakeaway
+            title={"Comparison of Patent Filings Across Decades"}
+            description={"N/A"}
+            // comparisonOfPatentFilingsAcrossDecades(data) ||
+          />
+          <Keytakeaway
+            title={" Sector Leading in Patent Filings for the Latest Year"}
+            description={PatentFilingLatestYear(data as any) || "N/A"}
+          />
+          <Keytakeaway
+            title={"Five-Year Moving Average of Patent Filings"}
+            description={FiveYearMovingAverage(data as any) || "N/A"}
+          />
+        </KeyDetail>
+      )}
+    </>
   );
 };
 

@@ -1,7 +1,11 @@
 import KeyDetail from "../../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
 
-import { examinerWithFastestGrowingWorkload, examinerWorkloadDistribution } from "./key";
+import {
+  examinerWithFastestGrowingWorkload,
+  examinerWorkloadDistribution,
+  workloadDisparityAmongExaminers,
+} from "./key";
 
 const ExaminerDistributionKeytakeaways = ({ data }: any) => {
   return (
@@ -14,7 +18,10 @@ const ExaminerDistributionKeytakeaways = ({ data }: any) => {
         title={"Examiner with Fastest Growing Workload"}
         description={examinerWithFastestGrowingWorkload(data) || "N/A"}
       />
-      <Keytakeaway title={"Workload Disparity Among Examiners"} description={"N/A"} />
+      <Keytakeaway
+        title={"Workload Disparity Among Examiners"}
+        description={workloadDisparityAmongExaminers(data) || "N/A"}
+      />
       <Keytakeaway
         title={"Efficiency Indicator by Examiner"}
         description={
@@ -22,10 +29,7 @@ const ExaminerDistributionKeytakeaways = ({ data }: any) => {
           "N/A"
         }
       />
-      <Keytakeaway
-        title={"Annual Workload Trends Among Examiners"}
-        // description={data && FiveYearMovingAverage(data as any)}
-      />
+      <Keytakeaway title={"Annual Workload Trends Among Examiners"} description={"N/A"} />
     </KeyDetail>
   );
 };

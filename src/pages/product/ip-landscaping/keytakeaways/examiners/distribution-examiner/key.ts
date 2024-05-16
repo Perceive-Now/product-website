@@ -17,6 +17,7 @@ interface ExaminerEfficiency {
   average_processing_days: number;
 }
 
+//
 export function examinerWorkloadDistribution(data: PatentExaminerData[], examinerName: string) {
   if (data.length === 0) {
     return "No data available.";
@@ -42,6 +43,7 @@ export function examinerWorkloadDistribution(data: PatentExaminerData[], examine
   )}% of the total examinations, indicating a high concentration of workload among a few examiners.`;
 }
 
+//
 export function examinerWithFastestGrowingWorkload(data: PatentExaminerData[]) {
   if (data.length === 0) {
     return "No patent data available.";
@@ -88,29 +90,46 @@ export function examinerWithFastestGrowingWorkload(data: PatentExaminerData[]) {
   }, the fastest growth among all examiners, highlighting the dynamic shifts in examination responsibilities.`;
 }
 
-export function workloadDisparityAmongExaminers(data: PatentExaminerData[], topPercentage: number) {
+//
+export function workloadDisparityAmongExaminers(data: PatentExaminerData[]) {
   // Aggregate total counts by examiner
-  const totalWorkload = data.reduce((acc, curr) => acc + curr.count, 0);
-  const examinerWorkloads = data.reduce((acc, curr) => {
-    acc[curr.examiner] = (acc[curr.examiner] || 0) + curr.count;
-    return acc;
-  }, {} as { [key: string]: number });
+  // Calculate the total number of patents
+  const totalPatents = data.reduce((acc, current) => acc + current.count, 0);
 
-  // Sort examiners by workload and calculate top A%
-  const sortedExaminers = Object.entries(examinerWorkloads).sort((a, b) => b[1] - a[1]);
-  const cutoffIndex = Math.ceil(sortedExaminers.length * (topPercentage / 100)) - 1;
-  const topExaminersWorkload = sortedExaminers
-    .slice(0, cutoffIndex + 1)
-    .reduce((acc, [_, count]) => acc + count, 0);
-  const percentageWorkload = (topExaminersWorkload / totalWorkload) * 100;
+  // Sort the examiners by patent count in descending order
+  const sortedExaminers = data.sort((a, b) => b.count - a.count);
 
-  return `The top ${topPercentage}% of examiners, including ${
-    sortedExaminers[0][0]
-  }, handle ${percentageWorkload.toFixed(
+  // Find the threshold for top examiners (e.g., top 10%)
+  let topExaminersCount = 0;
+  let topExaminersWorkload = 0;
+  let threshold = 0;
+  for (const examiner of sortedExaminers) {
+    topExaminersCount++;
+    topExaminersWorkload += examiner.count;
+    threshold = topExaminersWorkload / totalPatents;
+    if (threshold >= 0.1) {
+      // Change this threshold value as needed
+      break;
+    }
+  }
+
+  // Calculate the percentage of total workload handled by the top examiners
+  const percentageOfTotalWorkload = threshold * 100;
+
+  // Construct the sentence
+  const sentence = `The top ${percentageOfTotalWorkload.toFixed(2)}% of examiners, including ${
+    topExaminersCount > 1 ? "Examiners" : "Examiner"
+  } ${sortedExaminers
+    .slice(0, topExaminersCount)
+    .map((examiner) => examiner.examiner)
+    .join(", ")}, handle ${percentageOfTotalWorkload.toFixed(
     2,
   )}% of the total patent examination workload, demonstrating significant workload disparities.`;
+
+  return sentence;
 }
 
+//
 export function efficiencyIndicatorByExaminer(data: ExaminerEfficiency[]) {
   if (data.length === 0) {
     return "No data available.";
@@ -124,4 +143,20 @@ export function efficiencyIndicatorByExaminer(data: ExaminerEfficiency[]) {
   } processes patents in an average of ${mostEfficient.average_processing_days.toFixed(
     2,
   )} days, marking them as the most efficient, with a significant impact on reducing examination backlog.`;
+}
+
+export function annualWorkloadTrendsAmongExaminers(
+  data: PatentExaminerData[],
+  year: number,
+): string {
+  const yearlyData = data.filter((d) => d.year === year);
+
+  if (yearlyData.length === 0) {
+    return `No data available for year ${year}.`;
+  }
+
+  const sortedByWorkload = yearlyData.sort((a, b) => b.count - a.count);
+  const topExaminer = sortedByWorkload[0];
+
+  return `In year ${year}, the examination workload trends shifted significantly, with ${topExaminer.examiner} handling the most patents, indicating changing priorities or capacity enhancements.`;
 }

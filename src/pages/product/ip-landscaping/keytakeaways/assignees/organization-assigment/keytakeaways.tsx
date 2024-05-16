@@ -2,36 +2,44 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useEffect } from "react";
 import { useAppSelector } from "../../../../../../hooks/redux";
-import { getPatentCompetitorPortfolio } from "../../../../../../utils/api/charts";
+
+import { getPatentCompetitorActivity } from "../../../../../../utils/api/charts";
+
 import KeyDetail from "../../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
+
 import {
+  ICompetitorPortfolio,
   leadingOrganizationInPatentAssignments,
   marketShareOfPatentAssignmentsAmongTopOrganizations,
 } from "./key";
 
-const OrganizationAssignmentTakeaways = () => {
+interface Props {
+  data: ICompetitorPortfolio[];
+}
+
+const OrganizationAssignmentTakeaways = ({ data }: Props) => {
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
 
-  const { data } = useQuery(
+  const { data: competitorActivity } = useQuery(
     ["patents-year", ...keywords],
     async () => {
-      return await getPatentCompetitorPortfolio(keywords);
+      return await getPatentCompetitorActivity(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
 
   // Fetching time period
   useEffect(() => {
-    if (!data) return;
+    if (!competitorActivity) return;
 
     //
-  }, [data]);
+  }, [competitorActivity]);
 
   return (
     <>
-      {data && (
+      {competitorActivity && (
         <KeyDetail section="Key Takeaway">
           <Keytakeaway
             title={"Leading Organization in Patent Assignments"}
