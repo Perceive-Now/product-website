@@ -9,6 +9,8 @@ import { useAppSelector } from "../../../hooks/redux";
 import ProfileModal from "../../../components/modal/profile-modal";
 import ChangePasswordModal from "../../../components/modal/changepassword";
 import Button from "../../../components/reusable/button";
+import PageLoading from "../../../components/app/pageLoading";
+import Loading from "../../../components/reusable/loading";
 
 type IModal = "profile" | "password";
 
@@ -66,6 +68,10 @@ const UserProfile = () => {
       value: UserDetail?.country || "",
     },
   ];
+
+  if (UserDetail === undefined) {
+    return <Loading isLoading={UserDetail === undefined} />;
+  }
 
   return (
     <>

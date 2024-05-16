@@ -179,8 +179,8 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                     // register={register("country")}
                   />
                 </div>
-                {errors.country?.message && (
-                  <div className="mt-1 text-xs text-danger-500">{errors.country.message}</div>
+                {country === null && (
+                  <div className="mt-1 text-xs text-danger-500">Country is required</div>
                 )}
               </fieldset>
               {/* phone */}

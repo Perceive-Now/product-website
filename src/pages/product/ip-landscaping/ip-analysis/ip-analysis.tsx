@@ -26,6 +26,7 @@ import Loading from "../../../../components/reusable/loading";
 export default function IPAnalysis() {
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
   const activeIndex = useMemo(
     () => sessionDetail?.active_index || 0,
     [sessionDetail?.active_index],
@@ -183,8 +184,8 @@ export default function IPAnalysis() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeStep]);
 
-  if (loading) {
-    return <Loading isLoading={loading} />;
+  if (loading || sessionDetail === undefined) {
+    return <Loading isLoading={loading || sessionDetail === undefined} />;
   }
 
   return (
