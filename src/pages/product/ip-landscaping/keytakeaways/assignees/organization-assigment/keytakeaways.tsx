@@ -10,8 +10,10 @@ import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
 
 import {
   ICompetitorPortfolio,
+  comparisonOfAssignmentConcentrationAmongOrganizations,
   leadingOrganizationInPatentAssignments,
   marketShareOfPatentAssignmentsAmongTopOrganizations,
+  organizationWithLargestYearIncreaseAssignments,
 } from "./key";
 
 interface Props {
@@ -23,7 +25,7 @@ const OrganizationAssignmentTakeaways = ({ data }: Props) => {
   const keywords = searchedKeywords.map((kwd) => kwd.value);
 
   const { data: competitorActivity } = useQuery(
-    ["patents-year", ...keywords],
+    ["patents-activity", ...keywords],
     async () => {
       return await getPatentCompetitorActivity(keywords);
     },
@@ -52,11 +54,17 @@ const OrganizationAssignmentTakeaways = ({ data }: Props) => {
           />
           <Keytakeaway
             title={"Organization with Largest Year-on-Year Increase in Assignments"}
-            description="N/A"
+            description={
+              organizationWithLargestYearIncreaseAssignments(competitorActivity) || "N/A"
+            }
           />
           <Keytakeaway
             title={"Comparison of Assignment Concentration Among Organizations"}
-            description="N/A"
+            description={
+              (competitorActivity &&
+                comparisonOfAssignmentConcentrationAmongOrganizations(competitorActivity)) ||
+              "N/A"
+            }
           />
         </KeyDetail>
       )}

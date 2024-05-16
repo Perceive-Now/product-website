@@ -50,7 +50,7 @@ export function AverageFamilySizeEachYear(data: IFamilyYear[]) {
 }
 
 //
-export function LargePatentFamilyTrends(data: IFamilyYear[]) {
+export function largePatentFamilyTrends(data: IFamilyYear[]) {
   if (data.length === 0) {
     return "No data available.";
   }
@@ -133,7 +133,7 @@ export function findYearWithLargestAverage(data: IFamilyYear[]): string {
   )} documents per family, suggesting an emphasis on extensive protection and strategic innovation filing.`;
 }
 
-export function PatentFamilyGrowthRate(data: IFamilyYear[]) {
+export function PatentFamilyGrowthRate(data: IFamilyYear[]): string {
   if (data.length === 0) {
     return "No data available.";
   }
@@ -151,8 +151,13 @@ export function PatentFamilyGrowthRate(data: IFamilyYear[]) {
     return acc;
   }, {} as { [year: number]: { sum: number; count: number } });
 
-  // Calculate average for first and last year
+  // Ensure there are at least two years to compare
   const years = Object.keys(averages).map((year) => parseInt(year));
+  if (years.length < 2) {
+    return "Not enough data to calculate growth rates.";
+  }
+
+  // Calculate average for first and last year
   const firstYear = years[0];
   const lastYear = years[years.length - 1];
   const firstYearAverage = averages[firstYear].sum / averages[firstYear].count;
@@ -161,10 +166,14 @@ export function PatentFamilyGrowthRate(data: IFamilyYear[]) {
   // Calculate growth rate
   const growthRate = ((lastYearAverage - firstYearAverage) / firstYearAverage) * 100;
 
+  // Construct the message based on the growth rate
+  // const growthRateAbs = Math.abs(growthRate).toFixed(2);
+  // const trend = growthRate >= 0 ? "increase" : "decrease";
+
   // Format the message
-  return `The growth rate in the size of patent families from year ${firstYear} to ${lastYear} was ${growthRate.toFixed(
+  return `The growth rate in the size of patent families from year ${firstYear} to ${lastYear} was a ${growthRate.toFixed(
     2,
-  )}%, indicating an evolving approach to patent filings and protection strategies.`;
+  )}% , indicating an evolving approach to patent filings and protection strategies.`;
 }
 
 // geographical patent families

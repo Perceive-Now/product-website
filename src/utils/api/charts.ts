@@ -160,7 +160,7 @@ export async function getPatentCompetitorPortfolio(keywords: string[]) {
 }
 
 export async function getPatentCompetitorActivity(keywords: string[]) {
-  const res = await axiosInstance.get<IPatentCompetitorPortfolio>(
+  const res = await axiosInstance.get<IPatentCompetitorActivity>(
     `/api/competitor_activity?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
   );
   return res.data.response;

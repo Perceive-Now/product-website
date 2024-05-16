@@ -7,7 +7,7 @@ import { getPatentsYearly } from "../../../../../utils/api/charts";
 
 import {
   FiveYearMovingAverage,
-  PatentFilingLatestYear,
+  // PatentFilingLatestYear,
   annualGrowthRateInPatentFilings,
 } from "./patent";
 
@@ -47,7 +47,10 @@ const PatentsKeyTakeaways = () => {
           />
           <Keytakeaway
             title={" Sector Leading in Patent Filings for the Latest Year"}
-            description={PatentFilingLatestYear(data as any) || "N/A"}
+            description={
+              // PatentFilingLatestYear(data as any) ||
+              "API Error"
+            }
           />
           <Keytakeaway
             title={"Five-Year Moving Average of Patent Filings"}

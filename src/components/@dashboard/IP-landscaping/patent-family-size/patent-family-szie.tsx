@@ -25,7 +25,7 @@ interface IScholaryPublicationData {
   year: number;
 }
 
-export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
+export const PatentFamilySizeOverTime: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["inventor_analysis", ...keywords],
     async () => {

@@ -1,7 +1,9 @@
 import KeyDetail from "../../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
+
 import {
   IInventorCountryData,
+  internationalDiversityAmongInventors,
   rapidIncreaseInInventorNumbersByRegion,
   shiftInInventorGeographicalDistribution,
   topCountryForInventorActivity,
@@ -29,7 +31,10 @@ const GeographicalDistributionOfInventorsKeyTakeaways = ({ data }: Props) => {
             title={"Shift in Inventor Geographical Distribution"}
             description={shiftInInventorGeographicalDistribution(data) || "N/A"}
           />
-          <Keytakeaway title={"International Diversity Among Inventors"} description={"N/A"} />
+          <Keytakeaway
+            title={"International Diversity Among Inventors"}
+            description={internationalDiversityAmongInventors(data) || "N/A"}
+          />
         </KeyDetail>
       )}
     </>

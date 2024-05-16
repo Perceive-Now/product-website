@@ -50,3 +50,52 @@ export function shiftsInGeographicalPatternsOfAssignments(data: IAssigneeData[])
 
   return sentence;
 }
+
+export function regionalGrowthInPatentAssignments(data: IAssigneeData[]) {
+  // Group data by country
+  const groupedData: { [key: string]: { year: number; count: number }[] } = data.reduce(
+    (acc, curr) => {
+      if (!acc[curr.country]) {
+        acc[curr.country] = [];
+      }
+      acc[curr.country].push({ year: curr.year, count: curr.count });
+      return acc;
+    },
+    {} as { [key: string]: { year: number; count: number }[] },
+  );
+
+  // Calculate growth rates for each country
+  const growthRates: { country: string; growthRate: number; yearSpan: number }[] = [];
+  for (const country in groupedData) {
+    const countryData = groupedData[country];
+    countryData.sort((a, b) => a.year - b.year);
+
+    // Calculate growth over the entire span of available data
+    if (countryData.length > 1) {
+      const startCount = countryData[0].count;
+      const endCount = countryData[countryData.length - 1].count;
+      const yearSpan = countryData[countryData.length - 1].year - countryData[0].year;
+      if (startCount > 0) {
+        const growthRate = ((endCount - startCount) / startCount) * 100;
+        growthRates.push({ country, growthRate, yearSpan });
+      }
+    }
+  }
+
+  // Find the country with the largest growth rate
+  const largestGrowth = growthRates.reduce(
+    (max, curr) => (curr.growthRate > max.growthRate ? curr : max),
+    { country: "", growthRate: -Infinity, yearSpan: 0 },
+  );
+
+  // Construct the sentence
+  if (largestGrowth.country && largestGrowth.growthRate !== -Infinity) {
+    return `Region ${largestGrowth.country} saw a ${largestGrowth.growthRate.toFixed(
+      2,
+    )}% increase in patent assignments over the last ${
+      largestGrowth.yearSpan
+    } years, indicating a surge in its technological development and innovation ecosystem.`;
+  } else {
+    return "No sufficient data to calculate the growth rates for the regions.";
+  }
+}

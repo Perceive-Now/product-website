@@ -77,3 +77,14 @@ export function shiftInInventorGeographicalDistribution(data: IInventorCountryDa
 
   return sentence;
 }
+
+export function internationalDiversityAmongInventors(data: IInventorCountryData[]) {
+  // Extract unique countries
+  const uniqueCountries = new Set(data.map((d) => d.country));
+
+  // Count the number of distinct countries
+  const countryCount = uniqueCountries.size;
+
+  // Construct the sentence
+  return `The diversity of patent inventors is vast, with contributions from over ${countryCount} different countries, highlighting the global collaboration in innovation.`;
+}

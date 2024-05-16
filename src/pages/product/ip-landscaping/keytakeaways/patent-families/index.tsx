@@ -6,7 +6,7 @@ import { getPatentFamilySize } from "../../../../../utils/api/charts";
 import { useAppSelector } from "../../../../../hooks/redux";
 import {
   AverageFamilySizeEachYear,
-  LargePatentFamilyTrends,
+  largePatentFamilyTrends,
   PatentFamilyGrowthRate,
   findYearWithLargestAverage,
 } from "./patent-family";
@@ -39,7 +39,7 @@ const SizeOfPatentFamilyKeyTakeaway = () => {
           />
           <Keytakeaway
             title={"Trend in Large Patent Families"}
-            description={LargePatentFamilyTrends(patentFamilySize)}
+            description={largePatentFamilyTrends(patentFamilySize)}
           />
           <Keytakeaway
             title={"Year with Largest Average Patent Family Size"}
