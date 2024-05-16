@@ -1,2 +1,2 @@
-import { PatentFamilySizeOverTime } from "./patent-family-szie";
+import { PatentFamilySizeOverTime } from "./patent-family-size";
 export default PatentFamilySizeOverTime;

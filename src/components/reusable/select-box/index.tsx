@@ -8,7 +8,7 @@ const controlStyles = {
   disabled: "opacity-50 cursor-not-allowed",
 };
 const placeholderStyles = "leading-7 text-black-50 font-500 px-0.5";
-const selectInputStyles = "pl-1 py-6 text-base ";
+const selectInputStyles = "py-6 text-base ";
 const valueContainerStyles = "px-1 gap-1 text-black-50 text-sm py-[8px]";
 const singleValueStyles = "leading-7 text-black font-500 px-1";
 const indicatorsContainerStyles = "gap-1";

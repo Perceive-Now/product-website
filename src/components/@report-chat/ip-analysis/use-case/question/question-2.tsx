@@ -57,7 +57,7 @@ export default function ChatQuestionAnswer2({
 
         setIsLoading(false);
 
-        if (status === undefined) {
+        if (response == undefined || status === undefined) {
           toast.error("Something went wrong");
         }
 

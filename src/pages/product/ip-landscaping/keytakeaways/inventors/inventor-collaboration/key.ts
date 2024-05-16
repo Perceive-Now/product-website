@@ -22,8 +22,10 @@ export function analyzeCollaborationTrends(data: ICollaborationData[]): string {
     ((lastYearCollaborationCount - firstYearCollaborationCount) / firstYearCollaborationCount) *
     100;
 
+  const trend = increasePercentage >= 0 ? "increases" : "decreased";
+
   // Construct the sentence
-  const sentence = `Collaborations among inventors have increased by ${increasePercentage.toFixed(
+  const sentence = `Collaborations among inventors have ${trend} by ${increasePercentage.toFixed(
     2,
   )}% over the last ${totalYears} years, reflecting a trend towards more cooperative innovation efforts.`;
 
@@ -47,21 +49,51 @@ export function analyzeHighestCollaborationYear(data: ICollaborationData[]): str
   return sentence;
 }
 
+function getDecade(year: number): number {
+  return Math.floor(year / 10) * 10;
+}
+
 export function decadalIncreaseInCollaborations(data: ICollaborationData[]): string {
   // Find the collaboration counts for the 2000s and 2010s
-  const collaborations2000s = data.find((entry) => entry.year === 2000)?.count || 0;
-  const collaborations2010s = data.find((entry) => entry.year === 2010)?.count || 0;
+  if (data.length === 0) {
+    return "No data available.";
+  }
 
-  // Calculate the percentage increase in collaboration counts from the 2000s to the 2010s
-  const increasePercentage =
-    ((collaborations2010s - collaborations2000s) / collaborations2000s) * 100;
+  // Aggregate data by decade
+  const decadeData: { [decade: number]: { sum: number; count: number } } = data.reduce(
+    (acc, curr) => {
+      const decade = getDecade(curr.year);
 
-  // Construct the sentence
-  const sentence = `Comparing the last two decades, inventor collaborations in the 2010s were ${increasePercentage.toFixed(
+      if (!acc[decade]) {
+        acc[decade] = { sum: 0, count: 0 };
+      }
+      acc[decade].sum += curr.count;
+      acc[decade].count++;
+      return acc;
+    },
+    {} as { [decade: number]: { sum: number; count: number } },
+  );
+
+  // Ensure we have data for at least two decades
+  const decades = Object.keys(decadeData).map((decade) => parseInt(decade));
+  if (decades.length < 2) {
+    return "Not enough data to calculate growth rates.";
+  }
+
+  // Calculate average collaborations for each decade
+  const firstDecade = decades[0];
+  const lastDecade = decades[decades.length - 1];
+  const firstDecadeAverage = decadeData[firstDecade].sum / decadeData[firstDecade].count;
+  const lastDecadeAverage = decadeData[lastDecade].sum / decadeData[lastDecade].count;
+
+  // Calculate growth rate
+  const growthRate = ((lastDecadeAverage - firstDecadeAverage) / firstDecadeAverage) * 100;
+
+  const growth = growthRate > 0 ? "higher" : "lower";
+  // Format the message
+  return `Comparing the last two decades, inventor collaborations in the ${lastDecade}s were ${growthRate.toFixed(
     2,
-  )}% higher than in the 2000s, showing a growing preference for teamwork in innovation.`;
-
-  return sentence;
+  )}% ${growth} than in the ${firstDecade}s, showing a growing preference for teamwork in innovation.`;
 }
 
 export function regionalVariationsInCollaborationPatterns(data: ICollaborationData[]): string {

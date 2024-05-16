@@ -12,7 +12,7 @@ const ExaminerDistributionKeytakeaways = ({ data }: any) => {
     <KeyDetail section="Key Takeaway">
       <Keytakeaway
         title={"Examiner Workload Distribution"}
-        description={examinerWorkloadDistribution(data, data.examiner) || "N/A"}
+        description={examinerWorkloadDistribution(data) || "N/A"}
       />
       <Keytakeaway
         title={"Examiner with Fastest Growing Workload"}
@@ -26,10 +26,16 @@ const ExaminerDistributionKeytakeaways = ({ data }: any) => {
         title={"Efficiency Indicator by Examiner"}
         description={
           // efficiencyIndicatorByExaminer(data) ||
+          "API Error"
+        }
+      />
+      <Keytakeaway
+        title={"Annual Workload Trends Among Examiners"}
+        description={
+          // annualWorkloadTrendsAmongExaminers(data) ||
           "N/A"
         }
       />
-      <Keytakeaway title={"Annual Workload Trends Among Examiners"} description={"N/A"} />
     </KeyDetail>
   );
 };

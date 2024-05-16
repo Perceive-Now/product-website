@@ -28,23 +28,56 @@ export function topCountryForInventorActivity(data: IInventorCountryData[]): str
 }
 
 export function rapidIncreaseInInventorNumbersByRegion(data: IInventorCountryData[]): string {
-  data.sort((a, b) => b.count - a.count);
+  if (data.length === 0) {
+    return "No data available.";
+  }
 
-  // Find the region with the highest growth rate
-  const topRegionData = data[0];
-  const lastYearData = data[data.length - 1];
+  // Group data by country
+  const groupedData: { [key: string]: { year: number; count: number }[] } = data.reduce(
+    (acc, curr) => {
+      if (!acc[curr.country]) {
+        acc[curr.country] = [];
+      }
+      acc[curr.country].push({ year: curr.year, count: curr.count });
+      return acc;
+    },
+    {} as { [key: string]: { year: number; count: number }[] },
+  );
 
-  // Calculate the growth rate
-  const growthRate = ((topRegionData.count - lastYearData.count) / lastYearData.count) * 100;
+  // Calculate growth rates for each country
+  const growthRates: { country: string; growthRate: number; yearSpan: number }[] = [];
+  for (const country in groupedData) {
+    const countryData = groupedData[country];
+    countryData.sort((a, b) => a.year - b.year);
+
+    if (countryData.length > 1) {
+      const startYear = countryData[0].year;
+      const endYear = countryData[countryData.length - 1].year;
+      const startCount = countryData[0].count;
+      const endCount = countryData[countryData.length - 1].count;
+
+      const yearSpan = endYear - startYear;
+      const growthRate = ((endCount - startCount) / startCount) * 100;
+      growthRates.push({ country, growthRate, yearSpan });
+    }
+  }
+
+  // Find the country with the highest growth rate
+  const highestGrowth = growthRates.reduce(
+    (max, curr) => (curr.growthRate > max.growthRate ? curr : max),
+    { country: "", growthRate: -Infinity, yearSpan: 0 },
+  );
 
   // Construct the sentence
-  const sentence = `${
-    countryNames[topRegionData.country]
-  }'s inventor count has surged by ${growthRate.toFixed(2)}% in the last ${
-    topRegionData.year - lastYearData.year
-  } years, emerging as a significant innovation hub.`;
-
-  return sentence;
+  if (highestGrowth.country && highestGrowth.growthRate !== -Infinity) {
+    return `Region ${
+      highestGrowth.country
+    }'s inventor count has surged by ${highestGrowth.growthRate.toFixed(2)}% in the last ${
+      highestGrowth.yearSpan
+    } years, emerging as a significant innovation hub.`;
+  } else {
+    return "No sufficient data to calculate the growth rates for the regions.";
+  }
 }
 
 export function shiftInInventorGeographicalDistribution(data: IInventorCountryData[]): string {

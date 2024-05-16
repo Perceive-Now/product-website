@@ -61,9 +61,7 @@ const OrganizationAssignmentTakeaways = ({ data }: Props) => {
           <Keytakeaway
             title={"Comparison of Assignment Concentration Among Organizations"}
             description={
-              (competitorActivity &&
-                comparisonOfAssignmentConcentrationAmongOrganizations(competitorActivity)) ||
-              "N/A"
+              comparisonOfAssignmentConcentrationAmongOrganizations(competitorActivity) || "N/A"
             }
           />
         </KeyDetail>

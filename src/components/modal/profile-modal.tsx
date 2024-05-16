@@ -26,7 +26,7 @@ import { CrossIcon } from "../icons";
 interface Props {
   open: boolean;
   onClose: () => void;
-  userDetail?: any;
+  userDetail: any;
   modalType: "profile" | "interest";
   photo: string;
 }
@@ -40,14 +40,14 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
   });
 
   const formInitialValue: IProfile = {
-    username: userDetail?.username || "",
-    first_name: userDetail?.first_name || "",
-    last_name: userDetail?.last_name || "",
-    phone_number: userDetail?.phone_number || "",
-    country: userDetail?.country || "",
-    topics_of_interest: userDetail?.topics_of_interest || "",
-    company_name: userDetail?.company_name || "N/A",
-    job_position: userDetail?.job_position || "",
+    username: userDetail.username || "",
+    first_name: userDetail.first_name || "",
+    last_name: userDetail.last_name || "",
+    phone_number: userDetail.phone_number || "",
+    country: userDetail.country || "",
+    topics_of_interest: userDetail.topics_of_interest || "",
+    company_name: userDetail.company_name || "N/A",
+    job_position: userDetail.job_position || "",
   };
 
   const formResolver = yup.object().shape({
@@ -59,7 +59,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     last_name: yup.string().required("Last Name is required"),
     phone_number: yup.string().required("Phone Number is required"),
     country: yup.string(),
-    company_id: yup.string(),
+    company_name: yup.string().required("Company is required"),
     job_position: yup.string().required("Job position is required"),
   });
 
@@ -164,19 +164,6 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                   />
                 </div>
               </fieldset>
-              {/* phone */}
-              <fieldset className="col-span-1">
-                <Label className="font-semibold text-secondary-800">Phone number</Label>
-                <div className="mt-0.5">
-                  <PhoneNumberInput
-                    register={register("phone_number")}
-                    // type="text"
-                    value={userDetail?.phone_number || ""}
-                    placeholder="Phone number"
-                    error={errors.phone_number}
-                  />
-                </div>
-              </fieldset>
               <fieldset className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Country
@@ -195,6 +182,19 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                 {errors.country?.message && (
                   <div className="mt-1 text-xs text-danger-500">{errors.country.message}</div>
                 )}
+              </fieldset>
+              {/* phone */}
+              <fieldset className="col-span-1">
+                <Label className="font-semibold text-secondary-800">Phone number</Label>
+                <div className="mt-0.5">
+                  <PhoneNumberInput
+                    register={register("phone_number")}
+                    // type="text"
+                    value={userDetail?.phone_number || ""}
+                    placeholder="Phone number"
+                    error={errors.phone_number}
+                  />
+                </div>
               </fieldset>
               <fieldset className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">

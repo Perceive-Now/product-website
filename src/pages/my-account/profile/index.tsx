@@ -74,7 +74,11 @@ const UserProfile = () => {
         <div className="flex flex-col w-[900px] items-center justify-center">
           <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
             {photo ? (
-              <img src={photo} alt="profile_picture" className="h-full w-full rounded-full" />
+              <img
+                src={photo}
+                alt="profile_picture"
+                className="h-full w-full rounded-full object-cover"
+              />
             ) : (
               <ProfileIcon />
             )}
@@ -141,13 +145,15 @@ const UserProfile = () => {
         </div>
       </div>
       {/* ----------------Modal--------------- */}
-      <ProfileModal
-        open={modal === "profile"}
-        onClose={() => setModal(null)}
-        userDetail={UserDetail}
-        modalType={modalType}
-        photo={photo ? photo : UserDetail?.profile_photo}
-      />
+      {UserDetail && (
+        <ProfileModal
+          open={modal === "profile"}
+          onClose={() => setModal(null)}
+          userDetail={UserDetail}
+          modalType={modalType}
+          photo={photo ? photo : UserDetail?.profile_photo}
+        />
+      )}
       <ChangePasswordModal open={modal === "password"} onClose={() => setModal(null)} />
     </>
   );

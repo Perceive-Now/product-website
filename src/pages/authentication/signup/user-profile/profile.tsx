@@ -89,8 +89,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
     phone_number: yup.string().required("Phone Number is required"),
-    country: yup.string(),
-    company_name: yup.string().required(""),
+    country: yup.string().required("Company is required"),
+    company_name: yup.string().required("Company is required"),
     job_position: yup.string().required("Job position is required"),
   });
 
@@ -161,7 +161,11 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
               <p className="text-secondary-800 font-semibold">Profile Image</p>
               <div className="rounded-full over w-[80px] h-[80px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
                 {photo ? (
-                  <img src={photo} alt="profile_picture" className="h-full w-full rounded-full" />
+                  <img
+                    src={photo}
+                    alt="profile_picture"
+                    className="h-full w-full rounded-full object-cover"
+                  />
                 ) : (
                   <ProfileIcon />
                 )}
@@ -211,6 +215,26 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   />
                 </div>
               </fieldset>
+              <fieldset className="col-span-1">
+                <Label required className="font-semibold text-secondary-800">
+                  Country
+                </Label>
+                <div className="mt-0.5 rounded-md shadow-sm">
+                  <SelectBox
+                    onChange={setCountry}
+                    options={Countries.map((country) => ({
+                      label: country,
+                      value: country,
+                    }))}
+                    value={country || null}
+                    placeholder={"Select an options"}
+                  />
+                </div>
+                {country === null && (
+                  <div className="mt-1 text-xs text-danger-500">Country is required</div>
+                )}
+              </fieldset>
+
               {/* phone */}
               <fieldset className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>
@@ -224,7 +248,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   />
                 </div>
               </fieldset>
-              <div />
+
               <fieldset className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Company name
@@ -258,26 +282,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                 />
               </fieldset>
               {/* <div className="col-span-1" /> */}
-              <fieldset className="col-span-1">
-                <Label required className="font-semibold text-secondary-800">
-                  Country
-                </Label>
-                <div className="mt-0.5 rounded-md shadow-sm">
-                  <SelectBox
-                    onChange={setCountry}
-                    options={Countries.map((country) => ({
-                      label: country,
-                      value: country,
-                    }))}
-                    value={country || null}
-                    placeholder={"Select an options"}
-                    // register={register("country")}
-                  />
-                </div>
-                {errors.country?.message && (
-                  <div className="mt-1 text-xs text-danger-500">{errors.country.message}</div>
-                )}
-              </fieldset>
+
               <div className="col-span-1 " />
               <fieldset className="col-span-2 w-full">
                 <Label className="font-semibold text-secondary-800">Topics of interest</Label>

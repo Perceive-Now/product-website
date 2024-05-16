@@ -53,27 +53,64 @@ export function marketShareOfPatentAssignmentsAmongTopOrganizations(
 //
 export function comparisonOfAssignmentConcentrationAmongOrganizations(data: PatentInfo[]) {
   if (data.length === 0) {
-    return "No patent data available.";
+    return "No data available.";
   }
 
-  // Calculate the total number of assignments
-  const totalAssignments = data.reduce((acc, current) => acc + current.count, 0);
+  // Separate data by year
+  const dataByYear = data.reduce((acc, curr) => {
+    if (!acc[curr.year]) {
+      acc[curr.year] = [];
+    }
+    acc[curr.year].push(curr);
+    return acc;
+  }, {} as { [year: number]: PatentInfo[] });
 
-  // Sort the data by count in descending order
-  const sortedData = data.sort((a, b) => b.count - a.count);
+  // Get the list of years
+  const years = Object.keys(dataByYear)
+    .map((year) => parseInt(year))
+    .sort((a, b) => a - b);
+  const firstYear = years[0];
+  const lastYear = years[years.length - 1];
 
-  // Calculate the concentration of the top organization
-  const concentrationTopOrg = (sortedData[0].count / totalAssignments) * 100;
+  // Calculate concentration for each year
+  const calculateConcentration = (yearData: PatentInfo[]) => {
+    const totalAssignments = yearData.reduce((sum, curr) => sum + curr.count, 0);
+    return yearData.map((orgData) => ({
+      org: orgData.org,
+      concentration: (orgData.count / totalAssignments) * 100,
+    }));
+  };
+
+  const firstYearData = calculateConcentration(dataByYear[firstYear]);
+  const lastYearData = calculateConcentration(dataByYear[lastYear]);
+
+  // Calculate total concentration for top organizations for both years
+  const getTotalConcentration = (concentrationData: { org: string; concentration: number }[]) => {
+    return concentrationData.reduce((sum, curr) => sum + curr.concentration, 0);
+  };
+
+  const totalFirstYearConcentration = getTotalConcentration(firstYearData);
+  const totalLastYearConcentration = getTotalConcentration(lastYearData);
+
+  // Calculate growth rate
+  const growthRate =
+    ((totalLastYearConcentration - totalFirstYearConcentration) / totalFirstYearConcentration) *
+    100;
 
   // Construct the sentence
-  const sentence = `The concentration of patent assignments among the top organization has increased by ${concentrationTopOrg.toFixed(
+  return `The concentration of patent assignments among the top organizations has increased by ${growthRate.toFixed(
     2,
-  )}% over the last year, indicating a trend towards more centralized ownership of innovations.`;
-
-  return sentence;
+  )}% over the last ${
+    lastYear - firstYear
+  } years, indicating a trend towards more centralized ownership of innovations.`;
 }
-
+//
 export function organizationWithLargestYearIncreaseAssignments(data: PatentInfo[]) {
+  if (data.length === 0) {
+    return "No data available.";
+  }
+
+  // Group data by organization
   const groupedData: { [key: string]: { year: number; count: number }[] } = data.reduce(
     (acc, curr) => {
       if (!acc[curr.org]) {
@@ -82,38 +119,45 @@ export function organizationWithLargestYearIncreaseAssignments(data: PatentInfo[
       acc[curr.org].push({ year: curr.year, count: curr.count });
       return acc;
     },
-    {} as any,
+    {} as { [key: string]: { year: number; count: number }[] },
   );
 
-  // Calculate year-on-year growth rates
+  // Calculate year-over-year growth rates
   const growthRates: { org: string; growthRate: number }[] = [];
   for (const org in groupedData) {
     const orgData = groupedData[org];
     orgData.sort((a, b) => a.year - b.year);
+
     for (let i = 1; i < orgData.length; i++) {
-      const previousCount = orgData[i - 1].count;
-      const currentCount = orgData[i].count;
-      if (previousCount > 0) {
-        const growthRate = ((currentCount - previousCount) / previousCount) * 100;
-        growthRates.push({ org, growthRate });
+      // const yearA = orgData[i - 1].year;
+      // const yearB = orgData[i].year;
+      const countA = orgData[i - 1].count;
+      const countB = orgData[i].count;
+
+      if (countA === 0) {
+        // Avoid division by zero
+        continue;
       }
+
+      const growthRate = ((countB - countA) / countA) * 100;
+      growthRates.push({ org, growthRate });
     }
   }
 
-  // Find the organization with the largest growth rate
-  const largestGrowth = growthRates.reduce(
+  if (growthRates.length === 0) {
+    return "No valid growth rate calculations available.";
+  }
+
+  // Find the organization with the highest growth rate
+  const maxGrowth = growthRates.reduce(
     (max, curr) => (curr.growthRate > max.growthRate ? curr : max),
-    { org: "", growthRate: -Infinity },
+    growthRates[0],
   );
 
   // Construct the sentence
-  if (largestGrowth.org && largestGrowth.growthRate !== -Infinity) {
-    return `Organization ${
-      largestGrowth.org
-    } experienced the largest year-on-year increase in patent assignments, with a growth rate of ${largestGrowth.growthRate.toFixed(
-      2,
-    )}%, highlighting its rapid expansion in innovation activities.`;
-  } else {
-    return "No sufficient data to calculate the year-on-year growth rates for organizations.";
-  }
+  return `Organization ${
+    maxGrowth.org
+  } experienced the largest year-on-year increase in patent assignments, with a growth rate of ${maxGrowth.growthRate.toFixed(
+    2,
+  )}%, highlighting its rapid expansion in innovation activities.`;
 }

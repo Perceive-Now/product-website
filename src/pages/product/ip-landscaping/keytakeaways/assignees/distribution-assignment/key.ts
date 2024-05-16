@@ -90,7 +90,7 @@ export function regionalGrowthInPatentAssignments(data: IAssigneeData[]) {
 
   // Construct the sentence
   if (largestGrowth.country && largestGrowth.growthRate !== -Infinity) {
-    return `Region ${largestGrowth.country} saw a ${largestGrowth.growthRate.toFixed(
+    return `Region ${countryNames[largestGrowth.country]} saw a ${largestGrowth.growthRate.toFixed(
       2,
     )}% increase in patent assignments over the last ${
       largestGrowth.yearSpan

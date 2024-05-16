@@ -82,7 +82,7 @@ export const PatentFamilySizeOverTime: FunctionComponent<Props> = ({ keywords })
     >
       <div className="space-y-2 text-secondary-800 mt-4">
         {data && <ScatterChart data={scatterChartData} colors={["#7F4BD8", "#442873"]} />}
-        <SizeOfPatentFamilyKeyTakeaway />
+        {data && <SizeOfPatentFamilyKeyTakeaway patentFamilySize={data} />}
       </div>
     </DataSection>
   );
