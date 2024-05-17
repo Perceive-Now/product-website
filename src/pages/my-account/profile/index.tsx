@@ -1,20 +1,24 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import ProfileIcon from "../../../components/icons/common/profile";
 import EditIcon from "../../../components/icons/miscs/Edit";
 
 import ProfileComponent from "./profile";
-import { useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 import ProfileModal from "../../../components/modal/profile-modal";
 import ChangePasswordModal from "../../../components/modal/changepassword";
 import Button from "../../../components/reusable/button";
-import PageLoading from "../../../components/app/pageLoading";
 import Loading from "../../../components/reusable/loading";
+import toast from "react-hot-toast";
+import { updateUserProfile } from "../../../utils/api/userProfile";
+import { setUser } from "../../../stores/auth";
 
 type IModal = "profile" | "password";
 
 const UserProfile = () => {
+  const dispatch = useAppDispatch();
+
   const [modal, setModal] = useState<IModal | null>(null);
   const [modalType, setModalType] = useState<any>();
   const [photo, setPhoto] = useState<any>();
@@ -27,47 +31,123 @@ const UserProfile = () => {
     setPhoto(UserDetail?.profile_photo);
   }, [UserDetail]);
 
+  const updateProfile = useCallback(
+    async (photo: any) => {
+      const values = {
+        first_name: UserDetail?.first_name,
+        last_name: UserDetail?.last_name,
+        username: UserDetail?.username,
+        phone_number: UserDetail?.phone_number,
+        topics_of_interest: UserDetail?.topics_of_interest,
+        country: UserDetail?.country,
+        profile_photo: photo,
+        company_name: UserDetail?.company_name,
+        job_position: UserDetail?.job_position,
+        email: UserDetail?.email || "",
+        about_me: "",
+        id: UserDetail?.id || "",
+        full_name: UserDetail?.full_name || "",
+        registration_completed: true,
+      };
+
+      try {
+        await updateUserProfile(values).then((res: any) => {
+          if (res.status === 200) {
+            toast.success("Profile image update successfully");
+            dispatch(
+              setUser({
+                first_name: values.first_name,
+                last_name: values.last_name,
+                username: values.username,
+                phone_number: values.phone_number,
+                topics_of_interest: values.topics_of_interest,
+                country: values.country,
+                profile_photo: photo,
+                company_name: values?.company_name,
+                job_position: values?.job_position,
+                email: values.email,
+                about_me: "",
+                id: values.id || ("" as any),
+                full_name: values.full_name || "",
+                registration_completed: true,
+              }),
+            );
+            // toast.success("Profile updated successfully");
+          }
+        });
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    },
+    [
+      UserDetail?.company_name,
+      UserDetail?.country,
+      UserDetail?.email,
+      UserDetail?.first_name,
+      UserDetail?.full_name,
+      UserDetail?.id,
+      UserDetail?.job_position,
+      UserDetail?.last_name,
+      UserDetail?.phone_number,
+      UserDetail?.topics_of_interest,
+      UserDetail?.username,
+      dispatch,
+    ],
+  );
+
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhoto(reader.result);
+        updateProfile(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const ProfilesData = [
-    {
-      label: "Username",
-      value: UserDetail?.username || "",
-    },
-    {
-      label: "Full name",
-      value: UserDetail?.full_name || "",
-    },
-    {
-      label: "Email",
-      value: UserDetail?.email || "",
-    },
-    {
-      label: "Phone no.",
-      value: UserDetail?.phone_number || "",
-    },
-    {
-      label: "Company",
-      value: UserDetail?.company_name || "",
-    },
-    {
-      label: "Job title",
-      value: UserDetail?.job_position || "",
-    },
-    {
-      label: "Country",
-      value: UserDetail?.country || "",
-    },
-  ];
+  const ProfilesData = useMemo(
+    () => [
+      {
+        label: "Username",
+        value: UserDetail?.username || "",
+      },
+      {
+        label: "Full name",
+        value: UserDetail?.full_name || "",
+      },
+      {
+        label: "Email",
+        value: UserDetail?.email || "",
+      },
+      {
+        label: "Phone no.",
+        value: UserDetail?.phone_number || "",
+      },
+      {
+        label: "Company",
+        value: UserDetail?.company_name || "",
+      },
+      {
+        label: "Job title",
+        value: UserDetail?.job_position || "",
+      },
+      {
+        label: "Country",
+        value: UserDetail?.country || "",
+      },
+    ],
+    [
+      UserDetail?.company_name,
+      UserDetail?.country,
+      UserDetail?.email,
+      UserDetail?.full_name,
+      UserDetail?.job_position,
+      UserDetail?.phone_number,
+      UserDetail?.username,
+    ],
+  );
 
   if (UserDetail === undefined) {
     return <Loading isLoading={UserDetail === undefined} />;

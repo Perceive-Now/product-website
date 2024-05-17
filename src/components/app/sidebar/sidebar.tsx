@@ -96,8 +96,9 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
+    dispatch(setSession({ session_data: {} }));
+
     await dispatch(logoutUser());
-    dispatch(setSession({}));
     navigate("/login");
     setIsLoggingOut(false);
   };
@@ -172,9 +173,9 @@ export const AppSidebar: FunctionComponent<Props> = () => {
         </div>
         {/* sidebar bottom */}
         <div className="pb-3 text-gray-900 space-y-1">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full">
             {open && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full">
                 <div className="shrink-0">
                   <UserIcon
                     first_name={userDetail?.first_name || ""}
@@ -182,7 +183,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                     profile_photo={userDetail?.profile_photo}
                   />
                 </div>
-                <span>{userDetail?.full_name}</span>
+                <p className="line-clamp-1 w-14">{userDetail?.full_name}</p>
               </div>
             )}
             <button type="button" onClick={handleLogout}>

@@ -77,7 +77,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     async (value: IProfile) => {
       const values = {
         first_name: value.first_name,
-        last_name: value.last_name,
+        last_name: value.first_name,
         username: value.username,
         phone_number: value.phone_number,
         topics_of_interest: value.topics_of_interest,
@@ -88,13 +88,30 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         email: userDetail.email || "",
         about_me: "",
         id: userDetail.id || "",
-        full_name: userDetail.full_name || "",
+        full_name: `${value.first_name} ${value.last_name}` || "",
         registration_completed: true,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
           if (res.status === 200) {
-            dispatch(setUser(values as any));
+            dispatch(
+              setUser({
+                first_name: values.first_name,
+                last_name: values.last_name,
+                username: values.username,
+                phone_number: values.phone_number,
+                topics_of_interest: values.topics_of_interest,
+                country: values.country,
+                profile_photo: values.profile_photo,
+                company_name: values?.company_name,
+                job_position: values?.job_position,
+                email: values.email,
+                about_me: "",
+                id: values.id || "",
+                full_name: values.full_name || "",
+                registration_completed: true,
+              }),
+            );
             toast.success("Profile updated successfully");
             onClose();
           }

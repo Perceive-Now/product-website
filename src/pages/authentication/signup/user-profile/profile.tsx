@@ -48,6 +48,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   const [photo, setPhoto] = useState<any>(userDetail?.profile_photo);
 
   const [country, setCountry] = useState<IOption | null>(null);
+  // const [countryError, setCountryError] = useState<string | null>(null)
 
   useEffect(() => {
     if (userDetail?.country) {
@@ -74,14 +75,14 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   };
 
   const formInitialValue: IProfileForm = {
-    username: userDetail?.username || "",
-    first_name: userDetail?.first_name || "",
-    last_name: userDetail?.last_name || "",
-    phone_number: userDetail?.phone_number || "",
-    country: userDetail?.country || "",
-    topics_of_interest: userDetail?.topics_of_interest || "",
-    company_name: userDetail?.company_name || "",
-    job_position: userDetail?.job_position || "",
+    username: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    country: "",
+    topics_of_interest: "",
+    company_name: "",
+    job_position: "",
   };
 
   const formResolver = yup.object().shape({
@@ -89,7 +90,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
     phone_number: yup.string().required("Phone Number is required"),
-    country: yup.string().required("Company is required"),
+    country: yup.string(),
     company_name: yup.string().required("Company is required"),
     job_position: yup.string().required("Job position is required"),
   });
@@ -127,10 +128,10 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
           }
         });
       } catch (error: any) {
-        toast.error(error.message);
+        toast.error(error.response.data.error || error.message);
       }
     },
-    [changeActiveStep, country?.value, dispatch, photo],
+    [changeActiveStep, country, dispatch, photo],
   );
 
   // const addKeyword = useCallback(
@@ -149,6 +150,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
   //   },
   //   [keywords],
   // );
+
+  // console.log(countryError)
 
   return (
     <>
@@ -230,9 +233,9 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                     placeholder={"Select an options"}
                   />
                 </div>
-                {country === null && (
-                  <div className="mt-1 text-xs text-danger-500">Country is required</div>
-                )}
+                {/* {countryError !== null && (
+                  <div className="mt-1 text-xs text-danger-500">{countryError}</div>
+                )} */}
               </fieldset>
 
               {/* phone */}
