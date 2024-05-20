@@ -27,6 +27,7 @@ const ChatQuery = ({ query }: Props) => {
         <UserIcon
           first_name={userDetail?.first_name || ""}
           last_name={userDetail?.last_name || ""}
+          profile_photo={userDetail?.profile_photo}
         />
         {/* <div className="bg-appGray-200 rounded-full h-[30px] w-[30px] shrink-0" /> */}
         {edit ? (

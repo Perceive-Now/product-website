@@ -13,7 +13,7 @@ interface IChat {
   error?: string;
 }
 
-export function KnowNowIP() {
+function KnowNowIP() {
   const chatRef = useRef<HTMLInputElement>(null);
 
   const sessionID = jsCookie.get("session_id");
@@ -48,54 +48,54 @@ export function KnowNowIP() {
     setChats((prevChats) => [...prevChats, newChat]);
     // setIsloading(false);
 
-    const streamEndpoint = "https://knownow.perceivenow.ai/query_to_response";
-    const token = "c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907";
+    // const streamEndpoint = "https://knownow.perceivenow.ai/query_to_response";
+    // const token = "c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907";
 
-    fetch(streamEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(queries),
-    })
-      .then((response: any) => {
-        const reader = response.body.getReader();
+    // fetch(streamEndpoint, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify(queries),
+    // })
+    //   .then((response: any) => {
+    //     const reader = response.body.getReader();
 
-        const readChunk = () => {
-          reader
-            .read()
-            .then(({ done, value }: any) => {
-              if (done) {
-                console.log("Stream ended");
-                return;
-              }
-              const textDecoder = new TextDecoder();
-              const answer = textDecoder.decode(value);
+    //     const readChunk = () => {
+    //       reader
+    //         .read()
+    //         .then(({ done, value }: any) => {
+    //           if (done) {
+    //             console.log("Stream ended");
+    //             return;
+    //           }
+    //           const textDecoder = new TextDecoder();
+    //           const answer = textDecoder.decode(value);
 
-              setValue((prev) => prev + answer);
-              setChats((prevChats) => {
-                const updatedChats = [...prevChats];
-                updatedChats[updatedChats.length - 1].answer = answer;
-                return updatedChats;
-              });
-              // Process the chunk of data here
-              console.log("Received chunk of data:", value);
+    //           setValue((prev) => prev + answer);
+    //           setChats((prevChats) => {
+    //             const updatedChats = [...prevChats];
+    //             updatedChats[updatedChats.length - 1].answer = answer;
+    //             return updatedChats;
+    //           });
+    //           // Process the chunk of data here
+    //           console.log("Received chunk of data:", value);
 
-              // Read the next chunk
-              readChunk();
-            })
-            .catch((error: any) => {
-              console.error("Error reading chunk:", error);
-            });
-        };
+    //           // Read the next chunk
+    //           readChunk();
+    //         })
+    //         .catch((error: any) => {
+    //           console.error("Error reading chunk:", error);
+    //         });
+    //     };
 
-        // Start reading chunks
-        readChunk();
-      })
-      .catch((error) => {
-        console.error("Error occurred:", error);
-      });
+    //     // Start reading chunks
+    //     readChunk();
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error occurred:", error);
+    //   });
 
     // const response: any = await fetch(streamEndpoint, {
     //   method: 'POST',
@@ -118,39 +118,39 @@ export function KnowNowIP() {
     //   setValue(prev => prev + value);
     // }
 
-    // try {
-    //   const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
-    //     },
-    //   });
+    try {
+      const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
+        },
+      });
 
-    //   console.log(res)
+      console.log(res);
 
-    //   const answer = res.data;
+      const answer = res.data;
 
-    //   setIsloading(false);
+      setIsloading(false);
 
-    //   setChats((prevChats) => {
-    //     const updatedChats = [...prevChats];
-    //     updatedChats[updatedChats.length - 1].answer = answer;
-    //     return updatedChats;
-    //   });
-    // } catch (error: any) {
-    //   const errorMsg = error.response.statusText;
-    //   setIsloading(false);
+      setChats((prevChats) => {
+        const updatedChats = [...prevChats];
+        updatedChats[updatedChats.length - 1].answer = answer;
+        return updatedChats;
+      });
+    } catch (error: any) {
+      const errorMsg = error.response.statusText;
+      setIsloading(false);
 
-    //   setChats((prevChats) => {
-    //     const updatedChats = [...prevChats];
-    //     updatedChats[updatedChats.length - 1].error =
-    //       errorMsg || "Error while generating the response";
-    //     return updatedChats;
-    //   });
-    //   // console.log(error)
-    // } finally {
-    //   setLoadingIndex(null);
-    // }
+      setChats((prevChats) => {
+        const updatedChats = [...prevChats];
+        updatedChats[updatedChats.length - 1].error =
+          errorMsg || "Error while generating the response";
+        return updatedChats;
+      });
+      // console.log(error)
+    } finally {
+      setLoadingIndex(null);
+    }
   }, [chats, query, sessionID, userId]);
 
   console.log(value);
@@ -180,8 +180,8 @@ export function KnowNowIP() {
                 />
                 <QueryAnswer
                   answer={chat.answer}
-                  // isLoading={loadingIndex === idx}
-                  isLoading={false}
+                  isLoading={loadingIndex === idx}
+                  // isLoading={false}
                   error={chat.error}
                 />
               </div>
@@ -194,3 +194,5 @@ export function KnowNowIP() {
     </div>
   );
 }
+
+export default KnowNowIP;

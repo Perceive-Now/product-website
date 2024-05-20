@@ -96,10 +96,6 @@ import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
 
 import Stream from "./pages/stream/stream";
 
-// Knownow
-import KnowNow from "./pages/product/chat";
-import KnowNowIP from "./pages/product/ip-know-now";
-
 // Account
 import UserProfile from "./pages/my-account/profile";
 import MyReport from "./pages/my-account/my-reports";
@@ -108,6 +104,10 @@ import Setting from "./pages/my-account/setting";
 // Payment
 import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
+
+// Knownow
+import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
+import KnowNowIP from "./pages/product/know-now/ip-analysis";
 
 /**
  *
@@ -160,7 +160,7 @@ function App() {
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
-            <Route path="/know-now/market-intelligence" element={<KnowNow />} />
+            <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
 
             {/*Graph */}
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />

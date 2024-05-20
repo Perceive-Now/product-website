@@ -14,7 +14,7 @@ interface IChat {
   error?: string;
 }
 
-export function KnowNow() {
+function MarketIntelligenceKnowNow() {
   const chatRef = useRef<HTMLInputElement>(null);
 
   const [query, setQuery] = useState("");
@@ -141,3 +141,5 @@ export function KnowNow() {
     </div>
   );
 }
+
+export default MarketIntelligenceKnowNow;

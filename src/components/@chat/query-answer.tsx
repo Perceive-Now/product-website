@@ -7,6 +7,7 @@ import PN from "../../assets/images/pn.svg";
 import IconButton from "../reusable/icon-button";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
+import DotLoader from "../reusable/dot-loader";
 
 interface Props {
   answer: string;
@@ -48,9 +49,7 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
       </div>
       <div>
         {isLoading ? (
-          <span className="animate-spin">
-            <LoadingIcon className="text-primary-900" />
-          </span>
+          <DotLoader />
         ) : (
           <>
             {error || error !== undefined ? (
