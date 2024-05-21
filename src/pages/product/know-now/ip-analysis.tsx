@@ -6,6 +6,9 @@ import QueryAnswer from "../../../components/@chat/query-answer";
 import axios from "axios";
 import ChatQuery from "../../../components/@chat/chat-question";
 import jsCookie from "js-cookie";
+import KnowNowRightSideBar from "./side-bar";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setUpdateQuery } from "../../../stores/know-now";
 
 interface IChat {
   query: string;
@@ -14,6 +17,7 @@ interface IChat {
 }
 
 function KnowNowIP() {
+  const dispatch = useAppDispatch();
   const chatRef = useRef<HTMLInputElement>(null);
 
   const sessionID = jsCookie.get("session_id");
@@ -21,11 +25,15 @@ function KnowNowIP() {
 
   const [query, setQuery] = useState("");
   const [chats, setChats] = useState<IChat[]>([]);
-  const [value, setValue] = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
+
+  console.log(chats);
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
+
   const [isLoading, setIsloading] = useState(false);
+
+  const editIndex = useAppSelector((state) => state.KnowNow.editIndex);
+  const editQuery = useAppSelector((state) => state.KnowNow.query);
 
   const onSendQuery = useCallback(async () => {
     setLoadingIndex(chats.length);
@@ -125,12 +133,32 @@ function KnowNowIP() {
           Authorization: "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
         },
       });
-
-      console.log(res);
-
       const answer = res.data;
-
       setIsloading(false);
+
+      console.log(editIndex);
+
+      if (editIndex !== null) {
+        // const newChats = [...chats.slice(0, index), editIndex];
+
+        setChats((prevChats) => {
+          // Clone the previous chats array
+          const updatedChats = [...prevChats];
+
+          // Update the last chat's answer and response_time
+          if (updatedChats.length > 0) {
+            updatedChats[updatedChats.length - 1].answer = answer;
+            // updatedChats[updatedChats.length - 1].response_time = responseTime;
+          }
+
+          // Create a new array that includes chats up to editIndex (inclusive)
+          const newChats = updatedChats.slice(0, editIndex + 1);
+
+          console.log("New", newChats);
+
+          return newChats;
+        });
+      }
 
       setChats((prevChats) => {
         const updatedChats = [...prevChats];
@@ -141,19 +169,31 @@ function KnowNowIP() {
       const errorMsg = error.response.statusText;
       setIsloading(false);
 
+      if (editIndex !== null) {
+        setChats((prevChats) => {
+          const updatedChats = [...prevChats];
+          updatedChats[updatedChats.length - 1].query = editQuery || "";
+          const newChats = updatedChats.slice(0, editIndex + 1);
+
+          console.log("update", updatedChats);
+          console.log("New", newChats);
+          return newChats;
+        });
+        dispatch(setUpdateQuery({ editIndex: null }));
+      }
+
       setChats((prevChats) => {
         const updatedChats = [...prevChats];
         updatedChats[updatedChats.length - 1].error =
           errorMsg || "Error while generating the response";
         return updatedChats;
       });
-      // console.log(error)
     } finally {
       setLoadingIndex(null);
     }
-  }, [chats, query, sessionID, userId]);
+  }, [chats.length, dispatch, editIndex, editQuery, query, sessionID, userId]);
 
-  console.log(value);
+  console.log(editIndex);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -166,22 +206,21 @@ function KnowNowIP() {
   }, [chats]);
 
   return (
-    <div className="p-3 pb-6 flex">
+    <div className="p-3 pb-6 flex items-start">
       <div className="w-full">
         <div ref={chatRef} className="h-[calc(100vh-205px)] overflow-auto pn_scroller pb-2 pr-2">
-          {/* <div style={{ whiteSpace: 'pre-wrap' }}>{value}</div> */}
-
           <div className="space-y-6">
-            {chats.map((chat, idx) => (
+            {(chats || []).map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
                 <ChatQuery
                   query={chat.query}
-                  // updateQuery={onSendQuery}
+                  updateQuery={onSendQuery}
+                  editIndex={idx}
+                  setQuery={setQuery}
                 />
                 <QueryAnswer
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}
-                  // isLoading={false}
                   error={chat.error}
                 />
               </div>
@@ -190,7 +229,9 @@ function KnowNowIP() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <div className="w-[200px] 2xl:w-[300px] shrink-0"></div>
+      <div className="w-[200px] 2xl:w-[300px] shrink-0 ml-5">
+        <KnowNowRightSideBar />
+      </div>
     </div>
   );
 }

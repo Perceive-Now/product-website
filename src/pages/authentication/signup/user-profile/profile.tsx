@@ -286,7 +286,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
               </fieldset>
               {/* <div className="col-span-1" /> */}
 
-              <div className="col-span-1 " />
+              {/* <div className="col-span-1 " />
               <fieldset className="col-span-2 w-full">
                 <Label className="font-semibold text-secondary-800">Topics of interest</Label>
                 <div className="mt-0.5 rounded-md shadow-sm">
@@ -296,7 +296,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                     placeholder="Enter topics of interest"
                     error={errors.topics_of_interest}
                   />
-                  {/* <textarea
+                  <textarea
                     rows={5}
                     {...register("topics_of_interest")}
                     className={classNames(
@@ -329,9 +329,9 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                         </button>
                       </div>
                     ))}
-                  </div> */}
+                  </div>
                 </div>
-              </fieldset>
+              </fieldset> */}
             </div>
           </div>
           <div className="mt-5 flex items-center justify-center">

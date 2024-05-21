@@ -1,16 +1,17 @@
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
-
-import ProfileIcon from "../../../components/icons/common/profile";
-import EditIcon from "../../../components/icons/miscs/Edit";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 
 import ProfileComponent from "./profile";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 
 import ProfileModal from "../../../components/modal/profile-modal";
 import ChangePasswordModal from "../../../components/modal/changepassword";
+
 import Button from "../../../components/reusable/button";
 import Loading from "../../../components/reusable/loading";
-import toast from "react-hot-toast";
+import ProfileIcon from "../../../components/icons/common/profile";
+import EditIcon from "../../../components/icons/miscs/Edit";
+
 import { updateUserProfile } from "../../../utils/api/userProfile";
 import { setUser } from "../../../stores/auth";
 
@@ -25,7 +26,7 @@ const UserProfile = () => {
 
   const UserDetail = useAppSelector((state) => state.auth.user);
 
-  const TopicOfInterest = UserDetail?.topics_of_interest?.split(",") ?? [];
+  // const TopicOfInterest = UserDetail?.topics_of_interest?.split(",") ?? [];
 
   useEffect(() => {
     setPhoto(UserDetail?.profile_photo);
@@ -53,7 +54,7 @@ const UserProfile = () => {
       try {
         await updateUserProfile(values).then((res: any) => {
           if (res.status === 200) {
-            toast.success("Profile image update successfully");
+            toast.success("Profile Image updated successfully");
             dispatch(
               setUser({
                 first_name: values.first_name,
@@ -203,7 +204,7 @@ const UserProfile = () => {
               </div>
             </ProfileComponent>
 
-            <ProfileComponent
+            {/* <ProfileComponent
               title={"Topics of interest"}
               onEdit={() => {
                 setModal("profile");
@@ -226,7 +227,7 @@ const UserProfile = () => {
                   <div>N/A</div>
                 )}
               </div>
-            </ProfileComponent>
+            </ProfileComponent> */}
           </div>
         </div>
       </div>

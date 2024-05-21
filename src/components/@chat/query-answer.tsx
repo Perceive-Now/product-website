@@ -1,6 +1,6 @@
 import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import ThumbsDownIcon from "../icons/common/ThumbsDown";
-import { ErrorIcon, LoadingIcon, ShareIcon } from "../icons";
+import { ErrorIcon, ShareIcon } from "../icons";
 import CopyIcon from "../icons/common/copy";
 
 import PN from "../../assets/images/pn.svg";
