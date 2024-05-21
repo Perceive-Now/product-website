@@ -363,94 +363,77 @@ export const MarketQuestionList = [
   },
   {
     questionId: 43,
-    question: "What is the full name of the company, and what is its core mission?",
-    answer: "",
-  },
-  {
-    questionId: 44,
-    question:
-      "Please provide a concise description of the technology or product your company has developed.",
-    answer: "",
-  },
-  {
-    questionId: 45,
-    question:
-      "Describe the technical aspects and unique features of the key product or technology developed by the company. How does your product or technology introduce innovation or novelty within its field?",
-    answer: "",
-  },
-  {
-    questionId: 46,
     question:
       "What internal metrics does NeuraWear use to measure success in aligning with market dynamics and industry trends?",
     answer: "",
   },
   {
-    questionId: 47,
+    questionId: 44,
     question:
       "How does NeuraWear assess the impact of global market drivers and restraints on it's product development and marketing strategies?",
     answer: "",
   },
   {
-    questionId: 48,
+    questionId: 45,
     question:
       "Can you describe a recent strategic decision made by NeuraWear in response to the projected market growth in wearable technology? What was the rationale behind this decision?",
     answer: "",
   },
   {
-    questionId: 49,
+    questionId: 46,
     question:
-      "How does NeuraWear de ine its primary target market within the wearable technology industry?",
+      "How does NeuraWear define its primary target market within the wearable technology industry?",
     answer: "",
   },
   {
-    questionId: 50,
+    questionId: 47,
     question: "What data-driven methods does NeuraWear use to segment its customer base?",
     answer: "",
   },
   {
-    questionId: 51,
+    questionId: 48,
     question:
-      "What are the key factors that in luence the purchasing decisions of NeuraWear’s customers?",
+      "What are the key factors that influence the purchasing decisions of NeuraWear’s customers?",
     answer: "",
   },
   {
-    questionId: 52,
+    questionId: 49,
     question:
       "How has consumer feedback shaped the development of new features in NeuraWear products?",
     answer: "",
   },
   {
-    questionId: 53,
+    questionId: 50,
     question:
       "Can you describe the competitive advantages of NeuraWear’s latest wearable device compared to its main competitors?",
     answer: "",
   },
   {
-    questionId: 54,
+    questionId: 51,
     question:
       "What role does intellectual property play in NeuraWear’s product differentiation strategy?",
     answer: "",
   },
   {
-    questionId: 55,
+    questionId: 52,
     question:
-      "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its lagship product, and why?",
+      "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its flagship product, and why?",
     answer: "",
   },
   {
-    questionId: 56,
+    questionId: 53,
     question:
       "What are NeuraWear’s sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
     answer: "",
   },
   {
-    questionId: 57,
+    questionId: 54,
     question:
       "What are NeuraWear’s customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
     answer: "",
   },
   {
-    questionId: 58,
+    questionId: 55,
     question:
       "What are NeuraWear’s long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
     answer: "",

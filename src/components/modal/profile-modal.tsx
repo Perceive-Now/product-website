@@ -260,7 +260,13 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
             </div>
           )}
           <div className="mt-5 w-full">
-            <Button loading={isSubmitting} htmlType="submit" size="small" classname="w-full">
+            <Button
+              loading={isSubmitting}
+              htmlType="submit"
+              size="small"
+              classname="w-full"
+              disabled={isSubmitting || country === null}
+            >
               {isSubmitting ? <span>Saving</span> : <span>Save</span>}
             </Button>
           </div>

@@ -63,6 +63,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
     if (pathname.includes("/know-now")) {
       setIsChat(true);
     }
+    setIsChat(false);
   }, [pathname]);
 
   // const match = props.to ? pathname.includes(props.key) : false;
@@ -126,29 +127,31 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             )}
           </div>
           <div className="space-y-2.5">
-            {/* <Link to={"/know-now/ip-analysis"}>
-              <div
-                className={classNames(
-                  pathname.includes("/know-now")
-                    ? "bg-primary-900 text-white"
-                    : "bg-white text-secondary-800",
-                  "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
-                )}
-              >
-                Start new conversation
-              </div>
-            </Link> */}
-            {/* {
-              open &&
-              <button
+            {open && (
+              <Link to={"/know-now/ip-analysis"}>
+                <div
+                  className={classNames(
+                    pathname.includes("/know-now")
+                      ? "bg-primary-900 text-white"
+                      : "bg-white text-secondary-800",
+                    "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
+                  )}
+                >
+                  Start new conversation
+                </div>
+              </Link>
+            )}
+            {open && (
+              <Link
+                to="/"
                 type="button"
                 className={classNames(
                   "bg-white text-secondary-800 border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold w-full",
                 )}
               >
                 Create New Report
-              </button>
-            } */}
+              </Link>
+            )}
             {isChat ? (
               <>{open && <KnowNowHistory />}</>
             ) : (

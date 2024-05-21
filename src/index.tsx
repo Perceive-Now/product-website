@@ -12,6 +12,8 @@ import { store } from "./store";
 // App's global style
 import "./styles/dot-loader.css";
 import "./styles/input.scss";
+import "./styles/typing.css";
+
 import "./index.css";
 
 // Tooltip styles

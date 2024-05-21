@@ -48,8 +48,8 @@ export default function AuthLayout() {
     // );
 
     if (authStore.token) {
-      await dispatch(getUserDetails());
       await dispatch(getSessionDetails());
+      await dispatch(getUserDetails());
       setIsLoading(false);
       return;
     }

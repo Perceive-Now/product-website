@@ -222,9 +222,13 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       axiosInstance.get(`/api/get_company_list?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
-    const companyName = companyList.data.companies.find((c: any) =>
-      c.id === userProfileResponse.data.company_id ? c.name : "N/A",
+
+    const company = companyList.data.companies.find(
+      (c: any) => c.id === userProfileResponse.data.company_id,
     );
+
+    const companyName = company ? company : "N/A";
+
     return {
       success: true,
       message: "Successfully fetched user details",
@@ -259,7 +263,6 @@ export const AuthSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<IUserProfile>) => {
-      console.log(action.payload);
       state.user = action.payload;
     },
     setAuthToken: (state, action: PayloadAction<string | undefined>) => {

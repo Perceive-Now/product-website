@@ -49,7 +49,7 @@ function KnowNowIP() {
       {
         query: query,
         user_id: userId,
-        session_id: sessionID,
+        thread_id: sessionID,
       },
     ];
 
@@ -136,8 +136,6 @@ function KnowNowIP() {
       const answer = res.data;
       setIsloading(false);
 
-      console.log(editIndex);
-
       if (editIndex !== null) {
         // const newChats = [...chats.slice(0, index), editIndex];
 
@@ -206,9 +204,9 @@ function KnowNowIP() {
   }, [chats]);
 
   return (
-    <div className="p-3 pb-6 flex items-start">
+    <div className="p-3 flex items-start">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-205px)] overflow-auto pn_scroller pb-2 pr-2">
+        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2 pr-2">
           <div className="space-y-6">
             {(chats || []).map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">

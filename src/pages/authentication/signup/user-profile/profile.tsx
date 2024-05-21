@@ -133,29 +133,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     },
     [changeActiveStep, country, dispatch, photo],
   );
-
-  // const addKeyword = useCallback(
-  //   (value: string) => {
-  //     // if (keywords.length >= 0) {
-  //     //   setHasKeywords(true);
-  //     // }
-  //     setKeywords((prevKeywords) => [...prevKeywords, value]);
-  //   },
-  //   [],
-  // );
-
-  // const removeKeyword = useCallback(
-  //   (value: string) => {
-  //     setKeywords(keywords.filter((keyword) => keyword !== value));
-  //   },
-  //   [keywords],
-  // );
-
-  // console.log(countryError)
-
   return (
     <>
-      {/* <Loading isLoading={Loading} /> */}
       <div className="">
         <h4 className="font-bold text-[22px] text-primary-900">User Profile</h4>
         <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
@@ -284,58 +263,15 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   placeholder="Job Position"
                 />
               </fieldset>
-              {/* <div className="col-span-1" /> */}
-
-              {/* <div className="col-span-1 " />
-              <fieldset className="col-span-2 w-full">
-                <Label className="font-semibold text-secondary-800">Topics of interest</Label>
-                <div className="mt-0.5 rounded-md shadow-sm">
-                  <Input
-                    register={register("topics_of_interest")}
-                    type="textarea"
-                    placeholder="Enter topics of interest"
-                    error={errors.topics_of_interest}
-                  />
-                  <textarea
-                    rows={5}
-                    {...register("topics_of_interest")}
-                    className={classNames(
-                      "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                      errors.topics_of_interest
-                        ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                    )}
-                    placeholder="Enter Keyword"
-                    onKeyDown={(e: any) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault(); // Prevent default behavior of Enter key
-                        const keyword = (e.target as HTMLTextAreaElement).value.trim(); // Get the keyword and remove leading/trailing spaces
-                        if (keyword) {
-                          addKeyword(keyword);
-                          e.target.value = ""
-                        }
-                      }
-                    }}
-                  />
-                  <div className="flex flex-wrap gap-[10px] mt-5 absolute -top-4 left-2">
-                    {keywords.map((keyword) => (
-                      <div
-                        key={keyword}
-                        className="flex items-center justify-between gap-x-1 border rounded-lg border-appGray-600 py-0.5 px-2 text-sm font-medium text-secondary-800 bg-white"
-                      >
-                        {keyword}
-                        <button type="button" onClick={() => removeKeyword(keyword)}>
-                          <CrossIcon width={"16px"} className="text-secondary-800" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </fieldset> */}
             </div>
           </div>
           <div className="mt-5 flex items-center justify-center">
-            <Button loading={isSubmitting} htmlType="submit" size="small">
+            <Button
+              loading={isSubmitting}
+              htmlType="submit"
+              size="small"
+              disabled={country === null || isSubmitting}
+            >
               Continue
             </Button>
           </div>
