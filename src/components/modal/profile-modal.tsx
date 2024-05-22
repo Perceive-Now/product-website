@@ -51,16 +51,15 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
   };
 
   const formResolver = yup.object().shape({
-    username: yup
-      .string()
-      // .username("Username is required")
-      .required("Username is required"),
-    first_name: yup.string().required("First Name is required"),
-    last_name: yup.string().required("Last Name is required"),
-    phone_number: yup.string().required("Phone Number is required"),
+    username: yup.string().trim().required("Username is required"),
+
+    // .username("Username is required")
+    first_name: yup.string().trim().required("First Name is required"),
+    last_name: yup.string().trim().required("Last Name is required"),
+    phone_number: yup.string().trim().required("Phone Number is required"),
     country: yup.string(),
-    company_name: yup.string().required("Company is required"),
-    job_position: yup.string().required("Job position is required"),
+    company_name: yup.string().trim().required("Company is required"),
+    job_position: yup.string().trim().required("Job position is required"),
   });
 
   const {

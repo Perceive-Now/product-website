@@ -111,8 +111,11 @@ Props) {
           }
         }
       } catch (error: any) {
+        if (error.request.data == undefined) {
+          toast.error(error.message || "Something went wrong");
+        }
         setIsLoading(false);
-        toast.error(error || error.message);
+        toast.error(error || error.message || "Something went wrong");
       }
     },
     [

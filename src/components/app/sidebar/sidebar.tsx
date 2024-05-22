@@ -62,8 +62,9 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   useEffect(() => {
     if (pathname.includes("/know-now")) {
       setIsChat(true);
+    } else {
+      setIsChat(false);
     }
-    setIsChat(false);
   }, [pathname]);
 
   // const match = props.to ? pathname.includes(props.key) : false;

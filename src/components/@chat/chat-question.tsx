@@ -46,7 +46,7 @@ const ChatQuery = ({ query, updateQuery, editIndex, setQuery }: Props) => {
             setQuery={setQuery}
           />
         ) : (
-          <p className="text-secondary-800">{query}</p>
+          <span className="text-secondary-800">{query}</span>
         )}
       </div>
       <IconButton

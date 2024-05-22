@@ -204,10 +204,13 @@ function KnowNowIP() {
   }, [chats]);
 
   return (
-    <div className="p-3 flex items-start">
-      <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2 pr-2">
-          <div className="space-y-6">
+    <div className="p-3 pb-0 flex items-start">
+      <div className="w-full grow-0">
+        <div
+          ref={chatRef}
+          className="h-[calc(100vh-200px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+        >
+          <div className="space-y-6 w-full">
             {(chats || []).map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
                 <ChatQuery
@@ -227,7 +230,7 @@ function KnowNowIP() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <div className="w-[200px] 2xl:w-[300px] shrink-0 ml-5">
+      <div className="w-[300px] shrink-0 ml-5">
         <KnowNowRightSideBar />
       </div>
     </div>
