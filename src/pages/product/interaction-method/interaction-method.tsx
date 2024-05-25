@@ -19,7 +19,7 @@ const interactionMethods = [
     darkIcon: <UploadAttachementsIcon type="dark" />,
     title: "Upload attachments",
     description: "Upload documents to get detailed analyses.",
-    path: "/product/interaction-method/upload-attachments",
+    path: "/upload-attachments",
   },
   {
     lightIcon: <DetailedQAAIcon />,
@@ -69,8 +69,8 @@ export default function InteractionMethod() {
             />
           ))}
         </div>
-        <Button type="optional" classname="text-secondary-800" handleClick={handleContinueBtnClick}>
-          Continue
+        <Button type="optional" handleClick={handleContinueBtnClick}>
+          <p className="text-secondary-800 bg-red-400">Continue</p>
         </Button>
       </div>
     </div>

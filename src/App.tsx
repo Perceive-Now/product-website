@@ -98,6 +98,7 @@ import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
 import Setting from "./pages/my-account/setting";
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
+import UploadAttachementsMethod from "./pages/product/upload-attachements/upload-attachments-method";
 
 /**
  *
@@ -146,6 +147,7 @@ function App() {
             <Route path="/setting" element={<Setting />} />
 
             <Route path="/interaction-method" element={<InteractionMethod />} />
+            <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
