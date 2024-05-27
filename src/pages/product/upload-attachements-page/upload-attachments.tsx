@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import Button from "../../../components/reusable/button";
 import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
+import useFileUploadService from "./use-file-upload-service";
 
 const baseStyle = {
   flex: 1,
@@ -33,6 +34,7 @@ const rejectStyle = {
 
 export default function UploadAttachments() {
   const [files, setFiles] = React.useState<File[]>([]);
+  const { uploadFiles } = useFileUploadService();
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
@@ -48,12 +50,7 @@ export default function UploadAttachments() {
     },
     onDrop: (acceptedFiles) => {
       setFiles((prev) => {
-        const acceptedFileObjs = acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          }),
-        );
-        const filteredFiles = acceptedFileObjs.filter(
+        const filteredFiles = acceptedFiles.filter(
           (file) => !prev.some((prevFile) => prevFile.name === file.name),
         );
         return [...prev, ...filteredFiles];
@@ -78,8 +75,8 @@ export default function UploadAttachments() {
     });
   };
 
-  const handleContinueBtnClick = () => {
-    // handle continue
+  const handleContinueBtnClick = async () => {
+    await uploadFiles(files);
   };
 
   return (
