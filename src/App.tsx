@@ -98,7 +98,7 @@ import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
 import Setting from "./pages/my-account/setting";
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
-import UploadAttachementsMethod from "./pages/product/upload-attachements/upload-attachments-method";
+import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
 
 /**
  *

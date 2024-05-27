@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import Title from "../../../components/reusable/title";
 import UploadAttachements from "./upload-attachments";
+export default function UploadAttachementsPage() {
 
-export default function UploadAttachementsMethod() {
   return (
     <div>
       <Link
