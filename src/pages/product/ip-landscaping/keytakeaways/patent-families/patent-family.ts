@@ -1,11 +1,11 @@
 import StatesCodes from "../../../../../utils/extra/us-states-codes";
 
-interface IFamilyYear {
+export interface IFamilyYear {
   family_size: number;
   year: number;
 }
 
-interface IPatentLocation {
+export interface IPatentLocation {
   state: string;
   count: number;
   country: string;
@@ -50,7 +50,7 @@ export function AverageFamilySizeEachYear(data: IFamilyYear[]) {
 }
 
 //
-export function LargePatentFamilyTrends(data: IFamilyYear[]) {
+export function largePatentFamilyTrends(data: IFamilyYear[]) {
   if (data.length === 0) {
     return "No data available.";
   }
@@ -101,7 +101,7 @@ export function LargePatentFamilyTrends(data: IFamilyYear[]) {
     : "No significant increase in large patent families over the years.";
 }
 
-export function findYearWithLargestAverage(data: IFamilyYear[]): string {
+export function findYearWithLargestAverage(data: IFamilyYear[]) {
   if (data.length === 0) {
     return "No data available.";
   }
@@ -134,35 +134,41 @@ export function findYearWithLargestAverage(data: IFamilyYear[]): string {
 }
 
 export function PatentFamilyGrowthRate(data: IFamilyYear[]) {
-  if (data.length === 0) {
-    return "No data available.";
+  if (data.length < 2) {
+    return "No sufficient data to calculate the growth rates for patent families.";
   }
 
   // Sort the data by year
   data.sort((a, b) => a.year - b.year);
 
-  // Group data by year to calculate average family sizes
-  const averages = data.reduce((acc, curr) => {
-    if (!acc[curr.year]) {
-      acc[curr.year] = { sum: 0, count: 0 };
+  // Calculate the year-over-year growth rates
+  const growthRates: { yearA: number; yearB: number; growthRate: number }[] = [];
+  for (let i = 1; i < data.length; i++) {
+    const yearA = data[i - 1].year;
+    const yearB = data[i].year;
+    const sizeA = data[i - 1].family_size;
+    const sizeB = data[i].family_size;
+
+    if (sizeA === 0) {
+      // Avoid division by zero
+      return "No valid growth rate calculations available.";
+      // continue;
     }
-    acc[curr.year].sum += curr.family_size;
-    acc[curr.year].count++;
-    return acc;
-  }, {} as { [year: number]: { sum: number; count: number } });
 
-  // Calculate average for first and last year
-  const years = Object.keys(averages).map((year) => parseInt(year));
-  const firstYear = years[0];
-  const lastYear = years[years.length - 1];
-  const firstYearAverage = averages[firstYear].sum / averages[firstYear].count;
-  const lastYearAverage = averages[lastYear].sum / averages[lastYear].count;
+    const growthRate = ((sizeB - sizeA) / sizeA) * 100;
+    growthRates.push({ yearA, yearB, growthRate });
+  }
 
-  // Calculate growth rate
-  const growthRate = ((lastYearAverage - firstYearAverage) / firstYearAverage) * 100;
+  // Use the last year's growth rate for the sentence
+  const lastGrowth = growthRates[growthRates.length - 1];
 
-  // Format the message
-  return `The growth rate in the size of patent families from year ${firstYear} to ${lastYear} was ${growthRate.toFixed(
+  if (growthRates.length === 0) {
+    return "No valid growth rate calculations available.";
+  }
+
+  return `The growth rate in the size of patent families from year ${lastGrowth.yearA} to ${
+    lastGrowth.yearB
+  } was ${lastGrowth.growthRate.toFixed(
     2,
   )}%, indicating an evolving approach to patent filings and protection strategies.`;
 }

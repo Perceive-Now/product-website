@@ -46,7 +46,7 @@ export default function HelpPage() {
         <div className="mb-4">
           <Input
             register={register}
-            name={"subject"}
+            // name={"subject"}
             label="Subject"
             placeholder="Subject"
             error={errors["subject"]}
@@ -55,7 +55,7 @@ export default function HelpPage() {
 
         <div className="mb-4">
           <Input
-            name={"comment"}
+            // name={"comment"}
             label="Comment"
             register={register}
             type="textarea"
