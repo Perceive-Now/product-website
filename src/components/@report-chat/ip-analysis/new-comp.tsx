@@ -24,7 +24,7 @@ export default function NewComponent({
   answer,
 }: Props) {
   const formResolver = yup.object().shape({
-    answer: yup.string().required("Please provide your answer"),
+    answer: yup.string().trim().required("Please provide your answer"),
   });
 
   const {

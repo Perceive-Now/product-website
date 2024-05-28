@@ -109,43 +109,42 @@ export function cityWithHighestConcentrationOfApplicants(data: PatentInfo[]) {
   const topCityPercentage = (topCity[1] / totalPatents) * 100;
 
   // Format the message
-  const [countryCity] = topCity[0].split("-");
-  return `City ${countryCity} is home to the highest concentration of patent applicants, accounting for ${topCityPercentage.toFixed(
+  const countryCity = topCity[0].split("-");
+
+  return `City ${
+    countryCity[1]
+  } is home to the highest concentration of patent applicants, accounting for ${topCityPercentage.toFixed(
     2,
   )}% of the total, underlining its status as a central innovation locale.`;
 }
 
 export function shiftInGeographicalFocusOfApplicants(
   data: PatentInfo[],
-  region: string,
-  startYear: number,
-  endYear: number,
+  // startYear: number,
+  // endYear: number,
 ) {
-  // Filter data for the specified region and year range
-  const regionalData = data.filter(
-    (d) => d.city === region && (d.year === startYear || d.year === endYear),
+  // Filter the data for the first and last years
+  const firstYearData: any = data.find(
+    (entry) => entry.year === Math.min(...data.map((item) => item.year)),
+  );
+  const lastYearData: any = data.find(
+    (entry) => entry.year === Math.max(...data.map((item) => item.year)),
   );
 
-  // Ensure data for both years is present
-  if (regionalData.length !== 2) {
-    return `Insufficient data for ${region} to analyze trends from ${startYear} to ${endYear}.`;
+  if (!firstYearData && !lastYearData) {
+    return `Insifficient data`;
   }
+  // Calculate the growth rate
+  const growthRate = ((lastYearData?.count - firstYearData?.count) / firstYearData?.count) * 100;
 
-  // Extract counts for start and end years
-  const startData = regionalData.find((d) => d.year === startYear);
-  const endData = regionalData.find((d) => d.year === endYear);
-
-  if (!startData || !endData) {
-    return `Data for ${region} is incomplete for the years selected.`;
-  }
-
-  // Calculate the percentage growth rate
-  const growthRate = ((endData.count - startData.count) / startData.count) * 100;
-
-  // Format the message
-  return `Over the past decade, there has been a notable shift towards ${region} for patent applicants, with a growth rate of ${growthRate.toFixed(
+  // Construct the sentence
+  const sentence = `Over the past decade, there has been a notable shift towards ${
+    countryNames[lastYearData?.country]
+  } for patent applicants, with a growth rate of ${growthRate.toFixed(
     2,
   )}%, indicating changing innovation landscapes and the emergence of new technology hubs.`;
+
+  return sentence;
 }
 
 export function internationalDiversityOfPatentApplicants(data: PatentInfo[]) {

@@ -7,10 +7,10 @@ const controlStyles = {
   nonFocus: "border-appGray-600 hover:border-appGray-600",
   disabled: "opacity-50 cursor-not-allowed",
 };
-const placeholderStyles = "leading-7 ml-1 text-black-50 font-500 px-2";
-const selectInputStyles = "pl-1 py-6 text-base ";
+const placeholderStyles = "leading-7 text-black-50 font-500 px-0.5";
+const selectInputStyles = "py-6 text-base ";
 const valueContainerStyles = "px-1 gap-1 text-black-50 text-sm py-[8px]";
-const singleValueStyles = "leading-7 ml-1 text-black font-500 px-2";
+const singleValueStyles = "leading-7 text-black font-500 px-1";
 const indicatorsContainerStyles = "gap-1";
 const clearIndicatorStyles = "text-black-50 -mr-3";
 const indicatorSeparatorStyles = "hidden";
@@ -21,8 +21,8 @@ const menuStyles =
 const groupHeadingStyles = "ml-3 mt-2 mb-1 text-black-50 text-sm";
 const optionStyles = {
   base: "hover:cursor-pointer py-2 rounded",
-  focus: "bg-gray-medium active:bg-gray-medium border-none",
-  selected: "bg-gray-medium text-black-50",
+  focus: "bg-primary-900 active:bg-primary-900 border-none",
+  selected: "bg-primary-900 text-black-50",
   disabled: "opacity-50 cursor-not-allowed",
 };
 const noOptionsMessageStyles =
@@ -37,7 +37,7 @@ interface Props {
   options?: IOption[];
   onChange: any;
   // onChange: (selectedValues: IOption | IOption[] | null) => void;
-  value: IOption | IOption[] | null;
+  value: IOption | null;
   // isMulti?: boolean;
   isSearchable?: boolean;
   disabled?: boolean;
@@ -58,7 +58,6 @@ export default function SelectBox({
   disabled,
   isClearable,
   position,
-  name,
   error,
   touched,
   placeholder,
@@ -66,13 +65,11 @@ export default function SelectBox({
   const handleSelectChange = (selectedOption: IOption | IOption[] | null) => {
     onChange(selectedOption);
   };
+
   return (
     <Select
-      // isMulti={isMulti && isMulti}
-      name={name}
       options={options}
       className={classNames(touched || error ? "error-react-select" : "")}
-      classNamePrefix="select"
       onChange={handleSelectChange}
       value={value}
       isClearable={isClearable !== undefined ? isClearable : true}
@@ -97,7 +94,6 @@ export default function SelectBox({
           transition: "none",
           borderColor: isFocused ? "#E5E5E5" : "",
           boxShadow: "none",
-          // borderColor: touched || error ? "red" : "",
           "&:hover": {
             borderColor: touched || error ? "red" : "",
           },
