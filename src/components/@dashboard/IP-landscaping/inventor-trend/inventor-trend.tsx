@@ -85,9 +85,7 @@ export function InventorTrendOverTime({ keywords }: Props) {
           // abbreviateLegendX={true}
           colors={["#7F4BD8", "#442873"]}
         />
-        <div className="mt-4">
-          <TrendsInInventorCollaborationsOverTime />
-        </div>
+        <div className="mt-4">{data && <TrendsInInventorCollaborationsOverTime data={data} />}</div>
       </div>
     </DataSection>
   );
