@@ -4,24 +4,17 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 //
-import PerceiveLogo from "../../../assets/images/logo.svg";
-
-//
 import { sidebarItems, ISidebarListItem } from "./_data";
 
-// Redux
-// import { Dialog } from "@headlessui/react";
-// import SidebarTransition from "./sidebarTransition";
-import KnowNowHistory from "./chat-history";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { logoutUser } from "../../../stores/auth";
 //
 
-import { LogoutIcon } from "../../icons";
-import ToggleBarIcon from "../../icons/sidenav/bars";
+import { LogoutIcon, SettingsIcon } from "../../icons";
 import UserIcon from "../../reusable/userIcon";
+import SideBarToggleIcon from "../../icons/side-bar/toggle";
+
 import { setSession } from "../../../stores/session";
-// import { setSession } from "../../../stores/session";
 
 interface Props {
   show?: boolean;
@@ -34,12 +27,13 @@ interface INavLinkItemProps extends ISidebarListItem {
 
 const SidebarBottom = [
   {
-    title: "Profile",
-    href: "/profile",
-  },
-  {
     title: "Settings",
     href: "/setting",
+    icon: SettingsIcon,
+  },
+  {
+    title: "Logout",
+    icon: LogoutIcon,
   },
 ];
 
@@ -57,7 +51,6 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const { pathname } = useLocation();
 
   const userDetail = useAppSelector((state) => state.auth.user);
-  const isHome = useAppSelector((state) => state.UI.home);
 
   useEffect(() => {
     if (pathname.includes("/know-now")) {
@@ -106,80 +99,83 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   };
 
   return (
-    <div className={classNames("mt-1", open ? "mr-[260px]" : "mr-[100px]")}>
+    <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>
       <div
         className={classNames(
-          isHome || pathname === "/"
-            ? "secondary-transparent border border-primary-50"
-            : "bg-appGray-100",
-          open ? "w-[270px]" : "w-[56px] items-center duration-300 ",
-          "shadow px-2.5 fixed flex flex-col justify-between  rounded h-[calc(100vh-60px)]",
+          "bg-appGray-100 pt-1",
+          open ? "w-[220px]" : "w-[56px] items-center duration-300 ",
+          "shadow fixed flex flex-col justify-between  rounded h-[calc(100vh-80px)]",
         )}
       >
         <div>
-          <div className="flex justify-center items-center py-3 gap-2">
-            <button type="button" className="pt-1" onClick={() => setOpen(!open)}>
-              <ToggleBarIcon />
+          <div
+            className={classNames(
+              "flex items-center gap-2",
+              open ? "justify-end" : "justify-start",
+            )}
+          >
+            <button
+              type="button"
+              className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+              onClick={() => setOpen(!open)}
+            >
+              <SideBarToggleIcon />
             </button>
-            {open && (
-              <Link to="/">
-                <img src={PerceiveLogo} alt="PerceiveNow logo" className="-mt-0.5" />
-              </Link>
-            )}
           </div>
-          <div className="space-y-2.5">
-            {open && (
-              <Link to={"/know-now/ip-analysis"}>
-                <div
-                  className={classNames(
-                    pathname.includes("/know-now")
-                      ? "bg-primary-900 text-white"
-                      : "bg-white text-secondary-800",
-                    "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
-                  )}
-                >
-                  Start new conversation
-                </div>
-              </Link>
-            )}
-            {open && (
-              <Link
-                to="/"
-                type="button"
-                className={classNames(
-                  "bg-white text-secondary-800 border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold w-full",
-                )}
-              >
-                Create New Report
-              </Link>
-            )}
-            {isChat ? (
+          <div className="space-y-1 mt-1">
+            {/* {isChat && (
               <>{open && <KnowNowHistory />}</>
-            ) : (
-              <>
-                {sidebarItems.map((item, index) => (
-                  <div key={index}>
-                    {!item.children && (
-                      <NavLinkItem
-                        key={`top-${index}`}
-                        to={item.to}
-                        icon={item.icon}
-                        title={item.title}
-                        open={open}
-                        value={item.key}
-                      />
-                    )}
-                  </div>
-                ))}
-              </>
-            )}
+            )} */}
+            {sidebarItems.map((item, index) => (
+              <div key={index}>
+                {!item.children && (
+                  <NavLinkItem
+                    key={`top-${index}`}
+                    to={item.to}
+                    icon={item.icon}
+                    title={item.title}
+                    open={open}
+                    value={item.key}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
         {/* sidebar bottom */}
-        <div className="pb-3 text-gray-900 space-y-1">
-          <div className="flex items-center justify-between w-full">
+        <div className="pb-3 text-gray-900 space-y-2 ">
+          <div className="space-y-1 px-2.5">
+            {SidebarBottom.map((s, idx) => (
+              <div key={idx * 29}>
+                {s.href ? (
+                  <Link
+                    to={s.href}
+                    className={classNames(
+                      "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                    {open && <>{s.title}</>}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className={classNames(
+                      "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                    {open && <>{s.title}</>}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="bg-appGray-200 h-[1px] w-full" />
+          <div className="flex items-center justify-between w-full px-2.5">
             {open && (
-              <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-1 w-full">
                 <div className="shrink-0">
                   <UserIcon
                     first_name={userDetail?.first_name || ""}
@@ -190,26 +186,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                 <p className="line-clamp-1 w-14">{userDetail?.full_name}</p>
               </div>
             )}
-            <button type="button" onClick={handleLogout}>
-              <LogoutIcon />
-            </button>
           </div>
-          {open && (
-            <div className="flex flex-col">
-              {SidebarBottom.map((s, idx) => (
-                <Link
-                  to={s.href}
-                  key={idx * 29}
-                  className={classNames(
-                    "py-1  rounded px-2",
-                    s.href === pathname ? "bg-primary-900 text-white" : "text-gray-900",
-                  )}
-                >
-                  {s.title}
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </div>
@@ -217,37 +194,22 @@ export const AppSidebar: FunctionComponent<Props> = () => {
 };
 
 function NavLinkItem(props: INavLinkItemProps) {
-  // const { pathname } = useLocation();
-  // const match = props.to ? pathname.includes(props.key) : false;
-  // const titles = pathname?.split("/").slice(1);
-  // const hasKey = titles.includes(props.value);
-
   return (
     <NavLink to={props.to ?? ""} end>
       {({ isActive }) => (
-        <div
-          className={classNames(
-            "flex items-center py-1 text-white rounded ",
-            // (isActive || hasKey) && props.open ? "" : "hover:bg-primary-",
-            props.open && " px-2.5 bg-primary-900",
-          )}
-        >
-          {!props.open ? (
-            <>
-              {props.icon && (
-                <div
-                  className={classNames(" bg-primary-900 border border-[#E8EAF2] rounded p-[12px]")}
-                >
-                  {props.icon}
-                </div>
-              )}
-            </>
-          ) : (
-            <span
+        <div className={classNames("flex items-center gap-0.5", props.open && " px-2.5 ")}>
+          {props.icon && (
+            <div
               className={classNames(
-                "flex items-center text-sm font-semibold text-white",
-                // isActive || hasKey ? "text-white " : "text-gray-900",
+                "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
               )}
+            >
+              <props.icon className="text-primary-900" />
+            </div>
+          )}
+          {props.open && (
+            <span
+              className={classNames("flex items-center text-sm font-semibold text-secondary-800")}
             >
               {props.title}
             </span>

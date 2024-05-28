@@ -134,24 +134,19 @@ function App() {
           <Route path="/user-registration" element={<UserDetails />} />
           <Route path="/welcome" element={<WelcomePage />} />
 
-          {/* Need to ask for profile details before allowing to use */}
-          {/* <Route path="/signup/complete" element={<CompleteSignup />} /> */}
-
           <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
             <Route path="/payment" element={<Payment />} />
             <Route path="/stay-tuned" element={<StayTuned />} />
-
-            {/* <Route path="/market-research" element={<IPAnalysis />} />
-            <Route path="/market-intelligence" element={<IPAnalysis />} />
-            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} /> */}
           </Route>
 
           <Route element={<DefaultLayout />}>
+            <Route path="/" element={"Home"} />
+
             {/* report */}
-            <Route path="/" element={<IPAnalysis />} />
+            <Route path="/new-report" element={<IPAnalysis />} />
 
             {/* Account */}
             <Route path="/profile" element={<UserProfile />} />
