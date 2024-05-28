@@ -25,7 +25,7 @@ interface IScholaryPublicationData {
   year: number;
 }
 
-export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
+export const PatentFamilySizeOverTime: FunctionComponent<Props> = ({ keywords }) => {
   const { data, isLoading, isError, error } = useQuery(
     ["inventor_analysis", ...keywords],
     async () => {
@@ -82,7 +82,7 @@ export const InventorAnalysis: FunctionComponent<Props> = ({ keywords }) => {
     >
       <div className="space-y-2 text-secondary-800 mt-4">
         {data && <ScatterChart data={scatterChartData} colors={["#7F4BD8", "#442873"]} />}
-        <SizeOfPatentFamilyKeyTakeaway />
+        {data && <SizeOfPatentFamilyKeyTakeaway patentFamilySize={data} />}
       </div>
     </DataSection>
   );

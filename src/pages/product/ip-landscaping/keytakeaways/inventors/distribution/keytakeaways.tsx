@@ -1,52 +1,40 @@
-import { useQuery } from "@tanstack/react-query";
-
-import { useEffect } from "react";
-import { useAppSelector } from "../../../../../../hooks/redux";
-import { getPatentCompetitorPortfolio } from "../../../../../../utils/api/charts";
 import KeyDetail from "../../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
 
-const GeographicalDistributionOfInventorsKeyTakeaways = () => {
-  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
-  const keywords = searchedKeywords.map((kwd) => kwd.value);
+import {
+  IInventorCountryData,
+  internationalDiversityAmongInventors,
+  rapidIncreaseInInventorNumbersByRegion,
+  shiftInInventorGeographicalDistribution,
+  topCountryForInventorActivity,
+} from "./key";
 
-  const { data } = useQuery(
-    ["patents-year", ...keywords],
-    async () => {
-      return await getPatentCompetitorPortfolio(keywords);
-    },
-    // { enabled: !!props.keywords.length },
-  );
+interface Props {
+  data: IInventorCountryData[];
+}
 
-  // Fetching time period
-  useEffect(() => {
-    if (!data) return;
-
-    //
-  }, [data]);
-
+const GeographicalDistributionOfInventorsKeyTakeaways = ({ data }: Props) => {
   return (
     <>
       {data && (
         <KeyDetail section="Key Takeaway">
           <Keytakeaway
             title={"Top Country for Inventor Activity"}
-            // description={leadingOrganizationInPatentAssignments(data as any)}
+            description={topCountryForInventorActivity(data) || "N/A"}
           />
           <Keytakeaway
             title={"Rapid Increase in Inventor Numbers by Region"}
-            // description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any)}
-            // }
+            description={rapidIncreaseInInventorNumbersByRegion(data) || "N/A"}
           />
-          <Keytakeaway
-            title={"City with Highest Number of Inventors"}
-            // description={cityWithHighestConcentrationOfApplicants(data as any)}
-          />
+          <Keytakeaway title={"City with Highest Number of Inventors"} description={"N/A"} />
           <Keytakeaway
             title={"Shift in Inventor Geographical Distribution"}
-            // description={shiftInGeographicalFocusOfApplicants(data as any)}
+            description={shiftInInventorGeographicalDistribution(data) || "N/A"}
           />
-          <Keytakeaway title={"International Diversity Among Inventors"} />
+          <Keytakeaway
+            title={"International Diversity Among Inventors"}
+            description={internationalDiversityAmongInventors(data) || "N/A"}
+          />
         </KeyDetail>
       )}
     </>

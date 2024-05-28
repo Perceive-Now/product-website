@@ -26,7 +26,7 @@ import { CrossIcon } from "../icons";
 interface Props {
   open: boolean;
   onClose: () => void;
-  userDetail?: any;
+  userDetail: any;
   modalType: "profile" | "interest";
   photo: string;
 }
@@ -40,27 +40,26 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
   });
 
   const formInitialValue: IProfile = {
-    username: userDetail?.username || "",
-    first_name: userDetail?.first_name || "",
-    last_name: userDetail?.last_name || "",
-    phone_number: userDetail?.phone_number || "",
-    country: userDetail?.country || "",
-    topics_of_interest: userDetail?.topics_of_interest || "",
-    company_name: userDetail?.company_name || "N/A",
-    job_position: userDetail?.job_position || "",
+    username: userDetail.username || "",
+    first_name: userDetail.first_name || "",
+    last_name: userDetail.last_name || "",
+    phone_number: userDetail.phone_number || "",
+    country: userDetail.country || "",
+    topics_of_interest: userDetail.topics_of_interest || "",
+    company_name: userDetail.company_name || "N/A",
+    job_position: userDetail.job_position || "",
   };
 
   const formResolver = yup.object().shape({
-    username: yup
-      .string()
-      // .username("Username is required")
-      .required("Username is required"),
-    first_name: yup.string().required("First Name is required"),
-    last_name: yup.string().required("Last Name is required"),
-    phone_number: yup.string().required("Phone Number is required"),
+    username: yup.string().trim().required("Username is required"),
+
+    // .username("Username is required")
+    first_name: yup.string().trim().required("First Name is required"),
+    last_name: yup.string().trim().required("Last Name is required"),
+    phone_number: yup.string().trim().required("Phone Number is required"),
     country: yup.string(),
-    company_id: yup.string(),
-    job_position: yup.string().required("Job position is required"),
+    company_name: yup.string().trim().required("Company is required"),
+    job_position: yup.string().trim().required("Job position is required"),
   });
 
   const {
@@ -77,7 +76,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     async (value: IProfile) => {
       const values = {
         first_name: value.first_name,
-        last_name: value.last_name,
+        last_name: value.first_name,
         username: value.username,
         phone_number: value.phone_number,
         topics_of_interest: value.topics_of_interest,
@@ -88,13 +87,30 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         email: userDetail.email || "",
         about_me: "",
         id: userDetail.id || "",
-        full_name: userDetail.full_name || "",
+        full_name: `${value.first_name} ${value.last_name}` || "",
         registration_completed: true,
       };
       try {
         await updateUserProfile(values).then((res: any) => {
           if (res.status === 200) {
-            dispatch(setUser(values as any));
+            dispatch(
+              setUser({
+                first_name: values.first_name,
+                last_name: values.last_name,
+                username: values.username,
+                phone_number: values.phone_number,
+                topics_of_interest: values.topics_of_interest,
+                country: values.country,
+                profile_photo: values.profile_photo,
+                company_name: values?.company_name,
+                job_position: values?.job_position,
+                email: values.email,
+                about_me: "",
+                id: values.id || "",
+                full_name: values.full_name || "",
+                registration_completed: true,
+              }),
+            );
             toast.success("Profile updated successfully");
             onClose();
           }
@@ -164,19 +180,6 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                   />
                 </div>
               </fieldset>
-              {/* phone */}
-              <fieldset className="col-span-1">
-                <Label className="font-semibold text-secondary-800">Phone number</Label>
-                <div className="mt-0.5">
-                  <PhoneNumberInput
-                    register={register("phone_number")}
-                    // type="text"
-                    value={userDetail?.phone_number || ""}
-                    placeholder="Phone number"
-                    error={errors.phone_number}
-                  />
-                </div>
-              </fieldset>
               <fieldset className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Country
@@ -192,9 +195,22 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                     // register={register("country")}
                   />
                 </div>
-                {errors.country?.message && (
-                  <div className="mt-1 text-xs text-danger-500">{errors.country.message}</div>
+                {country === null && (
+                  <div className="mt-1 text-xs text-danger-500">Country is required</div>
                 )}
+              </fieldset>
+              {/* phone */}
+              <fieldset className="col-span-1">
+                <Label className="font-semibold text-secondary-800">Phone number</Label>
+                <div className="mt-0.5">
+                  <PhoneNumberInput
+                    register={register("phone_number")}
+                    // type="text"
+                    value={userDetail?.phone_number || ""}
+                    placeholder="Phone number"
+                    error={errors.phone_number}
+                  />
+                </div>
               </fieldset>
               <fieldset className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
@@ -243,7 +259,13 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
             </div>
           )}
           <div className="mt-5 w-full">
-            <Button loading={isSubmitting} htmlType="submit" size="small" classname="w-full">
+            <Button
+              loading={isSubmitting}
+              htmlType="submit"
+              size="small"
+              classname="w-full"
+              disabled={isSubmitting || country === null}
+            >
               {isSubmitting ? <span>Saving</span> : <span>Save</span>}
             </Button>
           </div>
