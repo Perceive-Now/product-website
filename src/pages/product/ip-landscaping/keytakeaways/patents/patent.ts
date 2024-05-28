@@ -4,61 +4,9 @@ interface PatentInfo {
   year: number;
 }
 
-export interface IPatentYear {
+interface IPatentYear {
   year: number;
   count: number;
-}
-
-export function annualGrowthRateInPatentFilings(data: IPatentYear[]) {
-  if (data.length < 2) {
-    return "Insufficient data to calculate growth rate.";
-  }
-
-  // Sort data by year
-  data.sort((a, b) => a.year - b.year);
-
-  // Calculate the number of years between the first and the last record
-  const n = data[data.length - 1].year - data[0].year;
-
-  // Get the initial value (start year) and final value (end year)
-  const initialCount = data[0].count;
-  const finalCount = data[data.length - 1].count;
-
-  // Calculate CAGR
-  const cagr = (finalCount / initialCount) ** (1 / n) - 1;
-  const cagrPercentage = (cagr * 100).toFixed(2);
-
-  // Determine the trend
-  const trend = cagr > 0 ? "upward" : "downward";
-
-  // Construct the response message
-  return `The annual growth rate of patent filings from year ${data[0].year} to year ${
-    data[data.length - 1].year
-  } was ${cagrPercentage}%, indicating an ${trend} trend in innovation activities.`;
-}
-
-export function comparisonOfPatentFilingsAcrossDecades(data: IPatentYear[]) {
-  // Calculate the total filings for the 2000s and 2010s
-  let filings2000s = 0;
-  let filings2010s = 0;
-
-  for (const entry of data) {
-    if (entry.year >= 2000 && entry.year < 2010) {
-      filings2000s += entry.count;
-    } else if (entry.year >= 2010 && entry.year < 2020) {
-      filings2010s += entry.count;
-    }
-  }
-
-  // Calculate the percentage increase
-  const percentageIncrease = ((filings2010s - filings2000s) / filings2000s) * 100;
-
-  // Construct the sentence
-  const sentence = `The comparison of patent filings across decades shows a ${percentageIncrease.toFixed(
-    2,
-  )}% increase in the 2010s compared to the 2000s, evidencing a significant shift in innovation intensity.`;
-
-  return sentence;
 }
 
 export function PatentFilingLatestYear(patentData: PatentInfo[]) {

@@ -76,7 +76,6 @@
     "stripe": "^15.4.0",
     "typescript": "^4.7.4",
     "universal-cookie": "^7.1.4",
-    "uuid": "^9.0.1",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

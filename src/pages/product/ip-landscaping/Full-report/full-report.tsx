@@ -12,6 +12,7 @@ import Button from "../../../../components/reusable/button";
 import Search, { IKeywordOption } from "../../../../components/reusable/search";
 import PatentYear from "../../../../components/@dashboard/IP-landscaping/patent-year";
 import PatentLegalStatus from "../../../../components/@dashboard/IP-landscaping/patent-status";
+import InventorAnalysis from "../../../../components/@dashboard/IP-landscaping/inventor-analysis";
 import GeographicalDistributionFiling from "../../../../components/@dashboard/IP-landscaping/geographical-filing";
 import TrendExaminationYear from "../../../../components/@dashboard/IP-landscaping/trends-examination-years";
 import ClassificationCPC from "../../../../components/@dashboard/IP-landscaping/cpc-classification";
@@ -25,7 +26,6 @@ import GeographicalDistributionInventors from "../../../../components/@dashboard
 import GeographicalDistributionApplicant from "../../../../components/@dashboard/IP-landscaping/geographic-applicant";
 import DistributionWorkload from "../../../../components/@dashboard/IP-landscaping/distribution-workload";
 import { NumberApplicationsByApplicant } from "../../../../components/@dashboard/IP-landscaping/Applicants/number-applicants";
-import PatentFamilySizeOverTime from "../../../../components/@dashboard/IP-landscaping/patent-family-size";
 
 //
 
@@ -133,7 +133,7 @@ export const IPFullReport = () => {
                   className="border-gray-200 shadow-custom border px-2 pt-1 pb-3 w-full space-y-2"
                 >
                   <div className="page-break">
-                    <PatentFamilySizeOverTime keywords={keywords} />
+                    <InventorAnalysis keywords={keywords} />
                   </div>
                   <hr />
                   <div className="page-break">

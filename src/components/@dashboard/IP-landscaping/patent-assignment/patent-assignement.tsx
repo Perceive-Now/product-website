@@ -73,7 +73,9 @@ export const PatentAssignment: FunctionComponent<Props> = ({ keywords }) => {
     >
       <div>
         {data && <ScrollableBarChart data={finalData} />}
-        <div className="mt-4">{data && <OrganizationAssignmentTakeaways data={data} />}</div>
+        <div className="mt-4">
+          <OrganizationAssignmentTakeaways />
+        </div>
       </div>
     </DataSection>
   );

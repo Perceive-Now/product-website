@@ -1,13 +1,8 @@
 import { useState } from "react";
 
 import IconButton from "../reusable/icon-button";
-import UserIcon from "../reusable/userIcon";
-
 import EditIcon from "../icons/miscs/Edit";
-
 import EditQuery from "./edit-query";
-
-import { useAppSelector } from "../../hooks/redux";
 
 // interface IChat {
 //   query: string;
@@ -16,37 +11,21 @@ import { useAppSelector } from "../../hooks/redux";
 
 interface Props {
   query: string;
-  updateQuery: () => void;
-  chatIndex?: any;
-  setEditIndex?: any;
-  editIndex?: any;
-  setQuery?: any;
+  // updateQuery: () => void;
+  // setChats: () => void
 }
 
-const ChatQuery = ({ query, updateQuery, editIndex, setQuery }: Props) => {
-  const userDetail = useAppSelector((state) => state.auth.user);
+const ChatQuery = ({ query }: Props) => {
   const [edit, setEdit] = useState(false);
 
   return (
     <div className="flex justify-between w-full gap-2.5">
       <div className="flex gap-3 w-full">
-        <div className="shrink-0">
-          <UserIcon
-            first_name={userDetail?.first_name || ""}
-            last_name={userDetail?.last_name || ""}
-            profile_photo={userDetail?.profile_photo}
-          />
-        </div>
+        <div className="bg-appGray-200 rounded-full h-[30px] w-[30px] shrink-0" />
         {edit ? (
-          <EditQuery
-            setEdit={setEdit}
-            query={query}
-            updateQuery={updateQuery}
-            editIndex={editIndex}
-            setQuery={setQuery}
-          />
+          <EditQuery setEdit={setEdit} query={query} />
         ) : (
-          <span className="text-secondary-800">{query}</span>
+          <p className="text-secondary-800">{query}</p>
         )}
       </div>
       <IconButton
