@@ -10,11 +10,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "./store";
 
 // App's global style
-import "./styles/dot-loader.css";
-import "./styles/input.scss";
-import "./styles/typing.css";
-
 import "./index.css";
+import "./styles/input.scss";
 
 // Tooltip styles
 import "react-tooltip/dist/react-tooltip.css";

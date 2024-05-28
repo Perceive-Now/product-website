@@ -24,7 +24,6 @@ interface Props {
 
 export default function EditQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
-
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   //
   const userId = jsCookie.get("user_id");
@@ -55,35 +54,24 @@ export default function EditQuestion({ changeActiveStep }: Props) {
       setIsLoading(true);
 
       try {
-        const response = await axiosInstance.put(
-          `https://pn-chatbot.azurewebsites.net/edit-answer/?newAnswer=${encodeURIComponent(
+        const response = await axiosInstance.post(
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&questionID=${Number(questionId)}`,
+          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${Number(questionId)}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
-        const status = response.status;
-        const statusText = response.statusText;
-
-        const message = response.data.message;
-
-        if (status === undefined) {
-          toast.error("Something went wrong");
-        }
+        const status = response.data.status;
 
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {
-          if (status === 200 || statusText === "OK") {
-            toast.success(message || "Answer edited successfully");
+          if (status === "true" || status == true) {
             dispatch(
               setSession({
                 session_data: {
                   ...sessionDetail,
                   step_id: 6,
-                  user_chat: {
-                    answer: answer,
-                  },
                 },
               }),
             );
@@ -100,7 +88,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
                     question: apiData,
                     question_id: questionId,
                     example_answer: exampleAnswer,
-                    answer: answer,
+                    answer: "",
                   },
                 },
               }),
@@ -115,21 +103,12 @@ export default function EditQuestion({ changeActiveStep }: Props) {
         toast.error(error.message);
       }
     },
-    [
-      answer,
-      changeActiveStep,
-      dispatch,
-      exampleAnswer,
-      questionId,
-      sessionDetail,
-      sessionId,
-      userId,
-    ],
+    [changeActiveStep, dispatch, exampleAnswer, questionId, sessionDetail, sessionId, userId],
   );
 
   return (
     <>
-      {question && exampleAnswer && answer && (
+      {question && exampleAnswer && (
         <NewComponent
           isLoading={isloading}
           onContinue={onContinue}

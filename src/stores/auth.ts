@@ -10,8 +10,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
 import { AppConfig } from "../utils/app.config";
-// import { useAppDispatch } from "../hooks/redux";
-// import { setSession } from "./session";
 
 /**
  * Interfaces
@@ -128,11 +126,9 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("logout", async (): Promise<IResponse> => {
-  // const dispatch = useAppDispatch();
   try {
     jsCookie.remove("pn_refresh");
     sessionStorage.removeItem("pn_access");
-    // dispatch(setSession({ session_data: {} }))
 
     return {
       success: true,
@@ -222,13 +218,9 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       axiosInstance.get(`/api/get_company_list?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
-
-    const company = companyList.data.companies.find(
-      (c: any) => c.id === userProfileResponse.data.company_id,
+    const companyName = companyList.data.companies.find((c: any) =>
+      c.id === userProfileResponse.data.company_id ? c.name : "N/A",
     );
-
-    const companyName = company ? company : "N/A";
-
     return {
       success: true,
       message: "Successfully fetched user details",
