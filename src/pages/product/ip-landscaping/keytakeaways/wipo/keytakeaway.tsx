@@ -1,32 +1,57 @@
+import { useQuery } from "@tanstack/react-query";
+
+import { useEffect } from "react";
+import { useAppSelector } from "../../../../../hooks/redux";
+import { getPatentCompetitorPortfolio } from "../../../../../utils/api/charts";
 import KeyDetail from "../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../components/reusable/keytakeaways";
-import { dominantWIPOSector, mostRapidlyGrowingWIPOSectore } from "./key";
 
-interface IData {
-  title: string;
-  count: number;
-}
+const WipoKeyTakeaway = () => {
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  const keywords = searchedKeywords.map((kwd) => kwd.value);
 
-interface Props {
-  data: IData[];
-}
+  const { data } = useQuery(
+    ["patents-year", ...keywords],
+    async () => {
+      return await getPatentCompetitorPortfolio(keywords);
+    },
+    // { enabled: !!props.keywords.length },
+  );
 
-const WipoKeyTakeaway = ({ data }: Props) => {
+  // Fetching time period
+  useEffect(() => {
+    if (!data) return;
+
+    //
+  }, [data]);
+
   return (
     <>
-      <KeyDetail section="Key Takeaway">
-        <Keytakeaway
-          title={"Dominant WIPO Sector"}
-          description={dominantWIPOSector(data) || "N/A"}
-        />
-        <Keytakeaway title={"Annual Growth in WIPO Sector Patent Filings"} description="N/A" />
-        <Keytakeaway title={"Shift in WIPO Sector Focus Over Years"} description="N/A" />
-        <Keytakeaway title={"Comparison of WIPO Sector Filings"} description="N/A" />
-        <Keytakeaway
-          title={"Most Rapidly Growing WIPO Sector"}
-          description={mostRapidlyGrowingWIPOSectore(data) || "N/A"}
-        />
-      </KeyDetail>
+      {data && (
+        <KeyDetail section="Key Takeaway">
+          <Keytakeaway
+            title={"Dominant WIPO Sector"}
+            // description={leadingOrganizationInPatentAssignments(data as any)}
+          />
+          <Keytakeaway
+            title={"Annual Growth in WIPO Sector Patent Filings"}
+            // description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any)}
+            // }
+          />
+          <Keytakeaway
+            title={"Shift in WIPO Sector Focus Over Years"}
+            // description={cityWithHighestConcentrationOfApplicants(data as any)}
+          />
+          <Keytakeaway
+            title={"Comparison of WIPO Sector Filings"}
+            // description={shiftInGeographicalFocusOfApplicants(data as any)}
+          />
+          <Keytakeaway
+            title={"Most Rapidly Growing WIPO Sector"}
+            // description={shiftInGeographicalFocusOfApplicants(data as any)}
+          />
+        </KeyDetail>
+      )}
     </>
   );
 };

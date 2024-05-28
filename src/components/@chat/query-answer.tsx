@@ -1,13 +1,12 @@
 import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import ThumbsDownIcon from "../icons/common/ThumbsDown";
-import { ErrorIcon, ShareIcon } from "../icons";
+import { ErrorIcon, LoadingIcon, ShareIcon } from "../icons";
 import CopyIcon from "../icons/common/copy";
 
 import PN from "../../assets/images/pn.svg";
 import IconButton from "../reusable/icon-button";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import DotLoader from "../reusable/dot-loader";
 
 interface Props {
   answer: string;
@@ -49,7 +48,9 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
       </div>
       <div>
         {isLoading ? (
-          <DotLoader />
+          <span className="animate-spin">
+            <LoadingIcon className="text-primary-900" />
+          </span>
         ) : (
           <>
             {error || error !== undefined ? (
@@ -84,7 +85,7 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
           </div>
           <div className="flex items-center gap-2">
             <IconButton color="default">
-              <ShareIcon className="text-[#87888C]" />
+              <ShareIcon />
             </IconButton>
             <IconButton onClick={copyText} color="default">
               <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />

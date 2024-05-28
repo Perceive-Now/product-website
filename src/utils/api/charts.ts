@@ -159,13 +159,6 @@ export async function getPatentCompetitorPortfolio(keywords: string[]) {
   return res.data.response;
 }
 
-export async function getPatentCompetitorActivity(keywords: string[]) {
-  const res = await axiosInstance.get<IPatentCompetitorActivity>(
-    `/api/competitor_activity?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
-  );
-  return res.data.response;
-}
-
 export async function getTechnlogyLifeCycleAnalysis(keywords: string[]) {
   const res = await axiosInstance.get<ITechnologyAnalysis>(
     `/api/lifecycle_analysis?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
@@ -367,14 +360,6 @@ export interface IPatentCompetitorPortfolio {
   response: {
     org: string;
     count: number;
-  }[];
-}
-
-export interface IPatentCompetitorActivity {
-  response: {
-    org: string;
-    count: number;
-    year: number;
   }[];
 }
 export interface ITechnologyAnalysis {

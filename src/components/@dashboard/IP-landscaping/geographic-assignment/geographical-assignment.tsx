@@ -153,7 +153,7 @@ export const GeographicalDistributionAssignment: FunctionComponent<Props> = ({ k
           ]}
         />
         <div className="mt-4">
-          {data && <GeographicalDistributionAssignmentTakeaways data={data} />}
+          <GeographicalDistributionAssignmentTakeaways />
         </div>
       </div>
     </DataSection>

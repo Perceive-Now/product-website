@@ -62,8 +62,6 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   useEffect(() => {
     if (pathname.includes("/know-now")) {
       setIsChat(true);
-    } else {
-      setIsChat(false);
     }
   }, [pathname]);
 
@@ -98,9 +96,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
-    dispatch(setSession({ session_data: {} }));
-
     await dispatch(logoutUser());
+    dispatch(setSession({}));
     navigate("/login");
     setIsLoggingOut(false);
   };
@@ -128,33 +125,31 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             )}
           </div>
           <div className="space-y-2.5">
-            {open && (
-              <Link to={"/know-now/ip-analysis"}>
-                <div
-                  className={classNames(
-                    pathname.includes("/know-now")
-                      ? "bg-primary-900 text-white"
-                      : "bg-white text-secondary-800",
-                    "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
-                  )}
-                >
-                  Start new conversation
-                </div>
-              </Link>
-            )}
-            {open && (
-              <Link
-                to="/"
+            {/* <Link to={"/know-now/ip-analysis"}>
+              <div
+                className={classNames(
+                  pathname.includes("/know-now")
+                    ? "bg-primary-900 text-white"
+                    : "bg-white text-secondary-800",
+                  "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
+                )}
+              >
+                Start new conversation
+              </div>
+            </Link> */}
+            {/* {
+              open &&
+              <button
                 type="button"
                 className={classNames(
                   "bg-white text-secondary-800 border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold w-full",
                 )}
               >
                 Create New Report
-              </Link>
-            )}
+              </button>
+            } */}
             {isChat ? (
-              <>{open && <KnowNowHistory />}</>
+              <KnowNowHistory />
             ) : (
               <>
                 {sidebarItems.map((item, index) => (
@@ -177,9 +172,9 @@ export const AppSidebar: FunctionComponent<Props> = () => {
         </div>
         {/* sidebar bottom */}
         <div className="pb-3 text-gray-900 space-y-1">
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between">
             {open && (
-              <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-2">
                 <div className="shrink-0">
                   <UserIcon
                     first_name={userDetail?.first_name || ""}
@@ -187,7 +182,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                     profile_photo={userDetail?.profile_photo}
                   />
                 </div>
-                <p className="line-clamp-1 w-14">{userDetail?.full_name}</p>
+                <span>{userDetail?.full_name}</span>
               </div>
             )}
             <button type="button" onClick={handleLogout}>

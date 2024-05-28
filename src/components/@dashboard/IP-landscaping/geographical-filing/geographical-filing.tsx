@@ -136,7 +136,7 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
       <div className="mt-4">
         {data && <USMap data={mapData} type={"heatmap_industry"} />}
 
-        {data && <GeographicalDistributionPatentKeyTakeaway patentLocation={data} />}
+        <GeographicalDistributionPatentKeyTakeaway />
       </div>
     </DataSection>
   );

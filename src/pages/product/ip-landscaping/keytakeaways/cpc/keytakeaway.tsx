@@ -1,24 +1,53 @@
+import { useQuery } from "@tanstack/react-query";
+
+import { useEffect } from "react";
+import { useAppSelector } from "../../../../../hooks/redux";
+import { getPatentCompetitorPortfolio } from "../../../../../utils/api/charts";
 import KeyDetail from "../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../components/reusable/keytakeaways";
 
-import { ICPCData, dominantCPCClassification } from "./key";
+const DistributionOfPatentsByCPCClassifications = () => {
+  const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
+  const keywords = searchedKeywords.map((kwd) => kwd.value);
 
-interface Props {
-  data: ICPCData[];
-}
+  const { data } = useQuery(
+    ["patents-year", ...keywords],
+    async () => {
+      return await getPatentCompetitorPortfolio(keywords);
+    },
+    // { enabled: !!props.keywords.length },
+  );
 
-const DistributionOfPatentsByCPCClassifications = ({ data }: Props) => {
+  // Fetching time period
+  useEffect(() => {
+    if (!data) return;
+
+    //
+  }, [data]);
+
   return (
     <>
-      <KeyDetail section="Key Takeaway">
-        <Keytakeaway
-          title={"Dominant CPC Classification"}
-          description={dominantCPCClassification(data) || "N/A"}
-        />
-        <Keytakeaway title={"Yearly Trends in CPC Classifications"} description={"N/A"} />
-        <Keytakeaway title={"Comparison of CPC Classifications Over Time"} description={"N/A"} />
-        <Keytakeaway title={"Rapid Growth CPC Classifications"} description={"N/A"} />
-      </KeyDetail>
+      {data && (
+        <KeyDetail section="Key Takeaway">
+          <Keytakeaway
+            title={"Dominant CPC Classification"}
+            // description={leadingOrganizationInPatentAssignments(data as any)}
+          />
+          <Keytakeaway
+            title={"Yearly Trends in CPC Classifications"}
+            // description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any)}
+            // }
+          />
+          <Keytakeaway
+            title={"Comparison of CPC Classifications Over Time"}
+            // description={cityWithHighestConcentrationOfApplicants(data as any)}
+          />
+          <Keytakeaway
+            title={"Rapid Growth CPC Classifications"}
+            // description={shiftInGeographicalFocusOfApplicants(data as any)}
+          />
+        </KeyDetail>
+      )}
     </>
   );
 };

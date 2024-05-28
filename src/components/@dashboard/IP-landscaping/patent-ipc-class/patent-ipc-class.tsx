@@ -56,7 +56,9 @@ export function PatentIPC({ keywords }: Props) {
           />
         )}
 
-        <div>{data && <IPCKeyTakeaway data={data} />}</div>
+        <div>
+          <IPCKeyTakeaway />
+        </div>
       </div>
     </DataSection>
   );

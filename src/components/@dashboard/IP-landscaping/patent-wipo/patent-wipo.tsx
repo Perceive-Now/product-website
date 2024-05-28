@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-
 import DataSection from "../../../reusable/data-section";
-import PageTitle from "../../../reusable/page-title";
-
+import { useQuery } from "@tanstack/react-query";
 import { getWIPOSector } from "../../../../utils/api/charts";
+import PageTitle from "../../../reusable/page-title";
 import BarChart from "../../../@product/bar-chart";
-
 import WipoKeyTakeaway from "../../../../pages/product/ip-landscaping/keytakeaways/wipo/keytakeaway";
 
 interface Props {
@@ -61,7 +58,9 @@ export function PatentWipo({ keywords }: Props) {
           // legends={"range"}
         />
 
-        <div className="mt-4">{data && <WipoKeyTakeaway data={data} />}</div>
+        <div className="mt-4">
+          <WipoKeyTakeaway />
+        </div>
       </div>
     </DataSection>
   );

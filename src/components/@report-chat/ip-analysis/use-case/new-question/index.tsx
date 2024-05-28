@@ -55,10 +55,6 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
         const apiData = response.data.question;
         const status = response.data.status;
 
-        if (status === undefined) {
-          toast.error("Something went wrong");
-        }
-
         if (resError || resError !== undefined) {
           toast.error(resError || "Something went wrong");
         } else {

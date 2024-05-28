@@ -5,7 +5,7 @@ import { EyeClosedIcon, EyeIcon } from "../../icons";
 interface IInput {
   label?: string;
   id?: string;
-  // name?: string;
+  name?: string;
   type?: "text" | "email" | "textarea" | "number" | "password";
   placeholder?: string;
   register?: any;
@@ -18,7 +18,7 @@ interface IInput {
 export default function Input({
   label,
   id,
-  // name,
+  name,
   type = "text",
   placeholder,
   register,
@@ -33,8 +33,8 @@ export default function Input({
         {label && <div className="text-appGray-900 mb-0.5 font-semibold">{label}</div>}
         {type === "textarea" ? (
           <textarea
-            id={id}
-            // name={name}
+            id={id || name}
+            name={name}
             {...register}
             className={classNames(
               "w-full rounded-lg placeholder:text-sm",
@@ -46,8 +46,8 @@ export default function Input({
           />
         ) : (
           <input
-            id={id}
-            // name={name}
+            id={id || name}
+            name={name}
             type={type}
             {...register}
             className={classNames(
