@@ -1,7 +1,7 @@
 import React from "react";
-import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
+import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../../../components/reusable/button";
+import Button from "../../../../components/reusable/button";
 import DetailedQAAIcon from "./detailed-qaa";
 import classNames from "classnames";
 import UploadAttachementsIcon from "./upload-attachements";

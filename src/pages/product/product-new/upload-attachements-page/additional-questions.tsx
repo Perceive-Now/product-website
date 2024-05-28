@@ -1,5 +1,5 @@
 import React from "react";
-import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
+import NewComponent from "../../../../components/@report-chat/ip-analysis/new-comp";
 
 export default function AdditionalQuestions() {
   const questionsList = [
