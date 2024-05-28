@@ -104,10 +104,10 @@ import Setting from "./pages/my-account/setting";
 // Payment
 import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
-
-// Knownow
-import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
+import InteractionMethod from "./pages/product/interaction-method/interaction-method";
+import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
+import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 
 /**
  *
@@ -157,6 +157,9 @@ function App() {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
             <Route path="/setting" element={<Setting />} />
+
+            <Route path="/interaction-method" element={<InteractionMethod />} />
+            <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
