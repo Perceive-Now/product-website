@@ -130,7 +130,7 @@ export default function LoginPage() {
               <input
                 id="username"
                 {...register("username")}
-                disabled
+                // disabled
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
@@ -150,7 +150,7 @@ export default function LoginPage() {
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
-                disabled
+                // disabled
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(

@@ -85,7 +85,8 @@ module.exports = {
           400: "#FFB531",
           500: "#FFA300",
           700: "#CC8300",
-          800: "#373D3F"
+          800: "#373D3F",
+          900: "#120824",
         },
         success: {
           500: "#40A140",
@@ -102,7 +103,7 @@ module.exports = {
       container: {
         center: true,
         screens: {
-          '2xl': '1440px',
+          "2xl": "1440px",
         },
       },
       backgroundImage: {
@@ -114,8 +115,5 @@ module.exports = {
       // },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/line-clamp"),
-  ],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
 };
