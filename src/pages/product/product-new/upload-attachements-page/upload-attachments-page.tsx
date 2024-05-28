@@ -58,7 +58,7 @@ export default function UploadAttachementsPage() {
       </div> */}
 
       <div>
-        <Title text="Upload Attachments" />
+        <Title text="Upload Attachments" className="mt-5" />
         {"bar"}
         {/* <UploadAttachments /> */}
         {/* <UploadAttachmentsWaiting /> */}

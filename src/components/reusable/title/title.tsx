@@ -8,8 +8,6 @@ interface ITitleProps {
 
 export default function Title({ text, className }: ITitleProps) {
   return (
-    <h1 className={classNames("text-5xl font-extrabold text-primary-800 mt-5", className)}>
-      {text}
-    </h1>
+    <h1 className={classNames("text-5xl font-extrabold text-primary-800", className)}>{text}</h1>
   );
 }
