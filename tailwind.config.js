@@ -11,6 +11,23 @@ module.exports = {
       "2xl": "1440px",
       "3xl": "1600px",
     },
+    // screens: {
+    //   'sm': '640px',
+    //   // => @media (min-width: 640px) { ... }
+
+    //   'md': '768px',
+    //   // => @media (min-width: 768px) { ... }
+
+    //   'lg': '1024px',
+    //   // => @media (min-width: 1024px) { ... }
+
+    //   'xl': '1280px',
+    //   // => @media (min-width: 1280px) { ... }
+
+    //   '2xl': '1440px',
+    //   // => @media (min-width: 1536px) { ... }
+    //   '3xl': '1800px'
+    // },
     spacing: {
       0: 0,
       0.5: "0.25rem",
@@ -68,7 +85,8 @@ module.exports = {
           400: "#FFB531",
           500: "#FFA300",
           700: "#CC8300",
-          800: "#373D3F"
+          800: "#373D3F",
+          900: "#120824",
         },
         success: {
           500: "#40A140",
@@ -85,7 +103,7 @@ module.exports = {
       container: {
         center: true,
         screens: {
-          '2xl': '1440px',
+          "2xl": "1440px",
         },
       },
       backgroundImage: {
@@ -97,8 +115,5 @@ module.exports = {
       // },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/line-clamp"),
-  ],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
 };

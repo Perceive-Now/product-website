@@ -42,12 +42,22 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
     changeActiveStep(5);
   }, [changeActiveStep, dispatch, sessionDetail]);
 
+  // const {
+  //   data: userChats,
+  //   isLoading,
+  //   isFetching,
+  //   refetch,
+  // } = useQuery(["get-user-chats"], async () => {
+  //   if (activeStep === 6) {
+  //     return await getUserChats(user_id, session_id);
+  //   }
+  // });
+
   useEffect(() => {
     if (activeStep === 6) {
       setLoading(true);
       getUserChats(user_id, session_id)
         .then((data) => {
-          console.log(data);
           setUserChats(data as any);
           setLoading(false);
         })
@@ -57,6 +67,13 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
         });
     }
   }, [activeStep, session_id, user_id]);
+
+  // Fetching time period
+  // useEffect(() => {
+  //   if (!userChats) return;
+  //   refetch();
+  //   //
+  // }, [refetch, userChats]);
 
   const mergedData = userChats?.map((chat) => {
     const question = questionList.find((q) => q.questionId == chat.question_id);
@@ -99,21 +116,19 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
           </div>
           <div className="relative">
             {loading ? (
-              <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+              <div className="flex justify-center items-center h-[200px]">
                 <LoadingIcon fontSize={52} className="animate-spin text-primary-900" />
               </div>
             ) : (
               <div className="mt-2 space-y-2.5 w-full">
-                {mergedData
-                  ?.sort((a, b) => Number(a.question_id) - Number(b.question_id))
-                  .map((u, idx) => (
-                    <ReviewQuestionAnswer
-                      key={idx * 59}
-                      question={u.question || ""}
-                      answer={u.answer || ""}
-                      onEdit={() => onEdit(u)}
-                    />
-                  ))}
+                {mergedData?.map((u, idx) => (
+                  <ReviewQuestionAnswer
+                    key={idx * 59}
+                    question={u.question || ""}
+                    answer={u.answer || ""}
+                    onEdit={() => onEdit(u)}
+                  />
+                ))}
               </div>
             )}
           </div>

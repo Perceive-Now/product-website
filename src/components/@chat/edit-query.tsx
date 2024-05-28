@@ -1,26 +1,17 @@
-import * as yup from "yup";
-import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-
 import Button from "../reusable/button";
 import Input from "../reusable/input";
-
-import { useAppDispatch } from "../../hooks/redux";
-import { setUpdateQuery } from "../../stores/know-now";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useCallback } from "react";
 
 interface Props {
   setEdit: (edit: boolean) => void;
   query: string;
-  updateQuery: () => void;
-  editIndex?: any;
-  setEditIndex?: any;
-  setQuery?: any;
+  // updateQuery: () => void;
 }
 
-const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) => {
-  const dispatch = useAppDispatch();
-
+const EditQuery = ({ setEdit, query }: Props) => {
   const formInitialValue = {
     query: query || "",
   };
@@ -39,24 +30,18 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
     mode: "onChange",
   });
 
-  const onUpdateQuery = useCallback(
-    (value: any) => {
-      // if (editIndex) {
-      // setEditIndex(editIndex)
-      dispatch(setUpdateQuery({ editIndex: editIndex, query: value.query }));
-
-      setEdit(false);
-      setQuery(value.query);
-      updateQuery();
-
-      // }
-    },
-    [dispatch, editIndex, setEdit, setQuery, updateQuery],
-  );
+  const updateQuery = useCallback(() => {
+    setEdit(false);
+  }, [setEdit]);
 
   return (
-    <form onSubmit={handleSubmit(onUpdateQuery)} className="w-full">
-      <Input register={register("query")} type="text" error={errors.query} />
+    <form onSubmit={handleSubmit(updateQuery)} className="w-full">
+      <Input
+        register={register("query")}
+        type="text"
+        // placeholder="First Name"
+        error={errors.query}
+      />
       <div className="flex items-center gap-2 mt-1">
         <Button
           handleClick={() => setEdit(false)}
@@ -73,7 +58,6 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
           size={"small"}
           classname="text-xs"
           rounded="small"
-          disabled
         >
           Update
         </Button>
