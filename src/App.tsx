@@ -98,12 +98,6 @@ import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
 import Setting from "./pages/my-account/setting";
 
-// Product new
-import InteractionMethod from "./pages/product/product-new/interaction-method/interaction-method";
-import UploadAttachementsMethod from "./pages/product/product-new/upload-attachements-page/upload-attachments-page";
-import Landing from "./pages/product/product-new/landing/landing";
-import ProductLayoutNew from "./pages/product/product-new/product-layout/product-layout-new";
-
 /**
  *
  */
@@ -149,13 +143,6 @@ function App() {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
             <Route path="/setting" element={<Setting />} />
-
-            {/* ProductLayoutNew */}
-            <Route element={<ProductLayoutNew />}>
-              <Route path="/landing" element={<Landing />} />
-              <Route path="/interaction-method" element={<InteractionMethod />} />
-              <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
-            </Route>
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
