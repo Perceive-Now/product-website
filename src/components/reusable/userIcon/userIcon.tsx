@@ -24,10 +24,10 @@ Props) {
         <img
           src={profile_photo}
           alt={first_name}
-          className="w-4 h-4 ml-1 rounded-full bg-primary-50"
+          className="w-4 h-4 rounded-full bg-primary-50 object-cover"
         />
       ) : (
-        <div className="text-primary-900 w-4 h-4 rounded-full bg-white flex justify-center items-center">
+        <div className="text-primary-900 w-4 h-4 rounded-full bg-appGray-100 flex justify-center items-center uppercase">
           {first}
           {last}
         </div>

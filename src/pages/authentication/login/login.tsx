@@ -130,7 +130,6 @@ export default function LoginPage() {
               <input
                 id="username"
                 {...register("username")}
-                // disabled
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
@@ -146,11 +145,11 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.username?.message}</div>
             )}
           </fieldset>
+
           <fieldset className="mt-2">
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
-                // disabled
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
@@ -176,6 +175,7 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
             )}
           </fieldset>
+
           <div className="text-sm text-primary-500 font-bold mt-0.5">
             <Link to="/forgot-password">Forgot password?</Link>
           </div>

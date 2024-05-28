@@ -10,6 +10,7 @@ import UseCaseSlice from "./stores/use-case";
 import SessionSlice from "./stores/session";
 import ChatSlice from "./stores/chat";
 import UISlice from "./stores/UI";
+import KnownowSlice from "./stores/know-now";
 
 //
 export const store = configureStore({
@@ -23,6 +24,7 @@ export const store = configureStore({
     usecase: UseCaseSlice,
     sessionDetail: SessionSlice,
     UI: UISlice,
+    KnowNow: KnownowSlice,
   },
 });
 
