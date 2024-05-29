@@ -1,29 +1,20 @@
 import { Route, Routes } from "react-router-dom";
 
-//
-// import AuthLayout from "./layouts/auth";
-import DefaultLayout from "./layouts/default";
-// import AccountLayout from "./layouts/account";
+// import IpPortfolioPage from "./pages/account/ipPortfolio";
+// import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
+// import PublicationAnalyticPage from "./pages/product/pro/publications/analytics";
+// import CompanyAnalyticPage from "./pages/product/pro/companies/analytics";
+// import UniversityAnalyticPage from "./pages/product/pro/university/analytics";
+// import FunderAnalyticPage from "./pages/product/pro/funders/analytics";
+// import InventorAnalyticPage from "./pages/product/pro/inventors/analytics";
 
-//
-// import HomePage from "./pages/homepage";
+// import CompanyPublicationDetailPage from "./pages/product/pro/companies/publication";
+// import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
+// import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
+// import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
 
-import LoginPage from "./pages/authentication/login";
-
-// Password
-import ResetPasswordPage from "./pages/authentication/reset-password";
-import ForgotPasswordPage from "./pages/authentication/forgot-password";
-
-// Signup confirmation and profile completion
-// import ConfirmSignup from "./pages/authentication/signup/confirm";
-// import CompleteSignup from "./pages/authentication/signup/complete";
-
-//
-import HelpPage from "./pages/miscs/help";
-import FeedbackPage from "./pages/miscs/feedback";
-
-// Product dashboard
-import DashboardPage from "./pages/product/dashboard";
+// import IPLandscaping from "./pages/product/ip-landscaping";
+// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 
 // Deep search - Patent
 
@@ -56,6 +47,31 @@ import DashboardPage from "./pages/product/dashboard";
 //
 // import UserProfilePage from "./pages/account/userProfile";
 
+// Signup confirmation and profile completion
+// import ConfirmSignup from "./pages/authentication/signup/confirm";
+// import CompleteSignup from "./pages/authentication/signup/complete";
+
+//
+// import AuthLayout from "./layouts/auth";
+import DefaultLayout from "./layouts/default";
+// import AccountLayout from "./layouts/account";
+
+//
+// import HomePage from "./pages/homepage";
+
+import LoginPage from "./pages/authentication/login";
+
+// Password
+import ResetPasswordPage from "./pages/authentication/reset-password";
+import ForgotPasswordPage from "./pages/authentication/forgot-password";
+
+//
+import HelpPage from "./pages/miscs/help";
+import FeedbackPage from "./pages/miscs/feedback";
+
+// Product dashboard
+import DashboardPage from "./pages/product/dashboard";
+
 //
 import PageNotFound404 from "./pages/404";
 // import CompanyProfilePage from "./pages/account/companyProfile.tsx";
@@ -66,43 +82,32 @@ import { WelcomePage } from "./components/@signup-complete";
 import ProductLayout from "./layouts/product-layout";
 import AuthDefaultLayout from "./layouts/auth/default";
 import AuthLayout from "./layouts/auth";
-// import IpPortfolioPage from "./pages/account/ipPortfolio";
-// import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
-// import PublicationAnalyticPage from "./pages/product/pro/publications/analytics";
-// import CompanyAnalyticPage from "./pages/product/pro/companies/analytics";
-// import UniversityAnalyticPage from "./pages/product/pro/university/analytics";
-// import FunderAnalyticPage from "./pages/product/pro/funders/analytics";
-// import InventorAnalyticPage from "./pages/product/pro/inventors/analytics";
 
-// import CompanyPublicationDetailPage from "./pages/product/pro/companies/publication";
-// import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
-// import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
-// import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
+// Auth
+import VerificationConfirm from "./pages/authentication/signup/confirmation";
+import UserDetails from "./pages/authentication/signup/user-details";
+import SignupPage from "./pages/authentication/signup";
 
-// import IPLandscaping from "./pages/product/ip-landscaping";
-// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
+// Product
 import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
 import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
 // import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
-import VerificationConfirm from "./pages/authentication/signup/confirmation";
-import UserDetails from "./pages/authentication/signup/user-details";
-import SignupPage from "./pages/authentication/signup";
-import KnowNow from "./pages/product/chat";
-import KnowNowIP from "./pages/product/ip-know-now";
+
 import Stream from "./pages/stream/stream";
+
+// Account
 import UserProfile from "./pages/my-account/profile";
 import MyReport from "./pages/my-account/my-reports";
-
-import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
-import StayTuned from "./components/default";
 import Setting from "./pages/my-account/setting";
 
-// Product new
-import InteractionMethod from "./pages/product/product-new/interaction-method/interaction-method";
-import UploadAttachementsMethod from "./pages/product/product-new/upload-attachements-page/upload-attachments-page";
-import Landing from "./pages/product/product-new/landing/landing";
-import ProductLayoutNew from "./pages/product/product-new/product-layout/product-layout-new";
+// Payment
+import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
+import StayTuned from "./components/default";
+import InteractionMethod from "./pages/product/interaction-method/interaction-method";
+import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
+import KnowNowIP from "./pages/product/know-now/ip-analysis";
+import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 
 /**
  *
@@ -129,38 +134,33 @@ function App() {
           <Route path="/user-registration" element={<UserDetails />} />
           <Route path="/welcome" element={<WelcomePage />} />
 
-          {/* Need to ask for profile details before allowing to use */}
-          {/* <Route path="/signup/complete" element={<CompleteSignup />} /> */}
-
           <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
             <Route path="/payment" element={<Payment />} />
             <Route path="/stay-tuned" element={<StayTuned />} />
-
-            {/* <Route path="/market-research" element={<IPAnalysis />} />
-            <Route path="/market-intelligence" element={<IPAnalysis />} />
-            <Route path="/ip-analysis/summary" element={<IPSummaryReport />} /> */}
           </Route>
 
           <Route element={<DefaultLayout />}>
-            <Route path="/" element={<IPAnalysis />} />
+            <Route path="/" element={"Home"} />
+
+            {/* report */}
+            <Route path="/new-report" element={<IPAnalysis />} />
+
+            {/* Account */}
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
             <Route path="/setting" element={<Setting />} />
 
-            {/* ProductLayoutNew */}
-            <Route element={<ProductLayoutNew />}>
-              <Route path="/landing" element={<Landing />} />
-              <Route path="/interaction-method" element={<InteractionMethod />} />
-              <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
-            </Route>
+            <Route path="/interaction-method" element={<InteractionMethod />} />
+            <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
-            <Route path="/know-now/market-intelligence" element={<KnowNow />} />
+            <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
 
+            {/*Graph */}
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
 
             <Route path="/dashboard" element={<DashboardPage />} />

@@ -1,0 +1,21 @@
+.typing-animation {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.typing-animation span {
+  display: inline-block;
+  overflow: hidden;
+  animation: typing 15s steps(40, end);
+  white-space: nowrap;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}

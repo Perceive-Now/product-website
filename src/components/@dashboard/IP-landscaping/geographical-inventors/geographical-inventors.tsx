@@ -156,7 +156,7 @@ export const GeographicalDistributionInventors: FunctionComponent<Props> = ({ ke
           ]}
         />
         <div className="mt-4">
-          <GeographicalDistributionOfInventorsKeyTakeaways />
+          {data && <GeographicalDistributionOfInventorsKeyTakeaways data={data} />}
         </div>
       </div>
     </DataSection>

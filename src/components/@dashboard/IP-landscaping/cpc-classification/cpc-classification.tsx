@@ -56,9 +56,7 @@ export const ClassificationCPC: FunctionComponent<Props> = ({ keywords }) => {
           />
         )}
 
-        <div>
-          <DistributionOfPatentsByCPCClassifications />
-        </div>
+        <div>{data && <DistributionOfPatentsByCPCClassifications data={data} />}</div>
       </div>
     </DataSection>
   );

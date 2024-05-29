@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 
 import StripePayment from "../../../../../pages/authentication/signup/stripe";
 import { getProducts } from "../../../../../utils/api/product";
-import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../../../hooks/redux";
 
 // interface Props {
@@ -24,6 +24,7 @@ const Payment = () => {
   });
 
   // Fetching time period
+
   useEffect(() => {
     if (!products) return;
     //

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useDropzone } from "react-dropzone";
-import Button from "../../../../components/reusable/button";
+import Button from "../../../components/reusable/button";
 import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
 import useFileUploadService from "./use-file-upload-service";

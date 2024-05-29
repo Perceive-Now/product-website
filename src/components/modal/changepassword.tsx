@@ -77,7 +77,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
         reset();
         toast.success(response.data.message || "Password updated successfully");
       } catch (error: any) {
-        toast.error(error.response.data.message || "Something went wrong");
+        toast.error(error.response.data.error || "Something went wrong");
       }
     },
     [reset],

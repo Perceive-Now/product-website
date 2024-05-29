@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
-import Title from "../../../../components/reusable/title";
+import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
+import Title from "../../../components/reusable/title";
 import UploadAttachments from "./upload-attachments";
 import { useState } from "react";
 import UploadAttachmentsWaiting from "./upload-attachments-waiting";

@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../../../components/reusable/button";
+import Button from "../../../components/reusable/button";
 
 export default function UploadAttachmentsWaiting() {
   const handleContinueBtnClick = () => {

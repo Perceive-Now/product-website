@@ -2,36 +2,46 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useEffect } from "react";
 import { useAppSelector } from "../../../../../../hooks/redux";
-import { getPatentCompetitorPortfolio } from "../../../../../../utils/api/charts";
+
+import { getPatentCompetitorActivity } from "../../../../../../utils/api/charts";
+
 import KeyDetail from "../../../../../../components/@dashboard/IP-landscaping/key-detail";
 import Keytakeaway from "../../../../../../components/reusable/keytakeaways";
+
 import {
+  ICompetitorPortfolio,
+  comparisonOfAssignmentConcentrationAmongOrganizations,
   leadingOrganizationInPatentAssignments,
   marketShareOfPatentAssignmentsAmongTopOrganizations,
+  organizationWithLargestYearIncreaseAssignments,
 } from "./key";
 
-const OrganizationAssignmentTakeaways = () => {
+interface Props {
+  data: ICompetitorPortfolio[];
+}
+
+const OrganizationAssignmentTakeaways = ({ data }: Props) => {
   const searchedKeywords = useAppSelector((state) => state.dashboard?.search) ?? [];
   const keywords = searchedKeywords.map((kwd) => kwd.value);
 
-  const { data } = useQuery(
-    ["patents-year", ...keywords],
+  const { data: competitorActivity } = useQuery(
+    ["patents-activity", ...keywords],
     async () => {
-      return await getPatentCompetitorPortfolio(keywords);
+      return await getPatentCompetitorActivity(keywords);
     },
     // { enabled: !!props.keywords.length },
   );
 
   // Fetching time period
   useEffect(() => {
-    if (!data) return;
+    if (!competitorActivity) return;
 
     //
-  }, [data]);
+  }, [competitorActivity]);
 
   return (
     <>
-      {data && (
+      {competitorActivity && (
         <KeyDetail section="Key Takeaway">
           <Keytakeaway
             title={"Leading Organization in Patent Assignments"}
@@ -39,18 +49,21 @@ const OrganizationAssignmentTakeaways = () => {
           />
           <Keytakeaway
             title={"Market Share of Patent Assignments Among Top Organizations"}
-            description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any)}
+            description={marketShareOfPatentAssignmentsAmongTopOrganizations(data as any) || "N/A"}
             // }
           />
           <Keytakeaway
             title={"Organization with Largest Year-on-Year Increase in Assignments"}
-            // description={cityWithHighestConcentrationOfApplicants(data as any)}
+            description={
+              organizationWithLargestYearIncreaseAssignments(competitorActivity) || "N/A"
+            }
           />
           <Keytakeaway
-            title={"Sector Dominance by Organization in Patent Assignments"}
-            // description={shiftInGeographicalFocusOfApplicants(data as any)}
+            title={"Comparison of Assignment Concentration Among Organizations"}
+            description={
+              comparisonOfAssignmentConcentrationAmongOrganizations(competitorActivity) || "N/A"
+            }
           />
-          <Keytakeaway title={"Comparison of Assignment Concentration Among Organizations"} />
         </KeyDetail>
       )}
     </>
