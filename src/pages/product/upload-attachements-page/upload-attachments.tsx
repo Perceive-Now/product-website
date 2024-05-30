@@ -4,6 +4,7 @@ import Button from "../../../components/reusable/button";
 import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
 import useFileUploadService from "./use-file-upload-service";
+import toast from "react-hot-toast";
 
 const baseStyle = {
   flex: 1,
@@ -34,7 +35,7 @@ const rejectStyle = {
 
 export default function UploadAttachments() {
   const [files, setFiles] = React.useState<File[]>([]);
-  const { uploadFiles } = useFileUploadService();
+  const { uploadFiles, uploading } = useFileUploadService();
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
@@ -76,7 +77,13 @@ export default function UploadAttachments() {
   };
 
   const handleContinueBtnClick = async () => {
-    await uploadFiles(files);
+    const resData = await uploadFiles(files);
+
+    if (!resData) return;
+
+    toast.success("Files uploaded successfully");
+
+    // Continue to the next step
   };
 
   return (
@@ -108,6 +115,7 @@ export default function UploadAttachments() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={files.length === 0}
+          loading={uploading}
         >
           <p className="text-secondary-800">Continue</p>
         </Button>

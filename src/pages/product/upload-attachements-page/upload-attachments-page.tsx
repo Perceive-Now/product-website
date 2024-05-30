@@ -31,6 +31,7 @@ const uploadAttachmentsSteps = [
 
 export default function UploadAttachementsPage() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [addQuestions, setAddQuestions] = useState([]);
 
   return (
     <div>
@@ -60,9 +61,9 @@ export default function UploadAttachementsPage() {
       <div>
         <Title text="Upload Attachments" className="mt-5" />
         {"bar"}
-        {/* <UploadAttachments /> */}
+        <UploadAttachments />
         {/* <UploadAttachmentsWaiting /> */}
-        <AdditionalQuestions />
+        {/* <AdditionalQuestions /> */}
       </div>
     </div>
   );
