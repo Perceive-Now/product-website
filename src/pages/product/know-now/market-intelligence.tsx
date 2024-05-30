@@ -7,6 +7,8 @@ import QueryAnswer from "../../../components/@chat/query-answer";
 import ChatQuery from "../../../components/@chat/chat-question";
 //
 import KnowNowRightSideBar from "./side-bar";
+// import { useAppDispatch } from "../../../hooks/redux"
+// import { setKnowNowChats } from "../../../stores/know-now1";
 
 //
 interface IChat {
@@ -18,15 +20,15 @@ interface IChat {
 
 function MarketIntelligenceKnowNow() {
   const chatRef = useRef<HTMLInputElement>(null);
+  // const dispatch = useAppDispatch();
 
   const [query, setQuery] = useState("");
   const [chats, setChats] = useState<IChat[]>([]);
+
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
 
   const [editIndex, setEditIndex] = useState<number | null>(null);
-
-  // console.log(chats)
 
   const onSendQuery = useCallback(async () => {
     setLoadingIndex(chats.length);
@@ -91,7 +93,6 @@ function MarketIntelligenceKnowNow() {
         const updatedChats = [...prevChats];
         updatedChats[updatedChats.length - 1].answer = answer;
         updatedChats[updatedChats.length - 1].response_time = responseTime;
-
         return updatedChats;
       });
     } catch (error: any) {
@@ -113,7 +114,7 @@ function MarketIntelligenceKnowNow() {
     }
 
     // console.log('')
-  }, [chats.length, editIndex, query]);
+  }, [chats, editIndex, query]);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -128,7 +129,7 @@ function MarketIntelligenceKnowNow() {
   return (
     <div className="p-3 flex">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2 pr-2">
+        <div ref={chatRef} className="h-[calc(100vh-260px)] overflow-auto pn_scroller pb-2 pr-2">
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
@@ -143,6 +144,9 @@ function MarketIntelligenceKnowNow() {
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}
                   error={chat.error && chat.error}
+                  updateQuery={onSendQuery}
+                  editIndex={idx}
+                  query={chat.query}
                 />
               </div>
             ))}
@@ -150,9 +154,7 @@ function MarketIntelligenceKnowNow() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <div className="w-[300px] shrink-0 ml-5">
-        <KnowNowRightSideBar />
-      </div>
+      <KnowNowRightSideBar />
     </div>
   );
 }

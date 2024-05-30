@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { LoaderIcon } from "react-hot-toast";
 
 interface Props {
-  sendQuery: () => void;
+  sendQuery: (query: string) => void;
   setQuery: (query: string) => void;
   isLoading: boolean;
   query: string;
@@ -36,17 +36,17 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault(); // Prevent default behavior of Enter key
-            sendQuery();
+            sendQuery(query);
           }
         }}
         placeholder="Start your query here"
-        disabled={isLoading}
+        // disabled={isLoading}
       />
       <div className="absolute right-2">
         <button
           className="bg-appGray-200 rounded-full h-4 w-4 flex items-center justify-center disabled:cursor-not-allowed"
           type="button"
-          onClick={sendQuery}
+          onClick={() => sendQuery(query)}
           disabled={isLoading || !query}
         >
           {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2" />}

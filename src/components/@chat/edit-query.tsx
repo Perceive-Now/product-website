@@ -11,14 +11,15 @@ import { setUpdateQuery } from "../../stores/know-now";
 
 interface Props {
   setEdit: (edit: boolean) => void;
+  onCancel: any;
   query: string;
-  updateQuery: () => void;
+  updateQuery: (query: string) => void;
   editIndex?: any;
   setEditIndex?: any;
   setQuery?: any;
 }
 
-const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) => {
+const EditQuery = ({ onCancel, query, updateQuery, editIndex, setEdit }: Props) => {
   const dispatch = useAppDispatch();
 
   const formInitialValue = {
@@ -41,17 +42,11 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
 
   const onUpdateQuery = useCallback(
     (value: any) => {
-      // if (editIndex) {
-      // setEditIndex(editIndex)
       dispatch(setUpdateQuery({ editIndex: editIndex, query: value.query }));
-
       setEdit(false);
-      setQuery(value.query);
-      updateQuery();
-
-      // }
+      updateQuery(value.query);
     },
-    [dispatch, editIndex, setEdit, setQuery, updateQuery],
+    [dispatch, editIndex, setEdit, updateQuery],
   );
 
   return (
@@ -59,7 +54,7 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
       <Input register={register("query")} type="text" error={errors.query} />
       <div className="flex items-center gap-2 mt-1">
         <Button
-          handleClick={() => setEdit(false)}
+          handleClick={onCancel}
           htmlType="button"
           type={"default"}
           size="default"
@@ -73,7 +68,6 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
           size={"small"}
           classname="text-xs"
           rounded="small"
-          disabled
         >
           Update
         </Button>

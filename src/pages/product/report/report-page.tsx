@@ -2,28 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 //
 import classNames from "classnames";
-
-import IPStepper from "../../../../components/@report-chat/ip-analysis/stepper";
-
-import Thankyou from "../../../../components/@report-chat/ip-analysis/use-case/thank-you";
-import DefaultStep from "../../../../components/@report-chat/ip-analysis/ip-analysis-steps/DefaultStep";
-
-import ChatQuestionAnswer from "../../../../components/@report-chat/ip-analysis/use-case/question/question-1";
-import ChatQuestionAnswer2 from "../../../../components/@report-chat/ip-analysis/use-case/question/question-2";
-
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { setSession } from "@/stores/session";
 import { questionList } from "./_question";
-import NewQuestion from "../../../../components/@report-chat/ip-analysis/use-case/new-question";
-import IPReview from "../../../../components/@report-chat/ip-analysis/use-case/review/review";
-import { setSession } from "../../../../stores/session";
-import EditQuestion from "../../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
-import Loading from "../../../../components/reusable/loading";
+import UseCaseSelect from "@/components/@report/use-case";
+import Loading from "@/components/reusable/loading";
 
 /**
  *
  */
-export default function IPAnalysis() {
+export default function ReportPage() {
   const dispatch = useAppDispatch();
   const session = useAppSelector((state) => state.sessionDetail.session);
 
@@ -119,64 +107,64 @@ export default function IPAnalysis() {
     {
       label: "",
       value: 0,
-      component: <DefaultStep changeActiveStep={changeActiveStep} />,
+      component: <UseCaseSelect changeActiveStep={changeActiveStep} />,
     },
     // {
     //   label: "",
     //   value: 1,
     //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
     // },
-    {
-      label: "",
-      value: 8,
-      component: (
-        <NewQuestion
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          exampleAnswer={question.answer}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
-    {
-      label: "",
-      value: 3,
-      component: (
-        <ChatQuestionAnswer
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          question={question}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
-    {
-      label: "",
-      value: 4,
-      component: (
-        <ChatQuestionAnswer2
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          question={question}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
-    {
-      label: "",
-      value: 5,
-      component: <Thankyou changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "Review",
-      value: 6,
-      component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
-    },
-    {
-      label: "Edit",
-      value: 7,
-      component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
-    },
+    // {
+    //   label: "",
+    //   value: 8,
+    //   component: (
+    //     <NewQuestion
+    //       changeActiveStep={changeActiveStep}
+    //       activeStep={activeStep}
+    //       exampleAnswer={question.answer}
+    //       activeIndex={activeIndex}
+    //     />
+    //   ),
+    // },
+    // {
+    //   label: "",
+    //   value: 3,
+    //   component: (
+    //     <ChatQuestionAnswer
+    //       changeActiveStep={changeActiveStep}
+    //       activeStep={activeStep}
+    //       question={question}
+    //       activeIndex={activeIndex}
+    //     />
+    //   ),
+    // },
+    // {
+    //   label: "",
+    //   value: 4,
+    //   component: (
+    //     <ChatQuestionAnswer2
+    //       changeActiveStep={changeActiveStep}
+    //       activeStep={activeStep}
+    //       question={question}
+    //       activeIndex={activeIndex}
+    //     />
+    //   ),
+    // },
+    // {
+    //   label: "",
+    //   value: 5,
+    //   component: <Thankyou changeActiveStep={changeActiveStep} />,
+    // },
+    // {
+    //   label: "Review",
+    //   value: 6,
+    //   component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
+    // },
+    // {
+    //   label: "Edit",
+    //   value: 7,
+    //   component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
+    // },
   ];
 
   //
@@ -214,11 +202,11 @@ export default function IPAnalysis() {
               </div>
             ))}
           </div>
-          {activeStep > 1 && activeStep < 7 && (
+          {/* {activeStep > 1 && activeStep < 7 && (
             <div className="absolute bottom-0 left-0 right-0 w-full rounded-b-md overflow-hidden">
-              <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />
+              <IPSteppe steps={questionWithUsecase} activeStep={activeIndex} />
             </div>
-          )}
+          )} */}
         </div>
       </div>
       <div className="flex-shrink-0 w-[200px]" />

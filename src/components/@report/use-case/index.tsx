@@ -1,15 +1,11 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
-//
-import Button from "../../../reusable/button";
-//
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import CheckBoxButtons from "../../../reusable/checkbox/checkbox";
-import { setUseCase } from "../../../../stores/use-case";
-// import { useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { setSession } from "@/stores/session";
+import { setUseCase } from "@/stores/use-case";
 import { UseCaseOptions } from "./__use-cases";
-import { setSession } from "../../../../stores/session";
-import { setUI } from "../../../../stores/UI";
-import UseCaseSelectButton from "../../../reusable/usecase-select";
+import Button from "@/components/reusable/button";
+import UseCaseSelectButton from "@/components/reusable/usecase-select";
+import CheckBoxButtons from "@/components/reusable/checkbox";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -22,7 +18,7 @@ interface OptionMappings {
 /**
  *
  */
-const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
+const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   // const { pathname } = useLocation();
@@ -34,7 +30,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   //
   const onContinue = useCallback(() => {
-    dispatch(setUI({ home: false }));
     if (selected.length > 0) {
       if (options.includes("ip-validity-analysis")) {
         dispatch(
@@ -225,7 +220,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
                   handleModeChange={handleChange}
                   classNames={{
                     component: "flex flex-col gap-[10px]",
-                    // label: "font-semibold text-white",
                   }}
                 />
               </div>
@@ -260,22 +254,8 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
         </div>
         {error && <p className="text-danger-500 text-sm mt-2 text-end">{error}</p>}
       </div>
-
-      {/* ----------- */}
-      {/* <div className="mt-5 items-center">
-        <CheckBoxButtons
-          options={radioOptions}
-          activeModes={selected}
-          handleModeChange={handleChange}
-          classNames={{
-            component: "flex flex-col gap-1",
-            label: "font-semibold text-primary-900",
-          }}
-        />
-        {error && <p className="text-danger-500 text-sm mt-2">{error}</p>}
-      </div> */}
     </div>
   );
 };
 
-export default DefaultStep;
+export default UseCaseSelect;

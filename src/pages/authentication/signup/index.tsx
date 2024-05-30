@@ -117,7 +117,6 @@ export default function SignupPage() {
                   id="email"
                   {...register("email")}
                   type="text"
-                  disabled
                   className={classNames(
                     "appearance-none block w-full px-2 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                     errors.email
@@ -139,7 +138,6 @@ export default function SignupPage() {
                   id="password"
                   {...register("password")}
                   type={isPasswordVisible ? "text" : "password"}
-                  disabled
                   className={classNames(
                     "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                     errors.password
@@ -188,7 +186,6 @@ export default function SignupPage() {
         </div>
         <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput
-            disabled
             onChange={() => setIsAgree(!isAgree)}
             // {...register("agree")}
             // label="I agree with Terms and Conditions & Privacy Policy"
