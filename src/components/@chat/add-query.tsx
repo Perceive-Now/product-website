@@ -36,7 +36,9 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault(); // Prevent default behavior of Enter key
-            sendQuery(query, null);
+            if (query.trim() && !isLoading) {
+              sendQuery(query, null);
+            }
           }
         }}
         placeholder="Start your query here"
@@ -47,7 +49,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
           className="bg-appGray-200 rounded-full h-4 w-4 flex items-center justify-center disabled:cursor-not-allowed"
           type="button"
           onClick={() => sendQuery(query, null)}
-          disabled={isLoading || !query}
+          disabled={isLoading || !query.trim()}
         >
           {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2" />}
         </button>
