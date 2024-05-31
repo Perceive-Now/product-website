@@ -34,9 +34,55 @@
     //
     "@typescript-eslint/no-unused-vars": "warn"
   },
+  "globals": {
+    "process": true
+  },
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "src"
+        ],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "alias": {
+        "map": [
+          [
+            "@",
+            "./src"
+          ],
+          [
+            "@components",
+            "./src/components"
+          ],
+          [
+            "@assets",
+            "./src/assets"
+          ],
+          [
+            "@utils",
+            "./src/utils"
+          ],
+          [
+            "@hooks",
+            "./src/hooks"
+          ]
+        ],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
     }
   }
 }

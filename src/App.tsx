@@ -91,7 +91,6 @@ import SignupPage from "./pages/authentication/signup";
 // Product
 import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
-import IPAnalysis from "./pages/product/ip-landscaping/ip-analysis/ip-analysis";
 // import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 
 import Stream from "./pages/stream/stream";
@@ -108,6 +107,7 @@ import InteractionMethod from "./pages/product/interaction-method/interaction-me
 import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
+import ReportPage from "./pages/product/report/report-page";
 
 /**
  *
@@ -146,7 +146,7 @@ function App() {
             <Route path="/" element={"Home"} />
 
             {/* report */}
-            <Route path="/new-report" element={<IPAnalysis />} />
+            <Route path="/new-report" element={<ReportPage />} />
 
             {/* Account */}
             <Route path="/profile" element={<UserProfile />} />

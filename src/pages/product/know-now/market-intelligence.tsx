@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
+import jsCookie from "js-cookie";
+
 //
 import AddQuery from "../../../components/@chat/add-query";
 //
@@ -8,112 +10,120 @@ import ChatQuery from "../../../components/@chat/chat-question";
 //
 import KnowNowRightSideBar from "./side-bar";
 
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setUpdateQuery } from "../../../stores/know-now";
+
+import {
+  addQuestion,
+  editQueryAndUpdateAnswer,
+  updateChatAnswer,
+  updateChatError,
+} from "../../../stores/know-now1";
+// import { useAppDispatch } from "../../../hooks/redux"
+// import { setKnowNowChats } from "../../../stores/know-now1";
+
 //
-interface IChat {
-  query: string;
-  answer: string;
-  response_time?: string;
-  error?: string;
-}
 
 function MarketIntelligenceKnowNow() {
-  const chatRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
+  const chats = useAppSelector((state) => state.KnowNowChat.chats);
 
+  const chatRef = useRef<HTMLInputElement>(null);
+  // const dispatch = useAppDispatch();
+  const sessionID = jsCookie.get("session_id");
+
+  const editQuery = useAppSelector((state) => state.KnowNow);
   const [query, setQuery] = useState("");
-  const [chats, setChats] = useState<IChat[]>([]);
+
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
 
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  // const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  // console.log(chats)
+  const onSendQuery = useCallback(
+    async (updateQuery: string, editIndex: number | null) => {
+      setLoadingIndex(editIndex !== null ? editIndex : chats.length);
+      setIsloading(true);
 
-  const onSendQuery = useCallback(async () => {
-    setLoadingIndex(chats.length);
-
-    setIsloading(true);
-    setQuery("");
-
-    const newChat = {
-      query: query,
-      answer: "",
-    };
-
-    const queries = {
-      query: query,
-      thread_id: "45545",
-    };
-
-    setChats((prevChats) => [...prevChats, newChat]);
-
-    try {
-      const res = await axios.post(
-        `https://percievenowchat2.azurewebsites.net/ask-question`,
-        queries,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "x-token": "secret-token",
-            "x-user-id": "user123",
-          },
-        },
-      );
-      const answer = res.data.message;
-
-      // For development only
-      const responseTime = res.data.time;
-
-      setIsloading(false);
-
-      // const index = chats.findIndex((chat, idx) => idx === editIndex);
+      const queries = {
+        query: query || updateQuery,
+        thread_id: sessionID,
+      };
 
       if (editIndex !== null) {
-        // const newChats = [...chats.slice(0, index), editIndex];
-
-        setChats((prevChats) => {
-          // Clone the previous chats array
-          const updatedChats = [...prevChats];
-
-          // Update the last chat's answer and response_time
-          if (updatedChats.length > 0) {
-            updatedChats[updatedChats.length - 1].answer = answer;
-            updatedChats[updatedChats.length - 1].response_time = responseTime;
-          }
-
-          // Create a new array that includes chats up to editIndex (inclusive)
-          const newChats = updatedChats.slice(0, editIndex + 1);
-
-          return newChats;
-        });
+        dispatch(
+          editQueryAndUpdateAnswer({ index: editIndex, newQuery: updateQuery, newAnswer: "" }),
+        );
+      } else {
+        dispatch(addQuestion(query));
       }
 
-      setChats((prevChats) => {
-        const updatedChats = [...prevChats];
-        updatedChats[updatedChats.length - 1].answer = answer;
-        updatedChats[updatedChats.length - 1].response_time = responseTime;
+      setQuery("");
 
-        return updatedChats;
-      });
-    } catch (error: any) {
-      const errorMsg = error.response.statusText;
-      setIsloading(false);
+      try {
+        const res = await axios.post(
+          `https://percievenowchat2.azurewebsites.net/ask-question`,
+          queries,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-token": "secret-token",
+              "x-user-id": "user123",
+            },
+          },
+        );
+        const answer = res.data.message;
 
-      setChats((prevChats) => {
-        const updatedChats = [...prevChats];
-        updatedChats[updatedChats.length - 1].error =
-          errorMsg || "Error while generating the response";
-        return updatedChats;
-      });
+        // For development only
+        const responseTime = res.data.time;
 
-      // setErrorMessage("Error while generating the response");
-      // console.log(error)
-    } finally {
-      setLoadingIndex(null);
-      // setIsError(false)
-    }
+        setIsloading(false);
 
-    // console.log('')
-  }, [chats.length, editIndex, query]);
+        if (editIndex !== null) {
+          dispatch(
+            editQueryAndUpdateAnswer({
+              index: editIndex,
+              newQuery: updateQuery,
+              newAnswer: answer,
+              responseTime: responseTime,
+            }),
+          );
+          dispatch(setUpdateQuery({ ...editQuery, editIndex: null }));
+        } else {
+          dispatch(
+            updateChatAnswer({
+              index: chats.length,
+              answer: answer,
+              responseTime: responseTime,
+            }),
+          );
+        }
+      } catch (error: any) {
+        const errorMsg = error.response.statusText;
+        setIsloading(false);
+        const errorAnswer = errorMsg || "Error while generating the response";
+
+        if (editIndex !== null) {
+          dispatch(
+            editQueryAndUpdateAnswer({
+              index: editIndex,
+              newQuery: updateQuery,
+              newAnswer: errorAnswer,
+            }),
+          );
+          dispatch(setUpdateQuery({ editIndex: null }));
+        } else {
+          dispatch(updateChatError({ index: chats.length, answer: errorAnswer }));
+        }
+      } finally {
+        setLoadingIndex(null);
+        // setIsError(false)
+      }
+
+      // console.log('')
+    },
+    [chats.length, dispatch, editQuery, query, sessionID],
+  );
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -128,21 +138,24 @@ function MarketIntelligenceKnowNow() {
   return (
     <div className="p-3 flex">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-200px)] overflow-auto pn_scroller pb-2 pr-2">
+        <div ref={chatRef} className="h-[calc(100vh-260px)] overflow-auto pn_scroller pb-2 pr-2">
           <div className="space-y-6">
             {chats.map((chat, idx) => (
               <div key={idx * 5} className="space-y-3">
                 <ChatQuery
                   query={chat.query}
                   updateQuery={onSendQuery}
-                  setEditIndex={setEditIndex}
                   editIndex={idx}
+                  setQuery={setQuery}
                 />
                 <QueryAnswer
                   responseTime={chat.response_time}
                   answer={chat.answer}
                   isLoading={loadingIndex === idx}
-                  error={chat.error && chat.error}
+                  error={chat.error}
+                  updateQuery={onSendQuery}
+                  editIndex={idx}
+                  query={chat.query}
                 />
               </div>
             ))}
@@ -150,9 +163,7 @@ function MarketIntelligenceKnowNow() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <div className="w-[300px] shrink-0 ml-5">
-        <KnowNowRightSideBar />
-      </div>
+      <KnowNowRightSideBar />
     </div>
   );
 }
