@@ -1,70 +1,83 @@
-import { Link } from "react-router-dom";
-import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import Title from "../../../components/reusable/title";
 import UploadAttachments from "./upload-attachments";
-import { useState } from "react";
-import UploadAttachmentsWaiting from "./upload-attachments-waiting";
 import AdditionalQuestions from "./additional-questions";
+import AllSet from "./all-set";
+import GoBack from "./goback";
+import StepContextProvider, { UploadAttachmentsContext } from "./upload-attachments-context";
+import { useContext } from "react";
+import GoToReport from "./goto-report";
+import NeedAdditionalAnswers from "./need-additional-answers";
 
 const uploadAttachmentsSteps = [
   {
-    id: 1,
+    id: 0,
     title: "Upload Attachments",
     description: "Upload the attachement files",
+    Component: UploadAttachments,
+  },
+  {
+    id: 1,
+    title: "Upload Attachments",
+    description: "Go to report and payement all set thing",
+    Component: GoToReport,
   },
   {
     id: 2,
-    title: "Upload Attachments",
-    description: "Wait for the files to upload and generate the questions",
+    title: "Upload Attachments | Additional Q&A",
+    description: "Wait is over need additional answeres to questions",
+    Component: NeedAdditionalAnswers,
   },
   {
     id: 3,
     title: "Upload Attachments | Additional Q&A",
     description: "Additional Q&A for the uploaded files",
+    Component: AdditionalQuestions,
   },
   {
     id: 4,
     title: "Upload Attachments",
     description: "Thank you and continue to report and payement",
+    Component: AllSet,
   },
 ];
 
 export default function UploadAttachementsPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [addQuestions, setAddQuestions] = useState([]);
-
   return (
-    <div>
-      <Link
-        to="/product"
-        className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit bg-red-400"
-      >
-        <ArrowLeftIcon /> Back
-      </Link>
-
-      {/* <div>
-        <div className="flex flex-row gap-x-1">
-          {uploadAttachmentsSteps.map((step) => (
-            <div
-              key={step.id}
-              className={`flex flex-col gap-y-1 ${
-                currentStep === step.id ? "text-primary-800" : "text-secondary-800"
-              }`}
-            >
-              <div>{step.title}</div>
-              <div>{step.description}</div>
-            </div>
-          ))}
-        </div>
-      </div> */}
-
+    <StepContextProvider>
+      <GoBack />
       <div>
         <Title text="Upload Attachments" className="mt-5" />
-        {"bar"}
-        <UploadAttachments />
-        {/* <UploadAttachmentsWaiting /> */}
-        {/* <AdditionalQuestions /> */}
+        <ProgressBar />
+        <StepContent />
       </div>
-    </div>
+    </StepContextProvider>
   );
 }
+
+const ProgressBar = () => {
+  const { currentStep } = useContext(UploadAttachmentsContext);
+
+  return (
+    <div className="w-full bg-primary-900 h-2 my-3">
+      <div
+        className="h-full bg-secondary-500"
+        style={{ width: `${(currentStep / uploadAttachmentsSteps.length) * 100}%` }}
+      ></div>
+    </div>
+  );
+};
+
+const StepContent = () => {
+  const { currentStep } = useContext(UploadAttachmentsContext);
+
+  return (
+    <>
+      {uploadAttachmentsSteps.map((step) => {
+        if (step.id === currentStep) {
+          const Component = step.Component;
+          return <Component key={step.id} />;
+        }
+      })}
+    </>
+  );
+};

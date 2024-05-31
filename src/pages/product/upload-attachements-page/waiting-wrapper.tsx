@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../../../components/reusable/button";
+import { UploadAttachmentsContext } from "./upload-attachments-context";
 
-export default function UploadAttachmentsWaiting() {
+export default function WaitingWrapper({
+  children,
+  nextStep,
+}: {
+  children: React.ReactNode;
+  nextStep: number;
+}) {
+  const { setCurrentStep } = useContext(UploadAttachmentsContext);
   const handleContinueBtnClick = () => {
-    // TODO handle continue click
+    console.log("nextStep", nextStep);
+    setCurrentStep(nextStep);
   };
 
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
-      {/* summary */}
       <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
         <p className="font-bold text-[32px] text-secondary-900">Here's a sneak peek!</p>
         <p className="font-semibold text-xl text-secondary-800">
@@ -34,15 +42,8 @@ export default function UploadAttachmentsWaiting() {
       </div>
 
       <div className="w-[300px] space-y-5">
-        {/* await and continue */}
         <>
-          <div>
-            <p className="font-bold text-lg text-purple-900 mb-1">Ready to see your report?</p>
-            <p className="text-secondary-800">
-              Everything looks great so far! Let's move on to creating your final report. <br />
-              Payment is needed to unlock your report.
-            </p>
-          </div>
+          {children}
           <Button type="optional" classname="w-full" handleClick={handleContinueBtnClick}>
             <p className="text-secondary-800">Continue</p>
           </Button>
@@ -50,28 +51,13 @@ export default function UploadAttachmentsWaiting() {
             If more info is required (temp link)
           </p>
         </>
-
-        {/* continue to ask more questions */}
-
-        <>
-          <div>
-            <p className="font-bold text-lg text-purple-900 mb-1">Almost There!</p>
-            <p className="text-secondary-800">
-              We need a bit more information to create your report. <br />
-              Please answer a few more questions to complete the details. Once done, we'll generate
-              your custom report.
-            </p>
-          </div>
-          <Button type="optional" classname="w-full" handleClick={handleContinueBtnClick}>
-            <p className="text-secondary-800">Continue</p>
-          </Button>
-        </>
       </div>
     </div>
   );
 }
 
 const summary = [
+  // TODO fetch from BE
   {
     heading: "Prior Art & Novelty",
     list: [

@@ -2,8 +2,7 @@ import axios from "axios";
 import jsCookie from "js-cookie";
 import { useState } from "react";
 import toast from "react-hot-toast";
-
-const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+import { BASE_URL } from "./db";
 
 export default function useFileUploadService() {
   const [uploading, setIsUploading] = useState(false);

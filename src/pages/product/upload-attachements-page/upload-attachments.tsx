@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Button from "../../../components/reusable/button";
 import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
 import useFileUploadService from "./use-file-upload-service";
 import toast from "react-hot-toast";
+import { UploadAttachmentsContext } from "./upload-attachments-context";
 
 const baseStyle = {
   flex: 1,
@@ -34,8 +35,10 @@ const rejectStyle = {
 } as const;
 
 export default function UploadAttachments() {
-  const [files, setFiles] = React.useState<File[]>([]);
   const { uploadFiles, uploading } = useFileUploadService();
+
+  const { setAdditionalQuestionsIds, setCurrentStep } = useContext(UploadAttachmentsContext);
+  const [files, setFiles] = useState<File[]>([]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
@@ -83,7 +86,13 @@ export default function UploadAttachments() {
 
     toast.success("Files uploaded successfully");
 
-    // Continue to the next step
+    if (resData.length === 0) {
+      setCurrentStep(1);
+      return;
+    }
+
+    setAdditionalQuestionsIds(resData);
+    setCurrentStep(2);
   };
 
   return (
