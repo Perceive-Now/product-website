@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { LoaderIcon } from "react-hot-toast";
 
 interface Props {
-  sendQuery: () => void;
+  sendQuery: (query: string, editIndex: number | null) => void;
   setQuery: (query: string) => void;
   isLoading: boolean;
   query: string;
@@ -24,7 +24,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
   }, [query]);
 
   return (
-    <div className="relative flex border border-primary-50 rounded-lg items-center overflow-hidden pl-2 py-1 bg-white">
+    <div className="relative flex border border-primary-50 rounded-lg items-center overflow-hidden pl-1 py-1 bg-white">
       <textarea
         rows={1}
         ref={textareaRef}
@@ -36,18 +36,20 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault(); // Prevent default behavior of Enter key
-            sendQuery();
+            if (query.trim() && !isLoading) {
+              sendQuery(query, null);
+            }
           }
         }}
         placeholder="Start your query here"
-        disabled={isLoading}
+        // disabled={isLoading}
       />
       <div className="absolute right-2">
         <button
           className="bg-appGray-200 rounded-full h-4 w-4 flex items-center justify-center disabled:cursor-not-allowed"
           type="button"
-          onClick={sendQuery}
-          disabled={isLoading || !query}
+          onClick={() => sendQuery(query, null)}
+          disabled={isLoading || !query.trim()}
         >
           {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2" />}
         </button>

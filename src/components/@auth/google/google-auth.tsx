@@ -98,7 +98,7 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
       classname="w-full"
       htmlType="button"
       type="gray"
-      disabled
+      disabled={!isAgree}
       startIcon={<GoogleIcon />}
     >
       {title}

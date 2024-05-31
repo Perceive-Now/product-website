@@ -11,6 +11,7 @@ import SessionSlice from "./stores/session";
 import ChatSlice from "./stores/chat";
 import UISlice from "./stores/UI";
 import KnownowSlice from "./stores/know-now";
+import KnownowSlice1 from "./stores/know-now1";
 
 //
 export const store = configureStore({
@@ -25,6 +26,7 @@ export const store = configureStore({
     sessionDetail: SessionSlice,
     UI: UISlice,
     KnowNow: KnownowSlice,
+    KnowNowChat: KnownowSlice1,
   },
 });
 

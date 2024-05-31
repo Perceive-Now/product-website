@@ -1,25 +1,32 @@
 import * as yup from "yup";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import Button from "../reusable/button";
-import Input from "../reusable/input";
 
 import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
+import classNames from "classnames";
 
 interface Props {
   setEdit: (edit: boolean) => void;
+  onCancel: any;
   query: string;
-  updateQuery: () => void;
+  updateQuery: (query: string, editIndex: number) => void;
   editIndex?: any;
   setEditIndex?: any;
   setQuery?: any;
 }
 
-const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) => {
+const EditQuery = ({ onCancel, query, updateQuery, editIndex, setEdit }: Props) => {
   const dispatch = useAppDispatch();
+  const [numberOfRows, setNumberOfRows] = useState(1);
+
+  useEffect(() => {
+    const lines = query.split("\n").length;
+    setNumberOfRows(lines);
+  }, [query]);
 
   const formInitialValue = {
     query: query || "",
@@ -31,7 +38,7 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
 
   const {
     register,
-    formState: { errors },
+    // formState: { errors },
     handleSubmit,
   } = useForm({
     defaultValues: formInitialValue,
@@ -41,25 +48,42 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
 
   const onUpdateQuery = useCallback(
     (value: any) => {
-      // if (editIndex) {
-      // setEditIndex(editIndex)
-      dispatch(setUpdateQuery({ editIndex: editIndex, query: value.query }));
-
-      setEdit(false);
-      setQuery(value.query);
-      updateQuery();
-
-      // }
+      if (value.query.trim()) {
+        dispatch(setUpdateQuery({ editIndex: editIndex, query: value.query }));
+        setEdit(false);
+        updateQuery(value.query, editIndex);
+      }
     },
-    [dispatch, editIndex, setEdit, setQuery, updateQuery],
+    [dispatch, editIndex, setEdit, updateQuery],
   );
 
   return (
-    <form onSubmit={handleSubmit(onUpdateQuery)} className="w-full">
-      <Input register={register("query")} type="text" error={errors.query} />
+    <form onSubmit={handleSubmit(onUpdateQuery)} className="w-full h-full">
+      <textarea
+        rows={numberOfRows}
+        {...register("query")}
+        onChange={(e) => {
+          const lines = e.target.value.split("\n").length;
+          setNumberOfRows(lines);
+        }}
+        className={classNames(
+          "appearance-none text-sm text-secondary-800 w-full border border-appGray-200 rounded-md placeholder:text-gray-400 placeholder:text-sm pn_scroller focus:border-appGray-200 focus-visible:border-appGray-200 focus:outline-none focus:ring-0 pr-6 ",
+        )}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault(); // Prevent default behavior of Enter key
+            if (query.trim()) {
+              onUpdateQuery;
+            }
+          }
+        }}
+        placeholder="Start your query here"
+        // disabled={isLoading}
+      />
+      {/* <Input register={register("query")} type="text" error={errors.query} /> */}
       <div className="flex items-center gap-2 mt-1">
         <Button
-          handleClick={() => setEdit(false)}
+          handleClick={onCancel}
           htmlType="button"
           type={"default"}
           size="default"
@@ -73,7 +97,6 @@ const EditQuery = ({ setEdit, query, updateQuery, editIndex, setQuery }: Props) 
           size={"small"}
           classname="text-xs"
           rounded="small"
-          disabled
         >
           Update
         </Button>

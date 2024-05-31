@@ -119,7 +119,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
               className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
               onClick={() => setOpen(!open)}
             >
-              <SideBarToggleIcon />
+              <SideBarToggleIcon className={classNames(open ? "rotate-180" : "")} />
             </button>
           </div>
           <div className="space-y-1 mt-1">
@@ -174,18 +174,18 @@ export const AppSidebar: FunctionComponent<Props> = () => {
           </div>
           <div className="bg-appGray-200 h-[1px] w-full" />
           <div className="flex items-center justify-between w-full px-2.5">
-            {open && (
-              <div className="flex items-center gap-1 w-full">
-                <div className="shrink-0">
-                  <UserIcon
-                    first_name={userDetail?.first_name || ""}
-                    last_name={userDetail?.last_name || ""}
-                    profile_photo={userDetail?.profile_photo}
-                  />
-                </div>
-                <p className="line-clamp-1 w-14">{userDetail?.full_name}</p>
+            <Link to="/profile" className="flex items-center gap-1 w-full">
+              <div className="shrink-0">
+                <UserIcon
+                  first_name={userDetail?.first_name || ""}
+                  last_name={userDetail?.last_name || ""}
+                  profile_photo={userDetail?.profile_photo}
+                />
               </div>
-            )}
+              {open && (
+                <p className="line-clamp-1 w-14 text-secondary-800">{userDetail?.full_name}</p>
+              )}
+            </Link>
           </div>
         </div>
       </div>
