@@ -33,20 +33,37 @@ export const KnownowSlice1 = createSlice({
       const newChat: IChat = { query, answer: "" };
       state.chats.push(newChat);
     },
-    updateChatAnswer: (state, action: PayloadAction<{ index: number; answer: string }>) => {
-      const { index, answer } = action.payload;
+    updateChatAnswer: (
+      state,
+      action: PayloadAction<{ index: number; answer: string; responseTime?: string }>,
+    ) => {
+      const { index, answer, responseTime } = action.payload;
       if (index >= 0 && index < state.chats.length) {
         state.chats[index].answer = answer;
+        state.chats[index].response_time = responseTime;
+      }
+    },
+    updateChatError: (state, action: PayloadAction<{ index: number; answer: string }>) => {
+      const { index, answer } = action.payload;
+      if (index >= 0 && index < state.chats.length) {
+        state.chats[index].error = answer;
       }
     },
     editQueryAndUpdateAnswer: (
       state,
-      action: PayloadAction<{ index: number; newQuery: string; newAnswer: string }>,
+      action: PayloadAction<{
+        index: number;
+        newQuery: string;
+        newAnswer: string;
+        responseTime?: string;
+      }>,
     ) => {
-      const { index, newQuery, newAnswer } = action.payload;
+      const { index, newQuery, newAnswer, responseTime } = action.payload;
       if (index >= 0 && index < state.chats.length) {
         state.chats[index].query = newQuery;
         state.chats[index].answer = newAnswer;
+        state.chats[index].response_time = responseTime;
+
         // Remove subsequent chat objects
         state.chats = state.chats.slice(0, index + 1);
       }
@@ -55,5 +72,10 @@ export const KnownowSlice1 = createSlice({
 });
 
 export default KnownowSlice1.reducer;
-export const { setKnowNowChats, addQuestion, updateChatAnswer, editQueryAndUpdateAnswer } =
-  KnownowSlice1.actions;
+export const {
+  setKnowNowChats,
+  updateChatError,
+  addQuestion,
+  updateChatAnswer,
+  editQueryAndUpdateAnswer,
+} = KnownowSlice1.actions;

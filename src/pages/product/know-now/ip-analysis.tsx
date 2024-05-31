@@ -24,7 +24,6 @@ interface IChat {
 function KnowNowIP() {
   const dispatch = useAppDispatch();
   const chats = useAppSelector((state) => state.KnowNowChat.chats);
-  console.log(chats);
 
   const chatRef = useRef<HTMLInputElement>(null);
 
@@ -38,14 +37,16 @@ function KnowNowIP() {
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
 
-  const editIndex = useAppSelector((state) => state.KnowNow.editIndex);
+  // const editIndex = useAppSelector((state) => state.KnowNow.editIndex);
 
   const onSendQuery = useCallback(
-    async (updateQuery: string) => {
+    async (updateQuery: string, editIndex: number | null) => {
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
+      setIsloading(true);
+
       const queries = [
         {
-          query: query,
+          query: query || updateQuery,
           user_id: userId,
           thread_id: sessionID,
         },
@@ -103,7 +104,7 @@ function KnowNowIP() {
         setLoadingIndex(null);
       }
     },
-    [chats.length, dispatch, editIndex, editQuery, query, sessionID, userId],
+    [chats.length, dispatch, editQuery, query, sessionID, userId],
   );
 
   const scrollToBottom = () => {
@@ -146,9 +147,7 @@ function KnowNowIP() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <div className="w-[300px] shrink-0 ml-5">
-        <KnowNowRightSideBar />
-      </div>
+      <KnowNowRightSideBar />
     </div>
   );
 }

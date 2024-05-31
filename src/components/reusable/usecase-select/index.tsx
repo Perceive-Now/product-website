@@ -38,7 +38,7 @@ export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
       {options.map((mode, idx) => (
         <div
           className={classNames(
-            "relative flex justify-between items-center cursor-pointer rounded-md py-2.5 text-sm px-2",
+            "relative flex justify-between items-center cursor-pointer rounded-md py-1 text-sm px-2",
             activeModes.includes(mode.value)
               ? "bg-primary-900 text-white border border-primary-900"
               : "bg-white border-appGray-200 border text-secondary-800 hover:bg-appGray-200",
@@ -54,7 +54,7 @@ export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
           />
           <div className={classNames(props?.classNames?.label, "flex")}>
             {mode.label}
-            <InfoIcon className="-mt-1 h-4 w-4" />
+            <InfoIcon className="h-2 w-2" />
           </div>
           <span
             className={classNames(
@@ -65,9 +65,9 @@ export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
             )}
           >
             {activeModes.includes(mode.value) ? (
-              <MinusIcon className="h-5 w-5" />
+              <MinusIcon className="h-2 w-2" />
             ) : (
-              <AddIcon className="h-5 w-5" />
+              <AddIcon className="h-2 w-2" />
             )}
           </span>
         </div>

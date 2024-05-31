@@ -13,7 +13,7 @@ interface Props {
   setEdit: (edit: boolean) => void;
   onCancel: any;
   query: string;
-  updateQuery: (query: string) => void;
+  updateQuery: (query: string, editIndex: number) => void;
   editIndex?: any;
   setEditIndex?: any;
   setQuery?: any;
@@ -44,7 +44,7 @@ const EditQuery = ({ onCancel, query, updateQuery, editIndex, setEdit }: Props) 
     (value: any) => {
       dispatch(setUpdateQuery({ editIndex: editIndex, query: value.query }));
       setEdit(false);
-      updateQuery(value.query);
+      updateQuery(value.query, editIndex);
     },
     [dispatch, editIndex, setEdit, updateQuery],
   );

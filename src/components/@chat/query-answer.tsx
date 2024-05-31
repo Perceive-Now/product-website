@@ -14,7 +14,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import DotLoader from "../reusable/dot-loader";
 import RefreshIcon from "../icons/common/refresh";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
 
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
   isLoading: boolean;
   error?: string;
   responseTime?: string;
-  updateQuery: (query: string) => void;
+  updateQuery: (query: string, editInex: number | null) => void;
   editIndex: any;
   query: string;
 }
@@ -37,7 +37,6 @@ const QueryAnswer = ({
   query,
 }: Props) => {
   const dispatch = useAppDispatch();
-  const updateIndex = useAppSelector((state) => state.KnowNow.editIndex);
 
   const copyRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -94,7 +93,7 @@ const QueryAnswer = ({
 
   const fullTextToCopy = convertHtmlToMarkdown(answer);
 
-  const formattedAnswer = answer.replace(/\n/g, "<br>");
+  const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
   const sanitizedAnswer = sanitizeHtml(formattedAnswer, {
     allowedTags: [
       "b",
@@ -118,10 +117,8 @@ const QueryAnswer = ({
 
   const onRegenerate = useCallback(() => {
     dispatch(setUpdateQuery({ editIndex: editIndex, query: query }));
-    if (updateIndex !== null) {
-      updateQuery(query);
-    }
-  }, [dispatch, editIndex, query, updateIndex, updateQuery]);
+    updateQuery(query, editIndex);
+  }, [dispatch, editIndex, query, updateQuery]);
 
   return (
     <div className="flex items-start gap-3">

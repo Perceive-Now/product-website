@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const KnowNowRightSideBar = () => {
   return (
-    <div className="w-[300px] shrink-0 ml-5">
+    <div className="w-[300px] shrink-0 ml-2">
       <div className="border-l">
         <div className="bg-appGray-200 py-1 px-1 rounded-t">
           <svg

@@ -18,7 +18,7 @@ import { setUpdateQuery } from "../../stores/know-now";
 
 interface Props {
   query: string;
-  updateQuery: (query: string) => void;
+  updateQuery: (query: string, editIndex: number) => void;
   chatIndex?: any;
   setEditIndex?: any;
   editIndex?: any;

@@ -1,11 +1,11 @@
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setSession } from "@/stores/session";
-import { setUseCase } from "@/stores/use-case";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setSession } from "../../../stores/session";
+import { setUseCase } from "../../../stores/use-case";
 import { UseCaseOptions } from "./__use-cases";
-import Button from "@/components/reusable/button";
-import UseCaseSelectButton from "@/components/reusable/usecase-select";
-import CheckBoxButtons from "@/components/reusable/checkbox";
+import Button from "../../../components/reusable/button";
+import UseCaseSelectButton from "../../../components/reusable/usecase-select";
+import CheckBoxButtons from "../../../components/reusable/checkbox";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -166,10 +166,12 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
   );
 
   return (
-    <div className="h-full bg-primary-gradient rounded-lg p-6">
-      <p className="text-white text-xl font-semibold ">Please select use case for your report.</p>
+    <div className="h-full p-6">
+      <p className="text-primary-900 text-xl font-semibold ">
+        Please select use case for your report.
+      </p>
       <div className="w-[660px] 2xl:w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="mt-1 items-center">
             <h5 className=" text-secondary-500 mb-1 text-[32px] font-bold font-helvetica">
               IP Analysis
@@ -177,7 +179,7 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
             <div className="space-y-[20px]">
               <div className="space-y-[10px]">
                 <p className="text-secondary-500">Pro reports</p>
-                <CheckBoxButtons
+                <UseCaseSelectButton
                   options={UseCaseOptions.filter(
                     (r) => r.reportPlan === "pro" && r.reportType === "ip",
                   )}
@@ -185,13 +187,12 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
                   handleModeChange={handleChange}
                   classNames={{
                     component: "flex flex-col gap-[10px]",
-                    label: "font-semibold text-white",
                   }}
                 />
               </div>
               <div className="space-y-[10px]">
                 <p className="text-secondary-500">Premium reports</p>
-                <CheckBoxButtons
+                <UseCaseSelectButton
                   options={UseCaseOptions.filter(
                     (r) => r.reportType === "ip" && r.reportPlan === "premium",
                   )}
@@ -199,7 +200,6 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
                   handleModeChange={handleChange}
                   classNames={{
                     component: "flex flex-col gap-[10px]",
-                    label: "font-semibold text-white",
                   }}
                 />
               </div>

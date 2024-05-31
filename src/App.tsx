@@ -146,7 +146,7 @@ function App() {
             <Route path="/" element={"Home"} />
 
             {/* report */}
-            {/* <Route path="/new-report" element={<ReportPage />} /> */}
+            <Route path="/new-report" element={<ReportPage />} />
 
             {/* Account */}
             <Route path="/profile" element={<UserProfile />} />

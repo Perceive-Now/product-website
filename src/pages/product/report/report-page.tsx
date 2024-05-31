@@ -2,11 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 //
 import classNames from "classnames";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setSession } from "@/stores/session";
+import { useAppDispatch, useAppSelector } from "../../..//hooks/redux";
+import { setSession } from "../../../stores/session";
 import { questionList } from "./_question";
-import UseCaseSelect from "@/components/@report/use-case";
-import Loading from "@/components/reusable/loading";
+import UseCaseSelect from "../../../components/@report/use-case";
+import Loading from "../../../components/reusable/loading";
 
 /**
  *
@@ -181,7 +181,7 @@ export default function ReportPage() {
       <div className="w-full">
         <div
           className={classNames(
-            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-900px)] 2xl:min-h-full max-h-full w-full",
+            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-full",
             activeStep !== 0 && activeStep !== 1 && "shadow border rounded-md p-2",
           )}
         >
