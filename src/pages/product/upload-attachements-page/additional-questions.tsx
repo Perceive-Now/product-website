@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
 import { UploadAttachmentsContext } from "./upload-attachments-context";
-import { questionList } from "../ip-landscaping/ip-analysis/_question";
 import useAdditionalQuestionsService, { IAnswerObj } from "./use-additional-questions-service";
+import { questionList } from "../report/_question";
 
 export default function AdditionalQuestions() {
   const { additionalQuestionIds } = useContext(UploadAttachmentsContext);
