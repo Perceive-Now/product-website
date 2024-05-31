@@ -10,6 +10,7 @@ import EditQuery from "./edit-query";
 import { useAppSelector } from "../../hooks/redux";
 import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
+import sanitizeHtml from "sanitize-html";
 
 // interface IChat {
 //   query: string;
@@ -41,6 +42,29 @@ const ChatQuery = ({ query, updateQuery, editIndex }: Props) => {
     dispatch(setUpdateQuery({ editIndex: null, query: "" }));
   }, [dispatch]);
 
+  const formattedQuery = query.replace(/\n/g, "<br>");
+
+  const sanitizedQuery = sanitizeHtml(formattedQuery, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "a",
+      "br",
+      "p",
+      "table",
+      "thead",
+      "tbody",
+      "tr",
+      "th",
+      "td",
+    ],
+    allowedAttributes: {
+      a: ["href"],
+    },
+  });
+
   return (
     <div className="flex justify-between w-full gap-2.5">
       <div className="flex gap-3 w-full">
@@ -60,7 +84,10 @@ const ChatQuery = ({ query, updateQuery, editIndex }: Props) => {
             onCancel={onCancel}
           />
         ) : (
-          <span className="text-secondary-800">{query}</span>
+          <div
+            className="text-secondary-800"
+            dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
+          />
         )}
       </div>
       <IconButton
