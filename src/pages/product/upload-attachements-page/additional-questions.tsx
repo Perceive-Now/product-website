@@ -5,13 +5,13 @@ import useAdditionalQuestionsService, { IAnswerObj } from "./use-additional-ques
 import { questionList } from "../report/_question";
 
 export default function AdditionalQuestions() {
-  const { additionalQuestionIds } = useContext(UploadAttachmentsContext);
+  const { additionalQuestionIds, setCurrentQuestionId, currentQuestionId, setCurrentStep } =
+    useContext(UploadAttachmentsContext);
 
-  const [currentQuestionId, setCurrentQuestionId] = useState(Number(additionalQuestionIds[0]) ?? 0);
   const [answers, setAnswers] = useState<IAnswerObj[]>();
 
   const { uploading, uploadAnswers } = useAdditionalQuestionsService();
-  const { setCurrentStep } = useContext(UploadAttachmentsContext);
+  const { setCurrentPageId } = useContext(UploadAttachmentsContext);
 
   useEffect(() => {
     setCurrentQuestionId(Number(additionalQuestionIds[0]) ?? 0);
@@ -39,7 +39,8 @@ export default function AdditionalQuestions() {
       const resData = await uploadAnswers(updatedAnswers);
 
       if (resData) {
-        setCurrentStep(4);
+        setCurrentPageId(4);
+        setCurrentStep((prev) => prev + 1);
         return;
       }
 
@@ -47,6 +48,7 @@ export default function AdditionalQuestions() {
     }
 
     setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex]);
+    setCurrentStep((prev) => prev + 1);
   };
 
   return (

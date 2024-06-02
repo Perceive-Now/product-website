@@ -37,7 +37,8 @@ const rejectStyle = {
 export default function UploadAttachments() {
   const { uploadFiles, uploading } = useFileUploadService();
 
-  const { setAdditionalQuestionsIds, setCurrentStep } = useContext(UploadAttachmentsContext);
+  const { setAdditionalQuestionsIds, setCurrentPageId, setCurrentStep } =
+    useContext(UploadAttachmentsContext);
   const [files, setFiles] = useState<File[]>([]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
@@ -74,25 +75,29 @@ export default function UploadAttachments() {
 
   const handleFileDelete = (fileName: string) => {
     setFiles((prev) => {
-      const newFiles = prev.filter((file) => file.name !== fileName);
-      return newFiles;
+      return prev.filter((file) => file.name !== fileName);
     });
   };
 
   const handleContinueBtnClick = async () => {
     const resData = await uploadFiles(files);
 
-    if (!resData) return;
+    if (!resData) {
+      toast.error("Something went wrong");
+      return;
+    }
 
     toast.success("Files uploaded successfully");
 
     if (resData.length === 0) {
-      setCurrentStep(1);
+      setCurrentPageId(1);
+      setCurrentStep((prev) => prev + 1);
       return;
     }
 
     setAdditionalQuestionsIds(resData);
-    setCurrentStep(2);
+    setCurrentPageId(2);
+    setCurrentStep((prev) => prev + 1);
   };
 
   return (

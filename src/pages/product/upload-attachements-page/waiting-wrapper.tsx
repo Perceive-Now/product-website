@@ -9,10 +9,11 @@ export default function WaitingWrapper({
   children: React.ReactNode;
   nextStep: number;
 }) {
-  const { setCurrentStep } = useContext(UploadAttachmentsContext);
+  const { setCurrentPageId, setCurrentStep } = useContext(UploadAttachmentsContext);
   const handleContinueBtnClick = () => {
     console.log("nextStep", nextStep);
-    setCurrentStep(nextStep);
+    setCurrentPageId(nextStep);
+    setCurrentStep((prev) => prev + 1);
   };
 
   return (
