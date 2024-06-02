@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
+import { IAnswerObj } from "./use-additional-questions-service";
 
 interface IUploadAttachmentsContext {
   currentPageId: number;
@@ -12,6 +13,9 @@ interface IUploadAttachmentsContext {
 
   additionalQuestionIds: number[];
   setAdditionalQuestionsIds: React.Dispatch<React.SetStateAction<number[]>>;
+
+  answers: IAnswerObj[];
+  setAnswers: React.Dispatch<React.SetStateAction<IAnswerObj[]>>;
 }
 
 const UploadAttachmentContextInitialState = {
@@ -34,6 +38,11 @@ const UploadAttachmentContextInitialState = {
   setAdditionalQuestionsIds: () => {
     // do something
   },
+
+  answers: [],
+  setAnswers: () => {
+    // do something
+  },
 };
 
 export const UploadAttachmentsContext = createContext<IUploadAttachmentsContext>(
@@ -47,20 +56,27 @@ export default function UploadAttachmentsContextProvider({
 }) {
   const [currentPageId, setCurrentPageId] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const [answers, setAnswers] = useState<IAnswerObj[]>([]);
   const [currentQuestionId, setCurrentQuestionId] = useState(0);
   const [additionalQuestionIds, setAdditionalQuestionsIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    setCurrentQuestionId(Number(additionalQuestionIds[0]) ?? 0);
+  }, [additionalQuestionIds, setCurrentQuestionId]);
 
   return (
     <UploadAttachmentsContext.Provider
       value={{
         currentPageId,
+        setCurrentPageId,
         additionalQuestionIds,
+        setAdditionalQuestionsIds,
         currentQuestionId,
+        setCurrentQuestionId,
         currentStep,
         setCurrentStep,
-        setCurrentQuestionId,
-        setCurrentPageId,
-        setAdditionalQuestionsIds,
+        answers,
+        setAnswers,
       }}
     >
       {children}

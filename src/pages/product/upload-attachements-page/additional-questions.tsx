@@ -1,34 +1,42 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
 import { UploadAttachmentsContext } from "./upload-attachments-context";
 import useAdditionalQuestionsService, { IAnswerObj } from "./use-additional-questions-service";
 import { questionList } from "../report/_question";
 
 export default function AdditionalQuestions() {
-  const { additionalQuestionIds, setCurrentQuestionId, currentQuestionId, setCurrentStep } =
-    useContext(UploadAttachmentsContext);
-
-  const [answers, setAnswers] = useState<IAnswerObj[]>();
+  const {
+    additionalQuestionIds,
+    setCurrentQuestionId,
+    currentQuestionId,
+    setCurrentStep,
+    setCurrentPageId,
+    answers,
+    setAnswers,
+  } = useContext(UploadAttachmentsContext);
 
   const { uploading, uploadAnswers } = useAdditionalQuestionsService();
-  const { setCurrentPageId } = useContext(UploadAttachmentsContext);
-
-  useEffect(() => {
-    setCurrentQuestionId(Number(additionalQuestionIds[0]) ?? 0);
-  }, [additionalQuestionIds, setCurrentQuestionId]);
 
   const currentQuestion = questionList.filter(
     (question) => question.questionId === currentQuestionId,
   )[0];
 
   const handleOnContinue = async (answer: IAnswerObj) => {
-    const updatedAnswers = [
-      ...(answers ?? []),
-      {
+    // check if there is already an answer to the question
+    const indexOfAlreadyAnsweredQuestion = answers.findIndex(
+      (answerObj) => answerObj.questionId === currentQuestionId,
+    );
+
+    const updatedAnswers = [...answers];
+
+    if (indexOfAlreadyAnsweredQuestion >= 0) {
+      updatedAnswers[indexOfAlreadyAnsweredQuestion].answer = answer.answer;
+    } else {
+      updatedAnswers.push({
         questionId: currentQuestionId,
         answer: answer.answer,
-      },
-    ];
+      });
+    }
 
     setAnswers(updatedAnswers);
 
@@ -51,6 +59,10 @@ export default function AdditionalQuestions() {
     setCurrentStep((prev) => prev + 1);
   };
 
+  const answerForCurrentQuestion = answers.find(
+    (answer) => currentQuestion.questionId === answer.questionId,
+  );
+
   return (
     <>
       {currentQuestion && (
@@ -60,6 +72,7 @@ export default function AdditionalQuestions() {
           question={currentQuestion.question}
           onContinue={handleOnContinue}
           key={currentQuestionId}
+          answer={answerForCurrentQuestion?.answer}
         />
       )}
     </>
