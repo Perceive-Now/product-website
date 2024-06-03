@@ -52,8 +52,8 @@ export default function AppFooter() {
       <div className="flex flex-col justify-center md:flex-row gap-x-3">
         <p
           className={classNames(
-            "flex items-center gap-[2px]",
-            pathname === "/" ? "text-white" : "text-primary-900",
+            "flex items-center gap-[2px] text-primary-900",
+            // pathname === "/" ? "text-white" : "text-primary-900",
           )}
         >
           <CopyRightIcon /> {currentYear}
@@ -66,8 +66,8 @@ export default function AppFooter() {
             target="_blank"
             rel="noreferrer"
             className={classNames(
-              " hover:underline",
-              pathname === "/" ? "text-white" : "text-primary-900",
+              " hover:underline text-primary-900",
+              // pathname === "/" ? "text-white" : "text-primary-900",
             )}
           >
             {item.title}

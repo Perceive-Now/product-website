@@ -93,8 +93,6 @@ import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 import MALicensing from "./pages/product/m&a-licensing";
 // import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 
-import Stream from "./pages/stream/stream";
-
 // Account
 import UserProfile from "./pages/my-account/profile";
 import MyReport from "./pages/my-account/my-reports";
@@ -108,6 +106,7 @@ import UploadAttachementsMethod from "./pages/product/upload-attachements-page/u
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 import ReportPage from "./pages/product/report/report-page";
+import Landing from "./pages/product/product-new/landing/landing";
 
 /**
  *
@@ -118,7 +117,6 @@ function App() {
     <div>
       <Routes>
         <Route path="/verify-email" element={<VerificationConfirm />} />
-        <Route path="/stream" element={<Stream />} />
 
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
@@ -143,7 +141,7 @@ function App() {
           </Route>
 
           <Route element={<DefaultLayout />}>
-            <Route path="/" element={"Home"} />
+            <Route path="/" element={<Landing />} />
 
             {/* report */}
             <Route path="/new-report" element={<ReportPage />} />

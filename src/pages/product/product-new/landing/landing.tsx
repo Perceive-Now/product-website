@@ -7,6 +7,7 @@ import classNames from "classnames";
 import BGVector3 from "./bg-vector-3";
 import BGVector2 from "./bg-vector-2";
 import BGVector1 from "./bg-vector-1";
+import { Link } from "react-router-dom";
 
 const stepsList = [
   {
@@ -44,9 +45,11 @@ export default function Landing() {
             <Title text="in 4 Easy Steps!" />
           </div>
 
-          <Button type="primary" classname="mt-[20px] w-[300px]">
-            Continue
-          </Button>
+          <Link to="/new-report">
+            <Button type="primary" classname="mt-[20px] w-[300px]">
+              Continue
+            </Button>
+          </Link>
 
           <div className="mt-12">
             <LandingMark />
