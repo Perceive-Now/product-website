@@ -1,9 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Button from "../../../components/reusable/button";
 import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
 import useFileUploadService from "./use-file-upload-service";
+import toast from "react-hot-toast";
+import { UploadAttachmentsContext } from "./upload-attachments-context";
 
 const baseStyle = {
   flex: 1,
@@ -33,8 +35,11 @@ const rejectStyle = {
 } as const;
 
 export default function UploadAttachments() {
-  const [files, setFiles] = React.useState<File[]>([]);
-  const { uploadFiles } = useFileUploadService();
+  const { uploadFiles, uploading } = useFileUploadService();
+
+  const { setAdditionalQuestionsIds, setCurrentPageId, setCurrentStep } =
+    useContext(UploadAttachmentsContext);
+  const [files, setFiles] = useState<File[]>([]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
@@ -70,13 +75,29 @@ export default function UploadAttachments() {
 
   const handleFileDelete = (fileName: string) => {
     setFiles((prev) => {
-      const newFiles = prev.filter((file) => file.name !== fileName);
-      return newFiles;
+      return prev.filter((file) => file.name !== fileName);
     });
   };
 
   const handleContinueBtnClick = async () => {
-    await uploadFiles(files);
+    const resData = await uploadFiles(files);
+
+    if (!resData) {
+      toast.error("Something went wrong");
+      return;
+    }
+
+    toast.success("Files uploaded successfully");
+
+    if (resData.length === 0) {
+      setCurrentPageId(1);
+      setCurrentStep((prev) => prev + 1);
+      return;
+    }
+
+    setAdditionalQuestionsIds(resData);
+    setCurrentPageId(2);
+    setCurrentStep((prev) => prev + 1);
   };
 
   return (
@@ -108,6 +129,7 @@ export default function UploadAttachments() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={files.length === 0}
+          loading={uploading}
         >
           <p className="text-secondary-800">Continue</p>
         </Button>
