@@ -166,10 +166,8 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
   );
 
   return (
-    <div className="h-full p-6">
-      <p className="text-primary-900 text-xl font-semibold ">
-        Please select use case for your report.
-      </p>
+    <div className="h-full">
+      <p className="text-[#120824] text-5xl font-bold ">Please select use cases for your report</p>
       <div className="w-[660px] 2xl:w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="mt-1 items-center">
