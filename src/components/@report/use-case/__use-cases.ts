@@ -158,3 +158,45 @@ export const radioOptionsMarket = [
     reportType: "premium",
   },
 ];
+
+export const UsecaseOptions = [
+  {
+    reportName: "VC Bundle",
+    value: "vc-bundle",
+    children: [
+      {
+        id: 14,
+        label: "Freedom to Operate",
+        value: "freedom_to_operate",
+        desc: "Ensure your product's market success with our Commercialization Assessment report, which evaluates market readiness and identifies potential launch hurdles. Ideal for businesses aiming to achieve a smooth and successful product launch.",
+        reportType: "ip",
+      },
+      {
+        id: 14,
+        label: "Merger & Acquisition",
+        value: "merger_acquisition",
+        desc: "Ensure your product's market success with our Commercialization Assessment report, which evaluates market readiness and identifies potential launch hurdles. Ideal for businesses aiming to achieve a smooth and successful product launch.",
+        reportType: "ip",
+      },
+      {
+        id: 14,
+        label: "Commercialization assessment",
+        value: "commercialization_assessment",
+        desc: "Ensure your product's market success with our Commercialization Assessment report, which evaluates market readiness and identifies potential launch hurdles. Ideal for businesses aiming to achieve a smooth and successful product launch.",
+        reportType: "market",
+      },
+      {
+        id: 14,
+        label: "Market Potential",
+        value: "market_potential",
+        desc: "Ensure your product's market success with our Commercialization Assessment report, which evaluates market readiness and identifies potential launch hurdles. Ideal for businesses aiming to achieve a smooth and successful product launch.",
+        reportType: "market",
+      },
+    ],
+  },
+  {
+    reportName: "Web 3.0",
+    value: "web",
+    children: [],
+  },
+];

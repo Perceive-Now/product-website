@@ -7,6 +7,7 @@ import { setSession } from "../../../stores/session";
 import { questionList } from "./_question";
 import UseCaseSelect from "../../../components/@report/use-case";
 import Loading from "../../../components/reusable/loading";
+import { useLocation } from "react-router-dom";
 
 /**
  *
@@ -14,6 +15,18 @@ import Loading from "../../../components/reusable/loading";
 export default function ReportPage() {
   const dispatch = useAppDispatch();
   const session = useAppSelector((state) => state.sessionDetail.session);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/new-report") {
+      dispatch(
+        setSession({
+          session_data: {},
+        }),
+      );
+    }
+  }, [location, dispatch]);
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
@@ -40,23 +53,6 @@ export default function ReportPage() {
     }
     setLoading(false);
   }, [sessionDetail]);
-
-  useEffect(() => {
-    if (sessionDetail !== undefined) {
-      if (activeStep !== 0) {
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              is_home: false,
-            },
-          }),
-        );
-      }
-    }
-    // setLoading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeStep]);
 
   //
   const changeActiveStep = useCallback((stepValue: number) => {

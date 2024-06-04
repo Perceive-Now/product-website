@@ -2,7 +2,7 @@ import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setSession } from "../../../stores/session";
 import { setUseCase } from "../../../stores/use-case";
-import { UseCaseOptions } from "./__use-cases";
+import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import Button from "../../../components/reusable/button";
 import UseCaseSelectButton from "../../../components/reusable/usecase-select";
 import CheckBoxButtons from "../../../components/reusable/checkbox";
@@ -167,13 +167,20 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   return (
     <div className="h-full">
-      <p className="text-[#120824] text-5xl font-bold ">Please select use cases for your report</p>
+      <p className="text-[#120824] text-5xl font-bold">Please select use cases for your report</p>
       <div className="w-[660px] 2xl:w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="mt-1 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 bg-appGray-100 p-2 rounded-lg">
+          <div>
+            {UsecaseOptions.map((usecase, idx) => (
+              <div key={idx * 99}>{usecase.reportName}</div>
+            ))}
+          </div>
+
+          <div className="items-center">
             <h5 className=" text-secondary-500 mb-1 text-[32px] font-bold font-helvetica">
               IP Analysis
             </h5>
+
             <div className="space-y-[20px]">
               <div className="space-y-[10px]">
                 <p className="text-secondary-500">Pro reports</p>
@@ -203,7 +210,7 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
               </div>
             </div>
           </div>
-          <div className="mt-1">
+          <div className="">
             <h5 className="text-secondary-500 mb-1 text-[32px] font-bold font-helvetica">
               Market Research & IP
             </h5>
