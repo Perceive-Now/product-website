@@ -3,6 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { quickPromptContent } from "./quick-prompt-content";
 import { type AnyObject } from "yup/lib/types";
+import Button from "../../../components/reusable/button";
+import classNames from "classnames";
 
 export default function QuickPromptForm() {
   const quickPrompts = quickPromptContent.find((content) => content.id === 0);
@@ -22,7 +24,7 @@ export default function QuickPromptForm() {
         curr,
       ) => {
         if (curr.contentType === "prompt" && curr.keyword) {
-          acc[curr.keyword] = yup.string();
+          acc[curr.keyword] = yup.string().trim().required("Please provide your answer");
         }
         return acc;
       },
@@ -49,8 +51,8 @@ export default function QuickPromptForm() {
 
   return (
     <form onSubmit={handleSubmit(onContinue)}>
-      <fieldset>
-        <div className="flex flex-wrap gap-2 items-center ">
+      <fieldset className="bg-white rounded-lg p-[20px] border border-appGray-200">
+        <div className="flex flex-wrap gap-2 items-center text-lg font-semibold">
           {quickPrompts?.contentList.map((content, index) => {
             if (content.contentType === "text") {
               return (
@@ -60,26 +62,33 @@ export default function QuickPromptForm() {
               );
             } else if (content.contentType === "prompt" && content.keyword) {
               return (
-                <div key={index} className="inline-block max-w-fit">
+                <div key={index} className="inline-block max-w-fit px-1 bg-appGray-100">
                   <input
-                    className="input-field"
+                    className={classNames(
+                      { "border-b-red-500": errors[content.keyword] },
+                      { "border-b-primary-900": !errors[content.keyword] },
+                      "focus:outline-none p-1 bg-transparent rounded-md rounded-b-none border-b-2 text-primary-900",
+                    )}
                     key={index}
                     width={content.placeholder.length}
                     {...register(content.keyword)}
                     placeholder={content.placeholder}
-                    onChange={(e) => {
-                      setValue(content.keyword, e.target.value);
-                    }}
                   />
                 </div>
               );
             }
           })}
         </div>
-        <button type="submit" className="btn-primary">
-          Continue
-        </button>
       </fieldset>
+      <Button
+        type="optional"
+        handleClick={() => {
+          handleSubmit(onContinue);
+        }}
+        classname="w-[320px] mt-[20px]"
+      >
+        <p className="text-secondary-800">Continue</p>
+      </Button>
     </form>
   );
 }
