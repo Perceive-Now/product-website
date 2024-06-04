@@ -2,6 +2,8 @@ import uploadAttachmentsPages from "@/pages/product/upload-attachements-page/upl
 import { UploadAttachmentsContext } from "@/pages/product/upload-attachements-page/upload-attachments-context";
 import { useContext, useEffect, useState } from "react";
 
+// TODO remove context and reuse when needed
+
 export default function ProgressBar() {
   const { currentPageId, additionalQuestionIds, currentStep } =
     useContext(UploadAttachmentsContext);

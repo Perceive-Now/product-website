@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import uploadAttachmentsPages from "./upload-attachment-pages-list";
 import { UploadAttachmentsContext } from "./upload-attachments-context";
 
+// TODO Remove and use one in reusable after switching to redux
+
 export default function ProgressBar() {
   const { currentPageId, additionalQuestionIds, currentStep } =
     useContext(UploadAttachmentsContext);

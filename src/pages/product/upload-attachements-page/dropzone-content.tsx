@@ -1,4 +1,4 @@
-import UploadIcon from "./upload";
+import { UploadIcon } from "../../../components/icons";
 
 const listContent = [
   "PDF (.pdf) - Portable Document Format",

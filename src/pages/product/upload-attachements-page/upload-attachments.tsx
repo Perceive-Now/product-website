@@ -1,11 +1,11 @@
 import React, { useContext, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Button from "../../../components/reusable/button";
-import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
 import useFileUploadService from "./use-file-upload-service";
 import toast from "react-hot-toast";
 import { UploadAttachmentsContext } from "./upload-attachments-context";
+import { DustbinIcon } from "../../../components/icons";
 
 const baseStyle = {
   flex: 1,

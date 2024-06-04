@@ -18,7 +18,7 @@ export default function DefaultLayout() {
           <AppSidebar />
           <div className="h-full w-full duration-500 px-4 ">
             <AppHeader />
-            <div className="relative py-3 h-full w-full">
+            <div className="relative py-3 h-full w-full pl-1">
               <Outlet />
             </div>
           </div>
