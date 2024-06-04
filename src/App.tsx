@@ -106,7 +106,7 @@ import UploadAttachementsMethod from "./pages/product/upload-attachements-page/u
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 import ReportPage from "./pages/product/report/report-page";
-import Landing from "./pages/product/product-new/landing/landing";
+import Landing from "./pages/product/landing/landing";
 
 /**
  *
