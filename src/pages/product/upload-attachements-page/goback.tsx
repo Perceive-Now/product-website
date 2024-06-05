@@ -1,7 +1,12 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
-import { UploadAttachmentsContext } from "./upload-attachments-context";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import {
+  decrementStep,
+  reset,
+  setCurrentPageId,
+  setCurrentQuestionId,
+} from "../../../stores/upload-attachments";
 
 const BackButton = () => {
   return (
@@ -14,14 +19,11 @@ const BackButton = () => {
 const buttonStyle = "flex flex-row gap-x-1 font-bold text-secondary-800 w-fit";
 
 export default function GoBack() {
-  const {
-    currentPageId,
-    setCurrentPageId,
-    setCurrentStep,
-    currentQuestionId,
-    setCurrentQuestionId,
-    additionalQuestionIds,
-  } = useContext(UploadAttachmentsContext);
+  const dispatch = useAppDispatch();
+
+  const { currentPageId, additionalQuestionIds, currentQuestionId } = useAppSelector(
+    (state) => state.uploadAttachments,
+  );
 
   if (currentPageId === 0) {
     // if in upload section page
@@ -32,13 +34,42 @@ export default function GoBack() {
     );
   }
 
+  if (currentPageId === 2) {
+    // if in need additional answers page
+    return (
+      <button
+        onClick={() => {
+          dispatch(setCurrentPageId(0));
+          dispatch(decrementStep());
+        }}
+        className={buttonStyle}
+      >
+        <BackButton />
+      </button>
+    );
+  }
+
+  if (currentPageId === 4) {
+    // if in all set page
+    return (
+      <button
+        onClick={() => {
+          dispatch(reset());
+        }}
+        className={buttonStyle}
+      >
+        <BackButton />
+      </button>
+    );
+  }
+
   if (currentPageId !== 3) {
     // if not in additional questions page
     return (
       <button
         onClick={() => {
-          setCurrentPageId(currentPageId - 1);
-          setCurrentStep((prev) => prev - 1);
+          dispatch(setCurrentPageId(currentPageId - 1));
+          dispatch(decrementStep());
         }}
         className={buttonStyle}
       >
@@ -52,13 +83,13 @@ export default function GoBack() {
 
     if (currentQuestionId === additionalQuestionIds[0]) {
       // if it is the first question
-      setCurrentPageId(currentPageId - 1);
-      setCurrentStep((prev) => prev - 1);
+      dispatch(setCurrentPageId(currentPageId - 1));
+      dispatch(decrementStep());
       return;
     }
 
-    setCurrentQuestionId((prev) => prev - 1);
-    setCurrentStep((prev) => prev - 1);
+    dispatch(setCurrentQuestionId(currentQuestionId - 1));
+    dispatch(decrementStep());
   };
 
   return (

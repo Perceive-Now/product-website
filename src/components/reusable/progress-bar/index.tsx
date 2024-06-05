@@ -1,12 +1,13 @@
-import uploadAttachmentsPages from "@/pages/product/upload-attachements-page/upload-attachment-pages-list";
-import { UploadAttachmentsContext } from "@/pages/product/upload-attachements-page/upload-attachments-context";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../../hooks/redux";
+import uploadAttachmentsPages from "../../../pages/product/upload-attachements-page/upload-attachment-pages-list";
 
-// TODO remove context and reuse when needed
+// TODO Remove and use one in reusable after switching to redux
 
 export default function ProgressBar() {
-  const { currentPageId, additionalQuestionIds, currentStep } =
-    useContext(UploadAttachmentsContext);
+  const { currentPageId, additionalQuestionIds, currentStep } = useAppSelector(
+    (state) => state.uploadAttachments,
+  );
 
   const [totalSteps, setTotalSteps] = useState(0);
 
