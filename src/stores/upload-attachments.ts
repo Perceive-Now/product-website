@@ -200,9 +200,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAnswersToAddtionalQuestionsError = false;
       state.isUploadAnswersToAddtionalQuestionsSuccess = true;
-      state.additionalQuestionIds = [];
       state.currentQuestionId = 0;
-      state.answers = [];
     });
     builder.addCase(uploadAnswersToAddtionalQuestions.rejected, (state, action) => {
       state.isUploading = false;

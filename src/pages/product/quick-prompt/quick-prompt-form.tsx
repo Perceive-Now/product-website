@@ -5,8 +5,8 @@ import { quickPromptContent } from "./quick-prompt-content";
 import { type AnyObject } from "yup/lib/types";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
-import { useAppDispatch } from "@/hooks/redux";
-import { uploadQuickPrompts } from "@/stores/quick-prompt";
+import { useAppDispatch } from "../../../hooks/redux";
+import { uploadQuickPrompts } from "../../../stores/quick-prompt";
 import jsCookie from "js-cookie";
 
 export default function QuickPromptForm() {

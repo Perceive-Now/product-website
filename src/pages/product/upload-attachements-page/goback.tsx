@@ -50,11 +50,13 @@ export default function GoBack() {
   }
 
   if (currentPageId === 4) {
-    // if in all set page
+    // if not in additional questions page
     return (
       <button
         onClick={() => {
-          dispatch(reset());
+          dispatch(setCurrentPageId(currentPageId - 1));
+          dispatch(decrementStep());
+          dispatch(setCurrentQuestionId(additionalQuestionIds[-1]));
         }}
         className={buttonStyle}
       >
@@ -88,7 +90,13 @@ export default function GoBack() {
       return;
     }
 
-    dispatch(setCurrentQuestionId(currentQuestionId - 1));
+    // find previous question id
+    const currentQuestionIdIndex = additionalQuestionIds.findIndex(
+      (id) => id === currentQuestionId,
+    );
+    const previousQuestionId = additionalQuestionIds[currentQuestionIdIndex - 1];
+
+    dispatch(setCurrentQuestionId(previousQuestionId));
     dispatch(decrementStep());
   };
 
