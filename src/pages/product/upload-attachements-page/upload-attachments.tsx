@@ -130,7 +130,7 @@ export default function UploadAttachments() {
         userId: jsCookie.get("user_id") ?? "",
         sessionId: jsCookie.get("session_id") ?? "",
         categoryId: "1" ?? "", // TODO get from usecase redux
-        attachments: files,
+        attachments: { ...files },
       }),
     );
   };

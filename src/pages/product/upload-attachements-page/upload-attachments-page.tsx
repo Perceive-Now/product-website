@@ -5,11 +5,16 @@ import uploadAttachmentsPages from "./upload-attachment-pages-list";
 import { useAppSelector } from "../../../hooks/redux";
 
 export default function UploadAttachmentsPage() {
+  const { currentPageId } = useAppSelector((state) => state.uploadAttachments);
+
+  const currentPageTitle =
+    uploadAttachmentsPages.find((page) => page.id === currentPageId)?.title ?? "Upload Attachments";
+
   return (
     <>
       <GoBack />
       <div>
-        <Title text="Upload Attachments" className="mt-5" />
+        <Title text={currentPageTitle} className="mt-5" />
         <ProgressBar />
         <PagesStepper />
       </div>
