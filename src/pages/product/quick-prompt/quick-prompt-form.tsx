@@ -5,12 +5,17 @@ import { quickPromptContent } from "./quick-prompt-content";
 import { type AnyObject } from "yup/lib/types";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
+import { useAppDispatch } from "@/hooks/redux";
+import { uploadQuickPrompts } from "@/stores/quick-prompt";
+import jsCookie from "js-cookie";
 
 export default function QuickPromptForm() {
-  const quickPrompts = quickPromptContent.find((content) => content.id === 0);
+  const dispatch = useAppDispatch();
+
+  const requiredQuickPrompts = quickPromptContent.find((content) => content.id === 0);
 
   const formInitialValue =
-    quickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
+    requiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
       if (curr.contentType === "prompt" && curr.keyword) {
         acc[curr.keyword] = "";
       }
@@ -18,7 +23,7 @@ export default function QuickPromptForm() {
     }, {}) || {};
 
   const formSchema =
-    quickPrompts?.contentList.reduce(
+    requiredQuickPrompts?.contentList.reduce(
       (
         acc: { [key: string]: yup.StringSchema<string | undefined, AnyObject, string | undefined> },
         curr,
@@ -38,7 +43,6 @@ export default function QuickPromptForm() {
     formState: { errors },
     handleSubmit,
     reset,
-    setValue,
   } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
@@ -46,14 +50,24 @@ export default function QuickPromptForm() {
   });
 
   const onContinue = (params: any) => {
-    console.log(params);
+    const dataObj = {
+      paragraphId: "1",
+      quickPrompts: { ...params },
+      categoryId: "1", // TODO: get categoryId, userId,
+      userId: jsCookie.get("user_id") ?? "",
+      sessionId: jsCookie.get("session_id") ?? "",
+    };
+
+    dispatch(uploadQuickPrompts(dataObj));
+
+    reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onContinue)}>
       <fieldset className="bg-white rounded-lg p-[20px] border border-appGray-200">
         <div className="flex flex-wrap gap-2 items-center text-lg font-semibold">
-          {quickPrompts?.contentList.map((content, index) => {
+          {requiredQuickPrompts?.contentList.map((content, index) => {
             if (content.contentType === "text") {
               return (
                 <p className="inline-block" key={index}>
