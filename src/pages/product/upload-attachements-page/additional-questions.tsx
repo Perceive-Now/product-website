@@ -48,11 +48,6 @@ export default function AdditionalQuestions() {
     dispatch,
   ]);
 
-  useEffect(() => {
-    if (additionalQuestionIds.length === 0) return;
-    dispatch(setCurrentQuestionId(additionalQuestionIds[0].question_id));
-  }, [additionalQuestionIds, dispatch]);
-
   const currentQuestion = questionList.filter(
     (question) => question.questionId === currentQuestionId,
   )[0];

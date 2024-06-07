@@ -184,7 +184,8 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploadAttachmentsError = false;
       state.isUploadAttachmentsSuccess = true;
       state.additionalQuestionIds = action.payload.data ?? [];
-      state.currentQuestionId = 0;
+      state.currentQuestionId =
+        state.additionalQuestionIds.length > 0 ? state.additionalQuestionIds[0].question_id : 0;
       state.answers = [];
     });
     builder.addCase(uploadAttachments.rejected, (state, action) => {
@@ -204,7 +205,6 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAnswersToAddtionalQuestionsError = false;
       state.isUploadAnswersToAddtionalQuestionsSuccess = true;
-      state.currentQuestionId = 0;
     });
     builder.addCase(uploadAnswersToAddtionalQuestions.rejected, (state, action) => {
       state.isUploading = false;

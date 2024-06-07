@@ -26,7 +26,7 @@ export default function ProgressBar() {
     <div className="w-full bg-primary-900 h-2 my-3">
       <div
         className="h-full bg-secondary-500"
-        style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+        style={{ width: `${((currentStep + 1) / (totalSteps + 2)) * 100}%` }}
       ></div>
     </div>
   );

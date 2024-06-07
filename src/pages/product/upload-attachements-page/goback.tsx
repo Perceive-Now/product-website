@@ -25,38 +25,27 @@ export default function GoBack() {
     (state) => state.uploadAttachments,
   );
 
+  // return (
+  //   <Link to="/interaction-method" className={buttonStyle}>
+  //     <BackButton />
+  //   </Link>
+  // );
+
   if (currentPageId === 0) {
     // if in upload section page
     return (
-      <Link to="/product" className={buttonStyle}>
+      <Link to="/interaction-method" className={buttonStyle}>
         <BackButton />
       </Link>
     );
   }
 
   if (currentPageId === 2) {
-    // if in need additional answers page
-    return (
-      <button
-        onClick={() => {
-          dispatch(setCurrentPageId(0));
-          dispatch(decrementStep());
-        }}
-        className={buttonStyle}
-      >
-        <BackButton />
-      </button>
-    );
-  }
-
-  if (currentPageId === 4) {
     // if not in additional questions page
     return (
       <button
         onClick={() => {
-          dispatch(setCurrentPageId(currentPageId - 1));
-          dispatch(decrementStep());
-          dispatch(setCurrentQuestionId(additionalQuestionIds[-1]));
+          dispatch(reset());
         }}
         className={buttonStyle}
       >
@@ -83,7 +72,7 @@ export default function GoBack() {
   const handlBackBtnClickInAdditionalQuestions = () => {
     if (additionalQuestionIds.length === 0) return;
 
-    if (currentQuestionId === additionalQuestionIds[0]) {
+    if (currentQuestionId === additionalQuestionIds[0].question_id) {
       // if it is the first question
       dispatch(setCurrentPageId(currentPageId - 1));
       dispatch(decrementStep());
@@ -92,9 +81,9 @@ export default function GoBack() {
 
     // find previous question id
     const currentQuestionIdIndex = additionalQuestionIds.findIndex(
-      (id) => id === currentQuestionId,
+      (questionIdObj) => questionIdObj.question_id === currentQuestionId,
     );
-    const previousQuestionId = additionalQuestionIds[currentQuestionIdIndex - 1];
+    const previousQuestionId = additionalQuestionIds[currentQuestionIdIndex - 1].question_id;
 
     dispatch(setCurrentQuestionId(previousQuestionId));
     dispatch(decrementStep());
