@@ -10,7 +10,7 @@ interface uploadQuickPromptsState {
   currentPageId: number;
   paragraphIds: number[];
   currentStep: number;
-  quickPrompts: string[];
+  quickPrompts: TPromptArray;
   quickPromptsUploadState: {
     isSuccess: boolean;
     isError: boolean;
@@ -69,8 +69,18 @@ export const quickPromptsSlice = createSlice({
   initialState,
   reducers: {
     // -----------------------------------------------------------------------
-    setQuickPrompts: (state, action: PayloadAction<string[]>) => {
-      state.quickPrompts = action.payload;
+    setQuickPrompts: (
+      state,
+      action: PayloadAction<{ prompts: { [key: string]: string }; paragraphId: number }>,
+    ) => {
+      const { prompts, paragraphId } = action.payload;
+      const index = state.quickPrompts.findIndex((content) => content.id === paragraphId);
+
+      if (index < 0) {
+        state.quickPrompts.push({ id: paragraphId, prompts });
+      } else {
+        state.quickPrompts[index] = { id: paragraphId, prompts };
+      }
     },
 
     // -----------------------------------------------------------------------
@@ -185,8 +195,9 @@ interface IResponseError {
   resError: string;
   message: string;
 }
-
-export interface IAnswerObj {
-  questionId: number;
-  answer: string;
+interface IPrompt {
+  id: number;
+  prompts: { [key: string]: string };
 }
+
+type TPromptArray = IPrompt[];

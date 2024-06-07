@@ -6,23 +6,32 @@ import { type AnyObject } from "yup/lib/types";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { uploadQuickPrompts } from "../../../stores/upload-quick-prompt";
+import { setQuickPrompts, uploadQuickPrompts } from "../../../stores/upload-quick-prompt";
 import jsCookie from "js-cookie";
 
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
 
-  const { isUploading } = useAppSelector((state) => state.uploadQuickPrompt);
+  const { isUploading, quickPrompts, currentParagraphId } = useAppSelector(
+    (state) => state.uploadQuickPrompt,
+  );
 
-  const requiredQuickPrompts = quickPromptContent.find((content) => content.id === 0);
+  const requiredQuickPrompts = quickPromptContent.find(
+    (content) => content.id === currentParagraphId,
+  );
 
-  const formInitialValue =
+  let formInitialValue =
     requiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
       if (curr.contentType === "prompt" && curr.keyword) {
         acc[curr.keyword] = "";
       }
       return acc;
     }, {}) || {};
+
+  formInitialValue = {
+    ...formInitialValue,
+    ...quickPrompts.find((content) => content.id === 0)?.prompts,
+  };
 
   const formSchema =
     requiredQuickPrompts?.contentList.reduce(
@@ -51,11 +60,17 @@ export default function QuickPromptForm() {
   });
 
   const onContinue = (params: { [key: string]: string }) => {
+    dispatch(setQuickPrompts({ prompts: params, paragraphId: currentParagraphId }));
+
+    const indexOfCurrentParagraphId = quickPromptContent.findIndex(
+      (content) => content.id === currentParagraphId,
+    );
+
     const promptData = [...quickPromptContent];
 
-    promptData[0] = {
-      ...promptData[0],
-      contentList: promptData[0].contentList.map((content) => {
+    promptData[indexOfCurrentParagraphId] = {
+      ...promptData[indexOfCurrentParagraphId],
+      contentList: promptData[indexOfCurrentParagraphId].contentList.map((content) => {
         if (content.contentType === "prompt" && content.keyword) {
           return {
             ...content,
@@ -66,14 +81,17 @@ export default function QuickPromptForm() {
       }),
     };
 
-    const content = promptData[0].contentList.reduce((acc: string, curr) => {
-      if (curr.contentType === "text") {
-        return acc + " " + curr.content;
-      } else if (curr.contentType === "prompt" && "prompt" in curr) {
-        return acc + " " + curr.prompt;
-      }
-      return acc;
-    }, "");
+    const content = promptData[indexOfCurrentParagraphId].contentList.reduce(
+      (acc: string, curr) => {
+        if (curr.contentType === "text") {
+          return acc + " " + curr.content;
+        } else if (curr.contentType === "prompt" && "prompt" in curr) {
+          return acc + " " + curr.prompt;
+        }
+        return acc;
+      },
+      "",
+    );
 
     const dataObj = {
       promptData: promptData,
