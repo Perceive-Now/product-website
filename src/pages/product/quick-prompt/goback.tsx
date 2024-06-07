@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
@@ -21,6 +21,7 @@ const buttonStyle = "flex flex-row gap-x-1 font-bold text-secondary-800 w-fit";
 
 export default function GoBack() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { currentPageId, currentParagraphId } = useAppSelector((state) => state.uploadQuickPrompt);
 
@@ -55,11 +56,8 @@ export default function GoBack() {
     } // error
 
     if (indexOfCurrentParagraphId === 0) {
-      return (
-        <Link to="/interaction-method" className={buttonStyle}>
-          <BackButton />
-        </Link>
-      );
+      navigate("/interaction-method");
+      return;
     }
 
     const previousParagraphId = quickPromptContent[indexOfCurrentParagraphId - 1].id;
