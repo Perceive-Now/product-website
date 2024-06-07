@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 import StripePayment from "../../../../../pages/authentication/signup/stripe";
 import { getProducts } from "../../../../../utils/api/product";
 import { useAppSelector } from "../../../../../hooks/redux";
+import BackButton from "../../../../../components/reusable/back-button";
 
 // interface Props {
 //   changeActiveStep: (step: number) => void;
@@ -32,17 +33,21 @@ const Payment = () => {
 
   const selectedReports = products?.filter((p) => ItemId?.includes(p.id));
 
-  useEffect(() => {
-    if (!clientSecret && !selectedReports) {
-      navigate("/");
-    }
-  }, [clientSecret, navigate, selectedReports]);
+  // useEffect(() => {
+  //   if (!clientSecret && !selectedReports) {
+  //     navigate("/");
+  //   }
+  // }, [clientSecret, navigate, selectedReports]);
 
   return (
-    <div>
-      {clientSecret && selectedReports && (
-        <StripePayment clientSecret={clientSecret} selectedPlan={selectedReports} />
-      )}
+    <div className="">
+      <BackButton path={"interaction-method"} />
+      <h5 className="text-5xl font-[800] my-2">Payment</h5>
+      <div className="w-[932px] mx-auto flex justify-center items-center  shadow border rounded-md bg-white h-full">
+        {clientSecret && selectedReports && (
+          <StripePayment clientSecret={clientSecret} selectedPlan={selectedReports} />
+        )}
+      </div>
     </div>
   );
 };

@@ -129,6 +129,19 @@ Props) {
       userId,
     ],
   );
+  const onSkip = useCallback(() => {
+    dispatch(
+      setSession({
+        session_data: {
+          ...sessionDetail,
+          question_id: questionId,
+          step_id: activeStep + 1,
+          active_index: activeIndex + 1,
+        },
+      }),
+    );
+    changeActiveStep(activeStep + 1);
+  }, [activeIndex, activeStep, changeActiveStep, dispatch, questionId, sessionDetail]);
   return (
     <>
       <NewComponent
@@ -136,6 +149,7 @@ Props) {
         onContinue={onContinue}
         question={question.question}
         exampleAnswer={question.answer}
+        onSkip={onSkip}
       />
     </>
   );

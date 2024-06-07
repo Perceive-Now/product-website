@@ -38,8 +38,6 @@ export default function ChatQuestionAnswer2({
   const userId = jsCookie.get("user_id");
   const sessionId = jsCookie.get("session_id");
 
-  // jsCookie.set("chatId", String(3));
-
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
@@ -114,6 +112,20 @@ export default function ChatQuestionAnswer2({
     ],
   );
 
+  const onSkip = useCallback(() => {
+    dispatch(
+      setSession({
+        session_data: {
+          ...sessionDetail,
+          question_id: questionId,
+          active_index: activeIndex + 1,
+          step_id: activeStep - 1,
+        },
+      }),
+    );
+    changeActiveStep(activeStep - 1);
+  }, [activeIndex, activeStep, changeActiveStep, dispatch, questionId, sessionDetail]);
+
   return (
     <>
       <NewComponent
@@ -121,6 +133,7 @@ export default function ChatQuestionAnswer2({
         onContinue={onContinue}
         question={question.question}
         exampleAnswer={question.answer}
+        onSkip={onSkip}
       />
     </>
   );

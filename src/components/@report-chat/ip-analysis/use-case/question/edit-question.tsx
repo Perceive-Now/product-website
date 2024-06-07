@@ -136,6 +136,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
           question={question}
           exampleAnswer={exampleAnswer}
           answer={answer}
+          onSkip
         />
       )}
     </>

@@ -186,7 +186,6 @@ export const getCurrentSession = createAsyncThunk("getCurrentSession", async ():
 });
 
 export const getNewSession = createAsyncThunk("getNewSession", async (): Promise<IResponse> => {
-  // const sessionId = jsCookie.get("sessionID");
   try {
     const response = await axiosInstance.get<IRefreshResponse>(
       `/api/new_session?code=${authCode}&clientId=default`,

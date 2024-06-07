@@ -82,7 +82,7 @@ const UseCaseTab = ({ UseCaseOptions, selected, handleChange, reports, onContinu
                     <p className="text-primary-900 font-600">Pro reports</p>
                     <UseCaseSelectButton
                       options={UseCaseOptions.filter(
-                        (r) => r.reportPlan === "pro" && r.reportType === "market",
+                        (r) => r.reportPlan === "pro" && r.reportType === "market-research",
                       )}
                       activeModes={selected}
                       handleModeChange={handleChange}
@@ -95,7 +95,7 @@ const UseCaseTab = ({ UseCaseOptions, selected, handleChange, reports, onContinu
                     <p className="text-primary-900 font-600">Premium reports</p>
                     <UseCaseSelectButton
                       options={UseCaseOptions.filter(
-                        (r) => r.reportType === "market" && r.reportPlan === "premium",
+                        (r) => r.reportType === "market-research" && r.reportPlan === "premium",
                       )}
                       activeModes={selected}
                       handleModeChange={handleChange}

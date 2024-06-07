@@ -28,7 +28,7 @@ export default function GoBack() {
   if (currentPageId === 0) {
     // if in upload section page
     return (
-      <Link to="/product" className={buttonStyle}>
+      <Link to="/interaction-method" className={buttonStyle}>
         <BackButton />
       </Link>
     );

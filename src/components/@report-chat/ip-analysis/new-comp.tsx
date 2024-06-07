@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 
 import * as yup from "yup";
-// import Loading from "../../reusable/loading";
 import Button from "../../reusable/button";
 import { useCallback, useEffect } from "react";
 
@@ -14,6 +13,7 @@ interface Props {
   exampleAnswer: string;
   isLoading: boolean;
   answer?: string;
+  onSkip?: any;
 }
 
 export default function NewComponent({
@@ -22,6 +22,7 @@ export default function NewComponent({
   isLoading,
   exampleAnswer,
   answer,
+  onSkip,
 }: Props) {
   const formResolver = yup.object().shape({
     answer: yup.string().trim().required("Please provide your answer"),
@@ -54,11 +55,11 @@ export default function NewComponent({
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 
   return (
-    <>
+    <div className="">
       {/* <Loading isLoading={isLoading} /> */}
       <div className="space-y-2.5">
         <h4
-          className="text-gray-600 text-xl font-semibold"
+          className="text-primary-900 text-xl font-semibold"
           dangerouslySetInnerHTML={{ __html: `${question}` }}
         />
         <p
@@ -67,25 +68,25 @@ export default function NewComponent({
           dangerouslySetInnerHTML={{ __html: `Eg: ${formattedAnswer}` }}
         />
         <Button
-          type="secondary"
+          type="gray"
           size="small"
-          rounded="medium"
+          rounded="small"
           classname="px-0.5 py-[6px] text-xs font-semibold"
           handleClick={useExample}
         >
           Use this example
         </Button>
       </div>
-      <form onSubmit={handleSubmit(onContinue)} className="mt-5">
+      <form onSubmit={handleSubmit(onContinue)} className="mt-4">
         <fieldset className="mt-3">
           <label className=" text-sm font-medium leading-5 text-gray-700">
-            <div className="mt-0.5 rounded-md shadow-sm">
+            <div className="mt-0.5 rounded-md">
               <textarea
                 rows={5}
                 disabled={isLoading}
                 {...register("answer")}
                 className={classNames(
-                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller",
+                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
                   errors.answer
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -98,12 +99,15 @@ export default function NewComponent({
             <div className="text-xs text-danger-500">{errors.answer?.message}</div>
           )}
         </fieldset>
-        <div className="mt-4 pb-4">
-          <Button htmlType={"submit"} rounded={"large"} loading={isLoading} disabled={isLoading}>
+        <div className="mt-4 pb-4 flex gap-2 items-center">
+          <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
+            Skip for now
+          </Button>
+          <Button htmlType={"submit"} rounded={"medium"} loading={isLoading} disabled={isLoading}>
             Save & Continue
           </Button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
