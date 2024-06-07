@@ -12,7 +12,7 @@ const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
 
   return (
     <>
-      <ol className="flex items-center overflow-hidden w-full rounded">
+      <ol className="flex items-center overflow-hidden w-full">
         {steps.map((step, idx) => (
           <li
             key={idx}

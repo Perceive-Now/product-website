@@ -13,7 +13,7 @@ interface Props {
 
 const StripePayment = ({ clientSecret, changeActiveStep, selectedPlan }: Props) => {
   return (
-    <div className="mx-auto">
+    <div className="w-full">
       {STRIPE_PROMISE && clientSecret && (
         <Elements stripe={loadStripe(STRIPE_PROMISE)} options={{ clientSecret }}>
           <StripePaymentForm selectedPlan={selectedPlan} changeActiveStep={changeActiveStep} />

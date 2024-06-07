@@ -19,7 +19,6 @@ interface ISessionData {
   user_chat?: IUserChat;
   client_secret?: string;
   active_index?: number;
-  is_home?: boolean;
 }
 
 interface IUserChat {
@@ -95,7 +94,6 @@ const updateSession = async (payload: ISession) => {
         last_session_id: payload.session_data?.last_session_id,
         client_secret: payload.session_data?.client_secret,
         active_index: payload.session_data?.active_index,
-        is_home: payload.session_data?.is_home || true,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,

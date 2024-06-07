@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, useEffect } from "react";
+import { useState, FunctionComponent, useEffect, useCallback } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { sidebarItems, ISidebarListItem } from "./_data";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { logoutUser } from "../../../stores/auth";
+import { getNewSession, logoutUser } from "../../../stores/auth";
 //
 
 import { LogoutIcon, SettingsIcon } from "../../icons";
@@ -194,28 +194,41 @@ export const AppSidebar: FunctionComponent<Props> = () => {
 };
 
 function NavLinkItem(props: INavLinkItemProps) {
+  const dispatch = useAppDispatch();
+
+  const handleClick = useCallback(() => {
+    if (props.value === "new-report") {
+      // dispatch(getNewSession());
+      // dispatch(
+      //   setSession({
+      //     session_data: {},
+      //   }),
+      // );
+    }
+  }, [dispatch, props.value]);
+
   return (
-    <NavLink to={props.to ?? ""} end>
-      {({ isActive }) => (
-        <div className={classNames("flex items-center gap-0.5", props.open && " px-2.5 ")}>
-          {props.icon && (
-            <div
-              className={classNames(
-                "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
-              )}
-            >
-              <props.icon className="text-primary-900" />
-            </div>
-          )}
-          {props.open && (
-            <span
-              className={classNames("flex items-center text-sm font-semibold text-secondary-800")}
-            >
-              {props.title}
-            </span>
-          )}
-        </div>
-      )}
+    <NavLink to={props.to ?? ""} end onClick={handleClick}>
+      {/* {({ isActive }) => ( */}
+      <div className={classNames("flex items-center gap-0.5", props.open && " px-2.5 ")}>
+        {props.icon && (
+          <div
+            className={classNames(
+              "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
+            )}
+          >
+            <props.icon className="text-primary-900" />
+          </div>
+        )}
+        {props.open && (
+          <span
+            className={classNames("flex items-center text-sm font-semibold text-secondary-800")}
+          >
+            {props.title}
+          </span>
+        )}
+      </div>
+      {/* )} */}
     </NavLink>
   );
 }
