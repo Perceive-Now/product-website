@@ -1,15 +1,13 @@
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import classNames from "classnames";
+import toast from "react-hot-toast";
+
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setSession } from "../../../stores/session";
 import { setUseCase } from "../../../stores/use-case";
-import { UseCaseOptions } from "./__use-cases";
-import Button from "../../../components/reusable/button";
-import UseCaseSelectButton from "../../../components/reusable/usecase-select";
-import CheckBoxButtons from "../../../components/reusable/checkbox";
-
-interface Props {
-  changeActiveStep: (steps: number) => void;
-}
+import { UsecaseOptions } from "./__use-cases";
+import UseCaseTab from "./case";
+import { useNavigate } from "react-router-dom";
 
 interface OptionMappings {
   [key: string]: string;
@@ -18,15 +16,16 @@ interface OptionMappings {
 /**
  *
  */
-const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
+const UseCaseSelect = () => {
+  const navigation = useNavigate();
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-  // const { pathname } = useLocation();
 
   const [selected, setSelected] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
-
-  const [error, setError] = useState("");
+  const [useCaseSelected, setUseCaseSelected] = useState<any>(UsecaseOptions[0].children);
+  const [useCaseType, setUseCaseType] = useState(UsecaseOptions[0].value);
+  const [reports, setReport] = useState<any>([]);
 
   //
   const onContinue = useCallback(() => {
@@ -84,20 +83,17 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
           }),
         );
       }
-
-      changeActiveStep(3);
+      navigation("/interaction-method");
       dispatch(setUseCase({ usecases: options }));
       setSelected([]);
-
-      setError("");
     } else {
-      setError("Please select one of the use cases");
+      toast.error("Please select one of the use cases");
     }
-  }, [changeActiveStep, dispatch, options, selected.length, sessionDetail]);
+  }, [dispatch, navigation, options, selected.length, sessionDetail]);
 
   useEffect(() => {
     const optionMappings: OptionMappings = {
-      // "freedom-to-operate": "ip-validity-analysis",
+      "freedom-to-operate": "ip-validity-analysis",
       "prior-art-search": "ip-validity-analysis",
       "patent-validity": "ip-validity-analysis",
       "patent-infringement": "ip-validity-analysis",
@@ -105,7 +101,7 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
       "ip-licensing-opportunity": "ip-licensing-opportunity",
       //
       "m&a": "market-research",
-      "market-analysis": "market-research",
+      "market-potential": "market-research",
       "competitive-landscape": "market-research",
       "consumer-landscape": "market-research",
       commercialization: "market-research",
@@ -128,13 +124,15 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
   // checkbox selection
   const handleChange = useCallback(
     (mode: string[]) => {
-      setError("");
-      // console.log(mode);
-      // setSelected(radioOptions.map(({ value }) => value));
       setSelected(mode);
 
-      const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
+      const reports = UsecaseOptions.find((option) => option.value === useCaseType);
+      const reportsList = reports?.children.filter((c) => mode.includes(c.value));
+      const matchingIds = reports?.children
+        .filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
         .map((r) => r.id);
+      setReport(reportsList);
+
       dispatch(
         setSession({
           session_data: {
@@ -143,114 +141,50 @@ const UseCaseSelect: FunctionComponent<Props> = ({ changeActiveStep }) => {
           },
         }),
       );
-      // if (mode.includes("all")) {
-      //   if (selected.length >= 4) {
-      //     const filteredOptions = radioOptions.filter(
-      //       (option) => mode.includes(option.value) && option.value !== "all",
-      //     );
-      //     setSelected(filteredOptions.map((option) => option.value));
-      //   } else {
-      //     setSelected(radioOptions.map(({ value }) => value));
-      //   }
-      // } else {
-      //   if (!mode.includes("all") && selected.length >= 4) {
-      //     setSelected([]);
-      //   } else if (mode.lengOptionMappingsth >= 4) {
-      //     setSelected(radioOptions.map(({ value }) => value));
-      //   } else {
-      //     setSelected(mode);
-      //   }
-      // }
     },
-    [dispatch, sessionDetail],
+    [dispatch, sessionDetail, useCaseType],
   );
+
+  const chooseUseCase = useCallback((options: any) => {
+    setUseCaseType(options.value);
+    setUseCaseSelected(options.children);
+  }, []);
 
   return (
     <div className="h-full">
-      <p className="text-[#120824] text-5xl font-bold ">Please select use cases for your report</p>
-      <div className="w-[660px] 2xl:w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="mt-1 items-center">
-            <h5 className=" text-secondary-500 mb-1 text-[32px] font-bold font-helvetica">
-              IP Analysis
-            </h5>
-            <div className="space-y-[20px]">
-              <div className="space-y-[10px]">
-                <p className="text-secondary-500">Pro reports</p>
-                <UseCaseSelectButton
-                  options={UseCaseOptions.filter(
-                    (r) => r.reportPlan === "pro" && r.reportType === "ip",
+      <p className="text-[#120824] text-5xl font-bold">Please select use cases for your report</p>
+      <div className="w-full mt-2">
+        <div className="flex justify-between bg-appGray-100 p-2 rounded-lg w-full">
+          <div className="w-[200px]">
+            {UsecaseOptions.map((usecase, idx) => (
+              <div key={idx * 99} className="w-full ">
+                <button
+                  type="button"
+                  className={classNames(
+                    "py-[12px] px-2 w-full rounded flex justify-start",
+                    useCaseType === usecase.value
+                      ? "bg-white text-primary-900 font-bold"
+                      : "text-secondary-800",
                   )}
-                  activeModes={selected}
-                  handleModeChange={handleChange}
-                  classNames={{
-                    component: "flex flex-col gap-[10px]",
-                  }}
-                />
+                  onClick={() => chooseUseCase(usecase)}
+                >
+                  {usecase.reportName}
+                </button>
               </div>
-              <div className="space-y-[10px]">
-                <p className="text-secondary-500">Premium reports</p>
-                <UseCaseSelectButton
-                  options={UseCaseOptions.filter(
-                    (r) => r.reportType === "ip" && r.reportPlan === "premium",
-                  )}
-                  activeModes={selected}
-                  handleModeChange={handleChange}
-                  classNames={{
-                    component: "flex flex-col gap-[10px]",
-                  }}
-                />
-              </div>
-            </div>
+            ))}
           </div>
-          <div className="mt-1">
-            <h5 className="text-secondary-500 mb-1 text-[32px] font-bold font-helvetica">
-              Market Research & IP
-            </h5>
-            <div className="space-y-[20px]">
-              <div className="space-y-[10px]">
-                <p className="text-secondary-500">Pro reports</p>
-                <UseCaseSelectButton
-                  options={UseCaseOptions.filter(
-                    (r) => r.reportType === "market-research" && r.reportPlan === "pro",
-                  )}
-                  activeModes={selected}
-                  handleModeChange={handleChange}
-                  classNames={{
-                    component: "flex flex-col gap-[10px]",
-                  }}
-                />
-              </div>
-              <div className="space-y-[10px]">
-                <p className="text-secondary-500">Premium reports</p>
-                <UseCaseSelectButton
-                  options={UseCaseOptions.filter(
-                    (r) => r.reportPlan === "premium" && r.reportType === "market-research",
-                  )}
-                  activeModes={selected}
-                  handleModeChange={handleChange}
-                  classNames={{
-                    component: "flex flex-col gap-[10px]",
-                    // label: "font-semibold text-white",
-                  }}
-                />
-              </div>
+          <div className="w-full bg-white px-4  pt-1 pb-8">
+            <div className="w-full">
+              <UseCaseTab
+                UseCaseOptions={useCaseSelected}
+                selected={selected}
+                handleChange={handleChange}
+                reports={reports}
+                onContinue={onContinue}
+              />
             </div>
           </div>
         </div>
-        <div className="mt-7 flex justify-end">
-          <Button
-            type="optional"
-            htmlType={"button"}
-            rounded={"small"}
-            disabled={error === undefined}
-            handleClick={onContinue}
-            classname="text-white disabled:cursor-not-allowed"
-          >
-            Continue
-          </Button>
-        </div>
-        {error && <p className="text-danger-500 text-sm mt-2 text-end">{error}</p>}
       </div>
     </div>
   );

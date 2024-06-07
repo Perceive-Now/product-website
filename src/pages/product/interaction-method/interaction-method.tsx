@@ -1,6 +1,5 @@
 import React from "react";
-import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
 import {
@@ -8,6 +7,7 @@ import {
   QuickPromptIcon,
   UploadAttachementsIcon,
 } from "../../../components/icons";
+import BackButton from "../../../components/reusable/back-button";
 
 const interactionMethods = [
   {
@@ -15,7 +15,7 @@ const interactionMethods = [
     darkIcon: <DetailedQAAIcon type="dark" />,
     title: "Detailed Q&A",
     description: "Provide detailed information through our guided Q&A.",
-    path: "/product/interaction-method/q-and-a",
+    path: "/q&a",
   },
   {
     lightIcon: <UploadAttachementsIcon />,
@@ -49,12 +49,7 @@ export default function InteractionMethod() {
 
   return (
     <div>
-      <Link
-        to="/product"
-        className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit bg-red-400"
-      >
-        <ArrowLeftIcon /> Back
-      </Link>
+      <BackButton path="new-report" />
       <div className="flex flex-col items-center gap-y-8">
         <h1 className="text-5xl font-extrabold text-primary-800 mt-5">
           Please select interaction method
@@ -73,7 +68,7 @@ export default function InteractionMethod() {
           ))}
         </div>
         <Button type="optional" handleClick={handleContinueBtnClick}>
-          <p className="text-secondary-800 bg-red-400">Continue</p>
+          <p className="text-secondary-800">Continue</p>
         </Button>
       </div>
     </div>

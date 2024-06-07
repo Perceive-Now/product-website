@@ -7,7 +7,7 @@ import ReviewQuestionAnswer from "./review-answer-question";
 import Button from "../../../../reusable/button";
 
 import { IAnswers, getUserChats } from "../../../../../utils/api/chat";
-import { questionList } from "../../../../../pages/product/report/_question";
+import { questionList } from "../../../../../pages/product/report-q&a/_question";
 
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 

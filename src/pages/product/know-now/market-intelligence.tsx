@@ -38,8 +38,6 @@ function MarketIntelligenceKnowNow() {
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
 
-  // const [editIndex, setEditIndex] = useState<number | null>(null);
-
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import jsCookie from "js-cookie";
 import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
-import { questionList } from "../report/_question";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   IAnswerObj,
@@ -14,6 +13,7 @@ import {
   uploadAnswersToAddtionalQuestions,
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
+import { questionList } from "../report-q&a/_question";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();

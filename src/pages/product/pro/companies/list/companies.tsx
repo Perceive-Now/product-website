@@ -28,7 +28,6 @@ import { getDeepSearchCompaniesPatentList } from "../../../../../utils/api/deep-
 import type { IDeepSearchCompanyPatentItem } from "../../../../../utils/api/deep-search/companies";
 // import TableYearSelect from "../../../../../components/reusable/table-year-select";
 import SubHeader from "../../../../../components/app/sub-header";
-import Filter from "../../../../../components/icons/chooseplan/filter";
 
 //
 const PAGE_SIZE = 10;
@@ -275,10 +274,6 @@ export default function DeepSearchCompaniesListPage() {
       {/* Search bar */}
       <div>
         <div className="grid grid-cols-8 mb-1">
-          <div className="col-span-1 w-full">
-            {category === "patents" && <Filter />}
-            {category === "publications" && <Filter />}
-          </div>
           <div className="col-span-6">
             {/* <div className="flex items-center w-full"> */}
             <Search
