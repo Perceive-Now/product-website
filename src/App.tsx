@@ -53,13 +53,8 @@ import { Route, Routes } from "react-router-dom";
 
 //
 // import AuthLayout from "./layouts/auth";
+
 import DefaultLayout from "./layouts/default";
-// import AccountLayout from "./layouts/account";
-
-//
-// import HomePage from "./pages/homepage";
-
-import LoginPage from "./pages/authentication/login";
 
 // Password
 import ResetPasswordPage from "./pages/authentication/reset-password";
@@ -74,11 +69,8 @@ import DashboardPage from "./pages/product/dashboard";
 
 //
 import PageNotFound404 from "./pages/404";
-// import CompanyProfilePage from "./pages/account/companyProfile.tsx";
 
 //
-import { WelcomePage } from "./components/@signup-complete";
-
 import ProductLayout from "./layouts/product-layout";
 import AuthDefaultLayout from "./layouts/auth/default";
 import AuthLayout from "./layouts/auth";
@@ -87,11 +79,10 @@ import AuthLayout from "./layouts/auth";
 import VerificationConfirm from "./pages/authentication/signup/confirmation";
 import UserDetails from "./pages/authentication/signup/user-details";
 import SignupPage from "./pages/authentication/signup";
+import LoginPage from "./pages/authentication/login";
 
 // Product
 import IPFullReport from "./pages/product/ip-landscaping/Full-report";
-import MALicensing from "./pages/product/m&a-licensing";
-// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
 
 // Account
 import UserProfile from "./pages/my-account/profile";
@@ -99,17 +90,19 @@ import MyReport from "./pages/my-account/my-reports";
 import Setting from "./pages/my-account/setting";
 
 // Payment
-import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
-import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
-import ReportPage from "./pages/product/report/report-page";
+import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 
-// Product New
-import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
-import InteractionMethod from "./pages/product/interaction-method/interaction-method";
+// Report
+import UseCasePage from "./pages/product/use-case";
 import Landing from "./pages/product/landing/landing";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
+import ReportQuestionAnswerPage from "./pages/product/report-q&a/report-page";
+import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
+import InteractionMethod from "./pages/product/interaction-method/interaction-method";
+import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
+import { WelcomePage } from "./components/@signup-complete";
 
 /**
  *
@@ -128,14 +121,10 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
 
-        {/* <Route path="/signup/confirm" element={<ConfirmSignup />} /> */}
-
-        {/* All the routes below are protected */}
+        {/* Authentication Route */}
         <Route element={<AuthLayout />}>
           <Route path="/user-registration" element={<UserDetails />} />
           <Route path="/welcome" element={<WelcomePage />} />
-
-          <Route path="/welcome/success" element={<WelcomePage />} />
 
           {/* Actual product pages */}
           <Route element={<ProductLayout />}>
@@ -146,16 +135,16 @@ function App() {
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Landing />} />
 
-            {/* report */}
-            <Route path="/new-report" element={<ReportPage />} />
-
             {/* Account */}
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/my-reports" element={<MyReport />} />
             <Route path="/setting" element={<Setting />} />
 
+            {/* Report-section */}
+            <Route path="/new-report" element={<UseCasePage />} />
             <Route path="/interaction-method" element={<InteractionMethod />} />
-            <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
+            <Route path="/q&a" element={<ReportQuestionAnswerPage />} />
+            <Route path="/upload-attachments" element={<UploadAttachmentsPage />} />
             <Route path="/quick-prompt" element={<QuickPromptPage />} />
 
             {/* Know-now */}
@@ -165,14 +154,15 @@ function App() {
             {/*Graph */}
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
 
+            {/* Previous graph and code */}
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/m&a-licensing" element={<MALicensing />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />
           </Route>
         </Route>
+
         {/* 404 not found */}
         <Route path="*" element={<PageNotFound404 />} />
       </Routes>

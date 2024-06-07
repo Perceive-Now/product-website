@@ -1,19 +1,42 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+import classNames from "classnames";
 
 //
-import classNames from "classnames";
-import { useAppDispatch, useAppSelector } from "../../..//hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+
 import { setSession } from "../../../stores/session";
 import { questionList } from "./_question";
-import UseCaseSelect from "../../../components/@report/use-case";
+
 import Loading from "../../../components/reusable/loading";
+import BackButton from "../../../components/reusable/back-button";
+
+import IPStepper from "../../../components/@report-chat/ip-analysis/stepper";
+import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
+import IPReview from "../../../components/@report-chat/ip-analysis/use-case/review/review";
+import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
+import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
+import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
+import ChatQuestionAnswer2 from "../../../components/@report-chat/ip-analysis/use-case/question/question-2";
 
 /**
  *
  */
-export default function ReportPage() {
+export default function ReportQuestionAnswerPage() {
   const dispatch = useAppDispatch();
   const session = useAppSelector((state) => state.sessionDetail.session);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/new-report") {
+      dispatch(
+        setSession({
+          session_data: {},
+        }),
+      );
+    }
+  }, [location, dispatch]);
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
@@ -40,23 +63,6 @@ export default function ReportPage() {
     }
     setLoading(false);
   }, [sessionDetail]);
-
-  useEffect(() => {
-    if (sessionDetail !== undefined) {
-      if (activeStep !== 0) {
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              is_home: false,
-            },
-          }),
-        );
-      }
-    }
-    // setLoading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeStep]);
 
   //
   const changeActiveStep = useCallback((stepValue: number) => {
@@ -107,64 +113,64 @@ export default function ReportPage() {
     {
       label: "",
       value: 0,
-      component: <UseCaseSelect changeActiveStep={changeActiveStep} />,
+      // component: <UseCaseSelect changeActiveStep={changeActiveStep} />,
     },
     // {
     //   label: "",
     //   value: 1,
     //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
     // },
-    // {
-    //   label: "",
-    //   value: 8,
-    //   component: (
-    //     <NewQuestion
-    //       changeActiveStep={changeActiveStep}
-    //       activeStep={activeStep}
-    //       exampleAnswer={question.answer}
-    //       activeIndex={activeIndex}
-    //     />
-    //   ),
-    // },
-    // {
-    //   label: "",
-    //   value: 3,
-    //   component: (
-    //     <ChatQuestionAnswer
-    //       changeActiveStep={changeActiveStep}
-    //       activeStep={activeStep}
-    //       question={question}
-    //       activeIndex={activeIndex}
-    //     />
-    //   ),
-    // },
-    // {
-    //   label: "",
-    //   value: 4,
-    //   component: (
-    //     <ChatQuestionAnswer2
-    //       changeActiveStep={changeActiveStep}
-    //       activeStep={activeStep}
-    //       question={question}
-    //       activeIndex={activeIndex}
-    //     />
-    //   ),
-    // },
-    // {
-    //   label: "",
-    //   value: 5,
-    //   component: <Thankyou changeActiveStep={changeActiveStep} />,
-    // },
-    // {
-    //   label: "Review",
-    //   value: 6,
-    //   component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
-    // },
-    // {
-    //   label: "Edit",
-    //   value: 7,
-    //   component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
-    // },
+    {
+      label: "",
+      value: 8,
+      component: (
+        <NewQuestion
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          exampleAnswer={question.answer}
+          activeIndex={activeIndex}
+        />
+      ),
+    },
+    {
+      label: "",
+      value: 3,
+      component: (
+        <ChatQuestionAnswer
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          question={question}
+          activeIndex={activeIndex}
+        />
+      ),
+    },
+    {
+      label: "",
+      value: 4,
+      component: (
+        <ChatQuestionAnswer2
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          question={question}
+          activeIndex={activeIndex}
+        />
+      ),
+    },
+    {
+      label: "",
+      value: 5,
+      component: <Thankyou changeActiveStep={changeActiveStep} />,
+    },
+    {
+      label: "Review",
+      value: 6,
+      component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
+    },
+    {
+      label: "Edit",
+      value: 7,
+      component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
+    },
   ];
 
   //
@@ -179,10 +185,16 @@ export default function ReportPage() {
   return (
     <>
       <div className="w-full">
+        <BackButton path={"interaction-method"} />
+        <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
+        {activeStep > 1 && activeStep < 7 && (
+          <div className="w-full rounded-md overflow-hidden">
+            <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />
+          </div>
+        )}
         <div
           className={classNames(
-            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-full",
-            activeStep !== 0 && activeStep !== 1 && "shadow border rounded-md p-2",
+            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-full shadow border rounded-md p-2 mt-2.5",
           )}
         >
           <div
@@ -202,11 +214,6 @@ export default function ReportPage() {
               </div>
             ))}
           </div>
-          {/* {activeStep > 1 && activeStep < 7 && (
-            <div className="absolute bottom-0 left-0 right-0 w-full rounded-b-md overflow-hidden">
-              <IPSteppe steps={questionWithUsecase} activeStep={activeIndex} />
-            </div>
-          )} */}
         </div>
       </div>
       <div className="flex-shrink-0 w-[200px]" />
