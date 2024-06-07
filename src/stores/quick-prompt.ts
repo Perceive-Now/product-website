@@ -35,14 +35,13 @@ export const uploadQuickPrompts = createAsyncThunk<
 >("uploadQuickPrompts", async (request: IuploadQuickPromptsRequest, thunkAPI) => {
   try {
     const dataObj = {
-      category_id: request.categoryId ?? "",
-      session_id: request.sessionId ?? "",
+      report_id: request.reportId,
+      content: request.content,
       user_id: request.userId ?? "",
-      paragraph_id: request.paragraphId ?? "",
-      quick_prompts: request.quickPrompts ?? "",
+      prompt_data: request.promptData ?? "",
     };
 
-    return await axios.post(BASE_URL + "/attachment/", dataObj); // TODO change endpoint
+    return await axios.post(BASE_URL + "/quick-prompt/", dataObj); // TODO change endpoint
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -124,11 +123,26 @@ export const {
 export default quickPromptsSlice.reducer;
 
 interface IuploadQuickPromptsRequest {
-  categoryId: string;
-  sessionId: string;
+  reportId: string;
   userId: string;
-  paragraphId: string;
-  quickPrompts: string[];
+  content: string;
+  promptData: {
+    id: number;
+    contentList: (
+      | {
+          contentType: string;
+          content: string;
+          keyword?: undefined;
+          placeholder?: undefined;
+        }
+      | {
+          contentType: string;
+          keyword: string;
+          placeholder: string;
+          content?: undefined;
+        }
+    )[];
+  }[];
 }
 
 interface IuploadQuickPromptsResponse {

@@ -49,13 +49,36 @@ export default function QuickPromptForm() {
     mode: "onBlur",
   });
 
-  const onContinue = (params: any) => {
+  const onContinue = (params: { [key: string]: string }) => {
+    const promptData = [...quickPromptContent];
+
+    promptData[0] = {
+      ...promptData[0],
+      contentList: promptData[0].contentList.map((content) => {
+        if (content.contentType === "prompt" && content.keyword) {
+          return {
+            ...content,
+            prompt: params[content.keyword],
+          };
+        }
+        return content;
+      }),
+    };
+
+    const content = promptData[0].contentList.reduce((acc: string, curr) => {
+      if (curr.contentType === "text") {
+        return acc + " " + curr.content;
+      } else if (curr.contentType === "prompt" && "prompt" in curr) {
+        return acc + " " + curr.prompt;
+      }
+      return acc;
+    }, "");
+
     const dataObj = {
-      paragraphId: "1",
-      quickPrompts: { ...params },
-      categoryId: "1", // TODO: get categoryId, userId,
+      promptData: promptData,
+      reportId: "1", // TODO: get reportID from usecases
       userId: jsCookie.get("user_id") ?? "",
-      sessionId: jsCookie.get("session_id") ?? "",
+      content: content,
     };
 
     dispatch(uploadQuickPrompts(dataObj));

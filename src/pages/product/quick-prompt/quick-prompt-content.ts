@@ -4,7 +4,7 @@ export const quickPromptContent = [
     contentList: [
       {
         contentType: "text",
-        content: "I am seeking a comprehensive analysis on the licensing potential of ",
+        content: "I am seeking a comprehensive analysis on the licensing potential of",
       },
       {
         contentType: "prompt",
@@ -13,7 +13,7 @@ export const quickPromptContent = [
       },
       {
         contentType: "text",
-        content: " in the",
+        content: "in the",
       },
       {
         contentType: "prompt",
@@ -22,7 +22,7 @@ export const quickPromptContent = [
       },
       {
         contentType: "text",
-        content: " in the ",
+        content: "in the",
       },
     ],
   },
