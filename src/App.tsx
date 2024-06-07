@@ -127,13 +127,13 @@ function App() {
           <Route path="/welcome" element={<WelcomePage />} />
 
           {/* Actual product pages */}
-          <Route element={<ProductLayout />}>
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/stay-tuned" element={<StayTuned />} />
-          </Route>
+          <Route element={<ProductLayout />}></Route>
 
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Landing />} />
+
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/stay-tuned" element={<StayTuned />} />
 
             {/* Account */}
             <Route path="/profile" element={<UserProfile />} />

@@ -233,7 +233,7 @@ export const questionList = [
     answer: `Anticipated Operating Expenses:
     • Total Expenses: Forecasting $8 million in total operating expenses for the first year post-launch.\n• Allocation: Broken down as follows: 40% for R&D to support ongoing innovation, 30% for marketing to drive adoption and brand awareness, 20% for general and administrative expenses, and 10% for sales and distribution efforts.`,
   },
-  // Infringement Analysis
+  // Market Research
   {
     questionId: 34,
     question:

@@ -92,6 +92,7 @@ module.exports = {
       backgroundImage: {
         "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%)",
         "secondary-gradient": "linear-gradient(110deg, #E08236 0.32%, #423ABA 99.59%);",
+        "white-gradient": "linear-gradient(111deg, #FFF 1.62%, #F7F5FF 98.58%);"
       },
       // boxShadow: {
       //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',

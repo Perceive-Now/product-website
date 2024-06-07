@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setSession } from "../../../stores/session";
 import { setUseCase } from "../../../stores/use-case";
-import { UsecaseOptions } from "./__use-cases";
+import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +23,7 @@ const UseCaseSelect = () => {
 
   const [selected, setSelected] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
-  const [useCaseSelected, setUseCaseSelected] = useState<any>(UsecaseOptions[0].children);
+  const [useCaseSelected, setUseCaseSelected] = useState<any>(UseCaseOptions);
   const [useCaseType, setUseCaseType] = useState(UsecaseOptions[0].value);
   const [reports, setReport] = useState<any>([]);
 
@@ -39,7 +39,6 @@ const UseCaseSelect = () => {
               active_index: 0,
               step_id: 3,
               use_cases: options,
-              is_home: false,
             },
           }),
         );
@@ -52,7 +51,6 @@ const UseCaseSelect = () => {
               step_id: 3,
               active_index: 0,
               use_cases: options,
-              is_home: false,
             },
           }),
         );
@@ -65,7 +63,6 @@ const UseCaseSelect = () => {
               step_id: 3,
               use_cases: options,
               active_index: 0,
-              is_home: false,
             },
           }),
         );
@@ -78,7 +75,6 @@ const UseCaseSelect = () => {
               step_id: 3,
               use_cases: options,
               active_index: 0,
-              is_home: false,
             },
           }),
         );
@@ -127,9 +123,8 @@ const UseCaseSelect = () => {
       setSelected(mode);
 
       const reports = UsecaseOptions.find((option) => option.value === useCaseType);
-      const reportsList = reports?.children.filter((c) => mode.includes(c.value));
-      const matchingIds = reports?.children
-        .filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
+      const reportsList = UseCaseOptions.filter((c) => mode.includes(c.value));
+      const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
         .map((r) => r.id);
       setReport(reportsList);
 
@@ -147,7 +142,7 @@ const UseCaseSelect = () => {
 
   const chooseUseCase = useCallback((options: any) => {
     setUseCaseType(options.value);
-    setUseCaseSelected(options.children);
+    setUseCaseSelected(UseCaseOptions);
   }, []);
 
   return (

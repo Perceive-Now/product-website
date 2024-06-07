@@ -45,7 +45,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
               active_index: 0,
               step_id: 3,
               use_cases: options,
-              is_home: false,
             },
           }),
         );
@@ -58,7 +57,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
               step_id: 3,
               active_index: 0,
               use_cases: options,
-              is_home: false,
             },
           }),
         );
@@ -71,7 +69,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
               step_id: 3,
               use_cases: options,
               active_index: 0,
-              is_home: false,
             },
           }),
         );
@@ -84,7 +81,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
               step_id: 3,
               use_cases: options,
               active_index: 0,
-              is_home: false,
             },
           }),
         );

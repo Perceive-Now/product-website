@@ -1,5 +1,4 @@
 import Button from "../../../components/reusable/button";
-import React from "react";
 
 export interface IReport {
   id: number;
@@ -16,6 +15,9 @@ interface Props {
   onContinue: () => void;
 }
 
+/**
+ *
+ */
 const SelectedReport = ({ reports, onContinue }: Props) => {
   const totalPrice = reports.reduce((total, item) => {
     if (item.reportPlan === "pro") {
@@ -58,6 +60,7 @@ const SelectedReport = ({ reports, onContinue }: Props) => {
           rounded={"small"}
           classname="text-black w-full"
           handleClick={onContinue}
+          size="small"
         >
           Continue
         </Button>

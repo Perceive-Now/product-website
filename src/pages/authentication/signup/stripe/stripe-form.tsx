@@ -85,7 +85,6 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
             step_id: 0,
             question_id: 0,
             active_index: 0,
-            is_home: true,
           },
         }),
       );
@@ -102,25 +101,25 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
   };
 
   return (
-    <div className="grid grid-cols-2 bg-appGray-100 p-[40px] gap-8 w-full rounded-lg">
+    <div className="grid grid-cols-2 bg-white p-[40px] gap-8 w-full rounded-lg ">
       <div className="space-y-3">
-        <div className="space-y-[20px]">
+        <div className="space-y-[20px] font-semibold text-secondary-800">
           <p>Please select a payment method.</p>
           <div className="bg-white rounded inline-block px-4 py-1">
             <img src={StripeImage} alt="Stripe" />
           </div>
         </div>
-        <div>
-          <p className="capitalize text-sm pb-1">SELECTED PLAN</p>
+        <div className="bg-appGray-100 px-2 py-2 rounded-md">
+          <p className="capitalize text-sm pb-1">SELECTED REPORT</p>
           {selectedPlan.map((plan) => (
             <div key={plan.id} className="pb-1">
-              <div className="flex items-center justify-between  font-semibold">
+              <div className="flex items-center justify-between text-secondary-800">
                 <span>{plan.name}</span>
                 <span>${plan.price / 100}</span>
               </div>
             </div>
           ))}
-          <div className="flex items-center justify-between pt-2 font-semibold border-t border-black">
+          <div className="flex items-center justify-between pt-2 pb-4 border-t border-black text-secondary-800">
             <span>Total</span>
             <span>${TotalPrice / 100}</span>
           </div>

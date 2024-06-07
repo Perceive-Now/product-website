@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
 import classNames from "classnames";
 
 //
@@ -26,17 +25,17 @@ export default function ReportQuestionAnswerPage() {
   const dispatch = useAppDispatch();
   const session = useAppSelector((state) => state.sessionDetail.session);
 
-  const location = useLocation();
+  // const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname === "/new-report") {
-      dispatch(
-        setSession({
-          session_data: {},
-        }),
-      );
-    }
-  }, [location, dispatch]);
+  // useEffect(() => {
+  //   if (location.pathname === "/new-report") {
+  //     dispatch(
+  //       setSession({
+  //         session_data: {},
+  //       }),
+  //     );
+  //   }
+  // }, [location, dispatch]);
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
@@ -110,16 +109,16 @@ export default function ReportQuestionAnswerPage() {
 
   //
   const steps = [
-    {
-      label: "",
-      value: 0,
-      // component: <UseCaseSelect changeActiveStep={changeActiveStep} />,
-    },
     // {
     //   label: "",
-    //   value: 1,
-    //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
+    //   value: 0,
+    //   // component: <UseCaseSelect changeActiveStep={changeActiveStep} />,
     // },
+    // // {
+    // //   label: "",
+    // //   value: 1,
+    // //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
+    // // },
     {
       label: "",
       value: 8,
@@ -188,13 +187,13 @@ export default function ReportQuestionAnswerPage() {
         <BackButton path={"interaction-method"} />
         <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
         {activeStep > 1 && activeStep < 7 && (
-          <div className="w-full rounded-md overflow-hidden">
+          <div className="w-full overflow-hidden">
             <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />
           </div>
         )}
         <div
           className={classNames(
-            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-full shadow border rounded-md p-2 mt-2.5",
+            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-ful shadow border rounded-md p-2 mt-2.5 w-[932px] bg-white",
           )}
         >
           <div
