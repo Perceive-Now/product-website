@@ -101,12 +101,15 @@ import Setting from "./pages/my-account/setting";
 // Payment
 import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import StayTuned from "./components/default";
-import InteractionMethod from "./pages/product/interaction-method/interaction-method";
-import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 import ReportPage from "./pages/product/report/report-page";
-import Landing from "./pages/product/product-new/landing/landing";
+
+// Product New
+import UploadAttachementsMethod from "./pages/product/upload-attachements-page/upload-attachments-page";
+import InteractionMethod from "./pages/product/interaction-method/interaction-method";
+import Landing from "./pages/product/landing/landing";
+import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
 
 /**
  *
@@ -153,6 +156,7 @@ function App() {
 
             <Route path="/interaction-method" element={<InteractionMethod />} />
             <Route path="/upload-attachments" element={<UploadAttachementsMethod />} />
+            <Route path="/quick-prompt" element={<QuickPromptPage />} />
 
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />

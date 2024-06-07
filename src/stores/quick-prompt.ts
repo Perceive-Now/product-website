@@ -1,0 +1,149 @@
+import axios from "axios";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+
+interface uploadQuickPromptsState {
+  isUploading: boolean;
+  currentParagraphId: number;
+  quickPrompts: string[];
+  quickPromptsUploadState: {
+    isSuccess: boolean;
+    isError: boolean;
+    message: string;
+  };
+}
+
+const initialState: uploadQuickPromptsState = {
+  isUploading: false,
+  currentParagraphId: 0,
+  quickPrompts: [],
+  quickPromptsUploadState: {
+    isSuccess: false,
+    isError: false,
+    message: "",
+  },
+};
+
+// -----------------------------------------------------------------------
+export const uploadQuickPrompts = createAsyncThunk<
+  IuploadQuickPromptsResponse,
+  IuploadQuickPromptsRequest,
+  {
+    rejectValue: IResponseError;
+  }
+>("uploadQuickPrompts", async (request: IuploadQuickPromptsRequest, thunkAPI) => {
+  try {
+    const dataObj = {
+      category_id: request.categoryId ?? "",
+      session_id: request.sessionId ?? "",
+      user_id: request.userId ?? "",
+      paragraph_id: request.paragraphId ?? "",
+      quick_prompts: request.quickPrompts ?? "",
+    };
+
+    return await axios.post(BASE_URL + "/attachment/", dataObj); // TODO change endpoint
+  } catch (error) {
+    const errorObj = {
+      resError: String(error),
+      message: "Unable to upload quick prompts",
+    };
+    return thunkAPI.rejectWithValue(errorObj);
+  }
+});
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+
+export const quickPromptsSlice = createSlice({
+  name: "quick-prompts",
+  initialState,
+  reducers: {
+    // -----------------------------------------------------------------------
+    setQuickPrompts: (state, action: PayloadAction<string[]>) => {
+      state.quickPrompts = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
+    setCurrentParagraphId: (state, action: PayloadAction<number>) => {
+      state.currentParagraphId = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
+    setQuickPromptsUploadState: (
+      state,
+      action: PayloadAction<{ isSuccess: boolean; isError: boolean; message: string }>,
+    ) => {
+      state.quickPromptsUploadState = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
+    getQuickPromptsSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    reset: () => initialState,
+  },
+  extraReducers(builder) {
+    // -----------------------------------------------------------------------
+    builder.addCase(uploadQuickPrompts.pending, (state) => {
+      state.isUploading = true;
+      state.quickPromptsUploadState = {
+        isError: false,
+        isSuccess: false,
+        message: "",
+      };
+    });
+    builder.addCase(uploadQuickPrompts.fulfilled, (state) => {
+      state.isUploading = false;
+      state.quickPromptsUploadState = {
+        isError: false,
+        isSuccess: true,
+        message: "",
+      };
+    });
+    builder.addCase(uploadQuickPrompts.rejected, (state, action) => {
+      state.isUploading = false;
+      state.quickPromptsUploadState = {
+        isError: true,
+        isSuccess: true,
+        message: action.error.message ?? "Unable to upload attachments",
+      };
+    });
+  },
+});
+
+export const {
+  reset,
+  getQuickPromptsSliceState,
+  setCurrentParagraphId,
+  setQuickPrompts,
+  setQuickPromptsUploadState,
+} = quickPromptsSlice.actions;
+
+export default quickPromptsSlice.reducer;
+
+interface IuploadQuickPromptsRequest {
+  categoryId: string;
+  sessionId: string;
+  userId: string;
+  paragraphId: string;
+  quickPrompts: string[];
+}
+
+interface IuploadQuickPromptsResponse {
+  resError: string;
+  data: number[];
+  status: number;
+  statusText: string;
+}
+
+interface IResponseError {
+  resError: string;
+  message: string;
+}
+
+export interface IAnswerObj {
+  questionId: number;
+  answer: string;
+}

@@ -2,9 +2,12 @@ import React from "react";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../../components/reusable/button";
-import DetailedQAAIcon from "./detailed-qaa";
 import classNames from "classnames";
-import UploadAttachementsIcon from "./upload-attachements";
+import {
+  DetailedQAAIcon,
+  QuickPromptIcon,
+  UploadAttachementsIcon,
+} from "../../../components/icons";
 
 const interactionMethods = [
   {
@@ -22,8 +25,8 @@ const interactionMethods = [
     path: "/upload-attachments",
   },
   {
-    lightIcon: <DetailedQAAIcon />,
-    darkIcon: <DetailedQAAIcon type="dark" />,
+    lightIcon: <QuickPromptIcon />,
+    darkIcon: <QuickPromptIcon type="dark" />,
     title: "Quick prompt",
     description: "Get fast insights with a quick prompt submission.",
     path: "/product/interaction-method/quick-prompt",

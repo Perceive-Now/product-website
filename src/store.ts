@@ -12,6 +12,7 @@ import ChatSlice from "./stores/chat";
 import UISlice from "./stores/UI";
 import KnownowSlice from "./stores/know-now";
 import KnownowSlice1 from "./stores/know-now1";
+import UploadAttachmentsSlice from "./stores/upload-attachments";
 
 //
 export const store = configureStore({
@@ -27,6 +28,7 @@ export const store = configureStore({
     UI: UISlice,
     KnowNow: KnownowSlice,
     KnowNowChat: KnownowSlice1,
+    uploadAttachments: UploadAttachmentsSlice,
   },
 });
 

@@ -66,6 +66,21 @@ import EducationIcon from "./dashboard/education";
 import CompetitiveLandscapeIcon from "./dashboard/competitive_landscape";
 import ResearchIcon from "./dashboard/research";
 
+// Interaction Method
+import UploadAttachementsIcon from "./interaction-method/upload-attachements";
+import QuickPromptIcon from "./interaction-method/quick-prompt";
+import DetailedQAAIcon from "./interaction-method/detailed-qaa";
+
+// Landing
+import BGVector0 from "./landing/bg-vector-0";
+import BGVector1 from "./landing/bg-vector-1";
+import BGVector2 from "./landing/bg-vector-2";
+import BGVector3 from "./landing/bg-vector-3";
+
+// Upload Attachments
+import DustbinIcon from "./upload-attachments/dust-bin";
+import UploadIcon from "./upload-attachments/upload";
+
 export {
   // Sidenav icons
   DashboardIcon,
@@ -130,4 +145,16 @@ export {
   ResearchIcon,
   CompetitiveLandscapeIcon,
   PaymentCardIcon,
+  // Interaction Method
+  UploadAttachementsIcon,
+  QuickPromptIcon,
+  DetailedQAAIcon,
+  // Landing
+  BGVector0,
+  BGVector1,
+  BGVector2,
+  BGVector3,
+  // Upload Attachments
+  DustbinIcon,
+  UploadIcon,
 };

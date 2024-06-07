@@ -2,28 +2,26 @@ import Button from "../../../components/reusable/button";
 
 export default function AllSet() {
   return (
-    <div>
-      <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
-        <div className="space-y-[20px] p-2">
-          <p className="text-secondary-900 font-bold text-[32px]">Great! You're All Set</p>
-          <p className="w-[300px] text-secondary-800">
-            Thanks for providing the extra details. We now have everything we need to create your
-            custom report.
-          </p>
-          <p className="w-[300px] text-secondary-800">
-            Let's move on to creating your final report. Payment is needed to unlock your report.
-          </p>
-          <Button
-            type="optional"
-            handleClick={() => {
-              console.log("continue");
-            }}
-            disabled={false}
-            classname="w-[320px]"
-          >
-            <p className="text-secondary-800">Continue</p>
-          </Button>
-        </div>
+    <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
+      <div className="space-y-[20px] p-2">
+        <p className="text-secondary-900 font-bold text-[32px]">Great! You're All Set</p>
+        <p className="w-[300px] text-secondary-800">
+          Thanks for providing the extra details. We now have everything we need to create your
+          custom report.
+        </p>
+        <p className="w-[300px] text-secondary-800">
+          Let's move on to creating your final report. Payment is needed to unlock your report.
+        </p>
+        <Button
+          type="optional"
+          handleClick={() => {
+            console.log("continue");
+          }}
+          disabled={false}
+          classname="w-[320px]"
+        >
+          <p className="text-secondary-800">Continue</p>
+        </Button>
       </div>
     </div>
   );

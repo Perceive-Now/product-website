@@ -1,11 +1,18 @@
-import React, { useContext, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import jsCookie from "js-cookie";
 import Button from "../../../components/reusable/button";
-import DustbinIcon from "./dust-bin";
 import DropZoneContent from "./dropzone-content";
-import useFileUploadService from "./use-file-upload-service";
 import toast from "react-hot-toast";
-import { UploadAttachmentsContext } from "./upload-attachments-context";
+import { DustbinIcon } from "../../../components/icons";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import {
+  incrementStep,
+  setCurrentPageId,
+  setIsUploadAttachmentsError,
+  setIsUploadAttachmentsSuccess,
+  uploadAttachments,
+} from "../../../stores/upload-attachments";
 
 const baseStyle = {
   flex: 1,
@@ -35,11 +42,49 @@ const rejectStyle = {
 } as const;
 
 export default function UploadAttachments() {
-  const { uploadFiles, uploading } = useFileUploadService();
+  const dispatch = useAppDispatch();
 
-  const { setAdditionalQuestionsIds, setCurrentPageId, setCurrentStep } =
-    useContext(UploadAttachmentsContext);
+  const {
+    isUploading,
+    additionalQuestionIds,
+    isUploadAttachmentsError,
+    isUploadAttachmentsSuccess,
+    message,
+  } = useAppSelector((state) => state.uploadAttachments);
+
   const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    if (isUploadAttachmentsError) {
+      toast.error(message);
+      dispatch(setIsUploadAttachmentsError(false));
+      return;
+    }
+
+    if (isUploadAttachmentsSuccess) {
+      if (additionalQuestionIds.length === 0) {
+        dispatch(setCurrentPageId(1));
+        dispatch(incrementStep());
+        dispatch(setIsUploadAttachmentsSuccess(false));
+        return;
+      }
+
+      if (additionalQuestionIds.length > 0) {
+        dispatch(setCurrentPageId(2));
+        dispatch(incrementStep());
+        dispatch(setIsUploadAttachmentsSuccess(false));
+        return;
+      }
+
+      return;
+    }
+  }, [
+    isUploadAttachmentsError,
+    isUploadAttachmentsSuccess,
+    message,
+    additionalQuestionIds,
+    dispatch,
+  ]);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
@@ -80,24 +125,14 @@ export default function UploadAttachments() {
   };
 
   const handleContinueBtnClick = async () => {
-    const resData = await uploadFiles(files);
-
-    if (!resData) {
-      toast.error("Something went wrong");
-      return;
-    }
-
-    toast.success("Files uploaded successfully");
-
-    if (resData.length === 0) {
-      setCurrentPageId(1);
-      setCurrentStep((prev) => prev + 1);
-      return;
-    }
-
-    setAdditionalQuestionsIds(resData);
-    setCurrentPageId(2);
-    setCurrentStep((prev) => prev + 1);
+    dispatch(
+      uploadAttachments({
+        userId: jsCookie.get("user_id") ?? "",
+        sessionId: jsCookie.get("session_id") ?? "",
+        categoryId: "1" ?? "", // TODO get from usecase redux
+        attachments: [...files],
+      }),
+    );
   };
 
   return (
@@ -129,7 +164,7 @@ export default function UploadAttachments() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={files.length === 0}
-          loading={uploading}
+          loading={isUploading}
         >
           <p className="text-secondary-800">Continue</p>
         </Button>
