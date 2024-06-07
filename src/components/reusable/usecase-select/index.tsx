@@ -1,8 +1,8 @@
-import React from "react";
 import classNames from "classnames";
-import { InfoIcon } from "../../icons";
+
 import MinusIcon from "../../icons/common/minus";
 import AddIcon from "../../icons/common/add-icon";
+import PopOverHover from "../tooltip";
 
 interface CheckBoxButtonsProps {
   options: RadioButtonOption[];
@@ -21,7 +21,7 @@ interface RadioButtonOption {
   desc?: string;
 }
 
-export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
+const UseCaseSelectButton = (props: CheckBoxButtonsProps) => {
   const { options, activeModes, handleModeChange } = props;
 
   const handleCheckboxChange = (mode: RadioButtonOption) => {
@@ -35,7 +35,7 @@ export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
 
   return (
     <div className={props.classNames?.component}>
-      {options.map((mode, idx) => (
+      {options.map((mode) => (
         <div
           className={classNames(
             "relative flex justify-between items-center cursor-pointer rounded-md py-1 text-sm px-2",
@@ -54,7 +54,7 @@ export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
           />
           <div className={classNames(props?.classNames?.label, "flex")}>
             {mode.label}
-            <InfoIcon className="h-2 w-2" />
+            {mode.desc && <PopOverHover desc={mode.desc} />}
           </div>
           <span
             className={classNames(
@@ -74,4 +74,6 @@ export default function UseCaseSelectButton(props: CheckBoxButtonsProps) {
       ))}
     </div>
   );
-}
+};
+
+export default UseCaseSelectButton;

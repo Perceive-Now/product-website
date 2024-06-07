@@ -30,7 +30,6 @@ import {
   IDeepSearchAcademicsPatentItem,
 } from "../../../../../utils/api/deep-search/academic";
 import SubHeader from "../../../../../components/app/sub-header";
-import Filter from "../../../../../components/icons/chooseplan/filter";
 
 //
 const PAGE_SIZE = 10;
@@ -264,9 +263,7 @@ export default function DeepSearchUniversityListPage() {
       {/* Search bar */}
       <div>
         <div className="grid grid-cols-8 mb-1">
-          <div className="col-span-1 w-full">
-            <Filter />
-          </div>
+          <div className="col-span-1 w-full"></div>
           <div className="col-span-6">
             {/* <div className="flex items-center w-full"> */}
             <Search
