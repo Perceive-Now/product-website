@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
