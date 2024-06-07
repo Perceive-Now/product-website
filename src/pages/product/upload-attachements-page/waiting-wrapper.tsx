@@ -1,19 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import Button from "../../../components/reusable/button";
-import { UploadAttachmentsContext } from "./upload-attachments-context";
+import { useAppDispatch } from "../../../hooks/redux";
+import { incrementStep, setCurrentPageId } from "../../../stores/upload-attachments";
 
 export default function WaitingWrapper({
   children,
-  nextStep,
+  nextPageId,
 }: {
   children: React.ReactNode;
-  nextStep: number;
+  nextPageId: number;
 }) {
-  const { setCurrentPageId, setCurrentStep } = useContext(UploadAttachmentsContext);
+  const dispatch = useAppDispatch();
+
   const handleContinueBtnClick = () => {
-    console.log("nextStep", nextStep);
-    setCurrentPageId(nextStep);
-    setCurrentStep((prev) => prev + 1);
+    dispatch(setCurrentPageId(nextPageId));
+    dispatch(incrementStep());
   };
 
   return (

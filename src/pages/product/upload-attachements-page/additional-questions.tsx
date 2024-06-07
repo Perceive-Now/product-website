@@ -1,21 +1,57 @@
-import { useContext } from "react";
+import { useEffect } from "react";
+import jsCookie from "js-cookie";
 import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
-import { UploadAttachmentsContext } from "./upload-attachments-context";
-import useAdditionalQuestionsService, { IAnswerObj } from "./use-additional-questions-service";
 import { questionList } from "../report/_question";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import {
+  IAnswerObj,
+  incrementStep,
+  setAnswers,
+  setCurrentPageId,
+  setCurrentQuestionId,
+  setIsUploadAnswersToAddtionalQuestionsError,
+  setIsUploadAnswersToAddtionalQuestionsSuccess,
+  uploadAnswersToAddtionalQuestions,
+} from "../../../stores/upload-attachments";
+import toast from "react-hot-toast";
 
 export default function AdditionalQuestions() {
-  const {
-    additionalQuestionIds,
-    setCurrentQuestionId,
-    currentQuestionId,
-    setCurrentStep,
-    setCurrentPageId,
-    answers,
-    setAnswers,
-  } = useContext(UploadAttachmentsContext);
+  const dispatch = useAppDispatch();
 
-  const { uploading, uploadAnswers } = useAdditionalQuestionsService();
+  const {
+    isUploading,
+    answers,
+    currentQuestionId,
+    additionalQuestionIds,
+    isUploadAnswersToAddtionalQuestionsError,
+    isUploadAnswersToAddtionalQuestionsSuccess,
+    message,
+  } = useAppSelector((state) => state.uploadAttachments);
+
+  useEffect(() => {
+    if (isUploadAnswersToAddtionalQuestionsError) {
+      toast.error(message);
+      dispatch(setIsUploadAnswersToAddtionalQuestionsError(false));
+      return;
+    }
+
+    if (isUploadAnswersToAddtionalQuestionsSuccess) {
+      dispatch(setCurrentPageId(4));
+      dispatch(incrementStep());
+      dispatch(setIsUploadAnswersToAddtionalQuestionsSuccess(false));
+      return;
+    }
+  }, [
+    isUploadAnswersToAddtionalQuestionsError,
+    isUploadAnswersToAddtionalQuestionsSuccess,
+    message,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    if (additionalQuestionIds.length === 0) return;
+    dispatch(setCurrentQuestionId(additionalQuestionIds[0]));
+  }, [additionalQuestionIds, dispatch]);
 
   const currentQuestion = questionList.filter(
     (question) => question.questionId === currentQuestionId,
@@ -30,7 +66,10 @@ export default function AdditionalQuestions() {
     const updatedAnswers = [...answers];
 
     if (indexOfAlreadyAnsweredQuestion >= 0) {
-      updatedAnswers[indexOfAlreadyAnsweredQuestion].answer = answer.answer;
+      updatedAnswers[indexOfAlreadyAnsweredQuestion] = {
+        questionId: currentQuestionId,
+        answer: answer.answer,
+      };
     } else {
       updatedAnswers.push({
         questionId: currentQuestionId,
@@ -38,25 +77,24 @@ export default function AdditionalQuestions() {
       });
     }
 
-    setAnswers(updatedAnswers);
+    dispatch(setAnswers(updatedAnswers));
 
     const nextQuestionIndex = additionalQuestionIds.indexOf(currentQuestionId) + 1;
 
     // if there are no additional questions
     if (nextQuestionIndex === additionalQuestionIds.length) {
-      const resData = await uploadAnswers(updatedAnswers);
-
-      if (resData) {
-        setCurrentPageId(4);
-        setCurrentStep((prev) => prev + 1);
-        return;
-      }
-
-      return;
+      dispatch(
+        uploadAnswersToAddtionalQuestions({
+          userId: jsCookie.get("user_id") ?? "",
+          sessionId: jsCookie.get("session_id") ?? "",
+          categoryId: "1" ?? "", // TODO get from usecase redux
+          answers: updatedAnswers,
+        }),
+      );
+    } else {
+      dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex]));
+      dispatch(incrementStep());
     }
-
-    setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex]);
-    setCurrentStep((prev) => prev + 1);
   };
 
   const answerForCurrentQuestion = answers.find(
@@ -67,7 +105,7 @@ export default function AdditionalQuestions() {
     <>
       {currentQuestion && (
         <NewComponent
-          isLoading={uploading}
+          isLoading={isUploading}
           exampleAnswer={currentQuestion.answer}
           question={currentQuestion.question}
           onContinue={handleOnContinue}

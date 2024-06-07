@@ -1,34 +1,46 @@
 import Title from "../../../components/reusable/title";
 import GoBack from "./goback";
-import { useContext } from "react";
 import ProgressBar from "./progress-bar";
 import uploadAttachmentsPages from "./upload-attachment-pages-list";
-import UploadAttachmentsContextProvider, {
-  UploadAttachmentsContext,
-} from "./upload-attachments-context";
+import { useAppSelector } from "../../../hooks/redux";
 
 export default function UploadAttachmentsPage() {
+  const { currentPageId } = useAppSelector((state) => state.uploadAttachments);
+
+  const currentPageTitle =
+    uploadAttachmentsPages.find((page) => page.id === currentPageId)?.title ?? "Upload Attachments";
+
   return (
-    <UploadAttachmentsContextProvider>
+    <>
       <GoBack />
       <div>
-        <Title text="Upload Attachments" className="mt-5" />
+        <Title text={currentPageTitle} className="mt-5" />
         <ProgressBar />
         <PagesStepper />
       </div>
-    </UploadAttachmentsContextProvider>
+    </>
   );
 }
 
 const PagesStepper = () => {
-  const { currentPageId } = useContext(UploadAttachmentsContext);
+  const { currentPageId } = useAppSelector((state) => state.uploadAttachments);
 
   return (
     <>
       {uploadAttachmentsPages.map((page) => {
+        const Comp = page.Component;
         if (page.id === currentPageId) {
-          const Component = page.Component;
-          return <Component key={page.id} />;
+          return (
+            <div key={page.id}>
+              <Comp key={page.id} />
+            </div>
+          );
+        } else {
+          return (
+            <div key={page.id} className="hidden">
+              <Comp key={page.id} />
+            </div>
+          );
         }
       })}
     </>
