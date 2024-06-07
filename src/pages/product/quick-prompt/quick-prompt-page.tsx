@@ -1,16 +1,38 @@
 import Title from "../../../components/reusable/title";
-import QuickPromptForm from "./quick-prompt-form";
+import GoBack from "./goback";
+import ProgressBar from "./progress-bar";
+import { useAppSelector } from "../../../hooks/redux";
+import quickPromptPagesList from "./quick-prompt-pages-list";
 
 export default function QuickPromptPage() {
+  const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);
+
+  const currentPageTitle =
+    quickPromptPagesList.find((page) => page.id === currentPageId)?.title ?? "Upload Attachments";
+
   return (
-    <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
-      <Title text="Quick Prompt" />
-      <p className="text-xl font-semibold text-secondary-900 mb-[20px] mt-[40px]">
-        Please fill out the following Mad Libs-style prompts to help us generate your custom report.
-      </p>
-      <div className="w-[900px]">
-        <QuickPromptForm />
+    <>
+      <GoBack />
+      <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
+        <Title text={currentPageTitle} className="mt-5" />
+        <ProgressBar />
+        <PagesStepper />
       </div>
-    </div>
+    </>
   );
 }
+
+const PagesStepper = () => {
+  const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);
+
+  return (
+    <>
+      {quickPromptPagesList.map((page) => {
+        const Comp = page.Component;
+        if (page.id === currentPageId) {
+          return <Comp key={page.id} />;
+        }
+      })}
+    </>
+  );
+};

@@ -1,11 +1,15 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { quickPromptContent } from "../pages/product/quick-prompt/quick-prompt-content";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
 interface uploadQuickPromptsState {
   isUploading: boolean;
   currentParagraphId: number;
+  currentPageId: number;
+  paragraphIds: number[];
+  currentStep: number;
   quickPrompts: string[];
   quickPromptsUploadState: {
     isSuccess: boolean;
@@ -17,6 +21,11 @@ interface uploadQuickPromptsState {
 const initialState: uploadQuickPromptsState = {
   isUploading: false,
   currentParagraphId: 0,
+  currentStep: 0,
+  currentPageId: 0,
+  paragraphIds: quickPromptContent.map((content) => {
+    return content.id;
+  }),
   quickPrompts: [],
   quickPromptsUploadState: {
     isSuccess: false,
@@ -70,6 +79,21 @@ export const quickPromptsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
+    incrementStep: (state) => {
+      state.currentStep += 1;
+    },
+
+    // -----------------------------------------------------------------------
+    decrementStep: (state) => {
+      state.currentStep -= 1;
+    },
+
+    // -----------------------------------------------------------------------
+    setCurrentPageId: (state, action: PayloadAction<number>) => {
+      state.currentPageId = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
     setQuickPromptsUploadState: (
       state,
       action: PayloadAction<{ isSuccess: boolean; isError: boolean; message: string }>,
@@ -100,6 +124,8 @@ export const quickPromptsSlice = createSlice({
         isSuccess: true,
         message: "",
       };
+      state.currentPageId = 1;
+      state.currentStep += 1;
     });
     builder.addCase(uploadQuickPrompts.rejected, (state, action) => {
       state.isUploading = false;
@@ -118,6 +144,9 @@ export const {
   setCurrentParagraphId,
   setQuickPrompts,
   setQuickPromptsUploadState,
+  decrementStep,
+  incrementStep,
+  setCurrentPageId,
 } = quickPromptsSlice.actions;
 
 export default quickPromptsSlice.reducer;

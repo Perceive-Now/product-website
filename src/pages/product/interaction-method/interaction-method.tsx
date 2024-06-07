@@ -29,7 +29,7 @@ const interactionMethods = [
     darkIcon: <QuickPromptIcon type="dark" />,
     title: "Quick prompt",
     description: "Get fast insights with a quick prompt submission.",
-    path: "/product/interaction-method/quick-prompt",
+    path: "/quick-prompt",
   },
 ];
 

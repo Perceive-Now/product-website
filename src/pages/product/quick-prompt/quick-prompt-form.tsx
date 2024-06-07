@@ -5,12 +5,14 @@ import { quickPromptContent } from "./quick-prompt-content";
 import { type AnyObject } from "yup/lib/types";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
-import { useAppDispatch } from "../../../hooks/redux";
-import { uploadQuickPrompts } from "../../../stores/quick-prompt";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { uploadQuickPrompts } from "../../../stores/upload-quick-prompt";
 import jsCookie from "js-cookie";
 
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
+
+  const { isUploading } = useAppSelector((state) => state.uploadQuickPrompt);
 
   const requiredQuickPrompts = quickPromptContent.find((content) => content.id === 0);
 
@@ -42,7 +44,6 @@ export default function QuickPromptForm() {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
@@ -82,8 +83,6 @@ export default function QuickPromptForm() {
     };
 
     dispatch(uploadQuickPrompts(dataObj));
-
-    reset();
   };
 
   return (
@@ -119,6 +118,7 @@ export default function QuickPromptForm() {
       </fieldset>
       <Button
         type="optional"
+        loading={isUploading}
         handleClick={() => {
           handleSubmit(onContinue);
         }}
