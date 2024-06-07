@@ -50,7 +50,7 @@ export default function AdditionalQuestions() {
 
   useEffect(() => {
     if (additionalQuestionIds.length === 0) return;
-    dispatch(setCurrentQuestionId(additionalQuestionIds[0]));
+    dispatch(setCurrentQuestionId(additionalQuestionIds[0].question_id));
   }, [additionalQuestionIds, dispatch]);
 
   const currentQuestion = questionList.filter(
@@ -79,7 +79,10 @@ export default function AdditionalQuestions() {
 
     dispatch(setAnswers(updatedAnswers));
 
-    const nextQuestionIndex = additionalQuestionIds.indexOf(currentQuestionId) + 1;
+    const nextQuestionIndex =
+      additionalQuestionIds.findIndex(
+        (questionId) => currentQuestionId === questionId.question_id,
+      ) + 1;
 
     // if there are no additional questions
     if (nextQuestionIndex === additionalQuestionIds.length) {
@@ -92,13 +95,13 @@ export default function AdditionalQuestions() {
         }),
       );
     } else {
-      dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex]));
+      dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
       dispatch(incrementStep());
     }
   };
 
   const answerForCurrentQuestion = answers.find(
-    (answer) => currentQuestion.questionId === answer.questionId,
+    (answer) => currentQuestion?.questionId === answer?.questionId,
   );
 
   return (
