@@ -7,7 +7,7 @@ interface UploadAttachmentsState {
   currentPageId: number;
   currentStep: number;
   currentQuestionId: number;
-  additionalQuestionIds: number[];
+  additionalQuestionIds: { question_id: number }[];
   answers: IAnswerObj[];
   isUploading: boolean;
   isUploadAttachmentsError: boolean;
@@ -57,8 +57,8 @@ export const uploadAttachments = createAsyncThunk<
     const base64Files = await Promise.all(request.attachments.map(convertToBase64));
 
     const dataObj = {
-      category_id: request.categoryId ?? "",
-      session_id: request.sessionId ?? "",
+      category_ids: request.categoryIds ?? "",
+      report_id: request.reportId ?? "",
       user_id: request.userId ?? "",
       attachment: base64Files[0] ?? "",
     };
@@ -88,17 +88,21 @@ export const uploadAnswersToAddtionalQuestions = createAsyncThunk<
       const session_id = request.sessionId;
       const category_id = request.categoryId;
 
-      const answersObj = request.answers.map((answer) => {
+      const answersObjList = request.answers.map((answer) => {
         return {
           category_id: category_id,
-          session_id: session_id,
+          report_id: session_id,
           user_id: user_id,
           question_id: String(answer.questionId),
           answer: answer.answer,
         };
       });
 
-      return await axios.post(BASE_URL + "/attachment-answers/", { answers: answersObj });
+      const answersObj: IUploadAnswersAPIRequest = {
+        answers: answersObjList,
+      };
+
+      return await axios.post(BASE_URL + "/attachment-answers/", answersObj);
     } catch (error) {
       const errorObj = {
         resError: String(error),
@@ -180,7 +184,8 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploadAttachmentsError = false;
       state.isUploadAttachmentsSuccess = true;
       state.additionalQuestionIds = action.payload.data ?? [];
-      state.currentQuestionId = 0;
+      state.currentQuestionId =
+        state.additionalQuestionIds.length > 0 ? state.additionalQuestionIds[0].question_id : 0;
       state.answers = [];
     });
     builder.addCase(uploadAttachments.rejected, (state, action) => {
@@ -200,7 +205,6 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAnswersToAddtionalQuestionsError = false;
       state.isUploadAnswersToAddtionalQuestionsSuccess = true;
-      state.currentQuestionId = 0;
     });
     builder.addCase(uploadAnswersToAddtionalQuestions.rejected, (state, action) => {
       state.isUploading = false;
@@ -228,15 +232,15 @@ export const {
 export default UploadAttachmentsSlice.reducer;
 
 interface IUploadAttachmentsRequest {
-  categoryId: string;
-  sessionId: string;
+  categoryIds: string[];
+  reportId: string;
   userId: string;
   attachments: File[];
 }
 
 interface IUploadAttachmentsResponse {
   resError: string;
-  data: number[];
+  data: { question_id: number }[];
   status: number;
   statusText: string;
 }
@@ -253,6 +257,16 @@ interface IUploadAnswersToAddtionalQuestionsResponse {
   data: number[];
   status: number;
   statusText: string;
+}
+
+interface IUploadAnswersAPIRequest {
+  answers: {
+    question_id: string;
+    report_id: string;
+    user_id: string;
+    answer: string;
+    category_id: string;
+  }[];
 }
 
 interface IResponseError {

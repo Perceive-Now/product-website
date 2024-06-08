@@ -5,22 +5,33 @@ import { quickPromptContent } from "./quick-prompt-content";
 import { type AnyObject } from "yup/lib/types";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
-import { useAppDispatch } from "../../../hooks/redux";
-import { uploadQuickPrompts } from "../../../stores/quick-prompt";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setQuickPrompts, uploadQuickPrompts } from "../../../stores/upload-quick-prompt";
 import jsCookie from "js-cookie";
 
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
 
-  const requiredQuickPrompts = quickPromptContent.find((content) => content.id === 0);
+  const { isUploading, quickPrompts, currentParagraphId } = useAppSelector(
+    (state) => state.uploadQuickPrompt,
+  );
 
-  const formInitialValue =
+  const requiredQuickPrompts = quickPromptContent.find(
+    (content) => content.id === currentParagraphId,
+  );
+
+  let formInitialValue =
     requiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
       if (curr.contentType === "prompt" && curr.keyword) {
         acc[curr.keyword] = "";
       }
       return acc;
     }, {}) || {};
+
+  formInitialValue = {
+    ...formInitialValue,
+    ...quickPrompts.find((content) => content.id === 0)?.prompts,
+  };
 
   const formSchema =
     requiredQuickPrompts?.contentList.reduce(
@@ -42,25 +53,54 @@ export default function QuickPromptForm() {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
     mode: "onBlur",
   });
 
-  const onContinue = (params: any) => {
+  const onContinue = (params: { [key: string]: string }) => {
+    dispatch(setQuickPrompts({ prompts: params, paragraphId: currentParagraphId }));
+
+    const indexOfCurrentParagraphId = quickPromptContent.findIndex(
+      (content) => content.id === currentParagraphId,
+    );
+
+    const promptData = [...quickPromptContent];
+
+    promptData[indexOfCurrentParagraphId] = {
+      ...promptData[indexOfCurrentParagraphId],
+      contentList: promptData[indexOfCurrentParagraphId].contentList.map((content) => {
+        if (content.contentType === "prompt" && content.keyword) {
+          return {
+            ...content,
+            prompt: params[content.keyword],
+          };
+        }
+        return content;
+      }),
+    };
+
+    const content = promptData[indexOfCurrentParagraphId].contentList.reduce(
+      (acc: string, curr) => {
+        if (curr.contentType === "text") {
+          return acc + " " + curr.content;
+        } else if (curr.contentType === "prompt" && "prompt" in curr) {
+          return acc + " " + curr.prompt;
+        }
+        return acc;
+      },
+      "",
+    );
+
     const dataObj = {
-      paragraphId: "1",
-      quickPrompts: { ...params },
-      categoryId: "1", // TODO: get categoryId, userId,
+      promptData: promptData,
+      reportId: "1", // TODO: get reportID from usecases
       userId: jsCookie.get("user_id") ?? "",
-      sessionId: jsCookie.get("session_id") ?? "",
+      content: content,
     };
 
     dispatch(uploadQuickPrompts(dataObj));
-
-    reset();
   };
 
   return (
@@ -96,6 +136,7 @@ export default function QuickPromptForm() {
       </fieldset>
       <Button
         type="optional"
+        loading={isUploading}
         handleClick={() => {
           handleSubmit(onContinue);
         }}

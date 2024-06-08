@@ -2,13 +2,16 @@ import React from "react";
 import Button from "../../../components/reusable/button";
 import { useAppDispatch } from "../../../hooks/redux";
 import { incrementStep, setCurrentPageId } from "../../../stores/upload-attachments";
+import ToPayementButton from "./to-payement-button";
 
 export default function WaitingWrapper({
   children,
   nextPageId,
+  nextPayement = false,
 }: {
   children: React.ReactNode;
   nextPageId: number;
+  nextPayement?: boolean;
 }) {
   const dispatch = useAppDispatch();
 
@@ -46,9 +49,14 @@ export default function WaitingWrapper({
       <div className="w-[300px] space-y-5">
         <>
           {children}
-          <Button type="optional" classname="w-full" handleClick={handleContinueBtnClick}>
-            <p className="text-secondary-800">Continue</p>
-          </Button>
+          {nextPayement ? (
+            <ToPayementButton />
+          ) : (
+            <Button type="optional" classname="w-full" handleClick={handleContinueBtnClick}>
+              <p className="text-secondary-800">Continue</p>
+            </Button>
+          )}
+
           <p className="cursor-pointer underline text-purple-900">
             If more info is required (temp link)
           </p>

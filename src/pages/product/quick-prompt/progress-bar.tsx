@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import uploadAttachmentsPages from "./upload-attachment-pages-list";
 import { useAppSelector } from "../../../hooks/redux";
+import quickPromptPagesList from "./quick-prompt-pages-list";
 
 // TODO Remove and use one in reusable after switching to redux
 
 export default function ProgressBar() {
-  const { currentPageId, additionalQuestionIds, currentStep } = useAppSelector(
-    (state) => state.uploadAttachments,
+  const { currentPageId, paragraphIds, currentStep } = useAppSelector(
+    (state) => state.uploadQuickPrompt,
   );
 
   const [totalSteps, setTotalSteps] = useState(0);
 
   useEffect(() => {
     let totalSteps = 0;
-    uploadAttachmentsPages.forEach((step) => {
+    quickPromptPagesList.forEach((step) => {
       if (step.id === currentPageId) {
         totalSteps = step.totalPages;
       }
     });
-    totalSteps += additionalQuestionIds.length;
+    totalSteps += paragraphIds?.length ?? 0;
     setTotalSteps(totalSteps);
-  }, [currentPageId, additionalQuestionIds, currentStep]);
+  }, [currentPageId, paragraphIds, currentStep]);
 
   return (
     <div className="w-full bg-primary-900 h-2 my-3">

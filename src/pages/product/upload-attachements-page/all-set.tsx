@@ -1,4 +1,4 @@
-import Button from "../../../components/reusable/button";
+import ToPayementButton from "./to-payement-button";
 
 export default function AllSet() {
   return (
@@ -12,16 +12,7 @@ export default function AllSet() {
         <p className="w-[300px] text-secondary-800">
           Let's move on to creating your final report. Payment is needed to unlock your report.
         </p>
-        <Button
-          type="optional"
-          handleClick={() => {
-            console.log("continue");
-          }}
-          disabled={false}
-          classname="w-[320px]"
-        >
-          <p className="text-secondary-800">Continue</p>
-        </Button>
+        <ToPayementButton />
       </div>
     </div>
   );
