@@ -219,7 +219,7 @@ export default function ReportQuestionAnswerPage() {
             </div>
           </div>
 
-          <div className="flex-shrink-0">aaa</div>
+          <div className="flex-shrink-0"></div>
         </div>
       </div>
     </>
