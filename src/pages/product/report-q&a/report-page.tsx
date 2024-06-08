@@ -25,18 +25,6 @@ export default function ReportQuestionAnswerPage() {
   const dispatch = useAppDispatch();
   const session = useAppSelector((state) => state.sessionDetail.session);
 
-  // const location = useLocation();
-
-  // useEffect(() => {
-  //   if (location.pathname === "/new-report") {
-  //     dispatch(
-  //       setSession({
-  //         session_data: {},
-  //       }),
-  //     );
-  //   }
-  // }, [location, dispatch]);
-
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
   const activeIndex = useMemo(
@@ -109,16 +97,6 @@ export default function ReportQuestionAnswerPage() {
 
   //
   const steps = [
-    // {
-    //   label: "",
-    //   value: 0,
-    //   // component: <UseCaseSelect changeActiveStep={changeActiveStep} />,
-    // },
-    // // {
-    // //   label: "",
-    // //   value: 1,
-    // //   component: <KeywordSelection changeActiveStep={changeActiveStep} />,
-    // // },
     {
       label: "",
       value: 8,

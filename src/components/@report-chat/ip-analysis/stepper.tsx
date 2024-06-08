@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import classNames from "classnames";
-// import { IStep } from "../../../@types/entities/IStep";
 
 interface Props {
   steps: any[];

@@ -47,7 +47,6 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
       setLoading(true);
       getUserChats(user_id, session_id)
         .then((data) => {
-          console.log(data);
           setUserChats(data as any);
           setLoading(false);
         })
