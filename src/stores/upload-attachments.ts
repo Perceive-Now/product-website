@@ -23,8 +23,8 @@ export interface IUploadAttachmentsState {
   isUploading: boolean;
   isUploadAttachmentsError: boolean;
   isUploadAttachmentsSuccess: boolean;
-  isUploadAnswersToAddtionalQuestionsError: boolean;
-  isUploadAnswersToAddtionalQuestionsSuccess: boolean;
+  isUploadAnswerToAddtionalQuestionsError: boolean;
+  isUploadAnswerToAddtionalQuestionsSuccess: boolean;
   message: string;
 }
 
@@ -37,8 +37,8 @@ export const initialState: IUploadAttachmentsState = {
   isUploading: false,
   isUploadAttachmentsError: false,
   isUploadAttachmentsSuccess: false,
-  isUploadAnswersToAddtionalQuestionsError: false,
-  isUploadAnswersToAddtionalQuestionsSuccess: false,
+  isUploadAnswerToAddtionalQuestionsError: false,
+  isUploadAnswerToAddtionalQuestionsSuccess: false,
   message: "",
 };
 
@@ -85,17 +85,17 @@ export const uploadAttachments = createAsyncThunk<
 });
 
 // -----------------------------------------------------------------------
-export const uploadAnswersToAddtionalQuestions = createAsyncThunk<
-  IUploadAnswersToAddtionalQuestionsResponse,
-  IUploadAnswersToAddtionalQuestionsRequest,
+export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
+  IuploadAnswerToAddtionalQuestionsResponse,
+  IuploadAnswerToAddtionalQuestionsRequest,
   {
     rejectValue: IResponseError;
   }
 >(
-  "uploadAnswersToAddtionalQuestions",
-  async (request: IUploadAnswersToAddtionalQuestionsRequest, thunkAPI) => {
+  "uploadAnswerToAddtionalQuestions",
+  async (request: IuploadAnswerToAddtionalQuestionsRequest, thunkAPI) => {
     try {
-      const answersObj: IUploadAnswersToAddtionalQuestionsRequestAPI = {
+      const answersObj: IuploadAnswerToAddtionalQuestionsRequestAPI = {
         user_case_id: request.user_case_id,
         requirement_gathering_id: request.requirementGatheringId,
         userID: request.userId,
@@ -158,13 +158,13 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setIsUploadAnswersToAddtionalQuestionsSuccess: (state, action: PayloadAction<boolean>) => {
-      state.isUploadAnswersToAddtionalQuestionsSuccess = action.payload;
+    setisUploadAnswerToAddtionalQuestionsSuccess: (state, action: PayloadAction<boolean>) => {
+      state.isUploadAnswerToAddtionalQuestionsSuccess = action.payload;
     },
 
     // -----------------------------------------------------------------------
-    setIsUploadAnswersToAddtionalQuestionsError: (state, action: PayloadAction<boolean>) => {
-      state.isUploadAnswersToAddtionalQuestionsError = action.payload;
+    setisUploadAnswerToAddtionalQuestionsError: (state, action: PayloadAction<boolean>) => {
+      state.isUploadAnswerToAddtionalQuestionsError = action.payload;
     },
 
     // -----------------------------------------------------------------------
@@ -202,20 +202,20 @@ export const UploadAttachmentsSlice = createSlice({
     });
 
     // -----------------------------------------------------------------------
-    builder.addCase(uploadAnswersToAddtionalQuestions.pending, (state) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.pending, (state) => {
       state.isUploading = true;
-      state.isUploadAnswersToAddtionalQuestionsError = false;
-      state.isUploadAnswersToAddtionalQuestionsSuccess = false;
+      state.isUploadAnswerToAddtionalQuestionsError = false;
+      state.isUploadAnswerToAddtionalQuestionsSuccess = false;
     });
-    builder.addCase(uploadAnswersToAddtionalQuestions.fulfilled, (state) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.fulfilled, (state) => {
       state.isUploading = false;
-      state.isUploadAnswersToAddtionalQuestionsError = false;
-      state.isUploadAnswersToAddtionalQuestionsSuccess = true;
+      state.isUploadAnswerToAddtionalQuestionsError = false;
+      state.isUploadAnswerToAddtionalQuestionsSuccess = true;
     });
-    builder.addCase(uploadAnswersToAddtionalQuestions.rejected, (state, action) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.rejected, (state, action) => {
       state.isUploading = false;
-      state.isUploadAnswersToAddtionalQuestionsError = true;
-      state.isUploadAnswersToAddtionalQuestionsSuccess = false;
+      state.isUploadAnswerToAddtionalQuestionsError = true;
+      state.isUploadAnswerToAddtionalQuestionsSuccess = false;
       state.message = action.error.message ?? "Unable to upload answers to additional questions";
     });
   },
@@ -228,8 +228,8 @@ export const {
   incrementStep,
   decrementStep,
   setCurrentQuestionId,
-  setIsUploadAnswersToAddtionalQuestionsError,
-  setIsUploadAnswersToAddtionalQuestionsSuccess,
+  setisUploadAnswerToAddtionalQuestionsError,
+  setisUploadAnswerToAddtionalQuestionsSuccess,
   setIsUploadAttachmentsError,
   setIsUploadAttachmentsSuccess,
   getUploadAttachmentsSliceState,
@@ -259,21 +259,21 @@ interface IUploadAttachmentsResponse {
   statusText: string;
 }
 
-interface IUploadAnswersToAddtionalQuestionsRequest {
+interface IuploadAnswerToAddtionalQuestionsRequest {
   userId: string;
   requirementGatheringId: number;
   answer: IAnswerObj;
   user_case_id: string;
 }
 
-interface IUploadAnswersToAddtionalQuestionsResponse {
+interface IuploadAnswerToAddtionalQuestionsResponse {
   resError: string;
   data: number[];
   status: number;
   statusText: string;
 }
 
-interface IUploadAnswersToAddtionalQuestionsRequestAPI {
+interface IuploadAnswerToAddtionalQuestionsRequestAPI {
   QuestionID: string;
   requirement_gathering_id: number;
   userID: string;

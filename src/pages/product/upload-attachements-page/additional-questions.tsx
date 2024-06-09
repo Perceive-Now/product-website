@@ -9,9 +9,9 @@ import {
   setAnswers,
   setCurrentPageId,
   setCurrentQuestionId,
-  setIsUploadAnswersToAddtionalQuestionsError,
-  setIsUploadAnswersToAddtionalQuestionsSuccess,
-  uploadAnswersToAddtionalQuestions,
+  setisUploadAnswerToAddtionalQuestionsError,
+  setisUploadAnswerToAddtionalQuestionsSuccess,
+  uploadAnswerToAddtionalQuestions,
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import { questionList } from "../report-q&a/_question";
@@ -24,19 +24,19 @@ export default function AdditionalQuestions() {
     answers,
     currentQuestionId,
     additionalQuestionIds,
-    isUploadAnswersToAddtionalQuestionsError,
-    isUploadAnswersToAddtionalQuestionsSuccess,
+    isUploadAnswerToAddtionalQuestionsError,
+    isUploadAnswerToAddtionalQuestionsSuccess,
     message,
   } = useAppSelector((state) => state.uploadAttachments);
 
   useEffect(() => {
-    if (isUploadAnswersToAddtionalQuestionsError) {
+    if (isUploadAnswerToAddtionalQuestionsError) {
       toast.error(message);
-      dispatch(setIsUploadAnswersToAddtionalQuestionsError(false));
+      dispatch(setisUploadAnswerToAddtionalQuestionsError(false));
       return;
     }
 
-    if (isUploadAnswersToAddtionalQuestionsSuccess) {
+    if (isUploadAnswerToAddtionalQuestionsSuccess) {
       const nextQuestionIndex =
         additionalQuestionIds.findIndex(
           (questionId) => currentQuestionId === questionId.question_id,
@@ -51,12 +51,12 @@ export default function AdditionalQuestions() {
         dispatch(incrementStep());
       }
 
-      dispatch(setIsUploadAnswersToAddtionalQuestionsSuccess(false));
+      dispatch(setisUploadAnswerToAddtionalQuestionsSuccess(false));
       return;
     }
   }, [
-    isUploadAnswersToAddtionalQuestionsError,
-    isUploadAnswersToAddtionalQuestionsSuccess,
+    isUploadAnswerToAddtionalQuestionsError,
+    isUploadAnswerToAddtionalQuestionsSuccess,
     additionalQuestionIds,
     currentQuestionId,
     message,
@@ -90,7 +90,7 @@ export default function AdditionalQuestions() {
     dispatch(setAnswers(updatedAnswers));
 
     dispatch(
-      uploadAnswersToAddtionalQuestions({
+      uploadAnswerToAddtionalQuestions({
         userId: jsCookie.get("user_id") ?? "",
         user_case_id: "1" ?? "", // TODO get from usecase redux
         answer: answer,
