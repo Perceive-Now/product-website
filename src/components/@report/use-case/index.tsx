@@ -8,6 +8,7 @@ import { setUseCase } from "../../../stores/use-case";
 import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 import { useNavigate } from "react-router-dom";
+import DefaultProgressBar from "../../../components/reusable/default-progress";
 
 interface OptionMappings {
   [key: string]: string;
@@ -148,6 +149,7 @@ const UseCaseSelect = () => {
   return (
     <div className="h-full">
       <p className="text-[#120824] text-5xl font-bold">Please select use cases for your report</p>
+      <DefaultProgressBar width={10} />
       <div className="w-full mt-2">
         <div className="flex justify-between bg-appGray-100 p-2 rounded-lg w-full">
           <div className="w-[200px]">

@@ -27,7 +27,7 @@ const StayTuned = () => {
               Go home
             </Button>
           </Link>
-          <Link to="/">
+          <Link to="/new-report">
             <Button type="primary" size="small" classname="border border-primary-900">
               Start new report
             </Button>

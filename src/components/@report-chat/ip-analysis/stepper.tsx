@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import classNames from "classnames";
-// import { IStep } from "../../../@types/entities/IStep";
 
 interface Props {
   steps: any[];
@@ -8,7 +7,7 @@ interface Props {
 }
 
 const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
-  const isStepComplete = (currentStep: number) => activeStep > currentStep;
+  const isStepComplete = (currentStep: number) => activeStep >= currentStep;
 
   return (
     <>
