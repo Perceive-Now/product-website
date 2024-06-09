@@ -103,6 +103,7 @@ import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intellige
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
 import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
 import { WelcomePage } from "./components/@signup-complete";
+import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
 
 /**
  *
@@ -141,12 +142,13 @@ function App() {
             <Route path="/setting" element={<Setting />} />
 
             {/* Report-section */}
-            <Route path="/new-report" element={<UseCasePage />} />
-            <Route path="/interaction-method" element={<InteractionMethod />} />
-            <Route path="/q&a" element={<ReportQuestionAnswerPage />} />
-            <Route path="/upload-attachments" element={<UploadAttachmentsPage />} />
-            <Route path="/quick-prompt" element={<QuickPromptPage />} />
-
+            <Route element={<ReportSectionStateManagementService />}>
+              <Route path="/new-report" element={<UseCasePage />} />
+              <Route path="/interaction-method" element={<InteractionMethod />} />
+              <Route path="/q&a" element={<ReportQuestionAnswerPage />} />
+              <Route path="/upload-attachments" element={<UploadAttachmentsPage />} />
+              <Route path="/quick-prompt" element={<QuickPromptPage />} />
+            </Route>
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />

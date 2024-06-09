@@ -9,14 +9,27 @@ const initialState: IUseCase = {
 };
 
 export const UseCaseSlice = createSlice({
-  name: "chat",
+  name: "usecases",
   initialState,
   reducers: {
+    // -----------------------------------------------------------------------
     setUseCase: (state, action: PayloadAction<IUseCase>) => {
       state.usecases = action.payload.usecases;
     },
+
+    // -----------------------------------------------------------------------
+    getUseCaseSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    setUseCaseStateFromDraft: (state, action: PayloadAction<IUseCase>) => {
+      state = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
+    reset: () => initialState,
   },
 });
 
-export const { setUseCase } = UseCaseSlice.actions;
+export const { setUseCase, getUseCaseSliceState, reset, setUseCaseStateFromDraft } =
+  UseCaseSlice.actions;
 export default UseCaseSlice.reducer;

@@ -12,6 +12,7 @@ import KnownowSlice from "./stores/know-now";
 import KnownowSlice1 from "./stores/know-now1";
 import UploadAttachmentsSlice from "./stores/upload-attachments";
 import uploadQuickPrompt from "./stores/upload-quick-prompt";
+import draftSlice from "./stores/draft";
 
 //
 export const store = configureStore({
@@ -20,13 +21,14 @@ export const store = configureStore({
     dashboard: DashboardReducer,
     states: StatesSlice,
     chat: ChatSlice,
-    usecase: UseCaseSlice,
+    usecases: UseCaseSlice,
     sessionDetail: SessionSlice,
     UI: UISlice,
     KnowNow: KnownowSlice,
     KnowNowChat: KnownowSlice1,
     uploadAttachments: UploadAttachmentsSlice,
     uploadQuickPrompt: uploadQuickPrompt,
+    draft: draftSlice,
   },
 });
 

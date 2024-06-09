@@ -13,6 +13,22 @@ interface OptionMappings {
   [key: string]: string;
 }
 
+const optionMappings: OptionMappings = {
+  "freedom-to-operate": "ip-validity-analysis",
+  "prior-art-search": "ip-validity-analysis",
+  "patent-validity": "ip-validity-analysis",
+  "patent-infringement": "ip-validity-analysis",
+  "ip-valuation": "ip-valuation",
+  "ip-licensing-opportunity": "ip-licensing-opportunity",
+  //
+  "m&a": "market-research",
+  "market-potential": "market-research",
+  "competitive-landscape": "market-research",
+  "consumer-landscape": "market-research",
+  commercialization: "market-research",
+  regulatory: "market-research",
+};
+
 /**
  *
  */
@@ -88,22 +104,6 @@ const UseCaseSelect = () => {
   }, [dispatch, navigation, options, selected.length, sessionDetail]);
 
   useEffect(() => {
-    const optionMappings: OptionMappings = {
-      "freedom-to-operate": "ip-validity-analysis",
-      "prior-art-search": "ip-validity-analysis",
-      "patent-validity": "ip-validity-analysis",
-      "patent-infringement": "ip-validity-analysis",
-      "ip-valuation": "ip-valuation",
-      "ip-licensing-opportunity": "ip-licensing-opportunity",
-      //
-      "m&a": "market-research",
-      "market-potential": "market-research",
-      "competitive-landscape": "market-research",
-      "consumer-landscape": "market-research",
-      commercialization: "market-research",
-      regulatory: "market-research",
-    };
-
     const newOptions: any[] | ((prevState: string[]) => string[]) = [];
 
     selected.forEach((option) => {

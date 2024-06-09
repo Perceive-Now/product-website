@@ -144,6 +144,7 @@ export const SessionSlice = createSlice({
   name: "Session",
   initialState,
   reducers: {
+    // -----------------------------------------------------------------------
     setSession: (state, action: PayloadAction<ISession>) => {
       state.session = {
         ...state.session, // Keep the properties from the previous session
@@ -160,6 +161,19 @@ export const SessionSlice = createSlice({
           console.error("Error updating session on server:", error);
         });
     },
+
+    // -----------------------------------------------------------------------
+    getSessionSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    setSessionFromDraft: (state, action: PayloadAction<ISession>) => {
+      state.session = {
+        ...action.payload,
+      };
+    },
+
+    // -----------------------------------------------------------------------
+    reset: () => initialState,
   },
   extraReducers(builder) {
     builder.addCase(getSessionDetails.fulfilled, (state, action) => {
@@ -169,5 +183,6 @@ export const SessionSlice = createSlice({
   },
 });
 
-export const { setSession } = SessionSlice.actions;
+export const { setSession, getSessionSliceState, reset, setSessionFromDraft } =
+  SessionSlice.actions;
 export default SessionSlice.reducer;
