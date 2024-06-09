@@ -12,8 +12,14 @@ import jsCookie from "js-cookie";
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
 
-  const { isUploading, quickPrompts, currentParagraphId } = useAppSelector(
-    (state) => state.uploadQuickPrompt,
+  const {
+    isUploading: isUploadingUploadQuickPrompt,
+    quickPrompts,
+    currentParagraphId,
+  } = useAppSelector((state) => state.uploadQuickPrompt);
+
+  const { isUploading: isUploadingUsecases, requirementGatheringId } = useAppSelector(
+    (state) => state.usecases,
   );
 
   const requiredQuickPrompts =
@@ -114,7 +120,7 @@ export default function QuickPromptForm() {
 
     const dataObj = {
       promptData: promptData,
-      requirementGatheringId: "1", // TODO: get requirementGatheringId from usecases
+      requirementGatheringId: requirementGatheringId,
       userId: jsCookie.get("user_id") ?? "",
       content: content,
     };
@@ -158,7 +164,7 @@ export default function QuickPromptForm() {
       </fieldset>
       <Button
         type="optional"
-        loading={isUploading}
+        loading={isUploadingUploadQuickPrompt || isUploadingUsecases}
         handleClick={() => {
           handleSubmit(onContinue);
         }}

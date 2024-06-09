@@ -240,14 +240,14 @@ export default UploadAttachmentsSlice.reducer;
 
 interface IUploadAttachmentsRequest {
   user_case_ids: string[];
-  requirementGatheringId: string;
+  requirementGatheringId: number;
   userId: string;
   attachments: File[];
 }
 
 interface IUploadAttachmentsRequestAPI {
   user_cases_ids: string[];
-  requirement_gathering_id: string;
+  requirement_gathering_id: number;
   user_id: string;
   attachment: string;
 }

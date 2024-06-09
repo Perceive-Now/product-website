@@ -46,12 +46,18 @@ export default function UploadAttachments() {
   const dispatch = useAppDispatch();
 
   const {
-    isUploading,
+    isUploading: isUploadingUploadAttachments,
     additionalQuestionIds,
     isUploadAttachmentsError,
     isUploadAttachmentsSuccess,
     message,
   } = useAppSelector((state) => state.uploadAttachments);
+
+  const {
+    isUploading: isUploadingUseCases,
+    useCaseIds,
+    requirementGatheringId,
+  } = useAppSelector((state) => state.usecases);
 
   const [files, setFiles] = useState<File[]>([]);
 
@@ -131,8 +137,8 @@ export default function UploadAttachments() {
     dispatch(
       uploadAttachments({
         userId: jsCookie.get("user_id") ?? "",
-        requirementGatheringId: jsCookie.get("session_id") ?? "", // TODO get requirement gathering id
-        user_case_ids: ["1"] ?? [], // TODO get from usecase redux
+        requirementGatheringId: requirementGatheringId ?? "",
+        user_case_ids: useCaseIds ?? [], // TODO get from usecase redux
         attachments: [...files],
       }),
     );
@@ -167,7 +173,7 @@ export default function UploadAttachments() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={files.length === 0}
-          loading={isUploading}
+          loading={isUploadingUploadAttachments || isUploadingUseCases}
         >
           <p className="text-secondary-800">Continue</p>
         </Button>

@@ -50,7 +50,7 @@ export const uploadQuickPrompts = createAsyncThunk<
   }
 >("uploadQuickPrompts", async (request: IuploadQuickPromptsRequest, thunkAPI) => {
   try {
-    const dataObj = {
+    const dataObj: IuploadQuickPromptsRequestAPI = {
       requirement_gathering_id: request.requirementGatheringId,
       content: request.content,
       user_id: request.userId ?? "",
@@ -175,10 +175,33 @@ export const {
 export default quickPromptsSlice.reducer;
 
 interface IuploadQuickPromptsRequest {
-  requirementGatheringId: string;
+  requirementGatheringId: number;
   userId: string;
   content: string;
   promptData: {
+    id: number;
+    contentList: (
+      | {
+          contentType: string;
+          content: string;
+          keyword?: undefined;
+          placeholder?: undefined;
+        }
+      | {
+          contentType: string;
+          keyword: string;
+          placeholder: string;
+          content?: undefined;
+        }
+    )[];
+  }[];
+}
+
+interface IuploadQuickPromptsRequestAPI {
+  requirement_gathering_id: number;
+  user_id: string;
+  content: string;
+  prompt_data: {
     id: number;
     contentList: (
       | {
