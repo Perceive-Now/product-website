@@ -35,8 +35,32 @@ export const quickPromptContent = [
       },
       {
         contentType: "prompt",
-        keyword: "interest",
+        keyword: "specifi-aspect",
         placeholder: "[specific aspect, e.g., major players, market trends, geographical focus]",
+      },
+      {
+        contentType: "text",
+        content: "and need detailed insights on ",
+      },
+      {
+        contentType: "prompt",
+        keyword: "specific-detail",
+        placeholder:
+          "[specific detail, e.g., potential partners, market entry barriers, pricing strategies]",
+      },
+      {
+        contentType: "text",
+        content: ". This analysis will help",
+      },
+      {
+        contentType: "prompt",
+        keyword: "specific-goal",
+        placeholder:
+          "[specific goal or decision, e.g., inform our strategy, guide our negotiations]",
+      },
+      {
+        contentType: "text",
+        content: ".",
       },
     ],
   },

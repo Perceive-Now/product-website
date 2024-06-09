@@ -135,12 +135,15 @@ export default function QuickPromptForm() {
               );
             } else if (content.contentType === "prompt" && content.keyword) {
               return (
-                <div key={index} className="inline-block max-w-fit px-1 mx-1 bg-appGray-100">
+                <div
+                  key={index}
+                  className="inline-block px-1 mr-1 max-w-[900px] overflow-hidden bg-appGray-100"
+                >
                   <input
                     className={classNames(
                       { "border-b-red-500": errors[content.keyword] },
                       { "border-b-primary-900": !errors[content.keyword] },
-                      "focus:outline-none p-1 bg-transparent rounded-md min-w-fit rounded-b-none border-b-2 text-primary-900",
+                      "focus:outline-none bg-transparent rounded-md min-w-fit max-w-[900px] display-block overflow-x-auto rounded-b-none border-b-2 text-primary-900",
                     )}
                     key={index}
                     width={content.placeholder.length}

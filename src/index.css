@@ -270,3 +270,7 @@
   background: linear-gradient(146deg, #ffb531 26.94%, #fa6d08 113.34%);
   cursor: pointer;
 }
+
+input {
+  field-sizing: content;
+}
