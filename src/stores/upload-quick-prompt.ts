@@ -4,7 +4,7 @@ import { quickPromptContent } from "../pages/product/quick-prompt/quick-prompt-c
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-interface uploadQuickPromptsState {
+interface TUploadQuickPromptsState {
   isUploading: boolean;
   currentParagraphId: number;
   currentPageId: number;
@@ -18,7 +18,7 @@ interface uploadQuickPromptsState {
   };
 }
 
-const initialState: uploadQuickPromptsState = {
+const initialState: TUploadQuickPromptsState = {
   isUploading: false,
   currentParagraphId: 0,
   currentStep: 0,
@@ -44,7 +44,7 @@ export const uploadQuickPrompts = createAsyncThunk<
 >("uploadQuickPrompts", async (request: IuploadQuickPromptsRequest, thunkAPI) => {
   try {
     const dataObj = {
-      report_id: request.reportId,
+      requirement_gathering_id: request.requirementGatheringId,
       content: request.content,
       user_id: request.userId ?? "",
       prompt_data: request.promptData ?? "",
@@ -115,6 +115,11 @@ export const quickPromptsSlice = createSlice({
     getQuickPromptsSliceState: (state) => state,
 
     // -----------------------------------------------------------------------
+    setQuickPromtsStateFromDraft: (state, action: PayloadAction<TUploadQuickPromptsState>) => {
+      state = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
     reset: () => initialState,
   },
   extraReducers(builder) {
@@ -157,12 +162,13 @@ export const {
   decrementStep,
   incrementStep,
   setCurrentPageId,
+  setQuickPromtsStateFromDraft,
 } = quickPromptsSlice.actions;
 
 export default quickPromptsSlice.reducer;
 
 interface IuploadQuickPromptsRequest {
-  reportId: string;
+  requirementGatheringId: string;
   userId: string;
   content: string;
   promptData: {

@@ -128,7 +128,7 @@ export default function UploadAttachments() {
     dispatch(
       uploadAttachments({
         userId: jsCookie.get("user_id") ?? "",
-        reportId: jsCookie.get("session_id") ?? "",
+        requirementGatheringId: jsCookie.get("session_id") ?? "",
         categoryIds: ["1"] ?? [], // TODO get from usecase redux
         attachments: [...files],
       }),

@@ -95,7 +95,7 @@ export default function QuickPromptForm() {
 
     const dataObj = {
       promptData: promptData,
-      reportId: "1", // TODO: get reportID from usecases
+      requirementGatheringId: "1", // TODO: get requirementGatheringId from usecases
       userId: jsCookie.get("user_id") ?? "",
       content: content,
     };

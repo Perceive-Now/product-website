@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-interface UploadAttachmentsState {
+interface TUploadAttachmentsState {
   currentPageId: number;
   currentStep: number;
   currentQuestionId: number;
@@ -17,7 +17,7 @@ interface UploadAttachmentsState {
   message: string;
 }
 
-const initialState: UploadAttachmentsState = {
+const initialState: TUploadAttachmentsState = {
   currentPageId: 0,
   currentStep: 0,
   currentQuestionId: 0,
@@ -58,7 +58,7 @@ export const uploadAttachments = createAsyncThunk<
 
     const dataObj = {
       category_ids: request.categoryIds ?? "",
-      report_id: request.reportId ?? "",
+      requirement_gathering_id: request.requirementGatheringId ?? "",
       user_id: request.userId ?? "",
       attachment: base64Files[0] ?? "",
     };
@@ -91,7 +91,7 @@ export const uploadAnswersToAddtionalQuestions = createAsyncThunk<
       const answersObjList = request.answers.map((answer) => {
         return {
           category_id: category_id,
-          report_id: session_id,
+          requirement_gathering_id: session_id,
           user_id: user_id,
           question_id: String(answer.questionId),
           answer: answer.answer,
@@ -167,7 +167,12 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    getUploadAttachmentsState: (state) => state,
+    getUploadAttachmentsSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    setUploadAttachmentsStateFromDraft: (state, action: PayloadAction<TUploadAttachmentsState>) => {
+      state = action.payload;
+    },
 
     // -----------------------------------------------------------------------
     reset: () => initialState,
@@ -226,14 +231,15 @@ export const {
   setIsUploadAnswersToAddtionalQuestionsSuccess,
   setIsUploadAttachmentsError,
   setIsUploadAttachmentsSuccess,
-  getUploadAttachmentsState,
+  getUploadAttachmentsSliceState,
+  setUploadAttachmentsStateFromDraft,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;
 
 interface IUploadAttachmentsRequest {
   categoryIds: string[];
-  reportId: string;
+  requirementGatheringId: string;
   userId: string;
   attachments: File[];
 }
@@ -262,7 +268,7 @@ interface IUploadAnswersToAddtionalQuestionsResponse {
 interface IUploadAnswersAPIRequest {
   answers: {
     question_id: string;
-    report_id: string;
+    requirement_gathering_id: string;
     user_id: string;
     answer: string;
     category_id: string;
