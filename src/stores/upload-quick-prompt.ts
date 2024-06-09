@@ -4,7 +4,7 @@ import { quickPromptContent } from "../pages/product/quick-prompt/quick-prompt-c
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-interface TUploadQuickPromptsState {
+export interface IUploadQuickPromptsState {
   isUploading: boolean;
   currentParagraphId: number;
   currentPageId: number;
@@ -18,7 +18,7 @@ interface TUploadQuickPromptsState {
   };
 }
 
-const initialState: TUploadQuickPromptsState = {
+export const initialState: IUploadQuickPromptsState = {
   isUploading: false,
   currentParagraphId: 0,
   currentStep: 0,
@@ -115,7 +115,7 @@ export const quickPromptsSlice = createSlice({
     getQuickPromptsSliceState: (state) => state,
 
     // -----------------------------------------------------------------------
-    setQuickPromtsStateFromDraft: (state, action: PayloadAction<TUploadQuickPromptsState>) => {
+    setQuickPromtsStateFromDraft: (state, action: PayloadAction<IUploadQuickPromptsState>) => {
       state = action.payload;
     },
 

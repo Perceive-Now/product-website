@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface IUseCase {
+export interface IUseCase {
   usecases: string[];
 }
 
-const initialState: IUseCase = {
+export const initialState: IUseCase = {
   usecases: [],
 };
 

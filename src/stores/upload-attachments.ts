@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-interface TUploadAttachmentsState {
+export interface IUploadAttachmentsState {
   currentPageId: number;
   currentStep: number;
   currentQuestionId: number;
@@ -17,7 +17,7 @@ interface TUploadAttachmentsState {
   message: string;
 }
 
-const initialState: TUploadAttachmentsState = {
+export const initialState: IUploadAttachmentsState = {
   currentPageId: 0,
   currentStep: 0,
   currentQuestionId: 0,
@@ -170,7 +170,7 @@ export const UploadAttachmentsSlice = createSlice({
     getUploadAttachmentsSliceState: (state) => state,
 
     // -----------------------------------------------------------------------
-    setUploadAttachmentsStateFromDraft: (state, action: PayloadAction<TUploadAttachmentsState>) => {
+    setUploadAttachmentsStateFromDraft: (state, action: PayloadAction<IUploadAttachmentsState>) => {
       state = action.payload;
     },
 

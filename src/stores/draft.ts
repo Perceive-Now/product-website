@@ -1,5 +1,14 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  IUploadAttachmentsState,
+  initialState as initialStateUploadAttachments,
+} from "./upload-attachments";
+import {
+  IUploadQuickPromptsState,
+  initialState as initialStateUploadQuickPrompt,
+} from "./upload-quick-prompt";
+import { IUseCase, initialState as initialStateUseCase } from "./use-case";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
@@ -109,6 +118,7 @@ export const draftSlice = createSlice({
       state.draftsArray = [...state.draftsArray, action.payload];
     },
 
+    // -----------------------------------------------------------------------
     updateDraftsArray: (state, action: PayloadAction<IDraftOptional>) => {
       const index = state.draftsArray.findIndex(
         (draft) => draft.requirement_gathering_id === action.payload.requirement_gathering_id,
@@ -121,11 +131,13 @@ export const draftSlice = createSlice({
           current_page: action.payload.current_page,
           other_data: {
             uploadAttachmentsSliceState:
-              action.payload.other_data?.uploadAttachmentsSliceState ?? {},
+              action.payload.other_data?.uploadAttachmentsSliceState ??
+              initialStateUploadAttachments,
             uploadQuickPromptsSliceState:
-              action.payload.other_data?.uploadQuickPromptsSliceState ?? {},
-            useCasesSliceState: action.payload.other_data?.useCasesSliceState ?? {},
-            sessionSliceState: action.payload.other_data?.sessionSliceState ?? {},
+              action.payload.other_data?.uploadQuickPromptsSliceState ??
+              initialStateUploadQuickPrompt,
+            useCasesSliceState:
+              action.payload.other_data?.useCasesSliceState ?? initialStateUseCase,
           },
         };
 
@@ -145,9 +157,6 @@ export const draftSlice = createSlice({
             useCasesSliceState:
               action.payload.other_data?.useCasesSliceState ??
               state.draftsArray[index].other_data.useCasesSliceState,
-            sessionSliceState:
-              action.payload.other_data?.sessionSliceState ??
-              state.draftsArray[index].other_data.sessionSliceState,
           },
         };
 
@@ -228,14 +237,13 @@ interface IResponseError {
 }
 
 interface IOtherData {
-  uploadAttachmentsSliceState: object;
-  uploadQuickPromptsSliceState: object;
-  useCasesSliceState: object;
-  sessionSliceState: object;
+  uploadAttachmentsSliceState: IUploadAttachmentsState;
+  uploadQuickPromptsSliceState: IUploadQuickPromptsState;
+  useCasesSliceState: IUseCase;
   [key: string]: any;
 }
 
-interface IDraft {
+export interface IDraft {
   requirement_gathering_id: string;
   user_id: string;
   current_page: string;
@@ -245,10 +253,9 @@ interface IDraft {
 type TDraftArray = IDraft[];
 
 interface IOtherDataOptional {
-  uploadAttachmentsSliceState?: object;
-  uploadQuickPromptsSliceState?: object;
-  useCasesSliceState?: object;
-  sessionSliceState?: object;
+  uploadAttachmentsSliceState?: IUploadAttachmentsState;
+  uploadQuickPromptsSliceState?: IUploadQuickPromptsState;
+  useCasesSliceState?: IUseCase;
   [key: string]: any;
 }
 

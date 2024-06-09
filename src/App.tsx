@@ -104,6 +104,7 @@ import InteractionMethod from "./pages/product/interaction-method/interaction-me
 import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
 import { WelcomePage } from "./components/@signup-complete";
 import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
+import DraftReports from "./pages/product/draft-reports/draft-reports";
 
 /**
  *
@@ -144,6 +145,8 @@ function App() {
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
               <Route path="/new-report" element={<UseCasePage />} />
+              <Route path="/draft-reports" element={<DraftReports />} />
+
               <Route path="/interaction-method" element={<InteractionMethod />} />
               <Route path="/q&a" element={<ReportQuestionAnswerPage />} />
               <Route path="/upload-attachments" element={<UploadAttachmentsPage />} />
