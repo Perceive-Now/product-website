@@ -96,10 +96,10 @@ export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
   async (request: IuploadAnswerToAddtionalQuestionsRequest, thunkAPI) => {
     try {
       const answersObj: IuploadAnswerToAddtionalQuestionsRequestAPI = {
-        user_case_id: request.user_case_id,
+        user_case_id: request.useCaseId,
         requirement_gathering_id: request.requirementGatheringId,
         userID: request.userId,
-        QuestionID: String(request.answer.questionId),
+        QuestionID: String(request.questionId),
         answer: request.answer.answer,
       };
 
@@ -263,7 +263,8 @@ interface IuploadAnswerToAddtionalQuestionsRequest {
   userId: string;
   requirementGatheringId: number;
   answer: IAnswerObj;
-  user_case_id: string;
+  useCaseId: string;
+  questionId: number;
 }
 
 interface IuploadAnswerToAddtionalQuestionsResponse {

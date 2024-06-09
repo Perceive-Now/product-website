@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import jsCookie from "js-cookie";
-import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   EUploadAttachmentsPages,
@@ -15,6 +14,7 @@ import {
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import { questionList } from "../report-q&a/_question";
+import QuestionForm from "./question-form";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();
@@ -28,6 +28,8 @@ export default function AdditionalQuestions() {
     isUploadAnswerToAddtionalQuestionsSuccess,
     message,
   } = useAppSelector((state) => state.uploadAttachments);
+
+  const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
 
   useEffect(() => {
     if (isUploadAnswerToAddtionalQuestionsError) {
@@ -92,9 +94,10 @@ export default function AdditionalQuestions() {
     dispatch(
       uploadAnswerToAddtionalQuestions({
         userId: jsCookie.get("user_id") ?? "",
-        user_case_id: "1" ?? "", // TODO get from usecase redux
+        useCaseId: useCaseIds[0] ?? "", // TODO get correct use case ids
         answer: answer,
-        requirementGatheringId: 1 ?? 0, // TODO get from usecase redux
+        questionId: currentQuestionId,
+        requirementGatheringId: requirementGatheringId,
       }),
     );
   };
@@ -106,7 +109,7 @@ export default function AdditionalQuestions() {
   return (
     <>
       {currentQuestion && (
-        <NewComponent
+        <QuestionForm
           isLoading={isUploading}
           exampleAnswer={currentQuestion.answer}
           question={currentQuestion.question}
