@@ -13,12 +13,13 @@ export interface IReport {
 interface Props {
   reports: any[];
   onContinue: () => void;
+  isUploading?: boolean;
 }
 
 /**
  *
  */
-const SelectedReport = ({ reports, onContinue }: Props) => {
+const SelectedReport = ({ reports, onContinue, isUploading = false }: Props) => {
   const totalPrice = reports.reduce((total, item) => {
     if (item.reportPlan === "pro") {
       return total + 995;
@@ -61,6 +62,7 @@ const SelectedReport = ({ reports, onContinue }: Props) => {
           classname="text-black w-full"
           handleClick={onContinue}
           size="small"
+          loading={isUploading}
         >
           Continue
         </Button>

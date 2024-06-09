@@ -9,6 +9,7 @@ interface Props {
   handleChange: any;
   reports: any;
   onContinue: () => void;
+  isUploading?: boolean;
 }
 
 const Tabs = [
@@ -20,7 +21,14 @@ const Tabs = [
   },
 ];
 
-const UseCaseTab = ({ UseCaseOptions, selected, handleChange, reports, onContinue }: Props) => {
+const UseCaseTab = ({
+  UseCaseOptions,
+  selected,
+  handleChange,
+  reports,
+  onContinue,
+  isUploading = false,
+}: Props) => {
   return (
     <div className="w-full">
       <Tab.Group as={"div"} className="w-full">
@@ -109,7 +117,7 @@ const UseCaseTab = ({ UseCaseOptions, selected, handleChange, reports, onContinu
             </Tab.Panel>
           </Tab.Panels>
           <div className="w-[300px] 2xl:w-[350px]">
-            <SelectedReport reports={reports} onContinue={onContinue} />
+            <SelectedReport reports={reports} onContinue={onContinue} isUploading={isUploading} />
           </div>
         </div>
       </Tab.Group>
