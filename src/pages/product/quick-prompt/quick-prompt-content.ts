@@ -22,7 +22,21 @@ export const quickPromptContent = [
       },
       {
         contentType: "text",
-        content: "in the",
+        content: "for",
+      },
+      {
+        contentType: "prompt",
+        keyword: "purpose-or-objective",
+        placeholder: "[Purpose/Objective]",
+      },
+      {
+        contentType: "text",
+        content: ". I am particularly interested in",
+      },
+      {
+        contentType: "prompt",
+        keyword: "interest",
+        placeholder: "[specific aspect, e.g., major players, market trends, geographical focus]",
       },
     ],
   },
