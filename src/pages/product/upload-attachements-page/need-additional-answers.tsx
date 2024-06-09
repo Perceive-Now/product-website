@@ -1,4 +1,4 @@
-import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
+import { EUploadAttachmentsPages } from "src/stores/upload-attachments";
 import WaitingWrapper from "./waiting-wrapper";
 
 export default function NeedAdditionalAnswers() {

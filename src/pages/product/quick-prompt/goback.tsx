@@ -3,12 +3,12 @@ import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   decrementStep,
+  EQuickPromptPages,
   setCurrentPageId,
   setCurrentParagraphId,
 } from "../../../stores/upload-quick-prompt";
 import { quickPromptContent } from "./quick-prompt-content";
 import toast from "react-hot-toast";
-import { EQuickPromptPages } from "./quick-prompt-pages-list";
 
 const BackButton = () => {
   return (

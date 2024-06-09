@@ -1,11 +1,21 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EUploadAttachmentsPages } from "src/pages/product/upload-attachements-page/upload-attachment-pages-list";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
+export const EUploadAttachmentsPages = {
+  UploadAttachments: 0,
+  GoToReport: 1,
+  NeedAdditionalAnswers: 2,
+  AdditionalQuestions: 3,
+  AllSet: 4,
+} as const;
+
+export type TUploadAttachmentsPages =
+  (typeof EUploadAttachmentsPages)[keyof typeof EUploadAttachmentsPages];
+
 export interface IUploadAttachmentsState {
-  currentPageId: EUploadAttachmentsPages;
+  currentPageId: TUploadAttachmentsPages;
   currentStep: number;
   currentQuestionId: number;
   additionalQuestionIds: { question_id: number }[];
@@ -128,7 +138,7 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<EUploadAttachmentsPages>) => {
+    setCurrentPageId: (state, action: PayloadAction<TUploadAttachmentsPages>) => {
       state.currentPageId = action.payload;
     },
 

@@ -6,8 +6,9 @@ import {
   reset,
   setCurrentPageId,
   setCurrentQuestionId,
+  EUploadAttachmentsPages,
 } from "../../../stores/upload-attachments";
-import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
+import uploadAttachmentsPages from "./upload-attachment-pages-list";
 
 const BackButton = () => {
   return (
@@ -57,7 +58,11 @@ export default function GoBack() {
     return (
       <button
         onClick={() => {
-          dispatch(setCurrentPageId(currentPageId - 1));
+          const currentPageIdIndex = uploadAttachmentsPages.findIndex(
+            (page) => page.id === currentPageId,
+          );
+          const previousPageId = uploadAttachmentsPages[currentPageIdIndex - 1].id;
+          dispatch(setCurrentPageId(previousPageId));
           dispatch(decrementStep());
         }}
         className={buttonStyle}

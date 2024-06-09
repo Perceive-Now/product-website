@@ -3,6 +3,7 @@ import jsCookie from "js-cookie";
 import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
+  EUploadAttachmentsPages,
   IAnswerObj,
   incrementStep,
   setAnswers,
@@ -14,7 +15,6 @@ import {
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import { questionList } from "../report-q&a/_question";
-import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();

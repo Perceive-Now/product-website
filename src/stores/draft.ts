@@ -12,18 +12,21 @@ import { IUseCase, initialState as initialStateUseCase } from "./use-case";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-export enum EReportSectionPageIDs {
-  UseCases = "new-report",
-  InteractionMethod = "interaction-method",
-  UploadAttachments = "upload-attachments",
-  UploadQuickPrompts = "quick-prompt",
-  QA = "q&a",
-  Payment = "payment",
-}
+export const EReportSectionPageIDs = {
+  UseCases: "new-report",
+  InteractionMethod: "interaction-method",
+  UploadAttachments: "upload-attachments",
+  UploadQuickPrompts: "quick-prompt",
+  QA: "q&a",
+  Payment: "payment",
+};
+
+export type TReportSectionPageIDs =
+  (typeof EReportSectionPageIDs)[keyof typeof EReportSectionPageIDs];
 
 interface draftState {
   isUploading: boolean;
-  currentPageId: EReportSectionPageIDs;
+  currentPageId: TReportSectionPageIDs;
   draftUploadState: {
     isSuccess: boolean;
     isError: boolean;
@@ -34,7 +37,7 @@ interface draftState {
 
 const initialState: draftState = {
   isUploading: false,
-  currentPageId: EReportSectionPageIDs.UseCases,
+  currentPageId: EReportSectionPageIDs.UseCases as TReportSectionPageIDs,
   draftUploadState: {
     isSuccess: false,
     isError: false,
@@ -174,7 +177,7 @@ export const draftSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<EReportSectionPageIDs>) => {
+    setCurrentPageId: (state, action: PayloadAction<TReportSectionPageIDs>) => {
       state.currentPageId = action.payload;
     },
 

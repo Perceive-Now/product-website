@@ -1,16 +1,9 @@
+import { EUploadAttachmentsPages } from "src/stores/upload-attachments";
 import AdditionalQuestions from "./additional-questions";
 import AllSet from "./all-set";
 import GoToReport from "./goto-report";
 import NeedAdditionalAnswers from "./need-additional-answers";
 import UploadAttachments from "./upload-attachments";
-
-export enum EUploadAttachmentsPages {
-  UploadAttachments,
-  GoToReport,
-  NeedAdditionalAnswers,
-  AdditionalQuestions,
-  AllSet,
-}
 
 const uploadAttachmentsPages = [
   {

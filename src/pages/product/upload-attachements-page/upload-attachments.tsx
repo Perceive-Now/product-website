@@ -7,13 +7,13 @@ import toast from "react-hot-toast";
 import { DustbinIcon } from "../../../components/icons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
+  EUploadAttachmentsPages,
   incrementStep,
   setCurrentPageId,
   setIsUploadAttachmentsError,
   setIsUploadAttachmentsSuccess,
   uploadAttachments,
 } from "../../../stores/upload-attachments";
-import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
 
 const baseStyle = {
   flex: 1,

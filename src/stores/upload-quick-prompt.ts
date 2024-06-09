@@ -1,14 +1,20 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { quickPromptContent } from "../pages/product/quick-prompt/quick-prompt-content";
-import { EQuickPromptPages } from "src/pages/product/quick-prompt/quick-prompt-pages-list";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+
+export const EQuickPromptPages = {
+  QuickPrompt: 0,
+  AllSet: 1,
+};
+
+export type TQuickPromptPages = (typeof EQuickPromptPages)[keyof typeof EQuickPromptPages];
 
 export interface IUploadQuickPromptsState {
   isUploading: boolean;
   currentParagraphId: number;
-  currentPageId: EQuickPromptPages;
+  currentPageId: TQuickPromptPages;
   paragraphIds: number[];
   currentStep: number;
   quickPrompts: TPromptArray;
@@ -100,7 +106,7 @@ export const quickPromptsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<EQuickPromptPages>) => {
+    setCurrentPageId: (state, action: PayloadAction<TQuickPromptPages>) => {
       state.currentPageId = action.payload;
     },
 

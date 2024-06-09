@@ -1,7 +1,11 @@
 import React from "react";
 import Button from "../../../components/reusable/button";
 import { useAppDispatch } from "../../../hooks/redux";
-import { incrementStep, setCurrentPageId } from "../../../stores/upload-attachments";
+import {
+  incrementStep,
+  setCurrentPageId,
+  TUploadAttachmentsPages,
+} from "../../../stores/upload-attachments";
 import ToPayementButton from "./to-payement-button";
 
 export default function WaitingWrapper({
@@ -10,7 +14,7 @@ export default function WaitingWrapper({
   nextPayement = false,
 }: {
   children: React.ReactNode;
-  nextPageId: number;
+  nextPageId: TUploadAttachmentsPages;
   nextPayement?: boolean;
 }) {
   const dispatch = useAppDispatch();

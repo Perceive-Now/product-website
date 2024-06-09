@@ -1,10 +1,6 @@
+import { EQuickPromptPages } from "src/stores/upload-quick-prompt";
 import AllSet from "../upload-attachements-page/all-set";
 import QuickPrompt from "./quick-prompt";
-
-export enum EQuickPromptPages {
-  QuickPrompt,
-  AllSet,
-}
 
 const quickPromptPagesList = [
   {
