@@ -16,6 +16,7 @@ export default function DraftReports() {
     dispatch(setUseCaseStateFromDraft(draft.other_data.useCasesSliceState));
     dispatch(setQuickPromtsStateFromDraft(draft.other_data.uploadQuickPromptsSliceState));
     dispatch(setUploadAttachmentsStateFromDraft(draft.other_data.uploadAttachmentsSliceState));
+    // todo add use case information
 
     // navigate to the relevent page
     navigate(`/${draft.current_page}`);

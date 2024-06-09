@@ -1,8 +1,9 @@
+import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
 import WaitingWrapper from "./waiting-wrapper";
 
 export default function NeedAdditionalAnswers() {
   return (
-    <WaitingWrapper nextPageId={3}>
+    <WaitingWrapper nextPageId={EUploadAttachmentsPages.AdditionalQuestions}>
       <div>
         <p className="font-bold text-lg text-purple-900 mb-1">Almost There!</p>
         <p className="text-secondary-800">

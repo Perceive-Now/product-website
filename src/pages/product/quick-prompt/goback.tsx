@@ -8,6 +8,7 @@ import {
 } from "../../../stores/upload-quick-prompt";
 import { quickPromptContent } from "./quick-prompt-content";
 import toast from "react-hot-toast";
+import { EQuickPromptPages } from "./quick-prompt-pages-list";
 
 const BackButton = () => {
   return (
@@ -31,7 +32,7 @@ export default function GoBack() {
   //   </Link>
   // );
 
-  if (currentPageId === 1) {
+  if (currentPageId === EQuickPromptPages.AllSet) {
     // if in all set page
     return (
       <button

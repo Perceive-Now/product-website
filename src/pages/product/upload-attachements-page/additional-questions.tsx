@@ -14,6 +14,7 @@ import {
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import { questionList } from "../report-q&a/_question";
+import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();
@@ -36,7 +37,7 @@ export default function AdditionalQuestions() {
     }
 
     if (isUploadAnswersToAddtionalQuestionsSuccess) {
-      dispatch(setCurrentPageId(4));
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
       dispatch(incrementStep());
       dispatch(setIsUploadAnswersToAddtionalQuestionsSuccess(false));
       return;

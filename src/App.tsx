@@ -105,6 +105,7 @@ import UploadAttachmentsPage from "./pages/product/upload-attachements-page/uplo
 import { WelcomePage } from "./components/@signup-complete";
 import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
 import DraftReports from "./pages/product/draft-reports/draft-reports";
+import { EReportSectionPageIDs } from "./stores/draft";
 
 /**
  *
@@ -144,13 +145,22 @@ function App() {
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
-              <Route path="/new-report" element={<UseCasePage />} />
+              <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
               <Route path="/draft-reports" element={<DraftReports />} />
 
-              <Route path="/interaction-method" element={<InteractionMethod />} />
-              <Route path="/q&a" element={<ReportQuestionAnswerPage />} />
-              <Route path="/upload-attachments" element={<UploadAttachmentsPage />} />
-              <Route path="/quick-prompt" element={<QuickPromptPage />} />
+              <Route
+                path={`/${EReportSectionPageIDs.InteractionMethod}`}
+                element={<InteractionMethod />}
+              />
+              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportQuestionAnswerPage />} />
+              <Route
+                path={`/${EReportSectionPageIDs.UploadAttachments}`}
+                element={<UploadAttachmentsPage />}
+              />
+              <Route
+                path={`/${EReportSectionPageIDs.UploadQuickPrompts}`}
+                element={<QuickPromptPage />}
+              />
             </Route>
             {/* Know-now */}
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />

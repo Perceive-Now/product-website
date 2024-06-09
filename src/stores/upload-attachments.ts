@@ -1,10 +1,11 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { EUploadAttachmentsPages } from "src/pages/product/upload-attachements-page/upload-attachment-pages-list";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
 export interface IUploadAttachmentsState {
-  currentPageId: number;
+  currentPageId: EUploadAttachmentsPages;
   currentStep: number;
   currentQuestionId: number;
   additionalQuestionIds: { question_id: number }[];
@@ -18,7 +19,7 @@ export interface IUploadAttachmentsState {
 }
 
 export const initialState: IUploadAttachmentsState = {
-  currentPageId: 0,
+  currentPageId: EUploadAttachmentsPages.UploadAttachments,
   currentStep: 0,
   currentQuestionId: 0,
   additionalQuestionIds: [],
@@ -127,7 +128,7 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<number>) => {
+    setCurrentPageId: (state, action: PayloadAction<EUploadAttachmentsPages>) => {
       state.currentPageId = action.payload;
     },
 

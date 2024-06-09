@@ -13,6 +13,7 @@ import {
   setIsUploadAttachmentsSuccess,
   uploadAttachments,
 } from "../../../stores/upload-attachments";
+import { EUploadAttachmentsPages } from "./upload-attachment-pages-list";
 
 const baseStyle = {
   flex: 1,
@@ -63,14 +64,16 @@ export default function UploadAttachments() {
 
     if (isUploadAttachmentsSuccess) {
       if (additionalQuestionIds.length === 0) {
-        dispatch(setCurrentPageId(1));
+        // if there are no need to get additional questions
+        dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
         dispatch(incrementStep());
         dispatch(setIsUploadAttachmentsSuccess(false));
         return;
       }
 
       if (additionalQuestionIds.length > 0) {
-        dispatch(setCurrentPageId(2));
+        // if there is a need to get additional questions
+        dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
         dispatch(incrementStep());
         dispatch(setIsUploadAttachmentsSuccess(false));
         return;

@@ -4,37 +4,45 @@ import GoToReport from "./goto-report";
 import NeedAdditionalAnswers from "./need-additional-answers";
 import UploadAttachments from "./upload-attachments";
 
+export enum EUploadAttachmentsPages {
+  UploadAttachments,
+  GoToReport,
+  NeedAdditionalAnswers,
+  AdditionalQuestions,
+  AllSet,
+}
+
 const uploadAttachmentsPages = [
   {
-    id: 0,
+    id: EUploadAttachmentsPages.UploadAttachments,
     totalPages: 1,
     title: "Upload Attachments",
     description: "Upload the attachement files",
     Component: UploadAttachments,
   },
   {
-    id: 1,
+    id: EUploadAttachmentsPages.GoToReport,
     totalPages: 1,
     title: "Upload Attachments",
     description: "Go to report and payement all set thing",
     Component: GoToReport,
   },
   {
-    id: 2,
+    id: EUploadAttachmentsPages.NeedAdditionalAnswers,
     totalPages: 2,
     title: "Upload Attachments | Additional Q&A",
     description: "Wait is over need additional answeres to questions",
     Component: NeedAdditionalAnswers,
   },
   {
-    id: 3,
+    id: EUploadAttachmentsPages.AdditionalQuestions,
     totalPages: 2,
     title: "Upload Attachments | Additional Q&A",
     description: "Additional Q&A for the uploaded files",
     Component: AdditionalQuestions,
   },
   {
-    id: 4,
+    id: EUploadAttachmentsPages.AllSet,
     totalPages: 2,
     title: "Upload Attachments",
     description: "Thank you and continue to report and payement",

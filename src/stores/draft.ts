@@ -12,9 +12,18 @@ import { IUseCase, initialState as initialStateUseCase } from "./use-case";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
+export enum EReportSectionPageIDs {
+  UseCases = "new-report",
+  InteractionMethod = "interaction-method",
+  UploadAttachments = "upload-attachments",
+  UploadQuickPrompts = "quick-prompt",
+  QA = "q&a",
+  Payment = "payment",
+}
+
 interface draftState {
   isUploading: boolean;
-  currentPageId: string;
+  currentPageId: EReportSectionPageIDs;
   draftUploadState: {
     isSuccess: boolean;
     isError: boolean;
@@ -25,7 +34,7 @@ interface draftState {
 
 const initialState: draftState = {
   isUploading: false,
-  currentPageId: "",
+  currentPageId: EReportSectionPageIDs.UseCases,
   draftUploadState: {
     isSuccess: false,
     isError: false,
@@ -165,7 +174,7 @@ export const draftSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<string>) => {
+    setCurrentPageId: (state, action: PayloadAction<EReportSectionPageIDs>) => {
       state.currentPageId = action.payload;
     },
 
