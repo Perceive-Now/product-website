@@ -8,6 +8,9 @@ import {
   UploadAttachementsIcon,
 } from "../../../components/icons";
 import BackButton from "../../../components/reusable/back-button";
+import { useAppSelector } from "src/hooks/redux";
+
+const validUseCasesForQuickPrompts: string[] = ["1"];
 
 const interactionMethods = [
   {
@@ -35,6 +38,9 @@ const interactionMethods = [
 
 export default function InteractionMethod() {
   const navigate = useNavigate();
+
+  const { useCaseIds } = useAppSelector((state) => state.usecases);
+
   const [selectedMethod, setSelectedMethod] = React.useState<string>("");
 
   const handleSelectMethod = (method: string) => {
@@ -55,17 +61,25 @@ export default function InteractionMethod() {
           Please select interaction method
         </h1>
         <div className="flex flex-row gap-x-[20px]">
-          {interactionMethods.map((method) => (
-            <InteractionMethodCard
-              key={method.title}
-              lightIcon={method.lightIcon}
-              darkIcon={method.darkIcon}
-              title={method.title}
-              description={method.description}
-              selectedMethod={selectedMethod}
-              onClickHandler={handleSelectMethod}
-            />
-          ))}
+          {interactionMethods
+            .filter((method) => {
+              return (
+                (method.title === "Quick prompt" &&
+                  useCaseIds.some((id) => validUseCasesForQuickPrompts.includes(id))) ||
+                method.title !== "Quick prompt"
+              );
+            })
+            .map((method) => (
+              <InteractionMethodCard
+                key={method.title}
+                lightIcon={method.lightIcon}
+                darkIcon={method.darkIcon}
+                title={method.title}
+                description={method.description}
+                selectedMethod={selectedMethod}
+                onClickHandler={handleSelectMethod}
+              />
+            ))}
         </div>
         <Button type="optional" handleClick={handleContinueBtnClick}>
           <p className="text-secondary-800">Continue</p>
