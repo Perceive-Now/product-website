@@ -51,7 +51,7 @@ export default function InteractionMethod() {
     <div>
       <BackButton path="new-report" />
       <div className="flex flex-col items-center gap-y-8">
-        <h1 className="text-5xl font-extrabold text-primary-800 mt-5">
+        <h1 className="text-5xl font-extrabold text-secondary-900 mt-5">
           Please select interaction method
         </h1>
         <div className="flex flex-row gap-x-[20px]">
