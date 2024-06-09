@@ -67,8 +67,8 @@ export const uploadAttachments = createAsyncThunk<
   try {
     const base64Files = await Promise.all(request.attachments.map(convertToBase64));
 
-    const dataObj = {
-      category_ids: request.categoryIds ?? "",
+    const dataObj: IUploadAttachmentsRequestAPI = {
+      user_cases_ids: request.user_case_ids ?? "",
       requirement_gathering_id: request.requirementGatheringId ?? "",
       user_id: request.userId ?? "",
       attachment: base64Files[0] ?? "",
@@ -95,22 +95,12 @@ export const uploadAnswersToAddtionalQuestions = createAsyncThunk<
   "uploadAnswersToAddtionalQuestions",
   async (request: IUploadAnswersToAddtionalQuestionsRequest, thunkAPI) => {
     try {
-      const user_id = request.userId;
-      const session_id = request.sessionId;
-      const category_id = request.categoryId;
-
-      const answersObjList = request.answers.map((answer) => {
-        return {
-          category_id: category_id,
-          requirement_gathering_id: session_id,
-          user_id: user_id,
-          question_id: String(answer.questionId),
-          answer: answer.answer,
-        };
-      });
-
-      const answersObj: IUploadAnswersAPIRequest = {
-        answers: answersObjList,
+      const answersObj: IUploadAnswersToAddtionalQuestionsRequestAPI = {
+        user_case_id: request.user_case_id,
+        requirement_gathering_id: request.requirementGatheringId,
+        userID: request.userId,
+        QuestionID: String(request.answer.questionId),
+        answer: request.answer.answer,
       };
 
       return await axios.post(BASE_URL + "/attachment-answers/", answersObj);
@@ -249,10 +239,17 @@ export const {
 export default UploadAttachmentsSlice.reducer;
 
 interface IUploadAttachmentsRequest {
-  categoryIds: string[];
+  user_case_ids: string[];
   requirementGatheringId: string;
   userId: string;
   attachments: File[];
+}
+
+interface IUploadAttachmentsRequestAPI {
+  user_cases_ids: string[];
+  requirement_gathering_id: string;
+  user_id: string;
+  attachment: string;
 }
 
 interface IUploadAttachmentsResponse {
@@ -263,10 +260,10 @@ interface IUploadAttachmentsResponse {
 }
 
 interface IUploadAnswersToAddtionalQuestionsRequest {
-  categoryId: string;
-  sessionId: string;
   userId: string;
-  answers: IAnswerObj[];
+  requirementGatheringId: number;
+  answer: IAnswerObj;
+  user_case_id: string;
 }
 
 interface IUploadAnswersToAddtionalQuestionsResponse {
@@ -276,14 +273,12 @@ interface IUploadAnswersToAddtionalQuestionsResponse {
   statusText: string;
 }
 
-interface IUploadAnswersAPIRequest {
-  answers: {
-    question_id: string;
-    requirement_gathering_id: string;
-    user_id: string;
-    answer: string;
-    category_id: string;
-  }[];
+interface IUploadAnswersToAddtionalQuestionsRequestAPI {
+  QuestionID: string;
+  requirement_gathering_id: number;
+  userID: string;
+  answer: string;
+  user_case_id: string;
 }
 
 interface IResponseError {

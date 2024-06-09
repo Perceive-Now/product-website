@@ -37,14 +37,28 @@ export default function AdditionalQuestions() {
     }
 
     if (isUploadAnswersToAddtionalQuestionsSuccess) {
-      dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
-      dispatch(incrementStep());
+      const nextQuestionIndex =
+        additionalQuestionIds.findIndex(
+          (questionId) => currentQuestionId === questionId.question_id,
+        ) + 1;
+
+      // if this is the last question
+      if (nextQuestionIndex === additionalQuestionIds.length) {
+        dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
+        dispatch(incrementStep());
+      } else {
+        dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
+        dispatch(incrementStep());
+      }
+
       dispatch(setIsUploadAnswersToAddtionalQuestionsSuccess(false));
       return;
     }
   }, [
     isUploadAnswersToAddtionalQuestionsError,
     isUploadAnswersToAddtionalQuestionsSuccess,
+    additionalQuestionIds,
+    currentQuestionId,
     message,
     dispatch,
   ]);
@@ -75,25 +89,14 @@ export default function AdditionalQuestions() {
 
     dispatch(setAnswers(updatedAnswers));
 
-    const nextQuestionIndex =
-      additionalQuestionIds.findIndex(
-        (questionId) => currentQuestionId === questionId.question_id,
-      ) + 1;
-
-    // if there are no additional questions
-    if (nextQuestionIndex === additionalQuestionIds.length) {
-      dispatch(
-        uploadAnswersToAddtionalQuestions({
-          userId: jsCookie.get("user_id") ?? "",
-          sessionId: jsCookie.get("session_id") ?? "",
-          categoryId: "1" ?? "", // TODO get from usecase redux
-          answers: updatedAnswers,
-        }),
-      );
-    } else {
-      dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
-      dispatch(incrementStep());
-    }
+    dispatch(
+      uploadAnswersToAddtionalQuestions({
+        userId: jsCookie.get("user_id") ?? "",
+        user_case_id: "1" ?? "", // TODO get from usecase redux
+        answer: answer,
+        requirementGatheringId: 1 ?? 0, // TODO get from usecase redux
+      }),
+    );
   };
 
   const answerForCurrentQuestion = answers.find(
