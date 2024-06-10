@@ -26,6 +26,7 @@ export interface IUploadAttachmentsState {
   isUploadAnswerToAddtionalQuestionsError: boolean;
   isUploadAnswerToAddtionalQuestionsSuccess: boolean;
   message: string;
+  answerResponse: IuploadAnswerToAddtionalQuestionsResponse;
 }
 
 export const initialState: IUploadAttachmentsState = {
@@ -40,6 +41,13 @@ export const initialState: IUploadAttachmentsState = {
   isUploadAnswerToAddtionalQuestionsError: false,
   isUploadAnswerToAddtionalQuestionsSuccess: false,
   message: "",
+  answerResponse: {
+    question: "",
+    questionID: 0,
+    sessionID: 0,
+    status: "",
+    userID: "",
+  },
 };
 
 // -----------------------------------------------------------------------
@@ -86,7 +94,7 @@ export const uploadAttachments = createAsyncThunk<
 
 // -----------------------------------------------------------------------
 export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
-  IuploadAnswerToAddtionalQuestionsResponse,
+  IuploadAnswerToAddtionalQuestionsResponseAPI,
   IuploadAnswerToAddtionalQuestionsRequest,
   {
     rejectValue: IResponseError;
@@ -95,15 +103,23 @@ export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
   "uploadAnswerToAddtionalQuestions",
   async (request: IuploadAnswerToAddtionalQuestionsRequest, thunkAPI) => {
     try {
-      const answersObj: IuploadAnswerToAddtionalQuestionsRequestAPI = {
+      const answersObj: IUploadAnswerToAddtionalQuestionsRequestAPI = {
         user_case_id: request.useCaseId,
         requirement_gathering_id: request.requirementGatheringId,
         userID: request.userId,
-        QuestionID: String(request.questionId),
+        QuestionID: Number(request.questionId),
         answer: request.answer.answer,
       };
 
-      return await axios.post(BASE_URL + "/attachment-answers/", answersObj);
+      return await axios.post(
+        `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+          answersObj.answer,
+        )}&userID=${answersObj.userID}&QuestionID=${Number(
+          answersObj.QuestionID,
+        )}&requirement_gathering_id=${answersObj.requirement_gathering_id}&user_case_id=${
+          answersObj.user_case_id
+        }`,
+      );
     } catch (error) {
       const errorObj = {
         resError: String(error),
@@ -207,10 +223,11 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploadAnswerToAddtionalQuestionsError = false;
       state.isUploadAnswerToAddtionalQuestionsSuccess = false;
     });
-    builder.addCase(uploadAnswerToAddtionalQuestions.fulfilled, (state) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.fulfilled, (state, action) => {
       state.isUploading = false;
       state.isUploadAnswerToAddtionalQuestionsError = false;
       state.isUploadAnswerToAddtionalQuestionsSuccess = true;
+      state.answerResponse = action.payload.data;
     });
     builder.addCase(uploadAnswerToAddtionalQuestions.rejected, (state, action) => {
       state.isUploading = false;
@@ -267,19 +284,30 @@ interface IuploadAnswerToAddtionalQuestionsRequest {
   questionId: number;
 }
 
-interface IuploadAnswerToAddtionalQuestionsResponse {
-  resError: string;
-  data: number[];
-  status: number;
-  statusText: string;
-}
-
-interface IuploadAnswerToAddtionalQuestionsRequestAPI {
-  QuestionID: string;
+interface IUploadAnswerToAddtionalQuestionsRequestAPI {
+  QuestionID: number;
   requirement_gathering_id: number;
   userID: string;
   answer: string;
   user_case_id: string;
+}
+
+interface IuploadAnswerToAddtionalQuestionsResponse {
+  question: string;
+  questionID: number;
+  sessionID: number;
+  status: string;
+  userID: string;
+}
+
+interface IuploadAnswerToAddtionalQuestionsResponseAPI {
+  data: {
+    question: string;
+    questionID: number;
+    sessionID: number;
+    status: string;
+    userID: string;
+  };
 }
 
 interface IResponseError {
