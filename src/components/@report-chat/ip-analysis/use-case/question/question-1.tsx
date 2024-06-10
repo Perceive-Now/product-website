@@ -142,6 +142,7 @@ Props) {
     );
     changeActiveStep(activeStep + 1);
   }, [activeIndex, activeStep, changeActiveStep, dispatch, questionId, sessionDetail]);
+
   return (
     <>
       <NewComponent
