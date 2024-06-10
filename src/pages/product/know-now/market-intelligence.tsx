@@ -19,10 +19,13 @@ import {
   updateChatAnswer,
   updateChatError,
 } from "../../../stores/know-now1";
-// import { useAppDispatch } from "../../../hooks/redux"
-// import { setKnowNowChats } from "../../../stores/know-now1";
+import KnowNowdefault from "./default";
 
 //
+
+/**
+ *
+ */
 
 function MarketIntelligenceKnowNow() {
   const dispatch = useAppDispatch();
@@ -136,28 +139,32 @@ function MarketIntelligenceKnowNow() {
   return (
     <div className="p-3 flex">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-260px)] overflow-auto pn_scroller pb-2 pr-2">
-          <div className="space-y-6">
-            {chats.map((chat, idx) => (
-              <div key={idx * 5} className="space-y-3">
-                <ChatQuery
-                  query={chat.query}
-                  updateQuery={onSendQuery}
-                  editIndex={idx}
-                  setQuery={setQuery}
-                />
-                <QueryAnswer
-                  responseTime={chat.response_time}
-                  answer={chat.answer}
-                  isLoading={loadingIndex === idx}
-                  error={chat.error}
-                  updateQuery={onSendQuery}
-                  editIndex={idx}
-                  query={chat.query}
-                />
-              </div>
-            ))}
-          </div>
+        <div ref={chatRef} className="h-[calc(100vh-264px)] overflow-auto pn_scroller pb-2 pr-2">
+          {chats && chats.length <= 0 ? (
+            <KnowNowdefault />
+          ) : (
+            <div className="space-y-6">
+              {chats.map((chat, idx) => (
+                <div key={idx * 5} className="space-y-3">
+                  <ChatQuery
+                    query={chat.query}
+                    updateQuery={onSendQuery}
+                    editIndex={idx}
+                    setQuery={setQuery}
+                  />
+                  <QueryAnswer
+                    responseTime={chat.response_time}
+                    answer={chat.answer}
+                    isLoading={loadingIndex === idx}
+                    error={chat.error}
+                    updateQuery={onSendQuery}
+                    editIndex={idx}
+                    query={chat.query}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>

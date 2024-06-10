@@ -32,6 +32,10 @@ module.exports = {
       14: "7rem",
       15: "7.5rem",
     },
+    fontFamily: {
+      'helvetica': ['Helvetica', 'Arial', 'sans-serif'],
+      'mulish': ['Mulish', 'sans-serif'],
+    },
     extend: {
       colors: {
         gray: {
@@ -99,5 +103,6 @@ module.exports = {
       // },
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
+  plugins: [require("@tailwindcss/forms"),
+     require("@tailwindcss/line-clamp")],
 };
