@@ -12,10 +12,6 @@ import NewComponent from "../../new-comp";
 import { setSession } from "../../../../../stores/session";
 import { setChat } from "../../../../../stores/chat";
 
-// import { addAnswer } from "../../../../../utils/api/chat";
-// import { updateSession } from "../../../../../stores/session";
-// import { addAnswer } from "../../../../../utils/api/chat";
-
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
@@ -25,16 +21,8 @@ interface Props {
     questionId: number;
     usecase?: any;
     answer: string;
-    // "all" | "ip-validity-analysis" | "ip-licensing-opportunity" | "ip-landscaping&fto" | "infringement-analysis"
   };
 }
-
-// interface IAnswers {
-//   question_id: number;
-//   session_id: number;
-//   user_id: string;
-//   answer: string;
-// }
 
 /**
  *
@@ -63,7 +51,9 @@ Props) {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            sessionId,
+          )}&QuestionID=${questionId}`,
         );
 
         const apiData = response.data.question;
@@ -137,6 +127,7 @@ Props) {
           question_id: questionId,
           step_id: activeStep + 1,
           active_index: activeIndex + 1,
+          skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
         },
       }),
     );

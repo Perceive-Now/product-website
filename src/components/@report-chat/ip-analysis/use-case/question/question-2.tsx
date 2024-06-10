@@ -46,8 +46,9 @@ export default function ChatQuestionAnswer2({
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
-          // userInput,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            sessionId,
+          )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
@@ -120,6 +121,7 @@ export default function ChatQuestionAnswer2({
           question_id: questionId,
           active_index: activeIndex + 1,
           step_id: activeStep - 1,
+          skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
         },
       }),
     );
