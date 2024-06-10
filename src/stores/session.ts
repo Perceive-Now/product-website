@@ -19,6 +19,7 @@ interface ISessionData {
   user_chat?: IUserChat;
   client_secret?: string;
   active_index?: number;
+  skipped_question?: number[];
 }
 
 interface IUserChat {
@@ -56,6 +57,7 @@ export const getSessionDetails = createAsyncThunk(
           session_id: response.data.session.session_id,
           user_id: response.data.session.user_id,
           session_data: {
+            skipped_question: response.data.session.session_data?.skipped_question,
             question_id: response.data.session.session_data?.question_id,
             step_id: response.data.session.session_data?.step_id,
             plans: response.data.session.session_data?.plans,
@@ -64,7 +66,6 @@ export const getSessionDetails = createAsyncThunk(
             user_chat: response.data.session.session_data?.user_chat,
             client_secret: response.data.session.session_data?.client_secret,
             active_index: response.data.session.session_data?.active_index,
-            is_home: response.data.session.session_data?.is_home || true,
           },
         },
       };
@@ -94,6 +95,7 @@ const updateSession = async (payload: ISession) => {
         last_session_id: payload.session_data?.last_session_id,
         client_secret: payload.session_data?.client_secret,
         active_index: payload.session_data?.active_index,
+        skipped_question: payload.session_data?.skipped_question,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,
@@ -153,12 +155,17 @@ export const SessionSlice = createSlice({
       const sessionData = state.session;
       updateSession(sessionData)
         .then((sessionData) => {
-          // Optionally handle the updated session data from the server
-          console.log("Session updated on server:", sessionData);
+          // console.log("Session updated on server");
+          return {
+            message: "Session updated on server",
+            sessionData,
+          };
         })
-        .catch((error) => {
-          // Handle errors from updating session on the server
-          console.error("Error updating session on server:", error);
+        .catch(() => {
+          // console.log("Error updating session on server");
+          return {
+            errror: "Error updating session on server",
+          };
         });
     },
 

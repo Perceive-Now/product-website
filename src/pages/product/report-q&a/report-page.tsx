@@ -17,6 +17,7 @@ import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/n
 import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 import ChatQuestionAnswer2 from "../../../components/@report-chat/ip-analysis/use-case/question/question-2";
+import SkippedQuestion from "./skipped-question";
 
 /**
  *
@@ -164,15 +165,13 @@ export default function ReportQuestionAnswerPage() {
       <div className="w-full">
         <BackButton path={"interaction-method"} />
         <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
-        {/* {activeStep > 1 && activeStep < 7 && ( */}
         <div className="w-full overflow-hidden">
           <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />
         </div>
-        {/* )}s */}
-        <div className="flex">
+        <div className="flex mt-2.5 justify-between gap-8">
           <div
             className={classNames(
-              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-ful shadow border rounded-md p-2 mt-2.5 w-[932px] bg-white",
+              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-ful shadow border rounded-md p-2 w-[932px] bg-white",
             )}
           >
             <div
@@ -197,7 +196,15 @@ export default function ReportQuestionAnswerPage() {
             </div>
           </div>
 
-          <div className="flex-shrink-0"></div>
+          <div className="flex-shrink-0 w-[300px]">
+            <SkippedQuestion
+              questions={
+                questionList
+                  .filter((q) => sessionDetail?.skipped_question?.includes(q.questionId))
+                  .map((q) => q) || []
+              }
+            />
+          </div>
         </div>
       </div>
     </>
