@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { sidebarItems, ISidebarListItem } from "./_data";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { getNewSession, logoutUser } from "../../../stores/auth";
+import { logoutUser } from "../../../stores/auth";
 //
 
 import { LogoutIcon, SettingsIcon } from "../../icons";
@@ -15,6 +15,7 @@ import UserIcon from "../../reusable/userIcon";
 import SideBarToggleIcon from "../../icons/side-bar/toggle";
 
 import { setSession } from "../../../stores/session";
+import ToolTip from "src/components/reusable/tool-tip";
 
 interface Props {
   show?: boolean;
@@ -114,13 +115,15 @@ export const AppSidebar: FunctionComponent<Props> = () => {
               open ? "justify-end" : "justify-start",
             )}
           >
-            <button
-              type="button"
-              className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
-              onClick={() => setOpen(!open)}
-            >
-              <SideBarToggleIcon className={classNames(open ? "rotate-180" : "")} />
-            </button>
+            <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+              <button
+                type="button"
+                className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+                onClick={() => setOpen(!open)}
+              >
+                <SideBarToggleIcon className={classNames(open ? "rotate-180" : "")} />
+              </button>
+            </ToolTip>
           </div>
           <div className="space-y-1 mt-1">
             {/* {isChat && (
@@ -154,7 +157,11 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                       "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
                     )}
                   >
-                    <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
                     {open && <>{s.title}</>}
                   </Link>
                 ) : (
@@ -165,7 +172,11 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                       "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
                     )}
                   >
-                    <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
                     {open && <>{s.title}</>}
                   </button>
                 )}
@@ -194,7 +205,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
 };
 
 function NavLinkItem(props: INavLinkItemProps) {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const handleClick = useCallback(() => {
     if (props.value === "new-report") {
@@ -205,20 +216,22 @@ function NavLinkItem(props: INavLinkItemProps) {
       //   }),
       // );
     }
-  }, [dispatch, props.value]);
+  }, [props.value]);
 
   return (
     <NavLink to={props.to ?? ""} end onClick={handleClick}>
       {/* {({ isActive }) => ( */}
       <div className={classNames("flex items-center gap-0.5", props.open && " px-2.5 ")}>
         {props.icon && (
-          <div
-            className={classNames(
-              "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
-            )}
-          >
-            <props.icon className="text-primary-900" />
-          </div>
+          <ToolTip title={props.title} placement="right">
+            <div
+              className={classNames(
+                "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
+              )}
+            >
+              <props.icon className="text-primary-900" />
+            </div>
+          </ToolTip>
         )}
         {props.open && (
           <span

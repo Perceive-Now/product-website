@@ -17,9 +17,39 @@
     user-select: none;
     /* user-select: text; */
   }
+  
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/helvetica-light.ttf") format("truetype");
+    font-weight: 300; /* Adjust as per the font weight */
+  }
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/Helvetica.ttf") format("truetype");
+    font-weight: 400; /* Adjust as per the font weight */
+  }
+  
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/Helvetica-Bold.ttf") format("truetype");
+    font-weight: 500;
+  }
+  
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/Helvetica-Bold.ttf") format("truetype");
+    font-weight: 700;
+  }
 
   a {
     @apply text-primary-500;
+  }
+
+  .primary-gradient-text {
+    background: linear-gradient(273deg, #442873 16.28%, #804bd9 104.76%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .secondary-transparent {

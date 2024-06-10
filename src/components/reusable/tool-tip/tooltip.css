@@ -1,0 +1,10 @@
+.pn-tooltip-theme {
+  background-color: #442873;
+  color: #fff;
+  font-size: 12px; /* text-sm equivalent */
+  font-weight: 600;
+}
+
+/* .pn-tooltip-theme .tippy-arrow {
+  color: ;
+} */

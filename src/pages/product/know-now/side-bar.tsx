@@ -19,7 +19,7 @@ const KnowNowRightSideBar = () => {
           </svg>
         </div>
         <div className="p-2.5">
-          <p className="text-sm">Based on th current conversation we found following data:</p>
+          <p className="text-sm">Based on the current conversation we found following data:</p>
           <div className="flex justify-end items-center">
             <span className="text-sm">Refresh</span>
             <svg

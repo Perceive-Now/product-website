@@ -12,7 +12,7 @@ import AppHeader from "../../components/app/header";
  */
 export default function DefaultLayout() {
   return (
-    <div className="bg-white-gradient">
+    <div className="bg-white-gradient ">
       <div className={classNames("w-full min-h-[calc(100vh-40px)] mt-0.5")}>
         <div className="flex h-full">
           <AppSidebar />
