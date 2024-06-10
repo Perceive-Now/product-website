@@ -3,8 +3,19 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-interface UploadAttachmentsState {
-  currentPageId: number;
+export const EUploadAttachmentsPages = {
+  UploadAttachments: 0,
+  GoToReport: 1,
+  NeedAdditionalAnswers: 2,
+  AdditionalQuestions: 3,
+  AllSet: 4,
+} as const;
+
+export type TUploadAttachmentsPages =
+  (typeof EUploadAttachmentsPages)[keyof typeof EUploadAttachmentsPages];
+
+export interface IUploadAttachmentsState {
+  currentPageId: TUploadAttachmentsPages;
   currentStep: number;
   currentQuestionId: number;
   additionalQuestionIds: { question_id: number }[];
@@ -12,13 +23,13 @@ interface UploadAttachmentsState {
   isUploading: boolean;
   isUploadAttachmentsError: boolean;
   isUploadAttachmentsSuccess: boolean;
-  isUploadAnswersToAddtionalQuestionsError: boolean;
-  isUploadAnswersToAddtionalQuestionsSuccess: boolean;
+  isUploadAnswerToAddtionalQuestionsError: boolean;
+  isUploadAnswerToAddtionalQuestionsSuccess: boolean;
   message: string;
 }
 
-const initialState: UploadAttachmentsState = {
-  currentPageId: 0,
+export const initialState: IUploadAttachmentsState = {
+  currentPageId: EUploadAttachmentsPages.UploadAttachments,
   currentStep: 0,
   currentQuestionId: 0,
   additionalQuestionIds: [],
@@ -26,8 +37,8 @@ const initialState: UploadAttachmentsState = {
   isUploading: false,
   isUploadAttachmentsError: false,
   isUploadAttachmentsSuccess: false,
-  isUploadAnswersToAddtionalQuestionsError: false,
-  isUploadAnswersToAddtionalQuestionsSuccess: false,
+  isUploadAnswerToAddtionalQuestionsError: false,
+  isUploadAnswerToAddtionalQuestionsSuccess: false,
   message: "",
 };
 
@@ -56,9 +67,9 @@ export const uploadAttachments = createAsyncThunk<
   try {
     const base64Files = await Promise.all(request.attachments.map(convertToBase64));
 
-    const dataObj = {
-      category_ids: request.categoryIds ?? "",
-      report_id: request.reportId ?? "",
+    const dataObj: IUploadAttachmentsRequestAPI = {
+      user_cases_ids: request.user_case_ids ?? "",
+      requirement_gathering_id: request.requirementGatheringId ?? "",
       user_id: request.userId ?? "",
       attachment: base64Files[0] ?? "",
     };
@@ -74,32 +85,22 @@ export const uploadAttachments = createAsyncThunk<
 });
 
 // -----------------------------------------------------------------------
-export const uploadAnswersToAddtionalQuestions = createAsyncThunk<
-  IUploadAnswersToAddtionalQuestionsResponse,
-  IUploadAnswersToAddtionalQuestionsRequest,
+export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
+  IuploadAnswerToAddtionalQuestionsResponse,
+  IuploadAnswerToAddtionalQuestionsRequest,
   {
     rejectValue: IResponseError;
   }
 >(
-  "uploadAnswersToAddtionalQuestions",
-  async (request: IUploadAnswersToAddtionalQuestionsRequest, thunkAPI) => {
+  "uploadAnswerToAddtionalQuestions",
+  async (request: IuploadAnswerToAddtionalQuestionsRequest, thunkAPI) => {
     try {
-      const user_id = request.userId;
-      const session_id = request.sessionId;
-      const category_id = request.categoryId;
-
-      const answersObjList = request.answers.map((answer) => {
-        return {
-          category_id: category_id,
-          report_id: session_id,
-          user_id: user_id,
-          question_id: String(answer.questionId),
-          answer: answer.answer,
-        };
-      });
-
-      const answersObj: IUploadAnswersAPIRequest = {
-        answers: answersObjList,
+      const answersObj: IuploadAnswerToAddtionalQuestionsRequestAPI = {
+        user_case_id: request.useCaseId,
+        requirement_gathering_id: request.requirementGatheringId,
+        userID: request.userId,
+        QuestionID: String(request.questionId),
+        answer: request.answer.answer,
       };
 
       return await axios.post(BASE_URL + "/attachment-answers/", answersObj);
@@ -127,7 +128,7 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<number>) => {
+    setCurrentPageId: (state, action: PayloadAction<TUploadAttachmentsPages>) => {
       state.currentPageId = action.payload;
     },
 
@@ -157,17 +158,22 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setIsUploadAnswersToAddtionalQuestionsSuccess: (state, action: PayloadAction<boolean>) => {
-      state.isUploadAnswersToAddtionalQuestionsSuccess = action.payload;
+    setisUploadAnswerToAddtionalQuestionsSuccess: (state, action: PayloadAction<boolean>) => {
+      state.isUploadAnswerToAddtionalQuestionsSuccess = action.payload;
     },
 
     // -----------------------------------------------------------------------
-    setIsUploadAnswersToAddtionalQuestionsError: (state, action: PayloadAction<boolean>) => {
-      state.isUploadAnswersToAddtionalQuestionsError = action.payload;
+    setisUploadAnswerToAddtionalQuestionsError: (state, action: PayloadAction<boolean>) => {
+      state.isUploadAnswerToAddtionalQuestionsError = action.payload;
     },
 
     // -----------------------------------------------------------------------
-    getUploadAttachmentsState: (state) => state,
+    getUploadAttachmentsSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    setUploadAttachmentsStateFromDraft: (state, action: PayloadAction<IUploadAttachmentsState>) => {
+      state = action.payload;
+    },
 
     // -----------------------------------------------------------------------
     reset: () => initialState,
@@ -196,20 +202,20 @@ export const UploadAttachmentsSlice = createSlice({
     });
 
     // -----------------------------------------------------------------------
-    builder.addCase(uploadAnswersToAddtionalQuestions.pending, (state) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.pending, (state) => {
       state.isUploading = true;
-      state.isUploadAnswersToAddtionalQuestionsError = false;
-      state.isUploadAnswersToAddtionalQuestionsSuccess = false;
+      state.isUploadAnswerToAddtionalQuestionsError = false;
+      state.isUploadAnswerToAddtionalQuestionsSuccess = false;
     });
-    builder.addCase(uploadAnswersToAddtionalQuestions.fulfilled, (state) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.fulfilled, (state) => {
       state.isUploading = false;
-      state.isUploadAnswersToAddtionalQuestionsError = false;
-      state.isUploadAnswersToAddtionalQuestionsSuccess = true;
+      state.isUploadAnswerToAddtionalQuestionsError = false;
+      state.isUploadAnswerToAddtionalQuestionsSuccess = true;
     });
-    builder.addCase(uploadAnswersToAddtionalQuestions.rejected, (state, action) => {
+    builder.addCase(uploadAnswerToAddtionalQuestions.rejected, (state, action) => {
       state.isUploading = false;
-      state.isUploadAnswersToAddtionalQuestionsError = true;
-      state.isUploadAnswersToAddtionalQuestionsSuccess = false;
+      state.isUploadAnswerToAddtionalQuestionsError = true;
+      state.isUploadAnswerToAddtionalQuestionsSuccess = false;
       state.message = action.error.message ?? "Unable to upload answers to additional questions";
     });
   },
@@ -222,20 +228,28 @@ export const {
   incrementStep,
   decrementStep,
   setCurrentQuestionId,
-  setIsUploadAnswersToAddtionalQuestionsError,
-  setIsUploadAnswersToAddtionalQuestionsSuccess,
+  setisUploadAnswerToAddtionalQuestionsError,
+  setisUploadAnswerToAddtionalQuestionsSuccess,
   setIsUploadAttachmentsError,
   setIsUploadAttachmentsSuccess,
-  getUploadAttachmentsState,
+  getUploadAttachmentsSliceState,
+  setUploadAttachmentsStateFromDraft,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;
 
 interface IUploadAttachmentsRequest {
-  categoryIds: string[];
-  reportId: string;
+  user_case_ids: string[];
+  requirementGatheringId: number;
   userId: string;
   attachments: File[];
+}
+
+interface IUploadAttachmentsRequestAPI {
+  user_cases_ids: string[];
+  requirement_gathering_id: number;
+  user_id: string;
+  attachment: string;
 }
 
 interface IUploadAttachmentsResponse {
@@ -245,28 +259,27 @@ interface IUploadAttachmentsResponse {
   statusText: string;
 }
 
-interface IUploadAnswersToAddtionalQuestionsRequest {
-  categoryId: string;
-  sessionId: string;
+interface IuploadAnswerToAddtionalQuestionsRequest {
   userId: string;
-  answers: IAnswerObj[];
+  requirementGatheringId: number;
+  answer: IAnswerObj;
+  useCaseId: string;
+  questionId: number;
 }
 
-interface IUploadAnswersToAddtionalQuestionsResponse {
+interface IuploadAnswerToAddtionalQuestionsResponse {
   resError: string;
   data: number[];
   status: number;
   statusText: string;
 }
 
-interface IUploadAnswersAPIRequest {
-  answers: {
-    question_id: string;
-    report_id: string;
-    user_id: string;
-    answer: string;
-    category_id: string;
-  }[];
+interface IuploadAnswerToAddtionalQuestionsRequestAPI {
+  QuestionID: string;
+  requirement_gathering_id: number;
+  userID: string;
+  answer: string;
+  user_case_id: string;
 }
 
 interface IResponseError {

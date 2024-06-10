@@ -12,16 +12,41 @@ import jsCookie from "js-cookie";
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
 
-  const { isUploading, quickPrompts, currentParagraphId } = useAppSelector(
-    (state) => state.uploadQuickPrompt,
+  const {
+    isUploading: isUploadingUploadQuickPrompt,
+    quickPrompts,
+    currentParagraphId,
+  } = useAppSelector((state) => state.uploadQuickPrompt);
+
+  const { isUploading: isUploadingUsecases, requirementGatheringId } = useAppSelector(
+    (state) => state.usecases,
   );
 
-  const requiredQuickPrompts = quickPromptContent.find(
-    (content) => content.id === currentParagraphId,
-  );
+  const requiredQuickPrompts =
+    quickPromptContent.find((content) => content.id === currentParagraphId) ??
+    quickPromptContent[0];
+
+  const modifiedRequiredQuickPrompts = { ...requiredQuickPrompts };
+  modifiedRequiredQuickPrompts.contentList = [];
+
+  requiredQuickPrompts?.contentList.forEach((quickPrompt) => {
+    if (quickPrompt.contentType === "text" && quickPrompt.content) {
+      const words = quickPrompt.content.split(" ");
+      words.forEach((word) => {
+        modifiedRequiredQuickPrompts.contentList.push({
+          contentType: "text",
+          content: word,
+          keyword: undefined,
+          placeholder: undefined,
+        });
+      });
+    } else {
+      modifiedRequiredQuickPrompts.contentList.push(quickPrompt);
+    }
+  });
 
   let formInitialValue =
-    requiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
+    modifiedRequiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
       if (curr.contentType === "prompt" && curr.keyword) {
         acc[curr.keyword] = "";
       }
@@ -34,7 +59,7 @@ export default function QuickPromptForm() {
   };
 
   const formSchema =
-    requiredQuickPrompts?.contentList.reduce(
+    modifiedRequiredQuickPrompts?.contentList.reduce(
       (
         acc: { [key: string]: yup.StringSchema<string | undefined, AnyObject, string | undefined> },
         curr,
@@ -95,7 +120,7 @@ export default function QuickPromptForm() {
 
     const dataObj = {
       promptData: promptData,
-      reportId: "1", // TODO: get reportID from usecases
+      requirementGatheringId: requirementGatheringId,
       userId: jsCookie.get("user_id") ?? "",
       content: content,
     };
@@ -106,22 +131,25 @@ export default function QuickPromptForm() {
   return (
     <form onSubmit={handleSubmit(onContinue)}>
       <fieldset className="bg-white rounded-lg p-[20px] border border-appGray-200">
-        <div className="flex flex-wrap gap-2 items-center text-lg font-semibold">
-          {requiredQuickPrompts?.contentList.map((content, index) => {
+        <div className="flex flex-wrap gap-y-2 items-center text-lg font-semibold">
+          {modifiedRequiredQuickPrompts?.contentList.map((content, index) => {
             if (content.contentType === "text") {
               return (
-                <p className="inline-block" key={index}>
+                <p className="inline-block mx-[3px]" key={index}>
                   {content.content}
                 </p>
               );
             } else if (content.contentType === "prompt" && content.keyword) {
               return (
-                <div key={index} className="inline-block max-w-fit px-1 bg-appGray-100">
+                <div
+                  key={index}
+                  className="inline-block px-1 mr-1 max-w-[900px] overflow-hidden bg-appGray-100"
+                >
                   <input
                     className={classNames(
                       { "border-b-red-500": errors[content.keyword] },
                       { "border-b-primary-900": !errors[content.keyword] },
-                      "focus:outline-none p-1 bg-transparent rounded-md rounded-b-none border-b-2 text-primary-900",
+                      "focus:outline-none bg-transparent rounded-md min-w-fit max-w-[900px] display-block overflow-x-auto rounded-b-none border-b-2 text-primary-900",
                     )}
                     key={index}
                     width={content.placeholder.length}
@@ -136,7 +164,7 @@ export default function QuickPromptForm() {
       </fieldset>
       <Button
         type="optional"
-        loading={isUploading}
+        loading={isUploadingUploadQuickPrompt || isUploadingUsecases}
         handleClick={() => {
           handleSubmit(onContinue);
         }}

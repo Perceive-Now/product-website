@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import jsCookie from "js-cookie";
-import NewComponent from "../../../components/@report-chat/ip-analysis/new-comp";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
+  EUploadAttachmentsPages,
   IAnswerObj,
   incrementStep,
   setAnswers,
   setCurrentPageId,
   setCurrentQuestionId,
-  setIsUploadAnswersToAddtionalQuestionsError,
-  setIsUploadAnswersToAddtionalQuestionsSuccess,
-  uploadAnswersToAddtionalQuestions,
+  setisUploadAnswerToAddtionalQuestionsError,
+  setisUploadAnswerToAddtionalQuestionsSuccess,
+  uploadAnswerToAddtionalQuestions,
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import { questionList } from "../report-q&a/_question";
+import QuestionForm from "./question-form";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();
@@ -23,27 +24,43 @@ export default function AdditionalQuestions() {
     answers,
     currentQuestionId,
     additionalQuestionIds,
-    isUploadAnswersToAddtionalQuestionsError,
-    isUploadAnswersToAddtionalQuestionsSuccess,
+    isUploadAnswerToAddtionalQuestionsError,
+    isUploadAnswerToAddtionalQuestionsSuccess,
     message,
   } = useAppSelector((state) => state.uploadAttachments);
 
+  const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
+
   useEffect(() => {
-    if (isUploadAnswersToAddtionalQuestionsError) {
+    if (isUploadAnswerToAddtionalQuestionsError) {
       toast.error(message);
-      dispatch(setIsUploadAnswersToAddtionalQuestionsError(false));
+      dispatch(setisUploadAnswerToAddtionalQuestionsError(false));
       return;
     }
 
-    if (isUploadAnswersToAddtionalQuestionsSuccess) {
-      dispatch(setCurrentPageId(4));
-      dispatch(incrementStep());
-      dispatch(setIsUploadAnswersToAddtionalQuestionsSuccess(false));
+    if (isUploadAnswerToAddtionalQuestionsSuccess) {
+      const nextQuestionIndex =
+        additionalQuestionIds.findIndex(
+          (questionId) => currentQuestionId === questionId.question_id,
+        ) + 1;
+
+      // if this is the last question
+      if (nextQuestionIndex === additionalQuestionIds.length) {
+        dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
+        dispatch(incrementStep());
+      } else {
+        dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
+        dispatch(incrementStep());
+      }
+
+      dispatch(setisUploadAnswerToAddtionalQuestionsSuccess(false));
       return;
     }
   }, [
-    isUploadAnswersToAddtionalQuestionsError,
-    isUploadAnswersToAddtionalQuestionsSuccess,
+    isUploadAnswerToAddtionalQuestionsError,
+    isUploadAnswerToAddtionalQuestionsSuccess,
+    additionalQuestionIds,
+    currentQuestionId,
     message,
     dispatch,
   ]);
@@ -74,25 +91,15 @@ export default function AdditionalQuestions() {
 
     dispatch(setAnswers(updatedAnswers));
 
-    const nextQuestionIndex =
-      additionalQuestionIds.findIndex(
-        (questionId) => currentQuestionId === questionId.question_id,
-      ) + 1;
-
-    // if there are no additional questions
-    if (nextQuestionIndex === additionalQuestionIds.length) {
-      dispatch(
-        uploadAnswersToAddtionalQuestions({
-          userId: jsCookie.get("user_id") ?? "",
-          sessionId: jsCookie.get("session_id") ?? "",
-          categoryId: "1" ?? "", // TODO get from usecase redux
-          answers: updatedAnswers,
-        }),
-      );
-    } else {
-      dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
-      dispatch(incrementStep());
-    }
+    dispatch(
+      uploadAnswerToAddtionalQuestions({
+        userId: jsCookie.get("user_id") ?? "",
+        useCaseId: useCaseIds[0] ?? "", // TODO get correct use case ids
+        answer: answer,
+        questionId: currentQuestionId,
+        requirementGatheringId: requirementGatheringId,
+      }),
+    );
   };
 
   const answerForCurrentQuestion = answers.find(
@@ -102,7 +109,7 @@ export default function AdditionalQuestions() {
   return (
     <>
       {currentQuestion && (
-        <NewComponent
+        <QuestionForm
           isLoading={isUploading}
           exampleAnswer={currentQuestion.answer}
           question={currentQuestion.question}

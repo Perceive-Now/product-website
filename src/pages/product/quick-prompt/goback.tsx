@@ -3,6 +3,7 @@ import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   decrementStep,
+  EQuickPromptPages,
   setCurrentPageId,
   setCurrentParagraphId,
 } from "../../../stores/upload-quick-prompt";
@@ -31,7 +32,7 @@ export default function GoBack() {
   //   </Link>
   // );
 
-  if (currentPageId === 1) {
+  if (currentPageId === EQuickPromptPages.AllSet) {
     // if in all set page
     return (
       <button

@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
 import toast from "react-hot-toast";
-
+import jsCookie from "js-cookie";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setSession } from "../../../stores/session";
-import { setUseCase } from "../../../stores/use-case";
+import {
+  setUseCase,
+  setUseCaseIds,
+  setUseCasesUploadState,
+  uploadUseCases,
+} from "../../../stores/use-case";
 import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +19,22 @@ interface OptionMappings {
   [key: string]: string;
 }
 
+const optionMappings: OptionMappings = {
+  "freedom-to-operate": "ip-validity-analysis",
+  "prior-art-search": "ip-validity-analysis",
+  "patent-validity": "ip-validity-analysis",
+  "patent-infringement": "ip-validity-analysis",
+  "ip-valuation": "ip-valuation",
+  "ip-licensing-opportunity": "ip-licensing-opportunity",
+  //
+  "m&a": "market-research",
+  "market-potential": "market-research",
+  "competitive-landscape": "market-research",
+  "consumer-landscape": "market-research",
+  commercialization: "market-research",
+  regulatory: "market-research",
+};
+
 /**
  *
  */
@@ -21,12 +42,40 @@ const UseCaseSelect = () => {
   const navigation = useNavigate();
   const dispatch = useAppDispatch();
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const { useCaseIds, isUploading, useCasesUploadState } = useAppSelector(
+    (state) => state.usecases,
+  );
 
   const [selected, setSelected] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
   const [useCaseSelected, setUseCaseSelected] = useState<any>(UseCaseOptions);
   const [useCaseType, setUseCaseType] = useState(UsecaseOptions[0].value);
   const [reports, setReport] = useState<any>([]);
+
+  useEffect(() => {
+    if (useCasesUploadState.isUseCaseUploadError) {
+      toast.error("Server error");
+      dispatch(
+        setUseCasesUploadState({
+          isUseCaseUploadError: false,
+          isUseCaseUploadSuccess: false,
+          message: "",
+        }),
+      );
+    }
+
+    if (useCasesUploadState.isUseCaseUploadSuccess) {
+      dispatch(
+        setUseCasesUploadState({
+          isUseCaseUploadError: false,
+          isUseCaseUploadSuccess: false,
+          message: "",
+        }),
+      );
+      navigation("/interaction-method");
+      setSelected([]);
+    }
+  }, [useCasesUploadState, navigation, dispatch]);
 
   //
   const onContinue = useCallback(() => {
@@ -80,31 +129,19 @@ const UseCaseSelect = () => {
           }),
         );
       }
-      navigation("/interaction-method");
+      dispatch(
+        uploadUseCases({
+          userCaseIds: useCaseIds,
+          userId: jsCookie.get("user_id") ?? "",
+        }),
+      );
       dispatch(setUseCase({ usecases: options }));
-      setSelected([]);
     } else {
       toast.error("Please select one of the use cases");
     }
-  }, [dispatch, navigation, options, selected.length, sessionDetail]);
+  }, [dispatch, options, selected.length, sessionDetail, useCaseIds]);
 
   useEffect(() => {
-    const optionMappings: OptionMappings = {
-      "freedom-to-operate": "ip-validity-analysis",
-      "prior-art-search": "ip-validity-analysis",
-      "patent-validity": "ip-validity-analysis",
-      "patent-infringement": "ip-validity-analysis",
-      "ip-valuation": "ip-valuation",
-      "ip-licensing-opportunity": "ip-licensing-opportunity",
-      //
-      "m&a": "market-research",
-      "market-potential": "market-research",
-      "competitive-landscape": "market-research",
-      "consumer-landscape": "market-research",
-      commercialization: "market-research",
-      regulatory: "market-research",
-    };
-
     const newOptions: any[] | ((prevState: string[]) => string[]) = [];
 
     selected.forEach((option) => {
@@ -122,6 +159,11 @@ const UseCaseSelect = () => {
   const handleChange = useCallback(
     (mode: string[]) => {
       setSelected(mode);
+
+      const matchingUseCaseIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
+        .map((r) => String(r.useCaseId));
+
+      dispatch(setUseCaseIds(matchingUseCaseIds));
 
       const reports = UsecaseOptions.find((option) => option.value === useCaseType);
       const reportsList = UseCaseOptions.filter((c) => mode.includes(c.value));
@@ -178,6 +220,7 @@ const UseCaseSelect = () => {
                 handleChange={handleChange}
                 reports={reports}
                 onContinue={onContinue}
+                isUploading={isUploading}
               />
             </div>
           </div>

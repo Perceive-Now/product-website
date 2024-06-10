@@ -4,10 +4,17 @@ import { quickPromptContent } from "../pages/product/quick-prompt/quick-prompt-c
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
-interface uploadQuickPromptsState {
+export const EQuickPromptPages = {
+  QuickPrompt: 0,
+  AllSet: 1,
+};
+
+export type TQuickPromptPages = (typeof EQuickPromptPages)[keyof typeof EQuickPromptPages];
+
+export interface IUploadQuickPromptsState {
   isUploading: boolean;
   currentParagraphId: number;
-  currentPageId: number;
+  currentPageId: TQuickPromptPages;
   paragraphIds: number[];
   currentStep: number;
   quickPrompts: TPromptArray;
@@ -18,11 +25,11 @@ interface uploadQuickPromptsState {
   };
 }
 
-const initialState: uploadQuickPromptsState = {
+export const initialState: IUploadQuickPromptsState = {
   isUploading: false,
   currentParagraphId: 0,
   currentStep: 0,
-  currentPageId: 0,
+  currentPageId: EQuickPromptPages.QuickPrompt,
   paragraphIds: quickPromptContent.map((content) => {
     return content.id;
   }),
@@ -43,8 +50,8 @@ export const uploadQuickPrompts = createAsyncThunk<
   }
 >("uploadQuickPrompts", async (request: IuploadQuickPromptsRequest, thunkAPI) => {
   try {
-    const dataObj = {
-      report_id: request.reportId,
+    const dataObj: IuploadQuickPromptsRequestAPI = {
+      requirement_gathering_id: request.requirementGatheringId,
       content: request.content,
       user_id: request.userId ?? "",
       prompt_data: request.promptData ?? "",
@@ -99,7 +106,7 @@ export const quickPromptsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
-    setCurrentPageId: (state, action: PayloadAction<number>) => {
+    setCurrentPageId: (state, action: PayloadAction<TQuickPromptPages>) => {
       state.currentPageId = action.payload;
     },
 
@@ -113,6 +120,11 @@ export const quickPromptsSlice = createSlice({
 
     // -----------------------------------------------------------------------
     getQuickPromptsSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    setQuickPromtsStateFromDraft: (state, action: PayloadAction<IUploadQuickPromptsState>) => {
+      state = action.payload;
+    },
 
     // -----------------------------------------------------------------------
     reset: () => initialState,
@@ -134,7 +146,7 @@ export const quickPromptsSlice = createSlice({
         isSuccess: true,
         message: "",
       };
-      state.currentPageId = 1;
+      state.currentPageId = EQuickPromptPages.AllSet;
       state.currentStep += 1;
     });
     builder.addCase(uploadQuickPrompts.rejected, (state, action) => {
@@ -157,15 +169,39 @@ export const {
   decrementStep,
   incrementStep,
   setCurrentPageId,
+  setQuickPromtsStateFromDraft,
 } = quickPromptsSlice.actions;
 
 export default quickPromptsSlice.reducer;
 
 interface IuploadQuickPromptsRequest {
-  reportId: string;
+  requirementGatheringId: number;
   userId: string;
   content: string;
   promptData: {
+    id: number;
+    contentList: (
+      | {
+          contentType: string;
+          content: string;
+          keyword?: undefined;
+          placeholder?: undefined;
+        }
+      | {
+          contentType: string;
+          keyword: string;
+          placeholder: string;
+          content?: undefined;
+        }
+    )[];
+  }[];
+}
+
+interface IuploadQuickPromptsRequestAPI {
+  requirement_gathering_id: number;
+  user_id: string;
+  content: string;
+  prompt_data: {
     id: number;
     contentList: (
       | {

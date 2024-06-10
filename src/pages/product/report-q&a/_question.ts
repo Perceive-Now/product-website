@@ -1,12 +1,14 @@
 export const questionList = [
   {
     questionId: 1,
+    useCaseId: 1,
     question: "What is the full name of the company, and what is its core mission?",
     usecase: "common-question",
     answer: `Full Name: NextGen Innovations Inc.\nCore Mission: NextGen Innovations Inc.aims to revolutionize digital interaction through advanced augmented reality(AR) technologies.The mission centers on enhancing daily life by merging AR experiences seamlessly into physical reality, thereby providing individuals with enriched, instantaneous access to information and new communication avenues.This integration seeks to diminish the divide between digital and physical realms, offering innovative solutions that cater to both individual and collective needs across various sectors.`,
   },
   {
     questionId: 2,
+    useCaseId: 1,
     question:
       "Please provide a concise description of the technology or product your company has developed.",
     usecase: "common-question",
@@ -15,6 +17,7 @@ export const questionList = [
   },
   {
     questionId: 3,
+    useCaseId: 1,
     question:
       "Describe the technical aspects and unique features of the key product or technology developed by the company. How does your product or technology introduce innovation or     novelty within its field?",
     usecase: "common-question",
@@ -22,6 +25,7 @@ export const questionList = [
   },
   {
     questionId: 4,
+    useCaseId: 1,
     question:
       "Could you explain your company's business model and how it generates revenue? What are the different revenue streams for your company, including primary and potential ancillary streams?",
     usecase: "common-question",
@@ -29,6 +33,7 @@ export const questionList = [
   },
   {
     questionId: 5,
+    useCaseId: 1,
     usecase: "common-question",
     question:
       "Can you provide key single-word terms that describe the core technologies or features of your innovation? For keywords that consist of two or three words, please separate each word with a comma. These keywords will be used to conduct a comprehensive prior art search to ensure the uniqueness of your intellectual property.",
@@ -36,6 +41,7 @@ export const questionList = [
   },
   {
     questionId: 6,
+    useCaseId: 1,
     question:
       "Can you tell me more about the specific patents or prior art you may have encountered during your research? What similarities or differences did you find?",
     usecase: "ip-validity-analysis",
@@ -43,6 +49,7 @@ export const questionList = [
   },
   {
     questionId: 7,
+    useCaseId: 1,
     question:
       "How does the key product or technology developed by the company meet the criteria of novelty in its field?",
     usecase: "ip-validity-analysis",
@@ -50,6 +57,7 @@ export const questionList = [
   },
   {
     questionId: 8,
+    useCaseId: 1,
     question:
       "Can you explain why the features of the key product or technology developed by the company are considered non-obvious to someone skilled in the field?",
     usecase: "ip-validity-analysis",
@@ -57,6 +65,7 @@ export const questionList = [
   },
   {
     questionId: 9,
+    useCaseId: 1,
     question:
       "How is the key product or technology developed by the company applicable to industrial needs in its domain?",
     usecase: "ip-validity-analysis",
@@ -65,12 +74,14 @@ export const questionList = [
   },
   {
     questionId: 10,
+    useCaseId: 1,
     question: "What is your strategy for patent filing, including geographies and patent offices?",
     usecase: "ip-validity-analysis",
     answer: `Our patent filing strategy prioritizes comprehensive protection and strategic geographic coverage to maximize the commercial potential of ARSight. Initially, we focus on filing patents in jurisdictions with strong intellectual property laws and significant market opportunities, such as the United States, European Union, Japan, and South Korea. We leverage the Patent Cooperation Treaty (PCT) for an efficient global filing process, allowing us to seek protection in over 150 countries through a single application. This approach enables us to secure our innovations' core aspects while considering expansion into emerging markets with high growth potential. Our aim is to balance broad international protection with the specific commercial relevance of each region to our business.`,
   },
   {
     questionId: 11,
+    useCaseId: 1,
     question:
       "How have you ensured enablement in the patent application for the key product or technology developed by the company?",
     usecase: "ip-validity-analysis",
@@ -79,6 +90,7 @@ export const questionList = [
   // Ip licensing strategy
   {
     questionId: 12,
+    useCaseId: 1,
     question:
       "How have you ensured the definiteness of claims in your patent application for the key product or technology developed by the company?",
     usecase: "ip-licensing-opportunity",
@@ -86,6 +98,7 @@ export const questionList = [
   },
   {
     questionId: 13,
+    useCaseId: 1,
     question:
       "Can you provide the exact claims that will be present in the patent application for your key product or technology developed?",
     usecase: "ip-licensing-opportunity",
@@ -94,6 +107,7 @@ export const questionList = [
   },
   {
     questionId: 14,
+    useCaseId: 1,
     question:
       "What specific technologies or innovations within NeuraWear are you looking to license, and what makes these aspects unique and valuable for potential licensees?",
     usecase: "ip-licensing-opportunity",
@@ -101,6 +115,7 @@ export const questionList = [
   },
   {
     questionId: 15,
+    useCaseId: 1,
     question:
       "Who are your ideal licensees for NeuraWear's technology, and in which industries or sectors do they primarily operate?",
     usecase: "ip-licensing-opportunity",
@@ -109,6 +124,7 @@ export const questionList = [
   },
   {
     questionId: 16,
+    useCaseId: 1,
     question: "What business goals are you aiming to achieve through IP licensing?",
     usecase: "ip-licensing-opportunity",
     // Business Goals Metrics:\n
@@ -116,6 +132,7 @@ export const questionList = [
   },
   {
     questionId: 17,
+    useCaseId: 1,
     question:
       "What is your preferred licensing model for NeuraWear, and how does this preference align with your strategic objectives?",
     usecase: "ip-licensing-opportunity",
@@ -124,6 +141,7 @@ export const questionList = [
   },
   {
     questionId: 18,
+    useCaseId: 1,
     question:
       "Are there specific geographic regions you are targeting for licensing NeuraWear's technology?",
     usecase: "ip-licensing-opportunity",
@@ -132,6 +150,7 @@ export const questionList = [
   },
   {
     questionId: 19,
+    useCaseId: 1,
     question: "What are your financial expectations from licensing agreements?",
     usecase: "ip-licensing-opportunity",
     answer: `Financial Expectations Metrics:\n• Upfront Payments: Targeting a total of $5 million from initial licensing deals.
@@ -139,24 +158,28 @@ export const questionList = [
   },
   {
     questionId: 20,
+    useCaseId: 1,
     question: "How prepared are you to negotiate and manage complex licensing agreements?",
     usecase: "ip-licensing-opportunity",
     answer: `• Team Expertise: A dedicated team of 10 experts specializing in IP law, negotiations, and technology transfer.\n   • Past Negotiation Success: A track record of successfully negotiating and managing 20+ complex licensing agreements in related sectors.\n• Strategic Partnerships: Established relationships with 5 of the top 10 industry leaders for potential licensing and collaboration.`,
   },
   {
     questionId: 21,
+    useCaseId: 1,
     question: "What key terms and conditions are you prioritizing in your licensing agreements?",
     usecase: "ip-licensing-opportunity",
     answer: `• Exclusivity: Offering non-exclusive licenses to 90% of partners to maximize market penetration, with selective exclusivity under strict performance conditions.\n• Term Length: Standard agreement terms of 5 years, with automatic renewal options contingent on meeting sales thresholds.\n• IP Protection: Implementing stringent IP protection clauses, including audit rights, to safeguard against unauthorized use, with compliance checks scheduled bi-annually.`,
   },
   {
     questionId: 22,
+    useCaseId: 1,
     question: "Are you open to exploring strategic partnerships or cross-licensing opportunities?",
     usecase: "ip-licensing-opportunity",
     answer: `• Openness Level: Targeting strategic partnerships with 30% of licensees, focusing on companies with complementary technologies.\n• Cross-Licensing: Evaluating cross-licensing opportunities with up to 10% of potential partners, particularly those in the healthcare and VR sectors.\n• Collaboration Goals: Aiming to develop 3 new co-innovated products within the first 2 years of partnerships.`,
   },
   {
     questionId: 23,
+    useCaseId: 1,
     question:
       "What metrics and KPIs will you use to evaluate the success of your licensing strategy?",
     usecase: "ip-licensing-opportunity",
@@ -164,6 +187,7 @@ export const questionList = [
   },
   {
     questionId: 24,
+    useCaseId: 1,
     question:
       "Do you have any performance requirements or specific expectations from licensees to ensure they contribute effectively to the licensed technology's success?",
     usecase: "ip-licensing-opportunity",
@@ -172,6 +196,7 @@ export const questionList = [
   // IP landscaping and FTO
   {
     questionId: 25,
+    useCaseId: 1,
     question:
       "How do you plan to handle sublicensing rights, audit rights, and quality control provisions to safeguard the integrity and value of your licensed IP?",
     usecase: "ip-valuation",
@@ -180,6 +205,7 @@ export const questionList = [
   },
   {
     questionId: 26,
+    useCaseId: 1,
     question:
       "Are there any particular fields of use you are considering for NeuraWear's licensing agreements, and how do these choices reflect market demands and opportunities?",
     usecase: "ip-valuation",
@@ -187,12 +213,14 @@ export const questionList = [
   },
   {
     questionId: 27,
+    useCaseId: 1,
     question: "What is the pricing strategy for your product or service?",
     usecase: "ip-valuation",
     answer: `• Competitive Pricing: Setting prices 10% below top competitors while offering superior technology features, aiming to capture a 15% market share within the first year.\n• Value-Based Pricing: Implementing value-based pricing for premium segments, expecting a 20% higher margin compared to standard offerings.`,
   },
   {
     questionId: 28,
+    useCaseId: 1,
     question: "How do you calculate the gross margin for your offerings?",
     usecase: "ip-valuation",
     answer: `Gross Margin Calculation:
@@ -200,12 +228,14 @@ export const questionList = [
   },
   {
     questionId: 29,
+    useCaseId: 1,
     question: "What are the total development costs incurred for your product or service?",
     usecase: "ip-valuation",
     answer: `Development Costs Metrics:\n• R&D Investment: $5 million spent on research and development over 3 years to bring NeuraWear technology to market.\n• Patent Costs: Additional $500,000 invested in patent filings and legal fees to protect IP globally.`,
   },
   {
     questionId: 30,
+    useCaseId: 1,
     question: "What future costs do you anticipate for full development and market launch?",
     usecase: "ip-valuation",
     answer: `Future Costs Metrics:
@@ -213,6 +243,7 @@ export const questionList = [
   },
   {
     questionId: 31,
+    useCaseId: 1,
     question: "What discount rate do you apply to future cash flows and why?",
     usecase: "ip-valuation",
     answer: `Discount Rate Application:
@@ -220,6 +251,7 @@ export const questionList = [
   },
   {
     questionId: 32,
+    useCaseId: 1,
     question:
       "What is the projected annual revenue growth rate, and how did you arrive at this figure?",
     usecase: "ip-valuation",
@@ -228,6 +260,7 @@ export const questionList = [
   },
   {
     questionId: 33,
+    useCaseId: 1,
     question: "What are the anticipated operating expenses, and how are they allocated?",
     usecase: "ip-valuation",
     answer: `Anticipated Operating Expenses:
@@ -236,6 +269,7 @@ export const questionList = [
   // Market Research
   {
     questionId: 34,
+    useCaseId: 1,
     question:
       "How do you project sales revenue for your products or services over the next 5 years?",
     usecase: "market-research",
@@ -244,6 +278,7 @@ export const questionList = [
   },
   {
     questionId: 35,
+    useCaseId: 1,
     question:
       "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
     usecase: "market-research",
@@ -252,24 +287,28 @@ export const questionList = [
   },
   {
     questionId: 36,
+    useCaseId: 1,
     question: "What specific problem does your product or service solve for your target audience?",
     usecase: "market-research",
     answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
   },
   {
     questionId: 37,
+    useCaseId: 1,
     question: "How does your product or service stand out from existing market offerings?",
     usecase: "market-research",
     answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
   },
   {
     questionId: 38,
+    useCaseId: 1,
     question: "What pricing strategy has your company adopted for its product or service?",
     usecase: "market-research",
     answer: `Pricing Strategy:\n• Adopting a value-based pricing strategy, NeuraWear's products are priced to reflect the significant value and unique benefits they offer to users, positioned slightly above the market average for wearable tech. This strategy underscores the premium features and advanced technology of our offerings, targeting consumers who prioritize quality and innovation.`,
   },
   {
     questionId: 39,
+    useCaseId: 1,
     question: "What are the primary and potential secondary revenue streams for your company?",
     usecase: "market-research",
     answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
@@ -277,6 +316,7 @@ export const questionList = [
   },
   {
     questionId: 40,
+    useCaseId: 1,
     question:
       "How is your company's cost structure organized, and what impact does it have on pricing and profitability?",
     usecase: "market-research",
@@ -284,6 +324,7 @@ export const questionList = [
   },
   {
     questionId: 41,
+    useCaseId: 1,
     question: "Which sales and distribution channels is your company planning to use?",
     usecase: "market-research",
     answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
@@ -291,6 +332,7 @@ export const questionList = [
   },
   {
     questionId: 42,
+    useCaseId: 1,
     question:
       "Who are your main competitors, and what differentiates your product or service from theirs?",
     usecase: "market-research",
@@ -301,6 +343,7 @@ export const questionList = [
 export const MarketQuestionList = [
   {
     questionId: 34,
+    useCaseId: 1,
     question:
       "How do you project sales revenue for your products or services over the next 5 years?",
     usecase: "market-research",
@@ -309,6 +352,7 @@ export const MarketQuestionList = [
   },
   {
     questionId: 35,
+    useCaseId: 1,
     question:
       "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
     usecase: "market-research",
@@ -317,24 +361,28 @@ export const MarketQuestionList = [
   },
   {
     questionId: 36,
+    useCaseId: 1,
     question: "What specific problem does your product or service solve for your target audience?",
     usecase: "market-research",
     answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
   },
   {
     questionId: 37,
+    useCaseId: 1,
     question: "How does your product or service stand out from existing market offerings?",
     usecase: "market-research",
     answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
   },
   {
     questionId: 38,
+    useCaseId: 1,
     question: "What pricing strategy has your company adopted for its product or service?",
     usecase: "market-research",
     answer: `Pricing Strategy:\n• Adopting a value-based pricing strategy, NeuraWear's products are priced to reflect the significant value and unique benefits they offer to users, positioned slightly above the market average for wearable tech. This strategy underscores the premium features and advanced technology of our offerings, targeting consumers who prioritize quality and innovation.`,
   },
   {
     questionId: 39,
+    useCaseId: 1,
     question: "What are the primary and potential secondary revenue streams for your company?",
     usecase: "market-research",
     answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
@@ -342,6 +390,7 @@ export const MarketQuestionList = [
   },
   {
     questionId: 40,
+    useCaseId: 1,
     question:
       "How is your company's cost structure organized, and what impact does it have on pricing and profitability?",
     usecase: "market-research",
@@ -349,6 +398,7 @@ export const MarketQuestionList = [
   },
   {
     questionId: 41,
+    useCaseId: 1,
     question: "Which sales and distribution channels is your company planning to use?",
     usecase: "market-research",
     answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
@@ -356,6 +406,7 @@ export const MarketQuestionList = [
   },
   {
     questionId: 42,
+    useCaseId: 1,
     question:
       "Who are your main competitors, and what differentiates your product or service from theirs?",
     usecase: "market-research",
@@ -363,77 +414,90 @@ export const MarketQuestionList = [
   },
   {
     questionId: 43,
+    useCaseId: 1,
     question:
       "What internal metrics does NeuraWear use to measure success in aligning with market dynamics and industry trends?",
     answer: "",
   },
   {
     questionId: 44,
+    useCaseId: 1,
     question:
       "How does NeuraWear assess the impact of global market drivers and restraints on it's product development and marketing strategies?",
     answer: "",
   },
   {
     questionId: 45,
+    useCaseId: 1,
     question:
       "Can you describe a recent strategic decision made by NeuraWear in response to the projected market growth in wearable technology? What was the rationale behind this decision?",
     answer: "",
   },
   {
     questionId: 46,
+    useCaseId: 1,
     question:
       "How does NeuraWear define its primary target market within the wearable technology industry?",
     answer: "",
   },
   {
     questionId: 47,
+    useCaseId: 1,
     question: "What data-driven methods does NeuraWear use to segment its customer base?",
     answer: "",
   },
   {
     questionId: 48,
+    useCaseId: 1,
     question:
       "What are the key factors that influence the purchasing decisions of NeuraWear’s customers?",
     answer: "",
   },
   {
     questionId: 49,
+    useCaseId: 1,
     question:
       "How has consumer feedback shaped the development of new features in NeuraWear products?",
     answer: "",
   },
   {
     questionId: 50,
+    useCaseId: 1,
     question:
       "Can you describe the competitive advantages of NeuraWear’s latest wearable device compared to its main competitors?",
     answer: "",
   },
   {
     questionId: 51,
+    useCaseId: 1,
     question:
       "What role does intellectual property play in NeuraWear’s product differentiation strategy?",
     answer: "",
   },
   {
     questionId: 52,
+    useCaseId: 1,
     question:
       "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its flagship product, and why?",
     answer: "",
   },
   {
     questionId: 53,
+    useCaseId: 1,
     question:
       "What are NeuraWear’s sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
     answer: "",
   },
   {
     questionId: 54,
+    useCaseId: 1,
     question:
       "What are NeuraWear’s customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
     answer: "",
   },
   {
     questionId: 55,
+    useCaseId: 1,
     question:
       "What are NeuraWear’s long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
     answer: "",

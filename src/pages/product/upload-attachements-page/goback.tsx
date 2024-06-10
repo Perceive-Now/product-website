@@ -6,7 +6,9 @@ import {
   reset,
   setCurrentPageId,
   setCurrentQuestionId,
+  EUploadAttachmentsPages,
 } from "../../../stores/upload-attachments";
+import uploadAttachmentsPages from "./upload-attachment-pages-list";
 
 const BackButton = () => {
   return (
@@ -31,8 +33,7 @@ export default function GoBack() {
   //   </Link>
   // );
 
-  if (currentPageId === 0) {
-    // if in upload section page
+  if (currentPageId === EUploadAttachmentsPages.UploadAttachments) {
     return (
       <Link to="/interaction-method" className={buttonStyle}>
         <BackButton />
@@ -40,8 +41,7 @@ export default function GoBack() {
     );
   }
 
-  if (currentPageId === 2) {
-    // if not in additional questions page
+  if (currentPageId === EUploadAttachmentsPages.NeedAdditionalAnswers) {
     return (
       <button
         onClick={() => {
@@ -54,12 +54,15 @@ export default function GoBack() {
     );
   }
 
-  if (currentPageId !== 3) {
-    // if not in additional questions page
+  if (currentPageId !== EUploadAttachmentsPages.AdditionalQuestions) {
     return (
       <button
         onClick={() => {
-          dispatch(setCurrentPageId(currentPageId - 1));
+          const currentPageIdIndex = uploadAttachmentsPages.findIndex(
+            (page) => page.id === currentPageId,
+          );
+          const previousPageId = uploadAttachmentsPages[currentPageIdIndex - 1].id;
+          dispatch(setCurrentPageId(previousPageId));
           dispatch(decrementStep());
         }}
         className={buttonStyle}
@@ -74,7 +77,7 @@ export default function GoBack() {
 
     if (currentQuestionId === additionalQuestionIds[0].question_id) {
       // if it is the first question
-      dispatch(setCurrentPageId(currentPageId - 1));
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
       dispatch(decrementStep());
       return;
     }
