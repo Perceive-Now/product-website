@@ -1,8 +1,8 @@
-import Title from "../../../components/reusable/title";
 import GoBack from "./goback";
 import ProgressBar from "./progress-bar";
 import { useAppSelector } from "../../../hooks/redux";
 import quickPromptPagesList from "./quick-prompt-pages-list";
+import Title from "src/components/reusable/title/title";
 
 export default function QuickPromptPage() {
   const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);

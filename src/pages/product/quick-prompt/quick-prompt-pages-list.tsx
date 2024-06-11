@@ -1,6 +1,6 @@
 import { EQuickPromptPages } from "src/stores/upload-quick-prompt";
-import AllSet from "../upload-attachements-page/all-set";
 import QuickPrompt from "./quick-prompt";
+import GoToReport from "../upload-attachements-page/goto-report";
 
 const quickPromptPagesList = [
   {
@@ -15,7 +15,7 @@ const quickPromptPagesList = [
     totalPages: 1,
     title: "All set",
     description: "Go to report and payement all set thing",
-    Component: AllSet,
+    Component: GoToReport,
   },
 ];
 
