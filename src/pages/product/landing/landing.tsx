@@ -69,7 +69,7 @@ export default function Landing() {
           <StepWrapper className="ml-[90px]">
             <ContentWrapper className="justify-end">
               <TextBlock
-                className="max-w-[230px]"
+                className="max-w-[225px]"
                 title={stepsList[1].title}
                 description={stepsList[1].description}
               />
