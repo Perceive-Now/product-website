@@ -214,7 +214,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = true;
       state.isUploadAttachmentsSuccess = false;
-      state.message = action.error.message ?? "Unable to upload attachments";
+      state.message = "Unable to upload attachments" ?? action.error.message;
     });
 
     // -----------------------------------------------------------------------
@@ -233,7 +233,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAnswerToAddtionalQuestionsError = true;
       state.isUploadAnswerToAddtionalQuestionsSuccess = false;
-      state.message = action.error.message ?? "Unable to upload answers to additional questions";
+      state.message = "Unable to upload answers" ?? action.error.message;
     });
   },
 });
