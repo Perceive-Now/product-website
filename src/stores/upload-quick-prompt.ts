@@ -6,14 +6,13 @@ const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
 export const EQuickPromptPages = {
   QuickPrompt: 0,
-  AllSet: 1,
+  GoToReport: 1,
 };
 
 export type TQuickPromptPages = (typeof EQuickPromptPages)[keyof typeof EQuickPromptPages];
 
 export interface IUploadQuickPromptsState {
   isUploading: boolean;
-  currentParagraphId: number;
   currentPageId: TQuickPromptPages;
   paragraphIds: number[];
   currentStep: number;
@@ -27,7 +26,6 @@ export interface IUploadQuickPromptsState {
 
 export const initialState: IUploadQuickPromptsState = {
   isUploading: false,
-  currentParagraphId: 0,
   currentStep: 0,
   currentPageId: EQuickPromptPages.QuickPrompt,
   paragraphIds: quickPromptContent.map((content) => {
@@ -76,23 +74,10 @@ export const quickPromptsSlice = createSlice({
   initialState,
   reducers: {
     // -----------------------------------------------------------------------
-    setQuickPrompts: (
-      state,
-      action: PayloadAction<{ prompts: { [key: string]: string }; paragraphId: number }>,
-    ) => {
-      const { prompts, paragraphId } = action.payload;
-      const index = state.quickPrompts.findIndex((content) => content.id === paragraphId);
-
-      if (index < 0) {
-        state.quickPrompts.push({ id: paragraphId, prompts });
-      } else {
-        state.quickPrompts[index] = { id: paragraphId, prompts };
-      }
-    },
-
-    // -----------------------------------------------------------------------
-    setCurrentParagraphId: (state, action: PayloadAction<number>) => {
-      state.currentParagraphId = action.payload;
+    setQuickPrompts: (state, action: PayloadAction<{ prompts: { [key: string]: string } }>) => {
+      const { prompts } = action.payload;
+      const index = state.quickPrompts.findIndex((content) => content.id === 0);
+      state.quickPrompts[index] = { id: 0, prompts };
     },
 
     // -----------------------------------------------------------------------
@@ -146,7 +131,6 @@ export const quickPromptsSlice = createSlice({
         isSuccess: true,
         message: "",
       };
-      state.currentPageId = EQuickPromptPages.AllSet;
       state.currentStep += 1;
     });
     builder.addCase(uploadQuickPrompts.rejected, (state, action) => {
@@ -163,7 +147,6 @@ export const quickPromptsSlice = createSlice({
 export const {
   reset,
   getQuickPromptsSliceState,
-  setCurrentParagraphId,
   setQuickPrompts,
   setQuickPromptsUploadState,
   decrementStep,

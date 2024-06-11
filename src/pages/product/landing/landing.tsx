@@ -1,10 +1,10 @@
 import React from "react";
-import Title from "../../../components/reusable/title";
 import Button from "../../../components/reusable/button";
 import LandingMark from "./landing-mark";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { BGVector0, BGVector1, BGVector2, BGVector3 } from "../../../components/icons";
+import Title from "src/components/reusable/title/title";
 
 const stepsList = [
   {
@@ -69,7 +69,7 @@ export default function Landing() {
           <StepWrapper className="ml-[90px]">
             <ContentWrapper className="justify-end">
               <TextBlock
-                className="max-w-[230px]"
+                className="max-w-[225px]"
                 title={stepsList[1].title}
                 description={stepsList[1].description}
               />

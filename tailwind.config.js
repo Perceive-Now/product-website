@@ -73,7 +73,6 @@ module.exports = {
           500: "#FFA300",
           700: "#CC8300",
           800: "#373D3F",
-          900: "#120824",
         },
         success: {
           500: "#40A140",
@@ -96,11 +95,12 @@ module.exports = {
       backgroundImage: {
         "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%)",
         "secondary-gradient": "linear-gradient(110deg, #E08236 0.32%, #423ABA 99.59%);",
-        "white-gradient": "linear-gradient(111deg, #FFF 1.62%, #F7F5FF 98.58%);"
+        "white-gradient": "linear-gradient(111deg, #FFF 1.62%, #F7F5FF 98.58%);",
       },
-      // boxShadow: {
-      //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      // },
+      boxShadow: {
+        // 'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        "page-content": "0px 0px 12px 0px rgba(36, 39, 43, 0.08)",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms"),

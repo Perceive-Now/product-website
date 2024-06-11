@@ -1,8 +1,8 @@
-import Title from "../../../components/reusable/title";
 import GoBack from "./goback";
 import ProgressBar from "./progress-bar";
 import uploadAttachmentsPages from "./upload-attachment-pages-list";
 import { useAppSelector } from "../../../hooks/redux";
+import Title from "src/components/reusable/title/title";
 
 export default function UploadAttachmentsPage() {
   const { currentPageId } = useAppSelector((state) => state.uploadAttachments);

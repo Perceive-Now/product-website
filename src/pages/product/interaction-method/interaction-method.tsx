@@ -10,7 +10,7 @@ import {
 import BackButton from "../../../components/reusable/back-button";
 import { useAppSelector } from "src/hooks/redux";
 
-const validUseCasesForQuickPrompts: string[] = ["1"];
+const validUseCasesForQuickPrompts: string[] = ["3"];
 
 const interactionMethods = [
   {
@@ -65,7 +65,10 @@ export default function InteractionMethod() {
             .filter((method) => {
               return (
                 (method.title === "Quick prompt" &&
-                  useCaseIds.some((id) => validUseCasesForQuickPrompts.includes(id))) ||
+                  // check if usecaseids only include validusecasesforquickprompts
+                  !useCaseIds.some(
+                    (string) => validUseCasesForQuickPrompts.indexOf(string) == -1,
+                  )) ||
                 method.title !== "Quick prompt"
               );
             })
