@@ -8,7 +8,7 @@ import { setSession } from "../../../stores/session";
 import { questionList } from "./_question";
 
 import Loading from "../../../components/reusable/loading";
-import BackButton from "../../../components/reusable/back-button";
+// import BackButton from "../../../components/reusable/back-button";
 
 import IPStepper from "../../../components/@report-chat/ip-analysis/stepper";
 import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
@@ -16,8 +16,11 @@ import IPReview from "../../../components/@report-chat/ip-analysis/use-case/revi
 import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
 import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
-import ChatQuestionAnswer2 from "../../../components/@report-chat/ip-analysis/use-case/question/question-2";
+// import ChatQuestionAnswer2 from "../../../components/@report-chat/ip-analysis/use-case/question/question-2";
 import SkippedQuestion from "./skipped-question";
+import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import { useNavigate } from "react-router-dom";
+import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
@@ -25,6 +28,7 @@ import SkippedQuestion from "./skipped-question";
 export default function ReportQuestionAnswerPage() {
   const dispatch = useAppDispatch();
   const session = useAppSelector((state) => state.sessionDetail.session);
+  const navigate = useNavigate();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
@@ -75,26 +79,24 @@ export default function ReportQuestionAnswerPage() {
       }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
     [activeIndex, questionId, questionWithUsecase],
   );
-
   //
-  useEffect(() => {
-    // Check if the condition is met to update the session and active step
-    const isConditionMet =
-      useCases.length > 0 && activeStep < 5 && questionWithUsecase.length === activeIndex;
+  // useEffect(() => {
+  //   const isConditionMet =
+  //     useCases.length > 0 && activeStep < 5 && questionWithUsecase.length === activeIndex;
 
-    if (isConditionMet) {
-      dispatch(
-        setSession({
-          session_data: {
-            ...sessionDetail,
-            step_id: 5,
-          },
-        }),
-      );
-      changeActiveStep(5);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeStep]);
+  //   if (isConditionMet) {
+  //     dispatch(
+  //       setSession({
+  //         session_data: {
+  //           ...sessionDetail,
+  //           step_id: 5,
+  //         },
+  //       }),
+  //     );
+  //     changeActiveStep(5);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [activeStep]);
 
   //
   const steps = [
@@ -119,21 +121,22 @@ export default function ReportQuestionAnswerPage() {
           activeStep={activeStep}
           question={question}
           activeIndex={activeIndex}
+          totalQuestion={questionWithUsecase.length}
         />
       ),
     },
-    {
-      label: "",
-      value: 4,
-      component: (
-        <ChatQuestionAnswer2
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          question={question}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
+    // {
+    //   label: "",
+    //   value: 4,
+    //   component: (
+    //     <ChatQuestionAnswer2
+    //       changeActiveStep={changeActiveStep}
+    //       activeStep={activeStep}
+    //       question={question}
+    //       activeIndex={activeIndex}
+    //     />
+    //   ),
+    // },
     {
       label: "",
       value: 5,
@@ -149,7 +152,29 @@ export default function ReportQuestionAnswerPage() {
       value: 7,
       component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
     },
+    // {
+    //   label: "payment",
+    //   value: 8,
+    //   component: <Payment />,
+    // },
   ];
+
+  const onBack = useCallback(() => {
+    if (activeIndex === 0) {
+      navigate("/interaction-method");
+    } else {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            question_id: questionId,
+            step_id: 3,
+            active_index: activeIndex - 1,
+          },
+        }),
+      );
+    }
+  }, [activeIndex, dispatch, navigate, questionId, sessionDetail]);
 
   //
   useEffect(() => {
@@ -163,7 +188,12 @@ export default function ReportQuestionAnswerPage() {
   return (
     <>
       <div className="w-full">
-        <BackButton path={"interaction-method"} />
+        <button
+          className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit"
+          onClick={onBack}
+        >
+          <ArrowLeftIcon /> Back
+        </button>
         <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
         <div className="w-full overflow-hidden">
           <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />

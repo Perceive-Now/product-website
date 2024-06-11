@@ -16,6 +16,7 @@ interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
   activeIndex: number;
+  totalQuestion: number;
   question: {
     question: string;
     questionId: number;
@@ -30,6 +31,7 @@ interface Props {
 export default function ChatQuestionAnswer({
   changeActiveStep,
   activeStep,
+  totalQuestion,
   question,
   activeIndex,
 }: // questionId,
@@ -70,17 +72,37 @@ Props) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            dispatch(
-              setSession({
-                session_data: {
-                  ...sessionDetail,
-                  question_id: questionId,
-                  step_id: activeStep + 1,
-                  active_index: activeIndex + 1,
-                },
-              }),
-            );
-            changeActiveStep(activeStep + 1);
+            if (totalQuestion - 1 === activeIndex) {
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    question_id: questionId,
+                    step_id: 5,
+                    active_index: activeIndex + 1,
+                    skipped_question: (sessionDetail?.skipped_question || []).filter(
+                      (id) => id !== questionId,
+                    ),
+                  },
+                }),
+              );
+              changeActiveStep(5);
+            } else {
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    question_id: questionId,
+                    step_id: 3,
+                    active_index: activeIndex + 1,
+                    skipped_question: (sessionDetail?.skipped_question || []).filter(
+                      (id) => id !== questionId,
+                    ),
+                  },
+                }),
+              );
+            }
+            changeActiveStep(3);
           } else if (status === undefined) {
             toast.error("Something went wrong");
           } else {
@@ -110,29 +132,44 @@ Props) {
     },
     [
       activeIndex,
-      activeStep,
       changeActiveStep,
       dispatch,
       questionId,
       sessionDetail,
       sessionId,
+      totalQuestion,
       userId,
     ],
   );
   const onSkip = useCallback(() => {
-    dispatch(
-      setSession({
-        session_data: {
-          ...sessionDetail,
-          question_id: questionId,
-          step_id: activeStep + 1,
-          active_index: activeIndex + 1,
-          skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
-        },
-      }),
-    );
-    changeActiveStep(activeStep + 1);
-  }, [activeIndex, activeStep, changeActiveStep, dispatch, questionId, sessionDetail]);
+    if (totalQuestion - 1 === activeIndex) {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            question_id: questionId,
+            step_id: 5,
+            active_index: activeIndex + 1,
+            skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
+          },
+        }),
+      );
+      changeActiveStep(5);
+    } else {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            question_id: questionId,
+            step_id: 3,
+            active_index: activeIndex + 1,
+            skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
+          },
+        }),
+      );
+      changeActiveStep(3);
+    }
+  }, [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail, totalQuestion]);
 
   return (
     <>

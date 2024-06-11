@@ -272,7 +272,7 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How do you project sales revenue for your products or services over the next 5 years?",
-    usecase: "market-research",
+    usecase: "market-analysis",
     answer: `Sales Revenue Projections:
     • First Year: Targeting $5 million in sales revenue as we establish market presence.\n• Year 5: Projecting to reach $20 million in sales revenue, based on a compounded annual growth rate of 25%, driven by expanding market reach, product line extensions, and strategic partnerships.`,
   },
@@ -281,36 +281,36 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
-    usecase: "market-research",
+    usecase: "market-analysis",
     answer: `Market and Competitive Analysis:
     • Data Gathered: Comprehensive analysis reveals a growing wearable market valued at $50 billion, with an annual growth rate of 15%. Competitive analysis indicates a gap in neuro-adaptive technology offerings.\n• Strategy Influence: This data guides our focus on differentiating NeuraWear through innovation, targeting underserved segments, and positioning our product as a premium offering within the wearable and neurotech spaces.`,
   },
   {
     questionId: 36,
     useCaseId: 1,
+    usecase: "consumer-landscape",
     question: "What specific problem does your product or service solve for your target audience?",
-    usecase: "market-research",
     answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
   },
   {
     questionId: 37,
     useCaseId: 1,
+    usecase: "competitive-landscape",
     question: "How does your product or service stand out from existing market offerings?",
-    usecase: "market-research",
     answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
   },
   {
     questionId: 38,
     useCaseId: 1,
+    usecase: "commercialization-assessment",
     question: "What pricing strategy has your company adopted for its product or service?",
-    usecase: "market-research",
     answer: `Pricing Strategy:\n• Adopting a value-based pricing strategy, NeuraWear's products are priced to reflect the significant value and unique benefits they offer to users, positioned slightly above the market average for wearable tech. This strategy underscores the premium features and advanced technology of our offerings, targeting consumers who prioritize quality and innovation.`,
   },
   {
     questionId: 39,
     useCaseId: 1,
     question: "What are the primary and potential secondary revenue streams for your company?",
-    usecase: "market-research",
+    usecase: "commercialization-assessment",
     answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
     • Secondary: Licensing our technology to other manufacturers, offering professional services for custom integration, and developing a marketplace for third-party applications that can enhance the NeuraWear experience.`,
   },
@@ -319,24 +319,139 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How is your company's cost structure organized, and what impact does it have on pricing and profitability?",
-    usecase: "market-research",
+    usecase: "commercialization-assessment",
     answer: `• Organization: NeuraWear's cost structure is heavily weighted towards R&D and innovation, reflecting our commitment to leading the market in technological advancements. Manufacturing and marketing are the next significant expenses, aligning with our strategy to produce high-quality products and create brand recognition.\n• Impact: This structure supports our value-based pricing strategy, ensuring profitability by delivering superior products that command premium prices, while the ongoing investment in R&D is designed to sustain long-term competitive advantage and market leadership.`,
   },
   {
     questionId: 41,
     useCaseId: 1,
     question: "Which sales and distribution channels is your company planning to use?",
-    usecase: "market-research",
+    usecase: "commercialization-assessment",
     answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
     This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
   },
   {
     questionId: 42,
     useCaseId: 1,
+
     question:
       "Who are your main competitors, and what differentiates your product or service from theirs?",
-    usecase: "market-research",
+    usecase: "competitive-landscape",
     answer: `Main Competitors:\n • Leading players in the wearable technology market, such as Fitbit, Apple Watch, and niche neurotechnology startups.\nDifferentiation:\n• Neuro-Adaptive Technology: Unlike competitors focusing on general fitness or notification management, NeuraWear specializes in neuro-adaptive interfaces, providing a more intuitive and personalized user experience.\n• Customization and Privacy: Offering higher levels of customization while ensuring user data privacy and security, addressing a key consumer concern in wearable tech.\n• Integration and Compatibility: Designed for seamless integration with a wide range of devices and platforms, enhancing usability across the consumer's digital ecosystem.`,
+  },
+  {
+    questionId: 43,
+    useCaseId: 1,
+    usecase: "market-analysis",
+    question:
+      "What internal metrics does NeuraWear use to measure success in aligning with market dynamics and industry trends?",
+    answer: `At NeuraWear, we utilize a blend of performance indicators to gauge our alignment with market dynamics. These include:\n• Market Share Growth: We track changes in our market share quarterly, aiming for a 5% increase year-over-year, reflecting successful penetration and customer acquisition strategies.\n• Customer Acquisition Cost (CAC): Our target CAC has been set at $120 per new user, optimized through targeted marketing and efficient sales funnel management.\n• User Retention Rates: We aim for a retention rate of 80% over a 12-month period, indicating strong customer satisfaction and product relevance.\n• Product Innovation Cycle Times: Our goal is to shorten the cycle time to under 18 months from ideation to launch, ensuring we keep pace with technological advancements and consumer expectations.`,
+  },
+  {
+    questionId: 44,
+    useCaseId: 1,
+    usecase: "market-analysis",
+    question:
+      "How does NeuraWear assess the impact of global market drivers and restraints on it's product development and marketing strategies?",
+    answer: `NeuraWear utilizes a comprehensive analysis approach to adapt our strategies based on global market drivers and restraints:\n• Economic Indicators: We monitor global economic trends, such as inflation rates and consumer spending patterns, to forecast demand and adjust our pricing strategy accordingly.\n• Consumer Trends: Through ongoing market research, we track changes in consumer preferences and technology adoption rates, which guide our product development and feature prioritization.\nRegulatory Changes: We keep abreast of new regulations in key markets, adapting our compliance strategies to ensure seamless market entry and sustained operations.`,
+  },
+  {
+    questionId: 45,
+    useCaseId: 1,
+    usecase: "m&a",
+    question:
+      "Can you describe a recent strategic decision made by NeuraWear in response to the projected market growth in wearable technology? What was the rationale behind this decision?",
+    answer:
+      "Recently, NeuraWear decided to invest heavily in AI and machine learning capabilities to enhance our wearable technology products. This strategic decision was driven by the projected market growth for AI-integrated wearables, which is expected to increase by 35% annually over the next five years. Our rationale was based on data indicating a significant consumer shift towards devices offering personalized health insights. By incorporating AI, we aim to provide superior functionality and customization, setting our products apart in a crowded market and aligning with consumer demand for highly personalized wearable technology.",
+  },
+  {
+    questionId: 46,
+    useCaseId: 1,
+    usecase: "market-analysis",
+    question:
+      "How does NeuraWear define its primary target market within the wearable technology industry?",
+    answer:
+      "NeuraWear targets health-conscious consumers aged 25 to 45, who are tech-savvy and have a disposable income level in the upper-middle class. This demographic is particularly inclined towards using technology to enhance their lifestyle and health, representing a significant portion of our customer base.",
+  },
+  {
+    questionId: 47,
+    useCaseId: 1,
+    usecase: "consumer-landscape",
+    question: "What data-driven methods does NeuraWear use to segment its customer base?",
+    answer:
+      "We employ cluster analysis techniques on customer data collected through our platforms, which include demographic, behavioral, and psychographic factors. This allows us to create distinct customer segments that are targeted with customized marketing strategies and product offerings.",
+  },
+  {
+    questionId: 48,
+    useCaseId: 1,
+    usecase: "consumer-landscape",
+    question:
+      "What are the key factors that influence the purchasing decisions of NeuraWear’s customers?",
+    answer:
+      "Key factors include the functionality and accuracy of health tracking, the aesthetic design of the devices, and the perceived value of the AI features in providing actionable health insights. Customer testimonials and expert reviews also play a crucial role in influencing purchasing decisions.",
+  },
+  {
+    questionId: 49,
+    useCaseId: 1,
+    usecase: "consumer-landscape",
+    question:
+      "How has consumer feedback shaped the development of new features in NeuraWear products?",
+    answer:
+      "Consumer feedback has directly led to the development of features such as enhanced sleep tracking, stress management tools, and integration with third-party health applications, ensuring our products meet the evolving needs of our users.",
+  },
+  {
+    questionId: 50,
+    useCaseId: 1,
+    usecase: "competitive-landscape",
+    question:
+      "Can you describe the competitive advantages of NeuraWear’s latest wearable device compared to its main competitors?",
+    answer:
+      "Our latest device, the NeuroBand X, offers unique features such as real-time mood assessment using EEG signals and adaptive learning algorithms that personalize health recommendations based on user behavior. These features set us apart from competitors by offering a deeper level of health monitoring and customization.",
+  },
+  {
+    questionId: 51,
+    useCaseId: 1,
+    usecase: "regulatory-pathways",
+    question:
+      "What role does intellectual property play in NeuraWear’s product differentiation strategy?",
+    answer:
+      "Intellectual property is crucial in protecting our unique neuro-adaptive technologies and maintaining a competitive edge. We hold several patents related to biometric sensors and machine learning processes, which prevent competitors from replicating our most innovative features.",
+  },
+  {
+    questionId: 52,
+    useCaseId: 1,
+    usecase: "commercialization-assessment",
+    question:
+      "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its flagship product, and why?",
+    answer:
+      "NeuraWear uses a value-based pricing strategy for the NeuroBand X, setting the price at $299. This reflects the advanced technology and the significant health benefits it offers compared to standard fitness trackers priced around $100-$150.",
+  },
+  {
+    questionId: 53,
+    useCaseId: 1,
+    usecase: "commercialization-assessment",
+    question:
+      "What are NeuraWear’s sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
+    answer:
+      "NeuraWear aims to double our current annual sales revenue within the next five years, targeting a consistent growth rate of 20% year-on-year. For emerging markets, specifically in Asia and South America, we target a 40% increase in our customer base over the next three years.",
+  },
+  {
+    questionId: 54,
+    useCaseId: 1,
+    usecase: "consumer-landscape",
+    question:
+      "What are NeuraWear’s customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
+    answer:
+      "NeuraWear plans to acquire 500,000 new users in the next year, focusing on the 25 to 40 age demographic. We will measure the success of these initiatives using key metrics such as cost per acquisition (CPA), conversion rates from trial to paid subscriptions, and initial user engagement levels during the first 90 days.",
+  },
+  {
+    questionId: 55,
+    usecase: "commercialization-assessment",
+    useCaseId: 1,
+    question:
+      "What are NeuraWear’s long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
+    answer:
+      "NeuraWear aims to maintain an annual customer retention rate of at least 85% over the next five years. Effectiveness in retaining customers will be measured by tracking the churn rate, customer satisfaction scores, and renewal rates for our subscription services.",
   },
 ];
 
@@ -417,89 +532,100 @@ export const MarketQuestionList = [
     useCaseId: 1,
     question:
       "What internal metrics does NeuraWear use to measure success in aligning with market dynamics and industry trends?",
-    answer: "",
+    answer: `At NeuraWear, we utilize a blend of performance indicators to gauge our alignment with market dynamics. These include:\n• Market Share Growth: We track changes in our market share quarterly, aiming for a 5% increase year-over-year, reflecting successful penetration and customer acquisition strategies.\n• Customer Acquisition Cost (CAC): Our target CAC has been set at $120 per new user, optimized through targeted marketing and efficient sales funnel management.\n• User Retention Rates: We aim for a retention rate of 80% over a 12-month period, indicating strong customer satisfaction and product relevance.\n• Product Innovation Cycle Times: Our goal is to shorten the cycle time to under 18 months from ideation to launch, ensuring we keep pace with technological advancements and consumer expectations.`,
   },
   {
     questionId: 44,
     useCaseId: 1,
     question:
       "How does NeuraWear assess the impact of global market drivers and restraints on it's product development and marketing strategies?",
-    answer: "",
+    answer: `NeuraWear utilizes a comprehensive analysis approach to adapt our strategies based on global market drivers and restraints:\n• Economic Indicators: We monitor global economic trends, such as inflation rates and consumer spending patterns, to forecast demand and adjust our pricing strategy accordingly.\n• Consumer Trends: Through ongoing market research, we track changes in consumer preferences and technology adoption rates, which guide our product development and feature prioritization.\nRegulatory Changes: We keep abreast of new regulations in key markets, adapting our compliance strategies to ensure seamless market entry and sustained operations.`,
   },
   {
     questionId: 45,
     useCaseId: 1,
     question:
       "Can you describe a recent strategic decision made by NeuraWear in response to the projected market growth in wearable technology? What was the rationale behind this decision?",
-    answer: "",
+    answer:
+      "Recently, NeuraWear decided to invest heavily in AI and machine learning capabilities to enhance our wearable technology products. This strategic decision was driven by the projected market growth for AI-integrated wearables, which is expected to increase by 35% annually over the next five years. Our rationale was based on data indicating a significant consumer shift towards devices offering personalized health insights. By incorporating AI, we aim to provide superior functionality and customization, setting our products apart in a crowded market and aligning with consumer demand for highly personalized wearable technology.",
   },
   {
     questionId: 46,
     useCaseId: 1,
     question:
       "How does NeuraWear define its primary target market within the wearable technology industry?",
-    answer: "",
+    answer:
+      "NeuraWear targets health-conscious consumers aged 25 to 45, who are tech-savvy and have a disposable income level in the upper-middle class. This demographic is particularly inclined towards using technology to enhance their lifestyle and health, representing a significant portion of our customer base.",
   },
   {
     questionId: 47,
     useCaseId: 1,
     question: "What data-driven methods does NeuraWear use to segment its customer base?",
-    answer: "",
+    answer:
+      "We employ cluster analysis techniques on customer data collected through our platforms, which include demographic, behavioral, and psychographic factors. This allows us to create distinct customer segments that are targeted with customized marketing strategies and product offerings.",
   },
   {
     questionId: 48,
     useCaseId: 1,
     question:
       "What are the key factors that influence the purchasing decisions of NeuraWear’s customers?",
-    answer: "",
+    answer:
+      "Key factors include the functionality and accuracy of health tracking, the aesthetic design of the devices, and the perceived value of the AI features in providing actionable health insights. Customer testimonials and expert reviews also play a crucial role in influencing purchasing decisions.",
   },
   {
     questionId: 49,
     useCaseId: 1,
     question:
       "How has consumer feedback shaped the development of new features in NeuraWear products?",
-    answer: "",
+    answer:
+      "Consumer feedback has directly led to the development of features such as enhanced sleep tracking, stress management tools, and integration with third-party health applications, ensuring our products meet the evolving needs of our users.",
   },
   {
     questionId: 50,
     useCaseId: 1,
     question:
       "Can you describe the competitive advantages of NeuraWear’s latest wearable device compared to its main competitors?",
-    answer: "",
+    answer:
+      "Our latest device, the NeuroBand X, offers unique features such as real-time mood assessment using EEG signals and adaptive learning algorithms that personalize health recommendations based on user behavior. These features set us apart from competitors by offering a deeper level of health monitoring and customization.",
   },
   {
     questionId: 51,
     useCaseId: 1,
     question:
       "What role does intellectual property play in NeuraWear’s product differentiation strategy?",
-    answer: "",
+    answer:
+      "Intellectual property is crucial in protecting our unique neuro-adaptive technologies and maintaining a competitive edge. We hold several patents related to biometric sensors and machine learning processes, which prevent competitors from replicating our most innovative features.",
   },
   {
     questionId: 52,
     useCaseId: 1,
     question:
       "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its flagship product, and why?",
-    answer: "",
+    answer:
+      "NeuraWear uses a value-based pricing strategy for the NeuroBand X, setting the price at $299. This reflects the advanced technology and the significant health benefits it offers compared to standard fitness trackers priced around $100-$150.",
   },
   {
     questionId: 53,
     useCaseId: 1,
     question:
       "What are NeuraWear’s sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
-    answer: "",
+    answer:
+      "NeuraWear aims to double our current annual sales revenue within the next five years, targeting a consistent growth rate of 20% year-on-year. For emerging markets, specifically in Asia and South America, we target a 40% increase in our customer base over the next three years.",
   },
   {
     questionId: 54,
     useCaseId: 1,
     question:
       "What are NeuraWear’s customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
-    answer: "",
+    answer:
+      "NeuraWear plans to acquire 500,000 new users in the next year, focusing on the 25 to 40 age demographic. We will measure the success of these initiatives using key metrics such as cost per acquisition (CPA), conversion rates from trial to paid subscriptions, and initial user engagement levels during the first 90 days.",
   },
   {
     questionId: 55,
     useCaseId: 1,
     question:
       "What are NeuraWear’s long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
-    answer: "",
+    answer:
+      "NeuraWear aims to maintain an annual customer retention rate of at least 85% over the next five years. Effectiveness in retaining customers will be measured by tracking the churn rate, customer satisfaction scores, and renewal rates for our subscription services.",
   },
 ];

@@ -38,7 +38,7 @@ export const UseCaseOptions = [
     reportPlan: "premium",
   },
   {
-    id: 11,
+    id: 100,
     label: "Patent valuation",
     value: "ip-valuation",
     desc: "Gain crucial insights into the financial worth of your patents with our Patent Valuation report. It's ideal for use in negotiations, investment evaluations, and portfolio management, ensuring you understand the full monetary potential of your patents.",
@@ -98,7 +98,7 @@ export const UseCaseOptions = [
   {
     id: 10,
     label: "Regulatory Pathways",
-    value: "regulatory",
+    value: "regulatory-pathways",
     desc: "Navigate the complexities of industry regulations with our comprehensive guide to compliance. This report is indispensable for ensuring that your business operations and strategies adhere to all relevant legal standards.",
     useCaseId: 0,
     reportType: "market-research",
@@ -117,7 +117,7 @@ export const UseCaseOptions = [
   {
     id: 14,
     label: "Commercialization Assessment",
-    value: "commercialization",
+    value: "commercialization-assessment",
     desc: "Ensure your product's market success with our Commercialization Assessment report, which evaluates market readiness and identifies potential launch hurdles. Ideal for businesses aiming to achieve a smooth and successful product launch.",
     useCaseId: 0,
     reportType: "market-research",

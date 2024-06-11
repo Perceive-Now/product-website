@@ -40,7 +40,7 @@ const SelectedReport = ({ reports, onContinue, isUploading = false }: Props) => 
             <>
               {reports.map((report) => (
                 <div key={report.id} className="flex justify-between text-base text-secondary-800">
-                  <p>{report.label}</p>
+                  <p className="capitalize">{report.label}</p>
                   <p>{report.reportPlan === "premium" ? "$1995" : "$995"}</p>
                 </div>
               ))}

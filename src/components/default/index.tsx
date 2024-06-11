@@ -9,8 +9,11 @@ import Button from "../reusable/button";
 
 const StayTuned = () => {
   return (
-    <div className=" bg-white">
-      <div className="py-5 mt-8 flex flex-col justify-center items-center bg-white">
+    <div
+      className=" bg-white h-[584px] w-[932px] mx-auto rounded-lg"
+      style={{ boxShadow: "0px 0px 12px 0px rgba(36, 39, 43, 0.08)" }}
+    >
+      <div className="py-5 flex flex-col justify-center items-center bg-white h-full w-full">
         <div className="">
           <img src={WelcomePerceiveLogo} alt="welcome to perceive now" />
         </div>
@@ -22,9 +25,9 @@ const StayTuned = () => {
           questions or need further help in the meantime.
         </div>
         <div className="flex justify-center gap-2">
-          <Link to="/">
+          <Link to="/my-reports">
             <Button type="secondary" size="small">
-              Go home
+              See all your reports
             </Button>
           </Link>
           <Link to="/new-report">

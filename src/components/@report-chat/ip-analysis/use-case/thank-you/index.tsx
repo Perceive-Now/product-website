@@ -57,8 +57,12 @@ const Thankyou = ({ changeActiveStep }: Props) => {
 
   //
   const onContinue = useCallback(async () => {
-    handlePayment();
-  }, [handlePayment]);
+    if (sessionDetail?.skipped_question && sessionDetail?.skipped_question?.length > 0) {
+      toast.error("Please provide all question answer");
+    } else {
+      handlePayment();
+    }
+  }, [handlePayment, sessionDetail?.skipped_question]);
 
   // review answer
   const reviewAnswer = useCallback(() => {
