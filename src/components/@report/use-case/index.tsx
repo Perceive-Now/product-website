@@ -52,6 +52,8 @@ const UseCaseSelect = () => {
   const [useCaseType, setUseCaseType] = useState(UsecaseOptions[0].value);
   const [reports, setReport] = useState<any>([]);
 
+  console.log(reports);
+
   useEffect(() => {
     if (useCasesUploadState.isUseCaseUploadError) {
       toast.error("Server error");
@@ -167,8 +169,8 @@ const UseCaseSelect = () => {
 
       const reports = UsecaseOptions.find((option) => option.value === useCaseType);
       const reportsList = UseCaseOptions.filter((c) => mode.includes(c.value));
-      const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)) // Filter to get objects with values in mode array
-        .map((r) => r.id);
+      const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)).map((r) => r.id);
+      console.log(reportsList);
       setReport(reportsList);
 
       dispatch(

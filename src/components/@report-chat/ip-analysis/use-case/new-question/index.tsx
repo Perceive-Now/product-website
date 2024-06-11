@@ -106,6 +106,21 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
     [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
   );
 
+  const onSkip = useCallback(() => {
+    dispatch(
+      setSession({
+        session_data: {
+          ...sessionDetail,
+          question_id: questionId,
+          step_id: 3,
+          active_index: activeIndex + 1,
+          skipped_question: [...(sessionDetail?.skipped_question || []), questionId as any],
+        },
+      }),
+    );
+    changeActiveStep(8);
+  }, [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail]);
+
   return (
     <>
       {question && (
@@ -114,6 +129,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
           onContinue={onContinue}
           question={question}
           exampleAnswer={exampleAnswer}
+          onSkip={onSkip}
         />
       )}
     </>

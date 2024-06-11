@@ -34,15 +34,15 @@ const Payment = () => {
 
   const selectedReports = products?.filter((p) => ItemId?.includes(p.id));
 
-  // useEffect(() => {
-  //   if (!clientSecret && !selectedReports) {
-  //     navigate("/");
-  //   }
-  // }, [clientSecret, navigate, selectedReports]);
+  useEffect(() => {
+    if (!clientSecret && !selectedReports) {
+      navigate("/");
+    }
+  }, [clientSecret, navigate, selectedReports]);
 
   return (
     <div className="">
-      <BackButton path={"interaction-method"} />
+      <BackButton path={"q&a"} />
       <h5 className="text-5xl font-[800] my-2">Payment</h5>
       <DefaultProgressBar width={100} />
       <div className="w-[932px] mx-auto flex justify-center items-center  shadow border rounded-md bg-white h-full">

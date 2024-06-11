@@ -1,11 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import jsCookie from "js-cookie";
-import Button from "../../../components/reusable/button";
-import DropZoneContent from "./dropzone-content";
 import toast from "react-hot-toast";
+import jsCookie from "js-cookie";
+
+import DropZoneContent from "./dropzone-content";
+
+import Button from "../../../components/reusable/button";
 import { DustbinIcon } from "../../../components/icons";
+
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+
+import "./border.css";
+
 import {
   EUploadAttachmentsPages,
   incrementStep,

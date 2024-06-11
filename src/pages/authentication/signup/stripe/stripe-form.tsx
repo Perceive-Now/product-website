@@ -101,7 +101,7 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
   };
 
   return (
-    <div className="grid grid-cols-2 bg-white p-[40px] gap-8 w-full rounded-lg ">
+    <div className="grid grid-cols-2 bg-white px-2 py-4 gap-8 w-full rounded-lg ">
       <div className="space-y-3">
         <div className="space-y-[20px] font-semibold text-secondary-800">
           <p>Please select a payment method.</p>
@@ -119,7 +119,7 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
               </div>
             </div>
           ))}
-          <div className="flex items-center justify-between pt-2 pb-4 border-t border-black text-secondary-800">
+          <div className="flex items-center justify-between pt-2 pb-4 border-t border-[#87888C] text-secondary-800">
             <span>Total</span>
             <span>${TotalPrice / 100}</span>
           </div>
