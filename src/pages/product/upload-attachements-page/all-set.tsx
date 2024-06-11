@@ -2,7 +2,7 @@ import ToPayementButton from "./to-payement-button";
 
 export default function AllSet() {
   return (
-    <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
+    <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg w-[900px]">
       <div className="space-y-[20px] p-2">
         <p className="text-secondary-900 font-bold text-[32px]">Great! You're All Set</p>
         <p className="w-[300px] text-secondary-800">
