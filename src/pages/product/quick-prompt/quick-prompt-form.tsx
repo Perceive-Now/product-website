@@ -6,8 +6,16 @@ import { type AnyObject } from "yup/lib/types";
 import Button from "../../../components/reusable/button";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { setQuickPrompts, uploadQuickPrompts } from "../../../stores/upload-quick-prompt";
+import {
+  EQuickPromptPages,
+  setCurrentPageId,
+  setQuickPrompts,
+  setQuickPromptsUploadState,
+  uploadQuickPrompts,
+} from "../../../stores/upload-quick-prompt";
 import jsCookie from "js-cookie";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
@@ -15,38 +23,41 @@ export default function QuickPromptForm() {
   const {
     isUploading: isUploadingUploadQuickPrompt,
     quickPrompts,
-    currentParagraphId,
+    quickPromptsUploadState,
   } = useAppSelector((state) => state.uploadQuickPrompt);
 
   const { isUploading: isUploadingUsecases, requirementGatheringId } = useAppSelector(
     (state) => state.usecases,
   );
 
-  const requiredQuickPrompts =
-    quickPromptContent.find((content) => content.id === currentParagraphId) ??
-    quickPromptContent[0];
-
-  const modifiedRequiredQuickPrompts = { ...requiredQuickPrompts };
-  modifiedRequiredQuickPrompts.contentList = [];
-
-  requiredQuickPrompts?.contentList.forEach((quickPrompt) => {
-    if (quickPrompt.contentType === "text" && quickPrompt.content) {
-      const words = quickPrompt.content.split(" ");
-      words.forEach((word) => {
-        modifiedRequiredQuickPrompts.contentList.push({
-          contentType: "text",
-          content: word,
-          keyword: undefined,
-          placeholder: undefined,
-        });
-      });
-    } else {
-      modifiedRequiredQuickPrompts.contentList.push(quickPrompt);
+  useEffect(() => {
+    if (quickPromptsUploadState.isSuccess) {
+      dispatch(
+        setQuickPromptsUploadState({
+          isSuccess: false,
+          isError: false,
+          message: "",
+        }),
+      );
+      dispatch(setCurrentPageId(EQuickPromptPages.GoToReport));
     }
-  });
+
+    if (quickPromptsUploadState.isError) {
+      toast.error("Error uploading quick prompts");
+      dispatch(
+        setQuickPromptsUploadState({
+          isSuccess: false,
+          isError: false,
+          message: "",
+        }),
+      );
+    }
+  }, [quickPromptsUploadState, dispatch]);
+
+  const requiredQuickPrompts = quickPromptContent[0];
 
   let formInitialValue =
-    modifiedRequiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
+    requiredQuickPrompts?.contentList.reduce((acc: { [key: string]: string }, curr) => {
       if (curr.contentType === "prompt" && curr.keyword) {
         acc[curr.keyword] = "";
       }
@@ -59,7 +70,7 @@ export default function QuickPromptForm() {
   };
 
   const formSchema =
-    modifiedRequiredQuickPrompts?.contentList.reduce(
+    requiredQuickPrompts?.contentList.reduce(
       (
         acc: { [key: string]: yup.StringSchema<string | undefined, AnyObject, string | undefined> },
         curr,
@@ -85,11 +96,9 @@ export default function QuickPromptForm() {
   });
 
   const onContinue = (params: { [key: string]: string }) => {
-    dispatch(setQuickPrompts({ prompts: params, paragraphId: currentParagraphId }));
+    dispatch(setQuickPrompts({ prompts: params }));
 
-    const indexOfCurrentParagraphId = quickPromptContent.findIndex(
-      (content) => content.id === currentParagraphId,
-    );
+    const indexOfCurrentParagraphId = quickPromptContent.findIndex((content) => content.id === 0);
 
     const promptData = [...quickPromptContent];
 
@@ -132,7 +141,7 @@ export default function QuickPromptForm() {
     <form onSubmit={handleSubmit(onContinue)}>
       <fieldset className="bg-white rounded-lg p-[20px] border border-appGray-200">
         <div className="flex flex-wrap gap-y-2 items-center text-lg font-semibold">
-          {modifiedRequiredQuickPrompts?.contentList.map((content, index) => {
+          {requiredQuickPrompts?.contentList.map((content, index) => {
             if (content.contentType === "text") {
               return (
                 <p className="inline-block mx-[3px]" key={index}>

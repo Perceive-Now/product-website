@@ -13,7 +13,7 @@ export default function QuickPromptPage() {
   return (
     <>
       <GoBack />
-      <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg">
+      <div className="flex flex-col min-w-[900px] min-h-[400px] rounded-lg">
         <Title text={currentPageTitle} className="mt-5" />
         <ProgressBar />
         <PagesStepper />
