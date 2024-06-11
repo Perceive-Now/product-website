@@ -1,19 +1,22 @@
-import "./style.css";
-import ThumbsUpIcon from "../icons/common/ThumbsUp";
-import ThumbsDownIcon from "../icons/common/ThumbsDown";
-import { ErrorIcon } from "../icons";
-import CopyIcon from "../icons/common/copy";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-
+import ToolTip from "../reusable/tool-tip";
 import sanitizeHtml from "sanitize-html";
+import classNames from "classnames";
+
+import "./style.css";
+
+import ThumbsDownIcon from "../icons/common/ThumbsDown";
+import ThumbsUpIcon from "../icons/common/ThumbsUp";
+import RefreshIcon from "../icons/common/refresh";
+import CopyIcon from "../icons/common/copy";
+import { ErrorIcon } from "../icons";
 
 import PN from "../../assets/images/pn.svg";
+
 import IconButton from "../reusable/icon-button";
-import { useCallback, useEffect, useRef, useState } from "react";
-import classNames from "classnames";
 import DotLoader from "../reusable/dot-loader";
-import RefreshIcon from "../icons/common/refresh";
+
 import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
 
@@ -26,6 +29,10 @@ interface Props {
   editIndex: any;
   query: string;
 }
+
+/**
+ *
+ */
 
 const QueryAnswer = ({
   answer,
@@ -93,15 +100,15 @@ const QueryAnswer = ({
 
   const fullTextToCopy = convertHtmlToMarkdown(answer);
 
-  const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
-  const sanitizedAnswer = sanitizeHtml(formattedAnswer, {
+  // const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+  const sanitizedAnswer = sanitizeHtml(answer, {
     allowedTags: [
       "b",
       "i",
       "em",
       "strong",
       "a",
-      "br",
+      "br", // Allow <br> tags
       "p",
       "table",
       "thead",
@@ -153,21 +160,29 @@ const QueryAnswer = ({
         )}
         <div className="flex items-center gap-2 mt-5">
           <div className="flex items-center gap-2">
-            <IconButton color="default" title="Good response" disabled>
-              <ThumbsUpIcon />
-            </IconButton>
-            <IconButton color="default" title="Bad response" disabled>
-              <ThumbsDownIcon />
-            </IconButton>
+            <ToolTip title="Good" placement="top">
+              <IconButton color="default" disabled>
+                <ThumbsUpIcon />
+              </IconButton>
+            </ToolTip>
+            <ToolTip title="Bad" placement="top">
+              <IconButton color="default" disabled>
+                <ThumbsDownIcon />
+              </IconButton>
+            </ToolTip>
           </div>
           <div className="flex items-center gap-2">
-            <IconButton color="default" title="Regenerate" onClick={onRegenerate}>
-              <RefreshIcon className="text-[#87888C]" />
-            </IconButton>
-            <CopyToClipboard text={fullTextToCopy}>
-              <IconButton onClick={copyText} color="default" title="Copy">
-                <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />
+            <ToolTip title="Regenerate" placement="top">
+              <IconButton color="default" onClick={onRegenerate}>
+                <RefreshIcon className="text-[#87888C]" />
               </IconButton>
+            </ToolTip>
+            <CopyToClipboard text={fullTextToCopy}>
+              <ToolTip title={isCopied ? "Copied" : "Copy"} placement="top">
+                <IconButton onClick={copyText} color="default">
+                  <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />
+                </IconButton>
+              </ToolTip>
             </CopyToClipboard>
           </div>
         </div>

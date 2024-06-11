@@ -11,6 +11,7 @@ import { useAppSelector } from "../../hooks/redux";
 import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
 import sanitizeHtml from "sanitize-html";
+import ToolTip from "../reusable/tool-tip";
 
 // interface IChat {
 //   query: string;
@@ -90,12 +91,14 @@ const ChatQuery = ({ query, updateQuery, editIndex }: Props) => {
           />
         )}
       </div>
-      <IconButton
-        rounded
-        color="gray"
-        icon={<EditIcon className="text-secondary-800" />}
-        onClick={onEdit}
-      />
+      <ToolTip title="Edit">
+        <IconButton
+          rounded
+          color="gray"
+          icon={<EditIcon className="text-secondary-800" />}
+          onClick={onEdit}
+        />
+      </ToolTip>
     </div>
   );
 };

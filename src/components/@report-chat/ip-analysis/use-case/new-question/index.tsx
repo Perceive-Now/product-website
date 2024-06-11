@@ -49,7 +49,9 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${Number(questionId)}`,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            sessionId,
+          )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
