@@ -27,6 +27,7 @@ export default function AdditionalQuestions() {
     isUploadAnswerToAddtionalQuestionsError,
     isUploadAnswerToAddtionalQuestionsSuccess,
     message,
+    answerResponse,
   } = useAppSelector((state) => state.uploadAttachments);
 
   const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
@@ -39,6 +40,12 @@ export default function AdditionalQuestions() {
     }
 
     if (isUploadAnswerToAddtionalQuestionsSuccess) {
+      if (answerResponse.status === "false") {
+        toast.error("Give a more detailed answer");
+        dispatch(setisUploadAnswerToAddtionalQuestionsSuccess(false));
+        return;
+      }
+
       const nextQuestionIndex =
         additionalQuestionIds.findIndex(
           (questionId) => currentQuestionId === questionId.question_id,
@@ -62,6 +69,7 @@ export default function AdditionalQuestions() {
     additionalQuestionIds,
     currentQuestionId,
     message,
+    answerResponse,
     dispatch,
   ]);
 

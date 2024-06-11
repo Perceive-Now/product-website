@@ -5,10 +5,7 @@ import {
   decrementStep,
   EQuickPromptPages,
   setCurrentPageId,
-  setCurrentParagraphId,
 } from "../../../stores/upload-quick-prompt";
-import { quickPromptContent } from "./quick-prompt-content";
-import toast from "react-hot-toast";
 
 const BackButton = () => {
   return (
@@ -24,7 +21,7 @@ export default function GoBack() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { currentPageId, currentParagraphId } = useAppSelector((state) => state.uploadQuickPrompt);
+  const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);
 
   // return (
   //   <Link to="/interaction-method" className={buttonStyle}>
@@ -32,7 +29,7 @@ export default function GoBack() {
   //   </Link>
   // );
 
-  if (currentPageId === EQuickPromptPages.AllSet) {
+  if (currentPageId === EQuickPromptPages.GoToReport) {
     // if in all set page
     return (
       <button
@@ -48,23 +45,7 @@ export default function GoBack() {
   }
 
   const handleBackBtnInQuickPromptsPage = () => {
-    const indexOfCurrentParagraphId = quickPromptContent.findIndex(
-      (content) => content.id === currentParagraphId,
-    );
-
-    if (indexOfCurrentParagraphId < 0) {
-      toast.error("Something went wrong");
-    } // error
-
-    if (indexOfCurrentParagraphId === 0) {
-      navigate("/interaction-method");
-      return;
-    }
-
-    const previousParagraphId = quickPromptContent[indexOfCurrentParagraphId - 1].id;
-
-    dispatch(setCurrentParagraphId(previousParagraphId));
-    dispatch(decrementStep());
+    navigate("/interaction-method");
   };
 
   return (

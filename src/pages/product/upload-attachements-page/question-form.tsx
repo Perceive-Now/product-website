@@ -47,7 +47,7 @@ export default function QuestionForm({
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 
   return (
-    <div className="">
+    <div className="w-[900px] bg-white p-2 shadow-page-content">
       <div className="space-y-2.5">
         <h4
           className="text-primary-900 text-xl font-semibold"
@@ -77,7 +77,7 @@ export default function QuestionForm({
                 disabled={isLoading}
                 {...register("answer")}
                 className={classNames(
-                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
+                  "appearance-none w-full px-2 py-[10px] text-sm placeholder:text-sm bg-appGray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
                   errors.answer
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
