@@ -44,6 +44,7 @@ export default function LoginPage() {
 
   //
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   //
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,6 +70,7 @@ export default function LoginPage() {
 
   const handleLogin = async (values: ILoginFormValues) => {
     setIsSubmitting(true);
+    setError(false);
 
     // Login user
     const response = await dispatch(loginUser(values)).unwrap();
@@ -87,6 +89,7 @@ export default function LoginPage() {
         navigate("/");
       }
     } else {
+      setError(true);
       toast.error(response.message);
     }
 
@@ -130,12 +133,12 @@ export default function LoginPage() {
               <input
                 id="username"
                 {...register("username")}
-                disabled
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.username
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Username/Email"
@@ -150,14 +153,14 @@ export default function LoginPage() {
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
-                disabled
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
                   "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.password
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                    : "border-gray-400  focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Password"
               />
@@ -185,7 +188,7 @@ export default function LoginPage() {
           <Button
             classname="w-full"
             htmlType="submit"
-            disabled={!userNameValue || !passwordValue}
+            // disabled={!userNameValue || !passwordValue}
             loading={isSubmitting}
             type="auth"
           >
