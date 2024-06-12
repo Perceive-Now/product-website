@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 const buttonStyle = "flex flex-row gap-x-1 font-bold text-secondary-800 w-fit";
 
 interface Props {
-  path: string;
+  path?: string;
 }
 
 const BackButton = ({ path }: Props) => {
   const navigate = useNavigate();
 
   const onBack = useCallback(() => {
-    // navigation(`/${path}`);
-    navigate(-1);
-  }, [navigate]);
+    if (path) navigate(`/${path}`);
+    else navigate(-1);
+  }, [navigate, path]);
 
   return (
     <button onClick={onBack} className={buttonStyle}>
