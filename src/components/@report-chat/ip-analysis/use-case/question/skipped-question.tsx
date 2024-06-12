@@ -81,7 +81,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: 6,
+                  step_id: 5,
                   skipped_question: (sessionDetail?.skipped_question || []).filter(
                     (id) => id !== questionId,
                   ),
@@ -99,7 +99,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: 7,
+                  step_id: 5,
                   user_chat: {
                     question: apiData,
                     question_id: questionId,
@@ -110,7 +110,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
               }),
             );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(7);
+            changeActiveStep(5);
           }
         }
         setIsLoading(false);
@@ -131,6 +131,18 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
     ],
   );
 
+  const onSkip = useCallback(() => {
+    dispatch(
+      setSession({
+        session_data: {
+          ...sessionDetail,
+          step_id: 5,
+        },
+      }),
+    );
+    changeActiveStep(5);
+  }, [changeActiveStep, dispatch, sessionDetail]);
+
   return (
     <>
       {question && exampleAnswer && (
@@ -139,7 +151,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
           onContinue={onContinue}
           question={question}
           exampleAnswer={exampleAnswer}
-          onSkip
+          onSkip={onSkip}
         />
       )}
     </>
