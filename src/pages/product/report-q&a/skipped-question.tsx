@@ -19,13 +19,19 @@ const SkippedQuestion = ({ questions }: Props) => {
 
   const handleQuestionSelect = useCallback(
     (question: IQuestion) => {
+      const updateQA = {
+        question_id: question.questionId,
+        question: question.question,
+        example_answer: question.answer,
+      };
       dispatch(
         setSession({
           session_data: {
             ...sessionDetail,
             question_id: question.questionId,
-            step_id: 3,
+            step_id: 9,
             active_index: question.questionId - 1,
+            user_chat: updateQA,
           },
         }),
       );

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 
 //
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -16,11 +17,12 @@ import IPReview from "../../../components/@report-chat/ip-analysis/use-case/revi
 import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
 import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
-// import ChatQuestionAnswer2 from "../../../components/@report-chat/ip-analysis/use-case/question/question-2";
+
 import SkippedQuestion from "./skipped-question";
+
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
-import { useNavigate } from "react-router-dom";
-import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
+import SkippedQuestionAnswer from "src/components/@report-chat/ip-analysis/use-case/question/skipped-question";
+// import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
@@ -79,6 +81,7 @@ export default function ReportQuestionAnswerPage() {
       }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
     [activeIndex, questionId, questionWithUsecase],
   );
+
   //
   // useEffect(() => {
   //   const isConditionMet =
@@ -102,18 +105,6 @@ export default function ReportQuestionAnswerPage() {
   const steps = [
     {
       label: "",
-      value: 8,
-      component: (
-        <NewQuestion
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          exampleAnswer={question.answer}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
-    {
-      label: "",
       value: 3,
       component: (
         <ChatQuestionAnswer
@@ -125,18 +116,6 @@ export default function ReportQuestionAnswerPage() {
         />
       ),
     },
-    // {
-    //   label: "",
-    //   value: 4,
-    //   component: (
-    //     <ChatQuestionAnswer2
-    //       changeActiveStep={changeActiveStep}
-    //       activeStep={activeStep}
-    //       question={question}
-    //       activeIndex={activeIndex}
-    //     />
-    //   ),
-    // },
     {
       label: "",
       value: 5,
@@ -150,13 +129,25 @@ export default function ReportQuestionAnswerPage() {
     {
       label: "Edit",
       value: 7,
-      component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
+      component: <EditQuestion changeActiveStep={changeActiveStep} />,
     },
-    // {
-    //   label: "payment",
-    //   value: 8,
-    //   component: <Payment />,
-    // },
+    {
+      label: "",
+      value: 8,
+      component: (
+        <NewQuestion
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          exampleAnswer={question.answer}
+          activeIndex={activeIndex}
+        />
+      ),
+    },
+    {
+      label: "payment",
+      value: 9,
+      component: <SkippedQuestionAnswer changeActiveStep={changeActiveStep} />,
+    },
   ];
 
   const onBack = useCallback(() => {

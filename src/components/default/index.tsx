@@ -17,7 +17,7 @@ const StayTuned = () => {
         <div className="">
           <img src={WelcomePerceiveLogo} alt="welcome to perceive now" />
         </div>
-        <div className="w-[425px] h-[1px] bg-primary-900 my-5" />
+        <div className="w-[425px] h-[1px] bg-[#442873] my-5" />
         <div className="font-extrabold text-5xl mb-1 text-primary-900">Stay tuned</div>
 
         <div className="max-w-[750px] text-secondary-800 text-center mb-4">

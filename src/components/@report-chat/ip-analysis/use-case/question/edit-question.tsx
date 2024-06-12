@@ -81,6 +81,9 @@ export default function EditQuestion({ changeActiveStep }: Props) {
                 session_data: {
                   ...sessionDetail,
                   step_id: 6,
+                  skipped_question: (sessionDetail?.skipped_question || []).filter(
+                    (id) => id !== questionId,
+                  ),
                   user_chat: {
                     answer: answer,
                   },

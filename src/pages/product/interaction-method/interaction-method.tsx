@@ -84,7 +84,7 @@ export default function InteractionMethod() {
               />
             ))}
         </div>
-        <Button type="optional" handleClick={handleContinueBtnClick}>
+        <Button type="optional" classname="w-[250px]" handleClick={handleContinueBtnClick}>
           <p className="text-secondary-800">Continue</p>
         </Button>
       </div>
