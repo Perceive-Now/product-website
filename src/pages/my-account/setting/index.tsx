@@ -13,8 +13,6 @@ const Setting = () => {
     return await getBillingHistory();
   });
 
-  console.log(billings);
-
   // Fetching time period
   useEffect(() => {
     if (!billings) return;
