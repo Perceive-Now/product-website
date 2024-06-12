@@ -29,15 +29,6 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
-    id: 15,
-    label: "Patent Licensing targets",
-    value: "ip-licensing-opportunity",
-    desc: "Maximize your intellectual property revenue with strategic insights into potential licensing opportunities. This report guides you through selecting and targeting the most lucrative IP licensing deals.",
-    useCaseId: 3,
-    reportType: "ip",
-    reportPlan: "premium",
-  },
-  {
     id: 100,
     label: "Patent valuation",
     value: "ip-valuation",
@@ -45,6 +36,15 @@ export const UseCaseOptions = [
     useCaseId: 4,
     reportType: "ip",
     reportPlan: "pro",
+  },
+  {
+    id: 15,
+    label: "Patent Licensing targets",
+    value: "ip-licensing-opportunity",
+    desc: "Maximize your intellectual property revenue with strategic insights into potential licensing opportunities. This report guides you through selecting and targeting the most lucrative IP licensing deals.",
+    useCaseId: 3,
+    reportType: "ip",
+    reportPlan: "premium",
   },
 
   //--------------------- Need to add--------------------

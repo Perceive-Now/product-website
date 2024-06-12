@@ -1,10 +1,9 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "src/hooks/redux";
+import { Outlet } from "react-router-dom";
 
 export default function ReportSectionStateManagementService() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const dispatch = useAppDispatch();
 
   return (
     <>

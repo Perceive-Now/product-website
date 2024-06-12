@@ -9,11 +9,12 @@ interface Props {
 }
 
 const BackButton = ({ path }: Props) => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const onBack = useCallback(() => {
-    navigation(`/${path}`);
-  }, [navigation, path]);
+    // navigation(`/${path}`);
+    navigate(-1);
+  }, [navigate]);
 
   return (
     <button onClick={onBack} className={buttonStyle}>

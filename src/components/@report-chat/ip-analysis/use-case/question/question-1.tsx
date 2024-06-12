@@ -30,7 +30,7 @@ interface Props {
  */
 export default function ChatQuestionAnswer({
   changeActiveStep,
-  activeStep,
+  // activeStep,
   totalQuestion,
   question,
   activeIndex,
