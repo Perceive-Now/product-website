@@ -46,7 +46,6 @@ const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
 root.render(
   <StrictMode>
     <Toaster position="top-right" />
-
     <BrowserRouter>
       <Provider store={store}>
         <GoogleOAuthProvider clientId={googleAPIKey || ""}>

@@ -46,3 +46,12 @@ export interface IProduct {
   price: number;
   prod_type: string;
 }
+
+export interface IProducts {
+  id: number;
+  label: string;
+  value: string;
+  desc: string;
+  reportType: string;
+  reportPlan: string;
+}

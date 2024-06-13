@@ -20,6 +20,8 @@ interface ISessionData {
   client_secret?: string;
   active_index?: number;
   skipped_question?: number[];
+  hasSkippedQuestion?: boolean;
+  completed_questions?: number[];
 }
 
 interface IUserChat {
@@ -66,6 +68,8 @@ export const getSessionDetails = createAsyncThunk(
             user_chat: response.data.session.session_data?.user_chat,
             client_secret: response.data.session.session_data?.client_secret,
             active_index: response.data.session.session_data?.active_index,
+            hasSkippedQuestion: response.data.session.session_data?.hasSkippedQuestion,
+            completed_questions: response.data.session.session_data?.completed_questions,
           },
         },
       };
@@ -96,6 +100,8 @@ const updateSession = async (payload: ISession) => {
         client_secret: payload.session_data?.client_secret,
         active_index: payload.session_data?.active_index,
         skipped_question: payload.session_data?.skipped_question,
+        hasSkippedQuestion: payload.session_data?.hasSkippedQuestion,
+        completed_questions: payload.session_data?.completed_questions,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,
@@ -114,33 +120,6 @@ const updateSession = async (payload: ISession) => {
     throw new Error("Failed to update session"); // Handle errors
   }
 };
-
-// const restoreSession = async (payload: ISession) => {
-//   try {
-//     const sessionID = jsCookie.get("session_id");
-//     const userId = jsCookie.get("user_id");
-
-//     const values = {
-//       session_id: sessionID || payload.session_id,
-//       user_id: userId || payload.user_id,
-//       session_data: {
-//         question_id: payload.session_data?.question_id,
-//         user_id: payload.session_data?.step_id,
-//         plans: payload.session_data?.plans,
-//         common_question_id: payload.session_data?.common_question_id,
-//         step_id: payload.session_data?.step_id,
-//         use_cases: payload.session_data?.use_cases,
-//         last_session_id: payload.session_data?.last_session_id
-//       }
-//     }
-//     // Make the API request to update the session
-//     const response = await axiosInstance.post(`/api/restore_session?code=${AppConfig.Auth_CODE}`, values
-//     );
-//     return response.data; // Return the updated session data
-//   } catch (error) {
-//     throw new Error("Failed to restore session"); // Handle errors
-//   }
-// };
 
 export const SessionSlice = createSlice({
   name: "Session",

@@ -49,6 +49,21 @@ Props) {
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
+      if (
+        sessionDetail?.skipped_question &&
+        sessionDetail?.skipped_question?.length > 0 &&
+        totalQuestion - 1 === activeIndex
+      ) {
+        toast.error("Answer all the skipped questions to continue.");
+        dispatch(
+          setSession({
+            session_data: {
+              ...sessionDetail,
+              hasSkippedQuestion: true,
+            },
+          }),
+        );
+      }
       try {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
@@ -83,6 +98,10 @@ Props) {
                     skipped_question: (sessionDetail?.skipped_question || []).filter(
                       (id) => id !== questionId,
                     ),
+                    completed_questions: [
+                      ...(sessionDetail?.completed_questions || []),
+                      questionId,
+                    ],
                   },
                 }),
               );
@@ -98,6 +117,10 @@ Props) {
                     skipped_question: (sessionDetail?.skipped_question || []).filter(
                       (id) => id !== questionId,
                     ),
+                    completed_questions: [
+                      ...(sessionDetail?.completed_questions || []),
+                      questionId,
+                    ],
                   },
                 }),
               );
@@ -142,19 +165,21 @@ Props) {
     ],
   );
   const onSkip = useCallback(() => {
-    if (totalQuestion - 1 === activeIndex) {
+    if (
+      sessionDetail?.skipped_question &&
+      sessionDetail?.skipped_question?.length > 0 &&
+      totalQuestion - 1 === activeIndex
+    ) {
       dispatch(
         setSession({
           session_data: {
             ...sessionDetail,
-            question_id: questionId,
-            step_id: 5,
-            active_index: activeIndex + 1,
+            hasSkippedQuestion: true,
             skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
           },
         }),
       );
-      changeActiveStep(5);
+      toast.error("Answer all the skipped questions to continue.");
     } else {
       dispatch(
         setSession({
@@ -163,6 +188,7 @@ Props) {
             question_id: questionId,
             step_id: 3,
             active_index: activeIndex + 1,
+            hasSkippedQuestion: false,
             skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
           },
         }),
@@ -179,6 +205,7 @@ Props) {
         question={question.question}
         exampleAnswer={question.answer}
         onSkip={onSkip}
+        hasSkippedQuestion={sessionDetail?.hasSkippedQuestion}
       />
     </>
   );

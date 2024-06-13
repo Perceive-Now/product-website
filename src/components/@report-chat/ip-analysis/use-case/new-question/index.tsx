@@ -73,6 +73,10 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
                     question_id: questionId,
                     step_id: 3,
                     active_index: activeIndex + 1,
+                    completed_questions: [
+                      ...(sessionDetail?.completed_questions || []),
+                      questionId,
+                    ],
                   },
                 }),
               );

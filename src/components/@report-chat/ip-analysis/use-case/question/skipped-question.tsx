@@ -67,8 +67,6 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
         const status = response.status;
         const statusText = response.statusText;
 
-        // const message = response.data.message;
-
         if (status === undefined) {
           toast.error("Something went wrong");
         }
@@ -81,17 +79,22 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: 5,
+                  step_id: 3,
                   skipped_question: (sessionDetail?.skipped_question || []).filter(
                     (id) => id !== questionId,
                   ),
+                  // active_index: ,
+                  completed_questions: [
+                    ...(sessionDetail?.completed_questions || []),
+                    questionId as any,
+                  ],
                   user_chat: {
                     answer: answer,
                   },
                 },
               }),
             );
-            changeActiveStep(6);
+            changeActiveStep(3);
           } else if (status === undefined) {
             toast.error("Something went wrong");
           } else {

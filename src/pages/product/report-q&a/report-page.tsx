@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
 
 //
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -144,7 +144,7 @@ export default function ReportQuestionAnswerPage() {
       ),
     },
     {
-      label: "payment",
+      label: "skipped-question",
       value: 9,
       component: <SkippedQuestionAnswer changeActiveStep={changeActiveStep} />,
     },
@@ -217,7 +217,7 @@ export default function ReportQuestionAnswerPage() {
             </div>
           </div>
 
-          <div className="flex-shrink-0 w-[300px]">
+          <div className="flex-shrink-0 2xl:w-[300px]">
             <SkippedQuestion
               questions={
                 questionList
