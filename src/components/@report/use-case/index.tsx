@@ -44,6 +44,7 @@ const optionMappings: OptionMappings = {
 const UseCaseSelect = () => {
   const navigation = useNavigate();
   const dispatch = useAppDispatch();
+
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   const { useCaseIds, isUploading, useCasesUploadState } = useAppSelector(
     (state) => state.usecases,
@@ -153,7 +154,6 @@ const UseCaseSelect = () => {
         newOptions.push(mappedOption);
       }
     });
-
     setOptions(newOptions);
   }, [selected]);
   //
@@ -192,9 +192,9 @@ const UseCaseSelect = () => {
 
   return (
     <div className="h-full">
-      <p className="font-[800] text-5xl">Please select use cases for your report</p>
+      <p className="text-[#120824] text-5xl font-bold">Please select use cases for your report</p>
       <DefaultProgressBar width={10} />
-      <div className="w-full mt-1">
+      <div className="w-full mt-2">
         <div className="flex justify-between bg-appGray-100 p-2 rounded-lg w-full">
           <div className="w-[200px]">
             {UsecaseOptions.map((usecase, idx) => (

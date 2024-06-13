@@ -12,8 +12,11 @@ const BackButton = ({ path }: Props) => {
   const navigate = useNavigate();
 
   const onBack = useCallback(() => {
-    if (path) navigate(`/${path}`);
-    else navigate(-1);
+    if (path !== undefined) {
+      navigate(`/${path}`);
+    } else {
+      navigate(-1);
+    }
   }, [navigate, path]);
 
   return (

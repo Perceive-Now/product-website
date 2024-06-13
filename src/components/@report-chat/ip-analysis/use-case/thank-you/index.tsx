@@ -1,13 +1,14 @@
-import React, { useCallback, useMemo, useState } from "react";
-import Button from "../../../../reusable/button";
-// import { getUserChats } from "../../../../../../utils/api/chat";
-// import axios from "axios";
-import axiosInstance from "../../../../../utils/axios";
-import { API_URL, Auth_CODE } from "../../../../../utils/constants";
-import toast from "react-hot-toast";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+import Button from "../../../../reusable/button";
+
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { setSession } from "../../../../../stores/session";
+
+import axiosInstance from "../../../../../utils/axios";
+import { API_URL, Auth_CODE } from "../../../../../utils/constants";
 
 interface Props {
   changeActiveStep: (steps: number) => void;

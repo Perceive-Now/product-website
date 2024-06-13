@@ -205,18 +205,18 @@ export const AppSidebar: FunctionComponent<Props> = () => {
 };
 
 function NavLinkItem(props: INavLinkItemProps) {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const handleClick = useCallback(() => {
     if (props.value === "new-report") {
       // dispatch(getNewSession());
-      // dispatch(
-      //   setSession({
-      //     session_data: {},
-      //   }),
-      // );
+      dispatch(
+        setSession({
+          session_data: {},
+        }),
+      );
     }
-  }, [props.value]);
+  }, [dispatch, props.value]);
 
   return (
     <NavLink to={props.to ?? ""} end onClick={handleClick}>

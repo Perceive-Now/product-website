@@ -30,6 +30,7 @@ const SkippedQuestion = ({ questions }: Props) => {
             ...sessionDetail,
             question_id: question.questionId,
             step_id: 9,
+            hasSkippedQuestion: false,
             active_index: question.questionId - 1,
             user_chat: updateQA,
           },
