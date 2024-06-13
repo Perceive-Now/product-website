@@ -188,9 +188,7 @@ export default function UploadAttachments() {
         >
           <p className="text-secondary-800">Continue</p>
         </Button>
-        <p className="my-3">
-          For now we only support one PDF file upload. Please upload your file in PDF format.
-        </p>
+        <p className="my-3">For now, we support only one PDF file type at a time</p>
       </div>
     </div>
   );
