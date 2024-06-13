@@ -8,7 +8,7 @@ interface Props {
 
 const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
   const isStepComplete = (currentStep: number) => {
-    return activeStep >= currentStep;
+    return activeStep > currentStep;
   };
 
   return (

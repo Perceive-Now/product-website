@@ -12,7 +12,7 @@ import Loading from "../../../components/reusable/loading";
 // import BackButton from "../../../components/reusable/back-button";
 
 import IPStepper from "../../../components/@report-chat/ip-analysis/stepper";
-import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
+// import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
 import IPReview from "../../../components/@report-chat/ip-analysis/use-case/review/review";
 import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
 import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
@@ -29,9 +29,9 @@ import SkippedQuestionAnswer from "src/components/@report-chat/ip-analysis/use-c
  */
 export default function ReportQuestionAnswerPage() {
   const dispatch = useAppDispatch();
-  const session = useAppSelector((state) => state.sessionDetail.session);
   const navigate = useNavigate();
 
+  const session = useAppSelector((state) => state.sessionDetail.session);
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
   const activeIndex = useMemo(
@@ -83,25 +83,6 @@ export default function ReportQuestionAnswerPage() {
   );
 
   //
-  // useEffect(() => {
-  //   const isConditionMet =
-  //     useCases.length > 0 && activeStep < 5 && questionWithUsecase.length === activeIndex;
-
-  //   if (isConditionMet) {
-  //     dispatch(
-  //       setSession({
-  //         session_data: {
-  //           ...sessionDetail,
-  //           step_id: 5,
-  //         },
-  //       }),
-  //     );
-  //     changeActiveStep(5);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activeStep]);
-
-  //
   const steps = [
     {
       label: "",
@@ -116,11 +97,11 @@ export default function ReportQuestionAnswerPage() {
         />
       ),
     },
-    {
-      label: "",
-      value: 5,
-      component: <Thankyou changeActiveStep={changeActiveStep} />,
-    },
+    // {
+    //   label: "",
+    //   value: 5,
+    //   component: <Thankyou changeActiveStep={changeActiveStep} />,
+    // },
     {
       label: "Review",
       value: 6,
@@ -146,7 +127,13 @@ export default function ReportQuestionAnswerPage() {
     {
       label: "skipped-question",
       value: 9,
-      component: <SkippedQuestionAnswer changeActiveStep={changeActiveStep} />,
+      component: (
+        <SkippedQuestionAnswer
+          changeActiveStep={changeActiveStep}
+          activeIndex={activeIndex}
+          questionWithUsecase={questionWithUsecase}
+        />
+      ),
     },
   ];
 
@@ -192,7 +179,8 @@ export default function ReportQuestionAnswerPage() {
         <div className="flex mt-2.5 justify-between gap-8">
           <div
             className={classNames(
-              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-ful shadow border rounded-md p-2 w-[932px] bg-white",
+              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full shadow border rounded-md w-[932px] p-2 bg-white",
+              sessionDetail?.step_id === 6 ? "mx-auto" : "",
             )}
           >
             <div
@@ -216,16 +204,18 @@ export default function ReportQuestionAnswerPage() {
               ))}
             </div>
           </div>
-
-          <div className="flex-shrink-0 2xl:w-[300px]">
-            <SkippedQuestion
-              questions={
-                questionList
-                  .filter((q) => sessionDetail?.skipped_question?.includes(q.questionId))
-                  .map((q) => q) || []
-              }
-            />
-          </div>
+          {sessionDetail?.step_id !== 6 && (
+            <div className="flex-shrink-0 2xl:w-[300px]">
+              <SkippedQuestion
+                questions={
+                  questionList
+                    .filter((q) => sessionDetail?.skipped_question?.includes(q.questionId))
+                    .map((q) => q) || []
+                }
+                questionWithUsecase={questionWithUsecase}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>

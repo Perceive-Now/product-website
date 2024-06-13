@@ -26,9 +26,14 @@ export default function EditQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
   //
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  // const sessionId = jsCookie.get("session_id");
 
   const [isloading, setIsLoading] = useState(false);
 
@@ -58,7 +63,9 @@ export default function EditQuestion({ changeActiveStep }: Props) {
         const response = await axiosInstance.put(
           `https://pn-chatbot.azurewebsites.net/edit-answer/?newAnswer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&questionID=${Number(questionId)}`,
+          )}&userID=${userId}&sessionID=${Number(requirementGatheringId)}&questionID=${Number(
+            questionId,
+          )}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
@@ -124,8 +131,8 @@ export default function EditQuestion({ changeActiveStep }: Props) {
       dispatch,
       exampleAnswer,
       questionId,
+      requirementGatheringId,
       sessionDetail,
-      sessionId,
       userId,
     ],
   );
@@ -139,7 +146,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
           question={question}
           exampleAnswer={exampleAnswer}
           answer={answer}
-          onSkip
+          showSkip={false}
         />
       )}
     </>

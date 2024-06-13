@@ -44,32 +44,22 @@ Props) {
   const questionId = useMemo(() => question.questionId, [question.questionId]);
 
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
-      if (
-        sessionDetail?.skipped_question &&
-        sessionDetail?.skipped_question?.length > 0 &&
-        totalQuestion - 1 === activeIndex
-      ) {
-        toast.error("Answer all the skipped questions to continue.");
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              hasSkippedQuestion: true,
-            },
-          }),
-        );
-      }
+
       try {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
-            sessionId,
+            requirementGatheringId,
           )}&QuestionID=${questionId}`,
         );
 
@@ -87,45 +77,61 @@ Props) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            if (totalQuestion - 1 === activeIndex) {
+            if (
+              sessionDetail?.skipped_question &&
+              sessionDetail?.skipped_question?.length > 0
+              // totalQuestion - 1 === activeIndex
+            ) {
+              // toast.error("Answer all the skipped questions to continue.");
               dispatch(
                 setSession({
                   session_data: {
                     ...sessionDetail,
-                    question_id: questionId,
-                    step_id: 5,
-                    active_index: activeIndex + 1,
-                    skipped_question: (sessionDetail?.skipped_question || []).filter(
-                      (id) => id !== questionId,
-                    ),
-                    completed_questions: [
-                      ...(sessionDetail?.completed_questions || []),
-                      questionId,
-                    ],
+                    hasSkippedQuestion: true,
                   },
                 }),
               );
-              changeActiveStep(5);
             } else {
-              dispatch(
-                setSession({
-                  session_data: {
-                    ...sessionDetail,
-                    question_id: questionId,
-                    step_id: 3,
-                    active_index: activeIndex + 1,
-                    skipped_question: (sessionDetail?.skipped_question || []).filter(
-                      (id) => id !== questionId,
-                    ),
-                    completed_questions: [
-                      ...(sessionDetail?.completed_questions || []),
-                      questionId,
-                    ],
-                  },
-                }),
-              );
+              if (totalQuestion - 1 === activeIndex) {
+                dispatch(
+                  setSession({
+                    session_data: {
+                      ...sessionDetail,
+                      question_id: questionId,
+                      step_id: 6,
+                      active_index: activeIndex + 1,
+                      skipped_question: (sessionDetail?.skipped_question || []).filter(
+                        (id) => id !== questionId,
+                      ),
+                      completed_questions: [
+                        ...(sessionDetail?.completed_questions || []),
+                        questionId,
+                      ],
+                    },
+                  }),
+                );
+                changeActiveStep(6);
+              } else {
+                dispatch(
+                  setSession({
+                    session_data: {
+                      ...sessionDetail,
+                      question_id: questionId,
+                      step_id: 3,
+                      active_index: activeIndex + 1,
+                      skipped_question: (sessionDetail?.skipped_question || []).filter(
+                        (id) => id !== questionId,
+                      ),
+                      completed_questions: [
+                        ...(sessionDetail?.completed_questions || []),
+                        questionId,
+                      ],
+                    },
+                  }),
+                );
+              }
+              changeActiveStep(3);
             }
-            changeActiveStep(3);
           } else if (status === undefined) {
             toast.error("Something went wrong");
           } else {
@@ -158,8 +164,8 @@ Props) {
       changeActiveStep,
       dispatch,
       questionId,
+      requirementGatheringId,
       sessionDetail,
-      sessionId,
       totalQuestion,
       userId,
     ],
@@ -179,7 +185,7 @@ Props) {
           },
         }),
       );
-      toast.error("Answer all the skipped questions to continue.");
+      // toast.error("Answer all the skipped questions to continue.");
     } else {
       dispatch(
         setSession({

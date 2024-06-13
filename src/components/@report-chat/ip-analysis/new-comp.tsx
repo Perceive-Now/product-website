@@ -15,6 +15,7 @@ interface Props {
   answer?: string;
   onSkip?: any;
   hasSkippedQuestion?: boolean;
+  showSkip?: boolean;
 }
 
 export default function NewComponent({
@@ -25,6 +26,7 @@ export default function NewComponent({
   answer,
   onSkip,
   hasSkippedQuestion,
+  showSkip = true,
 }: Props) {
   const formResolver = yup.object().shape({
     answer: yup.string().trim().required("Please provide your answer"),
@@ -105,9 +107,11 @@ export default function NewComponent({
           <div>Answer all the skipped questions to continue.</div>
         ) : (
           <div className="mt-4 pb-4 flex gap-2 items-center">
-            <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
-              Skip for now
-            </Button>
+            {showSkip && (
+              <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
+                Skip for now
+              </Button>
+            )}
             <Button htmlType={"submit"} rounded={"medium"} loading={isLoading} disabled={isLoading}>
               Save & Continue
             </Button>

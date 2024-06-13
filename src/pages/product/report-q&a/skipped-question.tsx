@@ -8,11 +8,20 @@ interface IQuestion {
   answer: string;
 }
 
-interface Props {
-  questions: IQuestion[];
+interface IQuestionUsecase {
+  questionId: number;
+  useCaseId: number;
+  question: string;
+  usecase: string;
+  answer: string;
 }
 
-const SkippedQuestion = ({ questions }: Props) => {
+interface Props {
+  questions: IQuestion[];
+  questionWithUsecase: IQuestionUsecase[];
+}
+
+const SkippedQuestion = ({ questions, questionWithUsecase }: Props) => {
   const dispatch = useAppDispatch();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
@@ -31,13 +40,15 @@ const SkippedQuestion = ({ questions }: Props) => {
             question_id: question.questionId,
             step_id: 9,
             hasSkippedQuestion: false,
-            active_index: question.questionId - 1,
+            active_index: questionWithUsecase.findIndex(
+              (q) => q.questionId === question.questionId,
+            ),
             user_chat: updateQA,
           },
         }),
       );
     },
-    [dispatch, sessionDetail],
+    [dispatch, questionWithUsecase, sessionDetail],
   );
 
   return (

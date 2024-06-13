@@ -16,19 +16,34 @@ interface Props {
   changeActiveStep: (steps: number) => void;
   // activeStep: number;
   exampleAnswer?: string;
+  activeIndex: number;
+  questionWithUsecase: IQuestionUsecase[];
+}
+
+interface IQuestionUsecase {
+  questionId: number;
+  useCaseId: number;
+  question: string;
+  usecase: string;
+  answer: string;
 }
 
 /**NewQuestion
  *
  */
 
-export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
+export default function SkippedQuestionAnswer({
+  changeActiveStep,
+  activeIndex,
+  questionWithUsecase,
+}: Props) {
   const dispatch = useAppDispatch();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  // const { requirementGatheringId } = useAppSelector((state) => state.usecases);
   //
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
   const [isloading, setIsLoading] = useState(false);
 
@@ -50,6 +65,10 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
     [sessionDetail?.user_chat?.question_id],
   );
 
+  const notCompletedQuestionList = questionWithUsecase.filter(
+    (q) => !sessionDetail?.completed_questions?.includes(q.questionId),
+  );
+
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
@@ -59,7 +78,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
-            sessionId,
+            requirementGatheringId,
           )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
@@ -75,26 +94,39 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
           toast.error(resError);
         } else {
           if (status === 200 || statusText === "OK") {
-            dispatch(
-              setSession({
-                session_data: {
-                  ...sessionDetail,
-                  step_id: 3,
-                  skipped_question: (sessionDetail?.skipped_question || []).filter(
-                    (id) => id !== questionId,
-                  ),
-                  // active_index: ,
-                  completed_questions: [
-                    ...(sessionDetail?.completed_questions || []),
-                    questionId as any,
-                  ],
-                  user_chat: {
-                    answer: answer,
+            if (sessionDetail?.skipped_question?.length !== 0) {
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    step_id: 3,
+                    skipped_question: (sessionDetail?.skipped_question || []).filter(
+                      (id) => id !== questionId,
+                    ),
+                    active_index: activeIndex + 1,
+                    completed_questions: [
+                      ...(sessionDetail?.completed_questions || []),
+                      questionId as any,
+                    ],
                   },
-                },
-              }),
-            );
-            changeActiveStep(3);
+                }),
+              );
+            } else {
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    hasSkippedQuestion: true,
+                    skipped_question: [
+                      ...(sessionDetail?.skipped_question || []),
+                      questionId as any,
+                    ],
+                  },
+                }),
+              );
+            }
+
+            changeActiveStep(6);
           } else if (status === undefined) {
             toast.error("Something went wrong");
           } else {
@@ -102,7 +134,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
               setSession({
                 session_data: {
                   ...sessionDetail,
-                  step_id: 5,
+                  step_id: 8,
                   user_chat: {
                     question: apiData,
                     question_id: questionId,
@@ -113,7 +145,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
               }),
             );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(5);
+            changeActiveStep(8);
           }
         }
         setIsLoading(false);
@@ -123,28 +155,46 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
       }
     },
     [
+      activeIndex,
       answer,
       changeActiveStep,
       dispatch,
       exampleAnswer,
       questionId,
+      requirementGatheringId,
       sessionDetail,
-      sessionId,
       userId,
     ],
   );
 
   const onSkip = useCallback(() => {
-    dispatch(
-      setSession({
-        session_data: {
-          ...sessionDetail,
-          step_id: 5,
-        },
-      }),
-    );
-    changeActiveStep(5);
-  }, [changeActiveStep, dispatch, sessionDetail]);
+    if (sessionDetail?.skipped_question && sessionDetail?.skipped_question?.length > 0) {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            hasSkippedQuestion: true,
+            skipped_question: [...(sessionDetail?.skipped_question || []), questionId as any],
+          },
+        }),
+      );
+      toast.error("Answer all the skipped questions to continue.");
+    } else {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            question_id: questionId,
+            step_id: 3,
+            active_index: activeIndex + 1,
+            hasSkippedQuestion: false,
+            skipped_question: [...(sessionDetail?.skipped_question || []), questionId as any],
+          },
+        }),
+      );
+      changeActiveStep(3);
+    }
+  }, [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail]);
 
   return (
     <>
@@ -155,6 +205,7 @@ export default function SkippedQuestionAnswer({ changeActiveStep }: Props) {
           question={question}
           exampleAnswer={exampleAnswer}
           onSkip={onSkip}
+          hasSkippedQuestion={sessionDetail?.hasSkippedQuestion}
         />
       )}
     </>

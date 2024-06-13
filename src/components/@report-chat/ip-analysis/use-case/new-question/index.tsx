@@ -28,9 +28,13 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
 
   //
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  // const sessionId = jsCookie.get("session_id");
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
 
   const questionId = useMemo(
     () => sessionDetail?.user_chat?.question_id,
@@ -50,7 +54,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
-            sessionId,
+            requirementGatheringId,
           )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
@@ -107,7 +111,15 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
         toast.error(error.message);
       }
     },
-    [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [
+      activeIndex,
+      changeActiveStep,
+      dispatch,
+      questionId,
+      requirementGatheringId,
+      sessionDetail,
+      userId,
+    ],
   );
 
   const onSkip = useCallback(() => {
