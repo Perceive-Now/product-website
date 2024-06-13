@@ -7,7 +7,7 @@ import {
   setCurrentPageId,
 } from "../../../stores/upload-quick-prompt";
 
-const BackButton = () => {
+const BackButtonUI = () => {
   return (
     <>
       <ArrowLeftIcon /> Back
@@ -25,7 +25,7 @@ export default function GoBack() {
 
   // return (
   //   <Link to="/interaction-method" className={buttonStyle}>
-  //     <BackButton />
+  //     <BackButtonUI />
   //   </Link>
   // );
 
@@ -39,7 +39,7 @@ export default function GoBack() {
         }}
         className={buttonStyle}
       >
-        <BackButton />
+        <BackButtonUI />
       </button>
     );
   }
@@ -50,7 +50,7 @@ export default function GoBack() {
 
   return (
     <button onClick={handleBackBtnInQuickPromptsPage} className={buttonStyle}>
-      <BackButton />
+      <BackButtonUI />
     </button>
   );
 }

@@ -43,7 +43,7 @@ const Payment = () => {
 
   return (
     <div className="">
-      <BackButton path={"q&a"} />
+      <BackButton />
       <h5 className="text-5xl font-[800] my-2">Payment</h5>
       <DefaultProgressBar width={100} />
       {clientSecret === undefined || selectedReports === undefined ? (
