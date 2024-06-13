@@ -10,10 +10,10 @@ import {
   setCurrentQuestionId,
   setisUploadAnswerToAddtionalQuestionsError,
   setisUploadAnswerToAddtionalQuestionsSuccess,
+  updateQuestionList,
   uploadAnswerToAddtionalQuestions,
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
-import { questionList } from "../report-q&a/_question";
 import QuestionForm from "./question-form";
 
 export default function AdditionalQuestions() {
@@ -28,6 +28,7 @@ export default function AdditionalQuestions() {
     isUploadAnswerToAddtionalQuestionsSuccess,
     message,
     answerResponse,
+    questionsList,
   } = useAppSelector((state) => state.uploadAttachments);
 
   const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
@@ -42,6 +43,9 @@ export default function AdditionalQuestions() {
     if (isUploadAnswerToAddtionalQuestionsSuccess) {
       if (answerResponse.status === "false") {
         toast.error("Give a more detailed answer");
+        dispatch(
+          updateQuestionList({ questionId: currentQuestionId, question: answerResponse.question }),
+        );
         dispatch(setisUploadAnswerToAddtionalQuestionsSuccess(false));
         return;
       }
@@ -73,7 +77,7 @@ export default function AdditionalQuestions() {
     dispatch,
   ]);
 
-  const currentQuestion = questionList.filter(
+  const currentQuestion = questionsList.filter(
     (question) => question.questionId === currentQuestionId,
   )[0];
 
