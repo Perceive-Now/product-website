@@ -60,12 +60,12 @@ export default function EditQuestion({ changeActiveStep }: Props) {
       setIsLoading(true);
 
       try {
-        const response = await axiosInstance.put(
-          `https://pn-chatbot.azurewebsites.net/edit-answer/?newAnswer=${encodeURIComponent(
+        const response = await axiosInstance.post(
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(requirementGatheringId)}&questionID=${Number(
-            questionId,
-          )}`,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            requirementGatheringId,
+          )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
