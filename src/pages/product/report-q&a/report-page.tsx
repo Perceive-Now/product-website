@@ -22,6 +22,7 @@ import SkippedQuestion from "./skipped-question";
 
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import SkippedQuestionAnswer from "src/components/@report-chat/ip-analysis/use-case/question/skipped-question";
+import Thankyou from "src/components/@report-chat/ip-analysis/use-case/thank-you";
 // import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
 
 /**
@@ -97,11 +98,11 @@ export default function ReportQuestionAnswerPage() {
         />
       ),
     },
-    // {
-    //   label: "",
-    //   value: 5,
-    //   component: <Thankyou changeActiveStep={changeActiveStep} />,
-    // },
+    {
+      label: "",
+      value: 5,
+      component: <Thankyou changeActiveStep={changeActiveStep} />,
+    },
     {
       label: "Review",
       value: 6,

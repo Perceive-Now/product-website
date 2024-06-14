@@ -1,12 +1,10 @@
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import { setSession } from "src/stores/session";
-
-interface IQuestion {
-  questionId: number;
-  question: string;
-  answer: string;
-}
+import { useAppDispatch } from "src/hooks/redux";
+import {
+  removeFromSkippedQuestionList,
+  setCurrentQuestionId,
+  updateNewQuestionList,
+} from "src/stores/Q&A";
 
 interface IQuestionUsecase {
   questionId: number;
@@ -17,38 +15,41 @@ interface IQuestionUsecase {
 }
 
 interface Props {
-  questions: IQuestion[];
-  questionWithUsecase: IQuestionUsecase[];
+  questions: IQuestionUsecase[];
+  questionWithUsecase?: IQuestionUsecase[];
 }
 
-const SkippedQuestion = ({ questions, questionWithUsecase }: Props) => {
+const SkippedQuestion = ({ questions }: Props) => {
   const dispatch = useAppDispatch();
 
-  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-
   const handleQuestionSelect = useCallback(
-    (question: IQuestion) => {
-      const updateQA = {
-        question_id: question.questionId,
-        question: question.question,
-        example_answer: question.answer,
-      };
+    (question: IQuestionUsecase) => {
       dispatch(
-        setSession({
-          session_data: {
-            ...sessionDetail,
-            question_id: question.questionId,
-            step_id: 9,
-            hasSkippedQuestion: false,
-            active_index: questionWithUsecase.findIndex(
-              (q) => q.questionId === question.questionId,
-            ),
-            user_chat: updateQA,
+        removeFromSkippedQuestionList({
+          question: question.question,
+          useCaseId: question.useCaseId,
+          exampleAnswer: question.answer,
+          answer: "",
+          usecase: question.usecase,
+          questionId: question.questionId,
+        }),
+      );
+      dispatch(setCurrentQuestionId(question.questionId));
+      dispatch(
+        updateNewQuestionList({
+          currentId: question.questionId,
+          questionAnswer: {
+            question: question.question,
+            useCaseId: question.useCaseId,
+            exampleAnswer: question.answer,
+            answer: "",
+            usecase: question.usecase,
+            questionId: question.questionId,
           },
         }),
       );
     },
-    [dispatch, questionWithUsecase, sessionDetail],
+    [dispatch],
   );
 
   return (

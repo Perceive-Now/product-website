@@ -18,7 +18,7 @@ interface Props {
   showSkip?: boolean;
 }
 
-export default function NewComponent({
+export default function QuestionAnswerForm({
   onContinue,
   question,
   isLoading,
@@ -50,11 +50,11 @@ export default function NewComponent({
     setValue("answer", exampleAnswer); // Update the form value
   }, [exampleAnswer, setValue]);
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     reset();
-  //   }
-  // }, [isLoading, reset]);
+  useEffect(() => {
+    if (!isLoading) {
+      reset();
+    }
+  }, [isLoading, reset]);
 
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 

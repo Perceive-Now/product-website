@@ -8,8 +8,8 @@ import CircularCounter from "./circular-counter";
  */
 export default function AppHeader() {
   return (
-    <div className="bg-white-gradient">
-      <div className="flex justify-between items-center sticky top-0 z-10 min-h-[80px] pb-2 px-1 container">
+    <div className="bg-white-gradient sticky top-0 z-10">
+      <div className="flex justify-between items-center  min-h-[80px] pb-2 px-1 container">
         <Link to="/">
           <img src={PerceiveLogo} alt="PerceiveNow logo" />
         </Link>

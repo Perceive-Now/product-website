@@ -13,6 +13,7 @@ import KnownowSlice1 from "./stores/know-now1";
 import UploadAttachmentsSlice from "./stores/upload-attachments";
 import uploadQuickPrompt from "./stores/upload-quick-prompt";
 import draftSlice from "./stores/draft";
+import QuestionAnswerSlice from "./stores/Q&A";
 
 //
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
     uploadAttachments: UploadAttachmentsSlice,
     uploadQuickPrompt: uploadQuickPrompt,
     draft: draftSlice,
+    QA: QuestionAnswerSlice,
   },
 });
 

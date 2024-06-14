@@ -82,11 +82,11 @@ const Thankyou = ({ changeActiveStep }: Props) => {
     <div className="h-[274px] flex flex-col items-start justify-between gap-y-[100px]">
       <div>
         <h6 className="text-xl font-medium text-secondary-800">
-          Thank you for providing all the answers
+          Answer all the skipped questions to continue.
         </h6>
-        <p className="text-secondary-800">
+        {/* <p className="text-secondary-800">
           If you'd like to take another look and make any changes, feel free to do so.
-        </p>
+        </p> */}
       </div>
       <div className="flex items-center justify-center gap-1 h-full w-full">
         <Button

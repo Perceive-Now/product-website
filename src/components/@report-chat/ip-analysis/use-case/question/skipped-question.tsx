@@ -40,7 +40,6 @@ export default function SkippedQuestionAnswer({
   const dispatch = useAppDispatch();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-  // const { requirementGatheringId } = useAppSelector((state) => state.usecases);
   //
   const userId = jsCookie.get("user_id");
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");
@@ -65,9 +64,23 @@ export default function SkippedQuestionAnswer({
     [sessionDetail?.user_chat?.question_id],
   );
 
-  const notCompletedQuestionList = questionWithUsecase.filter(
+  const notCompletedQuestionList = questionWithUsecase.find(
     (q) => !sessionDetail?.completed_questions?.includes(q.questionId),
   );
+
+  console.log(notCompletedQuestionList);
+
+  const skippedQA = useMemo(
+    () =>
+      questionWithUsecase.find((q, idx) => {
+        if (idx === activeIndex) {
+          return q;
+        }
+      }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
+    [activeIndex, questionWithUsecase, questionId],
+  );
+
+  const totalQuestion = questionWithUsecase.length;
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
@@ -94,12 +107,13 @@ export default function SkippedQuestionAnswer({
           toast.error(resError);
         } else {
           if (status === 200 || statusText === "OK") {
-            if (sessionDetail?.skipped_question?.length !== 0) {
+            if (sessionDetail?.skipped_question && sessionDetail?.skipped_question?.length > 0) {
               dispatch(
                 setSession({
                   session_data: {
                     ...sessionDetail,
                     step_id: 3,
+                    prev_index: activeIndex,
                     skipped_question: (sessionDetail?.skipped_question || []).filter(
                       (id) => id !== questionId,
                     ),
@@ -116,7 +130,9 @@ export default function SkippedQuestionAnswer({
                 setSession({
                   session_data: {
                     ...sessionDetail,
-                    hasSkippedQuestion: true,
+                    hasSkippedQuestion: false,
+                    prev_index: activeIndex,
+                    step_id: 6,
                     skipped_question: [
                       ...(sessionDetail?.skipped_question || []),
                       questionId as any,
@@ -134,6 +150,7 @@ export default function SkippedQuestionAnswer({
               setSession({
                 session_data: {
                   ...sessionDetail,
+                  prev_index: activeIndex,
                   step_id: 8,
                   user_chat: {
                     question: apiData,
@@ -198,12 +215,13 @@ export default function SkippedQuestionAnswer({
 
   return (
     <>
+      SKIPPED
       {question && exampleAnswer && (
         <NewComponent
           isLoading={isloading}
           onContinue={onContinue}
-          question={question}
-          exampleAnswer={exampleAnswer}
+          question={skippedQA?.question}
+          exampleAnswer={skippedQA?.answer}
           onSkip={onSkip}
           hasSkippedQuestion={sessionDetail?.hasSkippedQuestion}
         />

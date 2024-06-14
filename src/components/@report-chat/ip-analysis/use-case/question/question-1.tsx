@@ -79,14 +79,16 @@ Props) {
           if (status === "true" || status == true) {
             if (
               sessionDetail?.skipped_question &&
-              sessionDetail?.skipped_question?.length > 0
-              // totalQuestion - 1 === activeIndex
+              sessionDetail?.skipped_question?.length > 0 &&
+              totalQuestion - 1 === activeIndex
             ) {
               // toast.error("Answer all the skipped questions to continue.");
               dispatch(
                 setSession({
                   session_data: {
                     ...sessionDetail,
+                    step_id: 9,
+                    prev_index: activeIndex,
                     hasSkippedQuestion: true,
                   },
                 }),
@@ -97,6 +99,7 @@ Props) {
                   setSession({
                     session_data: {
                       ...sessionDetail,
+                      prev_index: activeIndex,
                       question_id: questionId,
                       step_id: 6,
                       active_index: activeIndex + 1,
@@ -118,6 +121,7 @@ Props) {
                       ...sessionDetail,
                       question_id: questionId,
                       step_id: 3,
+                      prev_index: activeIndex,
                       active_index: activeIndex + 1,
                       skipped_question: (sessionDetail?.skipped_question || []).filter(
                         (id) => id !== questionId,
@@ -140,6 +144,7 @@ Props) {
                 session_data: {
                   ...sessionDetail,
                   step_id: 8,
+                  prev_index: activeIndex,
                   user_chat: {
                     question: apiData,
                     question_id: questionId,
@@ -170,6 +175,7 @@ Props) {
       userId,
     ],
   );
+
   const onSkip = useCallback(() => {
     if (
       sessionDetail?.skipped_question &&
@@ -205,6 +211,7 @@ Props) {
 
   return (
     <>
+      CHAT
       <NewComponent
         isLoading={isloading}
         onContinue={onContinue}

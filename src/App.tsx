@@ -106,6 +106,7 @@ import { WelcomePage } from "./components/@signup-complete";
 import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
 import DraftReports from "./pages/product/draft-reports/draft-reports";
 import { EReportSectionPageIDs } from "./stores/draft";
+import ReportPage from "./pages/product/report-q&a";
 
 /**
  *
@@ -153,7 +154,7 @@ function App() {
                 path={`/${EReportSectionPageIDs.InteractionMethod}`}
                 element={<InteractionMethod />}
               />
-              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportQuestionAnswerPage />} />
+              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportPage />} />
               <Route
                 path={`/${EReportSectionPageIDs.UploadAttachments}`}
                 element={<UploadAttachmentsPage />}

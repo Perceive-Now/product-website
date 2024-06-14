@@ -22,6 +22,7 @@ interface ISessionData {
   skipped_question?: number[];
   hasSkippedQuestion?: boolean;
   completed_questions?: number[];
+  prev_index?: number;
 }
 
 interface IUserChat {
@@ -70,6 +71,7 @@ export const getSessionDetails = createAsyncThunk(
             active_index: response.data.session.session_data?.active_index,
             hasSkippedQuestion: response.data.session.session_data?.hasSkippedQuestion,
             completed_questions: response.data.session.session_data?.completed_questions,
+            prev_index: response.data.session.session_data?.prev_index,
           },
         },
       };
@@ -102,6 +104,7 @@ const updateSession = async (payload: ISession) => {
         skipped_question: payload.session_data?.skipped_question,
         hasSkippedQuestion: payload.session_data?.hasSkippedQuestion,
         completed_questions: payload.session_data?.completed_questions,
+        prev_index: payload.session_data?.prev_index,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,
