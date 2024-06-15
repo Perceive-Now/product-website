@@ -22,6 +22,8 @@ interface Props {
 const SkippedQuestion = ({ questions }: Props) => {
   const dispatch = useAppDispatch();
 
+  console.log(questions);
+
   const handleQuestionSelect = useCallback(
     (question: IQuestionUsecase) => {
       dispatch(

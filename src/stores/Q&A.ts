@@ -63,7 +63,7 @@ interface IQuestionAnswer {
 }
 
 export interface IQAState {
-  // currentPageId: TUploadAttachmentsPages;
+  currentPageId: IQAPage;
   currentStep: number;
   currentQuestionId: number;
   message: string;
@@ -88,8 +88,15 @@ export interface IQAState {
   }[];
 }
 
+export const QAPages = {
+  QA: 1,
+  Review: 2,
+} as const;
+
+export type IQAPage = (typeof QAPages)[keyof typeof QAPages];
+
 export const initialState: IQAState = {
-  // currentPageId: EUploadAttachmentsPages.UploadAttachments,
+  currentPageId: QAPages.QA,
   currentStep: 0,
   currentQuestionId: 1,
   message: "",
@@ -156,9 +163,9 @@ export const QuestionAnswerSlice = createSlice({
   initialState,
   reducers: {
     // -----------------------------------------------------------------------
-    // setCurrentPageId: (state, action: PayloadAction<TUploadAttachmentsPages>) => {
-    //   state.currentPageId = action.payload;
-    // },
+    setCurrentPageId: (state, action: PayloadAction<IQAPage>) => {
+      state.currentPageId = action.payload;
+    },
 
     // -----------------------------------------------------------------------
     incrementStep: (state) => {
@@ -195,13 +202,10 @@ export const QuestionAnswerSlice = createSlice({
         return question;
       });
     },
+    questionWithUseCases: (state, action: PayloadAction<IQuestionAnswer[]>) => {
+      state.questionsList = action.payload;
+    },
 
-    // state.questionsList = state.questionsList.map((question) => {
-    //   if (question.questionId === action.payload.questionId) {
-    //     question.question = action.payload.question;
-    //   }
-    //   return question;
-    // });
     // ----------------------------------------------------------------------
     addToSkippedQuestionList: (state, action: PayloadAction<IQuestionAnswer>) => {
       state.questionsList = state.questionsList.filter(
@@ -271,6 +275,7 @@ interface IUpdateQuestionPayload {
 //
 export const {
   reset,
+  setCurrentPageId,
   incrementStep,
   decrementStep,
   setCurrentQuestionId,
@@ -280,6 +285,7 @@ export const {
   updateNewQuestionList,
   setGenerateAnswerError,
   setGenerateAnswerSuccess,
+  questionWithUseCases,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;

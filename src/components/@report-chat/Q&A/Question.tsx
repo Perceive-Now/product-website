@@ -10,10 +10,10 @@ import {
   setCurrentQuestionId,
   setGenerateAnswerError,
   setGenerateAnswerSuccess,
+  updateQuestionList,
 } from "src/stores/Q&A";
 import { IAnswer } from "src/@types/entities/IPLandscape";
 import toast from "react-hot-toast";
-import { updateQuestionList } from "src/stores/upload-attachments";
 
 interface Props {
   question: {
@@ -40,45 +40,39 @@ const ReportChatQuestionAnswer = ({ question }: Props) => {
 
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
-  useEffect(() => {
-    if (generateAnswerError) {
-      toast.error("message");
-      dispatch(setGenerateAnswerError(false));
-      return;
-    }
+  // useEffect(() => {
+  //   if (generateAnswerError) {
+  //     toast.error("message");
+  //     dispatch(setGenerateAnswerError(false));
+  //     return;
+  //   }
 
-    if (setGenerateAnswerSuccess) {
-      if (answerResponse.status === "false") {
-        toast.error("Give a more detailed answer");
-        dispatch(
-          updateQuestionList({ questionId: currentQuestionId, question: answerResponse.question }),
-        );
-        dispatch(setGenerateAnswerSuccess(false));
-        return;
-      }
-      const nextQuestionIndex =
-        questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) + 1;
-      if (nextQuestionIndex === questionsList.length) {
-        // dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
-        dispatch(incrementStep());
-      } else {
-        dispatch(setCurrentQuestionId(questionsList[nextQuestionIndex].questionId));
-        dispatch(incrementStep());
-      }
-    }
-  }, [
-    answerResponse.question,
-    answerResponse.status,
-    currentQuestionId,
-    dispatch,
-    generateAnswerError,
-  ]);
+  //   if (setGenerateAnswerSuccess) {
+  //     if (answerResponse.status === "false") {
+  //       toast.error("Give a more detailed answer");
+  //       dispatch(
+  //         updateQuestionList({ questionId: currentQuestionId, question: answerResponse.question }),
+  //       );
+  //       dispatch(setGenerateAnswerSuccess(false));
+  //       return;
+  //     }
+  //     const nextQuestionIndex =
+  //       questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) + 1;
+  //     if (nextQuestionIndex === questionsList.length) {
+  //       // dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
+  //       dispatch(incrementStep());
+  //     } else {
+  //       dispatch(setCurrentQuestionId(questionsList[nextQuestionIndex].questionId));
+  //       dispatch(incrementStep());
+  //     }
+  //   }
+  // }, [answerResponse.question, answerResponse.status, currentQuestionId, dispatch, generateAnswerError, questionsList]);
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setLoading(true);
       try {
-        await dispatch(
+        const res: any = await dispatch(
           generateQuestionAnswer({
             useCaseId: "", // Replace with actual value or state
             requirementGatheringId: requirementGatheringId,
@@ -87,13 +81,43 @@ const ReportChatQuestionAnswer = ({ question }: Props) => {
             answer: value.answer || "",
           }),
         );
-
         setLoading(false);
+
+        if (setGenerateAnswerSuccess) {
+          if (res.payload.data.status === "false") {
+            toast.error("Give a more detailed answer");
+            dispatch(
+              updateQuestionList({
+                questionId: currentQuestionId,
+                question: answerResponse.question,
+              }),
+            );
+            dispatch(setGenerateAnswerSuccess(false));
+            return;
+          }
+          const nextQuestionIndex =
+            questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) +
+            1;
+          if (nextQuestionIndex === questionsList.length) {
+            // dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
+            dispatch(incrementStep());
+          } else {
+            dispatch(setCurrentQuestionId(questionsList[nextQuestionIndex].questionId));
+            dispatch(incrementStep());
+          }
+        }
       } catch (e: any) {
         setLoading(false);
       }
     },
-    [dispatch, question.questionId, requirementGatheringId],
+    [
+      answerResponse.question,
+      currentQuestionId,
+      dispatch,
+      question.questionId,
+      questionsList,
+      requirementGatheringId,
+    ],
   );
 
   const onSkip = useCallback(() => {
