@@ -11,7 +11,7 @@ import SkippedQuestion from "./skipped-question";
 import ReportChatQuestionAnswer from "src/components/@report-chat/Q&A/Question";
 import IPReview from "src/components/@report-chat/ip-analysis/use-case/review/review";
 import { useNavigate } from "react-router-dom";
-import { questionWithUseCases, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
+import { questionWithUseCases, setCurrentQuestionId } from "src/stores/Q&A";
 
 const ReportPage = () => {
   const dispatch = useAppDispatch();
@@ -38,12 +38,11 @@ const ReportPage = () => {
     }
   }, [questionsList, useCases]);
 
-  console.log(questionWithUsecase);
-
   useEffect(() => {
     if (questionWithUsecase && questionWithUsecase?.length > 0) {
       dispatch(questionWithUseCases(questionWithUsecase as any));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const question = useMemo(
@@ -87,8 +86,9 @@ const ReportPage = () => {
   ];
 
   const onBack = useCallback(() => {
-    const prevQuestionIndex =
-      questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) - 1;
+    const prevQuestionIndex = questionsList.findIndex(
+      (questionId) => currentQuestionId === questionId.questionId,
+    );
     const QIndex = questionsList.findIndex((q) => q.questionId === currentQuestionId);
     if (QIndex === 0) {
       navigate("/interaction-method");
