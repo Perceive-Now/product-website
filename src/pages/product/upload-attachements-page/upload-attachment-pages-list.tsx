@@ -24,7 +24,7 @@ const uploadAttachmentsPages = [
     id: EUploadAttachmentsPages.NeedAdditionalAnswers,
     totalPages: 2,
     title: "Upload Attachments",
-    description: "Wait is over need additional answeres to questions",
+    description: "Wait is over need additional answers to questions",
     Component: NeedAdditionalAnswers,
   },
   {

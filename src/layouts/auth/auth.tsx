@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast";
 //
 import PageLoading from "../../components/app/pageLoading";
 
 //
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
+//
 import { getSessionDetails } from "../../stores/session";
 
 interface PathPersistRefProps {
@@ -64,10 +65,11 @@ export default function AuthLayout() {
   useEffect(() => {
     if (userDetails) {
       if (!userDetails.registration_completed) {
+        toast.error("Please provide all the necessary information to proceed.");
         navigate("/user-registration");
       }
     }
-  }, [navigate, userDetails]);
+  }, [dispatch, navigate, userDetails]);
 
   // useEffect(() => {
   //   if (pathname !== "/") {

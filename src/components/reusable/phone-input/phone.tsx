@@ -18,9 +18,7 @@ export default function PhoneNumberInput({ placeholder, register, error, value }
         countrySelectorStyleProps={{
           buttonStyle: { height: "40px" },
         }}
-        // defaultCountry="united-arab-emirates"
         placeholder={placeholder}
-        // onChange={onChange}
         value={value}
         className={classNames(
           "w-full rounded-lg placeholder:text-sm border",

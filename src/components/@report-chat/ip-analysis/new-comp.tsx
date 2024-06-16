@@ -36,7 +36,6 @@ export default function NewComponent({
     register,
     formState: { errors },
     handleSubmit,
-    reset,
     setValue,
   } = useForm({
     defaultValues: {

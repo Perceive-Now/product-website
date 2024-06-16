@@ -43,7 +43,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     username: userDetail.username || "",
     first_name: userDetail.first_name || "",
     last_name: userDetail.last_name || "",
-    phone_number: userDetail.phone_number || "",
+    phone_number: userDetail.phone_number || "N/A",
     country: userDetail.country || "",
     topics_of_interest: userDetail.topics_of_interest || "",
     company_name: userDetail.company_name || "N/A",
@@ -56,7 +56,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     // .username("Username is required")
     first_name: yup.string().trim().required("First Name is required"),
     last_name: yup.string().trim().required("Last Name is required"),
-    phone_number: yup.string().trim().required("Phone Number is required"),
+    phone_number: yup.string().trim(),
     country: yup.string(),
     company_name: yup.string().trim().required("Company is required"),
     job_position: yup.string().trim().required("Job position is required"),
@@ -205,8 +205,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                 <div className="mt-0.5">
                   <PhoneNumberInput
                     register={register("phone_number")}
-                    // type="text"
-                    value={userDetail?.phone_number || ""}
+                    value={userDetail?.phone_number || "N/A"}
                     placeholder="Phone number"
                     error={errors.phone_number}
                   />

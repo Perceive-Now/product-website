@@ -17,6 +17,7 @@ import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 
 import DefaultProgressBar from "../../../components/reusable/default-progress";
+import { reset } from "src/stores/Q&A";
 
 interface OptionMappings {
   [key: string]: string;
@@ -133,6 +134,7 @@ const UseCaseSelect = () => {
           }),
         );
       }
+      dispatch(reset());
       dispatch(
         uploadUseCases({
           userCaseIds: useCaseIds,

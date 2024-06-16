@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import * as yup from "yup";
 import Button from "../../reusable/button";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   onContinue: any;
@@ -16,6 +16,8 @@ interface Props {
   onSkip?: any;
   hasSkippedQuestion?: boolean;
   showSkip?: boolean;
+  resetForm: boolean;
+  setResetForm: (reset: boolean) => void;
 }
 
 export default function QuestionAnswerForm({
@@ -27,7 +29,11 @@ export default function QuestionAnswerForm({
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
+  resetForm,
+  setResetForm,
 }: Props) {
+  const [updatedAnswer, setUpdatedAnswer] = useState("");
+
   const formResolver = yup.object().shape({
     answer: yup.string().trim().required("Please provide your answer"),
   });
@@ -36,27 +42,33 @@ export default function QuestionAnswerForm({
     register,
     formState: { errors },
     handleSubmit,
-    reset,
     setValue,
+    reset,
   } = useForm({
     defaultValues: {
-      answer: answer,
+      answer: updatedAnswer,
     },
     resolver: yupResolver(formResolver),
     mode: "onBlur",
   });
+
+  useEffect(() => {
+    setUpdatedAnswer(answer || "");
+    setValue("answer", answer || "");
+  }, [answer, setValue]);
   //
   const useExample = useCallback(() => {
     setValue("answer", exampleAnswer); // Update the form value
   }, [exampleAnswer, setValue]);
 
-  useEffect(() => {
-    if (!isLoading) {
-      reset();
-    }
-  }, [isLoading, reset]);
-
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
+
+  useEffect(() => {
+    if (resetForm) {
+      reset();
+      setResetForm(false);
+    }
+  });
 
   return (
     <div className="">

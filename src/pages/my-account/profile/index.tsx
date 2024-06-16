@@ -190,7 +190,7 @@ const UserProfile = () => {
                 {ProfilesData.map((profile, idx) => (
                   <div key={idx * 79} className="flex items-center gap-[60px] text-secondary-800">
                     <div className="w-[80px]">{profile.label}</div>
-                    <div>{profile.value}</div>
+                    <div>{profile.value || "N/A"}</div>
                   </div>
                 ))}
                 <div className="flex items-center justify-end">

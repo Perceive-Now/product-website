@@ -4,7 +4,6 @@ import classNames from "classnames";
 //
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 //
-import IPStepper from "src/components/@report-chat/ip-analysis/stepper";
 //
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 //
@@ -14,10 +13,14 @@ import IPReview from "src/components/@report-chat/ip-analysis/use-case/review/re
 //
 import {
   QAPages,
+  decrementStep,
   questionWithUseCases,
   setCurrentPageId,
   setCurrentQuestionId,
 } from "src/stores/Q&A";
+
+import DetailQAProgressBar from "src/components/@report-chat/Q&A/progress-bar";
+import EditQuestionAnswer from "src/components/@report-chat/Q&A/edit-Q&A";
 
 /**
  *
@@ -71,7 +74,7 @@ const ReportPage = () => {
       },
     [currentQuestionId, questionWithUsecase],
   );
-
+  //
   const QAPagesList = [
     {
       id: 1,
@@ -90,21 +93,30 @@ const ReportPage = () => {
       description: "",
       Component: <IPReview />,
     },
+    {
+      id: 3,
+      title: "",
+      description: "",
+      Component: <EditQuestionAnswer />,
+    },
   ];
 
   const onBack = useCallback(() => {
-    const prevQuestionIndex = questionsList.findIndex(
+    const prevQuestionIndex = questionWithUsecase?.findIndex(
       (questionId) => currentQuestionId === questionId.questionId,
     );
-    const QIndex = questionsList.findIndex((q) => q.questionId === currentQuestionId);
-    if (QIndex === 0) {
+    const QIndex = questionWithUsecase?.findIndex((q) => q.questionId === currentQuestionId);
+    if (currentPageId === 3) {
+      dispatch(setCurrentPageId(QAPages.Review));
+    } else if (QIndex === 0) {
       navigate("/interaction-method");
     } else if (currentPageId === 2) {
       dispatch(setCurrentPageId(QAPages.QA));
     } else {
-      dispatch(setCurrentQuestionId(prevQuestionIndex));
+      dispatch(setCurrentQuestionId(prevQuestionIndex || 0));
+      dispatch(decrementStep());
     }
-  }, [currentPageId, currentQuestionId, dispatch, navigate, questionsList]);
+  }, [currentPageId, currentQuestionId, dispatch, navigate, questionWithUsecase]);
 
   return (
     <div className="w-full">
@@ -113,7 +125,10 @@ const ReportPage = () => {
       </button>
       <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
       <div className="w-full overflow-hidden">
-        <IPStepper steps={questionWithUsecase || ([] as any)} activeStep={currentQuestionId} />
+        <DetailQAProgressBar
+          questionWithUsecase={questionWithUsecase || ([] as any)}
+          QAPagesList={QAPagesList}
+        />
       </div>
       <div className="flex mt-2.5 justify-between gap-8">
         <div
@@ -135,9 +150,11 @@ const ReportPage = () => {
             ))}
           </div>
         </div>
-        <div className="flex-shrink-0 2xl:w-[300px]">
-          {<SkippedQuestion questions={skippedQuestionList || []} />}
-        </div>
+        {currentPageId !== 2 && (
+          <div className="flex-shrink-0 2xl:w-[300px]">
+            {<SkippedQuestion questions={skippedQuestionList || []} />}
+          </div>
+        )}
       </div>
     </div>
   );

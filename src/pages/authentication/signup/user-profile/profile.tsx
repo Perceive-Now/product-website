@@ -89,7 +89,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     username: yup.string().trim().required("Username is required"),
     first_name: yup.string().trim().required("First Name is required"),
     last_name: yup.string().trim().required("Last Name is required"),
-    phone_number: yup.string().trim().required("Phone Number is required"),
+    phone_number: yup.string().trim(),
     country: yup.string(),
     company_name: yup.string().trim().required("Company is required"),
     job_position: yup.string().trim().required("Job position is required"),

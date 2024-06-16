@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
+
+import { API_URL, Auth_CODE } from "src/utils/constants";
+import axiosInstance from "src/utils/axios";
 
 import ReviewQuestionAnswer from "./review-answer-question";
 
@@ -12,16 +16,18 @@ import { questionList } from "../../../../../pages/product/report-q&a/_question"
 
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
-import { setChat } from "../../../../../stores/chat";
 import { setSession } from "../../../../../stores/session";
-import axiosInstance from "src/utils/axios";
-import { API_URL, Auth_CODE } from "src/utils/constants";
-import { useNavigate } from "react-router-dom";
+
+import { QAPages, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
+
 interface IPaymentIntent {
   payment_intent_id: string;
   clientSecret: string;
 }
 
+/**
+ *
+ */
 export default function IPReview() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -35,12 +41,10 @@ export default function IPReview() {
 
   const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
 
+  console.log(ItemId);
+
   const user_id = jsCookie.get("user_id") ?? "";
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");
-
-  // const {requirementGatheringId} = useAppSelector((state)=>state.usecases)
-
-  // const session_id = jsCookie.get("session_id") ?? "";
 
   const handlePayment = useCallback(async () => {
     setPaymentLoading(true);
@@ -78,7 +82,7 @@ export default function IPReview() {
       handlePayment();
     }
   }, [handlePayment, sessionDetail?.skipped_question]);
-
+  //
   useEffect(() => {
     if (currentPageId === 2) {
       setLoading(true);
@@ -93,7 +97,7 @@ export default function IPReview() {
         });
     }
   }, [currentPageId, requirementGatheringId, user_id]);
-
+  //
   const mergedData = userChats?.map((chat) => {
     const question = questionList.find((q) => q.questionId == chat.question_id);
     return {
@@ -103,21 +107,13 @@ export default function IPReview() {
       // You can include other properties from 'questionList' as needed
     };
   });
-
+  //
   const onEdit = useCallback(
     (chat: any) => {
-      dispatch(
-        setSession({
-          session_data: {
-            ...sessionDetail,
-            step_id: 7,
-            user_chat: chat,
-          },
-        }),
-      );
-      dispatch(setChat(chat));
+      dispatch(setCurrentQuestionId(Number(chat.question_id)));
+      dispatch(setCurrentPageId(QAPages.edit));
     },
-    [dispatch, sessionDetail],
+    [dispatch],
   );
 
   return (

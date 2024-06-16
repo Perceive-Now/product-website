@@ -91,6 +91,7 @@ export interface IQAState {
 export const QAPages = {
   QA: 1,
   Review: 2,
+  edit: 3,
 } as const;
 
 export type IQAPage = (typeof QAPages)[keyof typeof QAPages];

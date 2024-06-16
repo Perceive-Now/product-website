@@ -35,12 +35,11 @@ interface Props {
 const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const [resetForm, setResetForm] = useState(false);
 
   const userId = jsCookie.get("user_id");
 
-  const { currentQuestionId, questionsList, skippedQuestionList } = useAppSelector(
-    (state) => state.QA,
-  );
+  const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
 
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
@@ -57,6 +56,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         );
         const new_question = res.data.question;
         setLoading(false);
+        setResetForm(true);
 
         if (res.data.status === "false") {
           toast.error("Give a more detailed answer");
@@ -76,13 +76,15 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
             }),
           );
           const nextQuestionIndex =
-            questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) +
-            1;
+            questionWithUsecase.findIndex(
+              (questionId) => currentQuestionId === questionId.questionId,
+            ) + 1;
+
           if (nextQuestionIndex === questionWithUsecase.length) {
             dispatch(setCurrentPageId(QAPages.Review));
             dispatch(incrementStep());
           } else {
-            dispatch(setCurrentQuestionId(questionsList[nextQuestionIndex].questionId));
+            dispatch(setCurrentQuestionId(questionWithUsecase[nextQuestionIndex].questionId));
             dispatch(incrementStep());
           }
         }
@@ -94,8 +96,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       currentQuestionId,
       dispatch,
       question.questionId,
-      questionWithUsecase.length,
-      questionsList,
+      questionWithUsecase,
       requirementGatheringId,
       userId,
     ],
@@ -113,9 +114,10 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       }),
     );
     const nextQuestionIndex =
-      questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) + 1;
+      questionWithUsecase.findIndex((questionId) => currentQuestionId === questionId.questionId) +
+      1;
 
-    const nextQuestionId = questionsList[nextQuestionIndex].questionId;
+    const nextQuestionId = questionWithUsecase[nextQuestionIndex].questionId;
     dispatch(setCurrentQuestionId(nextQuestionId));
   }, [
     currentQuestionId,
@@ -125,7 +127,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     question.questionId,
     question.useCaseId,
     question.usecase,
-    questionsList,
+    questionWithUsecase,
   ]);
 
   return (
@@ -134,9 +136,11 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         onContinue={onContinue}
         question={question?.question || ""}
         exampleAnswer={question?.exampleAnswer || ""}
-        answer={question?.answer && question.answer}
+        answer={question.answer}
         isLoading={loading}
         onSkip={onSkip}
+        setResetForm={setResetForm}
+        resetForm={resetForm}
         hasSkippedQuestion={
           skippedQuestionList.length > 0 &&
           questionWithUsecase[questionWithUsecase.length - 1]?.questionId === currentQuestionId
