@@ -64,11 +64,11 @@ export default function SkippedQuestionAnswer({
     [sessionDetail?.user_chat?.question_id],
   );
 
-  const notCompletedQuestionList = questionWithUsecase.find(
-    (q) => !sessionDetail?.completed_questions?.includes(q.questionId),
-  );
+  // const notCompletedQuestionList = questionWithUsecase.find(
+  //   (q) => !sessionDetail?.completed_questions?.includes(q.questionId),
+  // );
 
-  console.log(notCompletedQuestionList);
+  // console.log(notCompletedQuestionList);
 
   const skippedQA = useMemo(
     () =>
@@ -80,7 +80,7 @@ export default function SkippedQuestionAnswer({
     [activeIndex, questionWithUsecase, questionId],
   );
 
-  const totalQuestion = questionWithUsecase.length;
+  // const totalQuestion = questionWithUsecase.length;
 
   const onContinue = useCallback(
     async (value: IAnswer) => {

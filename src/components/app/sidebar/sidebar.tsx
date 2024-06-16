@@ -16,6 +16,7 @@ import SideBarToggleIcon from "../../icons/side-bar/toggle";
 
 import { setSession } from "../../../stores/session";
 import ToolTip from "src/components/reusable/tool-tip";
+import KnowNowHistory from "./chat-history";
 
 interface Props {
   show?: boolean;
@@ -126,9 +127,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             </ToolTip>
           </div>
           <div className="space-y-1 mt-1">
-            {/* {isChat && (
-              <>{open && <KnowNowHistory />}</>
-            )} */}
+            {isChat && <>{open && <KnowNowHistory />}</>}
             {sidebarItems.map((item, index) => (
               <div key={index}>
                 {!item.children && (
