@@ -9,7 +9,8 @@ const initialState: IDetail = {
   chat: {
     question: undefined,
     answer: undefined,
-    questionId: undefined,
+    question_id: undefined,
+    exampleAnswer: undefined,
   },
   question: {
     question: undefined,
@@ -47,7 +48,8 @@ interface IQuestion {
 
 interface IChat {
   question?: string;
-  questionId?: string;
-  sessionId?: string;
+  question_id?: string;
+  session_id?: string;
   answer?: string;
+  exampleAnswer?: string;
 }

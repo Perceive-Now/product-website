@@ -1,38 +1,52 @@
-import { useState, Fragment, FunctionComponent, useEffect } from "react";
+import { useState, FunctionComponent, useEffect, useCallback } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
 
 //
-import PerceiveLogo from "../../../assets/images/logo.svg";
-
-//
 import { sidebarItems, ISidebarListItem } from "./_data";
 
-// Redux
-// import { Dialog } from "@headlessui/react";
-// import SidebarTransition from "./sidebarTransition";
-import KnowNowHistory from "./chat-history";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { logoutUser } from "../../../stores/auth";
 //
 
-import { ChevronDown, ChevronUp, LogoutIcon } from "../../icons";
-import ToggleBarIcon from "../../icons/sidenav/bars";
+import { LogoutIcon, SettingsIcon } from "../../icons";
 import UserIcon from "../../reusable/userIcon";
+import SideBarToggleIcon from "../../icons/side-bar/toggle";
 
-/**
- *
- */
+import { setSession } from "../../../stores/session";
+import ToolTip from "src/components/reusable/tool-tip";
+
 interface Props {
   show?: boolean;
   handleShow?: () => void;
 }
+interface INavLinkItemProps extends ISidebarListItem {
+  value: string;
+  open: boolean;
+}
+
+const SidebarBottom = [
+  {
+    title: "Settings",
+    href: "/setting",
+    icon: SettingsIcon,
+  },
+  {
+    title: "Logout",
+    icon: LogoutIcon,
+  },
+];
+
+/**
+ *
+ */
+
 export const AppSidebar: FunctionComponent<Props> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
 
   const { pathname } = useLocation();
@@ -42,6 +56,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   useEffect(() => {
     if (pathname.includes("/know-now")) {
       setIsChat(true);
+    } else {
+      setIsChat(false);
     }
   }, [pathname]);
 
@@ -49,185 +65,138 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   // const titles = pathname?.split("/").slice(1);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    sidebarItems.map((itm) => itm.key),
-  );
+  // const [expandedGroups, setExpandedGroups] = useState<string[]>(
+  //   sidebarItems.map((itm) => itm.key),
+  // );
 
-  const [expandedSubGroups, setExpandedSubGrups] = useState<string[]>([]);
-
-  //
-  const updateActiveGroup = (group: string) => {
-    if (expandedGroups.includes(group)) {
-      setExpandedGroups(expandedGroups.filter((g) => g !== group));
-    } else {
-      setExpandedGroups([...expandedGroups, group]);
-    }
-  };
+  // const [expandedSubGroups, setExpandedSubGrups] = useState<string[]>([]);
 
   //
-  const updateActiveSubGroup = (group: string) => {
-    if (expandedSubGroups.includes(group)) {
-      setExpandedSubGrups(expandedSubGroups.filter((g) => g !== group));
-    } else {
-      setExpandedSubGrups([...expandedSubGroups, group]);
-    }
-  };
+  // const updateActiveGroup = (group: string) => {
+  //   if (expandedGroups.includes(group)) {
+  //     setExpandedGroups(expandedGroups.filter((g) => g !== group));
+  //   } else {
+  //     setExpandedGroups([...expandedGroups, group]);
+  //   }
+  // };
+
+  //
+  // const updateActiveSubGroup = (group: string) => {
+  //   if (expandedSubGroups.includes(group)) {
+  //     setExpandedSubGrups(expandedSubGroups.filter((g) => g !== group));
+  //   } else {
+  //     setExpandedSubGrups([...expandedSubGroups, group]);
+  //   }
+  // };
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
+    dispatch(setSession({ session_data: {} }));
 
-    await dispatch(logoutUser()).unwrap();
+    await dispatch(logoutUser());
     navigate("/login");
-
     setIsLoggingOut(false);
   };
 
   return (
-    // <div className="w-[256px] h-full flex flex-col justify-between my-auto">
-    <div>
-      {/* <SidebarTransition show={show} handleShow={handleShow}> */}
+    <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>
       <div
         className={classNames(
-          // open ? "w-[270px]" : "w-[270px]",
-          " bg-appGray-100 shadow  overflow-auto px-2.5 min-h-screen fixed flex flex-col justify-between w-[270px]",
+          "bg-appGray-100 pt-1",
+          open ? "w-[220px]" : "w-[56px] items-center duration-300 ",
+          "shadow fixed flex flex-col justify-between  rounded h-[calc(100vh-80px)]",
         )}
       >
         <div>
-          <div className="flex justify-center items-center py-3 gap-2 bg-appGray-100">
-            {/* {open && ( */}
-            <button type="button" className="pt-1" onClick={() => setOpen(!open)}>
-              <ToggleBarIcon />
-            </button>
-            {/* )} */}
-            <Link to="/">
-              <img src={PerceiveLogo} alt="PerceiveNow logo" className="-mt-0.5" />
-            </Link>
-          </div>
-          <div className="space-y-2.5">
-            {/* <Link to={"/know-now/ip-analysis"}>
-            <div
-              className={classNames(
-                pathname.includes("/know-now")
-                  ? "bg-primary-900 text-white"
-                  : "bg-white text-secondary-800",
-                "border border-appGray-600 text-sm  px-2.5 py-1 rounded-md font-semibold ",
-              )}
-            >
-              Start new conversation
-            </div>
-          </Link> */}
-            {isChat ? (
-              <KnowNowHistory />
-            ) : (
-              <>
-                {sidebarItems.map((item, index) => (
-                  <div key={index}>
-                    {item.children && (
-                      <div>
-                        <div
-                          className="px-2.5 py-2 flex items-center cursor-pointer"
-                          onClick={() => updateActiveGroup(item.key)}
-                        >
-                          <div className="mr-1">
-                            {expandedGroups.includes(item.key) && <ChevronUp />}
-                            {!expandedGroups.includes(item.key) && <ChevronDown />}
-                          </div>
-                          <span className="text-lg">{item.title}</span>
-                        </div>
-                        {expandedGroups.includes(item.key) && (
-                          <div>
-                            {item.children?.map((child, jndex) => (
-                              <div key={jndex} className="">
-                                {child.children && (
-                                  <Fragment>
-                                    <div
-                                      className="px-2 py-2 flex items-center cursor-pointer ml-2"
-                                      onClick={() => updateActiveSubGroup(child.key)}
-                                    >
-                                      <div className="mr-1">
-                                        {expandedSubGroups.includes(child.key) && <ChevronUp />}
-                                        {!expandedSubGroups.includes(child.key) && <ChevronDown />}
-                                      </div>
-                                      <span className="text-lg">{child.title}</span>
-                                    </div>
-
-                                    {expandedSubGroups.includes(child.key) &&
-                                      child.children.map((subChild, kndex) => (
-                                        <div className="ml-3" key={kndex}>
-                                          <NavLinkItem
-                                            key={`sub-content-${kndex}`}
-                                            to={subChild.to}
-                                            // icon={subChild.icon}
-                                            title={subChild.title}
-                                            isTopLevel={false}
-                                            value={subChild.key}
-                                          />
-                                        </div>
-                                      ))}
-                                  </Fragment>
-                                )}
-
-                                {!child.children && (
-                                  <NavLinkItem
-                                    key={`main-content-${jndex}`}
-                                    to={child.to}
-                                    // icon={child.icon}
-                                    title={child.title}
-                                    isTopLevel={false}
-                                    value={child.key}
-                                  />
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {!item.children && (
-                      <NavLinkItem
-                        key={`top-${index}`}
-                        to={item.to}
-                        // icon={item.icon}
-                        title={item.title}
-                        isTopLevel={true}
-                        value={item.key}
-                      />
-                    )}
-                  </div>
-                ))}
-              </>
+          <div
+            className={classNames(
+              "flex items-center gap-2",
+              open ? "justify-end" : "justify-start",
             )}
+          >
+            <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+              <button
+                type="button"
+                className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+                onClick={() => setOpen(!open)}
+              >
+                <SideBarToggleIcon className={classNames(open ? "rotate-180" : "")} />
+              </button>
+            </ToolTip>
+          </div>
+          <div className="space-y-1 mt-1">
+            {/* {isChat && (
+              <>{open && <KnowNowHistory />}</>
+            )} */}
+            {sidebarItems.map((item, index) => (
+              <div key={index}>
+                {!item.children && (
+                  <NavLinkItem
+                    key={`top-${index}`}
+                    to={item.to}
+                    icon={item.icon}
+                    title={item.title}
+                    open={open}
+                    value={item.key}
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
         {/* sidebar bottom */}
-        <div className="pb-3 text-gray-900 space-y-1">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <UserIcon
-                first_name={userDetail?.first_name || ""}
-                last_name={userDetail?.last_name || ""}
-                profile_photo={userDetail?.profile_photo}
-              />
-              <span>{userDetail?.full_name}</span>
-            </div>
-            <button type="button" onClick={handleLogout}>
-              <LogoutIcon />
-            </button>
-          </div>
-          <div className="flex flex-col">
+        <div className="pb-3 text-gray-900 space-y-2 ">
+          <div className="space-y-1 px-2.5">
             {SidebarBottom.map((s, idx) => (
-              <Link
-                to={s.href}
-                key={idx * 29}
-                className={classNames(
-                  "py-1  rounded px-2",
-                  s.href === pathname ? "bg-primary-900 text-white" : "text-gray-900",
+              <div key={idx * 29}>
+                {s.href ? (
+                  <Link
+                    to={s.href}
+                    className={classNames(
+                      "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
+                    {open && <>{s.title}</>}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className={classNames(
+                      "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
+                    {open && <>{s.title}</>}
+                  </button>
                 )}
-              >
-                {s.title}
-              </Link>
+              </div>
             ))}
+          </div>
+          <div className="bg-appGray-200 h-[1px] w-full" />
+          <div className="flex items-center justify-between w-full px-2.5">
+            <Link to="/profile" className="flex items-center gap-1 w-full">
+              <div className="shrink-0">
+                <UserIcon
+                  first_name={userDetail?.first_name || ""}
+                  last_name={userDetail?.last_name || ""}
+                  profile_photo={userDetail?.profile_photo}
+                />
+              </div>
+              {open && (
+                <p className="line-clamp-1 w-14 text-secondary-800">{userDetail?.full_name}</p>
+              )}
+            </Link>
           </div>
         </div>
       </div>
@@ -236,60 +205,43 @@ export const AppSidebar: FunctionComponent<Props> = () => {
 };
 
 function NavLinkItem(props: INavLinkItemProps) {
-  const { pathname } = useLocation();
-  // const match = props.to ? pathname.includes(props.key) : false;
-  const titles = pathname?.split("/").slice(1);
-  const hasKey = titles.includes(props.value);
+  const dispatch = useAppDispatch();
+
+  const handleClick = useCallback(() => {
+    if (props.value === "new-report") {
+      // dispatch(getNewSession());
+      dispatch(
+        setSession({
+          session_data: {},
+        }),
+      );
+    }
+  }, [dispatch, props.value]);
 
   return (
-    <NavLink to={props.to ?? ""} end>
-      {({ isActive }) => (
-        <div
-          className={classNames(
-            "flex items-center py-1 text-gray-900 px-2.5 rounded",
-            // props.isTopLevel ? "pl-2" : "pl-4",
-            isActive || hasKey ? "bg-primary-900" : "hover:bg-primary-",
-          )}
-        >
-          {/* {props.icon && (
+    <NavLink to={props.to ?? ""} end onClick={handleClick}>
+      {/* {({ isActive }) => ( */}
+      <div className={classNames("flex items-center gap-0.5", props.open && " px-2.5 ")}>
+        {props.icon && (
+          <ToolTip title={props.title} placement="right">
             <div
               className={classNames(
-                "mr-1 text-gray-600 fill-gray-600",
-
-                {
-                  "text-white": isActive || hasKey,
-                },
+                "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
               )}
             >
-              {props.icon}
+              <props.icon className="text-primary-900" />
             </div>
-          )} */}
+          </ToolTip>
+        )}
+        {props.open && (
           <span
-            className={classNames(
-              "flex items-center text-sm font-semibold",
-              isActive || hasKey ? "text-white " : "text-gray-900",
-            )}
+            className={classNames("flex items-center text-sm font-semibold text-secondary-800")}
           >
             {props.title}
           </span>
-        </div>
-      )}
+        )}
+      </div>
+      {/* )} */}
     </NavLink>
   );
 }
-
-interface INavLinkItemProps extends ISidebarListItem {
-  isTopLevel: boolean;
-  value: string;
-}
-
-const SidebarBottom = [
-  {
-    title: "Profile",
-    href: "/profile",
-  },
-  // {
-  //   title: "Settings",
-  //   href: "/setting"
-  // }
-];

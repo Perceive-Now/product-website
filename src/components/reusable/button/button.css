@@ -15,9 +15,12 @@ button {
   @apply bg-white border text-secondary-800 border-appGray-600 hover:border-appGray-400 hover:text-appGray-600 focus:border-appGray-600 focus:text-appGray-600 disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed;
 }
 
+.auth-button {
+  @apply bg-primary-500 text-white  focus:bg-primary-800 focus:text-white disabled:cursor-not-allowed disabled:bg-primary-500/50;
+}
 
 .optional-button {
-  @apply bg-secondary-500 text-white hover:bg-secondary-400 disabled:hover:bg-secondary-500 disabled:text-gray-700 disabled:cursor-not-allowed;
+  @apply bg-secondary-500  hover:bg-secondary-400 disabled:hover:bg-secondary-500 disabled:text-gray-700 disabled:cursor-not-allowed;
 }
 
 .full-width {

@@ -1,6 +1,8 @@
 // import { Link } from "react-router-dom";
 
+import classNames from "classnames";
 import CopyRightIcon from "../../icons/common/copyright";
+import { Link } from "react-router-dom";
 
 //
 const footerLinks: IFooterLink[] = [
@@ -29,8 +31,12 @@ export default function AppFooter() {
 
   //
   return (
-    <div className="px-4 flex flex-col sm:flex-row  justify-center items-center w-full">
-      {/* <div className="flex flex-col md:flex-row gap-x-4 font-normal text-sm">
+    <div
+      className={classNames(
+        "px-4 flex flex-col sm:flex-row justify-between items-center w-full relative bottom-0",
+      )}
+    >
+      <div className="flex flex-col md:flex-row gap-x-4 font-normal text-sm">
         <Link to="/help" className="text-primary-900">
           Help
         </Link>
@@ -40,10 +46,15 @@ export default function AppFooter() {
         <Link to="#" className="text-primary-900">
           FAQs
         </Link>
-      </div> */}
+      </div>
 
       <div className="flex flex-col justify-center md:flex-row gap-x-3">
-        <p className="text-primary-900 flex items-center gap-[2px]">
+        <p
+          className={classNames(
+            "flex items-center gap-[2px] text-primary-900",
+            // pathname === "/" ? "text-white" : "text-primary-900",
+          )}
+        >
           <CopyRightIcon /> {currentYear}
         </p>
 
@@ -53,7 +64,10 @@ export default function AppFooter() {
             href={`${websiteUrl}/${item.url}`}
             target="_blank"
             rel="noreferrer"
-            className="text-primary-900 hover:underline"
+            className={classNames(
+              " hover:underline text-primary-900",
+              // pathname === "/" ? "text-white" : "text-primary-900",
+            )}
           >
             {item.title}
           </a>

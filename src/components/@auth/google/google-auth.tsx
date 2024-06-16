@@ -1,12 +1,14 @@
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import axios from "axios";
+
 import { useAppDispatch } from "../../../hooks/redux";
 import { loginUser, signUpUser } from "../../../stores/auth";
-import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+
 import Button from "../../reusable/button";
 import GoogleIcon from "../../icons/social/google";
-import axios from "axios";
 
 interface IGoogleDetail {
   email: string;
@@ -28,7 +30,6 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
   const [searchParams] = useSearchParams();
 
   const callbackPath = searchParams.get("callback_path");
-  // const [userDetail, setUserDetail] = useState<IGoogleDetail>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const login = useGoogleLogin({
@@ -41,11 +42,11 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
           },
         });
         const userDetail = res.data as IGoogleDetail;
-        // setUserDetail(res.data)
+
         const params = {
-          username: "user",
+          username: userDetail?.email || "",
           email: userDetail?.email || "",
-          password: "pasword",
+          password: "",
           first_name: userDetail?.given_name,
           last_name: userDetail?.family_name,
           company_id: "",
@@ -56,24 +57,33 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
           about_me: "",
           topics_of_interest: "",
         };
-        // App API
-        const apiLogin = await dispatch(loginUser(params)).unwrap();
-        // const response = await dispatch(signUpUser(params)).unwrap();
-        setIsSubmitting(false);
-        if (apiLogin.success) {
-          if (callbackPath) {
-            navigate(callbackPath);
-          } else {
-            if (type === "signin") {
+
+        if (type === "signin") {
+          const apiLogin = await dispatch(loginUser(params)).unwrap();
+
+          if (apiLogin.success) {
+            if (callbackPath) {
+              navigate(callbackPath);
+            } else {
               navigate("/");
             }
-            if (type === "signup") {
+          } else {
+            toast.error(apiLogin.message);
+          }
+        }
+        if (type === "signup") {
+          const response = await dispatch(signUpUser(params)).unwrap();
+          if (response.success) {
+            if (callbackPath) {
+              navigate(callbackPath);
+            } else {
               navigate("/user-registration");
             }
+          } else {
+            toast.error(response.message);
           }
-        } else {
-          toast.error(apiLogin.message);
         }
+        setIsSubmitting(false);
       } catch (error: unknown) {
         toast.error("Google authentication is failed");
         setIsSubmitting(false);

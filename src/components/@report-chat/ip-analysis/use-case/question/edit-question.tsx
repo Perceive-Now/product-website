@@ -1,6 +1,6 @@
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
@@ -10,84 +10,145 @@ import axiosInstance from "../../../../../utils/axios";
 
 import NewComponent from "../../new-comp";
 import { setChat } from "../../../../../stores/chat";
+import { setSession } from "../../../../../stores/session";
+
 interface Props {
   changeActiveStep: (steps: number) => void;
   // activeStep: number;
-  exampleAnswer: string;
+  exampleAnswer?: string;
 }
 
 /**NewQuestion
  *
  */
 
-export default function EditQuestion({ changeActiveStep, exampleAnswer }: Props) {
+export default function EditQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
-  const chatDetail = useAppSelector((state) => state.chat.chat);
+
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
+  //
+  const userId = jsCookie.get("user_id");
+  // const sessionId = jsCookie.get("session_id");
 
   const [isloading, setIsLoading] = useState(false);
 
-  const chatId = jsCookie.get("chatId");
-  const questionId = Number(jsCookie.get("questionId"));
-
-  useEffect(() => {
-    jsCookie.set("chatId", chatId || "");
-  }, [chatId]);
-
-  const apiQuestion = useAppSelector((state) => state.chat.chat.question) ?? "";
-
   //
-  const [question, setQuestion] = useState("");
-  //
-  const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
-
-  useEffect(() => {
-    setQuestion(apiQuestion);
-  }, [apiQuestion]);
+  const answer = useMemo(
+    () => sessionDetail?.user_chat?.answer || "",
+    [sessionDetail?.user_chat?.answer],
+  );
+  const exampleAnswer = useMemo(
+    () => sessionDetail?.user_chat?.example_answer,
+    [sessionDetail?.user_chat?.example_answer],
+  );
+  const question = useMemo(
+    () => sessionDetail?.user_chat?.question,
+    [sessionDetail?.user_chat?.question],
+  );
+  const questionId = useMemo(
+    () => sessionDetail?.user_chat?.question_id,
+    [sessionDetail?.user_chat?.question_id],
+  );
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
+
       try {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            requirementGatheringId,
+          )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
-        const status = response.data.status;
+        const status = response.status;
+        const statusText = response.statusText;
+
+        const message = response.data.message;
+
+        if (status === undefined) {
+          toast.error("Something went wrong");
+        }
 
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {
-          if (status === "true" || status == true) {
-            jsCookie.set("questionId", String(questionId + 1));
+          if (status === 200 || statusText === "OK") {
+            toast.success(message || "Answer edited successfully");
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  step_id: 6,
+                  skipped_question: (sessionDetail?.skipped_question || []).filter(
+                    (id) => id !== questionId,
+                  ),
+                  user_chat: {
+                    answer: answer,
+                  },
+                },
+              }),
+            );
             changeActiveStep(6);
+          } else if (status === undefined) {
+            toast.error("Something went wrong");
           } else {
-            jsCookie.set("chatId", chatId || "");
-            jsCookie.set("questionId", String(questionId));
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  step_id: 7,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                    example_answer: exampleAnswer,
+                    answer: answer,
+                  },
+                },
+              }),
+            );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
+            changeActiveStep(7);
           }
         }
-
         setIsLoading(false);
       } catch (error: any) {
         setIsLoading(false);
         toast.error(error.message);
       }
     },
-    [changeActiveStep, chatId, dispatch, questionId, sessionId, userId],
+    [
+      answer,
+      changeActiveStep,
+      dispatch,
+      exampleAnswer,
+      questionId,
+      requirementGatheringId,
+      sessionDetail,
+      userId,
+    ],
   );
 
   return (
-    <NewComponent
-      isLoading={isloading}
-      onContinue={onContinue}
-      question={question}
-      exampleAnswer={exampleAnswer}
-      answer={chatDetail.answer}
-    />
+    <>
+      {question && exampleAnswer && answer && (
+        <NewComponent
+          isLoading={isloading}
+          onContinue={onContinue}
+          question={question}
+          exampleAnswer={exampleAnswer}
+          answer={answer}
+          showSkip={false}
+        />
+      )}
+    </>
   );
 }

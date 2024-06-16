@@ -2,81 +2,29 @@ import type { ReactElement } from "react";
 
 //
 
-import { DashboardIcon } from "../../icons";
-
-// import HookIcon from "../../icons/sidenav/hook";
-// import DOcumentIcon from "../../icons/miscs/document";
-// import TechnologyIcon from "../../icons/miscs/Technology";
-// import BulbIcon from "../../icons/miscs/Bulb";
-// import PortfolioIcon from "../../icons/sidenav/portfolio";
-// import ClaimIcon from "../../icons/sidenav/claim";
-// import ChatIcon from "../../icons/sidenav/chat";
-// import InventorIcon from "../../icons/sidenav/inventors";
-// import PortfolioIcon from "../../icons/sidenav/portfolio";
-// import ClaimIcon from "../../icons/sidenav/claim";
-// import SummarizeIcon from "../../icons/sidenav/summarize";
+import NewChatIcon from "../../icons/side-bar/new-chat";
+import NewReportIcon from "../../icons/side-bar/new-report";
+import DraftIcon from "../../icons/side-bar/draft-icon";
 
 const sidebarItems: ISidebarListItem[] = [
   {
-    title: "My Reports",
-    key: "generate",
-    icon: <DashboardIcon />,
-    to: "/my-reports",
+    title: "New Conversation",
+    key: "new-chat",
+    icon: NewChatIcon,
+    to: "/know-now/market-intelligence",
   },
-  // {
-  //   title: "User info",
-  //   key: "user-info",
-  //   icon: <PortfolioIcon />,
-  //   to: "/info",
-  // },
-  // {
-  //   title: "Freedom to operate",
-  //   key: "freedom-to-operate",
-  //   icon: <HookIcon />,
-  //   to: "/patents",
-  // },
-  // {
-  //   title: "Report",
-  //   key: "report",
-  //   icon: <BulbIcon />,
-  //   to: "/reports",
-  // },
-  // {
-  //   title: "Settings",
-  //   key: "setting",
-  //   icon: <PortfolioIcon />,
-  //   to: "/setting",
-  // },
-  // {
-  //   title: "M&A Licensing",
-  //   key: "m&a-licensing",
-  //   icon: <DOcumentIcon />,
-  //   to: "/m&a-licensing",
-  // },
-  // {
-  //   title: "Technology landscaping",
-  //   key: "technology-landscaping",
-  //   icon: <TechnologyIcon />,
-  //   to: "/b",
-  // },
-  // {
-  //   title: "Competitive intelligence",
-  //   key: "competitive-intelligence",
-  //   icon: <BulbIcon />,
-  //   to: "/c",
-  // },
-  // {
-  //   title: "Infringement analysis",
-  //   icon: <PortfolioIcon />,
-  //   key: "infringement-analysis",
-  //   to: "/infringement-analysis",
-  // },
-  // {
-  //   title: "Database Search",
-  //   icon: <ClaimIcon />,
-  //   key: "database-search",
-  //   to: "/database-search",
-  // },
+  {
+    title: "New Report",
+    key: "new-report",
+    icon: NewReportIcon,
+    to: "/new-report",
+  },
+  {
+    title: "Draft",
+    key: "draft",
+    icon: DraftIcon,
+    to: "/draft-reports",
+  },
 ];
 
 export interface ISidebarItem {
@@ -88,7 +36,7 @@ export interface ISidebarItem {
 export interface ISidebarListItem {
   title: string;
   key: string;
-  icon?: ReactElement;
+  icon?: any;
   to: string;
   children?: ISidebarListItem[];
 }

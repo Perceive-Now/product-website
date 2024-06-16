@@ -10,8 +10,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "./store";
 
 // App's global style
-import "./index.css";
+import "./styles/dot-loader.css";
 import "./styles/input.scss";
+import "./styles/typing.css";
+
+import "./index.css";
 
 // Tooltip styles
 import "react-tooltip/dist/react-tooltip.css";
@@ -43,7 +46,6 @@ const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
 root.render(
   <StrictMode>
     <Toaster position="top-right" />
-
     <BrowserRouter>
       <Provider store={store}>
         <GoogleOAuthProvider clientId={googleAPIKey || ""}>

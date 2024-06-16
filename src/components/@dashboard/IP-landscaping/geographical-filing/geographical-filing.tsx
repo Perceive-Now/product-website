@@ -11,6 +11,7 @@ import { getGeoFiling } from "../../../../utils/api/charts";
 import StatesCodes from "../../../../utils/extra/us-states-codes";
 //
 import USMap from "../../../@product/us-map";
+import GeographicalDistributionPatentKeyTakeaway from "../../../../pages/product/ip-landscaping/keytakeaways/patent-families/geographical";
 
 interface Props {
   keywords: string[];
@@ -132,62 +133,10 @@ export const GeographicalDistributionFiling: FunctionComponent<Props> = ({ keywo
         />
       }
     >
-      <div className="space-y-2 text-secondary-800 mt-4">
-        {/* <HeatMap
-          data={tree_data}
-          legendY={"Year"}
-          legentType="legend"
-        legend={[
-          {
-            anchor: "right",
-            translateX: 60,
-            translateY: -1,
-            length: 500,
-            thickness: 8,
-            direction: "column",
-            tickPosition: "after",
-            tickSize: 3,
-            tickSpacing: 4,
-            tickOverlap: false,
-            tickFormat: ">-.2s",
-            title: "Growth rate",
-            titleAlign: "end",
-            titleOffset: 8,
-          },
-        ]}
-        /> */}
+      <div className="mt-4">
         {data && <USMap data={mapData} type={"heatmap_industry"} />}
 
-        <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-        <div>
-          <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-            <li>
-              Regional Market Share of Patent Families: The concentration of patent families by
-              region, e.g., "Region A accounts for X% of global patent families, indicating a major
-              innovation hub."
-            </li>
-            <li>
-              Growth Trends in Regional Patent Family Concentrations: Year-over-year growth in
-              patent family concentrations by region, e.g., "Region B's share of global patent
-              families grew by X% in the last Y years."
-            </li>
-            <li>
-              Comparison of Urban vs. Rural Patent Family Distributions: The disparity in patent
-              family locations, suggesting, "Urban areas account for X% of patent families, compared
-              to Y% in rural areas."
-            </li>
-            <li>
-              Impact of Regulatory Changes on Geographical Distribution: Shifts in patent family
-              concentrations following major patent policy changes, indicating, "Following policy
-              change X, region C saw a Y% increase in patent family concentration."
-            </li>
-            <li>
-              International Collaboration Indicated by Patent Family Locations: Instances of
-              international patent families, with metrics like, "X% of patent families have members
-              in more than one country, indicating high levels of international collaboration."
-            </li>
-          </ul>
-        </div>
+        {data && <GeographicalDistributionPatentKeyTakeaway patentLocation={data} />}
       </div>
     </DataSection>
   );

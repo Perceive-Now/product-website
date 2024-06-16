@@ -1,6 +1,5 @@
 import { FunctionComponent } from "react";
 import classNames from "classnames";
-// import { IStep } from "../../../@types/entities/IStep";
 
 interface Props {
   steps: any[];
@@ -8,7 +7,9 @@ interface Props {
 }
 
 const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
-  const isStepComplete = (currentStep: number) => activeStep > currentStep;
+  const isStepComplete = (currentStep: number) => {
+    return activeStep >= currentStep;
+  };
 
   return (
     <>
@@ -17,9 +18,8 @@ const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
           <li
             key={idx}
             className={classNames(
-              "py-0.5 px-[10px] bg-appGray-100 w-full",
-              // (idx === 0 || idx === 1) && "hidden",
-              isStepComplete(step.questionId) && "bg-primary-800",
+              "py-0.5 px-[10px] bg-primary-900 w-full",
+              isStepComplete(idx) && "bg-secondary-500",
             )}
           ></li>
         ))}

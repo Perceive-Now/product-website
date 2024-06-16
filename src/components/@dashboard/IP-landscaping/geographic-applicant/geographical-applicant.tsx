@@ -6,6 +6,7 @@ import PageTitle from "../../../reusable/page-title";
 import { useQuery } from "@tanstack/react-query";
 import { getGeographicDistributionApplicant } from "../../../../utils/api/charts";
 import countryNames from "../../../../utils/extra/country-2-names";
+import GeographicalDistributionOfApplicantFamilyKeyTakeaways from "../../../../pages/product/ip-landscaping/keytakeaways/patent-applicants/geographical-patent/keytakeaway";
 
 interface Props {
   keywords: string[];
@@ -114,71 +115,8 @@ export const GeographicalDistributionApplicant: FunctionComponent<Props> = ({ ke
       }
     >
       <div>
-        {/* <div>
-          <HeatMap
-            data={tree_data_reverse}
-            legendY={"Year"}
-            cell="circle"
-            legentType="legend"
-          />
-        </div> */}
-        {/* <div className="italic text-[36px] text-center my-2 font-normal">VS</div> */}
-        <HeatMap
-          data={finalData}
-          legendY={"Year"}
-          legentType="legend"
-          // legend={[
-          //   {
-          //     anchor: "right",
-          //     translateX: 60,
-          //     translateY: -1,
-          //     length: 500,
-          //     thickness: 8,
-          //     direction: "column",
-          //     tickPosition: "after",
-          //     tickSize: 3,
-          //     tickSpacing: 4,
-          //     tickOverlap: false,
-          //     tickFormat: ">-.2s",
-          //     title: "Growth rate",
-          //     titleAlign: "end",
-          //     titleOffset: 8,
-          //   },
-          // ]}
-        />
-        <div className="space-y-2 text-secondary-800 mt-4">
-          <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-          <div>
-            {/* <h6 className="font-semibold text-primary-900">
-                Family A: California (100 patents), Texas (50 patents); Family B: New York (80
-                patents), Florida (70 patents)
-              </h6> */}
-            <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-              <li>
-                Top Country for Patent Applicants: "Country A accounts for X% of all patent
-                applicants, demonstrating its leading role in global innovation."
-              </li>
-              <li>
-                Rapid Growth in Applicant Numbers by Region: "Region B's number of patent applicants
-                grew by X% in the last Y years, marking it as an emerging innovation hotspot."
-              </li>
-              <li>
-                City with Highest Concentration of Applicants: "City C is home to X% of patent
-                applicants, highlighting its significance as a local innovation center."
-              </li>
-              <li>
-                Shift in Geographical Focus of Applicants: "Over the past decade, the geographical
-                focus of patent applicants shifted towards Region D, with a growth rate of X%,
-                indicating changing innovation landscapes."
-              </li>
-              <li>
-                International Diversity of Patent Applicants: "Patent applications exhibit a high
-                degree of international diversity, with applicants from over X different countries,
-                emphasizing the global nature of innovation."
-              </li>
-            </ul>
-          </div>
-        </div>
+        <HeatMap data={finalData} legendY={"Year"} legentType="legend" />
+        <GeographicalDistributionOfApplicantFamilyKeyTakeaways data={data} />
       </div>
     </DataSection>
   );

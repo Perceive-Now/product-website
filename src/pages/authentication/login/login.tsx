@@ -17,9 +17,15 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 // import { WEBSITE_URL } from "../../../utils/constants";
 
 // Store
-import { useAppDispatch } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
 import GoogleAuth from "../../../components/@auth/google";
+import { setSession } from "../../../stores/session";
+
+interface ILoginFormValues {
+  username: string;
+  password: string;
+}
 
 /**
  *
@@ -28,6 +34,9 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const session = useAppSelector((state) => state.sessionDetail.session);
+
   const callbackPath = searchParams.get("callback_path");
 
   //
@@ -35,6 +44,7 @@ export default function LoginPage() {
 
   //
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   //
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,10 +56,7 @@ export default function LoginPage() {
   };
 
   const formResolver = yup.object().shape({
-    username: yup
-      .string()
-      // .username("Username is required")
-      .required("Username is required"),
+    username: yup.string().required("Username is required"),
     password: yup.string().required("Password is required"),
   });
 
@@ -63,23 +70,33 @@ export default function LoginPage() {
 
   const handleLogin = async (values: ILoginFormValues) => {
     setIsSubmitting(true);
+    setError(false);
 
     // Login user
     const response = await dispatch(loginUser(values)).unwrap();
     if (response.success) {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            last_session_id: session?.session_id,
+          },
+        }),
+      );
       if (callbackPath) {
         navigate(callbackPath);
       } else {
         navigate("/");
       }
     } else {
+      setError(true);
       toast.error(response.message);
     }
 
     setIsSubmitting(false);
   };
 
-  const userNameValue = watch("username");
+  // const userNameValue = watch("username");
   const passwordValue = watch("password");
 
   const getSession = useCallback(async () => {
@@ -112,10 +129,6 @@ export default function LoginPage() {
 
         <div>
           <fieldset className="mt-3">
-            {/* <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
-              Username
-            </label> */}
-
             <div className="mt-0.5 rounded-md shadow-sm">
               <input
                 id="username"
@@ -123,8 +136,9 @@ export default function LoginPage() {
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.username
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Username/Email"
@@ -135,12 +149,7 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.username?.message}</div>
             )}
           </fieldset>
-
           <fieldset className="mt-2">
-            {/* <label htmlFor="password" className="block text-sm font-medium leading-5 text-gray-700">
-              Password
-            </label> */}
-
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
@@ -148,9 +157,10 @@ export default function LoginPage() {
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
                   "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.password
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                    : "border-gray-400  focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Password"
               />
@@ -169,7 +179,6 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
             )}
           </fieldset>
-
           <div className="text-sm text-primary-500 font-bold mt-0.5">
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
@@ -179,9 +188,9 @@ export default function LoginPage() {
           <Button
             classname="w-full"
             htmlType="submit"
-            disabled={!userNameValue || !passwordValue}
+            // disabled={!userNameValue || !passwordValue}
             loading={isSubmitting}
-            type="gray"
+            type="auth"
           >
             Sign In
           </Button>
@@ -198,9 +207,4 @@ export default function LoginPage() {
       </form>
     </div>
   );
-}
-
-interface ILoginFormValues {
-  username: string;
-  password: string;
 }

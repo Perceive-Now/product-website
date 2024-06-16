@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
@@ -6,57 +6,61 @@ import axiosInstance from "../../../../../utils/axios";
 
 import { IAnswer } from "../../../../../@types/entities/IPLandscape";
 
-import { useAppDispatch } from "../../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 
 import NewComponent from "../../new-comp";
-import { addAnswer } from "../../../../../utils/api/chat";
+import { setSession } from "../../../../../stores/session";
 import { setChat } from "../../../../../stores/chat";
-// import { addAnswer } from "../../../../../utils/api/chat";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep: number;
+  activeIndex: number;
+  totalQuestion: number;
   question: {
     question: string;
     questionId: number;
     usecase?: any;
     answer: string;
-    // "all" | "ip-validity-analysis" | "ip-licensing-opportunity" | "ip-landscaping&fto" | "infringement-analysis"
   };
 }
-
-// interface IAnswers {
-//   question_id: number;
-//   session_id: number;
-//   user_id: string;
-//   answer: string;
-// }
 
 /**
  *
  */
 export default function ChatQuestionAnswer({
   changeActiveStep,
-  activeStep,
+  // activeStep,
+  totalQuestion,
   question,
+  activeIndex,
 }: // questionId,
 Props) {
   const dispatch = useAppDispatch();
   const [isloading, setIsLoading] = useState(false);
 
-  const questionId = question.questionId;
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
+  const questionId = useMemo(() => question.questionId, [question.questionId]);
 
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setIsLoading(true);
+
       try {
         const response = await axiosInstance.post(
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&QuestionID=${questionId}`,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            requirementGatheringId,
+          )}&QuestionID=${questionId}`,
         );
 
         const apiData = response.data.question;
@@ -64,48 +68,157 @@ Props) {
         const resError = response.data.error;
 
         setIsLoading(false);
-        // dispatch(setQuestionId({ questionId: 1 }));
+
+        if (response == undefined || status === undefined) {
+          toast.error("Something went wrong");
+        }
 
         if (resError || resError !== undefined) {
           toast.error(resError);
         } else {
           if (status === "true" || status == true) {
-            const updateAnswer = {
-              question_id: String(questionId) || "1",
-              session_id: sessionId || "",
-              user_id: userId || "",
-              answer: value.answer || "",
-            };
-
-            addAnswer(updateAnswer); // Send updated answers to the API
-            if (Number(questionId) <= 5) {
-              jsCookie.set("commonQuestionId", String(questionId + 1));
+            if (
+              sessionDetail?.skipped_question &&
+              sessionDetail?.skipped_question?.length > 0 &&
+              totalQuestion - 1 === activeIndex
+            ) {
+              // toast.error("Answer all the skipped questions to continue.");
+              dispatch(
+                setSession({
+                  session_data: {
+                    ...sessionDetail,
+                    step_id: 9,
+                    prev_index: activeIndex,
+                    hasSkippedQuestion: true,
+                  },
+                }),
+              );
             } else {
-              jsCookie.set("questionId", String(questionId + 1));
+              if (totalQuestion - 1 === activeIndex) {
+                dispatch(
+                  setSession({
+                    session_data: {
+                      ...sessionDetail,
+                      prev_index: activeIndex,
+                      question_id: questionId,
+                      step_id: 6,
+                      active_index: activeIndex + 1,
+                      skipped_question: (sessionDetail?.skipped_question || []).filter(
+                        (id) => id !== questionId,
+                      ),
+                      completed_questions: [
+                        ...(sessionDetail?.completed_questions || []),
+                        questionId,
+                      ],
+                    },
+                  }),
+                );
+                changeActiveStep(6);
+              } else {
+                dispatch(
+                  setSession({
+                    session_data: {
+                      ...sessionDetail,
+                      question_id: questionId,
+                      step_id: 3,
+                      prev_index: activeIndex,
+                      active_index: activeIndex + 1,
+                      skipped_question: (sessionDetail?.skipped_question || []).filter(
+                        (id) => id !== questionId,
+                      ),
+                      completed_questions: [
+                        ...(sessionDetail?.completed_questions || []),
+                        questionId,
+                      ],
+                    },
+                  }),
+                );
+              }
+              changeActiveStep(3);
             }
-
-            // jsCookie.set("questionId", String(questionId + 1));
-            changeActiveStep(activeStep + 1);
+          } else if (status === undefined) {
+            toast.error("Something went wrong");
           } else {
-            jsCookie.set("questionId", String(questionId));
+            dispatch(
+              setSession({
+                session_data: {
+                  ...sessionDetail,
+                  step_id: 8,
+                  prev_index: activeIndex,
+                  user_chat: {
+                    question: apiData,
+                    question_id: questionId,
+                  },
+                },
+              }),
+            );
             dispatch(setChat({ question: apiData }));
-            changeActiveStep(2);
+            changeActiveStep(8);
           }
         }
       } catch (error: any) {
+        if (error.request.data == undefined) {
+          toast.error(error.message || "Something went wrong");
+        }
         setIsLoading(false);
-        toast.error(error || error.message);
+        toast.error(error || error.message || "Something went wrong");
       }
     },
-    [activeStep, changeActiveStep, dispatch, questionId, sessionId, userId],
+    [
+      activeIndex,
+      changeActiveStep,
+      dispatch,
+      questionId,
+      requirementGatheringId,
+      sessionDetail,
+      totalQuestion,
+      userId,
+    ],
   );
+
+  const onSkip = useCallback(() => {
+    if (
+      sessionDetail?.skipped_question &&
+      sessionDetail?.skipped_question?.length > 0 &&
+      totalQuestion - 1 === activeIndex
+    ) {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            hasSkippedQuestion: true,
+            skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
+          },
+        }),
+      );
+      // toast.error("Answer all the skipped questions to continue.");
+    } else {
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            question_id: questionId,
+            step_id: 3,
+            active_index: activeIndex + 1,
+            hasSkippedQuestion: false,
+            skipped_question: [...(sessionDetail?.skipped_question || []), questionId],
+          },
+        }),
+      );
+      changeActiveStep(3);
+    }
+  }, [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail, totalQuestion]);
+
   return (
     <>
+      CHAT
       <NewComponent
         isLoading={isloading}
         onContinue={onContinue}
         question={question.question}
         exampleAnswer={question.answer}
+        onSkip={onSkip}
+        hasSkippedQuestion={sessionDetail?.hasSkippedQuestion}
       />
     </>
   );

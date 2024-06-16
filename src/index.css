@@ -17,9 +17,46 @@
     user-select: none;
     /* user-select: text; */
   }
+  body{
+    color: #120824;
+  }
+  
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/helvetica-light.ttf") format("truetype");
+    font-weight: 300; /* Adjust as per the font weight */
+  }
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/Helvetica.ttf") format("truetype");
+    font-weight: 400; /* Adjust as per the font weight */
+  }
+  
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/Helvetica-Bold.ttf") format("truetype");
+    font-weight: 500;
+  }
+  
+  @font-face {
+    font-family: "Helvetica";
+    src: url("./assets/fonts/Helvetica-Bold.ttf") format("truetype");
+    font-weight: 700;
+  }
 
   a {
     @apply text-primary-500;
+  }
+
+  .primary-gradient-text {
+    background: linear-gradient(273deg, #442873 16.28%, #804bd9 104.76%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .secondary-transparent {
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
   .pn_scroller::-webkit-scrollbar {
@@ -223,7 +260,7 @@
   padding: 0 !important;
 }
 
-.css-1xe1d5g-control{
+.css-1xe1d5g-control {
   border-radius: 8px !important;
   min-height: 40px !important;
 }
@@ -265,4 +302,8 @@
   border-radius: 50%;
   background: linear-gradient(146deg, #ffb531 26.94%, #fa6d08 113.34%);
   cursor: pointer;
+}
+
+input {
+  field-sizing: content;
 }

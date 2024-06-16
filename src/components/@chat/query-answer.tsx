@@ -1,21 +1,50 @@
-import ThumbsUpIcon from "../icons/common/ThumbsUp";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import ToolTip from "../reusable/tool-tip";
+import sanitizeHtml from "sanitize-html";
+import classNames from "classnames";
+
+import "./style.css";
+
 import ThumbsDownIcon from "../icons/common/ThumbsDown";
-import { ErrorIcon, LoadingIcon, ShareIcon } from "../icons";
+import ThumbsUpIcon from "../icons/common/ThumbsUp";
+import RefreshIcon from "../icons/common/refresh";
 import CopyIcon from "../icons/common/copy";
+import { ErrorIcon } from "../icons";
 
 import PN from "../../assets/images/pn.svg";
+
 import IconButton from "../reusable/icon-button";
-import { useEffect, useRef, useState } from "react";
-import classNames from "classnames";
+import DotLoader from "../reusable/dot-loader";
+
+import { useAppDispatch } from "../../hooks/redux";
+import { setUpdateQuery } from "../../stores/know-now";
 
 interface Props {
   answer: string;
   isLoading: boolean;
   error?: string;
   responseTime?: string;
+  updateQuery: (query: string, editInex: number | null) => void;
+  editIndex: any;
+  query: string;
 }
 
-const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
+/**
+ *
+ */
+
+const QueryAnswer = ({
+  answer,
+  isLoading,
+  error,
+  responseTime,
+  updateQuery,
+  editIndex,
+  query,
+}: Props) => {
+  const dispatch = useAppDispatch();
+
   const copyRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -23,24 +52,81 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
     setTimeout(() => {
       setIsCopied(false);
     }, 2000);
+  }, [isCopied]);
+
+  const copyText = useCallback(() => {
+    setIsCopied(true);
   }, []);
 
-  const copyText = () => {
-    // Get the text content of the button
-    const buttonText = copyRef.current.textContent;
+  const convertTableToText = (tableElement: HTMLTableElement) => {
+    if (!tableElement) return "";
 
-    // Copy the text to the clipboard
-    navigator.clipboard.writeText(buttonText);
-    setIsCopied(true);
-    // .then(() => {
-    //   console.log('Text copied to clipboard:', buttonText);
-    //   // Optionally, you can show a success message or perform any other action
-    // })
-    // .catch((error) => {
-    //   console.error('Failed to copy text to clipboard:', error);
-    //   // Handle error if copying fails
-    // });
+    const rows = Array.from(tableElement.querySelectorAll("tr")) as HTMLTableRowElement[];
+    const textRows = rows.map((row) => {
+      const cells = Array.from(row.querySelectorAll("th, td")) as HTMLTableCellElement[];
+      return "| " + cells.map((cell) => (cell.textContent ?? "").trim()).join(" | ") + " |";
+    });
+
+    const columnCount = rows[0].querySelectorAll("th, td").length;
+    const separator = "| " + "--- | ".repeat(columnCount);
+
+    textRows.splice(1, 0, separator);
+
+    return textRows.join("\n");
   };
+
+  // const extractText = (html: string) => {
+  //   const parser = new DOMParser();
+  //   const doc = parser.parseFromString(html, 'text/html');
+  //   return doc.body.textContent || '';
+  // };
+
+  const convertHtmlToMarkdown = (html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const body = doc.body;
+    let markdown = "";
+
+    body.childNodes.forEach((node) => {
+      if (node.nodeName === "TABLE") {
+        markdown += "\n" + convertTableToText(node as HTMLTableElement) + "\n";
+      } else {
+        markdown += (node.textContent || "") + "\n";
+      }
+    });
+
+    return markdown;
+  };
+
+  const fullTextToCopy = convertHtmlToMarkdown(answer);
+
+  // const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+  const sanitizedAnswer = sanitizeHtml(answer, {
+    allowedTags: [
+      "b",
+      "i",
+      "em",
+      "strong",
+      "a",
+      "br", // Allow <br> tags
+      "p",
+      "table",
+      "thead",
+      "tbody",
+      "tr",
+      "th",
+      "td",
+    ],
+    allowedAttributes: {
+      a: ["href"],
+    },
+  });
+
+  const onRegenerate = useCallback(() => {
+    dispatch(setUpdateQuery({ editIndex: editIndex, query: query }));
+    updateQuery(query, editIndex);
+  }, [dispatch, editIndex, query, updateQuery]);
+
   return (
     <div className="flex items-start gap-3">
       <div className="p-1 shrink-0">
@@ -48,9 +134,7 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
       </div>
       <div>
         {isLoading ? (
-          <span className="animate-spin">
-            <LoadingIcon className="text-primary-900" />
-          </span>
+          <DotLoader />
         ) : (
           <>
             {error || error !== undefined ? (
@@ -60,11 +144,11 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
               </span>
             ) : (
               <>
-                <p
+                <div
                   ref={copyRef}
                   style={{ textAlign: "justify" }}
                   className="text-secondary-800"
-                  dangerouslySetInnerHTML={{ __html: answer }}
+                  dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
                 />
                 <p className="text-xs text-secondary-800 font-bold mt-1">
                   ResponseTime:{" "}
@@ -74,22 +158,32 @@ const QueryAnswer = ({ answer, isLoading, error, responseTime }: Props) => {
             )}
           </>
         )}
-        <div className="flex items-center gap-3 mt-5">
+        <div className="flex items-center gap-2 mt-5">
           <div className="flex items-center gap-2">
-            <IconButton color="default">
-              <ThumbsUpIcon />
-            </IconButton>
-            <IconButton color="default">
-              <ThumbsDownIcon />
-            </IconButton>
+            <ToolTip title="Good" placement="top">
+              <IconButton color="default" disabled>
+                <ThumbsUpIcon />
+              </IconButton>
+            </ToolTip>
+            <ToolTip title="Bad" placement="top">
+              <IconButton color="default" disabled>
+                <ThumbsDownIcon />
+              </IconButton>
+            </ToolTip>
           </div>
           <div className="flex items-center gap-2">
-            <IconButton color="default">
-              <ShareIcon />
-            </IconButton>
-            <IconButton onClick={copyText} color="default">
-              <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />
-            </IconButton>
+            <ToolTip title="Regenerate" placement="top">
+              <IconButton color="default" onClick={onRegenerate}>
+                <RefreshIcon className="text-[#87888C]" />
+              </IconButton>
+            </ToolTip>
+            <CopyToClipboard text={fullTextToCopy}>
+              <ToolTip title={isCopied ? "Copied" : "Copy"} placement="top">
+                <IconButton onClick={copyText} color="default">
+                  <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />
+                </IconButton>
+              </ToolTip>
+            </CopyToClipboard>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPatentIPC } from "../../../../utils/api/charts";
 // import BarChart from "../../../@product/bar-chart";
 import ScrollableBarChart from "../../../@product/bar-scroll";
+import IPCKeyTakeaway from "../../../../pages/product/ip-landscaping/keytakeaways/ipc/keytakeaway";
 
 interface Props {
   keywords: string[];
@@ -38,7 +39,7 @@ export function PatentIPC({ keywords }: Props) {
         <PageTitle
           titleClass="font-bold"
           subTitle="Top IPC Classes in Patent Applications"
-          title="7. IPC"
+          title="8. IPC"
         />
       }
     >
@@ -55,36 +56,7 @@ export function PatentIPC({ keywords }: Props) {
           />
         )}
 
-        <h5 className="font-bold text-primary-900 text-lg">Key takeaways</h5>
-        <div>
-          <h6 className="font-semibold text-primary-900">
-            Patent ID 001: 5 references, Patent ID 002: 3 references, Patent ID 003: 7 references
-          </h6>
-          <ul className="list-disc ml-3 text-sm mt-1 font-medium">
-            <li>
-              Leading IPC Class: "IPC Class R leads with X% of patent applications, marking it as
-              the most focused area of innovation."
-            </li>
-            <li>
-              Growth Trend in IPC Class Applications: "Applications in IPC Class S have grown by X%
-              in the last Y years, indicating a rising trend in this technological field."
-            </li>
-            <li>
-              Comparison of IPC Class Dominance: "IPC Class T's share of patent applications has
-              increased from X% to Y% over the past decade, demonstrating shifting innovation
-              priorities."
-            </li>
-            <li>
-              Sector Analysis for IPC Classes: "The electronics sector predominantly applies for
-              patents in IPC Class U, accounting for X% of the sector's applications.
-            </li>
-            <li>
-              Year with Most Diverse IPC Class Filings: "Year Z recorded the most diverse range of
-              IPC Class filings, with significant applications in over X different classes,
-              reflecting a broad innovation landscape."
-            </li>
-          </ul>
-        </div>
+        <div>{data && <IPCKeyTakeaway data={data} />}</div>
       </div>
     </DataSection>
   );
