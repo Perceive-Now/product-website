@@ -103,11 +103,11 @@ export default function ReportQuestionAnswerPage() {
       value: 5,
       component: <Thankyou changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "Review",
-      value: 6,
-      component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
-    },
+    // {
+    //   label: "Review",
+    //   value: 6,
+    //   component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
+    // },
     {
       label: "Edit",
       value: 7,
@@ -205,7 +205,7 @@ export default function ReportQuestionAnswerPage() {
               ))}
             </div>
           </div>
-          {sessionDetail?.step_id !== 6 && (
+          {/* {sessionDetail?.step_id !== 6 && (
             <div className="flex-shrink-0 2xl:w-[300px]">
               <SkippedQuestion
                 questions={
@@ -216,7 +216,7 @@ export default function ReportQuestionAnswerPage() {
                 questionWithUsecase={questionWithUsecase}
               />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

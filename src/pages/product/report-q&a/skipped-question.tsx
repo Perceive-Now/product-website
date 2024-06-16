@@ -12,6 +12,7 @@ interface IQuestionUsecase {
   question: string;
   usecase: string;
   answer: string;
+  exampleAnswer: string;
 }
 
 interface Props {
@@ -22,16 +23,14 @@ interface Props {
 const SkippedQuestion = ({ questions }: Props) => {
   const dispatch = useAppDispatch();
 
-  console.log(questions);
-
   const handleQuestionSelect = useCallback(
     (question: IQuestionUsecase) => {
       dispatch(
         removeFromSkippedQuestionList({
           question: question.question,
           useCaseId: question.useCaseId,
-          exampleAnswer: question.answer,
-          answer: "",
+          exampleAnswer: question.exampleAnswer,
+          answer: question.answer,
           usecase: question.usecase,
           questionId: question.questionId,
         }),
@@ -43,8 +42,8 @@ const SkippedQuestion = ({ questions }: Props) => {
           questionAnswer: {
             question: question.question,
             useCaseId: question.useCaseId,
-            exampleAnswer: question.answer,
-            answer: "",
+            exampleAnswer: question.exampleAnswer,
+            answer: question.answer,
             usecase: question.usecase,
             questionId: question.questionId,
           },

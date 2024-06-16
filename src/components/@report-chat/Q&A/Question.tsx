@@ -1,105 +1,85 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import QuestionAnswerForm from "./question-form";
+import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
+import QuestionAnswerForm from "./question-form";
 import {
+  QAPages,
   addToSkippedQuestionList,
-  generateQuestionAnswer,
   incrementStep,
+  setCurrentPageId,
   setCurrentQuestionId,
-  setGenerateAnswerError,
   setGenerateAnswerSuccess,
+  updateQuestionAnswer,
   updateQuestionList,
 } from "src/stores/Q&A";
-import { IAnswer } from "src/@types/entities/IPLandscape";
-import toast from "react-hot-toast";
 
-interface Props {
-  question: {
-    questionId: number;
-    useCaseId: number;
-    question: string;
-    usecase: string;
-    answer?: string;
-    exampleAnswer: string;
-  };
+import { IAnswer } from "src/@types/entities/IPLandscape";
+import axiosInstance from "src/utils/axios";
+
+interface IQuestionUsecase {
+  questionId: number;
+  useCaseId: number;
+  question: string;
+  usecase: string;
+  answer: string;
+  exampleAnswer: string;
 }
 
-const ReportChatQuestionAnswer = ({ question }: Props) => {
+interface Props {
+  question: IQuestionUsecase;
+  questionWithUsecase: IQuestionUsecase[];
+}
+
+const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
-  const {
-    currentQuestionId,
-    questionsList,
-    generateAnswerError,
-    skippedQuestionList,
-    answerResponse,
-  } = useAppSelector((state) => state.QA);
+  const userId = jsCookie.get("user_id");
+
+  const { currentQuestionId, questionsList, skippedQuestionList } = useAppSelector(
+    (state) => state.QA,
+  );
 
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
-
-  // useEffect(() => {
-  //   if (generateAnswerError) {
-  //     toast.error("message");
-  //     dispatch(setGenerateAnswerError(false));
-  //     return;
-  //   }
-
-  //   if (setGenerateAnswerSuccess) {
-  //     if (answerResponse.status === "false") {
-  //       toast.error("Give a more detailed answer");
-  //       dispatch(
-  //         updateQuestionList({ questionId: currentQuestionId, question: answerResponse.question }),
-  //       );
-  //       dispatch(setGenerateAnswerSuccess(false));
-  //       return;
-  //     }
-  //     const nextQuestionIndex =
-  //       questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) + 1;
-  //     if (nextQuestionIndex === questionsList.length) {
-  //       // dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
-  //       dispatch(incrementStep());
-  //     } else {
-  //       dispatch(setCurrentQuestionId(questionsList[nextQuestionIndex].questionId));
-  //       dispatch(incrementStep());
-  //     }
-  //   }
-  // }, [answerResponse.question, answerResponse.status, currentQuestionId, dispatch, generateAnswerError, questionsList]);
 
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setLoading(true);
       try {
-        const res: any = await dispatch(
-          generateQuestionAnswer({
-            useCaseId: "", // Replace with actual value or state
-            requirementGatheringId: requirementGatheringId,
-            userId: jsCookie.get("user_id") ?? "",
-            questionId: question.questionId,
-            answer: value.answer || "",
-          }),
+        const res = await axiosInstance.post(
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+            value.answer,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            requirementGatheringId,
+          )}&QuestionID=${question.questionId}`,
         );
+        const new_question = res.data.question;
         setLoading(false);
 
-        if (setGenerateAnswerSuccess) {
-          if (res.payload.data.status === "false") {
-            toast.error("Give a more detailed answer");
-            dispatch(
-              updateQuestionList({
-                questionId: currentQuestionId,
-                question: answerResponse.question,
-              }),
-            );
-            dispatch(setGenerateAnswerSuccess(false));
-            return;
-          }
+        if (res.data.status === "false") {
+          toast.error("Give a more detailed answer");
+          dispatch(
+            updateQuestionList({
+              questionId: currentQuestionId,
+              question: new_question,
+            }),
+          );
+          dispatch(setGenerateAnswerSuccess(false));
+          return;
+        } else {
+          dispatch(
+            updateQuestionAnswer({
+              questionId: currentQuestionId,
+              answer: value.answer,
+            }),
+          );
           const nextQuestionIndex =
             questionsList.findIndex((questionId) => currentQuestionId === questionId.questionId) +
             1;
-          if (nextQuestionIndex === questionsList.length) {
-            // dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
+          if (nextQuestionIndex === questionWithUsecase.length) {
+            dispatch(setCurrentPageId(QAPages.Review));
             dispatch(incrementStep());
           } else {
             dispatch(setCurrentQuestionId(questionsList[nextQuestionIndex].questionId));
@@ -111,12 +91,13 @@ const ReportChatQuestionAnswer = ({ question }: Props) => {
       }
     },
     [
-      answerResponse.question,
       currentQuestionId,
       dispatch,
       question.questionId,
+      questionWithUsecase.length,
       questionsList,
       requirementGatheringId,
+      userId,
     ],
   );
 
@@ -153,7 +134,7 @@ const ReportChatQuestionAnswer = ({ question }: Props) => {
         onContinue={onContinue}
         question={question?.question || ""}
         exampleAnswer={question?.exampleAnswer || ""}
-        answer={question?.answer}
+        answer={question?.answer && question.answer}
         isLoading={loading}
         onSkip={onSkip}
         hasSkippedQuestion={

@@ -17,22 +17,17 @@ import { setSession } from "../../../../../stores/session";
 import axiosInstance from "src/utils/axios";
 import { API_URL, Auth_CODE } from "src/utils/constants";
 import { useNavigate } from "react-router-dom";
-
-interface Props {
-  changeActiveStep: (steps: number) => void;
-  activeStep?: number;
-}
-
 interface IPaymentIntent {
   payment_intent_id: string;
   clientSecret: string;
 }
 
-export default function IPReview({ changeActiveStep, activeStep }: Props) {
+export default function IPReview() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const { currentPageId } = useAppSelector((state) => state.QA);
 
   const [userChats, setUserChats] = useState<IAnswers[]>();
   const [loading, setLoading] = useState(false);
@@ -42,6 +37,8 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
 
   const user_id = jsCookie.get("user_id") ?? "";
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+
+  // const {requirementGatheringId} = useAppSelector((state)=>state.usecases)
 
   // const session_id = jsCookie.get("session_id") ?? "";
 
@@ -83,7 +80,7 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
   }, [handlePayment, sessionDetail?.skipped_question]);
 
   useEffect(() => {
-    if (activeStep === 6) {
+    if (currentPageId === 2) {
       setLoading(true);
       getUserChats(user_id, String(requirementGatheringId))
         .then((data) => {
@@ -95,7 +92,7 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
           setLoading(false);
         });
     }
-  }, [activeStep, requirementGatheringId, user_id]);
+  }, [currentPageId, requirementGatheringId, user_id]);
 
   const mergedData = userChats?.map((chat) => {
     const question = questionList.find((q) => q.questionId == chat.question_id);
@@ -118,10 +115,9 @@ export default function IPReview({ changeActiveStep, activeStep }: Props) {
           },
         }),
       );
-      changeActiveStep(7);
       dispatch(setChat(chat));
     },
-    [changeActiveStep, dispatch, sessionDetail],
+    [dispatch, sessionDetail],
   );
 
   return (

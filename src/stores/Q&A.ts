@@ -191,6 +191,18 @@ export const QuestionAnswerSlice = createSlice({
       state.currentQuestionId = action.payload;
     },
     // -----------------------------------------------------------------------
+    updateQuestionAnswer: (
+      state,
+      action: PayloadAction<{ questionId: number; answer: string }>,
+    ) => {
+      state.questionsList = state.questionsList.map((question) => {
+        if (question.questionId === action.payload.questionId) {
+          question.answer = action.payload.answer;
+        }
+        return question;
+      });
+    },
+    // -----------------------------------------------------------------------
     updateQuestionList: (
       state,
       action: PayloadAction<{ questionId: number; question: string }>,
@@ -244,6 +256,8 @@ export const QuestionAnswerSlice = createSlice({
 
       if (questionIndex !== -1) {
         state.questionsList[questionIndex] = questionAnswer;
+      } else {
+        state.questionsList.push(action.payload.questionAnswer);
       }
     },
     // ------------------------------------------------------------------------
@@ -286,6 +300,7 @@ export const {
   setGenerateAnswerError,
   setGenerateAnswerSuccess,
   questionWithUseCases,
+  updateQuestionAnswer,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;
