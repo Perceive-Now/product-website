@@ -22,7 +22,7 @@ export default function EditQuestionAnswer() {
   const [isloading, setIsLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
 
-  const { currentPageId, questionsList, currentQuestionId } = useAppSelector((state) => state.QA);
+  const { questionsList, currentQuestionId } = useAppSelector((state) => state.QA);
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
   const userId = jsCookie.get("user_id");
@@ -36,9 +36,10 @@ export default function EditQuestionAnswer() {
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
             requirementGatheringId,
-          )}&QuestionID=${currentPageId}`,
+          )}&QuestionID=${currentQuestionId}`,
         );
         const new_question = response.data.question;
+        setIsLoading(false);
 
         if (response.data.status === "false") {
           toast.error("Give a more detailed answer");
@@ -59,13 +60,12 @@ export default function EditQuestionAnswer() {
           );
           dispatch(setCurrentPageId(QAPages.Review));
         }
-        setIsLoading(false);
       } catch (error: any) {
         setIsLoading(false);
         toast.error(error.message);
       }
     },
-    [currentPageId, currentQuestionId, dispatch, requirementGatheringId, userId],
+    [currentQuestionId, dispatch, requirementGatheringId, userId],
   );
 
   const question = questionsList.find((q) => q.questionId === currentQuestionId);

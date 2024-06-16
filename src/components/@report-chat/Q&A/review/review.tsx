@@ -8,15 +8,15 @@ import axiosInstance from "src/utils/axios";
 
 import ReviewQuestionAnswer from "./review-answer-question";
 
-import Button from "../../../../reusable/button";
-import { LoadingIcon } from "../../../../icons";
+import Button from "../../../reusable/button";
+import { LoadingIcon } from "../../../icons";
 
-import { IAnswers, getUserChats } from "../../../../../utils/api/chat";
-import { questionList } from "../../../../../pages/product/report-q&a/_question";
+import { IAnswers, getUserChats } from "../../../../utils/api/chat";
+import { questionList } from "../../../../pages/product/report-q&a/_question";
 
-import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
-import { setSession } from "../../../../../stores/session";
+import { setSession } from "../../../../stores/session";
 
 import { QAPages, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
 
@@ -40,8 +40,6 @@ export default function IPReview() {
   const [paymentLoading, setPaymentLoading] = useState(false);
 
   const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
-
-  console.log(ItemId);
 
   const user_id = jsCookie.get("user_id") ?? "";
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");

@@ -1,7 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import jsCookie from "js-cookie";
 
 import { questionList } from "src/pages/product/report-q&a/_question";
+
+interface IResponse<T = any> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
 
 interface IQuestionAnswerResponse {
   question: string;
@@ -86,6 +93,14 @@ export interface IQAState {
     answer: string;
     exampleAnswer: string;
   }[];
+  updatedQAList: IAnswers[];
+}
+
+export interface IAnswers {
+  question_id: string | number;
+  requirement_gathering_id: string;
+  user_id: string;
+  answer: string;
 }
 
 export const QAPages = {
@@ -97,7 +112,7 @@ export const QAPages = {
 export type IQAPage = (typeof QAPages)[keyof typeof QAPages];
 
 export const initialState: IQAState = {
-  currentPageId: QAPages.QA,
+  currentPageId: QAPages.Review,
   currentStep: 0,
   currentQuestionId: 1,
   message: "",
@@ -119,6 +134,7 @@ export const initialState: IQAState = {
   skippedQuestionList: [],
   generateAnswerError: false,
   generateAnswerSuccess: false,
+  updatedQAList: [],
 };
 
 export const generateQuestionAnswer = createAsyncThunk<
@@ -158,6 +174,29 @@ export const generateQuestionAnswer = createAsyncThunk<
     return thunkAPI.rejectWithValue(errorObj);
   }
 });
+
+export const getUpdatedAnswer = createAsyncThunk(
+  "getUpdatedAnswer",
+  async (): Promise<IResponse> => {
+    const user_id = jsCookie.get("user_id") ?? "";
+    const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+    try {
+      const response = await axios.get<IAnswers[]>(
+        `https://pn-chatbot.azurewebsites.net/get-answers/?userID=${user_id}&requirement_gathering_id=${requirementGatheringId}`,
+      );
+      return {
+        success: true,
+        message: "Successfully fetched Q&A",
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Unable to fetch Q&A",
+      };
+    }
+  },
+);
 
 export const QuestionAnswerSlice = createSlice({
   name: "q&a",
@@ -278,6 +317,10 @@ export const QuestionAnswerSlice = createSlice({
       state.generateAnswerError = true;
       state.generateAnswerSuccess = false;
       state.message = "Unable to generate answers" ?? action.error.message;
+    });
+    builder.addCase(getUpdatedAnswer.fulfilled, (state, action) => {
+      const payloadData = action.payload.data;
+      state.updatedQAList = payloadData;
     });
   },
 });

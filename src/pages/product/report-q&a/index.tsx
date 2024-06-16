@@ -9,7 +9,7 @@ import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 //
 import SkippedQuestion from "./skipped-question";
 import ReportChatQuestionAnswer from "src/components/@report-chat/Q&A/Question";
-import IPReview from "src/components/@report-chat/ip-analysis/use-case/review/review";
+import IPReview from "src/components/@report-chat/Q&A/review/review";
 //
 import {
   QAPages,
