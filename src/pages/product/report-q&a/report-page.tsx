@@ -13,12 +13,12 @@ import Loading from "../../../components/reusable/loading";
 
 import IPStepper from "../../../components/@report-chat/ip-analysis/stepper";
 // import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
-import IPReview from "../../../components/@report-chat/Q&A/review/review";
+// import IPReview from "../../../components/@report-chat/Q&A/review/review";
 import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
 import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
 
-import SkippedQuestion from "./skipped-question";
+// import SkippedQuestion from "./skipped-question";
 
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import SkippedQuestionAnswer from "src/components/@report-chat/ip-analysis/use-case/question/skipped-question";
