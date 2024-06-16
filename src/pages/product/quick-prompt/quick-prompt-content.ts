@@ -22,15 +22,6 @@ export const quickPromptContent = [
       },
       {
         contentType: "text",
-        content: "in the",
-      },
-      {
-        contentType: "prompt",
-        keyword: "industry-or-market",
-        placeholder: "[Industry/Market]",
-      },
-      {
-        contentType: "text",
         content: "for",
       },
       {

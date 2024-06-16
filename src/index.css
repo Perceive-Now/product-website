@@ -17,6 +17,9 @@
     user-select: none;
     /* user-select: text; */
   }
+  body{
+    color: #120824;
+  }
   
   @font-face {
     font-family: "Helvetica";

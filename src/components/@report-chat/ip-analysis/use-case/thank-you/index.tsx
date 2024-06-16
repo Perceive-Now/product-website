@@ -1,13 +1,14 @@
-import React, { useCallback, useMemo, useState } from "react";
-import Button from "../../../../reusable/button";
-// import { getUserChats } from "../../../../../../utils/api/chat";
-// import axios from "axios";
-import axiosInstance from "../../../../../utils/axios";
-import { API_URL, Auth_CODE } from "../../../../../utils/constants";
-import toast from "react-hot-toast";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+import Button from "../../../../reusable/button";
+
 import { useAppDispatch, useAppSelector } from "../../../../../hooks/redux";
 import { setSession } from "../../../../../stores/session";
+
+import axiosInstance from "../../../../../utils/axios";
+import { API_URL, Auth_CODE } from "../../../../../utils/constants";
 
 interface Props {
   changeActiveStep: (steps: number) => void;
@@ -81,11 +82,11 @@ const Thankyou = ({ changeActiveStep }: Props) => {
     <div className="h-[274px] flex flex-col items-start justify-between gap-y-[100px]">
       <div>
         <h6 className="text-xl font-medium text-secondary-800">
-          Thank you for providing all the answers
+          Answer all the skipped questions to continue.
         </h6>
-        <p className="text-secondary-800">
+        {/* <p className="text-secondary-800">
           If you'd like to take another look and make any changes, feel free to do so.
-        </p>
+        </p> */}
       </div>
       <div className="flex items-center justify-center gap-1 h-full w-full">
         <Button

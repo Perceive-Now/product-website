@@ -9,8 +9,18 @@ import {
 } from "../../../components/icons";
 import BackButton from "../../../components/reusable/back-button";
 import { useAppSelector } from "src/hooks/redux";
+import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
 
-const validUseCasesForQuickPrompts: string[] = ["3"];
+const validUseCasesForQuickPrompts: string[] = [];
+UseCaseOptions.forEach((usecase) => {
+  if (usecase.reportType === "market-research") {
+    validUseCasesForQuickPrompts.push(String(usecase.useCaseId));
+  }
+
+  if (usecase.label === "Patent Licensing targets") {
+    validUseCasesForQuickPrompts.push(String(usecase.useCaseId));
+  }
+});
 
 const interactionMethods = [
   {
@@ -66,9 +76,7 @@ export default function InteractionMethod() {
               return (
                 (method.title === "Quick prompt" &&
                   // check if usecaseids only include validusecasesforquickprompts
-                  !useCaseIds.some(
-                    (string) => validUseCasesForQuickPrompts.indexOf(string) == -1,
-                  )) ||
+                  !useCaseIds.some((n) => validUseCasesForQuickPrompts.indexOf(n) === -1)) ||
                 method.title !== "Quick prompt"
               );
             })
@@ -84,7 +92,7 @@ export default function InteractionMethod() {
               />
             ))}
         </div>
-        <Button type="optional" handleClick={handleContinueBtnClick}>
+        <Button type="optional" classname="w-[250px]" handleClick={handleContinueBtnClick}>
           <p className="text-secondary-800">Continue</p>
         </Button>
       </div>

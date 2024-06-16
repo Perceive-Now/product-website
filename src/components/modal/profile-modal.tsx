@@ -56,7 +56,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     // .username("Username is required")
     first_name: yup.string().trim().required("First Name is required"),
     last_name: yup.string().trim().required("Last Name is required"),
-    phone_number: yup.string().trim().required("Phone Number is required"),
+    phone_number: yup.string().trim(),
     country: yup.string(),
     company_name: yup.string().trim().required("Company is required"),
     job_position: yup.string().trim().required("Job position is required"),
@@ -125,7 +125,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
   return (
     <Modal open={open} handleOnClose={onClose}>
       <form onSubmit={handleSubmit(onContinue)}>
-        <div className=" p-2.5 bg-white rounded-lg text-start w-full">
+        <div className=" p-2.5 bg-white rounded-lg text-start w-[600px]">
           <div className="flex justify-between mb-2">
             <div className="text-2xl font-semibold text-secondary-800">
               {modalType === "interest" ? (
@@ -142,7 +142,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
           </div>
           {modalType === "profile" ? (
             <div className="grid grid-cols-2 gap-x-5 gap-y-2 w-full">
-              <fieldset className="col-span-1">
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Username
                 </Label>
@@ -152,9 +152,9 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                   error={errors.username}
                   placeholder="Username"
                 />
-              </fieldset>
+              </div>
               <div className="col-span-1" />
-              <fieldset className="">
+              <div className="">
                 <Label required className="font-semibold text-secondary-800">
                   First Name
                 </Label>
@@ -166,8 +166,8 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                     error={errors.first_name}
                   />
                 </div>
-              </fieldset>
-              <fieldset className="">
+              </div>
+              <div className="">
                 <Label required className="font-semibold text-secondary-800">
                   Last Name
                 </Label>
@@ -179,8 +179,8 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                     error={errors.last_name}
                   />
                 </div>
-              </fieldset>
-              <fieldset className="col-span-1">
+              </div>
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Country
                 </Label>
@@ -198,21 +198,20 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                 {country === null && (
                   <div className="mt-1 text-xs text-danger-500">Country is required</div>
                 )}
-              </fieldset>
+              </div>
               {/* phone */}
-              <fieldset className="col-span-1">
+              <div className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>
                 <div className="mt-0.5">
                   <PhoneNumberInput
                     register={register("phone_number")}
-                    // type="text"
-                    value={userDetail?.phone_number || ""}
+                    value={userDetail?.phone_number}
                     placeholder="Phone number"
                     error={errors.phone_number}
                   />
                 </div>
-              </fieldset>
-              <fieldset className="col-span-1">
+              </div>
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Company name
                 </Label>
@@ -232,8 +231,8 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                 // register={register("country")}
                 placeholder={"Select a Company"}
               /> */}
-              </fieldset>
-              <fieldset className="col-span-1">
+              </div>
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Job Position
                 </Label>
@@ -243,7 +242,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                   error={errors.job_position}
                   placeholder="Job Position"
                 />
-              </fieldset>
+              </div>
             </div>
           ) : (
             <div className="w-[600px]">

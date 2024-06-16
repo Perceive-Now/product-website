@@ -20,9 +20,9 @@ export async function addAnswer(value: IAnswers) {
   return response;
 }
 
-export async function getUserChats(user_id: string, session_id: string) {
+export async function getUserChats(user_id: string, requirement_gathering_id: string) {
   const response = await axios.get<IAnswers[]>(
-    `https://pn-chatbot.azurewebsites.net/get-answers/?userID=${user_id}&sessionID=${session_id}`,
+    `https://pn-chatbot.azurewebsites.net/get-answers/?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
   );
 
   return response.data;

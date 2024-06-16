@@ -244,7 +244,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         username: userProfileResponse.data.username,
         company_name: companyName.name || userProfileResponse.data.company_name,
         email: userProfileResponse.data.email,
-        registration_completed: userProfileResponse.data.registration_completed,
+        registration_completed: userProfileResponse.data.registration_completed || false,
 
         //
       },

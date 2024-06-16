@@ -23,7 +23,7 @@ const UserProfile = () => {
   const [modal, setModal] = useState<IModal | null>(null);
   const [modalType, setModalType] = useState<any>();
   const [photo, setPhoto] = useState<any>();
-  const [size, setSize] = useState<number>(0);
+  // const [size, setSize] = useState<number>(0);
 
   const UserDetail = useAppSelector((state) => state.auth.user);
 
@@ -100,8 +100,8 @@ const UserProfile = () => {
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file: any = e?.target?.files?.[0];
     if (file) {
-      const sizeInMB = (file.size / (1024 * 1024)).toFixed(2); // Convert bytes to MB and fix to 2 decimal places
-      setSize(parseFloat(sizeInMB));
+      // const sizeInMB = (file.size / (1024 * 1024)).toFixed(2); // Convert bytes to MB and fix to 2 decimal places
+      // setSize(parseFloat(sizeInMB));
 
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -190,7 +190,7 @@ const UserProfile = () => {
                 {ProfilesData.map((profile, idx) => (
                   <div key={idx * 79} className="flex items-center gap-[60px] text-secondary-800">
                     <div className="w-[80px]">{profile.label}</div>
-                    <div>{profile.value}</div>
+                    <div>{profile.value || "N/A"}</div>
                   </div>
                 ))}
                 <div className="flex items-center justify-end">

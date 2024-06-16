@@ -98,7 +98,6 @@ import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import UseCasePage from "./pages/product/use-case";
 import Landing from "./pages/product/landing/landing";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
-import ReportQuestionAnswerPage from "./pages/product/report-q&a/report-page";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
 import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
@@ -106,6 +105,7 @@ import { WelcomePage } from "./components/@signup-complete";
 import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
 import DraftReports from "./pages/product/draft-reports/draft-reports";
 import { EReportSectionPageIDs } from "./stores/draft";
+import ReportPage from "./pages/product/report-q&a";
 
 /**
  *
@@ -145,14 +145,15 @@ function App() {
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
-              <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
               <Route path="/draft-reports" element={<DraftReports />} />
+
+              <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
 
               <Route
                 path={`/${EReportSectionPageIDs.InteractionMethod}`}
                 element={<InteractionMethod />}
               />
-              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportQuestionAnswerPage />} />
+              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportPage />} />
               <Route
                 path={`/${EReportSectionPageIDs.UploadAttachments}`}
                 element={<UploadAttachmentsPage />}

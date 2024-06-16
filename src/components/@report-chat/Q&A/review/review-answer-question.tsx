@@ -1,4 +1,4 @@
-import EditIcon from "../../../../icons/miscs/Edit";
+import EditIcon from "../../../icons/miscs/Edit";
 
 interface Props {
   question: string;
@@ -7,6 +7,7 @@ interface Props {
 }
 const ReviewQuestionAnswer = ({ question, answer, onEdit }: Props) => {
   const formatedAnswer = answer.replace(/\n/g, "<br>");
+
   return (
     <div className="rounded-lg overflow-hidden">
       <div

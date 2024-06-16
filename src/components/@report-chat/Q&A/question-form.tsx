@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import * as yup from "yup";
 import Button from "../../reusable/button";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Props {
   onContinue: any;
@@ -16,9 +16,11 @@ interface Props {
   onSkip?: any;
   hasSkippedQuestion?: boolean;
   showSkip?: boolean;
+  resetForm: boolean;
+  setResetForm: (reset: boolean) => void;
 }
 
-export default function NewComponent({
+export default function QuestionAnswerForm({
   onContinue,
   question,
   isLoading,
@@ -27,7 +29,11 @@ export default function NewComponent({
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
+  resetForm,
+  setResetForm,
 }: Props) {
+  const [updatedAnswer, setUpdatedAnswer] = useState("");
+
   const formResolver = yup.object().shape({
     answer: yup.string().trim().required("Please provide your answer"),
   });
@@ -37,25 +43,32 @@ export default function NewComponent({
     formState: { errors },
     handleSubmit,
     setValue,
+    reset,
   } = useForm({
     defaultValues: {
-      answer: answer,
+      answer: updatedAnswer,
     },
     resolver: yupResolver(formResolver),
     mode: "onBlur",
   });
+
+  useEffect(() => {
+    setUpdatedAnswer(answer || "");
+    setValue("answer", answer || "");
+  }, [answer, setValue]);
   //
   const useExample = useCallback(() => {
     setValue("answer", exampleAnswer); // Update the form value
   }, [exampleAnswer, setValue]);
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     reset();
-  //   }
-  // }, [isLoading, reset]);
-
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
+
+  useEffect(() => {
+    if (resetForm) {
+      reset();
+      setResetForm(false);
+    }
+  });
 
   return (
     <div className="">
@@ -89,7 +102,7 @@ export default function NewComponent({
                 disabled={isLoading}
                 {...register("answer")}
                 className={classNames(
-                  "appearance-none w-full px-2 py-[10px] bg-gray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
+                  "appearance-none w-full px-2 py-[10px] bg-appGray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
                   errors.answer
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",

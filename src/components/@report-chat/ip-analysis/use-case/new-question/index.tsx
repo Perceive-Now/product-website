@@ -28,9 +28,13 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
 
   //
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  // const sessionId = jsCookie.get("session_id");
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
 
   const questionId = useMemo(
     () => sessionDetail?.user_chat?.question_id,
@@ -50,7 +54,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
           `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
-            sessionId,
+            requirementGatheringId,
           )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
@@ -72,7 +76,12 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
                     ...sessionDetail,
                     question_id: questionId,
                     step_id: 3,
+                    prev_index: activeIndex,
                     active_index: activeIndex + 1,
+                    completed_questions: [
+                      ...(sessionDetail?.completed_questions || []),
+                      questionId,
+                    ],
                   },
                 }),
               );
@@ -86,6 +95,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
                 session_data: {
                   ...sessionDetail,
                   step_id: 8,
+                  prev_index: activeIndex,
                   user_chat: {
                     question: apiData,
                     question_id: questionId,
@@ -103,7 +113,15 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
         toast.error(error.message);
       }
     },
-    [activeIndex, changeActiveStep, dispatch, questionId, sessionDetail, sessionId, userId],
+    [
+      activeIndex,
+      changeActiveStep,
+      dispatch,
+      questionId,
+      requirementGatheringId,
+      sessionDetail,
+      userId,
+    ],
   );
 
   const onSkip = useCallback(() => {
@@ -123,6 +141,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
 
   return (
     <>
+      NEW
       {question && (
         <NewComponent
           isLoading={isloading}

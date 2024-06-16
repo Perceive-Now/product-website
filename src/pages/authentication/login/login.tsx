@@ -96,7 +96,7 @@ export default function LoginPage() {
     setIsSubmitting(false);
   };
 
-  const userNameValue = watch("username");
+  // const userNameValue = watch("username");
   const passwordValue = watch("password");
 
   const getSession = useCallback(async () => {

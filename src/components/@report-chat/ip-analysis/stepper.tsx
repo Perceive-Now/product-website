@@ -7,11 +7,13 @@ interface Props {
 }
 
 const IPStepper: FunctionComponent<Props> = ({ steps, activeStep }) => {
-  const isStepComplete = (currentStep: number) => activeStep >= currentStep;
+  const isStepComplete = (currentStep: number) => {
+    return activeStep >= currentStep;
+  };
 
   return (
     <>
-      <ol className="flex items-center overflow-hidden w-full rounded">
+      <ol className="flex items-center overflow-hidden w-full">
         {steps.map((step, idx) => (
           <li
             key={idx}

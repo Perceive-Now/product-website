@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 //
@@ -11,25 +12,27 @@ import Loading from "../../../components/reusable/loading";
 // import BackButton from "../../../components/reusable/back-button";
 
 import IPStepper from "../../../components/@report-chat/ip-analysis/stepper";
-import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
-import IPReview from "../../../components/@report-chat/ip-analysis/use-case/review/review";
+// import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
+import IPReview from "../../../components/@report-chat/Q&A/review/review";
 import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
 import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
 import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
-// import ChatQuestionAnswer2 from "../../../components/@report-chat/ip-analysis/use-case/question/question-2";
+
 import SkippedQuestion from "./skipped-question";
+
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
-import { useNavigate } from "react-router-dom";
-import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
+import SkippedQuestionAnswer from "src/components/@report-chat/ip-analysis/use-case/question/skipped-question";
+import Thankyou from "src/components/@report-chat/ip-analysis/use-case/thank-you";
+// import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
  */
 export default function ReportQuestionAnswerPage() {
   const dispatch = useAppDispatch();
-  const session = useAppSelector((state) => state.sessionDetail.session);
   const navigate = useNavigate();
 
+  const session = useAppSelector((state) => state.sessionDetail.session);
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
   const activeIndex = useMemo(
@@ -79,39 +82,9 @@ export default function ReportQuestionAnswerPage() {
       }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
     [activeIndex, questionId, questionWithUsecase],
   );
-  //
-  // useEffect(() => {
-  //   const isConditionMet =
-  //     useCases.length > 0 && activeStep < 5 && questionWithUsecase.length === activeIndex;
-
-  //   if (isConditionMet) {
-  //     dispatch(
-  //       setSession({
-  //         session_data: {
-  //           ...sessionDetail,
-  //           step_id: 5,
-  //         },
-  //       }),
-  //     );
-  //     changeActiveStep(5);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activeStep]);
 
   //
   const steps = [
-    {
-      label: "",
-      value: 8,
-      component: (
-        <NewQuestion
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          exampleAnswer={question.answer}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
     {
       label: "",
       value: 3,
@@ -125,38 +98,44 @@ export default function ReportQuestionAnswerPage() {
         />
       ),
     },
-    // {
-    //   label: "",
-    //   value: 4,
-    //   component: (
-    //     <ChatQuestionAnswer2
-    //       changeActiveStep={changeActiveStep}
-    //       activeStep={activeStep}
-    //       question={question}
-    //       activeIndex={activeIndex}
-    //     />
-    //   ),
-    // },
     {
       label: "",
       value: 5,
       component: <Thankyou changeActiveStep={changeActiveStep} />,
     },
-    {
-      label: "Review",
-      value: 6,
-      component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
-    },
+    // {
+    //   label: "Review",
+    //   value: 6,
+    //   component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
+    // },
     {
       label: "Edit",
       value: 7,
-      component: <EditQuestion changeActiveStep={changeActiveStep} exampleAnswer={""} />,
+      component: <EditQuestion changeActiveStep={changeActiveStep} />,
     },
-    // {
-    //   label: "payment",
-    //   value: 8,
-    //   component: <Payment />,
-    // },
+    {
+      label: "",
+      value: 8,
+      component: (
+        <NewQuestion
+          changeActiveStep={changeActiveStep}
+          activeStep={activeStep}
+          exampleAnswer={question.answer}
+          activeIndex={activeIndex}
+        />
+      ),
+    },
+    {
+      label: "skipped-question",
+      value: 9,
+      component: (
+        <SkippedQuestionAnswer
+          changeActiveStep={changeActiveStep}
+          activeIndex={activeIndex}
+          questionWithUsecase={questionWithUsecase}
+        />
+      ),
+    },
   ];
 
   const onBack = useCallback(() => {
@@ -201,7 +180,8 @@ export default function ReportQuestionAnswerPage() {
         <div className="flex mt-2.5 justify-between gap-8">
           <div
             className={classNames(
-              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full w-ful shadow border rounded-md p-2 w-[932px] bg-white",
+              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full shadow border rounded-md w-[932px] p-2 bg-white",
+              sessionDetail?.step_id === 6 ? "mx-auto" : "",
             )}
           >
             <div
@@ -225,16 +205,18 @@ export default function ReportQuestionAnswerPage() {
               ))}
             </div>
           </div>
-
-          <div className="flex-shrink-0 w-[300px]">
-            <SkippedQuestion
-              questions={
-                questionList
-                  .filter((q) => sessionDetail?.skipped_question?.includes(q.questionId))
-                  .map((q) => q) || []
-              }
-            />
-          </div>
+          {/* {sessionDetail?.step_id !== 6 && (
+            <div className="flex-shrink-0 2xl:w-[300px]">
+              <SkippedQuestion
+                questions={
+                  questionList
+                    .filter((q) => sessionDetail?.skipped_question?.includes(q.questionId))
+                    .map((q) => q) || []
+                }
+                questionWithUsecase={questionWithUsecase}
+              />
+            </div>
+          )} */}
         </div>
       </div>
     </>

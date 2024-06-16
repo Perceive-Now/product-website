@@ -26,9 +26,14 @@ export default function EditQuestion({ changeActiveStep }: Props) {
   const dispatch = useAppDispatch();
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+
+  // const {
+  //   requirementGatheringId,
+  // } = useAppSelector((state) => state.usecases);
   //
   const userId = jsCookie.get("user_id");
-  const sessionId = jsCookie.get("session_id");
+  // const sessionId = jsCookie.get("session_id");
 
   const [isloading, setIsLoading] = useState(false);
 
@@ -55,10 +60,12 @@ export default function EditQuestion({ changeActiveStep }: Props) {
       setIsLoading(true);
 
       try {
-        const response = await axiosInstance.put(
-          `https://pn-chatbot.azurewebsites.net/edit-answer/?newAnswer=${encodeURIComponent(
+        const response = await axiosInstance.post(
+          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
             value.answer,
-          )}&userID=${userId}&sessionID=${Number(sessionId)}&questionID=${Number(questionId)}`,
+          )}&userID=${userId}&requirement_gathering_id=${Number(
+            requirementGatheringId,
+          )}&QuestionID=${questionId}`,
         );
         const resError = response.data.error;
         const apiData = response.data.question;
@@ -81,6 +88,9 @@ export default function EditQuestion({ changeActiveStep }: Props) {
                 session_data: {
                   ...sessionDetail,
                   step_id: 6,
+                  skipped_question: (sessionDetail?.skipped_question || []).filter(
+                    (id) => id !== questionId,
+                  ),
                   user_chat: {
                     answer: answer,
                   },
@@ -121,8 +131,8 @@ export default function EditQuestion({ changeActiveStep }: Props) {
       dispatch,
       exampleAnswer,
       questionId,
+      requirementGatheringId,
       sessionDetail,
-      sessionId,
       userId,
     ],
   );
@@ -136,7 +146,7 @@ export default function EditQuestion({ changeActiveStep }: Props) {
           question={question}
           exampleAnswer={exampleAnswer}
           answer={answer}
-          onSkip
+          showSkip={false}
         />
       )}
     </>

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
+
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setSession } from "../../../stores/session";
 import {
@@ -10,10 +12,12 @@ import {
   setUseCasesUploadState,
   uploadUseCases,
 } from "../../../stores/use-case";
+
 import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
-import { useNavigate } from "react-router-dom";
+
 import DefaultProgressBar from "../../../components/reusable/default-progress";
+import { reset } from "src/stores/Q&A";
 
 interface OptionMappings {
   [key: string]: string;
@@ -27,12 +31,12 @@ const optionMappings: OptionMappings = {
   "ip-valuation": "ip-valuation",
   "ip-licensing-opportunity": "ip-licensing-opportunity",
   //
-  "m&a": "market-research",
-  "market-potential": "market-research",
-  "competitive-landscape": "market-research",
-  "consumer-landscape": "market-research",
-  commercialization: "market-research",
-  regulatory: "market-research",
+  "m&a": "m&a",
+  "market-analysis": "market-analysis",
+  "competitive-landscape": "competitive-landscape",
+  "consumer-landscape": "consumer-landscape",
+  "commercialization-assessment": "commercialization-assessment",
+  "regulatory-pathways": "regulatory-pathways",
 };
 
 /**
@@ -41,6 +45,7 @@ const optionMappings: OptionMappings = {
 const UseCaseSelect = () => {
   const navigation = useNavigate();
   const dispatch = useAppDispatch();
+
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   const { useCaseIds, isUploading, useCasesUploadState } = useAppSelector(
     (state) => state.usecases,
@@ -51,8 +56,6 @@ const UseCaseSelect = () => {
   const [useCaseSelected, setUseCaseSelected] = useState<any>(UseCaseOptions);
   const [useCaseType, setUseCaseType] = useState(UsecaseOptions[0].value);
   const [reports, setReport] = useState<any>([]);
-
-  console.log(reports);
 
   useEffect(() => {
     if (useCasesUploadState.isUseCaseUploadError) {
@@ -131,6 +134,7 @@ const UseCaseSelect = () => {
           }),
         );
       }
+      dispatch(reset());
       dispatch(
         uploadUseCases({
           userCaseIds: useCaseIds,
@@ -152,7 +156,6 @@ const UseCaseSelect = () => {
         newOptions.push(mappedOption);
       }
     });
-
     setOptions(newOptions);
   }, [selected]);
   //
@@ -167,10 +170,9 @@ const UseCaseSelect = () => {
 
       dispatch(setUseCaseIds(matchingUseCaseIds));
 
-      const reports = UsecaseOptions.find((option) => option.value === useCaseType);
+      // const reports = UsecaseOptions.find((option) => option.value === useCaseType);
       const reportsList = UseCaseOptions.filter((c) => mode.includes(c.value));
       const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)).map((r) => r.id);
-      console.log(reportsList);
       setReport(reportsList);
 
       dispatch(
@@ -182,7 +184,7 @@ const UseCaseSelect = () => {
         }),
       );
     },
-    [dispatch, sessionDetail, useCaseType],
+    [dispatch, sessionDetail],
   );
 
   const chooseUseCase = useCallback((options: any) => {

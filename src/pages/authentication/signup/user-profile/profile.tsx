@@ -89,7 +89,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
     username: yup.string().trim().required("Username is required"),
     first_name: yup.string().trim().required("First Name is required"),
     last_name: yup.string().trim().required("Last Name is required"),
-    phone_number: yup.string().trim().required("Phone Number is required"),
+    phone_number: yup.string().trim(),
     country: yup.string(),
     company_name: yup.string().trim().required("Company is required"),
     job_position: yup.string().trim().required("Job position is required"),
@@ -158,7 +158,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-x-5 gap-y-2 w-full mt-5">
-              <fieldset className="col-span-1">
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Username
                 </Label>
@@ -168,10 +168,10 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   error={errors.username}
                   placeholder="Username"
                 />
-              </fieldset>
+              </div>
               <div className="col-span-1" />
 
-              <fieldset className="">
+              <div className="">
                 <Label required className="font-semibold text-secondary-800">
                   First Name
                 </Label>
@@ -183,8 +183,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                     error={errors.first_name}
                   />
                 </div>
-              </fieldset>
-              <fieldset className="">
+              </div>
+              <div className="">
                 <Label required className="font-semibold text-secondary-800">
                   Last Name
                 </Label>
@@ -196,8 +196,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                     error={errors.last_name}
                   />
                 </div>
-              </fieldset>
-              <fieldset className="col-span-1">
+              </div>
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Country
                 </Label>
@@ -215,10 +215,10 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                 {/* {countryError !== null && (
                   <div className="mt-1 text-xs text-danger-500">{countryError}</div>
                 )} */}
-              </fieldset>
+              </div>
 
               {/* phone */}
-              <fieldset className="col-span-1">
+              <div className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>
                 <div className="mt-0.5">
                   <PhoneNumberInput
@@ -229,9 +229,9 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                     error={errors.phone_number}
                   />
                 </div>
-              </fieldset>
+              </div>
 
-              <fieldset className="col-span-1">
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Company name
                 </Label>
@@ -251,8 +251,8 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                 // register={register("country")}
                 placeholder={"Select a Company"}
               /> */}
-              </fieldset>
-              <fieldset className="col-span-1">
+              </div>
+              <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">
                   Job Position
                 </Label>
@@ -262,7 +262,7 @@ const UserProfile = ({ changeActiveStep, userDetail }: Props) => {
                   error={errors.job_position}
                   placeholder="Job Position"
                 />
-              </fieldset>
+              </div>
             </div>
           </div>
           <div className="mt-5 flex items-center justify-center">

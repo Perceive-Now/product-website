@@ -1,36 +1,56 @@
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import { setSession } from "src/stores/session";
+import { useAppDispatch } from "src/hooks/redux";
+import {
+  removeFromSkippedQuestionList,
+  setCurrentQuestionId,
+  updateNewQuestionList,
+} from "src/stores/Q&A";
 
-interface IQuestion {
+interface IQuestionUsecase {
   questionId: number;
+  useCaseId: number;
   question: string;
+  usecase: string;
   answer: string;
+  exampleAnswer: string;
 }
 
 interface Props {
-  questions: IQuestion[];
+  questions: IQuestionUsecase[];
+  questionWithUsecase?: IQuestionUsecase[];
 }
 
 const SkippedQuestion = ({ questions }: Props) => {
   const dispatch = useAppDispatch();
 
-  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-
   const handleQuestionSelect = useCallback(
-    (question: IQuestion) => {
+    (question: IQuestionUsecase) => {
       dispatch(
-        setSession({
-          session_data: {
-            ...sessionDetail,
-            question_id: question.questionId,
-            step_id: 3,
-            active_index: question.questionId - 1,
+        removeFromSkippedQuestionList({
+          question: question.question,
+          useCaseId: question.useCaseId,
+          exampleAnswer: question.exampleAnswer,
+          answer: question.answer,
+          usecase: question.usecase,
+          questionId: question.questionId,
+        }),
+      );
+      dispatch(setCurrentQuestionId(question.questionId));
+      dispatch(
+        updateNewQuestionList({
+          currentId: question.questionId,
+          questionAnswer: {
+            question: question.question,
+            useCaseId: question.useCaseId,
+            exampleAnswer: question.exampleAnswer,
+            answer: question.answer,
+            usecase: question.usecase,
+            questionId: question.questionId,
           },
         }),
       );
     },
-    [dispatch, sessionDetail],
+    [dispatch],
   );
 
   return (

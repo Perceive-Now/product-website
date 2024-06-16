@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { questionList } from "src/pages/product/report-q&a/_question";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
@@ -27,6 +28,13 @@ export interface IUploadAttachmentsState {
   isUploadAnswerToAddtionalQuestionsSuccess: boolean;
   message: string;
   answerResponse: IuploadAnswerToAddtionalQuestionsResponse;
+  questionsList: {
+    questionId: number;
+    useCaseId: number;
+    question: string;
+    usecase: string;
+    answer: string;
+  }[];
 }
 
 export const initialState: IUploadAttachmentsState = {
@@ -48,6 +56,7 @@ export const initialState: IUploadAttachmentsState = {
     status: "",
     userID: "",
   },
+  questionsList: questionList,
 };
 
 // -----------------------------------------------------------------------
@@ -184,6 +193,19 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
+    updateQuestionList: (
+      state,
+      action: PayloadAction<{ questionId: number; question: string }>,
+    ) => {
+      state.questionsList = state.questionsList.map((question) => {
+        if (question.questionId === action.payload.questionId) {
+          question.question = action.payload.question;
+        }
+        return question;
+      });
+    },
+
+    // -----------------------------------------------------------------------
     getUploadAttachmentsSliceState: (state) => state,
 
     // -----------------------------------------------------------------------
@@ -251,6 +273,7 @@ export const {
   setIsUploadAttachmentsSuccess,
   getUploadAttachmentsSliceState,
   setUploadAttachmentsStateFromDraft,
+  updateQuestionList,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;

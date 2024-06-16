@@ -1,4 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import jsCookie from "js-cookie";
+
 import axios from "axios";
 
 const BASE_URL = "https://pn-chatbot.azurewebsites.net";
@@ -105,6 +107,10 @@ export const UseCaseSlice = createSlice({
         isUseCaseUploadSuccess: true,
         message: "",
       };
+      jsCookie.set(
+        "requirement_gathering_id",
+        String(action.payload.data.requirement_gathering_id),
+      );
       state.requirementGatheringId = action.payload.data.requirement_gathering_id;
     });
     builder.addCase(uploadUseCases.rejected, (state, action) => {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 import Button from "../../../../components/reusable/button";
-import { IProduct } from "../../../../utils/api/product";
+import { IProducts } from "../../../../utils/api/product";
 import StripeImage from "../../../../assets/images/stripe.svg";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { setSession } from "../../../../stores/session";
@@ -12,7 +12,7 @@ import { getNewSession } from "../../../../stores/auth";
 
 interface Props {
   changeActiveStep?: (step: number) => void;
-  selectedPlan: IProduct[];
+  selectedPlan: IProducts[];
 }
 
 /**
@@ -31,7 +31,15 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const TotalPrice = selectedPlan.map((p) => p.price).reduce((acc, curr) => acc + curr, 0);
+  // const TotalPrice = selectedPlan.map((p) => p.price).reduce((acc, curr) => acc + curr, 0);
+  const TotalPrice = selectedPlan.reduce((total, item) => {
+    if (item.reportPlan === "pro") {
+      return total + 995;
+    } else if (item.reportPlan === "premium") {
+      return total + 1995;
+    }
+    return total; // In case of an unknown type
+  }, 0);
 
   // useEffect(() => {
   //   const pollPaymentStatus = async () => {
@@ -112,16 +120,20 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
         <div className="bg-appGray-100 px-2 py-2 rounded-md">
           <p className="capitalize text-sm pb-1">SELECTED REPORT</p>
           {selectedPlan.map((plan) => (
-            <div key={plan.id} className="pb-1">
-              <div className="flex items-center justify-between text-secondary-800">
-                <span>{plan.name}</span>
-                <span>${plan.price / 100}</span>
+            <div key={plan.id} className="pb-0.5">
+              <div className="grid grid-cols-2 text-secondary-800">
+                <span>{plan.label}</span>
+                <div className="justify-self-end ">
+                  <span>{plan.reportPlan === "pro" && "$995"}</span>
+                  <span>{plan.reportPlan === "premium" && "$1,995"}</span>
+                </div>
+                {/* <span>${plan.price / 100}</span> */}
               </div>
             </div>
           ))}
           <div className="flex items-center justify-between pt-2 pb-4 border-t border-[#87888C] text-secondary-800">
             <span>Total</span>
-            <span>${TotalPrice / 100}</span>
+            <span>${TotalPrice}</span>
           </div>
         </div>
       </div>
