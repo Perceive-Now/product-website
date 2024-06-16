@@ -139,7 +139,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         onSkip={onSkip}
         hasSkippedQuestion={
           skippedQuestionList.length > 0 &&
-          questionsList[questionsList.length - 1].questionId === currentQuestionId
+          questionWithUsecase[questionWithUsecase.length - 1]?.questionId === currentQuestionId
         }
       />
     </>

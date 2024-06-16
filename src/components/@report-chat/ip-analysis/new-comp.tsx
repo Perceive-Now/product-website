@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import * as yup from "yup";
 import Button from "../../reusable/button";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 interface Props {
   onContinue: any;

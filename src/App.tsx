@@ -98,7 +98,6 @@ import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
 import UseCasePage from "./pages/product/use-case";
 import Landing from "./pages/product/landing/landing";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
-import ReportQuestionAnswerPage from "./pages/product/report-q&a/report-page";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
 import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
