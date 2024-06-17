@@ -4,9 +4,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 import Button from "../../../../components/reusable/button";
+
 import { IProducts } from "../../../../utils/api/product";
+
 import StripeImage from "../../../../assets/images/stripe.svg";
-import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+
+import { useAppDispatch } from "../../../../hooks/redux";
+
 import { setSession } from "../../../../stores/session";
 import { getNewSession } from "../../../../stores/auth";
 
@@ -22,8 +26,6 @@ interface Props {
 
 const StripePaymentForm = ({ selectedPlan }: Props) => {
   const dispatch = useAppDispatch();
-
-  const sessionDetail = useAppSelector((state) => state.sessionDetail.session);
 
   const navigate = useNavigate();
   const stripe = useStripe();
@@ -82,11 +84,11 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
     } else {
       toast.success("Your Payment is Successful!");
       sessionStorage.setItem("clientSecret", "");
+      sessionStorage.setItem("planIds", "");
 
       dispatch(
         setSession({
           session_data: {
-            last_session_id: sessionDetail?.session_id,
             use_cases: [],
             user_chat: {
               question: "",

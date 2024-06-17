@@ -41,6 +41,10 @@ export default function IPReview() {
 
   const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
 
+  const storedPlanIds = sessionStorage.getItem("planIds");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const item_id = storedPlanIds ? JSON.parse(storedPlanIds) : [];
+
   const user_id = jsCookie.get("user_id") ?? "";
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
@@ -50,7 +54,7 @@ export default function IPReview() {
       const response = await axiosInstance.post<IPaymentIntent>(
         `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
         {
-          item_ids: ItemId,
+          item_ids: ItemId !== undefined ? ItemId : item_id,
         },
       );
       //
@@ -70,7 +74,7 @@ export default function IPReview() {
       setPaymentLoading(false);
       toast.error("Failed to create payment intent");
     }
-  }, [ItemId, dispatch, navigate, sessionDetail]);
+  }, [ItemId, dispatch, item_id, navigate, sessionDetail]);
 
   //
   const onContinue = useCallback(async () => {

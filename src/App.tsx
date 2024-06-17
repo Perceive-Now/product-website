@@ -71,7 +71,7 @@ import DashboardPage from "./pages/product/dashboard";
 import PageNotFound404 from "./pages/404";
 
 //
-import ProductLayout from "./layouts/product-layout";
+// import ProductLayout from "./layouts/product-layout";
 import AuthDefaultLayout from "./layouts/auth/default";
 import AuthLayout from "./layouts/auth";
 
@@ -130,7 +130,7 @@ function App() {
           <Route path="/welcome" element={<WelcomePage />} />
 
           {/* Actual product pages */}
-          <Route element={<ProductLayout />}></Route>
+          {/* <Route element={<ProductLayout />}></Route> */}
 
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Landing />} />
