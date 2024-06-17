@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, useEffect, useCallback } from "react";
+import { useState, FunctionComponent, useCallback, useEffect } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
@@ -42,7 +42,6 @@ const SidebarBottom = [
 /**
  *
  */
-
 export const AppSidebar: FunctionComponent<Props> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
