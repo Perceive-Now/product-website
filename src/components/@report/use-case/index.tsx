@@ -175,6 +175,8 @@ const UseCaseSelect = () => {
       const matchingIds = UseCaseOptions.filter((r) => mode.includes(r.value)).map((r) => r.id);
       setReport(reportsList);
 
+      sessionStorage.setItem("planIds", JSON.stringify(matchingIds));
+
       dispatch(
         setSession({
           session_data: {

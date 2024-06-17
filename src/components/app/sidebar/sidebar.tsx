@@ -127,7 +127,15 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             </ToolTip>
           </div>
           <div className="space-y-1 mt-1">
-            {isChat && <>{open && <KnowNowHistory />}</>}
+            {isChat && (
+              <>
+                {open && (
+                  <div className="px-2.5">
+                    <KnowNowHistory />
+                  </div>
+                )}
+              </>
+            )}
             {sidebarItems.map((item, index) => (
               <div key={index}>
                 {!item.children && (
