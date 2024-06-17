@@ -2,16 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
-
 import DropZoneContent from "./dropzone-content";
-
 import Button from "../../../components/reusable/button";
 import { DustbinIcon } from "../../../components/icons";
-
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-
 import "./border.css";
-
 import {
   EUploadAttachmentsPages,
   incrementStep,
@@ -20,6 +15,7 @@ import {
   setIsUploadAttachmentsSuccess,
   uploadAttachments,
 } from "../../../stores/upload-attachments";
+import classNames from "classnames";
 
 const baseStyle = {
   flex: 1,
@@ -155,6 +151,8 @@ export default function UploadAttachments() {
     );
   };
 
+  const isLoading = isUploadingUploadAttachments || isUploadingUseCases;
+
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
       {/* DropZone */}
@@ -171,8 +169,16 @@ export default function UploadAttachments() {
             <div key={file.name}>
               <div className="flex flex-row justify-between gap-x-3">
                 <p className="truncate text-xs mb-1">{file.name}</p>
-                <div className="cursor-pointer" onClick={() => handleFileDelete(file.name)}>
-                  <DustbinIcon />
+                <div
+                  onClick={() => {
+                    !isLoading && handleFileDelete(file.name);
+                  }}
+                  className={classNames(
+                    { "cursor-pointer": !isLoading },
+                    { "cursor-not-allowed": isLoading },
+                  )}
+                >
+                  <DustbinIcon className={classNames({ "opacity-50": isLoading })} />
                 </div>
               </div>
               <div className="w-full bg-gray-200 h-[1px]"></div>
@@ -184,9 +190,15 @@ export default function UploadAttachments() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={files.length === 0}
-          loading={isUploadingUploadAttachments || isUploadingUseCases}
+          loading={isLoading}
         >
-          <p className="text-secondary-800">Continue</p>
+          <p
+            className={classNames("text-secondary-800", {
+              "opacity-50": files.length === 0 || isLoading,
+            })}
+          >
+            Continue
+          </p>
         </Button>
         <p className="my-3">
           For now, we support only <strong>1 PDF</strong> file type at a time
