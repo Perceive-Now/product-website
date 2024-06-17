@@ -112,7 +112,7 @@ export const QAPages = {
 export type IQAPage = (typeof QAPages)[keyof typeof QAPages];
 
 export const initialState: IQAState = {
-  currentPageId: QAPages.Review,
+  currentPageId: QAPages.QA,
   currentStep: 0,
   currentQuestionId: 1,
   message: "",
