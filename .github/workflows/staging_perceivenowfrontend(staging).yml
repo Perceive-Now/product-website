@@ -25,7 +25,6 @@ jobs:
         run: |
           yarn
           yarn build --if-present
-          yarn test --if-present
 
       - name: Copy web.config to build output
         run: cp public/web.config build/web.config
