@@ -35,7 +35,7 @@ export const UseCaseOptions = [
     reportPlan: "premium",
   },
   {
-    id: 11,
+    id: 18,
     label: "Patent valuation",
     value: "ip-valuation",
     desc: "Gain crucial insights into the financial worth of your patents with our Patent Valuation report. It's ideal for use in negotiations, investment evaluations, and portfolio management, ensuring you understand the full monetary potential of your patents.",

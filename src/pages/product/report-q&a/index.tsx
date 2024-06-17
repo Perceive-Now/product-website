@@ -102,18 +102,17 @@ const ReportPage = () => {
   ];
 
   const onBack = useCallback(() => {
-    const prevQuestionIndex = questionWithUsecase?.findIndex(
-      (questionId) => currentQuestionId === questionId.questionId,
-    );
-    const QIndex = questionWithUsecase?.findIndex((q) => q.questionId === currentQuestionId);
+    const currentIndex = questionWithUsecase?.findIndex((q) => q.questionId === currentQuestionId);
+    const prevQiestionId =
+      questionWithUsecase && currentIndex && questionWithUsecase[currentIndex - 1].questionId;
     if (currentPageId === 3) {
       dispatch(setCurrentPageId(QAPages.Review));
-    } else if (QIndex === 0) {
+    } else if (currentIndex === 0) {
       navigate("/interaction-method");
     } else if (currentPageId === 2) {
       dispatch(setCurrentPageId(QAPages.QA));
     } else {
-      dispatch(setCurrentQuestionId(prevQuestionIndex || 0));
+      dispatch(setCurrentQuestionId(prevQiestionId || 0));
       dispatch(decrementStep());
     }
   }, [currentPageId, currentQuestionId, dispatch, navigate, questionWithUsecase]);

@@ -63,6 +63,7 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
       toast.error("Stripe or Elements not initialized");
       return;
     }
+
     // try {
     const result = await stripe.confirmPayment({
       elements,
@@ -72,9 +73,12 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
       // },
     });
     if (result.error) {
-      toast.error(result.error.message || "Payment is failed!");
-      // setMessage(result.error.message ?? '');
-      setIsLoading(false);
+      if (result.error?.type === "validation_error" || result.error?.type === "card_error") {
+        setIsLoading(false);
+      } else {
+        toast.error(result.error.message || "Payment is failed!");
+        setIsLoading(false);
+      }
     } else {
       toast.success("Your Payment is Successful!");
       sessionStorage.setItem("clientSecret", "");
@@ -140,7 +144,13 @@ const StripePaymentForm = ({ selectedPlan }: Props) => {
       <form onSubmit={handleSubmit}>
         <PaymentElement />
         <div className="mt-4">
-          <Button type="primary" size="small" classname="text-sm w-full" loading={isLoading}>
+          <Button
+            disabled={isLoading || !stripe || !elements}
+            type="primary"
+            size="small"
+            classname="text-sm w-full"
+            loading={isLoading}
+          >
             {isLoading ? <span>Processing</span> : <span>Confirm</span>}
           </Button>
         </div>
