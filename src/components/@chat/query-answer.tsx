@@ -1,30 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import ToolTip from "../reusable/tool-tip";
 import sanitizeHtml from "sanitize-html";
 import classNames from "classnames";
-
-import "./style.css";
-
+//
+import ToolTip from "../reusable/tool-tip";
+//
 import ThumbsDownIcon from "../icons/common/ThumbsDown";
 import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import RefreshIcon from "../icons/common/refresh";
 import CopyIcon from "../icons/common/copy";
 import { ErrorIcon } from "../icons";
-
+//
 import PN from "../../assets/images/pn.svg";
-
+//
 import IconButton from "../reusable/icon-button";
 import DotLoader from "../reusable/dot-loader";
-
+//
 import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
-
+//
+import "./style.css";
 interface Props {
   answer: string;
   isLoading: boolean;
   error?: string;
-  responseTime?: string;
   updateQuery: (query: string, editInex: number | null) => void;
   editIndex: any;
   query: string;
@@ -34,15 +33,7 @@ interface Props {
  *
  */
 
-const QueryAnswer = ({
-  answer,
-  isLoading,
-  error,
-  responseTime,
-  updateQuery,
-  editIndex,
-  query,
-}: Props) => {
+const QueryAnswer = ({ answer, isLoading, error, updateQuery, editIndex, query }: Props) => {
   const dispatch = useAppDispatch();
 
   const copyRef = useRef<any>(null);
@@ -116,9 +107,19 @@ const QueryAnswer = ({
       "tr",
       "th",
       "td",
+      "img",
     ],
     allowedAttributes: {
       a: ["href"],
+      img: ["src", "alt", "width", "height"],
+    },
+    transformTags: {
+      img: (tagName, attribs) => {
+        // Set fixed width and height
+        attribs.width = attribs.width || "800"; // default width if not specified
+        attribs.height = attribs.height || "200"; // default height if not specified
+        return { tagName, attribs };
+      },
     },
   });
 
@@ -150,10 +151,6 @@ const QueryAnswer = ({
                   className="text-secondary-800"
                   dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
                 />
-                <p className="text-xs text-secondary-800 font-bold mt-1">
-                  ResponseTime:{" "}
-                  <span className="text-primary-500">{responseTime && responseTime}</span>
-                </p>
               </>
             )}
           </>

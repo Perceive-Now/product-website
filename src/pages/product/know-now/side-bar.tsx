@@ -60,7 +60,7 @@ const KnowNowRightSideBar = () => {
           </div>
           <p className="text-sm mt-2 mb-1">You can also generate a full report.</p>
           <Link
-            to="/"
+            to="/new-report"
             className="text-white text-sm bg-primary-900 inline-block px-2 py-1 rounded-lg relative"
           >
             Get started
