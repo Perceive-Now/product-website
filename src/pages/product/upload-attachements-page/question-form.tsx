@@ -8,7 +8,8 @@ import { useCallback } from "react";
 import Button from "src/components/reusable/button";
 
 interface QuestionFormProps {
-  onContinue: any;
+  onContinue: ({ answer }: { answer: string | undefined }) => Promise<void>;
+  onSkipBtnClick: () => void;
   question: string;
   exampleAnswer: string;
   isLoading: boolean;
@@ -18,6 +19,7 @@ interface QuestionFormProps {
 
 export default function QuestionForm({
   onContinue,
+  onSkipBtnClick,
   question,
   isLoading,
   exampleAnswer,
@@ -39,7 +41,7 @@ export default function QuestionForm({
     resolver: yupResolver(formResolver),
     mode: "onBlur",
   });
-  //
+
   const useExample = useCallback(() => {
     setValue("answer", exampleAnswer); // Update the form value
   }, [exampleAnswer, setValue]);
@@ -91,6 +93,15 @@ export default function QuestionForm({
           )}
         </fieldset>
         <div className="mt-4 pb-4 flex gap-2 items-center">
+          <Button
+            htmlType={"button"}
+            rounded={"medium"}
+            loading={isLoading}
+            disabled={isLoading}
+            handleClick={onSkipBtnClick}
+          >
+            Skip and continue
+          </Button>
           <Button htmlType={"submit"} rounded={"medium"} loading={isLoading} disabled={isLoading}>
             Continue
           </Button>
