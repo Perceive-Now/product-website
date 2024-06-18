@@ -80,6 +80,7 @@ import BGVector3 from "./landing/bg-vector-3";
 // Upload Attachments
 import DustbinIcon from "./upload-attachments/dust-bin";
 import UploadIcon from "./upload-attachments/upload";
+import LightBulbIcon from "./upload-attachments/light-bulb";
 
 export {
   // Sidenav icons
@@ -157,4 +158,5 @@ export {
   // Upload Attachments
   DustbinIcon,
   UploadIcon,
+  LightBulbIcon,
 };
