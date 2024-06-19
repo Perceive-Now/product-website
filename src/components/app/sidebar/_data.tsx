@@ -11,7 +11,7 @@ const sidebarItems: ISidebarListItem[] = [
     title: "New Conversation",
     key: "new-chat",
     icon: NewChatIcon,
-    to: "/know-now/market-intelligence",
+    to: "/start-conversation",
   },
   {
     title: "New Report",

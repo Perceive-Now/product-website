@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axios";
-import { AppConfig } from "../utils/app.config";
+import { AppConfig } from "../config/app.config";
 
 const initialState: IProduct = {
   id: 0,

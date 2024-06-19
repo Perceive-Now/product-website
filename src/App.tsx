@@ -71,7 +71,6 @@ import DashboardPage from "./pages/product/dashboard";
 import PageNotFound404 from "./pages/404";
 
 //
-// import ProductLayout from "./layouts/product-layout";
 import AuthDefaultLayout from "./layouts/auth/default";
 import AuthLayout from "./layouts/auth";
 
@@ -81,9 +80,6 @@ import UserDetails from "./pages/authentication/signup/user-details";
 import SignupPage from "./pages/authentication/signup";
 import LoginPage from "./pages/authentication/login";
 
-// Product
-import IPFullReport from "./pages/product/ip-landscaping/Full-report";
-
 // Account
 import UserProfile from "./pages/my-account/profile";
 import MyReport from "./pages/my-account/my-reports";
@@ -91,21 +87,31 @@ import Setting from "./pages/my-account/setting";
 
 // Payment
 import StayTuned from "./components/default";
-import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
+
+import { WelcomePage } from "./components/@signup-complete";
+
+// knownow
+import KnowNowIP from "./pages/product/know-now/ip-analysis";
+import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
+
+// analytics
+import IPFullReport from "./pages/product/ip-landscaping/Full-report";
 
 // Report
 import UseCasePage from "./pages/product/use-case";
 import Landing from "./pages/product/landing/landing";
+import ReportPage from "./pages/product/report-q&a";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
-import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
+
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
 import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
-import { WelcomePage } from "./components/@signup-complete";
-import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
 import DraftReports from "./pages/product/draft-reports/draft-reports";
+
+import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
+
 import { EReportSectionPageIDs } from "./stores/draft";
-import ReportPage from "./pages/product/report-q&a";
+import KnowNowPage from "./pages/product/know-now";
 
 /**
  *
@@ -164,6 +170,8 @@ function App() {
               />
             </Route>
             {/* Know-now */}
+            <Route path="/start-conversation" element={<KnowNowPage />} />
+
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
 
