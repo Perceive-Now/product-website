@@ -5,7 +5,6 @@ import KnowNowdefault from "./default";
 import RadioButtons from "src/components/reusable/radio-buttons";
 import Button from "src/components/reusable/button";
 //
-import { generateKnowId } from "src/utils/helpers";
 import { useAppDispatch } from "src/hooks/redux";
 //
 import { generateNewId, resetChats } from "src/stores/know-now1";
@@ -35,8 +34,8 @@ const KnowNowPage = () => {
   }, []);
 
   const onContinue = useCallback(() => {
-    const id = generateKnowId();
-    dispatch(generateNewId({ id: id }));
+    // const id = generateKnowId();
+    dispatch(generateNewId({ id: "" }));
     dispatch(resetChats());
 
     if (mode === "ip") {

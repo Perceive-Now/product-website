@@ -20,6 +20,10 @@ import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
 //
 import "./style.css";
+import axios from "axios";
+import { AppConfig } from "src/config/app.config";
+import toast from "react-hot-toast";
+import { udateChatResponse } from "src/stores/know-now1";
 interface Props {
   answer: string;
   isLoading: boolean;
@@ -27,13 +31,21 @@ interface Props {
   updateQuery: (query: string, editInex: number | null) => void;
   editIndex: any;
   query: string;
+  message_id: string;
 }
 
 /**
  *
  */
-
-const QueryAnswer = ({ answer, isLoading, error, updateQuery, editIndex, query }: Props) => {
+const QueryAnswer = ({
+  answer,
+  isLoading,
+  error,
+  updateQuery,
+  editIndex,
+  query,
+  message_id,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const copyRef = useRef<any>(null);
@@ -123,10 +135,28 @@ const QueryAnswer = ({ answer, isLoading, error, updateQuery, editIndex, query }
     },
   });
 
+  //
   const onRegenerate = useCallback(() => {
     dispatch(setUpdateQuery({ editIndex: editIndex, query: query }));
     updateQuery(query, editIndex);
   }, [dispatch, editIndex, query, updateQuery]);
+
+  //
+  const handleLikeRes = useCallback(
+    async (value: boolean) => {
+      try {
+        const res = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
+          message_id: Number(message_id),
+          like: value,
+        });
+        toast.success(value ? "Good" : "Bad");
+        dispatch(udateChatResponse({ message_id: message_id, liked: value }));
+      } catch (error) {
+        toast.error("Server Error");
+      }
+    },
+    [dispatch, message_id],
+  );
 
   return (
     <div className="flex items-start gap-3">
@@ -158,12 +188,12 @@ const QueryAnswer = ({ answer, isLoading, error, updateQuery, editIndex, query }
         <div className="flex items-center gap-2 mt-5">
           <div className="flex items-center gap-2">
             <ToolTip title="Good" placement="top">
-              <IconButton color="default" disabled>
+              <IconButton color="default" onClick={() => handleLikeRes(true)}>
                 <ThumbsUpIcon />
               </IconButton>
             </ToolTip>
             <ToolTip title="Bad" placement="top">
-              <IconButton color="default" disabled>
+              <IconButton color="default" onClick={() => handleLikeRes(false)}>
                 <ThumbsDownIcon />
               </IconButton>
             </ToolTip>

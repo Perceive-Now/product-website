@@ -48,12 +48,19 @@ function MarketIntelligenceKnowNow() {
 
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
-      setLoadingIndex(editIndex !== null ? editIndex : chats.length);
       setIsloading(true);
+      setLoadingIndex(editIndex !== null ? editIndex : chats.length);
+
       const knownowId = knownow_id === undefined ? generateKnowId() : knownow_id;
+
       if (knownow_id === undefined) {
         dispatch(generateNewId({ id: knownowId }));
-        dispatch(setChatIds(knownowId));
+        dispatch(
+          setChatIds({
+            title: knownowId,
+            chat_id: knownowId,
+          }),
+        );
       }
 
       const queries = {
@@ -163,6 +170,7 @@ function MarketIntelligenceKnowNow() {
                     updateQuery={onSendQuery}
                     editIndex={idx}
                     query={chat.query}
+                    message_id={chat.message_id}
                   />
                 </div>
               ))}

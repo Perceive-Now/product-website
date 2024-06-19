@@ -172,7 +172,13 @@ function App() {
             {/* Know-now */}
             <Route path="/start-conversation" element={<KnowNowPage />} />
 
+            <Route path="/know-now/ip-analysis/:id" element={<KnowNowIP />} />
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
+
+            <Route
+              path="/know-now/market-intelligence/:id"
+              element={<MarketIntelligenceKnowNow />}
+            />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
 
             {/*Graph */}
