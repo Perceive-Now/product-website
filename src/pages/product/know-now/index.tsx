@@ -3,6 +3,9 @@ import KnowNowdefault from "./default";
 import RadioButtons from "src/components/reusable/radio-buttons";
 import Button from "src/components/reusable/button";
 import { useNavigate } from "react-router-dom";
+import { generateKnowId } from "src/utils/helpers";
+import { useAppDispatch } from "src/hooks/redux";
+import { generateNewId, setChatIds } from "src/stores/know-now1";
 
 const Options = [
   {
@@ -16,6 +19,8 @@ const Options = [
 ];
 
 const KnowNowPage = () => {
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
   const [mode, setMode] = useState("");
 
@@ -24,13 +29,16 @@ const KnowNowPage = () => {
   }, []);
 
   const onContinue = useCallback(() => {
+    const id = generateKnowId();
+    dispatch(generateNewId({ id: id }));
+
     if (mode === "ip") {
       navigate("/know-now/ip-analysis");
     }
     if (mode === "ma") {
       navigate("/know-now/market-intelligence");
     }
-  }, [mode, navigate]);
+  }, [dispatch, mode, navigate]);
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center pt-10 gap-8">
@@ -42,7 +50,7 @@ const KnowNowPage = () => {
             options={Options}
             activeMode={mode}
             handleModeChange={handleChnage}
-            classNames="text-xl font-semibold"
+            classNames="font-semibold"
           />
         </div>
         <Button handleClick={onContinue} classname="w-[400px]" disabled={!mode}>
