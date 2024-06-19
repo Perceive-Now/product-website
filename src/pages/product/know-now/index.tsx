@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
+//
 import KnowNowdefault from "./default";
 import RadioButtons from "src/components/reusable/radio-buttons";
 import Button from "src/components/reusable/button";
-import { useNavigate } from "react-router-dom";
+//
 import { generateKnowId } from "src/utils/helpers";
 import { useAppDispatch } from "src/hooks/redux";
-import { generateNewId, setChatIds } from "src/stores/know-now1";
+//
+import { generateNewId, resetChats } from "src/stores/know-now1";
 
 const Options = [
   {
@@ -18,6 +21,9 @@ const Options = [
   },
 ];
 
+/**
+ *
+ */
 const KnowNowPage = () => {
   const dispatch = useAppDispatch();
 
@@ -31,6 +37,7 @@ const KnowNowPage = () => {
   const onContinue = useCallback(() => {
     const id = generateKnowId();
     dispatch(generateNewId({ id: id }));
+    dispatch(resetChats());
 
     if (mode === "ip") {
       navigate("/know-now/ip-analysis");

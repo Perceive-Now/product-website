@@ -128,6 +128,9 @@ export const KnownowSlice1 = createSlice({
     setChatIds: (state, action: PayloadAction<string>) => {
       state.chatIds.push(action.payload);
     },
+    resetChats: (state) => {
+      state.chats = [];
+    },
   },
 });
 
@@ -139,5 +142,6 @@ export const {
   updateChatAnswer,
   generateNewId,
   setChatIds,
+  resetChats,
   editQueryAndUpdateAnswer,
 } = KnownowSlice1.actions;
