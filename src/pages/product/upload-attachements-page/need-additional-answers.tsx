@@ -7,7 +7,9 @@ export default function NeedAdditionalAnswers() {
       <div>
         <p className="font-bold text-lg text-purple-900 mb-1">Almost There!</p>
         <p className="text-secondary-800">
-          Great start! A few more details will help us tailor the report perfectly to your needs.
+          We need a bit more information to create your report. <br />
+          Please answer a few more questions to complete the details. Once done, we'll generate your
+          custom report.
         </p>
       </div>
     </WaitingWrapper>

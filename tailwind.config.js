@@ -33,8 +33,8 @@ module.exports = {
       15: "7.5rem",
     },
     fontFamily: {
-      helvetica: ["Helvetica", "Arial", "sans-serif"],
-      mulish: ["Mulish", "sans-serif"],
+      'helvetica': ['Helvetica', 'Arial', 'sans-serif'],
+      'mulish': ['Mulish', 'sans-serif'],
     },
     extend: {
       colors: {
@@ -82,9 +82,6 @@ module.exports = {
           500: "#A14040",
           800: "#641B1B",
         },
-        foundationOrange: {
-          100: "#FFF6E6",
-        },
       },
       ringWidth: {
         0.5: "0.5px",
@@ -106,5 +103,6 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
+  plugins: [require("@tailwindcss/forms"),
+     require("@tailwindcss/line-clamp")],
 };
