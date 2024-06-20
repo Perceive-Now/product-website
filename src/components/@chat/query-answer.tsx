@@ -24,6 +24,12 @@ import axios from "axios";
 import { AppConfig } from "src/config/app.config";
 import toast from "react-hot-toast";
 import { udateChatResponse } from "src/stores/know-now1";
+
+import { DndProvider, useDrag } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import parse from "html-react-parser";
+import { Element } from "domhandler/lib/node";
+
 interface Props {
   answer: string;
   isLoading: boolean;
@@ -33,6 +39,34 @@ interface Props {
   query: string;
   message_id: string;
 }
+
+const ItemTypes = {
+  IMAGE: "image",
+};
+
+const DraggableImage = ({ src }: any) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.IMAGE,
+    item: { src },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <img
+      ref={drag}
+      src={src}
+      alt="Draggable"
+      style={{
+        width: "200px",
+        height: "auto",
+        opacity: isDragging ? 0.5 : 1,
+        cursor: "move",
+      }}
+    />
+  );
+};
 
 /**
  *
@@ -57,10 +91,12 @@ const QueryAnswer = ({
     }, 2000);
   }, [isCopied]);
 
+  //
   const copyText = useCallback(() => {
     setIsCopied(true);
   }, []);
 
+  //
   const convertTableToText = (tableElement: HTMLTableElement) => {
     if (!tableElement) return "";
 
@@ -71,7 +107,7 @@ const QueryAnswer = ({
     });
 
     const columnCount = rows[0].querySelectorAll("th, td").length;
-    const separator = "| " + "--- | ".repeat(columnCount);
+    const separator = "".repeat(columnCount);
 
     textRows.splice(1, 0, separator);
 
@@ -84,6 +120,7 @@ const QueryAnswer = ({
   //   return doc.body.textContent || '';
   // };
 
+  //
   const convertHtmlToMarkdown = (html: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
@@ -101,7 +138,9 @@ const QueryAnswer = ({
     return markdown;
   };
 
+  //
   const fullTextToCopy = convertHtmlToMarkdown(answer);
+  navigator.clipboard.writeText(fullTextToCopy);
 
   // const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
   const sanitizedAnswer = sanitizeHtml(answer, {
@@ -145,11 +184,11 @@ const QueryAnswer = ({
   const handleLikeRes = useCallback(
     async (value: boolean) => {
       try {
-        const res = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
+        await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
           message_id: Number(message_id),
           like: value,
         });
-        toast.success(value ? "Good" : "Bad");
+        toast.success("Thanks for you feedback");
         dispatch(udateChatResponse({ message_id: message_id, liked: value }));
       } catch (error) {
         toast.error("Server Error");
@@ -158,12 +197,27 @@ const QueryAnswer = ({
     [dispatch, message_id],
   );
 
+  //
+  useEffect(() => {
+    if (answer) {
+      parse(answer, {
+        replace: (domNode) => {
+          // Ensure that domNode is an Element and has the properties we need
+          if ((domNode as Element).name === "img" && (domNode as Element).attribs.src) {
+            return <DraggableImage src={(domNode as Element).attribs.src} />;
+          }
+        },
+      });
+      // setParsedContent(parsed as React.ReactNode[]);
+    }
+  }, [answer]);
+
   return (
     <div className="flex items-start gap-3">
       <div className="p-1 shrink-0">
         <img className="h-full w-full" src={PN} alt={"Pn"} />
       </div>
-      <div>
+      <div className="w-full">
         {isLoading ? (
           <DotLoader />
         ) : (
@@ -174,14 +228,14 @@ const QueryAnswer = ({
                 {error}
               </span>
             ) : (
-              <>
+              <DndProvider backend={HTML5Backend}>
                 <div
                   ref={copyRef}
                   style={{ textAlign: "justify" }}
                   className="text-secondary-800"
                   dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
                 />
-              </>
+              </DndProvider>
             )}
           </>
         )}

@@ -7,7 +7,7 @@ import Button from "src/components/reusable/button";
 //
 import { useAppDispatch } from "src/hooks/redux";
 //
-import { generateNewId, resetChats } from "src/stores/know-now1";
+import { generateNewId, resetChatIds, resetChats } from "src/stores/know-now1";
 
 const Options = [
   {
@@ -34,8 +34,8 @@ const KnowNowPage = () => {
   }, []);
 
   const onContinue = useCallback(() => {
-    // const id = generateKnowId();
     dispatch(generateNewId({ id: "" }));
+    dispatch(resetChatIds());
     dispatch(resetChats());
 
     if (mode === "ip") {

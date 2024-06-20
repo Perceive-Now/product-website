@@ -36,9 +36,9 @@ interface IKnowNow {
 }
 
 interface IMarketChatSave {
-  user_id: "string";
-  thread_id: "string";
-  content: "string";
+  user_id: string;
+  thread_id: string;
+  content: string;
 }
 
 const initialState: IKnowNow = {
@@ -50,20 +50,27 @@ const initialState: IKnowNow = {
 // -------------------------------------------------------------------------------------------------------
 
 // Market
-export const saveMarketChat = createAsyncThunk("saveMarketChat", async (payload: any) => {
-  try {
-    await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/save`, payload);
-    return {
-      success: true,
-      message: "Saved Successfully",
-    };
-  } catch (error: any) {
-    return {
-      success: false,
-      message: "Chat not saved",
-    };
-  }
-});
+export const saveMarketChat = createAsyncThunk(
+  "saveMarketChat",
+  async (payload: IMarketChatSave) => {
+    try {
+      await axios.post(
+        `https://percievenowchat2.azurewebsites.net/save/
+`,
+        payload,
+      );
+      return {
+        success: true,
+        message: "Saved Successfully",
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: "Chat not saved",
+      };
+    }
+  },
+);
 
 // -------------------------------------------------------------------------------------------------------
 
@@ -113,7 +120,7 @@ export const saveIPChat = createAsyncThunk(
 );
 
 // -------------------------------------------------------------------------------------------------------
-//
+//Get Conversations
 export const getIPChat = createAsyncThunk(
   "getIPChat",
   async (payload: IKnowIP[]): Promise<IResponse<IKnowNowIPConversations>> => {
@@ -137,7 +144,7 @@ export const getIPChat = createAsyncThunk(
 );
 
 // -------------------------------------------------------------------------------------------------------
-
+// Get Chats
 export const getIPChatById = createAsyncThunk(
   "getIPChatById",
   async (payload: IKnowIPGetChat): Promise<IResponse> => {
@@ -150,23 +157,24 @@ export const getIPChatById = createAsyncThunk(
       const combinedData = [];
 
       for (let i = 0; i < chats.length; i++) {
-        // && chats[i + 1] && chats[i + 1].role === 'ai'
-        if (chats[i].role === "human" && chats[i + 1].role === "ai") {
-          console.log(chats);
-          console.log(data[i + 1].content);
-          console.log(data[i + 1].message_id);
+        if (chats[i].role === "human") {
+          let aiMessage = null;
 
-          // const nextMessage = data[i + 1] && data[i + 1].role === 'ai' ? data[i + 1].content : '';
-          // const messageId = data[i + 1] && data[i + 1].role === 'ai' ? data[i + 1].message_id : '';
+          // Look ahead to find the next AI response
+          for (let j = i + 1; j < chats.length; j++) {
+            if (chats[j].role === "ai") {
+              aiMessage = chats[j];
+              break;
+            }
+          }
+
+          // Add the pair to combinedData if an AI response was found
           combinedData.push({
-            query: data[i].content,
-            answer: data[i + 1].content || "",
-            liked: data[i].liked,
-            message_id: data[i + 1].message_id || "",
+            query: chats[i].content,
+            answer: aiMessage ? aiMessage.content : "",
+            liked: chats[i].liked,
+            message_id: aiMessage ? aiMessage.message_id : "",
           });
-          // if (nextMessage) {
-          //   i++; // Skip the next message as it's already paired
-          // }
         }
       }
       return {
@@ -261,6 +269,9 @@ export const KnownowSlice1 = createSlice({
     // -------------------------------------------------------------------------------------------------------
 
     setChatIds: (state, action: PayloadAction<{ title: string; chat_id: string }>) => {
+      if (!state.chatIds) {
+        state.chatIds = []; // Initialize if undefined
+      }
       state.chatIds.push(action.payload);
     },
 
@@ -274,6 +285,10 @@ export const KnownowSlice1 = createSlice({
 
     resetChats: (state) => {
       state.chats = [];
+    },
+
+    resetChatIds: (state) => {
+      state.chatIds = [];
     },
 
     // -------------------------------------------------------------------------------------------------------
@@ -310,6 +325,7 @@ export const {
   generateNewId,
   setChatIds,
   resetChats,
+  resetChatIds,
   setRemoveConversation,
   editQueryAndUpdateAnswer,
   udateChatResponse,

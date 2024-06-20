@@ -6,6 +6,7 @@ import KnowNowHistory from "./chat-history";
 
 //
 import { useAppSelector } from "src/hooks/redux";
+import { LoaderIcon } from "react-hot-toast";
 
 /**
  *
@@ -20,8 +21,15 @@ const ChatSidebar = () => {
           Start new conversation
         </Button>
       </Link>
-      <div className="px-1">
-        {chatIds && chatIds.length > 0 && <KnowNowHistory History={chatIds || []} />}
+      <div className="px-1 space-y-">
+        <h6 className="text-black">History</h6>
+        {chatIds && chatIds.length > 0 ? (
+          <KnowNowHistory History={chatIds || []} />
+        ) : (
+          <p className="mt-5 flex justify-center ">
+            <LoaderIcon className="h-3 w-3" />
+          </p>
+        )}
       </div>
     </div>
   );

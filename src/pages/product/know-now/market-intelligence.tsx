@@ -26,6 +26,7 @@ import {
 import KnowNowdefault from "./default";
 import { AppConfig } from "src/config/app.config";
 import { generateKnowId } from "src/utils/helpers";
+import { useNavigate, useParams } from "react-router-dom";
 
 //
 
@@ -35,12 +36,14 @@ import { generateKnowId } from "src/utils/helpers";
 
 function MarketIntelligenceKnowNow() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const chatRef = useRef<HTMLInputElement>(null);
   const userId = jsCookie.get("user_id");
 
   const chats = useAppSelector((state) => state.KnowNowChat.chats);
-  const { knownow_id } = useAppSelector((state) => state.KnowNowChat);
+  // const { knownow_id } = useAppSelector((state) => state.KnowNowChat);
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
@@ -50,25 +53,38 @@ function MarketIntelligenceKnowNow() {
     async (updateQuery: string, editIndex: number | null) => {
       setIsloading(true);
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
+      //
+      const conversationId = id !== undefined ? id : generateKnowId();
 
-      const knownowId = knownow_id === undefined ? generateKnowId() : knownow_id;
-
-      if (knownow_id === undefined) {
-        dispatch(generateNewId({ id: knownowId }));
+      //
+      if (id == undefined) {
+        dispatch(generateNewId({ id: conversationId }));
         dispatch(
           setChatIds({
-            title: knownowId,
-            chat_id: knownowId,
+            title: conversationId,
+            chat_id: conversationId,
           }),
         );
+        navigate(`/know-now/market-intelligence/${conversationId}`);
       }
 
+      //
+      await dispatch(
+        saveMarketChat({
+          thread_id: conversationId,
+          user_id: userId || "",
+          content: query || updateQuery,
+        }),
+      );
+
+      //
       const queries = {
         query: query || updateQuery,
-        thread_id: knownowId,
+        thread_id: conversationId,
         user_id: userId,
       };
 
+      //
       if (editIndex !== null) {
         dispatch(
           editQueryAndUpdateAnswer({ index: editIndex, newQuery: updateQuery, newAnswer: "" }),
@@ -90,13 +106,13 @@ function MarketIntelligenceKnowNow() {
         const answer = res.data;
         setIsloading(false);
 
-        await dispatch(
-          saveMarketChat({
-            user_id: userId ?? "",
-            thread_id: knownow_id,
-            content: updateQuery,
-          }),
-        );
+        // await dispatch(
+        //   saveMarketChat({
+        //     user_id: userId ?? "",
+        //     thread_id: conversationId,
+        //     content: updateQuery,
+        //   }),
+        // );
 
         if (editIndex !== null) {
           dispatch(
@@ -134,7 +150,7 @@ function MarketIntelligenceKnowNow() {
         setLoadingIndex(null);
       }
     },
-    [chats.length, dispatch, knownow_id, query, userId],
+    [chats.length, dispatch, id, navigate, query, userId],
   );
 
   const scrollToBottom = () => {
