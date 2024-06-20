@@ -77,7 +77,8 @@ export const quickPromptsSlice = createSlice({
     setQuickPrompts: (state, action: PayloadAction<{ prompts: { [key: string]: string } }>) => {
       const { prompts } = action.payload;
       const index = state.quickPrompts.findIndex((content) => content.id === 0);
-      state.quickPrompts[index] = { id: 0, prompts };
+      if (index >= 0) state.quickPrompts[index] = { id: 0, prompts };
+      else state.quickPrompts.push({ id: 0, prompts });
     },
 
     // -----------------------------------------------------------------------
