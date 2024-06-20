@@ -6,10 +6,11 @@ const BASE_URL = "https://pn-chatbot.azurewebsites.net";
 
 export const EUploadAttachmentsPages = {
   UploadAttachments: 0,
-  GoToReport: 1,
-  NeedAdditionalAnswers: 2,
-  AdditionalQuestions: 3,
-  AllSet: 4,
+  WebsiteLinks: 1,
+  GoToReport: 2,
+  NeedAdditionalAnswers: 3,
+  AdditionalQuestions: 4,
+  AllSet: 5,
 } as const;
 
 export type TUploadAttachmentsPages =
@@ -19,6 +20,8 @@ export interface IUploadAttachmentsState {
   currentPageId: TUploadAttachmentsPages;
   currentStep: number;
   currentQuestionId: number;
+  filesToUpload: File[];
+  websiteLinks: string[];
   additionalQuestionIds: { question_id: number }[];
   answers: IAnswerObj[];
   isUploading: boolean;
@@ -41,6 +44,8 @@ export const initialState: IUploadAttachmentsState = {
   currentPageId: EUploadAttachmentsPages.UploadAttachments,
   currentStep: 0,
   currentQuestionId: 0,
+  filesToUpload: [],
+  websiteLinks: [],
   additionalQuestionIds: [],
   answers: [],
   isUploading: false,
@@ -168,6 +173,11 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
+    setFilesToUpload: (state, action: PayloadAction<File[]>) => {
+      state.filesToUpload = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
     setCurrentQuestionId: (state, action: PayloadAction<number>) => {
       state.currentQuestionId = action.payload;
     },
@@ -274,6 +284,7 @@ export const {
   getUploadAttachmentsSliceState,
   setUploadAttachmentsStateFromDraft,
   updateQuestionList,
+  setFilesToUpload,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;
