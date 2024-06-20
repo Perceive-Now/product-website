@@ -11,15 +11,21 @@ import ChatQuery from "../../../components/@chat/chat-question";
 import KnowNowRightSideBar from "./side-bar";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { setUpdateQuery } from "../../../stores/know-now";
+// import { setUpdateQuery } from "../../../stores/know-now";
 
 import {
   addQuestion,
   editQueryAndUpdateAnswer,
+  generateNewId,
+  saveMarketChat,
+  setChatIds,
   updateChatAnswer,
   updateChatError,
 } from "../../../stores/know-now1";
+
 import KnowNowdefault from "./default";
+import { AppConfig } from "src/config/app.config";
+import { generateKnowId } from "src/utils/helpers";
 
 //
 
@@ -29,26 +35,31 @@ import KnowNowdefault from "./default";
 
 function MarketIntelligenceKnowNow() {
   const dispatch = useAppDispatch();
-  const chats = useAppSelector((state) => state.KnowNowChat.chats);
 
   const chatRef = useRef<HTMLInputElement>(null);
-  // const dispatch = useAppDispatch();
-  const sessionID = jsCookie.get("session_id");
+  const userId = jsCookie.get("user_id");
 
-  const editQuery = useAppSelector((state) => state.KnowNow);
-  const [query, setQuery] = useState("");
+  const chats = useAppSelector((state) => state.KnowNowChat.chats);
+  const { knownow_id } = useAppSelector((state) => state.KnowNowChat);
 
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
+  const [query, setQuery] = useState("");
 
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
       setIsloading(true);
+      const knownowId = knownow_id === undefined ? generateKnowId() : knownow_id;
+      if (knownow_id === undefined) {
+        dispatch(generateNewId({ id: knownowId }));
+        dispatch(setChatIds(knownowId));
+      }
 
       const queries = {
         query: query || updateQuery,
-        thread_id: sessionID,
+        thread_id: knownowId,
+        user_id: userId,
       };
 
       if (editIndex !== null) {
@@ -62,23 +73,23 @@ function MarketIntelligenceKnowNow() {
       setQuery("");
 
       try {
-        const res = await axios.post(
-          `https://percievenowchat2.azurewebsites.net/ask-question`,
-          queries,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "x-token": "secret-token",
-              "x-user-id": "user123",
-            },
+        const res = await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/ask-question`, queries, {
+          headers: {
+            "Content-Type": "application/json",
+            "x-token": "secret-token",
+            "x-user-id": "user123",
           },
-        );
-        const answer = res.data.message;
-
-        // For development only
-        const responseTime = res.data.time;
-
+        });
+        const answer = res.data;
         setIsloading(false);
+
+        await dispatch(
+          saveMarketChat({
+            user_id: userId ?? "",
+            thread_id: knownow_id,
+            content: updateQuery,
+          }),
+        );
 
         if (editIndex !== null) {
           dispatch(
@@ -86,16 +97,13 @@ function MarketIntelligenceKnowNow() {
               index: editIndex,
               newQuery: updateQuery,
               newAnswer: answer,
-              responseTime: responseTime,
             }),
           );
-          dispatch(setUpdateQuery({ ...editQuery, editIndex: null }));
         } else {
           dispatch(
             updateChatAnswer({
               index: chats.length,
               answer: answer,
-              responseTime: responseTime,
             }),
           );
         }
@@ -112,18 +120,14 @@ function MarketIntelligenceKnowNow() {
               newAnswer: errorAnswer,
             }),
           );
-          dispatch(setUpdateQuery({ editIndex: null }));
         } else {
           dispatch(updateChatError({ index: chats.length, answer: errorAnswer }));
         }
       } finally {
         setLoadingIndex(null);
-        // setIsError(false)
       }
-
-      // console.log('')
     },
-    [chats.length, dispatch, editQuery, query, sessionID],
+    [chats.length, dispatch, knownow_id, query, userId],
   );
 
   const scrollToBottom = () => {
@@ -153,7 +157,6 @@ function MarketIntelligenceKnowNow() {
                     setQuery={setQuery}
                   />
                   <QueryAnswer
-                    responseTime={chat.response_time}
                     answer={chat.answer}
                     isLoading={loadingIndex === idx}
                     error={chat.error}

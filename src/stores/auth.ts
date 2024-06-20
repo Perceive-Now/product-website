@@ -9,7 +9,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 //
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
-import { AppConfig } from "../utils/app.config";
+import { AppConfig } from "../config/app.config";
 // import { useAppDispatch } from "../hooks/redux";
 // import { setSession } from "./session";
 

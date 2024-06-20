@@ -7,7 +7,7 @@ export default function TrashIcon(props: SVGProps<SVGSVGElement>) {
       width="16"
       height="16"
       viewBox="0 0 16 16"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <g clipPath="url(#clip0_9640_9997)">
