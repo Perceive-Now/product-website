@@ -3,6 +3,7 @@ import jsCookie from "js-cookie";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   EUploadAttachmentsPages,
+  IAnswerObj,
   incrementStep,
   setAnswers,
   setCurrentPageId,
@@ -80,9 +81,7 @@ export default function AdditionalQuestions() {
     (question) => question.questionId === currentQuestionId,
   )[0];
 
-  const handleOnContinue = async ({ answer }: { answer: string | undefined }) => {
-    if (!answer) return;
-
+  const handleOnContinue = async (answer: IAnswerObj) => {
     // check if there is already an answer to the question
     const indexOfAlreadyAnsweredQuestion = answers.findIndex(
       (answerObj) => answerObj.questionId === currentQuestionId,
@@ -93,12 +92,12 @@ export default function AdditionalQuestions() {
     if (indexOfAlreadyAnsweredQuestion >= 0) {
       updatedAnswers[indexOfAlreadyAnsweredQuestion] = {
         questionId: currentQuestionId,
-        answer: answer,
+        answer: answer.answer,
       };
     } else {
       updatedAnswers.push({
         questionId: currentQuestionId,
-        answer: answer,
+        answer: answer.answer,
       });
     }
 
@@ -108,15 +107,11 @@ export default function AdditionalQuestions() {
       uploadAnswerToAddtionalQuestions({
         userId: jsCookie.get("user_id") ?? "",
         useCaseId: useCaseIds[0] ?? "", // TODO get correct use case ids
-        answer: { answer, questionId: currentQuestionId },
+        answer: answer,
         questionId: currentQuestionId,
         requirementGatheringId: requirementGatheringId,
       }),
     );
-  };
-
-  const handleSkipBtnClick = () => {
-    // console.log
   };
 
   const answerForCurrentQuestion = answers.find(
@@ -131,7 +126,6 @@ export default function AdditionalQuestions() {
           exampleAnswer={currentQuestion.answer}
           question={currentQuestion.question}
           onContinue={handleOnContinue}
-          onSkipBtnClick={handleSkipBtnClick}
           key={currentQuestionId}
           answer={answerForCurrentQuestion?.answer}
         />

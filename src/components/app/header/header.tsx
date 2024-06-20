@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import PerceiveLogo from "../../../assets/images/logo.svg";
+import CircularCounter from "./circular-counter";
 
 /**
  *
@@ -12,6 +13,7 @@ export default function AppHeader() {
         <Link to="/">
           <img src={PerceiveLogo} alt="PerceiveNow logo" />
         </Link>
+        <CircularCounter />
       </div>
     </div>
   );
