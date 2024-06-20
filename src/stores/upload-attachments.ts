@@ -44,6 +44,7 @@ export interface IUploadAttachmentsState {
     isLoading: boolean;
     message: string;
   };
+  requirementPercentage: number;
 }
 
 export const initialState: IUploadAttachmentsState = {
@@ -75,6 +76,7 @@ export const initialState: IUploadAttachmentsState = {
     isLoading: false,
     message: "",
   },
+  requirementPercentage: 0,
 };
 
 // -----------------------------------------------------------------------
@@ -244,6 +246,10 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploadAnswerToAddtionalQuestionsError = action.payload;
     },
 
+    setRequirementPercentage: (state, action: PayloadAction<number>) => {
+      state.requirementPercentage = action.payload;
+    },
+
     // -----------------------------------------------------------------------
     resetFetchRequirementSummaryState: (state) => {
       state.fetchRequirementSummaryState = {
@@ -374,6 +380,7 @@ export const {
   setFilesToUpload,
   resetFetchRequirementSummaryState,
   setWebsiteLinks,
+  setRequirementPercentage,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;

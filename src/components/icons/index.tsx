@@ -82,6 +82,7 @@ import DustbinIcon from "./upload-attachments/dust-bin";
 import UploadIcon from "./upload-attachments/upload";
 import LightBulbIcon from "./upload-attachments/light-bulb";
 import QuestionMarkIcon from "./upload-attachments/question-mark";
+import LiquidSphereLoaderIcon from "./upload-attachments/liquid-sphere-loader";
 
 export {
   // Sidenav icons
@@ -161,4 +162,5 @@ export {
   UploadIcon,
   LightBulbIcon,
   QuestionMarkIcon,
+  LiquidSphereLoaderIcon,
 };

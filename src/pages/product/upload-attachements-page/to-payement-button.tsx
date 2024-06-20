@@ -59,7 +59,7 @@ const ToPayementButton = () => {
       disabled={false}
       htmlType={"button"}
       rounded={"small"}
-      classname="font-semibold w-[320px]"
+      classname="font-semibold w-full"
       handleClick={onContinue}
       loading={loading}
     >
