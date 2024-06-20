@@ -12,7 +12,7 @@ interface IPaymentIntent {
   clientSecret: string;
 }
 
-const ToPayementButton = () => {
+const useHandlePayment = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -49,9 +49,15 @@ const ToPayementButton = () => {
     }
   }, [ItemId, dispatch, navigate, sessionDetail]);
 
-  const onContinue = useCallback(async () => {
+  return { handlePayment, loading };
+};
+
+const ToPayementButton = () => {
+  const { handlePayment, loading } = useHandlePayment();
+
+  const onContinue = () => {
     handlePayment();
-  }, [handlePayment]);
+  };
 
   return (
     <Button
@@ -69,3 +75,4 @@ const ToPayementButton = () => {
 };
 
 export default ToPayementButton;
+export { useHandlePayment };

@@ -26,12 +26,6 @@ export default function GoBack() {
     (state) => state.uploadAttachments,
   );
 
-  // return (
-  //   <Link to="/interaction-method" className={buttonStyle}>
-  //     <BackButton />
-  //   </Link>
-  // );
-
   if (currentPageId === EUploadAttachmentsPages.UploadAttachments) {
     return (
       <Link to="/interaction-method" className={buttonStyle}>
@@ -63,7 +57,7 @@ export default function GoBack() {
 
     if (currentQuestionId === additionalQuestionIds[0].question_id) {
       // if it is the first question
-      // dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
       dispatch(decrementStep());
       return;
     }

@@ -12,7 +12,9 @@ export default function AllSet() {
         <p className="w-[300px] text-secondary-800">
           Let's move on to creating your final report. Payment is needed to unlock your report.
         </p>
-        <ToPayementButton />
+        <div className="w-[320px]">
+          <ToPayementButton />
+        </div>
       </div>
     </div>
   );

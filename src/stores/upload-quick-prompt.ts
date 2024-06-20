@@ -55,7 +55,7 @@ export const uploadQuickPrompts = createAsyncThunk<
       prompt_data: request.promptData ?? "",
     };
 
-    return await axios.post(BASE_URL + "/quick-prompt/", dataObj); // TODO change endpoint
+    return await axios.post(BASE_URL + "/quick-prompt/", dataObj);
   } catch (error) {
     const errorObj = {
       resError: String(error),
