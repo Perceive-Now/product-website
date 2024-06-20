@@ -60,6 +60,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
                     " border-red-500 ": errors.websiteLinkInput,
                   },
                 )}
+                disabled={isLoading}
               />
               <Button
                 htmlType="submit"
@@ -99,7 +100,7 @@ const WhyAddWebsite = () => {
           <p className="font-bold text-lg pl-2 text-heroDark-900 mb-1">Why Add Website?</p>
           <ul className="list-disc pl-[20px] space-y-[4px]">
             <li className="text-sm text-secondary-800">
-              <strong>Better Reports:</strong> More data means more accurate reports
+              <strong>Better Reports:</strong> More data means more accurate reports.
             </li>
             <li className="text-sm text-secondary-800">
               <strong>Relevant Insights:</strong> Get business-specific insights.
