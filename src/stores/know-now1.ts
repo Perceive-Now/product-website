@@ -213,7 +213,12 @@ export const KnownowSlice1 = createSlice({
     addQuestion: (state, action: PayloadAction<string>) => {
       const query = action.payload || "";
       const newChat: IChat = { query, answer: "", message_id: "" };
-      state.chats.push(newChat);
+      console.log(state.chats);
+      if (state.chats) {
+        state.chats.push(newChat);
+        // Initialize if undefined
+      }
+      state.chatIds = [];
     },
 
     // -------------------------------------------------------------------------------------------------------
@@ -223,7 +228,7 @@ export const KnownowSlice1 = createSlice({
       action: PayloadAction<{ index: number; answer: string; responseTime?: string }>,
     ) => {
       const { index, answer, responseTime } = action.payload;
-      if (index >= 0 && index < state.chats.length) {
+      if (index >= 0 && index < (state.chats && state.chats.length)) {
         state.chats[index].answer = answer;
         state.chats[index].response_time = responseTime;
       }

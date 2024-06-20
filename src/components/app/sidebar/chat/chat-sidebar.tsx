@@ -23,12 +23,18 @@ const ChatSidebar = () => {
       </Link>
       <div className="px-1 space-y-">
         <h6 className="text-black">History</h6>
-        {chatIds && chatIds.length > 0 ? (
-          <KnowNowHistory History={chatIds || []} />
+        {chatIds ? (
+          <>
+            {chatIds.length > 0 ? (
+              <KnowNowHistory History={chatIds || []} />
+            ) : (
+              <div className="text-sm mt-2 text-primary-900 font-semibold">No chats found</div>
+            )}
+          </>
         ) : (
-          <p className="mt-5 flex justify-center ">
+          <div className="mt-5 flex justify-center ">
             <LoaderIcon className="h-3 w-3" />
-          </p>
+          </div>
         )}
       </div>
     </div>

@@ -2,33 +2,40 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import sanitizeHtml from "sanitize-html";
 import classNames from "classnames";
+import toast from "react-hot-toast";
+import axios from "axios";
+
+//
+import parse from "html-react-parser";
+import { Element } from "domhandler/lib/node";
+import { DndProvider, useDrag } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 //
 import ToolTip from "../reusable/tool-tip";
+
 //
 import ThumbsDownIcon from "../icons/common/ThumbsDown";
 import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import RefreshIcon from "../icons/common/refresh";
 import CopyIcon from "../icons/common/copy";
 import { ErrorIcon } from "../icons";
+
 //
 import PN from "../../assets/images/pn.svg";
+
 //
 import IconButton from "../reusable/icon-button";
 import DotLoader from "../reusable/dot-loader";
+
 //
 import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
+
 //
 import "./style.css";
-import axios from "axios";
 import { AppConfig } from "src/config/app.config";
-import toast from "react-hot-toast";
 import { udateChatResponse } from "src/stores/know-now1";
-
-import { DndProvider, useDrag } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import parse from "html-react-parser";
-import { Element } from "domhandler/lib/node";
 
 interface Props {
   answer: string;
@@ -140,10 +147,10 @@ const QueryAnswer = ({
 
   //
   const fullTextToCopy = convertHtmlToMarkdown(answer);
-  navigator.clipboard.writeText(fullTextToCopy);
+  // navigator.clipboard.writeText(fullTextToCopy);
 
-  // const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
-  const sanitizedAnswer = sanitizeHtml(answer, {
+  const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+  const sanitizedAnswer = sanitizeHtml(formattedAnswer, {
     allowedTags: [
       "b",
       "i",
@@ -188,7 +195,7 @@ const QueryAnswer = ({
           message_id: Number(message_id),
           like: value,
         });
-        toast.success("Thanks for you feedback");
+        toast.success("Thanks for your feedback");
         dispatch(udateChatResponse({ message_id: message_id, liked: value }));
       } catch (error) {
         toast.error("Server Error");

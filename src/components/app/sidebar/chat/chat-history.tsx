@@ -78,6 +78,14 @@ const KnowNowHistory = ({ History }: Props) => {
   );
 
   //
+  const onShare = useCallback(
+    (conversation_id: string) => {
+      navigate(`/share${path}/${conversation_id}`);
+    },
+    [navigate, path],
+  );
+
+  //
   const menuItems = [
     {
       label: "Pin",
@@ -94,9 +102,7 @@ const KnowNowHistory = ({ History }: Props) => {
     {
       label: "Share",
       icon: <ShareIcon className="h-2 w-2" />,
-      action: () => {
-        console.log("share");
-      },
+      action: onShare,
     },
   ];
 

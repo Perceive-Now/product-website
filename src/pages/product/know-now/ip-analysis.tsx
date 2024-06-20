@@ -60,7 +60,7 @@ function KnowNowIP() {
   //
   useEffect(() => {
     dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]));
-    if (id) {
+    if (id && chats.length > 0) {
       dispatch(
         getIPChatById({
           user_id: userId || "",
@@ -68,7 +68,7 @@ function KnowNowIP() {
         }),
       );
     }
-  }, [dispatch, id, userId]);
+  }, [chats.length, dispatch, id, userId]);
 
   //
   const onSendQuery = useCallback(

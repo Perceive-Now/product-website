@@ -25,6 +25,7 @@ import App from "./App";
 //
 import reportWebVitals from "./reportWebVitals";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AppConfig } from "./config/app.config";
 
 // React query client
 const queryclient = new QueryClient({
@@ -38,7 +39,7 @@ const queryclient = new QueryClient({
  */
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
-const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
+const googleAPIKey = AppConfig.GOOGLE_API_KEY;
 
 /**
  *

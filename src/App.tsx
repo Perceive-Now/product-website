@@ -112,6 +112,7 @@ import ReportSectionStateManagementService from "./layouts/report-section-state-
 
 import { EReportSectionPageIDs } from "./stores/draft";
 import KnowNowPage from "./pages/product/know-now";
+import ShareKnowNowPage from "./pages/product/share";
 
 /**
  *
@@ -180,6 +181,10 @@ function App() {
               element={<MarketIntelligenceKnowNow />}
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
+
+            {/* Share */}
+            <Route path="/share/know-now/market-intelligence/:id" element={<ShareKnowNowPage />} />
+            <Route path="/share/know-now/ip-analysis/:id" element={<ShareKnowNowPage />} />
 
             {/*Graph */}
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
