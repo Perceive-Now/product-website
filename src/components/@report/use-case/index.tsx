@@ -196,7 +196,9 @@ const UseCaseSelect = () => {
 
   return (
     <div className="h-full">
-      <p className="text-[#120824] text-5xl font-bold">Please select use cases for your report</p>
+      <p className="text-heroDark-900 text-5xl font-bold">
+        Please select use cases for your report
+      </p>
       <DefaultProgressBar width={10} />
       <div className="w-full mt-2">
         <div className="flex justify-between bg-appGray-100 p-2 rounded-lg w-full">

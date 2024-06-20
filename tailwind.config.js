@@ -85,6 +85,9 @@ module.exports = {
         foundationOrange: {
           100: "#FFF6E6",
         },
+        heroDark: {
+          900: "#120824",
+        },
       },
       ringWidth: {
         0.5: "0.5px",

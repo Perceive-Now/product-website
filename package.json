@@ -11,6 +11,7 @@
     "lint:fix": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx}\"",
     "format:check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\"",
     "format:write": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "f": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
     "prepare": "husky install"
   },
   "dependencies": {

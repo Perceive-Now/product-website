@@ -1,4 +1,5 @@
 import { LightBulbIcon, UploadIcon } from "../../../components/icons";
+import YellowBackgroundWithIcon from "./yellow-background-with-icon";
 
 const listContent = [
   "PDF (.pdf) - Portable Document Format",
@@ -33,13 +34,15 @@ export default function DropZoneContent() {
           </ul>
         </div>
       </div>
-      <div className="bg-foundationOrange-100 w-full items-center flex flex-row gap-x-1 p-[12px] rounded-lg">
-        <LightBulbIcon className="w-[36px] h-[36px]" />
-        <p className="text-sm">
-          Your input is key for a valuable report. The more accurate and complete your information,
-          the more insightful and actionable your final report will be.
-        </p>
-      </div>
+      <YellowBackgroundWithIcon>
+        <>
+          <LightBulbIcon className="w-[36px] h-[36px]" />
+          <p className="text-sm">
+            Your input is key for a valuable report. The more accurate and complete your
+            information, the more insightful and actionable your final report will be.
+          </p>
+        </>
+      </YellowBackgroundWithIcon>
     </>
   );
 }
