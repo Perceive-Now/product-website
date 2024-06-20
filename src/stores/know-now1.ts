@@ -213,7 +213,6 @@ export const KnownowSlice1 = createSlice({
     addQuestion: (state, action: PayloadAction<string>) => {
       const query = action.payload || "";
       const newChat: IChat = { query, answer: "", message_id: "" };
-      console.log(state.chats);
       if (state.chats) {
         state.chats.push(newChat);
         // Initialize if undefined
