@@ -16,10 +16,10 @@ import {
 import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 
-import DefaultProgressBar from "../../../components/reusable/default-progress";
 import { reset as resetQA } from "src/stores/Q&A";
 import { reset as resetUploadAttachments } from "src/stores/upload-attachments";
 import { reset as resetQuickPrompts } from "src/stores/upload-quick-prompt";
+import ProgressBar from "src/pages/product/upload-attachements-page/progress-bar";
 
 interface OptionMappings {
   [key: string]: string;
@@ -203,7 +203,7 @@ const UseCaseSelect = () => {
       <p className="text-heroDark-900 text-5xl font-bold">
         Please select use cases for your report
       </p>
-      <DefaultProgressBar width={10} />
+      <ProgressBar />
       <div className="w-full mt-2">
         <div className="flex justify-between bg-appGray-100 p-2 rounded-lg w-full">
           <div className="w-[200px]">

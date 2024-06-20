@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../hooks/redux";
+import ProgressBar from "src/pages/product/upload-attachements-page/progress-bar";
 
 interface Props {
   questionWithUsecase: any[];
@@ -28,12 +29,5 @@ export default function DetailQAProgressBar({ questionWithUsecase, QAPagesList }
     skippedQuestionList.length,
   ]);
 
-  return (
-    <div className="w-full bg-primary-900 h-1 my-3">
-      <div
-        className="h-full bg-secondary-500"
-        style={{ width: `${((currentStep + 1) / (totalSteps + 2)) * 100}%` }}
-      ></div>
-    </div>
-  );
+  return <ProgressBar currentStep={currentStep + 1} totalSteps={totalSteps + 1} />;
 }

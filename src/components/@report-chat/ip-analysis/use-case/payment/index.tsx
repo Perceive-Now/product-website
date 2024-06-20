@@ -9,6 +9,7 @@ import BackButton from "../../../../../components/reusable/back-button";
 import DefaultProgressBar from "../../../../../components/reusable/default-progress";
 import { UseCaseOptions } from "../../ip-analysis-steps/__use-cases";
 import Loading from "src/components/reusable/loading";
+import ProgressBar from "src/pages/product/upload-attachements-page/progress-bar";
 
 // interface Props {
 //   changeActiveStep: (step: number) => void;
@@ -46,7 +47,7 @@ const Payment = () => {
     <div className="">
       <BackButton />
       <h5 className="text-5xl font-[800] my-2">Payment</h5>
-      <DefaultProgressBar width={100} />
+      <ProgressBar />
       {clientSecret === undefined || selectedReports === undefined ? (
         <Loading isLoading={clientSecret === undefined || selectedReports === undefined} />
       ) : (
