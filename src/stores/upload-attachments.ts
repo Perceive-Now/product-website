@@ -35,6 +35,13 @@ export interface IUploadAttachmentsState {
     usecase: string;
     answer: string;
   }[];
+  requirementSummary: ISingleRequirementSummary[];
+  fetchRequirementSummaryState: {
+    isSuccess: boolean;
+    isError: boolean;
+    isLoading: boolean;
+    message: string;
+  };
 }
 
 export const initialState: IUploadAttachmentsState = {
@@ -57,6 +64,13 @@ export const initialState: IUploadAttachmentsState = {
     userID: "",
   },
   questionsList: questionList,
+  requirementSummary: [],
+  fetchRequirementSummaryState: {
+    isSuccess: false,
+    isError: false,
+    isLoading: false,
+    message: "",
+  },
 };
 
 // -----------------------------------------------------------------------
@@ -96,6 +110,30 @@ export const uploadAttachments = createAsyncThunk<
     const errorObj = {
       resError: String(error),
       message: "Unable to upload attachments",
+    };
+    return thunkAPI.rejectWithValue(errorObj);
+  }
+});
+
+// -----------------------------------------------------------------------
+export const fetchRequirementSummary = createAsyncThunk<
+  ISummaryResponseAPI,
+  ISummaryRequest,
+  {
+    rejectValue: IResponseError;
+  }
+>("requirementSummary", async (request, thunkAPI) => {
+  try {
+    const dataObj: ISummaryRequestAPI = {
+      use_case_ids: request.useCaseIds ?? [],
+      requirement_gathering_id: request.requirement_gathering_id ?? "",
+    };
+
+    return await axios.post(BASE_URL + "/summary", dataObj);
+  } catch (error) {
+    const errorObj = {
+      resError: String(error),
+      message: "Unable to fetch summary",
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -193,6 +231,16 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
+    resetFetchRequirementSummaryState: (state) => {
+      state.fetchRequirementSummaryState = {
+        isSuccess: false,
+        isError: false,
+        isLoading: false,
+        message: "",
+      };
+    },
+
+    // -----------------------------------------------------------------------
     updateQuestionList: (
       state,
       action: PayloadAction<{ questionId: number; question: string }>,
@@ -257,6 +305,41 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploadAnswerToAddtionalQuestionsSuccess = false;
       state.message = "Unable to upload answers" ?? action.error.message;
     });
+
+    // -----------------------------------------------------------------------
+    builder.addCase(fetchRequirementSummary.pending, (state) => {
+      state.isUploading = true;
+      state.fetchRequirementSummaryState = {
+        isError: false,
+        isSuccess: false,
+        isLoading: true,
+        message: "",
+      };
+    });
+    builder.addCase(fetchRequirementSummary.fulfilled, (state, action) => {
+      state.isUploading = false;
+      state.fetchRequirementSummaryState = {
+        isError: false,
+        isSuccess: true,
+        isLoading: true,
+        message: "",
+      };
+      state.requirementSummary = action.payload.data.map((summaryItem) => {
+        return {
+          summary: summaryItem.summary,
+          useCaseId: summaryItem.use_case_id,
+        };
+      });
+    });
+    builder.addCase(fetchRequirementSummary.rejected, (state, action) => {
+      state.isUploading = false;
+      state.fetchRequirementSummaryState = {
+        isError: true,
+        isSuccess: false,
+        isLoading: true,
+        message: action.payload?.message ?? "Unable to fetch summary",
+      };
+    });
   },
 });
 
@@ -274,6 +357,7 @@ export const {
   getUploadAttachmentsSliceState,
   setUploadAttachmentsStateFromDraft,
   updateQuestionList,
+  resetFetchRequirementSummaryState,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;
@@ -341,4 +425,26 @@ interface IResponseError {
 export interface IAnswerObj {
   questionId: number;
   answer: string;
+}
+
+interface ISingleRequirementSummary {
+  useCaseId: string;
+  summary: string;
+}
+
+interface ISummaryResponseAPI {
+  data: {
+    use_case_id: string;
+    summary: string;
+  }[];
+}
+
+interface ISummaryRequestAPI {
+  requirement_gathering_id: string;
+  use_case_ids: string[];
+}
+
+interface ISummaryRequest {
+  useCaseIds: string[];
+  requirement_gathering_id: string;
 }

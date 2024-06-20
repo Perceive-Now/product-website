@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { AppConfig } from "../utils/app.config";
+import { AppConfig } from "../config/app.config";
 import axiosInstance from "../utils/axios";
 import jsCookie from "js-cookie";
 

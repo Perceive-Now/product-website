@@ -13,7 +13,16 @@ import KnowNowRightSideBar from "./side-bar";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUpdateQuery } from "../../../stores/know-now";
 
-import { addQuestion, editQueryAndUpdateAnswer, updateChatAnswer } from "../../../stores/know-now1";
+import {
+  addQuestion,
+  editQueryAndUpdateAnswer,
+  generateNewId,
+  setChatIds,
+  updateChatAnswer,
+} from "../../../stores/know-now1";
+import { AppConfig } from "src/config/app.config";
+import KnowNowdefault from "./default";
+import { generateKnowId } from "src/utils/helpers";
 
 interface IChat {
   query: string;
@@ -31,6 +40,7 @@ function KnowNowIP() {
   const userId = jsCookie.get("user_id");
 
   const editQuery = useAppSelector((state) => state.KnowNow);
+  const { knownow_id } = useAppSelector((state) => state.KnowNowChat);
 
   const [query, setQuery] = useState("");
 
@@ -44,13 +54,18 @@ function KnowNowIP() {
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
       setIsloading(true);
 
-      const queries = [
-        {
-          query: query || updateQuery,
-          user_id: userId,
-          thread_id: sessionID,
-        },
-      ];
+      const knownowId = knownow_id === undefined ? generateKnowId() : knownow_id;
+
+      if (knownow_id === undefined) {
+        dispatch(generateNewId({ id: knownowId }));
+        dispatch(setChatIds(knownowId));
+      }
+
+      const queries = {
+        query: query || updateQuery,
+        user_id: userId,
+        conversation_id: knownowId,
+      };
 
       if (editIndex !== null) {
         dispatch(
@@ -62,13 +77,17 @@ function KnowNowIP() {
 
       setQuery("");
       try {
-        const res = await axios.post(`https://knownow.perceivenow.ai/query_to_response`, queries, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
+        const res = await axios.post(
+          `${AppConfig.KNOW_NOW_IP_API}/message/conversation/query`,
+          queries,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization:
+              //   "Bearer c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907",
+            },
           },
-        });
+        );
         const answer = res.data;
         setIsloading(false);
         if (editIndex !== null) {
@@ -104,7 +123,7 @@ function KnowNowIP() {
         setLoadingIndex(null);
       }
     },
-    [chats.length, dispatch, editQuery, query, sessionID, userId],
+    [chats.length, dispatch, editQuery, knownow_id, query, userId],
   );
 
   const scrollToBottom = () => {
@@ -124,26 +143,31 @@ function KnowNowIP() {
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
-          <div className="space-y-6 w-full">
-            {(chats || []).map((chat, idx) => (
-              <div key={idx * 5} className="space-y-3">
-                <ChatQuery
-                  query={chat.query}
-                  updateQuery={onSendQuery}
-                  editIndex={idx}
-                  setQuery={setQuery}
-                />
-                <QueryAnswer
-                  answer={chat.answer}
-                  isLoading={loadingIndex === idx}
-                  error={chat.error}
-                  updateQuery={onSendQuery}
-                  editIndex={idx}
-                  query={chat.query}
-                />
-              </div>
-            ))}
-          </div>
+          {" "}
+          {chats && chats.length <= 0 ? (
+            <KnowNowdefault />
+          ) : (
+            <div className="space-y-6 w-full">
+              {(chats || []).map((chat, idx) => (
+                <div key={idx * 5} className="space-y-3">
+                  <ChatQuery
+                    query={chat.query}
+                    updateQuery={onSendQuery}
+                    editIndex={idx}
+                    setQuery={setQuery}
+                  />
+                  <QueryAnswer
+                    answer={chat.answer}
+                    isLoading={loadingIndex === idx}
+                    error={chat.error}
+                    updateQuery={onSendQuery}
+                    editIndex={idx}
+                    query={chat.query}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
@@ -153,75 +177,3 @@ function KnowNowIP() {
 }
 
 export default KnowNowIP;
-
-// setIsloading(false);
-
-// const streamEndpoint = "https://knownow.perceivenow.ai/query_to_response";
-// const token = "c8af0589063bc32ce05ed53d4f0c388fe40b64a7bef8c06058308b9885006907";
-
-// fetch(streamEndpoint, {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//     Authorization: `Bearer ${token}`,
-//   },
-//   body: JSON.stringify(queries),
-// })
-//   .then((response: any) => {
-//     const reader = response.body.getReader();
-
-//     const readChunk = () => {
-//       reader
-//         .read()
-//         .then(({ done, value }: any) => {
-//           if (done) {
-//             console.log("Stream ended");
-//             return;
-//           }
-//           const textDecoder = new TextDecoder();
-//           const answer = textDecoder.decode(value);
-
-//           setValue((prev) => prev + answer);
-//           setChats((prevChats) => {
-//             const updatedChats = [...prevChats];
-//             updatedChats[updatedChats.length - 1].answer = answer;
-//             return updatedChats;
-//           });
-//           // Process the chunk of data here
-//           console.log("Received chunk of data:", value);
-
-//           // Read the next chunk
-//           readChunk();
-//         })
-//         .catch((error: any) => {
-//           console.error("Error reading chunk:", error);
-//         });
-//     };
-
-//     // Start reading chunks
-//     readChunk();
-//   })
-//   .catch((error) => {
-//     console.error("Error occurred:", error);
-//   });
-
-// const response: any = await fetch(streamEndpoint, {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Authorization': `Bearer ${token}`,
-//   },
-//   body: JSON.stringify(queries),
-// })
-// console.log(response.body.Js)
-// const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
-
-// // eslint-disable-next-line no-constant-condition
-// while (true) {
-//   const { value, done } = await reader.read();
-//   if (done) break;
-
-//   // Update UI with the received chunk of data
-//   console.log('Received: ', value);
-//   setValue(prev => prev + value);
-// }

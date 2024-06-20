@@ -1,4 +1,7 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { IResponse } from "src/@types/IResponse";
+import { AppConfig } from "src/config/app.config";
 
 interface IChat {
   query: string;
@@ -7,13 +10,64 @@ interface IChat {
   error?: string;
 }
 
+interface IGetMarket {
+  user_id: number;
+  thread_id: number;
+}
+
 interface IKnowNow {
   chats: IChat[];
+  knownow_id?: string;
+  chatIds: string[];
+}
+
+interface IMarketChatSave {
+  user_id: "string";
+  thread_id: "string";
+  content: "string";
 }
 
 const initialState: IKnowNow = {
   chats: [],
+  knownow_id: undefined,
+  chatIds: [],
 };
+
+export const saveMarketChat = createAsyncThunk("saveMarketChat", async (payload: any) => {
+  try {
+    await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/save`, payload);
+    return {
+      success: true,
+      message: "Saved Successfully",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: "Chat not saved",
+    };
+  }
+});
+//
+export const getMarketChatById = createAsyncThunk(
+  "getMarketChatById",
+  async (payload: IGetMarket): Promise<IResponse> => {
+    try {
+      const response = await axios.get(
+        `${AppConfig.KNOW_NOW_MARKET_API}/retrieve/?user_id=${payload.user_id}&thread_id=${payload.thread_id}`,
+      );
+      return {
+        success: true,
+        message: "Successfully fetched market chat",
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Unable to fetch session details",
+      };
+    }
+  },
+);
 
 export const KnownowSlice1 = createSlice({
   name: "know-now1",
@@ -68,6 +122,15 @@ export const KnownowSlice1 = createSlice({
         state.chats = state.chats.slice(0, index + 1);
       }
     },
+    generateNewId: (state, action: PayloadAction<{ id: string }>) => {
+      state.knownow_id = action.payload.id;
+    },
+    setChatIds: (state, action: PayloadAction<string>) => {
+      state.chatIds.push(action.payload);
+    },
+    resetChats: (state) => {
+      state.chats = [];
+    },
   },
 });
 
@@ -77,5 +140,8 @@ export const {
   updateChatError,
   addQuestion,
   updateChatAnswer,
+  generateNewId,
+  setChatIds,
+  resetChats,
   editQueryAndUpdateAnswer,
 } = KnownowSlice1.actions;

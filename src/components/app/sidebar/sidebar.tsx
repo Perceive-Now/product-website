@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, useCallback, useEffect } from "react";
+import { useState, FunctionComponent, useCallback, useEffect, Fragment } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import classNames from "classnames";
@@ -10,13 +10,13 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { logoutUser } from "../../../stores/auth";
 //
 
-import { LogoutIcon, SettingsIcon } from "../../icons";
+import { ChevronDown, ChevronUp, LogoutIcon, SettingsIcon } from "../../icons";
 import UserIcon from "../../reusable/userIcon";
 import SideBarToggleIcon from "../../icons/side-bar/toggle";
 
 import { setSession } from "../../../stores/session";
 import ToolTip from "src/components/reusable/tool-tip";
-import KnowNowHistory from "./chat-history";
+import ChatSidebar from "./chat/chat-sidebar";
 
 interface Props {
   show?: boolean;
@@ -46,7 +46,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [isChat, setIsChat] = useState(false);
 
   const { pathname } = useLocation();
@@ -65,22 +65,18 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   // const titles = pathname?.split("/").slice(1);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  // const [expandedGroups, setExpandedGroups] = useState<string[]>(
-  //   sidebarItems.map((itm) => itm.key),
-  // );
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(
+    sidebarItems.map((itm) => itm.key),
+  );
 
-  // const [expandedSubGroups, setExpandedSubGrups] = useState<string[]>([]);
+  const updateActiveGroup = (group: string) => {
+    if (expandedGroups.includes(group)) {
+      setExpandedGroups(expandedGroups.filter((g) => g !== group));
+    } else {
+      setExpandedGroups([...expandedGroups, group]);
+    }
+  };
 
-  //
-  // const updateActiveGroup = (group: string) => {
-  //   if (expandedGroups.includes(group)) {
-  //     setExpandedGroups(expandedGroups.filter((g) => g !== group));
-  //   } else {
-  //     setExpandedGroups([...expandedGroups, group]);
-  //   }
-  // };
-
-  //
   // const updateActiveSubGroup = (group: string) => {
   //   if (expandedSubGroups.includes(group)) {
   //     setExpandedSubGrups(expandedSubGroups.filter((g) => g !== group));
@@ -126,29 +122,66 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             </ToolTip>
           </div>
           <div className="space-y-1 mt-1">
-            {isChat && (
+            {isChat ? (
+              <>{open && <ChatSidebar />}</>
+            ) : (
               <>
-                {open && (
-                  <div className="px-2.5">
-                    <KnowNowHistory />
+                {sidebarItems.map((item, index) => (
+                  <div key={index}>
+                    {item.children && (
+                      <Fragment>
+                        <div
+                          className={`flex items-center justify-between my-1 rounded-lg cursor-pointer px-2.5 text-sm`}
+                          onClick={() => updateActiveGroup(item.key)}
+                        >
+                          <div className="flex items-center">
+                            <div className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center">
+                              {item.icon && <item.icon className="text-primary-900" />}
+                            </div>
+                            <span className=" text-sm">{item.title}</span>
+                          </div>
+                          <div className="">
+                            {expandedGroups.includes(item.key) && <ChevronUp className="w-2 h-2" />}
+                            {!expandedGroups.includes(item.key) && (
+                              <ChevronDown className="w-2 h-2" />
+                            )}
+                          </div>
+                        </div>
+
+                        {expandedGroups.includes(item.key) && (
+                          <div className="space-y-1">
+                            {item.children?.map((child, jndex) => (
+                              <div key={jndex} className="pl-4">
+                                {!child.children && (
+                                  <NavLinkItem
+                                    open={open}
+                                    key={`main-content-${jndex}`}
+                                    value={child.key}
+                                    // icon={child.icon}
+                                    title={child.title}
+                                    to={""}
+                                  />
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </Fragment>
+                    )}
+                    {!item.children && (
+                      <NavLinkItem
+                        key={`top-${index}`}
+                        to={item.to}
+                        icon={item.icon}
+                        title={item.title}
+                        open={open}
+                        value={item.key}
+                      />
+                    )}
                   </div>
-                )}
+                ))}
               </>
             )}
-            {sidebarItems.map((item, index) => (
-              <div key={index}>
-                {!item.children && (
-                  <NavLinkItem
-                    key={`top-${index}`}
-                    to={item.to}
-                    icon={item.icon}
-                    title={item.title}
-                    open={open}
-                    value={item.key}
-                  />
-                )}
-              </div>
-            ))}
           </div>
         </div>
         {/* sidebar bottom */}
