@@ -85,10 +85,12 @@ export default function WebsiteLinks() {
     dispatch(setWebsiteLinks(newWebLink));
   };
 
+  const isLoading = isUploadingUseCases || isUploadingUploadAttachments;
+
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
       <div className="flex flex-col justify-center p-[20px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-[900px]">
-        <WebsiteLinksForm />
+        <WebsiteLinksForm isLoading={isLoading} />
       </div>
 
       {/* Dropped files */}
@@ -117,7 +119,7 @@ export default function WebsiteLinks() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={websiteLinks.length === 0}
-          loading={false}
+          loading={isLoading}
         >
           <p
             className={classNames("text-secondary-800", {

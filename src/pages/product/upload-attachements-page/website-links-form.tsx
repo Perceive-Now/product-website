@@ -16,7 +16,7 @@ const listContent = [
   "Other Relevant URLs",
 ];
 
-export default function WebsiteLinksForm() {
+export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) {
   const dispatch = useAppDispatch();
 
   const { websiteLinks } = useAppSelector((state) => state.uploadAttachments);
@@ -61,7 +61,12 @@ export default function WebsiteLinksForm() {
                   },
                 )}
               />
-              <Button htmlType="submit" type="optional" classname="rounded-l-none h-full w-[80px]">
+              <Button
+                htmlType="submit"
+                type="optional"
+                classname="rounded-l-none h-full w-[80px]"
+                disabled={isLoading}
+              >
                 Paste
               </Button>
             </div>
