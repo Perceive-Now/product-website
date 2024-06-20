@@ -2,7 +2,6 @@ import { EUploadAttachmentsPages } from "src/stores/upload-attachments";
 import AdditionalQuestions from "./additional-questions";
 import AllSet from "./all-set";
 import GoToReport from "./goto-report";
-import NeedAdditionalAnswers from "./need-additional-answers";
 import UploadAttachments from "./upload-attachments";
 import WebsiteLinks from "./websiteLinks";
 
@@ -27,13 +26,6 @@ const uploadAttachmentsPages = [
     title: "Upload Attachments",
     description: "Go to report and payement all set thing",
     Component: GoToReport,
-  },
-  {
-    id: EUploadAttachmentsPages.NeedAdditionalAnswers,
-    totalPages: 3,
-    title: "Upload Attachments",
-    description: "Wait is over need additional answers to questions",
-    Component: NeedAdditionalAnswers,
   },
   {
     id: EUploadAttachmentsPages.AdditionalQuestions,

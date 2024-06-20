@@ -3,7 +3,6 @@ import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   decrementStep,
-  reset,
   setCurrentPageId,
   setCurrentQuestionId,
   EUploadAttachmentsPages,
@@ -41,19 +40,6 @@ export default function GoBack() {
     );
   }
 
-  if (currentPageId === EUploadAttachmentsPages.NeedAdditionalAnswers) {
-    return (
-      <button
-        onClick={() => {
-          dispatch(reset());
-        }}
-        className={buttonStyle}
-      >
-        <BackButton />
-      </button>
-    );
-  }
-
   if (currentPageId !== EUploadAttachmentsPages.AdditionalQuestions) {
     return (
       <button
@@ -77,7 +63,7 @@ export default function GoBack() {
 
     if (currentQuestionId === additionalQuestionIds[0].question_id) {
       // if it is the first question
-      dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
+      // dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
       dispatch(decrementStep());
       return;
     }

@@ -8,9 +8,8 @@ export const EUploadAttachmentsPages = {
   UploadAttachments: 0,
   WebsiteLinks: 1,
   GoToReport: 2,
-  NeedAdditionalAnswers: 3,
-  AdditionalQuestions: 4,
-  AllSet: 5,
+  AdditionalQuestions: 3,
+  AllSet: 4,
 } as const;
 
 export type TUploadAttachmentsPages =

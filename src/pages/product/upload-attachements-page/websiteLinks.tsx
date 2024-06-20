@@ -43,22 +43,9 @@ export default function WebsiteLinks() {
     }
 
     if (isUploadAttachmentsSuccess) {
-      if (additionalQuestionIds.length === 0) {
-        // if there are no need to get additional questions
-        dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
-        dispatch(incrementStep());
-        dispatch(setIsUploadAttachmentsSuccess(false));
-        return;
-      }
-
-      if (additionalQuestionIds.length > 0) {
-        // if there is a need to get additional questions
-        dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
-        dispatch(incrementStep());
-        dispatch(setIsUploadAttachmentsSuccess(false));
-        return;
-      }
-
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
+      dispatch(incrementStep());
+      dispatch(setIsUploadAttachmentsSuccess(false));
       return;
     }
   }, [
