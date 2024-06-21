@@ -7,7 +7,7 @@ import {
   setCurrentPageId,
 } from "../../../stores/upload-attachments";
 import ToPayementButton, { useHandlePayment } from "./to-payement-button";
-import RequirementSummary from "../quick-prompt/requirement-summary";
+import RequirementSummary from "./requirement-summary";
 import Modal from "src/components/reusable/modal";
 import { ConfirmationGuyIcon } from "src/components/icons";
 
