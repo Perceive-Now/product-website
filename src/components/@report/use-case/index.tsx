@@ -17,7 +17,9 @@ import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 
 import DefaultProgressBar from "../../../components/reusable/default-progress";
-import { reset } from "src/stores/Q&A";
+import { reset as resetQA } from "src/stores/Q&A";
+import { reset as resetUploadAttachments } from "src/stores/upload-attachments";
+import { reset as resetQuickPrompts } from "src/stores/upload-quick-prompt";
 
 interface OptionMappings {
   [key: string]: string;
@@ -134,7 +136,9 @@ const UseCaseSelect = () => {
           }),
         );
       }
-      dispatch(reset());
+      dispatch(resetQA());
+      dispatch(resetQuickPrompts());
+      dispatch(resetUploadAttachments());
       dispatch(
         uploadUseCases({
           userCaseIds: useCaseIds,
