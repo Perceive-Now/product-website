@@ -1,11 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import {
-  decrementStep,
-  EQuickPromptPages,
-  setCurrentPageId,
-} from "../../../stores/upload-quick-prompt";
+import { decrementStep } from "../../../stores/upload-quick-prompt";
 
 const BackButtonUI = () => {
   return (
@@ -21,30 +17,8 @@ export default function GoBack() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);
-
-  // return (
-  //   <Link to="/interaction-method" className={buttonStyle}>
-  //     <BackButtonUI />
-  //   </Link>
-  // );
-
-  if (currentPageId === EQuickPromptPages.GoToReport) {
-    // if in all set page
-    return (
-      <button
-        onClick={() => {
-          dispatch(setCurrentPageId(currentPageId - 1));
-          dispatch(decrementStep());
-        }}
-        className={buttonStyle}
-      >
-        <BackButtonUI />
-      </button>
-    );
-  }
-
   const handleBackBtnInQuickPromptsPage = () => {
+    dispatch(decrementStep());
     navigate("/interaction-method");
   };
 

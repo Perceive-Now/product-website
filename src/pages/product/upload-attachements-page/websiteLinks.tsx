@@ -89,14 +89,16 @@ export default function WebsiteLinks() {
             <div key={webLink}>
               <div className="flex flex-row justify-between gap-x-3">
                 <p className="truncate text-xs mb-1">{webLink}</p>
-                <div
-                  onClick={() => {
-                    handleWebLinkDelete(webLink);
-                  }}
-                  className="cursor-pointer"
-                >
-                  <DustbinIcon />
-                </div>
+                {!isLoading && (
+                  <div
+                    onClick={() => {
+                      handleWebLinkDelete(webLink);
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <DustbinIcon />
+                  </div>
+                )}
               </div>
               <div className="w-full bg-gray-200 h-[1px]"></div>
             </div>

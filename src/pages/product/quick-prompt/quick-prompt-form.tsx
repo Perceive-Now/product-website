@@ -7,8 +7,6 @@ import Button from "../../../components/reusable/button";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
-  EQuickPromptPages,
-  setCurrentPageId,
   setQuickPrompts,
   setQuickPromptsUploadState,
   uploadQuickPrompts,
@@ -16,6 +14,7 @@ import {
 import jsCookie from "js-cookie";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import useToPayment from "./use-to-payment";
 
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();
@@ -30,6 +29,8 @@ export default function QuickPromptForm() {
     (state) => state.usecases,
   );
 
+  const { handlePayment, loading: isLoadingToPayment } = useToPayment();
+
   useEffect(() => {
     if (quickPromptsUploadState.isSuccess) {
       dispatch(
@@ -39,7 +40,7 @@ export default function QuickPromptForm() {
           message: "",
         }),
       );
-      dispatch(setCurrentPageId(EQuickPromptPages.GoToReport));
+      handlePayment();
     }
 
     if (quickPromptsUploadState.isError) {
@@ -173,7 +174,7 @@ export default function QuickPromptForm() {
       </fieldset>
       <Button
         type="optional"
-        loading={isUploadingUploadQuickPrompt || isUploadingUsecases}
+        loading={isUploadingUploadQuickPrompt || isUploadingUsecases || isLoadingToPayment}
         handleClick={() => {
           handleSubmit(onContinue);
         }}
