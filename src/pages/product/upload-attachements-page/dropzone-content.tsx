@@ -4,11 +4,11 @@ import YellowBackgroundWithIcon from "./yellow-background-with-icon";
 const listContent = [
   "PDF (.pdf) - Portable Document Format",
   "Microsoft Word (.doc, .docx)",
-  "Microsoft Excel (.xls, .xlsx)",
+  // "Microsoft Excel (.xls, .xlsx)",
   "Text Files (.txt)",
-  "OpenDocument Text (.odt)",
+  // "OpenDocument Text (.odt)",
   "PowerPoint (.ppt, .pptx)",
-  "Keynote (.key) ",
+  // "Keynote (.key) ",
 ];
 
 export default function DropZoneContent() {
