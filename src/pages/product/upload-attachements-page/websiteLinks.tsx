@@ -106,12 +106,12 @@ export default function WebsiteLinks() {
           type="optional"
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
-          disabled={websiteLinks.length === 0}
+          disabled={isLoading}
           loading={isLoading}
         >
           <p
             className={classNames("text-secondary-800", {
-              "opacity-50": websiteLinks.length === 0,
+              "opacity-50": isLoading,
             })}
           >
             Continue
