@@ -56,8 +56,6 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     };
   });
 
-  console.log(transformedRequirementSummary);
-
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
       <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg p-2 shadow-page-content">

@@ -11,7 +11,7 @@ interface IMoreOption {
 
 interface IOptions {
   label: string;
-  action?: () => void;
+  action: (id: string) => void;
   icon?: any;
   moreOption?: IMoreOption;
 }
@@ -24,6 +24,7 @@ interface Props {
   alignment?: "left" | "right";
   tooltip?: string;
   width?: "sm" | "md" | "xs";
+  conversation_id: string;
 }
 
 export default function Dropdown({
@@ -32,13 +33,14 @@ export default function Dropdown({
   icon: Icon,
   alignment,
   width = "sm",
+  conversation_id,
 }: Props) {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button as="div">
         <IconButton
           type="button"
-          className={`flex items-center justify-center rounded-full border border-solid  hover:cursor-pointer hover:shadow-v1 focus:shadow-v1 ${classname}  duration-700`}
+          className={`flex items-center justify-center rounded-full border border-solid  hover:cursor-pointer hover:shadow-v1 focus:shadow-v1 ${classname}  duration-700 hover:bg-white`}
           icon={
             Icon !== undefined ? (
               <Icon className="h-5 w-5 text-white" />
@@ -67,7 +69,7 @@ export default function Dropdown({
                     active ? "bg-gray-100" : "",
                     "flex cursor-pointer items-center gap-x-0.5 pl-1 py-[4px] ",
                   )}
-                  // onClick={() => option.action()}
+                  onClick={() => option.action(conversation_id)}
                 >
                   <span className="">{option.icon}</span>
                   <div>
