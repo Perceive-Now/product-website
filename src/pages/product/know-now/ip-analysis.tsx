@@ -9,9 +9,6 @@ import ChatQuery from "../../../components/@chat/chat-question";
 import QueryAnswer from "../../../components/@chat/query-answer";
 
 //
-import KnowNowRightSideBar from "./side-bar";
-
-//
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUpdateQuery } from "../../../stores/know-now";
 
@@ -36,6 +33,7 @@ import KnowNowdefault from "./default";
 //
 import { generateKnowId } from "src/utils/helpers";
 import { LoadingIcon } from "src/components/icons";
+import toast from "react-hot-toast";
 
 /**
  *
@@ -69,7 +67,18 @@ function KnowNowIP() {
           user_id: userId || "",
           conversation_id: id,
         }),
-      );
+      )
+        .unwrap()
+        .then((res) => {
+          if (!res.success) {
+            toast.error("Unable to fetch Conversations");
+            navigate("/start-conversation");
+          }
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+          navigate("/start-conversation");
+        });
     }
     setIsSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -179,18 +188,18 @@ function KnowNowIP() {
         const errorAnswer = errorMsg || "Error while generating the response";
 
         //
-        await dispatch(
-          saveIPChat([
-            {
-              conversation_id: conversationId,
-              user_id: userId || "",
-              role: "ai",
-              service_name: "ip",
-              title: conversationId,
-              content: "Error while generating the response",
-            },
-          ]),
-        );
+        // await dispatch(
+        //   saveIPChat([
+        //     {
+        //       conversation_id: conversationId,
+        //       user_id: userId || "",
+        //       role: "ai",
+        //       service_name: "ip",
+        //       title: conversationId,
+        //       content: "Error while generating the response",
+        //     },
+        //   ]),
+        // );
 
         if (editIndex !== null) {
           dispatch(
@@ -224,13 +233,14 @@ function KnowNowIP() {
   }, [chats]);
 
   return (
-    <div className="p-3 pb-0 flex items-start">
+    <div className="p-3 pb-0 w-[960px] mx-auto">
       <div className="w-full grow-0">
         <div
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
           {(chats && chats.length <= 0 && id) || isSaved ? (
+            // {(chats && chats.length <= 0 && id) || isFetching ? (
             <div className="flex justify-center items-center h-full">
               <LoadingIcon className="h-5 w-5 text-primary-900" />
             </div>
@@ -266,7 +276,8 @@ function KnowNowIP() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <KnowNowRightSideBar />
+      {/* <div className="w-[300px]" /> */}
+      {/* // <KnowNowRightSideBar /> */}
     </div>
   );
 }

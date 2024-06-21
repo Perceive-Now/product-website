@@ -1,29 +1,38 @@
 /* eslint-disable no-console */
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import classNames from "classnames";
+import jsCookie from "js-cookie";
+import axios from "axios";
 
+//
 import Dropdown from "../../../reusable/dropdown";
+
 //
 import { ShareIcon } from "../../../icons";
 import TrashIcon from "../../../icons/common/trash";
-import PinIcon from "../../../icons/common/pin-icon";
+// import PinIcon from "../../../icons/common/pin-icon";
+
 //
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { AppConfig } from "src/config/app.config";
-import toast from "react-hot-toast";
+
+//
 import { useAppDispatch } from "src/hooks/redux";
 import { setRemoveConversation } from "src/stores/know-now1";
-import classNames from "classnames";
-import jsCookie from "js-cookie";
 
 interface Props {
   History: { title: string; chat_id: string }[];
 }
 
+/**
+ *
+ */
+
 const KnowNowHistory = ({ History }: Props) => {
-  const location = useLocation();
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
 
   const [path, setPath] = useState("");
@@ -56,12 +65,12 @@ const KnowNowHistory = ({ History }: Props) => {
           }
         }
         if (location.pathname.includes("/know-now/market-intelligence")) {
-          const { data } = await axios.post(
-            `${AppConfig.KNOW_NOW_MARKET_API}/delete/?user_id=${userId}&thread_id=${conversation_id}`,
-            {
-              conversation_id: conversation_id,
+          const { data } = await axios.delete(`${AppConfig.KNOW_NOW_MARKET_API}/delete/thread`, {
+            params: {
+              user_id: userId,
+              thread_id: conversation_id,
             },
-          );
+          });
           if (data.success) {
             dispatch(setRemoveConversation(conversation_id));
             if (id === conversation_id) {
@@ -87,13 +96,13 @@ const KnowNowHistory = ({ History }: Props) => {
 
   //
   const menuItems = [
-    {
-      label: "Pin",
-      icon: <PinIcon className="h-2 w-2" />,
-      action: () => {
-        console.log("Pin");
-      },
-    },
+    // {
+    //   label: "Pin",
+    //   icon: <PinIcon className="h-2 w-2" />,
+    //   action: () => {
+    //     console.log("Pin");
+    //   },
+    // },
     {
       label: "Delete",
       icon: <TrashIcon className="h-2 w-2" />,

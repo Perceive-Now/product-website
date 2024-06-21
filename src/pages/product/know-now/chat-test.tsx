@@ -1,6 +1,11 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { AppConfig } from "src/config/app.config";
+import { useAppDispatch } from "src/hooks/redux";
+import { saveMarketChat } from "src/stores/know-now1";
 
 const ChatComponent = () => {
+  const dispatch = useAppDispatch();
   const wsUri = "wss://percievenowchat2.azurewebsites.net/ws/chat?user_id=12&thread_id=12"; // Replace with your actual server address and port
 
   const [searching, setSearching] = useState(false);

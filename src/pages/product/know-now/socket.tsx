@@ -96,19 +96,24 @@ function MarketIntelligenceKnowNow() {
         // navigate(`/know-now/market-intelligence/${conversationId}`);
       }
 
-      await dispatch(
-        saveMarketChat({
-          thread_id: conversationId,
-          user_id: userId || "",
-          content: query || updateQuery,
-        }),
-      );
-
       const queries = {
         query: query || updateQuery,
         thread_id: conversationId,
         user_id: userId,
       };
+
+      await dispatch(
+        saveMarketChat({
+          thread_id: conversationId,
+          user_id: userId || "",
+          conversation_data: {
+            conversation_id: "",
+            query: queries.query,
+            ai_content: answer,
+            likes: 0,
+          },
+        }),
+      );
 
       if (editIndex !== null) {
         dispatch(

@@ -35,7 +35,9 @@ import { setUpdateQuery } from "../../stores/know-now";
 //
 import "./style.css";
 import { AppConfig } from "src/config/app.config";
-import { udateChatResponse } from "src/stores/know-now1";
+import { saveMarketChat, udateChatResponse } from "src/stores/know-now1";
+import { useLocation, useParams } from "react-router-dom";
+import jsCookie from "js-cookie";
 
 interface Props {
   answer: string;
@@ -88,6 +90,10 @@ const QueryAnswer = ({
   message_id,
 }: Props) => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const { id } = useParams();
+
+  const userId = jsCookie.get("user_id");
 
   const copyRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -191,17 +197,33 @@ const QueryAnswer = ({
   const handleLikeRes = useCallback(
     async (value: boolean) => {
       try {
-        await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
-          message_id: Number(message_id),
-          like: value,
-        });
+        if (location.pathname.includes("/know-now/ip-analysis")) {
+          await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
+            message_id: Number(message_id),
+            like: value,
+          });
+        }
+        if (location.pathname.includes("/know-now/market-intelligence") && id) {
+          dispatch(
+            saveMarketChat({
+              thread_id: id || "",
+              user_id: userId || "",
+              conversation_data: {
+                conversation_id: "",
+                query: query,
+                ai_content: answer,
+                likes: value ? 1 : 0,
+              },
+            }),
+          );
+        }
         toast.success("Thanks for your feedback");
         dispatch(udateChatResponse({ message_id: message_id, liked: value }));
       } catch (error) {
         toast.error("Server Error");
       }
     },
-    [dispatch, message_id],
+    [answer, dispatch, id, location.pathname, message_id, query, userId],
   );
 
   //

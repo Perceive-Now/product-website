@@ -14,6 +14,8 @@ import { LoaderIcon } from "react-hot-toast";
 const ChatSidebar = () => {
   const { chatIds } = useAppSelector((state) => state.KnowNowChat);
 
+  console.log(chatIds);
+
   return (
     <div className="px-1 space-y-2">
       <Link to={"/start-conversation"}>
