@@ -1,18 +1,50 @@
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { LiquidSphereLoaderIcon } from "src/components/icons";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import {
+  fetchRequirementPercentage,
+  resetFetchRequirementPercentageState,
+} from "src/stores/upload-attachments";
 
 export default function ReportPercentage({
   isAdditionalQuestions,
 }: {
   isAdditionalQuestions?: boolean;
 }) {
-  // fetch report percentage from here
+  const dispatch = useAppDispatch();
 
-  const { requirementPercentage } = useAppSelector((state) => state.uploadAttachments);
+  const { requirementPercentage, fetchRequirementPercentageState } = useAppSelector(
+    (state) => state.uploadAttachments,
+  );
+  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+
+  useEffect(() => {
+    if (fetchRequirementPercentageState.isError) {
+      toast.error(fetchRequirementPercentageState.message);
+      dispatch(resetFetchRequirementPercentageState());
+      return;
+    }
+
+    if (fetchRequirementPercentageState.isSuccess) {
+      dispatch(resetFetchRequirementPercentageState());
+      return;
+    }
+  }, [dispatch, fetchRequirementPercentageState]);
+
+  useEffect(() => {
+    dispatch(
+      fetchRequirementPercentage({
+        requirement_gathering_id: requirementGatheringId,
+      }),
+    );
+  }, [dispatch, requirementGatheringId]);
 
   const percentageContent = percentageContentSets.find(
     (content) => requirementPercentage >= content.percentageMargin,
   );
+
+  const isLoading = fetchRequirementPercentageState.isLoading;
 
   return (
     <>
