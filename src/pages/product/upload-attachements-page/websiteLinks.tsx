@@ -61,8 +61,9 @@ export default function WebsiteLinks() {
       uploadAttachments({
         userId: jsCookie.get("user_id") ?? "",
         requirementGatheringId: requirementGatheringId ?? "",
-        user_case_ids: useCaseIds ?? [], // TODO get from usecase redux
+        user_case_ids: useCaseIds ?? [],
         attachments: [...filesToUpload],
+        webUrls: websiteLinks,
       }),
     );
   };

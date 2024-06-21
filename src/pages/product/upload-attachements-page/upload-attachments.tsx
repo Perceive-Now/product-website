@@ -50,28 +50,23 @@ export default function UploadAttachments() {
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
       "application/pdf": [".pdf"],
-      // "application/msword": [".doc", ".docx"],
-      // "application/vnd.ms-excel": [".xls", ".xlsx"],
-      // "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-      // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
-      // "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
-      // "application/vnd.apple.keynote": [".key"],
-      // "application/vnd.oasis.opendocument.text": [".odt"],
-      // "text/plain": [".txt"],
+      "application/msword": [".doc", ".docx"],
+      "application/vnd.ms-excel": [".xls", ".xlsx"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+      "application/vnd.apple.keynote": [".key"],
+      "application/vnd.oasis.opendocument.text": [".odt"],
+      "text/plain": [".txt"],
     },
     onDrop: (acceptedFiles: File[]) => {
       setFiles((prev) => {
         const filteredFiles = acceptedFiles.filter(
           (file) => !prev.some((prevFile) => prevFile.name === file.name),
         );
-
-        // return [...prev, ...filteredFiles];
-
-        if (filteredFiles.length > 0) return filteredFiles;
-        return prev;
+        return [...prev, ...filteredFiles];
       });
     },
-    maxFiles: 1,
   });
 
   const style = useMemo(

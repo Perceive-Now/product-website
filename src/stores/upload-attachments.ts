@@ -103,12 +103,20 @@ export const uploadAttachments = createAsyncThunk<
 
   try {
     const base64Files = await Promise.all(request.attachments.map(convertToBase64));
+    const attachmentsArr = request.attachments.map((attachment, index) => {
+      return {
+        file: base64Files[index] ?? "",
+        fileType: attachment.type,
+        fileName: attachment.name,
+      };
+    });
 
     const dataObj: IUploadAttachmentsRequestAPI = {
       user_cases_ids: request.user_case_ids ?? "",
       requirement_gathering_id: request.requirementGatheringId ?? "",
       user_id: request.userId ?? "",
-      attachment: base64Files[0] ?? "",
+      attachments: attachmentsArr ?? [],
+      web_urls: request.webUrls ?? [],
     };
 
     return await axios.post(BASE_PN_REPORT_URL + "/attachment/", dataObj);
@@ -388,13 +396,19 @@ interface IUploadAttachmentsRequest {
   requirementGatheringId: number;
   userId: string;
   attachments: File[];
+  webUrls: string[];
 }
 
 interface IUploadAttachmentsRequestAPI {
   user_cases_ids: string[];
   requirement_gathering_id: number;
   user_id: string;
-  attachment: string;
+  attachments: {
+    file: string;
+    fileType: string;
+    fileName: string;
+  }[];
+  web_urls: string[];
 }
 
 interface IUploadAttachmentsResponse {
