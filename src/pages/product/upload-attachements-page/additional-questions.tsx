@@ -3,8 +3,9 @@ import jsCookie from "js-cookie";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   EUploadAttachmentsPages,
-  IAnswerObj,
+  fetchRequirementPercentage,
   incrementStep,
+  resetFetchRequirementPercentageState,
   setAnswers,
   setCurrentPageId,
   setCurrentQuestionId,
@@ -15,6 +16,7 @@ import {
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import QuestionForm from "./question-form";
+import ReportPercentage from "./report-percentage";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();
@@ -32,6 +34,22 @@ export default function AdditionalQuestions() {
   } = useAppSelector((state) => state.uploadAttachments);
 
   const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
+
+  const { requirementPercentage, fetchRequirementPercentageState } = useAppSelector(
+    (state) => state.uploadAttachments,
+  );
+  useEffect(() => {
+    if (fetchRequirementPercentageState.isError) {
+      toast.error(fetchRequirementPercentageState.message);
+      dispatch(resetFetchRequirementPercentageState());
+      return;
+    }
+
+    if (fetchRequirementPercentageState.isSuccess) {
+      dispatch(resetFetchRequirementPercentageState());
+      return;
+    }
+  }, [dispatch, fetchRequirementPercentageState]);
 
   useEffect(() => {
     if (isUploadAnswerToAddtionalQuestionsError) {
@@ -62,6 +80,11 @@ export default function AdditionalQuestions() {
       } else {
         dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
         dispatch(incrementStep());
+        dispatch(
+          fetchRequirementPercentage({
+            requirement_gathering_id: requirementGatheringId,
+          }),
+        );
       }
 
       dispatch(setisUploadAnswerToAddtionalQuestionsSuccess(false));
@@ -81,7 +104,9 @@ export default function AdditionalQuestions() {
     (question) => question.questionId === currentQuestionId,
   )[0];
 
-  const handleOnContinue = async (answer: IAnswerObj) => {
+  const handleOnContinue = async ({ answer }: { answer: string | undefined }) => {
+    if (!answer) return;
+
     // check if there is already an answer to the question
     const indexOfAlreadyAnsweredQuestion = answers.findIndex(
       (answerObj) => answerObj.questionId === currentQuestionId,
@@ -92,12 +117,12 @@ export default function AdditionalQuestions() {
     if (indexOfAlreadyAnsweredQuestion >= 0) {
       updatedAnswers[indexOfAlreadyAnsweredQuestion] = {
         questionId: currentQuestionId,
-        answer: answer.answer,
+        answer: answer,
       };
     } else {
       updatedAnswers.push({
         questionId: currentQuestionId,
-        answer: answer.answer,
+        answer: answer,
       });
     }
 
@@ -107,11 +132,27 @@ export default function AdditionalQuestions() {
       uploadAnswerToAddtionalQuestions({
         userId: jsCookie.get("user_id") ?? "",
         useCaseId: useCaseIds[0] ?? "", // TODO get correct use case ids
-        answer: answer,
+        answer: { answer, questionId: currentQuestionId },
         questionId: currentQuestionId,
         requirementGatheringId: requirementGatheringId,
       }),
     );
+  };
+
+  const handleSkipBtnClick = () => {
+    const nextQuestionIndex =
+      additionalQuestionIds.findIndex(
+        (questionId) => currentQuestionId === questionId.question_id,
+      ) + 1;
+
+    // if this is the last question
+    if (nextQuestionIndex === additionalQuestionIds.length) {
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.AllSet));
+      dispatch(incrementStep());
+    } else {
+      dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
+      dispatch(incrementStep());
+    }
   };
 
   const answerForCurrentQuestion = answers.find(
@@ -121,14 +162,21 @@ export default function AdditionalQuestions() {
   return (
     <>
       {currentQuestion && (
-        <QuestionForm
-          isLoading={isUploading}
-          exampleAnswer={currentQuestion.answer}
-          question={currentQuestion.question}
-          onContinue={handleOnContinue}
-          key={currentQuestionId}
-          answer={answerForCurrentQuestion?.answer}
-        />
+        <div className="flex flex-row justify-between gap-x-[150px]">
+          <QuestionForm
+            isLoading={isUploading}
+            exampleAnswer={currentQuestion.answer}
+            question={currentQuestion.question}
+            onContinue={handleOnContinue}
+            onSkipBtnClick={handleSkipBtnClick}
+            key={currentQuestionId}
+            answer={answerForCurrentQuestion?.answer}
+          />
+          <div className="w-[400px] shrink-0">
+            <p className="font-bold text-lg text-purple-900 mb-1">Report requirements</p>
+            <ReportPercentage isAdditionalQuestions={true} />
+          </div>
+        </div>
       )}
     </>
   );

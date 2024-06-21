@@ -8,8 +8,10 @@ import {
   UploadAttachementsIcon,
 } from "../../../components/icons";
 import BackButton from "../../../components/reusable/back-button";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
+import { setSequirmentGatheringMethod, TRequirementGatheringMethod } from "src/stores/use-case";
+import ProgressBar from "../upload-attachements-page/progress-bar";
 
 const validUseCasesForQuickPrompts: string[] = [];
 UseCaseOptions.forEach((usecase) => {
@@ -48,6 +50,7 @@ const interactionMethods = [
 
 export default function InteractionMethod() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { useCaseIds } = useAppSelector((state) => state.usecases);
 
@@ -59,13 +62,15 @@ export default function InteractionMethod() {
 
   const handleContinueBtnClick = () => {
     if (!selectedMethod) return;
-    const path = interactionMethods.find((method) => method.title === selectedMethod)?.path || "";
-    navigate(path);
+    const method = interactionMethods.find((method) => method.title === selectedMethod);
+    dispatch(setSequirmentGatheringMethod((method?.title ?? " ") as TRequirementGatheringMethod));
+    navigate(method?.path ?? "");
   };
 
   return (
     <div>
       <BackButton path="new-report" />
+      <ProgressBar />
       <div className="flex flex-col items-center gap-y-8">
         <h1 className="text-5xl font-extrabold text-secondary-900 mt-5">
           Please select interaction method
