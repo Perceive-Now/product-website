@@ -2,17 +2,17 @@ import type { ReactElement } from "react";
 
 //
 
-// import NewChatIcon from "../../icons/side-bar/new-chat";
+import NewChatIcon from "../../icons/side-bar/new-chat";
 import NewReportIcon from "../../icons/side-bar/new-report";
 import DraftIcon from "../../icons/side-bar/draft-icon";
 
 const sidebarItems: ISidebarListItem[] = [
-  // {
-  //   title: "New Conversation",
-  //   key: "new-chat",
-  //   icon: NewChatIcon,
-  //   to: "/know-now/market-intelligence",
-  // },
+  {
+    title: "New Conversation",
+    key: "new-chat",
+    icon: NewChatIcon,
+    to: "/start-conversation",
+  },
   {
     title: "New Report",
     key: "new-report",

@@ -14,6 +14,7 @@ import UploadAttachmentsSlice from "./stores/upload-attachments";
 import uploadQuickPrompt from "./stores/upload-quick-prompt";
 import draftSlice from "./stores/draft";
 import QuestionAnswerSlice from "./stores/Q&A";
+import KnownowIPSlice from "./stores/knownow-ip";
 
 //
 export const store = configureStore({
@@ -26,6 +27,7 @@ export const store = configureStore({
     sessionDetail: SessionSlice,
     UI: UISlice,
     KnowNow: KnownowSlice,
+    KnowNowIP: KnownowIPSlice,
     KnowNowChat: KnownowSlice1,
     uploadAttachments: UploadAttachmentsSlice,
     uploadQuickPrompt: uploadQuickPrompt,

@@ -2,8 +2,9 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import jsCookie from "js-cookie";
 
 import axios from "axios";
+import { AppConfig } from "src/config/app.config";
 
-const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
 export interface IUseCase {
   isUploading: boolean;
@@ -43,7 +44,7 @@ export const uploadUseCases = createAsyncThunk<
       user_id: request.userId ?? "",
     };
 
-    return await axios.post(BASE_URL + "/requirements_gathering", dataObj);
+    return await axios.post(BASE_PN_REPORT_URL + "/requirements_gathering", dataObj);
   } catch (error) {
     const errorObj = {
       resError: String(error),

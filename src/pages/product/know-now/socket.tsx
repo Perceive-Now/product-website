@@ -1,18 +1,12 @@
-import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import jsCookie from "js-cookie";
 
-//
 import AddQuery from "../../../components/@chat/add-query";
-//
 import QueryAnswer from "../../../components/@chat/query-answer";
 import ChatQuery from "../../../components/@chat/chat-question";
-//
-import KnowNowRightSideBar from "./side-bar";
+import KnowNowdefault from "./default";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-// import { setUpdateQuery } from "../../../stores/know-now";
-
 import {
   addQuestion,
   editQueryAndUpdateAnswer,
@@ -23,52 +17,85 @@ import {
   updateChatError,
 } from "../../../stores/know-now1";
 
-import KnowNowdefault from "./default";
-import { AppConfig } from "src/config/app.config";
 import { generateKnowId } from "src/utils/helpers";
 import { useNavigate, useParams } from "react-router-dom";
 
-//
-
-/**
- *
- */
+const wsUri = "wss://percievenowchat2.azurewebsites.net/ws/chat?user_id=12&thread_id=12";
 
 function MarketIntelligenceKnowNow() {
+  const [websocket, setWebsocket] = useState<WebSocket | null>(null);
+  const [answer, setAnswer] = useState("");
+
+  const chatRef = useRef<HTMLDivElement>(null);
+  const userId = jsCookie.get("user_id");
+
+  const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [query, setQuery] = useState("");
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const chatRef = useRef<HTMLInputElement>(null);
-  const userId = jsCookie.get("user_id");
-
   const chats = useAppSelector((state) => state.KnowNowChat.chats);
-  // const { knownow_id } = useAppSelector((state) => state.KnowNowChat);
 
-  const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
-  const [isLoading, setIsloading] = useState(false);
-  const [query, setQuery] = useState("");
+  console.log(answer);
+
+  useEffect(() => {
+    let ws: WebSocket;
+
+    const connectWebSocket = () => {
+      ws = new WebSocket(wsUri);
+
+      ws.onopen = () => {
+        console.log("Connected to WebSocket server!");
+      };
+
+      ws.onmessage = (ev: MessageEvent) => {
+        const newMessage = ev.data;
+        setAnswer((prev) => prev + newMessage);
+        console.log("Message received from server:", answer);
+        dispatch(updateChatAnswer({ index: chats.length, answer }));
+
+        setIsLoading(false);
+      };
+
+      ws.onerror = (ev: Event) => {
+        console.error("WebSocket error:", ev);
+      };
+
+      ws.onclose = (ev: CloseEvent) => {
+        console.log("WebSocket closed:", ev);
+        if (!ev.wasClean) {
+          console.log("Reconnecting to WebSocket server...");
+          setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
+        }
+      };
+
+      setWebsocket(ws);
+    };
+
+    connectWebSocket();
+
+    return () => {
+      ws.close();
+    };
+  }, [answer, chats.length, dispatch]);
 
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
-      setIsloading(true);
+      setIsLoading(true);
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
-      //
       const conversationId = id !== undefined ? id : generateKnowId();
 
-      //
-      if (id == undefined) {
+      if (id === undefined) {
         dispatch(generateNewId({ id: conversationId }));
-        dispatch(
-          setChatIds({
-            title: conversationId,
-            chat_id: conversationId,
-          }),
-        );
-        navigate(`/know-now/market-intelligence/${conversationId}`);
+        // setAnswer((prev) => prev + newMessage + "<br>");
+
+        dispatch(setChatIds({ title: conversationId, chat_id: conversationId }));
+        // navigate(`/know-now/market-intelligence/${conversationId}`);
       }
 
-      //
       await dispatch(
         saveMarketChat({
           thread_id: conversationId,
@@ -77,14 +104,12 @@ function MarketIntelligenceKnowNow() {
         }),
       );
 
-      //
       const queries = {
         query: query || updateQuery,
         thread_id: conversationId,
         user_id: userId,
       };
 
-      //
       if (editIndex !== null) {
         dispatch(
           editQueryAndUpdateAnswer({ index: editIndex, newQuery: updateQuery, newAnswer: "" }),
@@ -96,61 +121,34 @@ function MarketIntelligenceKnowNow() {
       setQuery("");
 
       try {
-        const res = await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/ask-question`, queries, {
-          headers: {
-            "Content-Type": "application/json",
-            "x-token": "secret-token",
-            "x-user-id": "user123",
-          },
-        });
-        const answer = res.data;
-        setIsloading(false);
-
-        // await dispatch(
-        //   saveMarketChat({
-        //     user_id: userId ?? "",
-        //     thread_id: conversationId,
-        //     content: updateQuery,
-        //   }),
-        // );
-
-        if (editIndex !== null) {
-          dispatch(
-            editQueryAndUpdateAnswer({
-              index: editIndex,
-              newQuery: updateQuery,
-              newAnswer: answer,
-            }),
-          );
+        if (websocket) {
+          console.log("Sending message via WebSocket:", queries);
+          websocket.send(JSON.stringify(queries));
         } else {
-          dispatch(
-            updateChatAnswer({
-              index: chats.length,
-              answer: answer,
-            }),
-          );
+          throw new Error("WebSocket is not connected");
         }
+        setIsLoading(false);
       } catch (error: any) {
-        const errorMsg = error.response.statusText;
-        setIsloading(false);
-        const errorAnswer = errorMsg || "Error while generating the response";
+        console.error("WebSocket send error:", error);
+        const errorMsg = error.message || "Error while generating the response";
+        setIsLoading(false);
 
         if (editIndex !== null) {
           dispatch(
             editQueryAndUpdateAnswer({
               index: editIndex,
               newQuery: updateQuery,
-              newAnswer: errorAnswer,
+              newAnswer: errorMsg,
             }),
           );
         } else {
-          dispatch(updateChatError({ index: chats.length, answer: errorAnswer }));
+          dispatch(updateChatError({ index: chats.length, answer: errorMsg }));
         }
       } finally {
         setLoadingIndex(null);
       }
     },
-    [chats.length, dispatch, id, navigate, query, userId],
+    [chats.length, dispatch, id, query, userId, websocket],
   );
 
   const scrollToBottom = () => {
@@ -164,7 +162,7 @@ function MarketIntelligenceKnowNow() {
   }, [chats]);
 
   return (
-    <div className="p-3 flex">
+    <div className="p-3 pb-0 w-[960px] mx-auto">
       <div className="w-full">
         <div ref={chatRef} className="h-[calc(100vh-264px)] overflow-auto pn_scroller pb-2 pr-2">
           {chats && chats.length <= 0 ? (
@@ -180,7 +178,7 @@ function MarketIntelligenceKnowNow() {
                     setQuery={setQuery}
                   />
                   <QueryAnswer
-                    answer={chat.answer}
+                    answer={answer}
                     isLoading={loadingIndex === idx}
                     error={chat.error}
                     updateQuery={onSendQuery}
@@ -195,7 +193,6 @@ function MarketIntelligenceKnowNow() {
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <KnowNowRightSideBar />
     </div>
   );
 }
