@@ -18,6 +18,8 @@ import {
 import { IAnswer } from "src/@types/entities/IPLandscape";
 import axiosInstance from "src/utils/axios";
 
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+
 interface IQuestionUsecase {
   questionId: number;
   useCaseId: number;
@@ -48,7 +50,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       setLoading(true);
       try {
         const res = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+          `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
             requirementGatheringId,

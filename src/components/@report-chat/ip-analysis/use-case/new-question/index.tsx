@@ -12,6 +12,8 @@ import axiosInstance from "../../../../../utils/axios";
 import NewComponent from "../../new-comp";
 import { setSession } from "../../../../../stores/session";
 
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+
 interface Props {
   changeActiveStep: (steps: number) => void;
   activeStep?: number;
@@ -51,7 +53,7 @@ export default function NewQuestion({ changeActiveStep, exampleAnswer, activeInd
       setIsLoading(true);
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+          `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
             requirementGatheringId,

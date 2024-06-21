@@ -12,9 +12,7 @@ import {
   updateQuestionList,
 } from "src/stores/Q&A";
 
-/**NewQuestion
- *
- */
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 export default function EditQuestionAnswer() {
   const dispatch = useAppDispatch();
@@ -32,7 +30,7 @@ export default function EditQuestionAnswer() {
 
       try {
         const response = await axiosInstance.post(
-          `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
+          `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
             value.answer,
           )}&userID=${userId}&requirement_gathering_id=${Number(
             requirementGatheringId,
