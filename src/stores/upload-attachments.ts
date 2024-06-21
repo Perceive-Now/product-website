@@ -6,8 +6,8 @@ const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 export const EUploadAttachmentsPages = {
   UploadAttachments: 0,
-  GoToReport: 1,
-  NeedAdditionalAnswers: 2,
+  WebsiteLinks: 1,
+  GoToReport: 2,
   AdditionalQuestions: 3,
   AllSet: 4,
 } as const;
@@ -19,6 +19,8 @@ export interface IUploadAttachmentsState {
   currentPageId: TUploadAttachmentsPages;
   currentStep: number;
   currentQuestionId: number;
+  filesToUpload: File[];
+  websiteLinks: string[];
   additionalQuestionIds: { question_id: number }[];
   answers: IAnswerObj[];
   isUploading: boolean;
@@ -42,12 +44,21 @@ export interface IUploadAttachmentsState {
     isLoading: boolean;
     message: string;
   };
+  requirementPercentage: number;
+  fetchRequirementPercentageState: {
+    isSuccess: boolean;
+    isError: boolean;
+    isLoading: boolean;
+    message: string;
+  };
 }
 
 export const initialState: IUploadAttachmentsState = {
   currentPageId: EUploadAttachmentsPages.UploadAttachments,
   currentStep: 0,
   currentQuestionId: 0,
+  filesToUpload: [],
+  websiteLinks: [],
   additionalQuestionIds: [],
   answers: [],
   isUploading: false,
@@ -66,6 +77,13 @@ export const initialState: IUploadAttachmentsState = {
   questionsList: questionList,
   requirementSummary: [],
   fetchRequirementSummaryState: {
+    isSuccess: false,
+    isError: false,
+    isLoading: false,
+    message: "",
+  },
+  requirementPercentage: 0,
+  fetchRequirementPercentageState: {
     isSuccess: false,
     isError: false,
     isLoading: false,
@@ -97,12 +115,20 @@ export const uploadAttachments = createAsyncThunk<
 
   try {
     const base64Files = await Promise.all(request.attachments.map(convertToBase64));
+    const attachmentsArr = request.attachments.map((attachment, index) => {
+      return {
+        file: base64Files[index] ?? "",
+        fileType: attachment.type,
+        fileName: attachment.name,
+      };
+    });
 
     const dataObj: IUploadAttachmentsRequestAPI = {
       user_cases_ids: request.user_case_ids ?? "",
       requirement_gathering_id: request.requirementGatheringId ?? "",
       user_id: request.userId ?? "",
-      attachment: base64Files[0] ?? "",
+      attachments: attachmentsArr ?? [],
+      web_urls: request.webUrls ?? [],
     };
 
     return await axios.post(BASE_PN_REPORT_URL + "/attachment/", dataObj);
@@ -134,6 +160,29 @@ export const fetchRequirementSummary = createAsyncThunk<
     const errorObj = {
       resError: String(error),
       message: "Unable to fetch summary",
+    };
+    return thunkAPI.rejectWithValue(errorObj);
+  }
+});
+
+// -----------------------------------------------------------------------
+export const fetchRequirementPercentage = createAsyncThunk<
+  IRequirementPercentageResponseAPI,
+  IRequirementPercentageRequestAPI,
+  {
+    rejectValue: IResponseError;
+  }
+>("fetchRequirementPercentage", async (request, thunkAPI) => {
+  try {
+    return await axios.get(
+      `${BASE_PN_REPORT_URL}/completion-precentage?requirement_gathering_id=${encodeURIComponent(
+        request.requirement_gathering_id,
+      )}`,
+    );
+  } catch (error) {
+    const errorObj = {
+      resError: String(error),
+      message: "Unable to fetch completion percentage",
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -204,6 +253,16 @@ export const UploadAttachmentsSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
+    setFilesToUpload: (state, action: PayloadAction<File[]>) => {
+      state.filesToUpload = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
+    setWebsiteLinks: (state, action: PayloadAction<string[]>) => {
+      state.websiteLinks = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
     setCurrentQuestionId: (state, action: PayloadAction<number>) => {
       state.currentQuestionId = action.payload;
     },
@@ -228,9 +287,23 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploadAnswerToAddtionalQuestionsError = action.payload;
     },
 
+    setRequirementPercentage: (state, action: PayloadAction<number>) => {
+      state.requirementPercentage = action.payload;
+    },
+
     // -----------------------------------------------------------------------
     resetFetchRequirementSummaryState: (state) => {
       state.fetchRequirementSummaryState = {
+        isSuccess: false,
+        isError: false,
+        isLoading: false,
+        message: "",
+      };
+    },
+
+    // -----------------------------------------------------------------------
+    resetFetchRequirementPercentageState: (state) => {
+      state.fetchRequirementPercentageState = {
         isSuccess: false,
         isError: false,
         isLoading: false,
@@ -338,6 +411,36 @@ export const UploadAttachmentsSlice = createSlice({
         message: action.payload?.message ?? "Unable to fetch summary",
       };
     });
+
+    // -----------------------------------------------------------------------
+    builder.addCase(fetchRequirementPercentage.pending, (state) => {
+      state.isUploading = true;
+      state.fetchRequirementPercentageState = {
+        isError: false,
+        isSuccess: false,
+        isLoading: true,
+        message: "",
+      };
+    });
+    builder.addCase(fetchRequirementPercentage.fulfilled, (state, action) => {
+      state.isUploading = false;
+      state.fetchRequirementPercentageState = {
+        isError: false,
+        isSuccess: true,
+        isLoading: true,
+        message: "",
+      };
+      state.requirementPercentage = action.payload.data.completion_percentage;
+    });
+    builder.addCase(fetchRequirementPercentage.rejected, (state, action) => {
+      state.isUploading = false;
+      state.fetchRequirementPercentageState = {
+        isError: true,
+        isSuccess: false,
+        isLoading: true,
+        message: action.payload?.message ?? "Unable to fetch summary",
+      };
+    });
   },
 });
 
@@ -355,7 +458,11 @@ export const {
   getUploadAttachmentsSliceState,
   setUploadAttachmentsStateFromDraft,
   updateQuestionList,
+  setFilesToUpload,
   resetFetchRequirementSummaryState,
+  setWebsiteLinks,
+  setRequirementPercentage,
+  resetFetchRequirementPercentageState,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;
@@ -365,13 +472,19 @@ interface IUploadAttachmentsRequest {
   requirementGatheringId: number;
   userId: string;
   attachments: File[];
+  webUrls: string[];
 }
 
 interface IUploadAttachmentsRequestAPI {
   user_cases_ids: string[];
   requirement_gathering_id: number;
   user_id: string;
-  attachment: string;
+  attachments: {
+    file: string;
+    fileType: string;
+    fileName: string;
+  }[];
+  web_urls: string[];
 }
 
 interface IUploadAttachmentsResponse {
@@ -445,4 +558,14 @@ interface ISummaryRequestAPI {
 interface ISummaryRequest {
   useCaseIds: string[];
   requirement_gathering_id: string;
+}
+
+interface IRequirementPercentageResponseAPI {
+  data: {
+    completion_percentage: number;
+  };
+}
+
+interface IRequirementPercentageRequestAPI {
+  requirement_gathering_id: number;
 }

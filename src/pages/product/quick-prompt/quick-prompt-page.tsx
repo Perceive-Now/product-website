@@ -1,8 +1,9 @@
 import GoBack from "./goback";
-import ProgressBar from "./progress-bar";
 import { useAppSelector } from "../../../hooks/redux";
 import quickPromptPagesList from "./quick-prompt-pages-list";
 import Title from "src/components/reusable/title/title";
+import { useEffect, useState } from "react";
+import ProgressBar from "../upload-attachements-page/progress-bar";
 
 export default function QuickPromptPage() {
   const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);
@@ -15,7 +16,7 @@ export default function QuickPromptPage() {
       <GoBack />
       <div className="flex flex-col min-w-[900px] min-h-[400px] rounded-lg">
         <Title text={currentPageTitle} className="mt-5" />
-        <ProgressBar />
+        <ProgressBarWrapper />
         <PagesStepper />
       </div>
     </>
@@ -36,3 +37,24 @@ const PagesStepper = () => {
     </>
   );
 };
+
+function ProgressBarWrapper() {
+  const { currentPageId, paragraphIds, currentStep } = useAppSelector(
+    (state) => state.uploadQuickPrompt,
+  );
+
+  const [totalSteps, setTotalSteps] = useState(0);
+
+  useEffect(() => {
+    let totalSteps = 0;
+    quickPromptPagesList.forEach((step) => {
+      if (step.id === currentPageId) {
+        totalSteps = step.totalPages;
+      }
+    });
+    totalSteps += paragraphIds?.length ?? 0;
+    setTotalSteps(totalSteps);
+  }, [currentPageId, paragraphIds, currentStep]);
+
+  return <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />;
+}

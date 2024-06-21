@@ -33,8 +33,8 @@ module.exports = {
       15: "7.5rem",
     },
     fontFamily: {
-      'helvetica': ['Helvetica', 'Arial', 'sans-serif'],
-      'mulish': ['Mulish', 'sans-serif'],
+      helvetica: ["Helvetica", "Arial", "sans-serif"],
+      mulish: ["Mulish", "sans-serif"],
     },
     extend: {
       colors: {
@@ -82,6 +82,12 @@ module.exports = {
           500: "#A14040",
           800: "#641B1B",
         },
+        foundationOrange: {
+          100: "#FFF6E6",
+        },
+        heroDark: {
+          900: "#120824",
+        },
       },
       ringWidth: {
         0.5: "0.5px",
@@ -93,9 +99,13 @@ module.exports = {
         },
       },
       backgroundImage: {
-        "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%)",
+        "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%);",
         "secondary-gradient": "linear-gradient(110deg, #E08236 0.32%, #423ABA 99.59%);",
         "white-gradient": "linear-gradient(111deg, #FFF 1.62%, #F7F5FF 98.58%);",
+        "progressbar-gradient-lr":
+          "linear-gradient(270deg, #442873 0%, #643BA9 0.01%, #442873 99.97%);",
+        "progressbar-gradient-rl":
+          "linear-gradient(270deg, #442873 0.79%, #643BA9 99.98%, #442873 99.99%);",
       },
       boxShadow: {
         // 'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
@@ -103,6 +113,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms"),
-     require("@tailwindcss/line-clamp")],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
 };
