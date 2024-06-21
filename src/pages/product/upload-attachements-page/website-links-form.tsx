@@ -29,6 +29,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     defaultValues: {
       websiteLinkInput: "",
@@ -39,6 +40,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
 
   const addWebsiteLink = ({ websiteLinkInput }: { websiteLinkInput: string }) => {
     dispatch(setWebsiteLinks([...websiteLinks, websiteLinkInput]));
+    reset();
   };
 
   return (
