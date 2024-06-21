@@ -44,6 +44,8 @@ function KnowNowIP() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [isSaved, setIsSaved] = useState(false);
+
   //
   const chatRef = useRef<HTMLInputElement>(null);
   const userId = jsCookie.get("user_id");
@@ -60,7 +62,8 @@ function KnowNowIP() {
   //
   useEffect(() => {
     dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]));
-    if (id && chats.length > 0) {
+
+    if (id && ((chats && chats.length >= 0) || isSaved)) {
       dispatch(
         getIPChatById({
           user_id: userId || "",
@@ -68,7 +71,9 @@ function KnowNowIP() {
         }),
       );
     }
-  }, [chats.length, dispatch, id, userId]);
+    setIsSaved(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, id, isSaved, userId]);
 
   //
   const onSendQuery = useCallback(
@@ -140,7 +145,7 @@ function KnowNowIP() {
         const answer = res.data;
 
         //
-        await dispatch(
+        const saveAnswer: any = await dispatch(
           saveIPChat([
             {
               conversation_id: conversationId,
@@ -152,6 +157,10 @@ function KnowNowIP() {
             },
           ]),
         );
+
+        if (saveAnswer.payload.success) {
+          setIsSaved(true);
+        }
 
         if (editIndex !== null) {
           dispatch(
@@ -221,7 +230,7 @@ function KnowNowIP() {
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
-          {chats && chats.length <= 0 && id ? (
+          {(chats && chats.length <= 0 && id) || isSaved ? (
             <div className="flex justify-center items-center h-full">
               <LoadingIcon className="h-5 w-5 text-primary-900" />
             </div>
