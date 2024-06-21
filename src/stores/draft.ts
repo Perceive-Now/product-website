@@ -10,7 +10,7 @@ import {
 } from "./upload-quick-prompt";
 import { IUseCase, initialState as initialStateUseCase } from "./use-case";
 
-const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 export const EReportSectionPageIDs = {
   UseCases: "new-report",
@@ -62,7 +62,7 @@ export const uploadDraft = createAsyncThunk<
       other_data: request.other_data ?? {},
     };
 
-    return await axios.post(BASE_URL + "/quick-prompt/", dataObj); // TODO change endpoint
+    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", dataObj); // TODO change endpoint
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -88,7 +88,7 @@ export const fetchDraftByIds = createAsyncThunk<
       other_data: request.other_data ?? [],
     };
 
-    return await axios.post(BASE_URL + "/quick-prompt/", dataObj); // TODO change endpoint
+    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", dataObj); // TODO change endpoint
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -107,7 +107,7 @@ export const fetchDraftsByUserId = createAsyncThunk<
   }
 >("uploadDraft", async (request: { userId: string }, thunkAPI) => {
   try {
-    return await axios.post(BASE_URL + "/quick-prompt/", request.userId); // TODO change endpoint
+    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", request.userId); // TODO change endpoint
   } catch (error) {
     const errorObj = {
       resError: String(error),

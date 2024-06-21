@@ -4,6 +4,8 @@ import jsCookie from "js-cookie";
 
 import { questionList } from "src/pages/product/report-q&a/_question";
 
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+
 interface IResponse<T = any> {
   success: boolean;
   message: string;
@@ -153,13 +155,11 @@ export const generateQuestionAnswer = createAsyncThunk<
       answer: request.answer,
     };
     return await axios.post(
-      `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
-        answersObj.answer,
-      )}&userID=${answersObj.userID}&QuestionID=${Number(
-        answersObj.QuestionID,
-      )}&requirement_gathering_id=${answersObj.requirement_gathering_id}&user_case_id=${
-        answersObj.user_case_id
-      }`,
+      `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(answersObj.answer)}&userID=${
+        answersObj.userID
+      }&QuestionID=${Number(answersObj.QuestionID)}&requirement_gathering_id=${
+        answersObj.requirement_gathering_id
+      }&user_case_id=${answersObj.user_case_id}`,
     );
     // return {
     //   status: res.data.status,
@@ -182,7 +182,7 @@ export const getUpdatedAnswer = createAsyncThunk(
     const requirementGatheringId = jsCookie.get("requirement_gathering_id");
     try {
       const response = await axios.get<IAnswers[]>(
-        `https://pn-chatbot.azurewebsites.net/get-answers/?userID=${user_id}&requirement_gathering_id=${requirementGatheringId}`,
+        `${BASE_PN_REPORT_URL}/get-answers/?userID=${user_id}&requirement_gathering_id=${requirementGatheringId}`,
       );
       return {
         success: true,
