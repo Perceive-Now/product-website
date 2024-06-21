@@ -2,7 +2,7 @@ import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { questionList } from "src/pages/product/report-q&a/_question";
 
-const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 export const EUploadAttachmentsPages = {
   UploadAttachments: 0,
@@ -111,7 +111,7 @@ export const uploadAttachments = createAsyncThunk<
       attachment: base64Files[0] ?? "",
     };
 
-    return await axios.post(BASE_URL + "/attachment/", dataObj);
+    return await axios.post(BASE_PN_REPORT_URL + "/attachment/", dataObj);
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -135,7 +135,7 @@ export const fetchRequirementSummary = createAsyncThunk<
       requirement_gathering_id: request.requirement_gathering_id ?? "",
     };
 
-    return await axios.post(BASE_URL + "/summary", dataObj);
+    return await axios.post(BASE_PN_REPORT_URL + "/summary", dataObj);
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -165,13 +165,11 @@ export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
       };
 
       return await axios.post(
-        `https://pn-chatbot.azurewebsites.net/generate/?answer=${encodeURIComponent(
-          answersObj.answer,
-        )}&userID=${answersObj.userID}&QuestionID=${Number(
-          answersObj.QuestionID,
-        )}&requirement_gathering_id=${answersObj.requirement_gathering_id}&user_case_id=${
-          answersObj.user_case_id
-        }`,
+        `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(answersObj.answer)}&userID=${
+          answersObj.userID
+        }&QuestionID=${Number(answersObj.QuestionID)}&requirement_gathering_id=${
+          answersObj.requirement_gathering_id
+        }&user_case_id=${answersObj.user_case_id}`,
       );
     } catch (error) {
       const errorObj = {

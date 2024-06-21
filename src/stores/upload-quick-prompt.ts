@@ -2,7 +2,7 @@ import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { quickPromptContent } from "../pages/product/quick-prompt/quick-prompt-content";
 
-const BASE_URL = "https://pn-chatbot.azurewebsites.net";
+const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 export const EQuickPromptPages = {
   QuickPrompt: 0,
@@ -55,7 +55,7 @@ export const uploadQuickPrompts = createAsyncThunk<
       prompt_data: request.promptData ?? "",
     };
 
-    return await axios.post(BASE_URL + "/quick-prompt/", dataObj);
+    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", dataObj);
   } catch (error) {
     const errorObj = {
       resError: String(error),
