@@ -69,7 +69,7 @@ export default function ProgressBar({
         <div className="bg-primary-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
           <div
             className="bg-progressbar-gradient-rl w-full flex flex-col justify-center h-full col-start-1 row-start-1"
-            style={{ width: `${((currentStep + 2) / (totalSteps + 2)) * 100}%` }}
+            style={{ width: `${((currentStep + 2) / (totalSteps + 2)) * 100}%`, minWidth: "200px" }}
           ></div>
           <p className="text-white pl-[20px] col-start-1 row-start-1">{currentPageName}</p>
         </div>

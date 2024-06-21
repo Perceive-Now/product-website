@@ -3,7 +3,9 @@ import jsCookie from "js-cookie";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   EUploadAttachmentsPages,
+  fetchRequirementPercentage,
   incrementStep,
+  resetFetchRequirementPercentageState,
   setAnswers,
   setCurrentPageId,
   setCurrentQuestionId,
@@ -32,6 +34,22 @@ export default function AdditionalQuestions() {
   } = useAppSelector((state) => state.uploadAttachments);
 
   const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
+
+  const { requirementPercentage, fetchRequirementPercentageState } = useAppSelector(
+    (state) => state.uploadAttachments,
+  );
+  useEffect(() => {
+    if (fetchRequirementPercentageState.isError) {
+      toast.error(fetchRequirementPercentageState.message);
+      dispatch(resetFetchRequirementPercentageState());
+      return;
+    }
+
+    if (fetchRequirementPercentageState.isSuccess) {
+      dispatch(resetFetchRequirementPercentageState());
+      return;
+    }
+  }, [dispatch, fetchRequirementPercentageState]);
 
   useEffect(() => {
     if (isUploadAnswerToAddtionalQuestionsError) {
@@ -62,6 +80,11 @@ export default function AdditionalQuestions() {
       } else {
         dispatch(setCurrentQuestionId(additionalQuestionIds[nextQuestionIndex].question_id));
         dispatch(incrementStep());
+        dispatch(
+          fetchRequirementPercentage({
+            requirement_gathering_id: requirementGatheringId,
+          }),
+        );
       }
 
       dispatch(setisUploadAnswerToAddtionalQuestionsSuccess(false));

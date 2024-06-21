@@ -175,7 +175,9 @@ export const fetchRequirementPercentage = createAsyncThunk<
 >("fetchRequirementPercentage", async (request, thunkAPI) => {
   try {
     return await axios.get(
-      `${BASE_PN_REPORT_URL}/completion-precentage/?requirement_gathering_id=${request.requirement_gathering_id}`,
+      `${BASE_PN_REPORT_URL}/completion-precentage?requirement_gathering_id=${encodeURIComponent(
+        request.requirement_gathering_id,
+      )}`,
     );
   } catch (error) {
     const errorObj = {
