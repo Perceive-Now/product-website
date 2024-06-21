@@ -1,7 +1,11 @@
 import { LiquidSphereLoaderIcon } from "src/components/icons";
 import { useAppSelector } from "src/hooks/redux";
 
-export default function ReportPercentage() {
+export default function ReportPercentage({
+  isAdditionalQuestions,
+}: {
+  isAdditionalQuestions?: boolean;
+}) {
   // fetch report percentage from here
 
   const { requirementPercentage } = useAppSelector((state) => state.uploadAttachments);
@@ -12,16 +16,20 @@ export default function ReportPercentage() {
 
   return (
     <>
-      <div className="flex flex-row justify-center items-center gap-x-1">
+      <div className="flex flex-row justify-start items-center gap-x-1">
         <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden">
           <LiquidSphereLoaderIcon className="row-start-1 col-start-1" />
           <div className="col-start-1 row-start-1 text-white w-fit translate-x-2">
             {requirementPercentage}%
           </div>
         </div>
-        <p className="text-purple-900 font-bold text-lg">{percentageContent?.title}</p>
+        {!isAdditionalQuestions && (
+          <p className="text-purple-900 font-bold text-lg">{percentageContent?.title}</p>
+        )}
       </div>
-      <p className="text-secondary-800 mt-1">{percentageContent?.subtitle}</p>
+      {!isAdditionalQuestions && (
+        <p className="text-secondary-800 mt-1">{percentageContent?.subtitle}</p>
+      )}
     </>
   );
 }

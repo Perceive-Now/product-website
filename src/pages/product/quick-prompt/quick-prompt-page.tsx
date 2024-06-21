@@ -38,8 +38,6 @@ const PagesStepper = () => {
   );
 };
 
-// TODO Remove and use one in reusable after switching to redux
-
 function ProgressBarWrapper() {
   const { currentPageId, paragraphIds, currentStep } = useAppSelector(
     (state) => state.uploadQuickPrompt,

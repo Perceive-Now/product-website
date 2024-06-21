@@ -14,6 +14,7 @@ import {
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import QuestionForm from "./question-form";
+import ReportPercentage from "./report-percentage";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();
@@ -138,15 +139,21 @@ export default function AdditionalQuestions() {
   return (
     <>
       {currentQuestion && (
-        <QuestionForm
-          isLoading={isUploading}
-          exampleAnswer={currentQuestion.answer}
-          question={currentQuestion.question}
-          onContinue={handleOnContinue}
-          onSkipBtnClick={handleSkipBtnClick}
-          key={currentQuestionId}
-          answer={answerForCurrentQuestion?.answer}
-        />
+        <div className="flex flex-row justify-between gap-x-[150px]">
+          <QuestionForm
+            isLoading={isUploading}
+            exampleAnswer={currentQuestion.answer}
+            question={currentQuestion.question}
+            onContinue={handleOnContinue}
+            onSkipBtnClick={handleSkipBtnClick}
+            key={currentQuestionId}
+            answer={answerForCurrentQuestion?.answer}
+          />
+          <div className="w-[400px] shrink-0">
+            <p className="font-bold text-lg text-purple-900 mb-1">Report requirements</p>
+            <ReportPercentage isAdditionalQuestions={true} />
+          </div>
+        </div>
       )}
     </>
   );
