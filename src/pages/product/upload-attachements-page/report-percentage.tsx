@@ -18,7 +18,7 @@ export default function ReportPercentage({
     <>
       <div className="flex flex-row justify-start items-center gap-x-1">
         <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden">
-          <LiquidSphereLoaderIcon className="row-start-1 col-start-1" />
+          <LiquidSphereLoaderIcon className="row-start-1 col-start-1" liquidHeight={50} />
           <div className="col-start-1 row-start-1 text-white w-fit translate-x-2">
             {requirementPercentage}%
           </div>
