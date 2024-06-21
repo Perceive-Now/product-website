@@ -19,7 +19,7 @@ export const questionList = [
     questionId: 3,
     useCaseId: 1,
     question:
-      "Describe the technical aspects and unique features of the key product or technology developed by the company. How does your product or technology introduce innovation or     novelty within its field?",
+      "Describe the technical aspects and unique features of the key product or technology developed by the company. How does your product or technology introduce innovation or novelty within its field?",
     usecase: "common-question",
     answer: `ARSight stands out through its advanced spatial computing algorithms and lightweight AR glasses, distinguishing itself with several innovative features:\n• High-Resolution Display: Ensures crystal-clear imagery with minimal distortion for an immersive experience.\n• Adaptive Learning: Utilizes user interaction data to personalize content delivery, enhancing learning and engagement.\n• Energy Efficiency: Incorporates proprietary technology to significantly extend battery life, facilitating practical, all-day use.\nThese innovations position ARSight as a pioneer in AR technology by offering unparalleled real-time environmental mapping, digital information overlay with minimal latency, and dynamic content adaptation, setting a new standard in user interaction and immersion within the augmented reality landscape.`,
   },
@@ -109,7 +109,7 @@ export const questionList = [
     questionId: 14,
     useCaseId: 1,
     question:
-      "What specific technologies or innovations within NeuraWear are you looking to license, and what makes these aspects unique and valuable for potential licensees?",
+      "What specific technologies or innovations are you looking to license, and what makes these aspects unique and valuable for potential licensees?",
     usecase: "ip-licensing-opportunity",
     answer: `Within NeuraWear, we're looking to license several key technologies and innovations that stand out due to their potential to revolutionize wearable tech:\n1. Neuro-Adaptive Interfaces: These interfaces adjust device operations based on the user's neurological feedback, providing an intuitive user experience that enhances usability and satisfaction.\n2. Low-Power Neural Sensors: Our advanced neural sensors consume significantly less power than current market offerings, enabling longer wear times without sacrificing performance.\n3. Customizable Neurofeedback Algorithms: These algorithms offer potential licensees the ability to tailor experiences to their specific user base, adding value through personalization and adaptability. `,
   },
@@ -117,7 +117,7 @@ export const questionList = [
     questionId: 15,
     useCaseId: 1,
     question:
-      "Who are your ideal licensees for NeuraWear's technology, and in which industries or sectors do they primarily operate?",
+      "Who are your ideal licensees for your technology, and in which industries or sectors do they primarily operate?",
     usecase: "ip-licensing-opportunity",
     // Ideal Licensees:\n
     answer: `• Consumer Electronics: Targeting 100+ companies with a focus on wearable devices, holding a combined market share of 40% in the global wearable tech industry.\n• Healthcare and Medical Devices: Aiming for 50+ leading companies specializing in non-invasive monitoring tools, contributing to a sector with an annual growth rate of 7%.\n• Gaming and VR: Engaging with 30+ innovators in VR hardware, tapping into a VR market expected to reach $12 billion by 2024.`,
@@ -134,7 +134,7 @@ export const questionList = [
     questionId: 17,
     useCaseId: 1,
     question:
-      "What is your preferred licensing model for NeuraWear, and how does this preference align with your strategic objectives?",
+      "What is your preferred licensing model, and how does this preference align with your strategic objectives?",
     usecase: "ip-licensing-opportunity",
     answer: `Licensing Model Metrics:
     • Upfront Fees: Charging $500,000 - $1 million per licensee, targeting a total of $5 million in upfront fees within the first year.\n• Royalties: Setting a standard royalty rate of 5-7% on net sales of products incorporating NeuraWear technology, aiming for $15 million in royalties by year three.\n• Performance Milestones: Implementing 3 major milestones per licensee, tied to development, sales, and technology adaptation achievements, contributing an additional $2 million in revenue.`,
@@ -143,7 +143,7 @@ export const questionList = [
     questionId: 18,
     useCaseId: 1,
     question:
-      "Are there specific geographic regions you are targeting for licensing NeuraWear's technology?",
+      "Are there specific geographic regions you are targeting for licensing your technology?",
     usecase: "ip-licensing-opportunity",
     // Geographic Targets:\n
     answer: `• North America and Europe: Capturing 60% of licensing initiatives, with an aim to penetrate 30% of the wearable market by 2025.\n• Asia-Pacific: Focusing on 30% of efforts to leverage high consumer electronics growth, aiming for a 25% adoption rate in targeted sectors.\n• Emerging Markets: Allocating 10% of licensing strategies to tap into fast-growing tech adoption, with a goal of 10% market penetration by 2025.`,
@@ -207,7 +207,7 @@ export const questionList = [
     questionId: 26,
     useCaseId: 1,
     question:
-      "Are there any particular fields of use you are considering for NeuraWear's licensing agreements, and how do these choices reflect market demands and opportunities?",
+      "Are there any particular fields of use you are considering for your licensing agreements, and how do these choices reflect market demands and opportunities?",
     usecase: "ip-valuation",
     answer: `Fields of Use Metrics:\n• Targeted Fields: Focusing on consumer electronics, healthcare, and entertainment, sectors showing a compound annual growth rate (CAGR) of 10-15% over the next 5 years.\n• Market Opportunities: Identifying wearable health monitors and VR education as key areas with a projected market size increase of 25% by 2025, aligning with NeuraWear's strengths.`,
   },
@@ -333,7 +333,6 @@ export const questionList = [
   {
     questionId: 42,
     useCaseId: 1,
-
     question:
       "Who are your main competitors, and what differentiates your product or service from theirs?",
     usecase: "competitive-landscape",
@@ -344,7 +343,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "market-analysis",
     question:
-      "What internal metrics does NeuraWear use to measure success in aligning with market dynamics and industry trends?",
+      "What internal metrics does your company use to measure success in aligning with market dynamics and industry trends?",
     answer: `At NeuraWear, we utilize a blend of performance indicators to gauge our alignment with market dynamics. These include:\n• Market Share Growth: We track changes in our market share quarterly, aiming for a 5% increase year-over-year, reflecting successful penetration and customer acquisition strategies.\n• Customer Acquisition Cost (CAC): Our target CAC has been set at $120 per new user, optimized through targeted marketing and efficient sales funnel management.\n• User Retention Rates: We aim for a retention rate of 80% over a 12-month period, indicating strong customer satisfaction and product relevance.\n• Product Innovation Cycle Times: Our goal is to shorten the cycle time to under 18 months from ideation to launch, ensuring we keep pace with technological advancements and consumer expectations.`,
   },
   {
@@ -352,7 +351,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "market-analysis",
     question:
-      "How does NeuraWear assess the impact of global market drivers and restraints on it's product development and marketing strategies?",
+      "How does your company assess the impact of global market drivers and restraints on its product development and marketing strategies?",
     answer: `NeuraWear utilizes a comprehensive analysis approach to adapt our strategies based on global market drivers and restraints:\n• Economic Indicators: We monitor global economic trends, such as inflation rates and consumer spending patterns, to forecast demand and adjust our pricing strategy accordingly.\n• Consumer Trends: Through ongoing market research, we track changes in consumer preferences and technology adoption rates, which guide our product development and feature prioritization.\nRegulatory Changes: We keep abreast of new regulations in key markets, adapting our compliance strategies to ensure seamless market entry and sustained operations.`,
   },
   {
@@ -360,7 +359,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "m&a",
     question:
-      "Can you describe a recent strategic decision made by NeuraWear in response to the projected market growth in wearable technology? What was the rationale behind this decision?",
+      "Can you describe a recent strategic decision made by your company in response to projected market growth in your industry? What was the rationale behind this decision?",
     answer:
       "Recently, NeuraWear decided to invest heavily in AI and machine learning capabilities to enhance our wearable technology products. This strategic decision was driven by the projected market growth for AI-integrated wearables, which is expected to increase by 35% annually over the next five years. Our rationale was based on data indicating a significant consumer shift towards devices offering personalized health insights. By incorporating AI, we aim to provide superior functionality and customization, setting our products apart in a crowded market and aligning with consumer demand for highly personalized wearable technology.",
   },
@@ -368,8 +367,7 @@ export const questionList = [
     questionId: 46,
     useCaseId: 1,
     usecase: "market-analysis",
-    question:
-      "How does NeuraWear define its primary target market within the wearable technology industry?",
+    question: "How does your company define its primary target market within its industry?",
     answer:
       "NeuraWear targets health-conscious consumers aged 25 to 45, who are tech-savvy and have a disposable income level in the upper-middle class. This demographic is particularly inclined towards using technology to enhance their lifestyle and health, representing a significant portion of our customer base.",
   },
@@ -377,7 +375,7 @@ export const questionList = [
     questionId: 47,
     useCaseId: 1,
     usecase: "consumer-landscape",
-    question: "What data-driven methods does NeuraWear use to segment its customer base?",
+    question: "What data-driven methods does your company use to segment its customer base?",
     answer:
       "We employ cluster analysis techniques on customer data collected through our platforms, which include demographic, behavioral, and psychographic factors. This allows us to create distinct customer segments that are targeted with customized marketing strategies and product offerings.",
   },
@@ -385,8 +383,7 @@ export const questionList = [
     questionId: 48,
     useCaseId: 1,
     usecase: "consumer-landscape",
-    question:
-      "What are the key factors that influence the purchasing decisions of NeuraWear’s customers?",
+    question: "What are the key factors that influence the purchasing decisions of your customers?",
     answer:
       "Key factors include the functionality and accuracy of health tracking, the aesthetic design of the devices, and the perceived value of the AI features in providing actionable health insights. Customer testimonials and expert reviews also play a crucial role in influencing purchasing decisions.",
   },
@@ -394,8 +391,7 @@ export const questionList = [
     questionId: 49,
     useCaseId: 1,
     usecase: "consumer-landscape",
-    question:
-      "How has consumer feedback shaped the development of new features in NeuraWear products?",
+    question: "How has consumer feedback shaped the development of new features in your products?",
     answer:
       "Consumer feedback has directly led to the development of features such as enhanced sleep tracking, stress management tools, and integration with third-party health applications, ensuring our products meet the evolving needs of our users.",
   },
@@ -404,7 +400,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "competitive-landscape",
     question:
-      "Can you describe the competitive advantages of NeuraWear’s latest wearable device compared to its main competitors?",
+      ". Can you describe the competitive advantages of your latest product compared to its main competitors?",
     answer:
       "Our latest device, the NeuroBand X, offers unique features such as real-time mood assessment using EEG signals and adaptive learning algorithms that personalize health recommendations based on user behavior. These features set us apart from competitors by offering a deeper level of health monitoring and customization.",
   },
@@ -412,8 +408,7 @@ export const questionList = [
     questionId: 51,
     useCaseId: 1,
     usecase: "regulatory-pathways",
-    question:
-      "What role does intellectual property play in NeuraWear’s product differentiation strategy?",
+    question: "What role does intellectual property play in your product differentiation strategy?",
     answer:
       "Intellectual property is crucial in protecting our unique neuro-adaptive technologies and maintaining a competitive edge. We hold several patents related to biometric sensors and machine learning processes, which prevent competitors from replicating our most innovative features.",
   },
@@ -422,7 +417,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "commercialization-assessment",
     question:
-      "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its flagship product, and why?",
+      "What primary and secondary revenue streams-based pricing strategy has your company adopted for its flagship product, and why?",
     answer:
       "NeuraWear uses a value-based pricing strategy for the NeuroBand X, setting the price at $299. This reflects the advanced technology and the significant health benefits it offers compared to standard fitness trackers priced around $100-$150.",
   },
@@ -431,7 +426,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "commercialization-assessment",
     question:
-      "What are NeuraWear’s sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
+      "What are your company's sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
     answer:
       "NeuraWear aims to double our current annual sales revenue within the next five years, targeting a consistent growth rate of 20% year-on-year. For emerging markets, specifically in Asia and South America, we target a 40% increase in our customer base over the next three years.",
   },
@@ -440,7 +435,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "consumer-landscape",
     question:
-      "What are NeuraWear’s customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
+      "What are your customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
     answer:
       "NeuraWear plans to acquire 500,000 new users in the next year, focusing on the 25 to 40 age demographic. We will measure the success of these initiatives using key metrics such as cost per acquisition (CPA), conversion rates from trial to paid subscriptions, and initial user engagement levels during the first 90 days.",
   },
@@ -449,7 +444,7 @@ export const questionList = [
     usecase: "commercialization-assessment",
     useCaseId: 1,
     question:
-      "What are NeuraWear’s long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
+      "What are your long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
     answer:
       "NeuraWear aims to maintain an annual customer retention rate of at least 85% over the next five years. Effectiveness in retaining customers will be measured by tracking the churn rate, customer satisfaction scores, and renewal rates for our subscription services.",
   },
