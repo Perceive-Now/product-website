@@ -40,22 +40,22 @@ export default function ProgressBar({
   }
 
   return (
-    <div className="h-[28px] w-full flex flex-row items-center gap-x-[4px] text-sm  mt-1 mb-5">
+    <div className="h-[28px] w-full flex flex-row items-center gap-x-[4px] text-sm mt-1 mb-5">
       {/* usecase */}
-      <div className="bg-progressbar-gradient-lr w-[260px] flex flex-col justify-center h-full rounded-l-lg overflow-hidden">
+      <div className="bg-progressbar-gradient-lr w-[260px] flex flex-col justify-center h-full rounded-l-[4px] overflow-hidden">
         <p className="text-white pl-[20px]">Use case selected</p>
       </div>
 
       {/* interaction / q&a / upload / qp */}
       {currentPageName === "1" && (
-        <div className="bg-purple-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
-          <p className="text-purple-900 pl-[20px] col-start-1 row-start-1 font-semibold">
+        <div className="bg-primary-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
+          <p className="text-primary-900 pl-[20px] col-start-1 row-start-1 font-semibold">
             {"Select interaction method"}
           </p>
         </div>
       )}
       {currentPageName === "2" && (
-        <div className="bg-purple-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
+        <div className="bg-primary-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
           <div
             className="bg-progressbar-gradient-rl w-full flex flex-col justify-center h-full col-start-1 row-start-1"
             style={{ width: `${100}%` }}
@@ -66,7 +66,7 @@ export default function ProgressBar({
         </div>
       )}
       {currentPageName !== "1" && currentPageName !== "2" && (
-        <div className="bg-purple-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
+        <div className="bg-primary-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
           <div
             className="bg-progressbar-gradient-rl w-full flex flex-col justify-center h-full col-start-1 row-start-1"
             style={{ width: `${((currentStep + 2) / (totalSteps + 2)) * 100}%` }}
@@ -76,8 +76,8 @@ export default function ProgressBar({
       )}
 
       {/* payment */}
-      <div className="bg-purple-50 w-[260px] flex flex-col justify-center h-full rounded-r-lg overflow-hidden">
-        <p className="text-purple-900 pl-[20px] font-semibold">Payment</p>
+      <div className="bg-primary-50 w-[260px] flex flex-col justify-center h-full rounded-r-[4px] overflow-hidden">
+        <p className="text-primary-900 pl-[20px] font-semibold">Payment</p>
       </div>
     </div>
   );
