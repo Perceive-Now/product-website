@@ -135,9 +135,6 @@ export default function UploadAttachments() {
             Continue
           </p>
         </Button>
-        <p className="my-3">
-          For now, we support only <strong>1 PDF</strong> file type at a time
-        </p>
       </div>
     </div>
   );
