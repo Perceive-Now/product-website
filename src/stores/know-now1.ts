@@ -89,17 +89,19 @@ export const getMarketChatById = createAsyncThunk(
       return {
         success: true,
         message: "Successfully fetched market chat",
-        data: chats.map((d: any) => ({
-          message_id: d.conversation_id,
-          query: d.query,
-          answer: d.ai_content,
-          liked: d.likes,
-        })),
+        data:
+          chats.map((d: any) => ({
+            message_id: d.conversation_id,
+            query: d.query,
+            answer: d.ai_content,
+            liked: d.likes,
+          })) || [],
       };
     } catch (error) {
       return {
         success: false,
-        message: "Unable to fetch session details",
+        message: "Unable to fetch market chat",
+        data: [] as any,
       };
     }
   },
@@ -118,15 +120,17 @@ export const getMarketThread = createAsyncThunk(
       return {
         success: true,
         message: "Successfully fetched Market chat",
-        data: data.threads.map((c: any) => ({
-          chat_id: c,
-          title: c,
-        })),
+        data:
+          data.threads.map((c: any) => ({
+            chat_id: c,
+            title: c,
+          })) || [],
       };
     } catch (error) {
       return {
         success: false,
         message: "Unable to get Market chat",
+        data: [] as any,
       };
     }
   },
@@ -159,11 +163,11 @@ export const getIPChat = createAsyncThunk(
   "getIPChat",
   async (payload: IKnowIP[]): Promise<IResponse<IKnowNowIPConversations>> => {
     try {
-      const response = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/conversation/get`, payload);
+      const { data } = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/conversation/get`, payload);
       return {
         success: true,
         message: "Successfully fetched IP chat",
-        data: response.data.conversations.map((c: any) => ({
+        data: data.conversations.map((c: any) => ({
           chat_id: c.conversation_id,
           title: c.title,
         })),
@@ -172,6 +176,7 @@ export const getIPChat = createAsyncThunk(
       return {
         success: false,
         message: "Unable to get IP chat",
+        data: [] as any,
       };
     }
   },
@@ -208,18 +213,19 @@ export const getIPChatById = createAsyncThunk(
             answer: aiMessage ? aiMessage.content : "",
             liked: chats[i].liked,
             message_id: aiMessage ? aiMessage.message_id : "",
-          });
+          }) || [];
         }
       }
       return {
         success: true,
         message: "Successfully fetched IP chat",
-        data: combinedData,
+        data: combinedData || [],
       };
     } catch (error) {
       return {
         success: false,
         message: "Unable to get IP chat",
+        data: [] as any,
       };
     }
   },
