@@ -30,12 +30,14 @@ import DotLoader from "../reusable/dot-loader";
 
 //
 import { useAppDispatch } from "../../hooks/redux";
-import { setUpdateQuery } from "../../stores/know-now";
+// import { setUpdateQuery } from "../../stores/knownow-market";
 
 //
 import "./style.css";
 import { AppConfig } from "src/config/app.config";
-import { udateChatResponse } from "src/stores/know-now1";
+import { saveMarketChat, udateChatResponse } from "src/stores/know-now1";
+import { useLocation, useParams } from "react-router-dom";
+import jsCookie from "js-cookie";
 
 interface Props {
   answer: string;
@@ -88,6 +90,10 @@ const QueryAnswer = ({
   message_id,
 }: Props) => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const { id } = useParams();
+
+  const userId = jsCookie.get("user_id");
 
   const copyRef = useRef<any>(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -98,10 +104,10 @@ const QueryAnswer = ({
     }, 2000);
   }, [isCopied]);
 
-  //
-  const copyText = useCallback(() => {
-    setIsCopied(true);
-  }, []);
+  // //
+  // const copyText = useCallback(() => {
+  //   setIsCopied(true);
+  // }, []);
 
   //
   const convertTableToText = (tableElement: HTMLTableElement) => {
@@ -147,9 +153,28 @@ const QueryAnswer = ({
 
   //
   const fullTextToCopy = convertHtmlToMarkdown(answer);
-  // navigator.clipboard.writeText(fullTextToCopy);
+
+  const onCopy = async () => {
+    setIsCopied(true);
+
+    // const textToCopy = "Text to copy to clipboard";
+    try {
+      await navigator.clipboard.writeText(fullTextToCopy);
+      // console.log('Text copied to clipboard');
+    } catch (err) {
+      // console.error('Failed to copy text: ', err);
+    }
+  };
 
   const formattedAnswer = answer.replace(/\n/g, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+  formattedAnswer.replace(/<a\s+href="([^"]*)"/g, '<a href="$1" target="_blank"');
+
+  // const parser = new DOMParser();
+  // const doc = parser.parseFromString(formattedAnswer, 'text/html');
+  // doc.querySelectorAll('a').forEach((a) => {
+  //   a.setAttribute('target', '_blank');
+  // });
+
   const sanitizedAnswer = sanitizeHtml(formattedAnswer, {
     allowedTags: [
       "b",
@@ -183,25 +208,41 @@ const QueryAnswer = ({
 
   //
   const onRegenerate = useCallback(() => {
-    dispatch(setUpdateQuery({ editIndex: editIndex, query: query }));
+    // dispatch(setUpdateQuery({ editIndex: editIndex, query: query }));
     updateQuery(query, editIndex);
-  }, [dispatch, editIndex, query, updateQuery]);
+  }, [editIndex, query, updateQuery]);
 
   //
   const handleLikeRes = useCallback(
     async (value: boolean) => {
       try {
-        await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
-          message_id: Number(message_id),
-          like: value,
-        });
+        if (location.pathname.includes("/know-now/ip-analysis")) {
+          await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
+            message_id: Number(message_id),
+            like: value,
+          });
+        }
+        if (location.pathname.includes("/know-now/market-intelligence") && id) {
+          dispatch(
+            saveMarketChat({
+              thread_id: id || "",
+              user_id: userId || "",
+              conversation_data: {
+                conversation_id: "",
+                query: query,
+                ai_content: answer,
+                likes: value ? 1 : 0,
+              },
+            }),
+          );
+        }
         toast.success("Thanks for your feedback");
         dispatch(udateChatResponse({ message_id: message_id, liked: value }));
       } catch (error) {
         toast.error("Server Error");
       }
     },
-    [dispatch, message_id],
+    [answer, dispatch, id, location.pathname, message_id, query, userId],
   );
 
   //
@@ -224,10 +265,8 @@ const QueryAnswer = ({
       <div className="p-1 shrink-0">
         <img className="h-full w-full" src={PN} alt={"Pn"} />
       </div>
-      <div className="w-full">
-        {isLoading ? (
-          <DotLoader />
-        ) : (
+      <div className="w-full ">
+        <div className="">
           <>
             {error || error !== undefined ? (
               <span className="text-danger-500 font-semibold text flex items-center gap-0.5 text-sm">
@@ -236,16 +275,19 @@ const QueryAnswer = ({
               </span>
             ) : (
               <DndProvider backend={HTML5Backend}>
-                <div
-                  ref={copyRef}
-                  style={{ textAlign: "justify" }}
-                  className="text-secondary-800"
-                  dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
-                />
+                <div className="relative">
+                  <div
+                    ref={copyRef}
+                    style={{ textAlign: "justify" }}
+                    className="text-secondary-800 relative bottom-0 "
+                    dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
+                  />
+                </div>
               </DndProvider>
             )}
           </>
-        )}
+          {isLoading && <DotLoader />}
+        </div>
         <div className="flex items-center gap-2 mt-5">
           <div className="flex items-center gap-2">
             <ToolTip title="Good" placement="top">
@@ -267,7 +309,7 @@ const QueryAnswer = ({
             </ToolTip>
             <CopyToClipboard text={fullTextToCopy}>
               <ToolTip title={isCopied ? "Copied" : "Copy"} placement="top">
-                <IconButton onClick={copyText} color="default">
+                <IconButton onClick={onCopy} color="default">
                   <CopyIcon className={classNames(isCopied ? "text-black" : "text-[#87888C]")} />
                 </IconButton>
               </ToolTip>

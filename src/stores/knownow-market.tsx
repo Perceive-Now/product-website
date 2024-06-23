@@ -3,13 +3,7 @@ import axios from "axios";
 
 //
 import { IResponse } from "src/@types/IResponse";
-import {
-  IChats,
-  IKnowIP,
-  IKnowIPGetChat,
-  IKnowNowIPConversation,
-  IKnowNowIPConversations,
-} from "src/@types/entities/IKnow";
+import { IChats } from "src/@types/entities/IKnow";
 
 //
 import { AppConfig } from "src/config/app.config";
@@ -24,28 +18,44 @@ interface IChat {
   liked?: boolean;
 }
 
+interface IGetMarket {
+  user_id: string;
+  thread_id: string;
+}
+
 interface IKnowNow {
   chats: IChat[];
   knownow_id?: string;
-  chatIPIds: IChats[];
-  isFetching: boolean;
+  chatMarketIds: IChats[];
+  marketChatLoading: boolean;
+}
+
+interface IMarketChatSave {
+  user_id: string;
+  thread_id: string;
+  conversation_data: {
+    conversation_id: string;
+    query: string;
+    ai_content: string;
+    likes: 0 | 1;
+  };
 }
 
 const initialState: IKnowNow = {
   chats: [],
   knownow_id: undefined,
-  chatIPIds: [],
-  isFetching: true,
+  chatMarketIds: [],
+  marketChatLoading: true,
 };
 
 // -------------------------------------------------------------------------------------------------------
 
-// IP KNowNow
-export const saveIPChat = createAsyncThunk(
-  "saveIPChat",
-  async (payload: IKnowNowIPConversation[]) => {
+// Market
+export const saveMarketChat = createAsyncThunk(
+  "saveMarketChat",
+  async (payload: IMarketChatSave) => {
     try {
-      await axios.post(`${AppConfig.KNOW_NOW_IP_API}/conversation/add`, payload);
+      await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/save`, payload);
       return {
         success: true,
         message: "Saved Successfully",
@@ -60,24 +70,31 @@ export const saveIPChat = createAsyncThunk(
 );
 
 // -------------------------------------------------------------------------------------------------------
-//Get Conversations
-export const getIPChat = createAsyncThunk(
-  "getIPChat",
-  async (payload: IKnowIP[]): Promise<IResponse<IKnowNowIPConversations>> => {
+
+//Market KnowNow
+export const getMarketChatById = createAsyncThunk(
+  "getMarketChatById",
+  async (payload: IGetMarket): Promise<IResponse> => {
     try {
-      const { data } = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/conversation/get`, payload);
+      const { data } = await axios.get(
+        `${AppConfig.KNOW_NOW_MARKET_API}/conversations?user_id=${payload.user_id}&thread_id=${payload.thread_id}`,
+      );
+      const chats = data.conversations;
       return {
         success: true,
-        message: "Successfully fetched IP chat",
-        data: data.conversations.map((c: any) => ({
-          chat_id: c.conversation_id,
-          title: c.title,
-        })),
+        message: "Successfully fetched market chat",
+        data:
+          chats.map((d: any) => ({
+            message_id: d.conversation_id,
+            query: d.query,
+            answer: d.ai_content,
+            liked: d.likes,
+          })) || [],
       };
     } catch (error) {
       return {
         success: false,
-        message: "Unable to get IP chat",
+        message: "Unable to fetch market chat",
         data: [] as any,
       };
     }
@@ -85,59 +102,41 @@ export const getIPChat = createAsyncThunk(
 );
 
 // -------------------------------------------------------------------------------------------------------
-// Get Chats
-export const getIPChatById = createAsyncThunk(
-  "getIPChatById",
-  async (payload: IKnowIPGetChat): Promise<IResponse> => {
+
+//Get Conversations
+export const getMarketThread = createAsyncThunk(
+  "getIPChat",
+  async (payload: string): Promise<IResponse> => {
     try {
-      const { data } = await axios.post(
-        `${AppConfig.KNOW_NOW_IP_API}/conversation/get_by_id`,
-        payload,
+      const { data } = await axios.get(
+        `${AppConfig.KNOW_NOW_MARKET_API}/threads?user_id=${payload}`,
       );
-      const chats = data.conversation.messages;
-      const combinedData = [];
-
-      for (let i = 0; i < chats.length; i++) {
-        if (chats[i].role === "human") {
-          let aiMessage = null;
-
-          // Look ahead to find the next AI response
-          for (let j = i + 1; j < chats.length; j++) {
-            if (chats[j].role === "ai") {
-              aiMessage = chats[j];
-              break;
-            }
-          }
-
-          // Add the pair to combinedData if an AI response was found
-          combinedData.push({
-            query: chats[i].content,
-            answer: aiMessage ? aiMessage.content : "",
-            liked: chats[i].liked,
-            message_id: aiMessage ? aiMessage.message_id : "",
-          }) || [];
-        }
-      }
       return {
         success: true,
-        message: "Successfully fetched IP chat",
-        data: combinedData || [],
+        message: "Successfully fetched Market chat",
+        data:
+          data.threads.map((c: any) => ({
+            chat_id: c,
+            title: c,
+          })) || [],
       };
     } catch (error) {
       return {
         success: false,
-        message: "Unable to get IP chat",
+        message: "Unable to get Market chat",
         data: [] as any,
       };
     }
   },
 );
 
+// -------------------------------------------------------------------------------------------------------
+
 /**
  *
  */
-export const KnownowIPSlice = createSlice({
-  name: "knownow-ip",
+export const KnownowMarketSlice = createSlice({
+  name: "knownow-market",
   initialState,
   reducers: {
     setKnowNowChats: (state, action: PayloadAction<IChat>) => {
@@ -214,33 +213,33 @@ export const KnownowIPSlice = createSlice({
 
     // -------------------------------------------------------------------------------------------------------
 
-    setChatIPIds: (state, action: PayloadAction<{ title: string; chat_id: string }>) => {
-      if (!state.chatIPIds) {
-        state.chatIPIds = []; // Initialize if undefined
+    setChatMarketIds: (state, action: PayloadAction<{ title: string; chat_id: string }>) => {
+      if (!state.chatMarketIds) {
+        state.chatMarketIds = []; // Initialize if undefined
       }
-      state.chatIPIds.push(action.payload);
+      state.chatMarketIds.push(action.payload);
     },
 
     //
-    setRemoveIPConversation: (state, action: PayloadAction<string>) => {
+    setRemoveMarketConversation: (state, action: PayloadAction<string>) => {
       const conversationId = action.payload;
-      state.chatIPIds = state.chatIPIds.filter((c) => c.chat_id !== conversationId);
+      state.chatMarketIds = state.chatMarketIds.filter((c) => c.chat_id !== conversationId);
     },
 
     // -------------------------------------------------------------------------------------------------------
 
-    resetChats: (state) => {
+    resetMarketChats: (state) => {
       state.chats = [];
     },
 
-    resetchatIPIds: (state) => {
-      state.chatIPIds = [];
+    resetMarketchatMarketIds: (state) => {
+      state.chatMarketIds = [];
     },
 
-    resetKnowNowIP: (state) => {
+    resetKnowNowMarket: (state) => {
       state.chats = [];
-      state.chatIPIds = [];
-      state.isFetching = true;
+      state.chatMarketIds = [];
+      state.marketChatLoading = true;
     },
 
     // -------------------------------------------------------------------------------------------------------
@@ -255,31 +254,30 @@ export const KnownowIPSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // IP Chat cases
-      .addCase(getIPChatById.fulfilled, (state, action) => {
-        state.chats = action.payload.data;
+      .addCase(getMarketThread.fulfilled, (state, action) => {
+        state.marketChatLoading = false;
+        state.chatMarketIds = action.payload.data as any;
       })
-      .addCase(getIPChat.fulfilled, (state, action) => {
-        state.isFetching = false;
-        state.chatIPIds = action.payload.data as any;
+      .addCase(getMarketChatById.fulfilled, (state, action) => {
+        state.chats = action.payload.data;
       });
   },
 });
 
 // ------------------------------------------------------------------------------------------------------------
 
-export default KnownowIPSlice.reducer;
+export default KnownowMarketSlice.reducer;
 export const {
   setKnowNowChats,
   updateChatError,
   addQuestion,
   updateChatAnswer,
   generateNewId,
-  setChatIPIds,
-  resetChats,
-  resetchatIPIds,
-  setRemoveIPConversation,
+  setChatMarketIds,
+  resetMarketChats,
+  resetMarketchatMarketIds,
+  setRemoveMarketConversation,
   editQueryAndUpdateAnswer,
   udateChatResponse,
-  resetKnowNowIP,
-} = KnownowIPSlice.actions;
+  resetKnowNowMarket,
+} = KnownowMarketSlice.actions;

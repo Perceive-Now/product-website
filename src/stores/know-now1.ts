@@ -25,26 +25,33 @@ interface IChat {
 }
 
 interface IGetMarket {
-  user_id: number;
-  thread_id: number;
+  user_id: string;
+  thread_id: string;
 }
 
 interface IKnowNow {
   chats: IChat[];
   knownow_id?: string;
   chatIds: IChats[];
+  isFetching: boolean;
 }
 
 interface IMarketChatSave {
   user_id: string;
   thread_id: string;
-  content: string;
+  conversation_data: {
+    conversation_id: string;
+    query: string;
+    ai_content: string;
+    likes: 0 | 1;
+  };
 }
 
 const initialState: IKnowNow = {
   chats: [],
   knownow_id: undefined,
   chatIds: [],
+  isFetching: false,
 };
 
 // -------------------------------------------------------------------------------------------------------
@@ -54,11 +61,7 @@ export const saveMarketChat = createAsyncThunk(
   "saveMarketChat",
   async (payload: IMarketChatSave) => {
     try {
-      await axios.post(
-        `https://percievenowchat2.azurewebsites.net/save/
-`,
-        payload,
-      );
+      await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/save`, payload);
       return {
         success: true,
         message: "Saved Successfully",
@@ -79,24 +82,59 @@ export const getMarketChatById = createAsyncThunk(
   "getMarketChatById",
   async (payload: IGetMarket): Promise<IResponse> => {
     try {
-      const response = await axios.get(
-        `${AppConfig.KNOW_NOW_MARKET_API}/retrieve/?user_id=${payload.user_id}&thread_id=${payload.thread_id}`,
+      const { data } = await axios.get(
+        `${AppConfig.KNOW_NOW_MARKET_API}/conversations?user_id=${payload.user_id}&thread_id=${payload.thread_id}`,
       );
+      const chats = data.conversations;
       return {
         success: true,
         message: "Successfully fetched market chat",
-        data: response.data,
+        data:
+          chats.map((d: any) => ({
+            message_id: d.conversation_id,
+            query: d.query,
+            answer: d.ai_content,
+            liked: d.likes,
+          })) || [],
       };
     } catch (error) {
       return {
         success: false,
-        message: "Unable to fetch session details",
+        message: "Unable to fetch market chat",
+        data: [] as any,
       };
     }
   },
 );
 
 // -------------------------------------------------------------------------------------------------------
+
+//Get Conversations
+export const getMarketThread = createAsyncThunk(
+  "getIPChat",
+  async (payload: string): Promise<IResponse> => {
+    try {
+      const { data } = await axios.get(
+        `${AppConfig.KNOW_NOW_MARKET_API}/threads?user_id=${payload}`,
+      );
+      return {
+        success: true,
+        message: "Successfully fetched Market chat",
+        data:
+          data.threads.map((c: any) => ({
+            chat_id: c,
+            title: c,
+          })) || [],
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Unable to get Market chat",
+        data: [] as any,
+      };
+    }
+  },
+);
 // -------------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------------
 
@@ -125,11 +163,11 @@ export const getIPChat = createAsyncThunk(
   "getIPChat",
   async (payload: IKnowIP[]): Promise<IResponse<IKnowNowIPConversations>> => {
     try {
-      const response = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/conversation/get`, payload);
+      const { data } = await axios.post(`${AppConfig.KNOW_NOW_IP_API}/conversation/get`, payload);
       return {
         success: true,
         message: "Successfully fetched IP chat",
-        data: response.data.conversations.map((c: any) => ({
+        data: data.conversations.map((c: any) => ({
           chat_id: c.conversation_id,
           title: c.title,
         })),
@@ -138,6 +176,7 @@ export const getIPChat = createAsyncThunk(
       return {
         success: false,
         message: "Unable to get IP chat",
+        data: [] as any,
       };
     }
   },
@@ -174,18 +213,19 @@ export const getIPChatById = createAsyncThunk(
             answer: aiMessage ? aiMessage.content : "",
             liked: chats[i].liked,
             message_id: aiMessage ? aiMessage.message_id : "",
-          });
+          }) || [];
         }
       }
       return {
         success: true,
         message: "Successfully fetched IP chat",
-        data: combinedData,
+        data: combinedData || [],
       };
     } catch (error) {
       return {
         success: false,
         message: "Unable to get IP chat",
+        data: [] as any,
       };
     }
   },
@@ -305,16 +345,33 @@ export const KnownowSlice1 = createSlice({
 
   // -------------------------------------------------------------------------------------------------------
 
-  extraReducers(builder) {
-    builder.addCase(getIPChat.fulfilled, (state, action) => {
-      state.chatIds = action.payload.data as any;
-    });
+  extraReducers: (builder) => {
+    builder
+      // IP Chat cases
+      .addCase(getMarketThread.fulfilled, (state, action) => {
+        state.chatIds = action.payload.data as any;
+      })
+      // .addCase(getIPChatById.pending, (state) => {
+      //   state.isFetching = true;
+      // })
+      .addCase(getMarketChatById.fulfilled, (state, action) => {
+        state.isFetching = false;
+        state.chats = action.payload.data;
+      })
+      .addCase(getIPChatById.fulfilled, (state, action) => {
+        state.chats = action.payload.data;
+      })
+      .addCase(getIPChatById.rejected, (state) => {
+        state.isFetching = false;
+      });
 
-    // -------------------------------------------------------------------------------------------------------
-
-    builder.addCase(getIPChatById.fulfilled, (state, action) => {
-      state.chats = action.payload.data as any;
-    });
+    // Market Chat cases
+    // .addCase(getMarketThread.fulfilled, (state, action) => {
+    //   state.chatIds = action.payload.data;
+    // })
+    // .addCase(getMarketChatById.fulfilled, (state, action) => {
+    //   state.chats = action.payload.data;
+    // });
   },
 });
 

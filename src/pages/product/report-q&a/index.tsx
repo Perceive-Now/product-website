@@ -51,6 +51,8 @@ const ReportPage = () => {
     }
   }, [questionsList, useCases]);
 
+  console.log(questionWithUsecase);
+
   useEffect(() => {
     if (questionWithUsecase && questionWithUsecase?.length > 0) {
       dispatch(questionWithUseCases(questionWithUsecase));
@@ -150,7 +152,7 @@ const ReportPage = () => {
           </div>
         </div>
         {currentPageId !== 2 && (
-          <div className="flex-shrink-0 2xl:w-[300px]">
+          <div className="flex-shrink-0 lg:w-[300px]">
             {<SkippedQuestion questions={skippedQuestionList || []} />}
           </div>
         )}

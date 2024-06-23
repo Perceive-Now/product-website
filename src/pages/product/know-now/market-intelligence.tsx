@@ -1,34 +1,34 @@
-import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import jsCookie from "js-cookie";
 
 //
 import AddQuery from "../../../components/@chat/add-query";
+
 //
 import QueryAnswer from "../../../components/@chat/query-answer";
 import ChatQuery from "../../../components/@chat/chat-question";
-//
-import KnowNowRightSideBar from "./side-bar";
 
+//
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-// import { setUpdateQuery } from "../../../stores/know-now";
 
 import {
   addQuestion,
   editQueryAndUpdateAnswer,
   generateNewId,
+  getMarketChatById,
+  getMarketThread,
   saveMarketChat,
-  setChatIds,
+  setChatMarketIds,
   updateChatAnswer,
   updateChatError,
-} from "../../../stores/know-now1";
+} from "../../../stores/knownow-market";
 
 import KnowNowdefault from "./default";
 import { AppConfig } from "src/config/app.config";
 import { generateKnowId } from "src/utils/helpers";
-import { useNavigate, useParams } from "react-router-dom";
-
-//
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { LoadingIcon } from "src/components/icons";
+import toast from "react-hot-toast";
 
 /**
  *
@@ -37,45 +37,82 @@ import { useNavigate, useParams } from "react-router-dom";
 function MarketIntelligenceKnowNow() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
 
+  //
+  const [searchParams] = useSearchParams();
+  const queryStatus = searchParams.get("status");
+
+  //
   const chatRef = useRef<HTMLInputElement>(null);
   const userId = jsCookie.get("user_id");
 
-  const chats = useAppSelector((state) => state.KnowNowChat.chats);
-  // const { knownow_id } = useAppSelector((state) => state.KnowNowChat);
+  const { chats } = useAppSelector((state) => state.KnownowMarket);
 
+  //
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
   const [query, setQuery] = useState("");
 
+  //
+  useEffect(() => {
+    if (queryStatus) {
+      setIsSaved(true);
+    }
+  }, [id, queryStatus]);
+
+  // || (location.pathname === "/know-now/market-intelligence" || location.pathname === "/know-now/ip-analysis")
+  useEffect(() => {
+    if (id && isSaved) {
+      dispatch(getMarketThread(userId || ""));
+      dispatch(
+        getMarketChatById({
+          user_id: userId || "",
+          thread_id: id || "",
+        }),
+      )
+        .unwrap()
+        .then((res) => {
+          if (!res.success) {
+            toast.error("Unable to fetch Conversations");
+            navigate("/start-conversation");
+          }
+        })
+        .catch(() => {
+          toast.error("Something went wrong");
+          navigate("/start-conversation");
+        });
+      setIsSaved(false);
+    }
+    // setIsSaved(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, id, userId, isSaved]);
+
+  //
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
       setIsloading(true);
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
-      //
-      const conversationId = id !== undefined ? id : generateKnowId();
 
       //
-      if (id == undefined) {
+      const conversationId = id !== undefined ? id : generateKnowId();
+      const messageId = generateKnowId();
+
+      //
+      if (id === undefined) {
         dispatch(generateNewId({ id: conversationId }));
         dispatch(
-          setChatIds({
+          setChatMarketIds({
             title: conversationId,
             chat_id: conversationId,
           }),
         );
         navigate(`/know-now/market-intelligence/${conversationId}`);
       }
-
-      //
-      await dispatch(
-        saveMarketChat({
-          thread_id: conversationId,
-          user_id: userId || "",
-          content: query || updateQuery,
-        }),
-      );
 
       //
       const queries = {
@@ -95,45 +132,88 @@ function MarketIntelligenceKnowNow() {
 
       setQuery("");
 
+      // ----------------------------------------------------------------------------
+
       try {
-        const res = await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/ask-question`, queries, {
+        const response: any = await fetch(`${AppConfig.KNOW_NOW_MARKET_API}/ask-question`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             "x-token": "secret-token",
             "x-user-id": "user123",
           },
+          body: JSON.stringify(queries),
         });
-        const answer = res.data;
-        setIsloading(false);
 
-        // await dispatch(
-        //   saveMarketChat({
-        //     user_id: userId ?? "",
-        //     thread_id: conversationId,
-        //     content: updateQuery,
-        //   }),
-        // );
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let answer = "";
 
-        if (editIndex !== null) {
-          dispatch(
-            editQueryAndUpdateAnswer({
-              index: editIndex,
-              newQuery: updateQuery,
-              newAnswer: answer,
-            }),
-          );
-        } else {
-          dispatch(
-            updateChatAnswer({
-              index: chats.length,
-              answer: answer,
-            }),
-          );
+        // Stream
+        while (!done) {
+          const { value, done: streamDone } = await reader.read();
+          done = streamDone;
+          if (value) {
+            setLoadingIndex(null);
+            const chunk = decoder.decode(value);
+            answer += chunk;
+
+            if (editIndex !== null) {
+              dispatch(
+                editQueryAndUpdateAnswer({
+                  index: editIndex,
+                  newQuery: updateQuery,
+                  newAnswer: answer,
+                }),
+              );
+            } else {
+              dispatch(
+                updateChatAnswer({
+                  index: chats.length,
+                  answer: answer,
+                }),
+              );
+            }
+            // console.log('Chunk received:', decoder.decode(value));
+          }
         }
-      } catch (error: any) {
-        const errorMsg = error.response.statusText;
+
+        await dispatch(
+          saveMarketChat({
+            thread_id: conversationId,
+            user_id: userId || "",
+            conversation_data: {
+              conversation_id: messageId,
+              query: queries.query,
+              ai_content: answer,
+              likes: 0,
+            },
+          }),
+        )
+          .unwrap()
+          .then(() => {
+            // setIsSaved(true);
+            // toast.success("Saved successfully")
+          })
+          .catch(() => {
+            toast.error("Unable to save");
+          });
+
+        // console.log('Stream ended');
+
         setIsloading(false);
-        const errorAnswer = errorMsg || "Error while generating the response";
+        setLoadingIndex(null);
+
+        // const answer = "res.data";
+      } catch (error: any) {
+        // const errorMsg = error.response.statusText;
+        setIsloading(false);
+        setLoadingIndex(null);
+
+        const errorAnswer = "Error while generating the response";
+
+        toast.error("Something went wrong");
 
         if (editIndex !== null) {
           dispatch(
@@ -164,38 +244,48 @@ function MarketIntelligenceKnowNow() {
   }, [chats]);
 
   return (
-    <div className="p-3 flex">
+    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto">
       <div className="w-full">
-        <div ref={chatRef} className="h-[calc(100vh-264px)] overflow-auto pn_scroller pb-2 pr-2">
-          {chats && chats.length <= 0 ? (
-            <KnowNowdefault />
-          ) : (
-            <div className="space-y-6">
-              {chats.map((chat, idx) => (
-                <div key={idx * 5} className="space-y-3">
-                  <ChatQuery
-                    query={chat.query}
-                    updateQuery={onSendQuery}
-                    editIndex={idx}
-                    setQuery={setQuery}
-                  />
-                  <QueryAnswer
-                    answer={chat.answer}
-                    isLoading={loadingIndex === idx}
-                    error={chat.error}
-                    updateQuery={onSendQuery}
-                    editIndex={idx}
-                    query={chat.query}
-                    message_id={chat.message_id}
-                  />
-                </div>
-              ))}
+        <div
+          ref={chatRef}
+          className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+        >
+          {chats && chats.length <= 0 && id ? (
+            <div className="flex justify-center items-center h-full">
+              <LoadingIcon className="h-5 w-5 text-primary-900" />
             </div>
+          ) : (
+            <>
+              {id === undefined ? (
+                <KnowNowdefault />
+              ) : (
+                <div className="space-y-6 w-full">
+                  {((chats && chats) || []).map((chat, idx) => (
+                    <div key={idx * 5} className="space-y-3">
+                      <ChatQuery
+                        query={chat.query}
+                        updateQuery={onSendQuery}
+                        editIndex={idx}
+                        setQuery={setQuery}
+                      />
+                      <QueryAnswer
+                        answer={chat.answer}
+                        isLoading={isLoading && loadingIndex === idx}
+                        error={chat.error}
+                        updateQuery={onSendQuery}
+                        editIndex={idx}
+                        query={chat.query}
+                        message_id={chat.message_id}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
         <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
       </div>
-      <KnowNowRightSideBar />
     </div>
   );
 }
