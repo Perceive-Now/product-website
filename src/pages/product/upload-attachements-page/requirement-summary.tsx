@@ -2,11 +2,13 @@ import { ReactNode, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
+import { LoadingIcon } from "src/components/icons";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import {
   fetchRequirementSummary,
   resetFetchRequirementSummaryState,
 } from "src/stores/upload-attachments";
+import { motion } from "framer-motion";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch();
@@ -56,6 +58,8 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     };
   });
 
+  const isLoading = fetchRequirementSummaryState.isLoading;
+
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
       <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg p-2 shadow-page-content">
@@ -68,9 +72,20 @@ export default function RequirementSummary({ children }: { children: ReactNode }
           </>
         )}
         <div className="text-gray-600 mt-[20px]">
-          {!fetchRequirementSummaryState.isLoading ? (
+          {isLoading ? (
+            <div className="flex flex-row gap-x-1">
+              <p> Fetching requirement summary</p>
+              <LoadingIcon />
+            </div>
+          ) : (
             transformedRequirementSummary.map((item) => (
-              <div key={item.useCaseId} className="mb-2">
+              <motion.div
+                key={item.useCaseId}
+                className="mb-2"
+                initial={{ opacity: 0, y: 2 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+              >
                 <p className="text-base font-bold">
                   {item.useCaseName}
                   {":"}
@@ -84,10 +99,8 @@ export default function RequirementSummary({ children }: { children: ReactNode }
                 ) : (
                   <p className="text-sm">{item.summary}</p>
                 )}
-              </div>
+              </motion.div>
             ))
-          ) : (
-            <div>Fetching requirement summary</div>
           )}
         </div>
       </div>
