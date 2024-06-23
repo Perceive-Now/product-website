@@ -108,7 +108,7 @@ export default function WebsiteLinks() {
           type="optional"
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
-          disabled={isLoading}
+          disabled={websiteLinks.length === 0}
           loading={isLoading}
         >
           <p
@@ -117,6 +117,21 @@ export default function WebsiteLinks() {
             })}
           >
             Continue
+          </p>
+        </Button>
+        <Button
+          type="default"
+          classname="text-secondary-800 w-full"
+          handleClick={handleContinueBtnClick}
+          disabled={isLoading}
+          loading={isLoading}
+        >
+          <p
+            className={classNames("text-secondary-800", {
+              "opacity-50": isLoading,
+            })}
+          >
+            Skip
           </p>
         </Button>
       </div>
