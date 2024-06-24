@@ -208,11 +208,13 @@ export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
       };
 
       return await axios.post(
-        `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(answersObj.answer)}&userID=${
-          answersObj.userID
-        }&QuestionID=${Number(answersObj.QuestionID)}&requirement_gathering_id=${
-          answersObj.requirement_gathering_id
-        }&user_case_id=${answersObj.user_case_id}`,
+        `${BASE_PN_REPORT_URL}/attachment-answer/?answer=${encodeURIComponent(
+          answersObj.answer,
+        )}&userID=${answersObj.userID}&QuestionID=${Number(
+          answersObj.QuestionID,
+        )}&requirement_gathering_id=${answersObj.requirement_gathering_id}&user_case_id=${
+          answersObj.user_case_id
+        }`,
       );
     } catch (error) {
       const errorObj = {
