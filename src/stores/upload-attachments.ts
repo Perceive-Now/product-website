@@ -133,9 +133,15 @@ export const uploadAttachments = createAsyncThunk<
 
     return await axios.post(BASE_PN_REPORT_URL + "/attachment/", dataObj);
   } catch (error) {
+    let message = "Unable to upload attachments";
+
+    if (error && typeof error === "object" && "code" in error && "message" in error) {
+      message = Number(error.code) === 460 ? String(error.message) : message;
+    }
+
     const errorObj = {
       resError: String(error),
-      message: "Unable to upload attachments",
+      message,
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -357,7 +363,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = true;
       state.isUploadAttachmentsSuccess = false;
-      state.message = "Unable to upload attachments" ?? action.error.message;
+      state.message = action.error.message ?? "Unable to upload attachments";
     });
 
     // -----------------------------------------------------------------------
