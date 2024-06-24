@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import {
   EUploadAttachmentsPages,
+  fetchRequirementSummary,
   incrementStep,
+  resetFetchRequirementSummaryState,
   setCurrentPageId,
   setIsUploadAttachmentsError,
   setIsUploadAttachmentsSuccess,
@@ -35,6 +37,26 @@ export default function WebsiteLinks() {
     requirementGatheringId,
   } = useAppSelector((state) => state.usecases);
 
+  const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
+    (state) => state.uploadAttachments,
+  );
+
+  useEffect(() => {
+    if (fetchRequirementSummaryState.isError) {
+      toast.error("Something went wrong");
+      dispatch(resetFetchRequirementSummaryState());
+      return;
+    }
+
+    if (fetchRequirementSummaryState.isSuccess) {
+      dispatch(resetFetchRequirementSummaryState());
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
+      dispatch(incrementStep());
+      dispatch(setIsUploadAttachmentsSuccess(false));
+      return;
+    }
+  }, [fetchRequirementSummaryState, dispatch, location]);
+
   useEffect(() => {
     if (isUploadAttachmentsError) {
       toast.error(message);
@@ -43,9 +65,12 @@ export default function WebsiteLinks() {
     }
 
     if (isUploadAttachmentsSuccess) {
-      dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
-      dispatch(incrementStep());
-      dispatch(setIsUploadAttachmentsSuccess(false));
+      dispatch(
+        fetchRequirementSummary({
+          requirement_gathering_id: String(requirementGatheringId),
+          useCaseIds: useCaseIds,
+        }),
+      );
       return;
     }
   }, [
@@ -73,7 +98,8 @@ export default function WebsiteLinks() {
     dispatch(setWebsiteLinks(newWebLink));
   };
 
-  const isLoading = isUploadingUseCases || isUploadingUploadAttachments;
+  const isLoading =
+    isUploadingUseCases || isUploadingUploadAttachments || fetchRequirementSummaryState.isLoading;
 
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
