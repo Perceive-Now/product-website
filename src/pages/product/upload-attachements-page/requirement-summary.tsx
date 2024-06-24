@@ -42,19 +42,30 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     isInitialLoad.current = false;
   }, [dispatch, requirementGatheringId, useCaseIds]);
 
-  const transformedRequirementSummary: {
-    useCaseId: string;
-    useCaseName: string;
-    summary: string;
-  }[] = requirementSummary.map((summaryItem) => {
-    return {
-      summary: summaryItem.summary,
-      useCaseName:
-        UseCaseOptions.find((option) => option.useCaseId === Number(summaryItem.useCaseId))
-          ?.label ?? "",
-      useCaseId: summaryItem.useCaseId,
-    };
-  });
+  const transformedRequirementSummary: (
+    | {
+        useCaseId: string;
+        useCaseName: string;
+        summary: string;
+      }
+    | { contentSummary: string }
+  )[] = requirementSummary
+    .map((summaryItem) => {
+      if ("summary" in summaryItem) {
+        return {
+          summary: summaryItem.summary,
+          useCaseName:
+            UseCaseOptions.find((option) => option.useCaseId === Number(summaryItem.useCaseId))
+              ?.label ?? "",
+          useCaseId: summaryItem.useCaseId,
+        };
+      } else if ("contentSummary" in summaryItem) {
+        return {
+          contentSummary: summaryItem.contentSummary,
+        };
+      } else return null;
+    })
+    .filter((f) => f !== null);
 
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
@@ -69,23 +80,40 @@ export default function RequirementSummary({ children }: { children: ReactNode }
         )}
         <div className="text-gray-600 mt-[20px]">
           {!fetchRequirementSummaryState.isLoading ? (
-            transformedRequirementSummary.map((item) => (
-              <div key={item.useCaseId} className="mb-2">
-                <p className="text-base font-bold">
-                  {item.useCaseName}
-                  {":"}
-                </p>
-
-                {item.summary === "" ? (
-                  <div>
-                    The provided information is not enough to generate a summary. Please continue
-                    with the requirement gathering process
+            transformedRequirementSummary.map((item) => {
+              if ("contentSummary" in item) {
+                return (
+                  <div key={item.contentSummary} className="mb-2">
+                    {item.contentSummary === "" ? (
+                      <div>
+                        The provided information is not enough to generate a summary. Please
+                        continue with the requirement gathering process
+                      </div>
+                    ) : (
+                      <p className="text-sm font-medium">{item.contentSummary}</p>
+                    )}
                   </div>
-                ) : (
-                  <p className="text-sm">{item.summary}</p>
-                )}
-              </div>
-            ))
+                );
+              } else if ("summary" in item) {
+                return (
+                  <div key={item.useCaseId} className="mb-2">
+                    <p className="text-base font-bold">
+                      {item.useCaseName}
+                      {":"}
+                    </p>
+
+                    {item.summary === "" ? (
+                      <div>
+                        The provided information is not enough to generate a summary. Please
+                        continue with the requirement gathering process
+                      </div>
+                    ) : (
+                      <p className="text-sm">{item.summary}</p>
+                    )}
+                  </div>
+                );
+              }
+            })
           ) : (
             <div>Fetching requirement summary</div>
           )}
