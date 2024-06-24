@@ -147,7 +147,7 @@ export default function WebsiteLinks() {
         </Button>
         <Button
           type="default"
-          classname="text-secondary-800 w-full"
+          classname="w-full border border-orange-500 mt-[20px]"
           handleClick={handleContinueBtnClick}
           disabled={isLoading}
           loading={isLoading}

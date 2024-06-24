@@ -54,13 +54,13 @@ export default function ReportPercentage({
             className="row-start-1 col-start-1"
             percentage={requirementPercentage}
           />
-          {isLoading ? (
-            <LoadingIcon />
-          ) : (
-            <p className="col-start-1 row-start-1 text-white text-center w-full mix-blend-difference">
-              {requirementPercentage}%
-            </p>
-          )}
+          <p className="col-start-1 row-start-1 text-white text-center w-full mix-blend-difference">
+            {isLoading ? (
+              <LoadingIcon className="col-start-1 row-start-1 text-center" />
+            ) : (
+              <>{requirementPercentage}%</>
+            )}
+          </p>
         </div>
         {!isAdditionalQuestions && (
           <p className="text-purple-900 font-bold text-lg">{percentageContent?.title}</p>

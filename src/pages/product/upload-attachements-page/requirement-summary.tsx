@@ -37,7 +37,7 @@ export default function RequirementSummary({ children }: { children: ReactNode }
         )}
         <div className="text-gray-600 mt-[20px]">
           {isLoading ? (
-            <div className="flex flex-row gap-x-1">
+            <div className="flex flex-row gap-x-1 items-center">
               <p> Fetching requirement summary</p>
               <LoadingIcon />
             </div>
