@@ -31,7 +31,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className={classNames(
-          "appearance-none w-full h-full border-none rounded-md bg-appGray-100 placeholder:text-gray-400 pn_scroller focus:border-none focus-visible:border-none focus:outline-none focus:ring-0 pr-6 max-h-[60px]",
+          "appearance-none w-full h-full border-none rounded-md bg-appGray-100 placeholder:text-appGray-600 pn_scroller focus:border-none focus-visible:border-none focus:outline-none focus:ring-0 pr-6 max-h-[60px]",
         )}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
