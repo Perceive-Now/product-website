@@ -6,7 +6,6 @@ const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 export const EQuickPromptPages = {
   QuickPrompt: 0,
-  GoToReport: 1,
 };
 
 export type TQuickPromptPages = (typeof EQuickPromptPages)[keyof typeof EQuickPromptPages];

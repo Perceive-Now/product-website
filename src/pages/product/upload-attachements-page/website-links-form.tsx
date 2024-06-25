@@ -29,6 +29,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     defaultValues: {
       websiteLinkInput: "",
@@ -39,6 +40,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
 
   const addWebsiteLink = ({ websiteLinkInput }: { websiteLinkInput: string }) => {
     dispatch(setWebsiteLinks([...websiteLinks, websiteLinkInput]));
+    reset();
   };
 
   return (
@@ -52,7 +54,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
                 {...register("websiteLinkInput")}
                 placeholder="https://www.example.com/"
                 className={classNames(
-                  "h-full w-full border border-appGray-600 rounded-l-lg p-2 placeholder:text-base placeholder:text-appGray-500 placeholder:font-medium font-medium",
+                  "h-full w-full max-w-[400px] border border-appGray-600 rounded-l-lg p-2 placeholder:text-base placeholder:text-appGray-500 placeholder:font-medium font-medium",
                   {
                     " border-appGray-600 ": !errors.websiteLinkInput,
                   },

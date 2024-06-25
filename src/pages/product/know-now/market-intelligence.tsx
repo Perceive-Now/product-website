@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import jsCookie from "js-cookie";
 
@@ -19,22 +18,17 @@ import {
   getMarketChatById,
   getMarketThread,
   saveMarketChat,
-  setChatIds,
+  setChatMarketIds,
   updateChatAnswer,
   updateChatError,
-} from "../../../stores/know-now1";
+} from "../../../stores/knownow-market";
 
 import KnowNowdefault from "./default";
 import { AppConfig } from "src/config/app.config";
 import { generateKnowId } from "src/utils/helpers";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { LoadingIcon } from "src/components/icons";
 import toast from "react-hot-toast";
-// import { connect, disconnect } from "src/utils/websocket-service";
-
-//
-
-// const socket = io('https://percievenowchat2.azurewebsites.net/ws/chat'); // Replace with your WebSocket server URL
 
 /**
  *
@@ -43,22 +37,38 @@ import toast from "react-hot-toast";
 function MarketIntelligenceKnowNow() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
 
+  //
+  const [searchParams] = useSearchParams();
+  const queryStatus = searchParams.get("status");
+
+  //
   const chatRef = useRef<HTMLInputElement>(null);
   const userId = jsCookie.get("user_id");
 
-  const { chats } = useAppSelector((state) => state.KnowNowChat);
+  const { chats } = useAppSelector((state) => state.KnownowMarket);
 
+  //
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
-  const [query, setQuery] = useState("");
+
   const [isSaved, setIsSaved] = useState(false);
+  const [query, setQuery] = useState("");
 
+  //
   useEffect(() => {
-    dispatch(getMarketThread(userId || ""));
+    if (queryStatus) {
+      setIsSaved(true);
+    }
+  }, [id, queryStatus]);
 
-    if (id) {
+  // || (location.pathname === "/know-now/market-intelligence" || location.pathname === "/know-now/ip-analysis")
+  useEffect(() => {
+    if (id && isSaved) {
+      dispatch(getMarketThread(userId || ""));
       dispatch(
         getMarketChatById({
           user_id: userId || "",
@@ -80,20 +90,23 @@ function MarketIntelligenceKnowNow() {
     }
     // setIsSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, id, userId]);
+  }, [dispatch, id, userId, isSaved]);
 
+  //
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
       setIsloading(true);
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
-      //
-      const conversationId = id !== undefined ? id : generateKnowId();
 
       //
-      if (id == undefined) {
+      const conversationId = id !== undefined ? id : generateKnowId();
+      const messageId = generateKnowId();
+
+      //
+      if (id === undefined) {
         dispatch(generateNewId({ id: conversationId }));
         dispatch(
-          setChatIds({
+          setChatMarketIds({
             title: conversationId,
             chat_id: conversationId,
           }),
@@ -119,59 +132,88 @@ function MarketIntelligenceKnowNow() {
 
       setQuery("");
 
-      // -------------------------------------------------------------------
+      // ----------------------------------------------------------------------------
 
       try {
-        const res = await axios.post(`${AppConfig.KNOW_NOW_MARKET_API}/ask-question`, queries, {
+        const response: any = await fetch(`${AppConfig.KNOW_NOW_MARKET_API}/ask-question`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             "x-token": "secret-token",
             "x-user-id": "user123",
           },
+          body: JSON.stringify(queries),
         });
-        const answer = res.data;
-        setIsloading(false);
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let answer = "";
+
+        // Stream
+        while (!done) {
+          const { value, done: streamDone } = await reader.read();
+          done = streamDone;
+          if (value) {
+            setLoadingIndex(null);
+            const chunk = decoder.decode(value);
+            answer += chunk;
+
+            if (editIndex !== null) {
+              dispatch(
+                editQueryAndUpdateAnswer({
+                  index: editIndex,
+                  newQuery: updateQuery,
+                  newAnswer: answer,
+                }),
+              );
+            } else {
+              dispatch(
+                updateChatAnswer({
+                  index: chats.length,
+                  answer: answer,
+                }),
+              );
+            }
+            // console.log('Chunk received:', decoder.decode(value));
+          }
+        }
 
         await dispatch(
           saveMarketChat({
             thread_id: conversationId,
             user_id: userId || "",
             conversation_data: {
-              conversation_id: "",
+              conversation_id: messageId,
               query: queries.query,
-              ai_content: "",
+              ai_content: answer,
               likes: 0,
             },
           }),
         )
           .unwrap()
           .then(() => {
-            setIsSaved(true);
+            // setIsSaved(true);
+            // toast.success("Saved successfully")
           })
           .catch(() => {
             toast.error("Unable to save");
           });
 
-        if (editIndex !== null) {
-          dispatch(
-            editQueryAndUpdateAnswer({
-              index: editIndex,
-              newQuery: updateQuery,
-              newAnswer: answer,
-            }),
-          );
-        } else {
-          dispatch(
-            updateChatAnswer({
-              index: chats.length,
-              answer: answer,
-            }),
-          );
-        }
-      } catch (error: any) {
-        const errorMsg = error.response.statusText;
+        // console.log('Stream ended');
+
         setIsloading(false);
-        const errorAnswer = errorMsg || "Error while generating the response";
+        setLoadingIndex(null);
+
+        // const answer = "res.data";
+      } catch (error: any) {
+        // const errorMsg = error.response.statusText;
+        setIsloading(false);
+        setLoadingIndex(null);
+
+        const errorAnswer = "Error while generating the response";
+
+        toast.error("Something went wrong");
 
         if (editIndex !== null) {
           dispatch(
@@ -188,7 +230,7 @@ function MarketIntelligenceKnowNow() {
         setLoadingIndex(null);
       }
     },
-    [chats, dispatch, id, navigate, query, userId],
+    [chats.length, dispatch, id, navigate, query, userId],
   );
 
   const scrollToBottom = () => {
@@ -202,14 +244,13 @@ function MarketIntelligenceKnowNow() {
   }, [chats]);
 
   return (
-    <div className="p-3 pb-0 w-[960px] mx-auto">
+    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto">
       <div className="w-full">
         <div
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
           {chats && chats.length <= 0 && id ? (
-            // {(chats && chats.length <= 0 && id) || isFetching ? (
             <div className="flex justify-center items-center h-full">
               <LoadingIcon className="h-5 w-5 text-primary-900" />
             </div>
@@ -229,7 +270,7 @@ function MarketIntelligenceKnowNow() {
                       />
                       <QueryAnswer
                         answer={chat.answer}
-                        isLoading={loadingIndex === idx}
+                        isLoading={isLoading && loadingIndex === idx}
                         error={chat.error}
                         updateQuery={onSendQuery}
                         editIndex={idx}

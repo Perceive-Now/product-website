@@ -1,59 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 
-// import IpPortfolioPage from "./pages/account/ipPortfolio";
-// import PatentAnalyticPage from "./pages/product/pro/patents/analytics";
-// import PublicationAnalyticPage from "./pages/product/pro/publications/analytics";
-// import CompanyAnalyticPage from "./pages/product/pro/companies/analytics";
-// import UniversityAnalyticPage from "./pages/product/pro/university/analytics";
-// import FunderAnalyticPage from "./pages/product/pro/funders/analytics";
-// import InventorAnalyticPage from "./pages/product/pro/inventors/analytics";
-
-// import CompanyPublicationDetailPage from "./pages/product/pro/companies/publication";
-// import UniversityPatentDetailPage from "./pages/product/pro/university/patent";
-// import UniversityPublicationDetailPage from "./pages/product/pro/university/publication";
-// import FunderProjectDetailPage from "./pages/product/pro/funders/project-detail";
-
-// import IPLandscaping from "./pages/product/ip-landscaping";
-// import IPSummaryReport from "./pages/product/ip-landscaping/Summary-report";
-
-// Deep search - Patent
-
-// import EmergingTechnologiesAnalytics from "./pages/product/emerging-technology/analytics";
-// import EmergingTechnologyListPage from "./pages/product/emerging-technology/list";
-
-// import PatentListPage from "./pages/product/pro/patents/list";
-// import PatentDetailPage from "./pages/product/pro/patents/detail";
-
-// // Deep search - Publication
-// import PublicationListPage from "./pages/product/pro/publications/list";
-// import PublicationDetailPage from "./pages/product/pro/publications/detail";
-
-// // Deep search - Companies
-// import DeepSearchCompaniesListPage from "./pages/product/pro/companies/list";
-// import DeepSearchCompanyPatenPage from "./pages/product/pro/companies/patent";
-
-// // Deep search - Inventors
-// import DeepSearchInventorsListPage from "./pages/product/pro/inventors/list";
-// import DeepSearchInventorPage from "./pages/product/pro/inventors/detail";
-
-// //
-// import DeepSearchUniversityListPage from "./pages/product/pro/university/list";
-// // import DeepSearchAcademicPage from "./pages/product/pro/university/detail/detail";
-
-// //
-// import DeepSearchFundersListPage from "./pages/product/pro/funders/list";
-// import DeepSearchFunderPage from "./pages/product/pro/funders/detail";
-
-//
-// import UserProfilePage from "./pages/account/userProfile";
-
-// Signup confirmation and profile completion
-// import ConfirmSignup from "./pages/authentication/signup/confirm";
-// import CompleteSignup from "./pages/authentication/signup/complete";
-
-//
-// import AuthLayout from "./layouts/auth";
-
 import DefaultLayout from "./layouts/default";
 
 // Password
@@ -104,17 +50,18 @@ import Landing from "./pages/product/landing/landing";
 import ReportPage from "./pages/product/report-q&a";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
 
+//
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
 import UploadAttachmentsPage from "./pages/product/upload-attachements-page/upload-attachments-page";
 import DraftReports from "./pages/product/draft-reports/draft-reports";
 
+//
 import ReportSectionStateManagementService from "./layouts/report-section-state-management-service/report-section-state-management-service";
 
+//
 import { EReportSectionPageIDs } from "./stores/draft";
 import KnowNowPage from "./pages/product/know-now";
 import ShareKnowNowPage from "./pages/product/share";
-import ChatComponent from "./pages/product/know-now/chat-test";
-import MarketIntelligenceKnowNowSocket from "./pages/product/know-now/socket";
 
 /**
  *
@@ -133,13 +80,16 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
 
+        {/* Share */}
+        <Route path="/share/know-now/market-intelligence/:id" element={<ShareKnowNowPage />} />
+        <Route path="/share/know-now/ip-analysis/:id" element={<ShareKnowNowPage />} />
+
         {/* Authentication Route */}
         <Route element={<AuthLayout />}>
           <Route path="/user-registration" element={<UserDetails />} />
           <Route path="/welcome" element={<WelcomePage />} />
 
           {/* Actual product pages */}
-          {/* <Route element={<ProductLayout />}></Route> */}
 
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Landing />} />
@@ -155,6 +105,7 @@ function App() {
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
               <Route path="/draft-reports" element={<DraftReports />} />
+              <Route path="/reports-list" element={<DraftReports />} />
 
               <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
 
@@ -172,6 +123,7 @@ function App() {
                 element={<QuickPromptPage />}
               />
             </Route>
+
             {/* Know-now */}
             <Route path="/start-conversation" element={<KnowNowPage />} />
 
@@ -184,12 +136,9 @@ function App() {
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
             {/*  */}
-            <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} />
-            <Route path="/chats" element={<ChatComponent />} />
 
-            {/* Share */}
-            <Route path="/share/know-now/market-intelligence/:id" element={<ShareKnowNowPage />} />
-            <Route path="/share/know-now/ip-analysis/:id" element={<ShareKnowNowPage />} />
+            {/* <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} /> */}
+            {/* <Route path="/chats" element={<ChatComponent />} /> */}
 
             {/*Graph */}
             <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
@@ -211,88 +160,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
-          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */
-}
-
-{
-  /* Deep Search pages */
-}
-{
-  /* <Route path="/patents" element={<PatentAnalyticPage />} />
-          <Route path="/patents/table" element={<PatentListPage />} />
-          <Route path="/patents/:id" element={<PatentDetailPage />} />
-
-          <Route path="/publications" element={<PublicationAnalyticPage />} />
-          <Route path="/publications/table" element={<PublicationListPage />} />
-          <Route path="/publications/:id" element={<PublicationDetailPage />} />
-
-          <Route path="/companies" element={<CompanyAnalyticPage />} />
-          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
-          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
-          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
-
-          <Route path="/inventors" element={<InventorAnalyticPage />} />
-          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
-          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
-
-          <Route path="/universities" element={<UniversityAnalyticPage />} />
-          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */
-}
-{
-  /* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} />{/* <Route path="/emerging-technologies" element={<EmergingTechnologiesAnalytics />} />
-          <Route path="/emerging-technologies/list" element={<EmergingTechnologyListPage />} /> */
-}
-
-{
-  /* Deep Search pages */
-}
-{
-  /* <Route path="/patents" element={<PatentAnalyticPage />} />
-          <Route path="/patents/table" element={<PatentListPage />} />
-          <Route path="/patents/:id" element={<PatentDetailPage />} />
-
-          <Route path="/publications" element={<PublicationAnalyticPage />} />
-          <Route path="/publications/table" element={<PublicationListPage />} />
-          <Route path="/publications/:id" element={<PublicationDetailPage />} />
-
-          <Route path="/companies" element={<CompanyAnalyticPage />} />
-          <Route path="/companies/table" element={<DeepSearchCompaniesListPage />} />
-          <Route path="/companies/patent/:id" element={<DeepSearchCompanyPatenPage />} />
-          <Route path="/companies/publication/:id" element={<CompanyPublicationDetailPage />} />
-
-          <Route path="/inventors" element={<InventorAnalyticPage />} />
-          <Route path="/inventors/table" element={<DeepSearchInventorsListPage />} />
-          <Route path="/inventors/:type" element={<DeepSearchInventorPage />} />
-
-          <Route path="/universities" element={<UniversityAnalyticPage />} />
-          <Route path="/universities/table" element={<DeepSearchUniversityListPage />} /> */
-}
-{
-  /* <Route path="/universities/:type" element={<DeepSearchAcademicPage />} /> */
-}
-{
-  /* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
-          <Route
-            path="/universities/publication/:id"
-            element={<UniversityPublicationDetailPage />}
-          />
-
-          <Route path="/funders" element={<FunderAnalyticPage />} />
-          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
-          <Route path="/funders/:id" element={<DeepSearchFunderPage />} /> */
-}
-{
-  /* <Route path="/universities/patent/:id" element={<UniversityPatentDetailPage />} />
-          <Route
-            path="/universities/publication/:id"
-            element={<UniversityPublicationDetailPage />}
-          />
-
-          <Route path="/funders" element={<FunderAnalyticPage />} />
-          <Route path="/funders/table" element={<DeepSearchFundersListPage />} />
-          <Route path="/funders/:id" element={<DeepSearchFunderPage />} />
-          <Route path="/funders/project/:id" element={<FunderProjectDetailPage />} /> */
-}

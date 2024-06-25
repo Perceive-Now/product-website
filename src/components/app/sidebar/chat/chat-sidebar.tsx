@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 //
 import Button from "src/components/reusable/button";
@@ -7,14 +7,32 @@ import KnowNowHistory from "./chat-history";
 //
 import { useAppSelector } from "src/hooks/redux";
 import { LoaderIcon } from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 /**
  *
  */
 const ChatSidebar = () => {
-  const { chatIds } = useAppSelector((state) => state.KnowNowChat);
+  const location = useLocation();
 
-  console.log(chatIds);
+  //
+  const [chats, setChats] = useState([]);
+
+  //
+  const { chatIPIds, isFetching } = useAppSelector((state) => state.KnowNowIP);
+  const { chatMarketIds, marketChatLoading } = useAppSelector((state) => state.KnownowMarket);
+
+  //
+  useEffect(() => {
+    if (location.pathname.includes("/know-now/market-intelligence")) {
+      setChats(chatMarketIds as any);
+    }
+
+    if (location.pathname.includes("/know-now/ip-analysis")) {
+      setChats(chatIPIds as any);
+    }
+    // setChats([]);
+  }, [chatIPIds, chatMarketIds, location]);
 
   return (
     <div className="px-1 space-y-2">
@@ -25,10 +43,10 @@ const ChatSidebar = () => {
       </Link>
       <div className="px-1 space-y-">
         <h6 className="text-black">History</h6>
-        {chatIds ? (
+        {(!marketChatLoading && chats.length > 0) || (!isFetching && chats.length >= 0) ? (
           <>
-            {chatIds.length > 0 ? (
-              <KnowNowHistory History={chatIds || []} />
+            {chats.length > 0 ? (
+              <KnowNowHistory History={chats || []} />
             ) : (
               <div className="text-sm mt-2 text-primary-900 font-semibold">No chats found</div>
             )}

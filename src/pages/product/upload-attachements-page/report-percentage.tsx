@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import toast from "react-hot-toast";
-import { LiquidSphereLoaderIcon } from "src/components/icons";
+import { LiquidSphereLoaderIcon, LoadingIcon } from "src/components/icons";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import {
   fetchRequirementPercentage,
@@ -54,8 +54,12 @@ export default function ReportPercentage({
             className="row-start-1 col-start-1"
             percentage={requirementPercentage}
           />
-          <p className="col-start-1 row-start-1 text-white text-center w-full mix-blend-difference">
-            {requirementPercentage}%
+          <p className="col-start-1 row-start-1 text-white flex flex-row items-center justify-center text-center w-full mix-blend-difference">
+            {isLoading ? (
+              <LoadingIcon className="col-start-1 row-start-1 text-center" />
+            ) : (
+              <>{requirementPercentage}%</>
+            )}
           </p>
         </div>
         {!isAdditionalQuestions && (
