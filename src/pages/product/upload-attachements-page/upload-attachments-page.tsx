@@ -29,9 +29,8 @@ const PagesStepper = () => {
   return (
     <>
       {uploadAttachmentsPages.map((page) => {
-        const Comp = page.Component;
         if (page.id === currentPageId) {
-          return <Comp key={page.id} />;
+          return <div key={page.id}>{page.Component}</div>;
         }
       })}
     </>

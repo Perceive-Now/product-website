@@ -37,7 +37,7 @@ export interface IUploadAttachmentsState {
     usecase: string;
     answer: string;
   }[];
-  requirementSummary: ISingleRequirementSummary[];
+  requirementSummary: TSingleRequirementSummary[];
   fetchRequirementSummaryState: {
     isSuccess: boolean;
     isError: boolean;
@@ -149,7 +149,7 @@ export const uploadAttachments = createAsyncThunk<
 
 // -----------------------------------------------------------------------
 export const fetchRequirementSummary = createAsyncThunk<
-  ISummaryResponseAPI,
+  TSummaryResponseAPI,
   ISummaryRequest,
   {
     rejectValue: IResponseError;
@@ -403,12 +403,33 @@ export const UploadAttachmentsSlice = createSlice({
         isLoading: true,
         message: "",
       };
-      state.requirementSummary = action.payload.data.map((summaryItem) => {
-        return {
-          summary: summaryItem.summary,
-          useCaseId: summaryItem.use_case_id,
-        };
-      });
+
+      const useCaseSummaries = action.payload.data
+        .map((summaryItem) => {
+          if ("summary" in summaryItem) {
+            return {
+              summary: summaryItem.summary,
+              useCaseId: summaryItem.use_case_id,
+            };
+          } else {
+            return null;
+          }
+        })
+        .filter((f) => f !== null);
+
+      const contentSummary = action.payload.data
+        .map((summaryItem) => {
+          if ("content_summary" in summaryItem) {
+            return {
+              contentSummary: summaryItem.content_summary,
+            };
+          } else {
+            return null;
+          }
+        })
+        .filter((f) => f !== null);
+
+      state.requirementSummary = [...useCaseSummaries, ...contentSummary].reverse();
     });
     builder.addCase(fetchRequirementSummary.rejected, (state, action) => {
       state.isUploading = false;
@@ -546,17 +567,34 @@ export interface IAnswerObj {
   answer: string;
 }
 
-interface ISingleRequirementSummary {
+interface ISingleRequirementSummaryUseCase {
   useCaseId: string;
   summary: string;
 }
 
-interface ISummaryResponseAPI {
-  data: {
-    use_case_id: string;
-    summary: string;
-  }[];
+interface ISingleRequirementSummaryContent {
+  contentSummary: string;
 }
+
+type TSingleRequirementSummary =
+  | ISingleRequirementSummaryContent
+  | ISingleRequirementSummaryUseCase
+  | null;
+
+interface ISummaryUseCaseSummary {
+  use_case_id: string;
+  summary: string;
+}
+
+interface ISummaryContentSummary {
+  content_summary: string;
+}
+
+type TSingleSummaryResponse = ISummaryContentSummary | ISummaryUseCaseSummary;
+
+type TSummaryResponseAPI = {
+  data: TSingleSummaryResponse[];
+};
 
 interface ISummaryRequestAPI {
   requirement_gathering_id: string;

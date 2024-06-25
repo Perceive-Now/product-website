@@ -109,6 +109,19 @@ function MarketIntelligenceKnowNow() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id, userId, isSaved, location]);
 
+  // function removeLast5Words(inputString: string) {
+  //   // Split the string into an array of words
+  //   let words = inputString.split(' ');
+
+  //   // Calculate the number of words to keep
+  //   let numWordsToKeep = Math.max(0, words.length - 5);
+
+  //   // Join the remaining words back into a string
+  //   let resultString = words.slice(0, numWordsToKeep).join(' ');
+
+  //   return resultString;
+  // }
+
   //
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
@@ -199,10 +212,11 @@ function MarketIntelligenceKnowNow() {
             answer += chunk;
             chunks.push(chunk);
 
-            const combinedAnswer = chunks.join("");
+            const combinedAnswer = chunks.join("") + " Loading..";
             debouncedUpdate(combinedAnswer);
           }
         }
+        debouncedUpdate(answer);
 
         await dispatch(
           saveMarketChat({
@@ -269,8 +283,8 @@ function MarketIntelligenceKnowNow() {
 
   // h-[calc(100vh-260px)]
   return (
-    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto h-[600px]">
-      <div className="w-full flex flex-col justify-start">
+    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto">
+      <div className="w-full">
         <div
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
