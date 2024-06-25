@@ -25,9 +25,10 @@ interface Props {
   setEditIndex?: any;
   editIndex?: any;
   setQuery?: any;
+  isloadingCompleted?: boolean;
 }
 
-const ChatQuery = ({ query, updateQuery, editIndex }: Props) => {
+const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props) => {
   const dispatch = useAppDispatch();
 
   const userDetail = useAppSelector((state) => state.auth.user);
@@ -97,6 +98,7 @@ const ChatQuery = ({ query, updateQuery, editIndex }: Props) => {
           color="gray"
           icon={<EditIcon className="text-secondary-800" />}
           onClick={onEdit}
+          disabled={isloadingCompleted}
         />
       </ToolTip>
     </div>

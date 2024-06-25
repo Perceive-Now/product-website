@@ -59,6 +59,7 @@ function KnowNowIP() {
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
   const [query, setQuery] = useState("");
+  const [chatIndex, setChatIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (queryStatus) {
@@ -102,6 +103,7 @@ function KnowNowIP() {
   const onSendQuery = useCallback(
     async (updateQuery: string, editIndex: number | null) => {
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
+      setChatIndex(editIndex !== null ? editIndex : chats.length);
       setIsloading(true);
 
       //
@@ -163,7 +165,7 @@ function KnowNowIP() {
             },
           },
         );
-        setIsloading(false);
+
         //
         const answer = res.data;
         await dispatch(
@@ -198,6 +200,8 @@ function KnowNowIP() {
         } else {
           dispatch(updateChatAnswer({ index: chats.length, answer }));
         }
+        setIsloading(false);
+        setChatIndex(null);
       } catch (error: any) {
         const errorMsg = error.response?.statusText;
         setIsloading(false);
@@ -217,6 +221,7 @@ function KnowNowIP() {
         }
       } finally {
         setLoadingIndex(null);
+        setChatIndex(null);
       }
     },
     [chats, dispatch, id, navigate, query, userId],
@@ -258,15 +263,17 @@ function KnowNowIP() {
                         updateQuery={onSendQuery}
                         editIndex={idx}
                         setQuery={setQuery}
+                        isloadingCompleted={chatIndex === idx && isLoading}
                       />
                       <QueryAnswer
                         answer={chat.answer}
-                        isLoading={loadingIndex === idx}
+                        isLoading={isLoading && loadingIndex === idx}
                         error={chat.error}
                         updateQuery={onSendQuery}
                         editIndex={idx}
                         query={chat.query}
                         message_id={chat.message_id}
+                        loadingCompleted={chatIndex === idx && isLoading}
                       />
                     </div>
                   ))}

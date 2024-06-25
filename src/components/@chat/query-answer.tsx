@@ -47,6 +47,7 @@ interface Props {
   editIndex: any;
   query: string;
   message_id: string;
+  loadingCompleted?: boolean;
 }
 
 const ItemTypes = {
@@ -89,6 +90,7 @@ const QueryAnswer = ({
   updateQuery,
   editIndex,
   query,
+  loadingCompleted,
   message_id,
 }: Props) => {
   const dispatch = useAppDispatch();
@@ -298,7 +300,7 @@ const QueryAnswer = ({
             </>
           )}
         </div>
-        {!isLoading && (
+        {!loadingCompleted && (
           <div className="flex items-center gap-2 mt-5">
             <div className="flex items-center gap-2">
               <ToolTip title="Good" placement="top">

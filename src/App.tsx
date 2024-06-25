@@ -70,8 +70,7 @@ import MarketIntelligenceKnowNowSocket from "./pages/product/know-now/socket";
  */
 function App() {
   return (
-    // <div className="App">
-    <div>
+    <>
       <Routes>
         <Route path="/verify-email" element={<VerificationConfirm />} />
 
@@ -158,7 +157,7 @@ function App() {
         {/* 404 not found */}
         <Route path="*" element={<PageNotFound404 />} />
       </Routes>
-    </div>
+    </>
   );
 }
 

@@ -60,6 +60,7 @@ function MarketIntelligenceKnowNow() {
   //
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(false);
+  const [chatIndex, setChatIndex] = useState<number | null>(null);
 
   const [isSaved, setIsSaved] = useState(false);
   const [query, setQuery] = useState("");
@@ -113,6 +114,7 @@ function MarketIntelligenceKnowNow() {
     async (updateQuery: string, editIndex: number | null) => {
       setIsloading(true);
       setLoadingIndex(editIndex !== null ? editIndex : chats.length);
+      setChatIndex(editIndex !== null ? editIndex : chats.length);
 
       //
       const conversationId = id !== undefined ? id : generateKnowId();
@@ -227,7 +229,7 @@ function MarketIntelligenceKnowNow() {
 
         setIsloading(false);
         setLoadingIndex(null);
-
+        setChatIndex(null);
         // const answer = "res.data";
       } catch (error: any) {
         // const errorMsg = error.response.statusText;
@@ -265,9 +267,10 @@ function MarketIntelligenceKnowNow() {
     scrollToBottom();
   }, [chats]);
 
+  // h-[calc(100vh-260px)]
   return (
-    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto">
-      <div className="w-full">
+    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto h-[600px]">
+      <div className="w-full flex flex-col justify-start">
         <div
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
@@ -289,6 +292,7 @@ function MarketIntelligenceKnowNow() {
                         updateQuery={onSendQuery}
                         editIndex={idx}
                         setQuery={setQuery}
+                        isloadingCompleted={chatIndex === idx && isLoading}
                       />
                       <QueryAnswer
                         answer={chat.answer}
@@ -298,6 +302,7 @@ function MarketIntelligenceKnowNow() {
                         editIndex={idx}
                         query={chat.query}
                         message_id={chat.message_id}
+                        loadingCompleted={chatIndex === idx && isLoading}
                       />
                     </div>
                   ))}
