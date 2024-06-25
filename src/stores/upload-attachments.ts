@@ -570,7 +570,8 @@ interface ISingleRequirementSummaryContent {
 
 type TSingleRequirementSummary =
   | ISingleRequirementSummaryContent
-  | ISingleRequirementSummaryUseCase;
+  | ISingleRequirementSummaryUseCase
+  | null;
 
 interface ISummaryUseCaseSummary {
   use_case_id: string;
