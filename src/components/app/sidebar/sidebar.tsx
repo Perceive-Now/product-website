@@ -168,42 +168,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                         )}
                       </Fragment>
                     )}
-                    {item.subList && (
-                      <>
-                        <NavLinkItem
-                          key={`top-${index}`}
-                          to={item.to}
-                          icon={item.icon}
-                          title={item.title}
-                          open={open}
-                          value={item.key}
-                        />
-                        {open && (
-                          <ul
-                            className={classNames(
-                              "space-y-1 pl-7 list-disc",
-                              "max-h-[180px] w-11/12 overflow-y-auto overflow-x-hidden",
-                              "pn_scroller",
-                            )}
-                          >
-                            {item.subList?.map((child, jndex) => (
-                              <li key={jndex}>
-                                {!child.children && (
-                                  <NavLinkItem
-                                    open={open}
-                                    key={`main-content-${jndex}`}
-                                    value={child.key}
-                                    title={child.title}
-                                    to={child.to}
-                                  />
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </>
-                    )}
-                    {!item.children && !item.subList && (
+                    {!item.children && (
                       <NavLinkItem
                         key={`top-${index}`}
                         to={item.to}
@@ -309,9 +274,7 @@ function NavLinkItem(props: INavLinkItemProps) {
         )}
         {props.open && (
           <span
-            className={classNames(
-              "flex items-center text-sm font-semibold text-secondary-800 line-clamp-2 text-wrap",
-            )}
+            className={classNames("flex items-center text-sm font-semibold text-secondary-800")}
           >
             {props.title}
           </span>
