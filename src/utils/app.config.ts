@@ -4,5 +4,5 @@ export const AppConfig = {
   API_URL: process.env.REACT_APP_API_URL ?? "",
   Auth_CODE: process.env.REACT_APP_AUTH_CODE ?? "",
   STRIPE_PROMISE: process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY,
-  APP_URL: process.env.REACT_APP_WEBSITE_URL,
+  // APP_URL: process.env.REACT_APP_WEBSITE_URL,
 };
