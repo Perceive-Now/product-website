@@ -51,8 +51,6 @@ const ReportPage = () => {
     }
   }, [questionsList, useCases]);
 
-  console.log(questionWithUsecase);
-
   useEffect(() => {
     if (questionWithUsecase && questionWithUsecase?.length > 0) {
       dispatch(questionWithUseCases(questionWithUsecase));

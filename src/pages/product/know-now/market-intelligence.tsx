@@ -34,6 +34,8 @@ import { generateKnowId } from "src/utils/helpers";
 //
 import { LoadingIcon } from "src/components/icons";
 
+// const socket = io('https://percievenowchat2.azurewebsites.net/ws/chat'); // Replace with your WebSocket server URL
+
 /**
  *
  */
