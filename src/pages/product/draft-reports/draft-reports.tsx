@@ -23,7 +23,7 @@ export default function DraftReports() {
   };
 
   if (draftsArray.length === 0) {
-    return <div>No drafts available</div>;
+    return <div>Not available</div>;
   }
 
   return (
