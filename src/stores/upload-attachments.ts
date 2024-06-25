@@ -37,7 +37,7 @@ export interface IUploadAttachmentsState {
     usecase: string;
     answer: string;
   }[];
-  requirementSummary: TSingleRequirementSummary[];
+  requirementSummary: ISingleRequirementSummary[];
   fetchRequirementSummaryState: {
     isSuccess: boolean;
     isError: boolean;
@@ -133,9 +133,15 @@ export const uploadAttachments = createAsyncThunk<
 
     return await axios.post(BASE_PN_REPORT_URL + "/attachment/", dataObj);
   } catch (error) {
+    let message = "Unable to upload attachments";
+
+    if (error && typeof error === "object" && "code" in error && "message" in error) {
+      message = Number(error.code) === 460 ? String(error.message) : message;
+    }
+
     const errorObj = {
       resError: String(error),
-      message: "Unable to upload attachments",
+      message,
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -143,7 +149,7 @@ export const uploadAttachments = createAsyncThunk<
 
 // -----------------------------------------------------------------------
 export const fetchRequirementSummary = createAsyncThunk<
-  TSummaryResponseAPI,
+  ISummaryResponseAPI,
   ISummaryRequest,
   {
     rejectValue: IResponseError;
@@ -208,11 +214,13 @@ export const uploadAnswerToAddtionalQuestions = createAsyncThunk<
       };
 
       return await axios.post(
-        `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(answersObj.answer)}&userID=${
-          answersObj.userID
-        }&QuestionID=${Number(answersObj.QuestionID)}&requirement_gathering_id=${
-          answersObj.requirement_gathering_id
-        }&user_case_id=${answersObj.user_case_id}`,
+        `${BASE_PN_REPORT_URL}/attachment-answer/?answer=${encodeURIComponent(
+          answersObj.answer,
+        )}&userID=${answersObj.userID}&QuestionID=${Number(
+          answersObj.QuestionID,
+        )}&requirement_gathering_id=${answersObj.requirement_gathering_id}&user_case_id=${
+          answersObj.user_case_id
+        }`,
       );
     } catch (error) {
       const errorObj = {
@@ -355,7 +363,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = true;
       state.isUploadAttachmentsSuccess = false;
-      state.message = "Unable to upload attachments" ?? action.error.message;
+      state.message = action.error.message ?? "Unable to upload attachments";
     });
 
     // -----------------------------------------------------------------------
@@ -395,33 +403,12 @@ export const UploadAttachmentsSlice = createSlice({
         isLoading: true,
         message: "",
       };
-
-      const useCaseSummaries = action.payload.data
-        .map((summaryItem) => {
-          if ("summary" in summaryItem) {
-            return {
-              summary: summaryItem.summary,
-              useCaseId: summaryItem.use_case_id,
-            };
-          } else {
-            return null;
-          }
-        })
-        .filter((f) => f !== null);
-
-      const contentSummary = action.payload.data
-        .map((summaryItem) => {
-          if ("content_summary" in summaryItem) {
-            return {
-              contentSummary: summaryItem.content_summary,
-            };
-          } else {
-            return null;
-          }
-        })
-        .filter((f) => f !== null);
-
-      state.requirementSummary = [...useCaseSummaries, ...contentSummary].reverse();
+      state.requirementSummary = action.payload.data.map((summaryItem) => {
+        return {
+          summary: summaryItem.summary,
+          useCaseId: summaryItem.use_case_id,
+        };
+      });
     });
     builder.addCase(fetchRequirementSummary.rejected, (state, action) => {
       state.isUploading = false;
@@ -559,33 +546,17 @@ export interface IAnswerObj {
   answer: string;
 }
 
-interface ISingleRequirementSummaryUseCase {
+interface ISingleRequirementSummary {
   useCaseId: string;
   summary: string;
 }
 
-interface ISingleRequirementSummaryContent {
-  contentSummary: string;
+interface ISummaryResponseAPI {
+  data: {
+    use_case_id: string;
+    summary: string;
+  }[];
 }
-
-type TSingleRequirementSummary =
-  | ISingleRequirementSummaryContent
-  | ISingleRequirementSummaryUseCase;
-
-interface ISummaryUseCaseSummary {
-  use_case_id: string;
-  summary: string;
-}
-
-interface ISummaryContentSummary {
-  content_summary: string;
-}
-
-type TSingleSummaryResponse = ISummaryContentSummary | ISummaryUseCaseSummary;
-
-type TSummaryResponseAPI = {
-  data: TSingleSummaryResponse[];
-};
 
 interface ISummaryRequestAPI {
   requirement_gathering_id: string;
