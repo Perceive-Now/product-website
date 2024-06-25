@@ -62,6 +62,8 @@ import ReportSectionStateManagementService from "./layouts/report-section-state-
 import { EReportSectionPageIDs } from "./stores/draft";
 import KnowNowPage from "./pages/product/know-now";
 import ShareKnowNowPage from "./pages/product/share";
+import ChatComponent from "./pages/product/know-now/chat-test";
+import MarketIntelligenceKnowNowSocket from "./pages/product/know-now/socket";
 
 /**
  *
@@ -135,6 +137,8 @@ function App() {
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
             {/*  */}
+            <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} />
+            <Route path="/chats" element={<ChatComponent />} />
 
             {/* <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} /> */}
             {/* <Route path="/chats" element={<ChatComponent />} /> */}
