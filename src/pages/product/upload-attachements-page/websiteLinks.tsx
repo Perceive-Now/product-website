@@ -150,7 +150,7 @@ export default function WebsiteLinks() {
           classname="w-full border border-orange-500 mt-[20px]"
           handleClick={handleContinueBtnClick}
           disabled={isLoading}
-          loading={isLoading}
+          loading={false}
         >
           <p
             className={classNames("text-secondary-800", {
