@@ -7,4 +7,5 @@ export const AppConfig = {
   KNOW_NOW_IP_API: process.env.REACT_APP_KNOW_NOW_IP_API,
   KNOW_NOW_MARKET_API: process.env.REACT_APP_KNOW_NOW_MARKET_API,
   REPORT_API_URL: process.env.REACT_APP_REPORT_API_URL,
+  APP_URL: process.env.REACT_APP_REPORT_APP_URL,
 };
