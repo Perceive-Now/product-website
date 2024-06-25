@@ -8,7 +8,6 @@ import { setUseCase } from "../../../../stores/use-case";
 // import { useLocation } from "react-router-dom";
 import { UseCaseOptions } from "./__use-cases";
 import { setSession } from "../../../../stores/session";
-import { setUI } from "../../../../stores/UI";
 import UseCaseSelectButton from "../../../reusable/usecase-select";
 
 interface Props {
@@ -34,7 +33,6 @@ const DefaultStep: FunctionComponent<Props> = ({ changeActiveStep }) => {
 
   //
   const onContinue = useCallback(() => {
-    dispatch(setUI({ home: false }));
     if (selected.length > 0) {
       if (options.includes("ip-validity-analysis")) {
         dispatch(

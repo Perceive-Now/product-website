@@ -16,6 +16,7 @@ export interface IUseCase {
     message: string;
   };
   requirementGatheringId: number;
+  requirmentGatheringMethod: TRequirementGatheringMethod;
 }
 
 export const initialState: IUseCase = {
@@ -28,6 +29,7 @@ export const initialState: IUseCase = {
     message: "",
   },
   requirementGatheringId: 0,
+  requirmentGatheringMethod: " ",
 };
 
 // -----------------------------------------------------------------------
@@ -66,6 +68,11 @@ export const UseCaseSlice = createSlice({
     // -----------------------------------------------------------------------
     setUseCaseIds: (state, action: PayloadAction<string[]>) => {
       state.useCaseIds = action.payload;
+    },
+
+    // -----------------------------------------------------------------------
+    setSequirmentGatheringMethod: (state, action: PayloadAction<TRequirementGatheringMethod>) => {
+      state.requirmentGatheringMethod = action.payload;
     },
 
     // -----------------------------------------------------------------------
@@ -132,6 +139,7 @@ export const {
   setUseCaseIds,
   setUseCaseStateFromDraft,
   setUseCasesUploadState,
+  setSequirmentGatheringMethod,
 } = UseCaseSlice.actions;
 export default UseCaseSlice.reducer;
 
@@ -155,3 +163,9 @@ interface IUploadUseCasesRequestAPI {
   user_id: string;
   user_case_ids: string[];
 }
+
+export type TRequirementGatheringMethod =
+  | "Upload Attachments"
+  | "Detailed Q&A"
+  | "Quick Prompts"
+  | " ";

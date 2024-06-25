@@ -18,11 +18,11 @@ import {
 } from "../../../stores/know-now1";
 
 import { generateKnowId } from "src/utils/helpers";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const wsUri = "wss://percievenowchat2.azurewebsites.net/ws/chat?user_id=12&thread_id=12";
 
-function MarketIntelligenceKnowNow() {
+function MarketIntelligenceKnowNowSocket() {
   const [websocket, setWebsocket] = useState<WebSocket | null>(null);
   const [answer, setAnswer] = useState("");
 
@@ -34,12 +34,12 @@ function MarketIntelligenceKnowNow() {
   const [query, setQuery] = useState("");
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { id } = useParams();
 
   const chats = useAppSelector((state) => state.KnowNowChat.chats);
 
-  console.log(answer);
+  // console.log(answer);
 
   useEffect(() => {
     let ws: WebSocket;
@@ -48,29 +48,29 @@ function MarketIntelligenceKnowNow() {
       ws = new WebSocket(wsUri);
 
       ws.onopen = () => {
-        console.log("Connected to WebSocket server!");
+        // console.log("Connected to WebSocket server!");
       };
 
       ws.onmessage = (ev: MessageEvent) => {
         const newMessage = ev.data;
         setAnswer((prev) => prev + newMessage);
-        console.log("Message received from server:", answer);
+        // console.log("Message received from server:", answer);
         dispatch(updateChatAnswer({ index: chats.length, answer }));
 
         setIsLoading(false);
       };
 
-      ws.onerror = (ev: Event) => {
-        console.error("WebSocket error:", ev);
-      };
+      // ws.onerror = (ev: Event) => {
+      //   console.error("WebSocket error:", ev);
+      // };
 
-      ws.onclose = (ev: CloseEvent) => {
-        console.log("WebSocket closed:", ev);
-        if (!ev.wasClean) {
-          console.log("Reconnecting to WebSocket server...");
-          setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
-        }
-      };
+      // ws.onclose = (ev: CloseEvent) => {
+      //   console.log("WebSocket closed:", ev);
+      //   if (!ev.wasClean) {
+      //     console.log("Reconnecting to WebSocket server...");
+      //     setTimeout(connectWebSocket, 3000); // Attempt to reconnect after 3 seconds
+      //   }
+      // };
 
       setWebsocket(ws);
     };
@@ -96,19 +96,24 @@ function MarketIntelligenceKnowNow() {
         // navigate(`/know-now/market-intelligence/${conversationId}`);
       }
 
-      await dispatch(
-        saveMarketChat({
-          thread_id: conversationId,
-          user_id: userId || "",
-          content: query || updateQuery,
-        }),
-      );
-
       const queries = {
         query: query || updateQuery,
         thread_id: conversationId,
         user_id: userId,
       };
+
+      await dispatch(
+        saveMarketChat({
+          thread_id: conversationId,
+          user_id: userId || "",
+          conversation_data: {
+            conversation_id: "",
+            query: queries.query,
+            ai_content: answer,
+            likes: 0,
+          },
+        }),
+      );
 
       if (editIndex !== null) {
         dispatch(
@@ -122,14 +127,14 @@ function MarketIntelligenceKnowNow() {
 
       try {
         if (websocket) {
-          console.log("Sending message via WebSocket:", queries);
+          // console.log("Sending message via WebSocket:", queries);
           websocket.send(JSON.stringify(queries));
         } else {
           throw new Error("WebSocket is not connected");
         }
         setIsLoading(false);
       } catch (error: any) {
-        console.error("WebSocket send error:", error);
+        // console.error("WebSocket send error:", error);
         const errorMsg = error.message || "Error while generating the response";
         setIsLoading(false);
 
@@ -148,7 +153,7 @@ function MarketIntelligenceKnowNow() {
         setLoadingIndex(null);
       }
     },
-    [chats.length, dispatch, id, query, userId, websocket],
+    [answer, chats.length, dispatch, id, query, userId, websocket],
   );
 
   const scrollToBottom = () => {
@@ -197,4 +202,4 @@ function MarketIntelligenceKnowNow() {
   );
 }
 
-export default MarketIntelligenceKnowNow;
+export default MarketIntelligenceKnowNowSocket;

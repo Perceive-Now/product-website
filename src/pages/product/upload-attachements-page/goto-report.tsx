@@ -1,15 +1,12 @@
-import { EUploadAttachmentsPages } from "src/stores/upload-attachments";
 import WaitingWrapper from "./waiting-wrapper";
+import ReportPercentage from "./report-percentage";
 
 export default function GoToReport() {
   return (
-    <WaitingWrapper nextPageId={EUploadAttachmentsPages.AllSet} nextPayement={true}>
+    <WaitingWrapper>
       <div>
         <p className="font-bold text-lg text-purple-900 mb-1">Ready to see your report?</p>
-        <p className="text-secondary-800">
-          Everything looks great so far! Let's move on to creating your final report. <br />
-          Payment is needed to unlock your report.
-        </p>
+        <ReportPercentage />
       </div>
     </WaitingWrapper>
   );

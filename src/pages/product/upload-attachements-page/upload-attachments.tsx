@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import toast from "react-hot-toast";
-import jsCookie from "js-cookie";
 import DropZoneContent from "./dropzone-content";
 import Button from "../../../components/reusable/button";
 import { DustbinIcon } from "../../../components/icons";
@@ -11,9 +9,7 @@ import {
   EUploadAttachmentsPages,
   incrementStep,
   setCurrentPageId,
-  setIsUploadAttachmentsError,
-  setIsUploadAttachmentsSuccess,
-  uploadAttachments,
+  setFilesToUpload,
 } from "../../../stores/upload-attachments";
 import classNames from "classnames";
 
@@ -47,81 +43,31 @@ const rejectStyle = {
 export default function UploadAttachments() {
   const dispatch = useAppDispatch();
 
-  const {
-    isUploading: isUploadingUploadAttachments,
-    additionalQuestionIds,
-    isUploadAttachmentsError,
-    isUploadAttachmentsSuccess,
-    message,
-  } = useAppSelector((state) => state.uploadAttachments);
+  const { filesToUpload } = useAppSelector((state) => state.uploadAttachments);
 
-  const {
-    isUploading: isUploadingUseCases,
-    useCaseIds,
-    requirementGatheringId,
-  } = useAppSelector((state) => state.usecases);
-
-  const [files, setFiles] = useState<File[]>([]);
-
-  useEffect(() => {
-    if (isUploadAttachmentsError) {
-      toast.error(message);
-      dispatch(setIsUploadAttachmentsError(false));
-      return;
-    }
-
-    if (isUploadAttachmentsSuccess) {
-      if (additionalQuestionIds.length === 0) {
-        // if there are no need to get additional questions
-        dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
-        dispatch(incrementStep());
-        dispatch(setIsUploadAttachmentsSuccess(false));
-        return;
-      }
-
-      if (additionalQuestionIds.length > 0) {
-        // if there is a need to get additional questions
-        dispatch(setCurrentPageId(EUploadAttachmentsPages.NeedAdditionalAnswers));
-        dispatch(incrementStep());
-        dispatch(setIsUploadAttachmentsSuccess(false));
-        return;
-      }
-
-      return;
-    }
-  }, [
-    isUploadAttachmentsError,
-    isUploadAttachmentsSuccess,
-    message,
-    additionalQuestionIds,
-    dispatch,
-  ]);
+  const [files, setFiles] = useState<File[]>(filesToUpload);
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     accept: {
       "application/pdf": [".pdf"],
-      // "application/msword": [".doc", ".docx"],
+      "application/msword": [".doc", ".docx"],
       // "application/vnd.ms-excel": [".xls", ".xlsx"],
-      // "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+      "application/vnd.ms-powerpoint": [".ppt"],
       // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
-      // "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
       // "application/vnd.apple.keynote": [".key"],
       // "application/vnd.oasis.opendocument.text": [".odt"],
-      // "text/plain": [".txt"],
+      "text/plain": [".txt"],
     },
     onDrop: (acceptedFiles: File[]) => {
       setFiles((prev) => {
         const filteredFiles = acceptedFiles.filter(
           (file) => !prev.some((prevFile) => prevFile.name === file.name),
         );
-
-        // return [...prev, ...filteredFiles];
-
-        if (filteredFiles.length > 0) return filteredFiles;
-        return prev;
+        return [...prev, ...filteredFiles];
       });
     },
-    maxFiles: 1,
   });
 
   const style = useMemo(
@@ -141,17 +87,10 @@ export default function UploadAttachments() {
   };
 
   const handleContinueBtnClick = async () => {
-    dispatch(
-      uploadAttachments({
-        userId: jsCookie.get("user_id") ?? "",
-        requirementGatheringId: requirementGatheringId ?? "",
-        user_case_ids: useCaseIds ?? [], // TODO get from usecase redux
-        attachments: [...files],
-      }),
-    );
+    dispatch(setFilesToUpload(files));
+    dispatch(incrementStep());
+    dispatch(setCurrentPageId(EUploadAttachmentsPages.WebsiteLinks));
   };
-
-  const isLoading = isUploadingUploadAttachments || isUploadingUseCases;
 
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
@@ -171,14 +110,11 @@ export default function UploadAttachments() {
                 <p className="truncate text-xs mb-1">{file.name}</p>
                 <div
                   onClick={() => {
-                    !isLoading && handleFileDelete(file.name);
+                    handleFileDelete(file.name);
                   }}
-                  className={classNames(
-                    { "cursor-pointer": !isLoading },
-                    { "cursor-not-allowed": isLoading },
-                  )}
+                  className="cursor-pointer"
                 >
-                  <DustbinIcon className={classNames({ "opacity-50": isLoading })} />
+                  <DustbinIcon />
                 </div>
               </div>
               <div className="w-full bg-gray-200 h-[1px]"></div>
@@ -190,19 +126,16 @@ export default function UploadAttachments() {
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
           disabled={files.length === 0}
-          loading={isLoading}
+          loading={false}
         >
           <p
             className={classNames("text-secondary-800", {
-              "opacity-50": files.length === 0 || isLoading,
+              "opacity-50": files.length === 0,
             })}
           >
             Continue
           </p>
         </Button>
-        <p className="my-3">
-          For now, we support only <strong>1 PDF</strong> file type at a time
-        </p>
       </div>
     </div>
   );

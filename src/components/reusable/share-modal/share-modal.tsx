@@ -11,10 +11,11 @@ import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from "re
 //
 export default function ShareModal({ open, handleClose, path }: ICitationModalProps) {
   const [isCopied, setIsCopied] = useState<boolean>(false);
-  const origin =
-    process.env.NODE_ENV === "development"
-      ? "https://develop.app.perceivenow.ai"
-      : window.location.origin;
+  const origin = "https://develop.app.perceivenow.ai";
+  // "https://develop.app.perceivenow.ai"
+  // process.env.NODE_ENV === "development"
+  //   ? "https://develop.app.perceivenow.ai"
+  //   : window.location.origin;
 
   const url = `${origin}${path}`;
 
@@ -71,9 +72,9 @@ export default function ShareModal({ open, handleClose, path }: ICitationModalPr
             <p className="mt-4">Or copy link</p>
 
             <p className="mt-1 border w-full py-1 px-2 pl-0 rounded flex">
-              <input value={url} className="px-1 mr-1 flex-1" readOnly />
+              <input value={url} className="px-1 mr-1 w-[300px] grow-0" readOnly />
               <button
-                className="bg-gray-200 cursor-pointer py-[4px] px-[20px] rounded hover:bg-gray-300"
+                className="bg-gray-200 cursor-pointer py-[4px] px-[20px] w-full rounded hover:bg-gray-300"
                 onClick={handleCopyLinkToClipBoard}
               >
                 {isCopied ? "Copied!" : "Copy"}
