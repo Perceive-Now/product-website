@@ -7,13 +7,16 @@ import { getProducts } from "../../../../../utils/api/product";
 import { useAppSelector } from "../../../../../hooks/redux";
 import BackButton from "../../../../../components/reusable/back-button";
 import { UseCaseOptions } from "../../ip-analysis-steps/__use-cases";
+
+//
 import Loading from "src/components/reusable/loading";
+
+//
 import ProgressBar from "src/pages/product/upload-attachements-page/progress-bar";
 
-// interface Props {
-//   changeActiveStep: (step: number) => void;
-// }
-
+/**
+ *
+ */
 const Payment = () => {
   const navigate = useNavigate();
 

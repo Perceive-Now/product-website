@@ -218,7 +218,7 @@ export const KnownowIPSlice = createSlice({
       if (!state.chatIPIds) {
         state.chatIPIds = []; // Initialize if undefined
       }
-      state.chatIPIds.push(action.payload);
+      state.chatIPIds.unshift(action.payload);
     },
 
     //

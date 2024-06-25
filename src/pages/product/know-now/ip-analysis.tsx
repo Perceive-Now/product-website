@@ -68,17 +68,14 @@ function KnowNowIP() {
 
   //
   useEffect(() => {
+    if (
+      (id && isSaved) ||
+      location.pathname === "/know-now/market-intelligence" ||
+      location.pathname === "/know-now/ip-analysis"
+    ) {
+      dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]));
+    }
     if (id && isSaved) {
-      dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]))
-        .unwrap()
-        .then((res) => {
-          if (res.success) {
-            // toast.success("Success Get Conversations from id")
-          } else {
-            // toast.error("Unable to get")
-          }
-        });
-
       dispatch(
         getIPChatById({
           user_id: userId || "",

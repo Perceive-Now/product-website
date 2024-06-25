@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import {
   EUploadAttachmentsPages,
-  fetchRequirementSummary,
   incrementStep,
-  resetFetchRequirementSummaryState,
   setCurrentPageId,
   setIsUploadAttachmentsError,
   setIsUploadAttachmentsSuccess,
@@ -37,26 +35,6 @@ export default function WebsiteLinks() {
     requirementGatheringId,
   } = useAppSelector((state) => state.usecases);
 
-  const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
-    (state) => state.uploadAttachments,
-  );
-
-  useEffect(() => {
-    if (fetchRequirementSummaryState.isError) {
-      toast.error("Something went wrong");
-      dispatch(resetFetchRequirementSummaryState());
-      return;
-    }
-
-    if (fetchRequirementSummaryState.isSuccess) {
-      dispatch(resetFetchRequirementSummaryState());
-      dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
-      dispatch(incrementStep());
-      dispatch(setIsUploadAttachmentsSuccess(false));
-      return;
-    }
-  }, [fetchRequirementSummaryState, dispatch, location]);
-
   useEffect(() => {
     if (isUploadAttachmentsError) {
       toast.error(message);
@@ -65,12 +43,9 @@ export default function WebsiteLinks() {
     }
 
     if (isUploadAttachmentsSuccess) {
-      dispatch(
-        fetchRequirementSummary({
-          requirement_gathering_id: String(requirementGatheringId),
-          useCaseIds: useCaseIds,
-        }),
-      );
+      dispatch(setCurrentPageId(EUploadAttachmentsPages.GoToReport));
+      dispatch(incrementStep());
+      dispatch(setIsUploadAttachmentsSuccess(false));
       return;
     }
   }, [
@@ -98,8 +73,7 @@ export default function WebsiteLinks() {
     dispatch(setWebsiteLinks(newWebLink));
   };
 
-  const isLoading =
-    isUploadingUseCases || isUploadingUploadAttachments || fetchRequirementSummaryState.isLoading;
+  const isLoading = isUploadingUseCases || isUploadingUploadAttachments;
 
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
@@ -134,7 +108,7 @@ export default function WebsiteLinks() {
           type="optional"
           classname="text-secondary-800 w-full"
           handleClick={handleContinueBtnClick}
-          disabled={websiteLinks.length === 0}
+          disabled={isLoading}
           loading={isLoading}
         >
           <p
@@ -143,21 +117,6 @@ export default function WebsiteLinks() {
             })}
           >
             Continue
-          </p>
-        </Button>
-        <Button
-          type="default"
-          classname="w-full border border-orange-500 mt-[20px]"
-          handleClick={handleContinueBtnClick}
-          disabled={isLoading}
-          loading={false}
-        >
-          <p
-            className={classNames("text-secondary-800", {
-              "opacity-50": isLoading,
-            })}
-          >
-            Skip
           </p>
         </Button>
       </div>
