@@ -1,12 +1,46 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
-import { LoadingIcon } from "src/components/icons";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import {
+  fetchRequirementSummary,
+  resetFetchRequirementSummaryState,
+} from "src/stores/upload-attachments";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  const isInitialLoad = useRef<boolean>(true);
+
+  const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
   const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
     (state) => state.uploadAttachments,
   );
+
+  useEffect(() => {
+    if (fetchRequirementSummaryState.isError) {
+      if (location.pathname !== "/quick-prompt") toast.error("Unable to fetch requirement summary");
+      dispatch(resetFetchRequirementSummaryState());
+      return;
+    }
+
+    if (fetchRequirementSummaryState.isSuccess) {
+      dispatch(resetFetchRequirementSummaryState());
+      return;
+    }
+  }, [fetchRequirementSummaryState, dispatch, location]);
+
+  useEffect(() => {
+    dispatch(
+      fetchRequirementSummary({
+        requirement_gathering_id: String(requirementGatheringId),
+        useCaseIds: useCaseIds,
+      }),
+    );
+    isInitialLoad.current = false;
+  }, [dispatch, requirementGatheringId, useCaseIds]);
 
   const transformedRequirementSummary: {
     useCaseId: string;
@@ -22,8 +56,6 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     };
   });
 
-  const isLoading = fetchRequirementSummaryState.isLoading;
-
   return (
     <div className="flex flex-row justify-between gap-x-[150px]">
       <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg p-2 shadow-page-content">
@@ -36,12 +68,7 @@ export default function RequirementSummary({ children }: { children: ReactNode }
           </>
         )}
         <div className="text-gray-600 mt-[20px]">
-          {isLoading ? (
-            <div className="flex flex-row gap-x-1 items-center">
-              <p> Fetching requirement summary</p>
-              <LoadingIcon />
-            </div>
-          ) : (
+          {!fetchRequirementSummaryState.isLoading ? (
             transformedRequirementSummary.map((item) => (
               <div key={item.useCaseId} className="mb-2">
                 <p className="text-base font-bold">
@@ -59,6 +86,8 @@ export default function RequirementSummary({ children }: { children: ReactNode }
                 )}
               </div>
             ))
+          ) : (
+            <div>Fetching requirement summary</div>
           )}
         </div>
       </div>

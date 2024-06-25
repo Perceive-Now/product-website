@@ -105,7 +105,6 @@ function App() {
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
               <Route path="/draft-reports" element={<DraftReports />} />
-              <Route path="/reports-list" element={<DraftReports />} />
 
               <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
 
