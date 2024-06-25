@@ -122,30 +122,34 @@ const KnowNowHistory = ({ History }: Props) => {
     },
   ];
 
+  const indexedHistory = History.map((element, index) => ({ index, element }));
+
   return (
     <>
       <div className="h-[calc(100vh-400px)] overflow-y-auto pn_scroller">
-        {History.map((h, idx) => (
-          <div
-            key={idx * 100}
-            className={classNames(
-              "flex items-center px-0.5",
-              id === h.chat_id ? "bg-appGray-200 rounded-md " : "",
-            )}
-          >
-            <Link to={`${path}/${h.chat_id}?status=true`}>
-              <div className="text-sm py-1">
-                <span className="line-clamp-1 text-black">{h.chat_id}</span>
-              </div>
-            </Link>
-            <Dropdown
-              menuItems={menuItems}
-              width="xs"
-              alignment="right"
-              conversation_id={h.chat_id}
-            />
-          </div>
-        ))}
+        {indexedHistory
+          .sort((a, b) => a.index - b.index)
+          .map((h, idx) => (
+            <div
+              key={idx * 100}
+              className={classNames(
+                "flex items-center px-0.5 w-full",
+                id === h.element.chat_id ? "bg-appGray-200 rounded-md " : "",
+              )}
+            >
+              <Link to={`${path}/${h.element.chat_id}?status=true`} className="grow-0">
+                <div className="text-sm py-1 line-clamp-1 ">
+                  <p className="line-clamp-1 text-black">{h.element.chat_id}</p>
+                </div>
+              </Link>
+              <Dropdown
+                menuItems={menuItems}
+                width="xs"
+                alignment="right"
+                conversation_id={h.element.chat_id}
+              />
+            </div>
+          ))}
       </div>
       <ShareModal open={modal} path={sharePath} handleClose={() => setModal(false)} />
     </>

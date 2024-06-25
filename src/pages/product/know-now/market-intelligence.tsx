@@ -1,5 +1,8 @@
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
+import debounce from "lodash.debounce";
 
 //
 import AddQuery from "../../../components/@chat/add-query";
@@ -23,12 +26,15 @@ import {
   updateChatError,
 } from "../../../stores/knownow-market";
 
+//
 import KnowNowdefault from "./default";
 import { AppConfig } from "src/config/app.config";
 import { generateKnowId } from "src/utils/helpers";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+
+//
 import { LoadingIcon } from "src/components/icons";
-import toast from "react-hot-toast";
+
+// const socket = io('https://percievenowchat2.azurewebsites.net/ws/chat'); // Replace with your WebSocket server URL
 
 /**
  *
@@ -63,12 +69,22 @@ function MarketIntelligenceKnowNow() {
     if (queryStatus) {
       setIsSaved(true);
     }
-  }, [id, queryStatus]);
+    // if (!id) {
+    //   navigate(`${location.pathname}?status=true`)
+    // }
+  }, [id, location, navigate, queryStatus]);
 
-  // || (location.pathname === "/know-now/market-intelligence" || location.pathname === "/know-now/ip-analysis")
+  //
   useEffect(() => {
-    if (id && isSaved) {
+    if (
+      (id && isSaved) ||
+      location.pathname === "/know-now/market-intelligence" ||
+      location.pathname === "/know-now/ip-analysis"
+    ) {
       dispatch(getMarketThread(userId || ""));
+    }
+    //
+    if (id && isSaved) {
       dispatch(
         getMarketChatById({
           user_id: userId || "",
@@ -90,7 +106,7 @@ function MarketIntelligenceKnowNow() {
     }
     // setIsSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, id, userId, isSaved]);
+  }, [dispatch, id, userId, isSaved, location]);
 
   //
   const onSendQuery = useCallback(
@@ -149,6 +165,27 @@ function MarketIntelligenceKnowNow() {
         const decoder = new TextDecoder();
         let done = false;
         let answer = "";
+        const chunks = [];
+
+        // Debounce function to limit UI updates
+        const debouncedUpdate = debounce((newAnswer) => {
+          if (editIndex !== null) {
+            dispatch(
+              editQueryAndUpdateAnswer({
+                index: editIndex,
+                newQuery: updateQuery,
+                newAnswer: newAnswer,
+              }),
+            );
+          } else {
+            dispatch(
+              updateChatAnswer({
+                index: chats.length,
+                answer: newAnswer,
+              }),
+            );
+          }
+        }, 100); // Adjust debounce interval as needed
 
         // Stream
         while (!done) {
@@ -158,24 +195,10 @@ function MarketIntelligenceKnowNow() {
             setLoadingIndex(null);
             const chunk = decoder.decode(value);
             answer += chunk;
+            chunks.push(chunk);
 
-            if (editIndex !== null) {
-              dispatch(
-                editQueryAndUpdateAnswer({
-                  index: editIndex,
-                  newQuery: updateQuery,
-                  newAnswer: answer,
-                }),
-              );
-            } else {
-              dispatch(
-                updateChatAnswer({
-                  index: chats.length,
-                  answer: answer,
-                }),
-              );
-            }
-            // console.log('Chunk received:', decoder.decode(value));
+            const combinedAnswer = chunks.join("");
+            debouncedUpdate(combinedAnswer);
           }
         }
 
@@ -214,7 +237,6 @@ function MarketIntelligenceKnowNow() {
         const errorAnswer = "Error while generating the response";
 
         toast.error("Something went wrong");
-
         if (editIndex !== null) {
           dispatch(
             editQueryAndUpdateAnswer({

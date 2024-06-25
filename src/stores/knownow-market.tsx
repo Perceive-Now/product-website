@@ -217,7 +217,7 @@ export const KnownowMarketSlice = createSlice({
       if (!state.chatMarketIds) {
         state.chatMarketIds = []; // Initialize if undefined
       }
-      state.chatMarketIds.push(action.payload);
+      state.chatMarketIds.unshift(action.payload);
     },
 
     //

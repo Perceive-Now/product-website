@@ -16,8 +16,6 @@ import CompaniesIcon from "./sidenav/companies";
 import Universities2Icon from "./sidenav/universities2";
 import SimilarityIcon from "./sidenav/similarity";
 import MascotIcon from "./sidenav/mascot";
-import ReportsListIcon from "./side-bar/reports-list";
-import IndustriesIcon from "./side-bar/industries-icon";
 
 // Chevron
 import ChevronUp from "./chevron/up";
@@ -106,8 +104,6 @@ export {
   Universities2Icon,
   SimilarityIcon,
   MascotIcon,
-  ReportsListIcon,
-  IndustriesIcon,
   // Chevron icons
   ChevronUp,
   ChevronRight,
