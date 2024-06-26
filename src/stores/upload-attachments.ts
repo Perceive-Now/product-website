@@ -135,8 +135,19 @@ export const uploadAttachments = createAsyncThunk<
   } catch (error) {
     let message = "Unable to upload attachments";
 
-    if (error && typeof error === "object" && "code" in error && "message" in error) {
-      message = Number(error.code) === 460 ? String(error.message) : message;
+    if (
+      error &&
+      typeof error === "object" &&
+      "response" in error &&
+      typeof error.response === "object" &&
+      error.response &&
+      "data" in error.response &&
+      typeof error.response.data === "object" &&
+      error.response.data &&
+      "detail" in error.response.data &&
+      typeof error.response.data.detail === "string"
+    ) {
+      message = error.response?.data?.detail;
     }
 
     const errorObj = {

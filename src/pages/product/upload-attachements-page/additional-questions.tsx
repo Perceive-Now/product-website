@@ -35,9 +35,7 @@ export default function AdditionalQuestions() {
 
   const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
 
-  const { requirementPercentage, fetchRequirementPercentageState } = useAppSelector(
-    (state) => state.uploadAttachments,
-  );
+  const { fetchRequirementPercentageState } = useAppSelector((state) => state.uploadAttachments);
   useEffect(() => {
     if (fetchRequirementPercentageState.isError) {
       toast.error(fetchRequirementPercentageState.message);
@@ -97,6 +95,7 @@ export default function AdditionalQuestions() {
     currentQuestionId,
     message,
     answerResponse,
+    requirementGatheringId,
     dispatch,
   ]);
 
