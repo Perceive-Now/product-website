@@ -202,6 +202,8 @@ function KnowNowIP() {
         }
         setIsloading(false);
         setChatIndex(null);
+        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
+        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
       } catch (error: any) {
         const errorMsg = error.response?.statusText;
         setIsloading(false);
@@ -219,6 +221,7 @@ function KnowNowIP() {
         } else {
           dispatch(updateChatAnswer({ index: chats.length, answer: errorAnswer }));
         }
+        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
       } finally {
         setLoadingIndex(null);
         setChatIndex(null);
@@ -240,8 +243,8 @@ function KnowNowIP() {
   }, [chats]);
 
   return (
-    <div className="p-3 pb-0 xl:w-[960px] mx-auto">
-      <div className="w-full">
+    <div className="px-3 pb-0 xl:w-[960px] mx-auto">
+      <div className="w-full h-full relative">
         <div
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"

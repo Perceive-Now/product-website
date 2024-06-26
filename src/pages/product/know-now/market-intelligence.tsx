@@ -70,9 +70,6 @@ function MarketIntelligenceKnowNow() {
     if (queryStatus) {
       setIsSaved(true);
     }
-    // if (!id) {
-    //   navigate(`${location.pathname}?status=true`)
-    // }
   }, [id, location, navigate, queryStatus]);
 
   //
@@ -105,22 +102,8 @@ function MarketIntelligenceKnowNow() {
         });
       setIsSaved(false);
     }
-    // setIsSaved(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id, userId, isSaved, location]);
-
-  // function removeLast5Words(inputString: string) {
-  //   // Split the string into an array of words
-  //   let words = inputString.split(' ');
-
-  //   // Calculate the number of words to keep
-  //   let numWordsToKeep = Math.max(0, words.length - 5);
-
-  //   // Join the remaining words back into a string
-  //   let resultString = words.slice(0, numWordsToKeep).join(' ');
-
-  //   return resultString;
-  // }
 
   //
   const onSendQuery = useCallback(
@@ -212,7 +195,7 @@ function MarketIntelligenceKnowNow() {
             answer += chunk;
             chunks.push(chunk);
 
-            const combinedAnswer = chunks.join("") + " Loading..";
+            const combinedAnswer = chunks.join("") + ` <span class="stream-loader"></span>`;
             debouncedUpdate(combinedAnswer);
           }
         }
@@ -244,6 +227,8 @@ function MarketIntelligenceKnowNow() {
         setIsloading(false);
         setLoadingIndex(null);
         setChatIndex(null);
+        navigate(`/know-now/market-intelligence/${conversationId}?status=true`);
+
         // const answer = "res.data";
       } catch (error: any) {
         // const errorMsg = error.response.statusText;
@@ -264,6 +249,7 @@ function MarketIntelligenceKnowNow() {
         } else {
           dispatch(updateChatError({ index: chats.length, answer: errorAnswer }));
         }
+        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
       } finally {
         setLoadingIndex(null);
       }
@@ -284,7 +270,7 @@ function MarketIntelligenceKnowNow() {
   // h-[calc(100vh-260px)]
   return (
     <div className="px-3 pt-0 pb-0 w-[960px] mx-auto">
-      <div className="w-full">
+      <div className="w-full relative h-full">
         <div
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
