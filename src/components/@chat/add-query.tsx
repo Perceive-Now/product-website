@@ -24,14 +24,14 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
   }, [query]);
 
   return (
-    <div className="relative mt-2 flex border border-primary-50 rounded-lg items-center overflow-hidden pl-1 py-1 bg-appGray-100">
+    <div className="absolute w-full -bottom-10 mt-2 flex border border-primary-50 rounded-lg items-center overflow-hidden pl-1 py-1 bg-appGray-100">
       <textarea
         rows={1}
         ref={textareaRef}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className={classNames(
-          "appearance-none w-full h-full border-none rounded-md bg-appGray-100 placeholder:text-appGray-600 pn_scroller focus:border-none focus-visible:border-none focus:outline-none focus:ring-0 pr-6 max-h-[70px]",
+          "appearance-none w-full h-full border-none rounded-md bg-appGray-100 placeholder:text-appGray-600 pn_scroller focus:border-none focus-visible:border-none focus:outline-none focus:ring-0 pr-6 max-h-[100px]",
         )}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
