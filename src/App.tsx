@@ -64,6 +64,7 @@ import KnowNowPage from "./pages/product/know-now";
 import ShareKnowNowPage from "./pages/product/share";
 import ChatComponent from "./pages/product/know-now/chat-test";
 import MarketIntelligenceKnowNowSocket from "./pages/product/know-now/socket";
+import GenerateMarketReport from "./components/@report-generate/market-report-generate";
 
 /**
  *
@@ -123,6 +124,7 @@ function App() {
                 element={<QuickPromptPage />}
               />
             </Route>
+            <Route path="/generate-market-report" element={<GenerateMarketReport />} />
 
             {/* Know-now */}
             <Route path="/start-conversation" element={<KnowNowPage />} />
