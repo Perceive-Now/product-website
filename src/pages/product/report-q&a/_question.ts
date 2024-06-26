@@ -93,7 +93,7 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How have you ensured the definiteness of claims in your patent application for the key product or technology developed by the company?",
-    usecase: "ip-licensing-opportunity",
+    usecase: "ip-validity-analysis",
     answer: `We have meticulously drafted the claims in our patent applications to ensure they are clear, concise, and specific, thereby meeting the requirement for definiteness. This process involved collaborating with experienced patent attorneys to define the scope of our technology accurately and to distinguish it from prior art. By using precise technical language and incorporating detailed descriptions of the ARSight system's components and functionalities, we aim to clearly outline the boundaries of our intellectual property. This approach helps prevent ambiguity in claim interpretation, ensuring that the innovative aspects of ARSight are well-protected and understood by patent examiners, industry peers, and potential competitors.`,
   },
   {
@@ -101,7 +101,7 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Can you provide the exact claims that will be present in the patent application for your key product or technology developed?",
-    usecase: "ip-licensing-opportunity",
+    usecase: "ip-validity-analysis",
     answer: `While I can't provide the exact wording of pending patent claims due to confidentiality and strategic considerations, I can outline the general areas covered by our claims for ARSight:\n1. Spatial Computing Algorithm: Claims focus on the novel method for real-time mapping and digital overlay on physical environments.
     2. Adaptive Learning System: We claim the unique process by which ARSight customizes content based on user interactions and preferences.\n3. Energy-Efficient Hardware Design: Claims address the innovative aspects of our AR glasses, particularly the mechanisms that significantly extend battery life.\n These claims are designed to encompass the core innovations of ARSight, protecting our unique approach to augmented reality technology and its application across various industries.`,
   },
@@ -266,13 +266,12 @@ export const questionList = [
     answer: `Anticipated Operating Expenses:
     • Total Expenses: Forecasting $8 million in total operating expenses for the first year post-launch.\n• Allocation: Broken down as follows: 40% for R&D to support ongoing innovation, 30% for marketing to drive adoption and brand awareness, 20% for general and administrative expenses, and 10% for sales and distribution efforts.`,
   },
-  // Market Research
   {
     questionId: 34,
     useCaseId: 1,
     question:
       "How do you project sales revenue for your products or services over the next 5 years?",
-    usecase: "market-analysis",
+    usecase: "ip-valuation",
     answer: `Sales Revenue Projections:
     • First Year: Targeting $5 million in sales revenue as we establish market presence.\n• Year 5: Projecting to reach $20 million in sales revenue, based on a compounded annual growth rate of 25%, driven by expanding market reach, product line extensions, and strategic partnerships.`,
   },
@@ -281,21 +280,21 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
-    usecase: "market-analysis",
+    usecase: "ip-valuation",
     answer: `Market and Competitive Analysis:
     • Data Gathered: Comprehensive analysis reveals a growing wearable market valued at $50 billion, with an annual growth rate of 15%. Competitive analysis indicates a gap in neuro-adaptive technology offerings.\n• Strategy Influence: This data guides our focus on differentiating NeuraWear through innovation, targeting underserved segments, and positioning our product as a premium offering within the wearable and neurotech spaces.`,
   },
   {
     questionId: 36,
     useCaseId: 1,
-    usecase: "consumer-landscape",
+    usecase: "commercialization-assessment",
     question: "What specific problem does your product or service solve for your target audience?",
     answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
   },
   {
     questionId: 37,
     useCaseId: 1,
-    usecase: "competitive-landscape",
+    usecase: "commercialization-assessment",
     question: "How does your product or service stand out from existing market offerings?",
     answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
   },
@@ -335,7 +334,7 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Who are your main competitors, and what differentiates your product or service from theirs?",
-    usecase: "competitive-landscape",
+    usecase: "commercialization-assessment",
     answer: `Main Competitors:\n • Leading players in the wearable technology market, such as Fitbit, Apple Watch, and niche neurotechnology startups.\nDifferentiation:\n• Neuro-Adaptive Technology: Unlike competitors focusing on general fitness or notification management, NeuraWear specializes in neuro-adaptive interfaces, providing a more intuitive and personalized user experience.\n• Customization and Privacy: Offering higher levels of customization while ensuring user data privacy and security, addressing a key consumer concern in wearable tech.\n• Integration and Compatibility: Designed for seamless integration with a wide range of devices and platforms, enhancing usability across the consumer's digital ecosystem.`,
   },
   {
@@ -357,7 +356,7 @@ export const questionList = [
   {
     questionId: 45,
     useCaseId: 1,
-    usecase: "m&a",
+    usecase: "market-analysis",
     question:
       "Can you describe a recent strategic decision made by your company in response to projected market growth in your industry? What was the rationale behind this decision?",
     answer:
@@ -374,7 +373,7 @@ export const questionList = [
   {
     questionId: 47,
     useCaseId: 1,
-    usecase: "consumer-landscape",
+    usecase: "market-analysis",
     question: "What data-driven methods does your company use to segment its customer base?",
     answer:
       "We employ cluster analysis techniques on customer data collected through our platforms, which include demographic, behavioral, and psychographic factors. This allows us to create distinct customer segments that are targeted with customized marketing strategies and product offerings.",
@@ -382,7 +381,7 @@ export const questionList = [
   {
     questionId: 48,
     useCaseId: 1,
-    usecase: "consumer-landscape",
+    usecase: "market-analysis",
     question: "What are the key factors that influence the purchasing decisions of your customers?",
     answer:
       "Key factors include the functionality and accuracy of health tracking, the aesthetic design of the devices, and the perceived value of the AI features in providing actionable health insights. Customer testimonials and expert reviews also play a crucial role in influencing purchasing decisions.",
@@ -390,7 +389,7 @@ export const questionList = [
   {
     questionId: 49,
     useCaseId: 1,
-    usecase: "consumer-landscape",
+    usecase: "market-analysis",
     question: "How has consumer feedback shaped the development of new features in your products?",
     answer:
       "Consumer feedback has directly led to the development of features such as enhanced sleep tracking, stress management tools, and integration with third-party health applications, ensuring our products meet the evolving needs of our users.",
@@ -398,7 +397,7 @@ export const questionList = [
   {
     questionId: 50,
     useCaseId: 1,
-    usecase: "competitive-landscape",
+    usecase: "market-analysis",
     question:
       ". Can you describe the competitive advantages of your latest product compared to its main competitors?",
     answer:
@@ -407,7 +406,7 @@ export const questionList = [
   {
     questionId: 51,
     useCaseId: 1,
-    usecase: "regulatory-pathways",
+    usecase: "market-analysis",
     question: "What role does intellectual property play in your product differentiation strategy?",
     answer:
       "Intellectual property is crucial in protecting our unique neuro-adaptive technologies and maintaining a competitive edge. We hold several patents related to biometric sensors and machine learning processes, which prevent competitors from replicating our most innovative features.",
@@ -415,7 +414,7 @@ export const questionList = [
   {
     questionId: 52,
     useCaseId: 1,
-    usecase: "commercialization-assessment",
+    usecase: "market-analysis",
     question:
       "What primary and secondary revenue streams-based pricing strategy has your company adopted for its flagship product, and why?",
     answer:
@@ -424,7 +423,7 @@ export const questionList = [
   {
     questionId: 53,
     useCaseId: 1,
-    usecase: "commercialization-assessment",
+    usecase: "market-analysis",
     question:
       "What are your company's sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
     answer:
@@ -433,7 +432,7 @@ export const questionList = [
   {
     questionId: 54,
     useCaseId: 1,
-    usecase: "consumer-landscape",
+    usecase: "market-analysis",
     question:
       "What are your customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
     answer:
@@ -441,12 +440,278 @@ export const questionList = [
   },
   {
     questionId: 55,
-    usecase: "commercialization-assessment",
+    usecase: "market-analysis",
     useCaseId: 1,
     question:
       "What are your long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
     answer:
       "NeuraWear aims to maintain an annual customer retention rate of at least 85% over the next five years. Effectiveness in retaining customers will be measured by tracking the churn rate, customer satisfaction scores, and renewal rates for our subscription services.",
+  },
+  {
+    questionId: 56,
+    usecase: "m&a",
+    useCaseId: 1,
+    question: "What are your strategic goals for mergers and acquisitions?",
+    answer: "",
+  },
+  {
+    questionId: 57,
+    usecase: "market-analysis",
+    useCaseId: 1,
+    question: "What criteria do you use to select acquisition targets?",
+    answer: "",
+  },
+  {
+    questionId: 58,
+    usecase: "m&a",
+    useCaseId: 1,
+    question: "Are there any regulatory considerations in your target markets?",
+    answer: "",
+  },
+  {
+    questionId: 59,
+    usecase: "m&a",
+    useCaseId: 1,
+    question: "What financial metrics do you consider important in assessing M&A targets?",
+    answer: "",
+  },
+  {
+    questionId: 60,
+    usecase: "m&a",
+    useCaseId: 1,
+    question: "How do you plan to integrate the acquired company into your operations?",
+    answer: "",
+  },
+  {
+    questionId: 61,
+    usecase: "m&a",
+    useCaseId: 1,
+    question: "How do you measure the success of your M&A activities?",
+    answer: "",
+  },
+  {
+    questionId: 62,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "What are the key factors that have contributed to changes in your company's market share over the past five years?",
+    answer: "",
+  },
+  {
+    questionId: 63,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "Can you provide details on your company's brand positioning strategies and how they differ from those of your main competitors?",
+    answer: "",
+  },
+  {
+    questionId: 64,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "Could you share insights into your company's financial performance trends, including revenue growth and profit margins, compared to your competitors?",
+    answer: "",
+  },
+  {
+    questionId: 65,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "What are the most significant recent innovations your company has developed, and how do they compare to the innovations from your competitors?",
+    answer: "",
+  },
+  {
+    questionId: 66,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "How does your company assess the effectiveness of its sales channels, and what unique strategies have you implemented compared to your competitors?",
+    answer: "",
+  },
+  {
+    questionId: 67,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "How does your company assess the effectiveness of its sales channels, and what unique strategies have you implemented compared to your competitors?",
+    answer: "",
+  },
+  {
+    questionId: 68,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "What strategic moves has your company recently made to stay competitive, and how do you anticipate these moves will position you against future competitor actions?",
+    answer: "",
+  },
+  {
+    questionId: 69,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "Can you provide details on the strengths and weaknesses of your supply chain compared to those of your key competitors?",
+    answer: "",
+  },
+  {
+    questionId: 70,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "What specific strategies has your company employed to enhance customer satisfaction, and how do these strategies compare to those of your competitors?",
+    answer: "",
+  },
+  {
+    questionId: 71,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "What are some of the most impactful strategic alliances your company has formed, and how have these alliances affected your competitive positioning?",
+    answer: "",
+  },
+  {
+    questionId: 72,
+    usecase: "competitive-landscape",
+    useCaseId: 1,
+    question:
+      "What are the most significant risks your company faces from competitive actions, and how are you managing these risks?",
+    answer: "",
+  },
+  {
+    questionId: 73,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "Could you provide insights into the regulatory challenges and pathways in key markets such as the USA, EU, and Asia?",
+    answer: "",
+  },
+  {
+    questionId: 74,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "What operational adjustments has your company had to make to comply with international regulations?",
+    answer: "",
+  },
+  {
+    questionId: 75,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "What are the major regulatory risks your company faces, and what mitigation strategies have you implemented?",
+    answer: "",
+  },
+  {
+    questionId: 76,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "What quality management systems does your company implement to satisfy regulatory requirements?",
+    answer: "",
+  },
+  {
+    questionId: 77,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "What emerging regulatory trends could potentially impact your market, and how do you plan to respond?",
+    answer: "",
+  },
+  {
+    questionId: 78,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "What are the current regulatory challenges your company is facing, and how are these affecting your operations?",
+    answer: "",
+  },
+  {
+    questionId: 79,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "What are your company's future targets in terms of regulatory achievements, and what steps are you taking to meet these goals?",
+    answer: "",
+  },
+  {
+    questionId: 80,
+    usecase: "regulatory-pathways",
+    useCaseId: 1,
+    question:
+      "How does your company engage with regulatory bodies to ensure compliance and influence regulatory frameworks?",
+    answer: "",
+  },
+  {
+    questionId: 81,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "What are your strategic goals for expanding into new demographic or geographic markets in the next 5 years?",
+    answer: "",
+  },
+  {
+    questionId: 82,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "What consumer trends and behaviours have you identified as pivotal for shaping your product development over the next few years?",
+    answer: "",
+  },
+  {
+    questionId: 83,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "What consumer trends and behaviours have you identified as pivotal for shaping your product development over the next few years?",
+    answer: "",
+  },
+  {
+    questionId: 84,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "What are the anticipated challenges in adopting new technologies among your target consumers, and how do you plan to address them?",
+    answer: "",
+  },
+  {
+    questionId: 85,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "How do you intend to measure the success of new market entries and product launches?",
+    answer: "",
+  },
+  {
+    questionId: 86,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "What strategies will you implement to enhance customer loyalty and retention in increasingly competitive markets?",
+    answer: "",
+  },
+  {
+    questionId: 87,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "Can you describe how you will use consumer feedback to inform future product iterations and service improvements?",
+    answer: "",
+  },
+  {
+    questionId: 88,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "What are your plans for integrating emerging technologies to stay ahead in your market?",
+    answer: "",
+  },
+  {
+    questionId: 89,
+    usecase: "consumer-landscape",
+    useCaseId: 1,
+    question:
+      "How will you adapt your pricing strategy to balance between growth, competitiveness, and profitability in new markets?",
+    answer: "",
   },
 ];
 
