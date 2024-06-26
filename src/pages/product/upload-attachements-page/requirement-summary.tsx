@@ -1,12 +1,6 @@
-import { ReactNode, useEffect, useRef } from "react";
-import toast from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import { ReactNode } from "react";
 import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
-import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import {
-  fetchRequirementSummary,
-  resetFetchRequirementSummaryState,
-} from "src/stores/upload-attachments";
+import { useAppSelector } from "src/hooks/redux";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
   const { requirementSummary, fetchRequirementSummaryState } = useAppSelector(
