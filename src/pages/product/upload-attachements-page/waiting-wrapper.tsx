@@ -33,40 +33,42 @@ export default function WaitingWrapper({ children }: { children: React.ReactNode
   const nextPayement = requirementPercentage >= 95 || additionalQuestionIds.length === 0;
 
   return (
-    <RequirementSummary>
-      <div className="w-[400px] shrink-0">
-        {children}
-        <div className="mt-5"></div>
-        {nextPayement && <ToPayementButton />}
-        {!nextPayement && (
-          <div className="space-y-[20px] ">
-            <Modal open={isOpenDialog} handleOnClose={() => setIsOpenDialog(false)}>
-              <ConfirmationDialog
-                handleContinueCreateReportCallback={handleContinueCreateReport}
-                handleProvideMoreDetailsCallback={handleContinueDetailsBtnClick}
-                setIsOpenDialog={setIsOpenDialog}
-              />
-            </Modal>
-            <Button
-              type="optional"
-              classname="w-full"
-              handleClick={handleContinueDetailsBtnClick}
-              disabled={loading}
-            >
-              <p className="text-secondary-800">Continue to provide more details</p>
-            </Button>
-            <Button
-              type="default"
-              classname="w-full border border-orange-500"
-              handleClick={() => setIsOpenDialog(true)}
-              disabled={loading}
-            >
-              <p className="text-secondary-800">Skip details and continue</p>
-            </Button>
-          </div>
-        )}
-      </div>
-    </RequirementSummary>
+    <div className="flex flex-wrap lg:flex-row gap-y-5 w-full">
+      <RequirementSummary>
+        <div className="w-[400px] shrink-0">
+          {children}
+          <div className="mt-5"></div>
+          {nextPayement && <ToPayementButton />}
+          {!nextPayement && (
+            <div className="space-y-[20px] ">
+              <Modal open={isOpenDialog} handleOnClose={() => setIsOpenDialog(false)}>
+                <ConfirmationDialog
+                  handleContinueCreateReportCallback={handleContinueCreateReport}
+                  handleProvideMoreDetailsCallback={handleContinueDetailsBtnClick}
+                  setIsOpenDialog={setIsOpenDialog}
+                />
+              </Modal>
+              <Button
+                type="optional"
+                classname="w-full"
+                handleClick={handleContinueDetailsBtnClick}
+                disabled={loading}
+              >
+                <p className="text-secondary-800">Continue to provide more details</p>
+              </Button>
+              <Button
+                type="default"
+                classname="w-full border border-orange-500"
+                handleClick={() => setIsOpenDialog(true)}
+                disabled={loading}
+              >
+                <p className="text-secondary-800">Skip details and continue</p>
+              </Button>
+            </div>
+          )}
+        </div>
+      </RequirementSummary>
+    </div>
   );
 }
 

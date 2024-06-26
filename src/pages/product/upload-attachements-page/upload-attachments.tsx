@@ -93,7 +93,7 @@ export default function UploadAttachments() {
   };
 
   return (
-    <div className="flex flex-row justify-between gap-x-[150px]">
+    <div className="flex lg:flex-row flex-wrap gap-y-5 justify-between gap-x-[150px]">
       {/* DropZone */}
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
