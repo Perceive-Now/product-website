@@ -193,6 +193,8 @@ const QueryAnswer = ({
       "th",
       "td",
       "img",
+      "span",
+      "div",
     ],
     allowedAttributes: {
       a: ["href", "target", "rel"],
@@ -291,7 +293,7 @@ const QueryAnswer = ({
                     <div
                       ref={copyRef}
                       style={{ textAlign: "justify" }}
-                      className="text-secondary-800 relative bottom-0 duration-500 delay-500 whitespace-pre-wrap	"
+                      className="text-secondary-800 relative bottom-0 duration-500 delay-500 whitespace-pre-wrap stream-answer"
                       dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
                     />
                   </div>
