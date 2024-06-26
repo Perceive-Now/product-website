@@ -3,8 +3,8 @@ import ToPayementButton from "./to-payement-button";
 
 export default function AllSet() {
   return (
-    <div className="flex flex-row justify-between gap-x-[150px]">
-      <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white shadow-page-content p-2 rounded-lg w-[900px]">
+    <div className="flex lg:flex-row flex-wrap gap-y-5 justify-between gap-x-[100px]">
+      <div className="flex flex-col w-full lg:max-w-[900px] max-w-[600px] min-h-[400px] bg-white shadow-page-content p-2 rounded-lg">
         <div className="space-y-[20px]">
           <p className="text-heroDark-900 font-bold text-[32px]">Great! You're All Set</p>
           <p className="w-[300px] text-secondary-800">
@@ -19,7 +19,7 @@ export default function AllSet() {
           </div>
         </div>
       </div>
-      <div className="w-[400px] shrink-0">
+      <div className="max-w-[400px] w-full shrink-0">
         <ReportPercentage />
       </div>
     </div>

@@ -102,8 +102,8 @@ export default function WebsiteLinks() {
     isUploadingUseCases || isUploadingUploadAttachments || fetchRequirementSummaryState.isLoading;
 
   return (
-    <div className="flex flex-row justify-between gap-x-[150px]">
-      <div className="flex flex-col justify-center p-[20px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-[900px]">
+    <div className="flex lg:flex-row flex-wrap gap-y-5 justify-between gap-x-[150px]">
+      <div className="flex flex-col justify-center p-[20px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-full max-w-[900px]">
         <WebsiteLinksForm isLoading={isLoading} />
       </div>
 
@@ -149,7 +149,7 @@ export default function WebsiteLinks() {
           type="default"
           classname="w-full border border-orange-500 mt-[20px]"
           handleClick={handleContinueBtnClick}
-          disabled={isLoading}
+          disabled={websiteLinks.length > 0}
           loading={false}
         >
           <p

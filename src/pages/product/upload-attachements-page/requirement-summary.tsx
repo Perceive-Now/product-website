@@ -61,8 +61,8 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     .filter((f) => f !== null);
 
   return (
-    <div className="flex flex-row justify-between gap-x-[150px]">
-      <div className="flex flex-col min-w-[900px] min-h-[400px] bg-white rounded-lg p-2 shadow-page-content">
+    <div className="flex lg:flex-row flex-wrap gap-y-5 justify-between w-full gap-x-[100px]">
+      <div className="flex flex-col min-h-[400px] max-w-[850px] w-full bg-white rounded-lg p-2 shadow-page-content">
         {transformedRequirementSummary.length > 0 && (
           <>
             <p className="font-bold text-[32px] text-secondary-900">Here's a sneak peek!</p>
