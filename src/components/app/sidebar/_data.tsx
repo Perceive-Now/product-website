@@ -33,50 +33,50 @@ const sidebarItems: ISidebarListItem[] = [
     icon: DraftIcon,
     to: "/draft-reports",
   },
-  // {
-  //   title: "Industries",
-  //   key: "industries",
-  //   icon: IndustriesIcon,
-  //   to: "#",
-  //   subList: [
-  //     {
-  //       title: "Venture Capital",
-  //       key: "venture-capital",
-  //       icon: DraftIcon,
-  //       to: "#",
-  //     },
-  //     {
-  //       title: "Biotechnology",
-  //       key: "biotechnology",
-  //       icon: DraftIcon,
-  //       to: "#",
-  //     },
-  //     {
-  //       title: "Pharmaceuticals",
-  //       key: "pharmaceuticals",
-  //       icon: DraftIcon,
-  //       to: "#",
-  //     },
-  //     {
-  //       title: "Healthcare",
-  //       key: "healthcare",
-  //       icon: DraftIcon,
-  //       to: "#",
-  //     },
-  //     {
-  //       title: "Sustainability",
-  //       key: "sustainability",
-  //       icon: DraftIcon,
-  //       to: "#",
-  //     },
-  //     {
-  //       title: "Law",
-  //       key: "law",
-  //       icon: DraftIcon,
-  //       to: "#",
-  //     },
-  //   ],
-  // },
+  {
+    title: "Industries",
+    key: "industries",
+    icon: IndustriesIcon,
+    to: "#",
+    subList: [
+      {
+        title: "Venture Capital",
+        key: "venture-capital",
+        icon: DraftIcon,
+        to: "#",
+      },
+      {
+        title: "Biotechnology",
+        key: "biotechnology",
+        icon: DraftIcon,
+        to: "#",
+      },
+      {
+        title: "Pharmaceuticals",
+        key: "pharmaceuticals",
+        icon: DraftIcon,
+        to: "#",
+      },
+      {
+        title: "Healthcare",
+        key: "healthcare",
+        icon: DraftIcon,
+        to: "#",
+      },
+      {
+        title: "Sustainability",
+        key: "sustainability",
+        icon: DraftIcon,
+        to: "#",
+      },
+      {
+        title: "Law",
+        key: "law",
+        icon: DraftIcon,
+        to: "#",
+      },
+    ],
+  },
 ];
 
 export interface ISidebarItem {
