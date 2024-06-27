@@ -41,7 +41,7 @@ export default function WebsiteLinks() {
 
   useEffect(() => {
     if (fetchRequirementSummaryState.isError) {
-      toast.error("Something went wrong");
+      toast.error(message);
       dispatch(resetFetchRequirementSummaryState());
       return;
     }
@@ -53,7 +53,7 @@ export default function WebsiteLinks() {
       dispatch(setIsUploadAttachmentsSuccess(false));
       return;
     }
-  }, [fetchRequirementSummaryState, dispatch]);
+  }, [fetchRequirementSummaryState, dispatch, message]);
 
   useEffect(() => {
     if (isUploadAttachmentsError) {

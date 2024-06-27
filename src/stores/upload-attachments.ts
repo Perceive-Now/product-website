@@ -135,8 +135,19 @@ export const uploadAttachments = createAsyncThunk<
   } catch (error) {
     let message = "Unable to upload attachments";
 
-    if (error && typeof error === "object" && "code" in error && "message" in error) {
-      message = Number(error.code) === 460 ? String(error.message) : message;
+    if (
+      error &&
+      typeof error === "object" &&
+      "response" in error &&
+      typeof error.response === "object" &&
+      error.response &&
+      "data" in error.response &&
+      typeof error.response.data === "object" &&
+      error.response.data &&
+      "detail" in error.response.data &&
+      typeof error.response.data.detail === "string"
+    ) {
+      message = error.response?.data?.detail;
     }
 
     const errorObj = {
@@ -354,7 +365,14 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = false;
       state.isUploadAttachmentsSuccess = true;
-      state.additionalQuestionIds = action.payload.data ?? [];
+
+      const checkedData = action.payload.data ?? [];
+      const uniqueQuestionIdsSet = new Set<number>(checkedData.map((item) => item.question_id));
+      const uniqueQuestionIdsArray = Array.from(uniqueQuestionIdsSet);
+      state.additionalQuestionIds = uniqueQuestionIdsArray.map((questionId) => ({
+        question_id: questionId,
+      }));
+
       state.currentQuestionId =
         state.additionalQuestionIds.length > 0 ? state.additionalQuestionIds[0].question_id : 0;
       state.answers = [];
@@ -363,7 +381,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = true;
       state.isUploadAttachmentsSuccess = false;
-      state.message = action.error.message ?? "Unable to upload attachments";
+      state.message = action.payload?.message ?? "Unable to upload attachments";
     });
 
     // -----------------------------------------------------------------------
