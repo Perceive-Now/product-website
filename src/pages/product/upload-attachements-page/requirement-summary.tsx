@@ -3,38 +3,9 @@ import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
 import { useAppSelector } from "src/hooks/redux";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
-
-  const isInitialLoad = useRef<boolean>(true);
-
-  const { requirementGatheringId, useCaseIds } = useAppSelector((state) => state.usecases);
   const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
     (state) => state.uploadAttachments,
   );
-
-  useEffect(() => {
-    if (fetchRequirementSummaryState.isError) {
-      if (location.pathname !== "/quick-prompt") toast.error("Unable to fetch requirement summary");
-      dispatch(resetFetchRequirementSummaryState());
-      return;
-    }
-
-    if (fetchRequirementSummaryState.isSuccess) {
-      dispatch(resetFetchRequirementSummaryState());
-      return;
-    }
-  }, [fetchRequirementSummaryState, dispatch, location]);
-
-  useEffect(() => {
-    dispatch(
-      fetchRequirementSummary({
-        requirement_gathering_id: String(requirementGatheringId),
-        useCaseIds: useCaseIds,
-      }),
-    );
-    isInitialLoad.current = false;
-  }, [dispatch, requirementGatheringId, useCaseIds]);
 
   const transformedRequirementSummary = requirementSummary
     .map((summaryItem) => {

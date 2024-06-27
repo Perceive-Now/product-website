@@ -381,7 +381,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = true;
       state.isUploadAttachmentsSuccess = false;
-      state.message = action.error.message ?? "Unable to upload attachments";
+      state.message = action.payload?.message ?? "Unable to upload attachments";
     });
 
     // -----------------------------------------------------------------------
