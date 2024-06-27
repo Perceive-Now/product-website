@@ -95,7 +95,7 @@ const GenerateMarketReport = () => {
         toast.success(`Report for section ${section[sectionIndex]} is complete`);
         setReportData((prevData) => ({
           ...prevData,
-          [section]: res.data.third_party_resp,
+          [section]: res.data.third_party_resp[0],
         }));
         setIsGenerating(false);
 
