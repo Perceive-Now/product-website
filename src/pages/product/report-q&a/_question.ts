@@ -310,8 +310,7 @@ export const questionList = [
     useCaseId: 1,
     question: "What are the primary and potential secondary revenue streams for your company?",
     usecase: "commercialization-assessment",
-    answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
-    • Secondary: Licensing our technology to other manufacturers, offering professional services for custom integration, and developing a marketplace for third-party applications that can enhance the NeuraWear experience.`,
+    answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.\n• Secondary: Licensing our technology to other manufacturers, offering professional services for custom integration, and developing a marketplace for third-party applications that can enhance the NeuraWear experience.`,
   },
   {
     questionId: 40,
@@ -326,8 +325,7 @@ export const questionList = [
     useCaseId: 1,
     question: "Which sales and distribution channels is your company planning to use?",
     usecase: "commercialization-assessment",
-    answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
-    This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
+    answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales. This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
   },
   {
     questionId: 42,
@@ -452,42 +450,48 @@ export const questionList = [
     usecase: "m&a",
     useCaseId: 1,
     question: "What are your strategic goals for mergers and acquisitions?",
-    answer: "",
+    answer:
+      "Our strategic goals for M&A focus on acquiring companies that can provide advanced sensor technology and artificial intelligence capabilities, aiming to enhance our products' performance. We seek to expand our market presence in Europe and Asia by 25% and aim to reduce production costs by 15% through synergies over the next three years.",
   },
   {
     questionId: 57,
     usecase: "market-analysis",
     useCaseId: 1,
     question: "What criteria do you use to select acquisition targets?",
-    answer: "",
+    answer:
+      "We prioritize targets with strong R&D capabilities in AI and robotics, robust customer bases in high-growth regions, and financial health indicators such as EBITDA margins above 20% and a debt-to-equity ratio below 0.5. Strategic fit, potential for innovation scalability, and market expansion possibilities are key considerations.",
   },
   {
     questionId: 58,
     usecase: "m&a",
     useCaseId: 1,
     question: "Are there any regulatory considerations in your target markets?",
-    answer: "",
+    answer:
+      "Regulatory considerations are crucial, particularly compliance with the EU's General Data Protection Regulation (GDPR) for data handling and the U.S. Federal Trade Commission's guidelines on antitrust matters. We ensure all potential acquisitions comply with these standards to mitigate legal and financial risks.",
   },
   {
     questionId: 59,
     usecase: "m&a",
     useCaseId: 1,
     question: "What financial metrics do you consider important in assessing M&A targets?",
-    answer: "",
+    answer:
+      "We evaluate targets based on their revenue growth rate, aiming for at least 10% annually, EBITDA margins, ideally 20% or higher, and a strong cash flow position to support ongoing operations and integration costs. Return on investment is projected to break even within three years post-acquisition.",
   },
   {
     questionId: 60,
     usecase: "m&a",
     useCaseId: 1,
     question: "How do you plan to integrate the acquired company into your operations?",
-    answer: "",
+    answer:
+      "Our integration strategy includes a 100-day plan focusing on technology alignment, operational efficiency, and cultural integration. We set specific milestones for technology integration within six months and aim to achieve operational cost synergies of up to 10% within the first year.",
   },
   {
     questionId: 61,
     usecase: "m&a",
     useCaseId: 1,
     question: "How do you measure the success of your M&A activities?",
-    answer: "",
+    answer:
+      "Success is measured by achieving or exceeding the set financial targets such as revenue growth and cost reduction, successful technology integration within the specified timeframe, and employee retention rates above 90% post-acquisition. Long-term success is evaluated by the acquired entity’s contribution to our market expansion and innovation capabilities.",
   },
   {
     questionId: 62,
@@ -495,7 +499,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are the key factors that have contributed to changes in your company's market share over the past five years?",
-    answer: "",
+    answer:
+      "Our market share has increased by 12% over the past five years, driven primarily by our expansion into the Asian market and the launch of our AI-driven product line, which captured a significant share of the tech-savvy consumer segment.",
   },
   {
     questionId: 63,
@@ -503,7 +508,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Can you provide details on your company's brand positioning strategies and how they differ from those of your main competitors?",
-    answer: "",
+    answer:
+      "Our brand positioning focuses on user-centric design and sustainability, which differentiates us from competitors who prioritize cost reduction. This strategy has improved our brand perception scores by 20% as measured in independent consumer surveys.",
   },
   {
     questionId: 64,
@@ -511,7 +517,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Could you share insights into your company's financial performance trends, including revenue growth and profit margins, compared to your competitors?",
-    answer: "",
+    answer:
+      "Over the last three years, our revenue has grown at an annual rate of 8%, outpacing the industry average of 5%. Our profit margins have also improved by 3% due to efficiencies gained through automation and supply chain optimizations.",
   },
   {
     questionId: 65,
@@ -519,7 +526,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are the most significant recent innovations your company has developed, and how do they compare to the innovations from your competitors?",
-    answer: "",
+    answer:
+      "Our flagship innovation last year was a blockchain-based supply chain transparency tool, which is a first in our industry. This has given us a competitive edge over others who are still relying on traditional supply chain management systems",
   },
   {
     questionId: 66,
@@ -527,7 +535,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How does your company assess the effectiveness of its sales channels, and what unique strategies have you implemented compared to your competitors?",
-    answer: "",
+    answer:
+      "We assess sales channel effectiveness through conversion rates and customer feedback. A unique strategy we've implemented is the use of augmented reality in showrooms, which has increased our conversion rates by 15% compared to competitors who use standard display methods.",
   },
   {
     questionId: 67,
@@ -535,7 +544,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How does your company assess the effectiveness of its sales channels, and what unique strategies have you implemented compared to your competitors?",
-    answer: "",
+    answer:
+      "Our recent campaigns have utilized user-generated content much more extensively than our competitors, leading to a 50% higher engagement rate on social media platforms.",
   },
   {
     questionId: 68,
@@ -543,7 +553,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What strategic moves has your company recently made to stay competitive, and how do you anticipate these moves will position you against future competitor actions?",
-    answer: "",
+    answer:
+      "We recently acquired a smaller competitor to consolidate our market position in the renewable energy sector, anticipating a shift in competitor focus towards green technologies. This move is expected to secure us an additional 10% market share in this growing sector over the next two years.",
   },
   {
     questionId: 69,
@@ -551,7 +562,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Can you provide details on the strengths and weaknesses of your supply chain compared to those of your key competitors?",
-    answer: "",
+    answer:
+      "A strength of our supply chain is its agility, allowing us to adapt quickly to market changes. However, a weakness is our higher logistics costs compared to competitors who have optimized their routes and warehouse locations more effectively.",
   },
   {
     questionId: 70,
@@ -559,7 +571,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What specific strategies has your company employed to enhance customer satisfaction, and how do these strategies compare to those of your competitors?",
-    answer: "",
+    answer:
+      "We have implemented a 24/7 customer support center with multilingual capabilities, which has increased our customer satisfaction rate to 90%, approximately 10% higher than the industry average.",
   },
   {
     questionId: 71,
@@ -567,7 +580,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are some of the most impactful strategic alliances your company has formed, and how have these alliances affected your competitive positioning?",
-    answer: "",
+    answer:
+      "Our partnership with TechGlobal Inc. has allowed us to integrate cutting-edge AI into our products, enhancing our competitive positioning by delivering features that are currently unmatched by our direct competitors.",
   },
   {
     questionId: 72,
@@ -575,7 +589,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are the most significant risks your company faces from competitive actions, and how are you managing these risks?",
-    answer: "",
+    answer:
+      "A significant risk is the rapid innovation in AI technology by competitors. We manage this risk by investing 15% of our annual revenue in R&D and collaborating with leading technology universities to stay ahead in innovation.",
   },
   {
     questionId: 73,
@@ -583,7 +598,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Could you provide insights into the regulatory challenges and pathways in key markets such as the USA, EU, and Asia?",
-    answer: "",
+    answer:
+      "In the USA, the challenge lies in navigating the FDA’s premarket approval process, which is stringent for neuro-adaptive devices. The EU’s MDR presents similar hurdles but with an added focus on privacy under GDPR. Asia varies widely, with Japan having rigorous safety requirements, while countries like China are rapidly updating their regulatory frameworks to catch up with technological advances.",
   },
   {
     questionId: 74,
@@ -591,7 +607,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What operational adjustments has your company had to make to comply with international regulations?",
-    answer: "",
+    answer:
+      "We've had to invest significantly in clinical trials and certification processes, impacting our go-to-market timelines and costs. Regulatory compliance has also influenced our marketing strategies, requiring clear communication about device capabilities and limitations per regulatory standards.",
   },
   {
     questionId: 75,
@@ -599,7 +616,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are the major regulatory risks your company faces, and what mitigation strategies have you implemented?",
-    answer: "",
+    answer:
+      "The major risks include potential non-compliance with emerging regulations and rapid changes in regulatory landscapes. Our mitigation strategy involves continuous monitoring of regulatory updates and maintaining agile compliance processes capable of adapting to new requirements quickly.",
   },
   {
     questionId: 76,
@@ -607,7 +625,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What quality management systems does your company implement to satisfy regulatory requirements?",
-    answer: "",
+    answer:
+      "NeuraWear adheres to ISO 13485 for medical devices, implementing comprehensive quality management systems that cover all stages from product design to post-market surveillance, ensuring continuous compliance and quality assurance.",
   },
   {
     questionId: 77,
@@ -615,7 +634,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What emerging regulatory trends could potentially impact your market, and how do you plan to respond?",
-    answer: "",
+    answer:
+      "Emerging trends include stricter data protection regulations and increased scrutiny of AI in healthcare devices. We are preparing by enhancing our data security measures and ensuring our AI algorithms are transparent and explainable, aligning with potential regulatory changes.",
   },
   {
     questionId: 78,
@@ -623,7 +643,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are the current regulatory challenges your company is facing, and how are these affecting your operations?",
-    answer: "",
+    answer:
+      "Current challenges include adapting to the new EU Medical Device Regulation (MDR) which requires more extensive clinical data and a reevaluation of our device classification. This has led to delays in our product launches in Europe and increased our operational costs.",
   },
   {
     questionId: 79,
@@ -631,7 +652,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are your company's future targets in terms of regulatory achievements, and what steps are you taking to meet these goals?",
-    answer: "",
+    answer:
+      "Our future regulatory targets include achieving faster product approval times by enhancing our pre-submission processes and working more collaboratively with regulatory agencies. We're investing in regulatory affairs expertise and enhancing our compliance infrastructure to meet these goals.",
   },
   {
     questionId: 80,
@@ -639,7 +661,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How does your company engage with regulatory bodies to ensure compliance and influence regulatory frameworks?",
-    answer: "",
+    answer:
+      "We actively engage with regulatory bodies through consultation during product development stages and participate in industry groups that influence regulatory policies. Our approach includes regular submissions of research findings and safety data to regulators to aid in shaping guidelines that are informed by real-world data.",
   },
   {
     questionId: 81,
@@ -647,7 +670,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are your strategic goals for expanding into new demographic or geographic markets in the next 5 years?",
-    answer: "",
+    answer:
+      "Our immediate goal is to penetrate the Southeast Asian market by 2025, targeting tech-savvy millennials in urban areas. We're leveraging local influencers and digital marketing to build brand awareness and have established partnerships with two regional health and wellness chains to facilitate rapid market entry.",
   },
   {
     questionId: 82,
@@ -655,7 +679,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What consumer trends and behaviours have you identified as pivotal for shaping your product development over the next few years?",
-    answer: "",
+    answer:
+      "The growing interest in mental health and stress management has led us to develop a new range of wearables that monitor and provide feedback on psychological well-being. This includes features for mindfulness and stress tracking, developed in collaboration with mental health professionals.",
   },
   {
     questionId: 83,
@@ -663,7 +688,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What consumer trends and behaviours have you identified as pivotal for shaping your product development over the next few years?",
-    answer: "",
+    answer:
+      "We're launching a targeted campaign using AI-driven content personalization to engage consumers in underpenetrated markets. By analyzing user interaction data, we will deliver personalized ads and content directly through social media platforms, expected to boost engagement rates by 40%.",
   },
   {
     questionId: 84,
@@ -671,7 +697,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are the anticipated challenges in adopting new technologies among your target consumers, and how do you plan to address them?",
-    answer: "",
+    answer:
+      "We anticipate resistance due to data privacy concerns. To address this, we are rolling out a new privacy campaign highlighting our encryption and data handling policies, and introducing a user-controlled data privacy feature that allows customers to manage their data sharing preferences.",
   },
   {
     questionId: 85,
@@ -679,7 +706,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How do you intend to measure the success of new market entries and product launches?",
-    answer: "",
+    answer:
+      "Success metrics for new market entries include achieving a 25% market share within the first year and maintaining a customer acquisition cost (CAC) below $50. We will also track the engagement and repeat purchase rates to measure the effectiveness of initial product launches.",
   },
   {
     questionId: 86,
@@ -687,7 +715,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What strategies will you implement to enhance customer loyalty and retention in increasingly competitive markets?",
-    answer: "",
+    answer:
+      "To enhance loyalty, we are introducing an advanced rewards program that integrates with daily activities to offer real-time benefits, such as discounts on health products and services. This program is supported by a new customer service initiative providing 24/7 support and personalized health insights.",
   },
   {
     questionId: 87,
@@ -695,7 +724,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "Can you describe how you will use consumer feedback to inform future product iterations and service improvements?",
-    answer: "",
+    answer:
+      "We've implemented a real-time feedback loop within our app, allowing users to report issues and suggest improvements directly. This feedback is analyzed quarterly to prioritize product updates and feature rollouts, directly addressing the most common user requests and complaints.",
   },
   {
     questionId: 88,
@@ -703,7 +733,8 @@ export const questionList = [
     useCaseId: 1,
     question:
       "What are your plans for integrating emerging technologies to stay ahead in your market?",
-    answer: "",
+    answer:
+      "We are in the early stages of integrating AI to enhance predictive health analytics and are exploring the use of biodegradable materials to develop more sustainable product lines. These initiatives are expected to set new industry standards in both technological innovation and environmental responsibility by 2024.",
   },
   {
     questionId: 89,
@@ -711,181 +742,7 @@ export const questionList = [
     useCaseId: 1,
     question:
       "How will you adapt your pricing strategy to balance between growth, competitiveness, and profitability in new markets?",
-    answer: "",
-  },
-];
-
-export const MarketQuestionList = [
-  {
-    questionId: 34,
-    useCaseId: 1,
-    question:
-      "How do you project sales revenue for your products or services over the next 5 years?",
-    usecase: "market-research",
-    answer: `Sales Revenue Projections:
-    • First Year: Targeting $5 million in sales revenue as we establish market presence.\n• Year 5: Projecting to reach $20 million in sales revenue, based on a compounded annual growth rate of 25%, driven by expanding market reach, product line extensions, and strategic partnerships.`,
-  },
-  {
-    questionId: 35,
-    useCaseId: 1,
-    question:
-      "What market and competitive analysis data have you gathered, and how does it influence your strategy?",
-    usecase: "market-research",
-    answer: `Market and Competitive Analysis:
-    • Data Gathered: Comprehensive analysis reveals a growing wearable market valued at $50 billion, with an annual growth rate of 15%. Competitive analysis indicates a gap in neuro-adaptive technology offerings.\n• Strategy Influence: This data guides our focus on differentiating NeuraWear through innovation, targeting underserved segments, and positioning our product as a premium offering within the wearable and neurotech spaces.`,
-  },
-  {
-    questionId: 36,
-    useCaseId: 1,
-    question: "What specific problem does your product or service solve for your target audience?",
-    usecase: "market-research",
-    answer: `Problem Solution:\n• NeuraWear addresses the lack of intuitive, user-friendly interfaces in wearable technology, solving the problem of cumbersome interactions that hinder widespread adoption. By integrating neuro-adaptive technologies, NeuraWear offers a seamless, personalized user experience that adjusts to individual preferences and responses, enhancing usability and satisfaction.`,
-  },
-  {
-    questionId: 37,
-    useCaseId: 1,
-    question: "How does your product or service stand out from existing market offerings?",
-    usecase: "market-research",
-    answer: `Market Differentiation:\n• NeuraWear stands out by offering the first wearable technology that uses neuro-adaptive interfaces for a truly personalized and intuitive user experience. Unlike competitors that focus on fitness tracking or notification management, NeuraWear leverages neural feedback to improve device usability and functionality, setting a new standard for user interaction in the wearable space.`,
-  },
-  {
-    questionId: 38,
-    useCaseId: 1,
-    question: "What pricing strategy has your company adopted for its product or service?",
-    usecase: "market-research",
-    answer: `Pricing Strategy:\n• Adopting a value-based pricing strategy, NeuraWear's products are priced to reflect the significant value and unique benefits they offer to users, positioned slightly above the market average for wearable tech. This strategy underscores the premium features and advanced technology of our offerings, targeting consumers who prioritize quality and innovation.`,
-  },
-  {
-    questionId: 39,
-    useCaseId: 1,
-    question: "What are the primary and potential secondary revenue streams for your company?",
-    usecase: "market-research",
-    answer: `Revenue Streams:\n• Primary: Direct sales of NeuraWear devices and subscriptions for premium software features.
-    • Secondary: Licensing our technology to other manufacturers, offering professional services for custom integration, and developing a marketplace for third-party applications that can enhance the NeuraWear experience.`,
-  },
-  {
-    questionId: 40,
-    useCaseId: 1,
-    question:
-      "How is your company's cost structure organized, and what impact does it have on pricing and profitability?",
-    usecase: "market-research",
-    answer: `• Organization: NeuraWear's cost structure is heavily weighted towards R&D and innovation, reflecting our commitment to leading the market in technological advancements. Manufacturing and marketing are the next significant expenses, aligning with our strategy to produce high-quality products and create brand recognition.\n• Impact: This structure supports our value-based pricing strategy, ensuring profitability by delivering superior products that command premium prices, while the ongoing investment in R&D is designed to sustain long-term competitive advantage and market leadership.`,
-  },
-  {
-    questionId: 41,
-    useCaseId: 1,
-    question: "Which sales and distribution channels is your company planning to use?",
-    usecase: "market-research",
-    answer: `Sales and Distribution Channels:\n• Direct Online Sales: Leveraging an e-commerce platform to sell directly to consumers globally, aiming for 50% of total sales.\n• Retail Partnerships: Establishing agreements with leading electronics retailers for in-store and online sales, targeting 30% of sales through this channel.\n• Enterprise Sales Team: Deploying a dedicated sales team for B2B deals, particularly for healthcare and corporate wellness programs, expected to contribute 20% of sales.
-    This multi-channel approach allows us to reach a broad audience, catering to different buying preferences and enhancing market penetration.`,
-  },
-  {
-    questionId: 42,
-    useCaseId: 1,
-    question:
-      "Who are your main competitors, and what differentiates your product or service from theirs?",
-    usecase: "market-research",
-    answer: `Main Competitors:\n • Leading players in the wearable technology market, such as Fitbit, Apple Watch, and niche neurotechnology startups.\nDifferentiation:\n• Neuro-Adaptive Technology: Unlike competitors focusing on general fitness or notification management, NeuraWear specializes in neuro-adaptive interfaces, providing a more intuitive and personalized user experience.\n• Customization and Privacy: Offering higher levels of customization while ensuring user data privacy and security, addressing a key consumer concern in wearable tech.\n• Integration and Compatibility: Designed for seamless integration with a wide range of devices and platforms, enhancing usability across the consumer's digital ecosystem.`,
-  },
-  {
-    questionId: 43,
-    useCaseId: 1,
-    question:
-      "What internal metrics does NeuraWear use to measure success in aligning with market dynamics and industry trends?",
-    answer: `At NeuraWear, we utilize a blend of performance indicators to gauge our alignment with market dynamics. These include:\n• Market Share Growth: We track changes in our market share quarterly, aiming for a 5% increase year-over-year, reflecting successful penetration and customer acquisition strategies.\n• Customer Acquisition Cost (CAC): Our target CAC has been set at $120 per new user, optimized through targeted marketing and efficient sales funnel management.\n• User Retention Rates: We aim for a retention rate of 80% over a 12-month period, indicating strong customer satisfaction and product relevance.\n• Product Innovation Cycle Times: Our goal is to shorten the cycle time to under 18 months from ideation to launch, ensuring we keep pace with technological advancements and consumer expectations.`,
-  },
-  {
-    questionId: 44,
-    useCaseId: 1,
-    question:
-      "How does NeuraWear assess the impact of global market drivers and restraints on it's product development and marketing strategies?",
-    answer: `NeuraWear utilizes a comprehensive analysis approach to adapt our strategies based on global market drivers and restraints:\n• Economic Indicators: We monitor global economic trends, such as inflation rates and consumer spending patterns, to forecast demand and adjust our pricing strategy accordingly.\n• Consumer Trends: Through ongoing market research, we track changes in consumer preferences and technology adoption rates, which guide our product development and feature prioritization.\nRegulatory Changes: We keep abreast of new regulations in key markets, adapting our compliance strategies to ensure seamless market entry and sustained operations.`,
-  },
-  {
-    questionId: 45,
-    useCaseId: 1,
-    question:
-      "Can you describe a recent strategic decision made by NeuraWear in response to the projected market growth in wearable technology? What was the rationale behind this decision?",
     answer:
-      "Recently, NeuraWear decided to invest heavily in AI and machine learning capabilities to enhance our wearable technology products. This strategic decision was driven by the projected market growth for AI-integrated wearables, which is expected to increase by 35% annually over the next five years. Our rationale was based on data indicating a significant consumer shift towards devices offering personalized health insights. By incorporating AI, we aim to provide superior functionality and customization, setting our products apart in a crowded market and aligning with consumer demand for highly personalized wearable technology.",
-  },
-  {
-    questionId: 46,
-    useCaseId: 1,
-    question:
-      "How does NeuraWear define its primary target market within the wearable technology industry?",
-    answer:
-      "NeuraWear targets health-conscious consumers aged 25 to 45, who are tech-savvy and have a disposable income level in the upper-middle class. This demographic is particularly inclined towards using technology to enhance their lifestyle and health, representing a significant portion of our customer base.",
-  },
-  {
-    questionId: 47,
-    useCaseId: 1,
-    question: "What data-driven methods does NeuraWear use to segment its customer base?",
-    answer:
-      "We employ cluster analysis techniques on customer data collected through our platforms, which include demographic, behavioral, and psychographic factors. This allows us to create distinct customer segments that are targeted with customized marketing strategies and product offerings.",
-  },
-  {
-    questionId: 48,
-    useCaseId: 1,
-    question:
-      "What are the key factors that influence the purchasing decisions of NeuraWear’s customers?",
-    answer:
-      "Key factors include the functionality and accuracy of health tracking, the aesthetic design of the devices, and the perceived value of the AI features in providing actionable health insights. Customer testimonials and expert reviews also play a crucial role in influencing purchasing decisions.",
-  },
-  {
-    questionId: 49,
-    useCaseId: 1,
-    question:
-      "How has consumer feedback shaped the development of new features in NeuraWear products?",
-    answer:
-      "Consumer feedback has directly led to the development of features such as enhanced sleep tracking, stress management tools, and integration with third-party health applications, ensuring our products meet the evolving needs of our users.",
-  },
-  {
-    questionId: 50,
-    useCaseId: 1,
-    question:
-      "Can you describe the competitive advantages of NeuraWear’s latest wearable device compared to its main competitors?",
-    answer:
-      "Our latest device, the NeuroBand X, offers unique features such as real-time mood assessment using EEG signals and adaptive learning algorithms that personalize health recommendations based on user behavior. These features set us apart from competitors by offering a deeper level of health monitoring and customization.",
-  },
-  {
-    questionId: 51,
-    useCaseId: 1,
-    question:
-      "What role does intellectual property play in NeuraWear’s product differentiation strategy?",
-    answer:
-      "Intellectual property is crucial in protecting our unique neuro-adaptive technologies and maintaining a competitive edge. We hold several patents related to biometric sensors and machine learning processes, which prevent competitors from replicating our most innovative features.",
-  },
-  {
-    questionId: 52,
-    useCaseId: 1,
-    question:
-      "What primary and secondary revenue streams-based pricing strategy has NeuraWear adopted for its flagship product, and why?",
-    answer:
-      "NeuraWear uses a value-based pricing strategy for the NeuroBand X, setting the price at $299. This reflects the advanced technology and the significant health benefits it offers compared to standard fitness trackers priced around $100-$150.",
-  },
-  {
-    questionId: 53,
-    useCaseId: 1,
-    question:
-      "What are NeuraWear’s sales revenue and customer base expansion targets for the next five years, especially in emerging markets?",
-    answer:
-      "NeuraWear aims to double our current annual sales revenue within the next five years, targeting a consistent growth rate of 20% year-on-year. For emerging markets, specifically in Asia and South America, we target a 40% increase in our customer base over the next three years.",
-  },
-  {
-    questionId: 54,
-    useCaseId: 1,
-    question:
-      "What are NeuraWear’s customer acquisition targets for the upcoming year, and what key metrics will you use to measure success?",
-    answer:
-      "NeuraWear plans to acquire 500,000 new users in the next year, focusing on the 25 to 40 age demographic. We will measure the success of these initiatives using key metrics such as cost per acquisition (CPA), conversion rates from trial to paid subscriptions, and initial user engagement levels during the first 90 days.",
-  },
-  {
-    questionId: 55,
-    useCaseId: 1,
-    question:
-      "What are NeuraWear’s long-term customer retention targets, and how do you measure effectiveness in retaining customers?",
-    answer:
-      "NeuraWear aims to maintain an annual customer retention rate of at least 85% over the next five years. Effectiveness in retaining customers will be measured by tracking the churn rate, customer satisfaction scores, and renewal rates for our subscription services.",
+      "We are adopting a penetration pricing strategy to quickly build a customer base in new markets, followed by a gradual price increase as we add more advanced features. A tiered pricing model will be introduced to cater to different economic segments, ensuring market competitiveness while maintaining healthy profit margins.",
   },
 ];
