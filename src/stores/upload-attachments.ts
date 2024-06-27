@@ -354,7 +354,14 @@ export const UploadAttachmentsSlice = createSlice({
       state.isUploading = false;
       state.isUploadAttachmentsError = false;
       state.isUploadAttachmentsSuccess = true;
-      state.additionalQuestionIds = action.payload.data ?? [];
+
+      const checkedData = action.payload.data ?? [];
+      const uniqueQuestionIdsSet = new Set<number>(checkedData.map((item) => item.question_id));
+      const uniqueQuestionIdsArray = Array.from(uniqueQuestionIdsSet);
+      state.additionalQuestionIds = uniqueQuestionIdsArray.map((questionId) => ({
+        question_id: questionId,
+      }));
+
       state.currentQuestionId =
         state.additionalQuestionIds.length > 0 ? state.additionalQuestionIds[0].question_id : 0;
       state.answers = [];
