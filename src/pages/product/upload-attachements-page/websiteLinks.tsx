@@ -17,6 +17,7 @@ import WebsiteLinksForm from "./website-links-form";
 import { DustbinIcon } from "src/components/icons";
 import Button from "src/components/reusable/button";
 import classNames from "classnames";
+import LeftContentWrapper from "./left-content-wrapper";
 
 export default function WebsiteLinks() {
   const dispatch = useAppDispatch();
@@ -102,8 +103,8 @@ export default function WebsiteLinks() {
     isUploadingUseCases || isUploadingUploadAttachments || fetchRequirementSummaryState.isLoading;
 
   return (
-    <div className="flex lg:flex-row flex-wrap gap-y-5 justify-between gap-x-[150px]">
-      <div className="flex flex-col justify-center p-[20px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-full max-w-[900px]">
+    <LeftContentWrapper>
+      <div className="flex flex-col justify-center p-2 lg:p-[20px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-full max-w-[900px]">
         <WebsiteLinksForm isLoading={isLoading} />
       </div>
 
@@ -161,6 +162,6 @@ export default function WebsiteLinks() {
           </p>
         </Button>
       </div>
-    </div>
+    </LeftContentWrapper>
   );
 }

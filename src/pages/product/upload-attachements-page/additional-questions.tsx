@@ -17,6 +17,7 @@ import {
 import toast from "react-hot-toast";
 import QuestionForm from "./question-form";
 import ReportPercentage from "./report-percentage";
+import LeftContentWrapper from "./left-content-wrapper";
 
 export default function AdditionalQuestions() {
   const dispatch = useAppDispatch();
@@ -165,7 +166,7 @@ export default function AdditionalQuestions() {
   return (
     <>
       {currentQuestion && (
-        <div className="flex lg:flex-row gap-y-5 flex-wrap justify-between gap-x-[100px]">
+        <LeftContentWrapper>
           <QuestionForm
             isLoading={isUploading}
             exampleAnswer={currentQuestion.answer}
@@ -175,11 +176,11 @@ export default function AdditionalQuestions() {
             key={currentQuestionId}
             answer={answerForCurrentQuestion?.answer}
           />
-          <div className="lg:max-w-[400px] w-full max-w-[200px] shrink-0">
+          <div className="max-w-[250px] lg:max-w-[300px] xl:max-w-[400px] w-full shrink-0">
             <p className="font-bold text-lg text-purple-900 mb-1">Report requirements</p>
             <ReportPercentage isAdditionalQuestions={true} />
           </div>
-        </div>
+        </LeftContentWrapper>
       )}
     </>
   );

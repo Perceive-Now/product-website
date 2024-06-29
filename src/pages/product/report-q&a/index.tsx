@@ -21,6 +21,7 @@ import {
 
 import DetailQAProgressBar from "src/components/@report-chat/Q&A/progress-bar";
 import EditQuestionAnswer from "src/components/@report-chat/Q&A/edit-Q&A";
+import { questionList } from "./_question";
 
 /**
  *
@@ -44,10 +45,19 @@ const ReportPage = () => {
   }, [sessionDetail]);
 
   const questionWithUsecase = useMemo(() => {
-    if (useCases && useCases.length > 0) {
-      return questionsList.filter(
-        (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
-      );
+    if (useCases && useCases.length > 0 && questionsList.length === 0) {
+      return questionList
+        .filter((q) => q.usecase === "common-question" || useCases.includes(q.usecase))
+        .map((q) => ({
+          question: q.question,
+          questionId: q.questionId,
+          useCaseId: q.useCaseId,
+          usecase: q.usecase,
+          answer: "",
+          exampleAnswer: q.answer, // Assigning the answer to exampleAnswer
+        }));
+    } else {
+      return questionsList;
     }
   }, [questionsList, useCases]);
 

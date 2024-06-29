@@ -45,7 +45,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
 
   return (
     <div>
-      <div className="flex flex-row gap-5 mt-15 mb-[68px] justify-center items-center">
+      <div className="flex flex-col xl:flex-row gap-3 xl:gap-5 mt-6 xl:mt-15 mb-4 xl:mb-[68px] justify-center items-center">
         <form onSubmit={handleSubmit(addWebsiteLink)}>
           <fieldset className="flex flex-col justify-center items-center gap-y-[20px] text-lg font-bold">
             <label>Type or Paste Your URL</label>
@@ -76,11 +76,11 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
           </fieldset>
         </form>
 
-        <div>
+        <div className="flex flex-col items-center">
           <p className="text-lg font-bold">Recommended websites</p>
-          <ul className="list-disc pl-[20px]">
+          <ul className="list-disc flex flex-wrap justify-center xl:flex-col pl-[20px]">
             {listContent.map((content) => (
-              <li key={content} className="text-sm">
+              <li key={content} className="text-sm max-w-fit pr-[30px] xl:pr-0 w-full">
                 {content}
               </li>
             ))}
