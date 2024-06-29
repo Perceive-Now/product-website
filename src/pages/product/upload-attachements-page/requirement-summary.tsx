@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
 import { useAppSelector } from "src/hooks/redux";
+import LeftContentWrapper from "./left-content-wrapper";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
   const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
@@ -26,8 +27,8 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     .filter((f) => f !== null);
 
   return (
-    <div className="flex lg:flex-row flex-wrap gap-y-5 justify-between w-full gap-x-[100px]">
-      <div className="flex flex-col min-h-[400px] max-w-[850px] w-full bg-white rounded-lg p-2 shadow-page-content">
+    <LeftContentWrapper>
+      <div className="flex flex-col lg:min-w-[500px] xl:min-w-[900px] min-h-[400px] max-h-[500px] pn_scroller overflow-y-auto bg-white rounded-lg p-2 shadow-page-content">
         {transformedRequirementSummary.length > 0 && (
           <>
             <p className="font-bold text-[32px] text-secondary-900">Here's a sneak peek!</p>
@@ -79,6 +80,6 @@ export default function RequirementSummary({ children }: { children: ReactNode }
       </div>
 
       {children}
-    </div>
+    </LeftContentWrapper>
   );
 }

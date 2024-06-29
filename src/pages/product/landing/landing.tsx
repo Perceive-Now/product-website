@@ -34,8 +34,8 @@ const stepsList = [
 export default function Landing() {
   return (
     <div className="h-[80vh] flex justify-center items-center">
-      <div className="flex flex-row w-fit space-x-5 h-[500px] items-end">
-        <div>
+      <div className="flex flex-row w-fit space-x-1 xl:space-x-5 h-[500px] items-end">
+        <div className="w-full max-w-[350px] lg:max-w-[400px] xl:max-w-[500px]">
           <div className="space-y-2">
             <Title text="Create" />
             <Title text="Your Perfect Report" />
@@ -48,7 +48,7 @@ export default function Landing() {
             </Button>
           </Link>
 
-          <div className="mt-12">
+          <div className="mt-4 lg:mt-8 xl:mt-12">
             <LandingMark />
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function Landing() {
             <BGVector0 className="z-0 row-start-1 col-start-1" />
           </StepWrapper>
 
-          <StepWrapper className="ml-[90px]">
+          <StepWrapper className="ml-[30px] xl:ml-[90px]">
             <ContentWrapper className="justify-end">
               <TextBlock
                 className="max-w-[225px]"
@@ -78,7 +78,7 @@ export default function Landing() {
             <BGVector1 className="z-0 row-start-1 col-start-1" />
           </StepWrapper>
 
-          <StepWrapper className="ml-[150px]">
+          <StepWrapper className="ml-[60px] xl:ml-[150px]">
             <ContentWrapper className="justify-start">
               <NumberCircle number={3} className="text-primary-900 ml-[30px] mr-1" />
               <TextBlock
@@ -90,7 +90,7 @@ export default function Landing() {
             <BGVector2 className="z-0 row-start-1 col-start-1" />
           </StepWrapper>
 
-          <StepWrapper className="ml-[210px]">
+          <StepWrapper className="ml-[90px] xl:ml-[210px]">
             <ContentWrapper className="justify-end">
               <TextBlock
                 className="max-w-[230px]"
@@ -120,7 +120,12 @@ const ContentWrapper = ({
   children: React.ReactNode;
   className: string;
 }) => (
-  <div className={classNames("z-10 flex flex-row items-center row-start-1 col-start-1", className)}>
+  <div
+    className={classNames(
+      "z-10 flex flex-row items-center row-start-1 col-start-1 w-[455px]",
+      className,
+    )}
+  >
     {children}
   </div>
 );
