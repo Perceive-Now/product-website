@@ -14,10 +14,10 @@ const listContent = [
 export default function DropZoneContent() {
   return (
     <>
-      <div className="flex flex-row justify-center gap-x-5 mb-9 mt-15">
+      <div className="flex flex-row justify-center lg:gap-x-5 gap-x-2 mb-5 lg:mb-9 mt-6 lg:mt-15">
         <div className="flex flex-col items-center text-lg font-bold">
           <UploadIcon />
-          <p>Drag and Drop files to upload</p>
+          <p className="text-center">Drag and Drop files to upload</p>
           <p className="text-base">or</p>
           <p className="text-primary-900 underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out">
             Browse

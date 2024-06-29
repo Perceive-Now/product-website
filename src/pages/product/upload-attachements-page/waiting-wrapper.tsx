@@ -34,7 +34,7 @@ export default function WaitingWrapper({ children }: { children: React.ReactNode
 
   return (
     <RequirementSummary>
-      <div className="w-[400px] shrink-0">
+      <div className="max-w-[250px] lg:max-w-[300px] xl:max-w-[400px] w-full shrink-0">
         {children}
         <div className="mt-5"></div>
         {nextPayement && <ToPayementButton />}

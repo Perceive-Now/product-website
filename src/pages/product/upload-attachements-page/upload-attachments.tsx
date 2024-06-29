@@ -12,6 +12,7 @@ import {
   setFilesToUpload,
 } from "../../../stores/upload-attachments";
 import classNames from "classnames";
+import LeftContentWrapper from "./left-content-wrapper";
 
 const baseStyle = {
   flex: 1,
@@ -93,7 +94,7 @@ export default function UploadAttachments() {
   };
 
   return (
-    <div className="flex flex-row justify-between gap-x-[150px]">
+    <LeftContentWrapper>
       {/* DropZone */}
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
@@ -137,6 +138,6 @@ export default function UploadAttachments() {
           </p>
         </Button>
       </div>
-    </div>
+    </LeftContentWrapper>
   );
 }
