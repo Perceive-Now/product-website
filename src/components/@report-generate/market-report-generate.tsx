@@ -114,7 +114,7 @@ const GenerateMarketReport = () => {
     const filename = generateKnowId();
     setFileName(filename);
     try {
-      const res = await axios.post("http://172.203.243.82:8000/create_file_usecase", {
+      const res = await axios.post("https://report.api.perceivenow.ai/create_file_usecase", {
         file_name: filename,
         number: "1",
         text: `${marketAnalysisQA}`,
