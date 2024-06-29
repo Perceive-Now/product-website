@@ -165,7 +165,7 @@ export default function AdditionalQuestions() {
   return (
     <>
       {currentQuestion && (
-        <div className="flex flex-row justify-between gap-x-[150px]">
+        <div className="flex lg:flex-row gap-y-5 flex-wrap justify-between gap-x-[100px]">
           <QuestionForm
             isLoading={isUploading}
             exampleAnswer={currentQuestion.answer}
@@ -175,7 +175,7 @@ export default function AdditionalQuestions() {
             key={currentQuestionId}
             answer={answerForCurrentQuestion?.answer}
           />
-          <div className="w-[400px] shrink-0">
+          <div className="lg:max-w-[400px] w-full max-w-[200px] shrink-0">
             <p className="font-bold text-lg text-purple-900 mb-1">Report requirements</p>
             <ReportPercentage isAdditionalQuestions={true} />
           </div>

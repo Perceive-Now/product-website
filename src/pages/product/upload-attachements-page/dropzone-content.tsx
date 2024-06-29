@@ -14,7 +14,7 @@ const listContent = [
 export default function DropZoneContent() {
   return (
     <>
-      <div className="flex flex-row justify-center gap-x-5 mb-9 mt-15">
+      <div className="flex flex-row justify-center gap-x-5 mb-9 mt-15 min-w-[600px]">
         <div className="flex flex-col items-center text-lg font-bold">
           <UploadIcon />
           <p>Drag and Drop files to upload</p>
