@@ -205,8 +205,8 @@ const UseCaseSelect = () => {
       </p>
       <ProgressBar />
       <div className="w-full mt-2">
-        <div className="flex justify-between bg-appGray-100 p-2 rounded-lg w-full">
-          <div className="w-[200px]">
+        <div className="flex justify-between border bg-white p-2 rounded-lg w-full">
+          {/* <div className="w-[200px]">
             {UsecaseOptions.map((usecase, idx) => (
               <div key={idx * 99} className="w-full ">
                 <button
@@ -223,8 +223,8 @@ const UseCaseSelect = () => {
                 </button>
               </div>
             ))}
-          </div>
-          <div className="w-full bg-white px-4  pt-1 pb-8">
+          </div> */}
+          <div className="w-full bg-white pb-8">
             <div className="w-full">
               <UseCaseTab
                 UseCaseOptions={useCaseSelected}

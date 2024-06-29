@@ -115,11 +115,11 @@ const KnowNowHistory = ({ History }: Props) => {
       icon: <TrashIcon className="h-2 w-2" />,
       action: onDelete,
     },
-    {
-      label: "Share",
-      icon: <ShareIcon className="h-2 w-2" />,
-      action: onShare,
-    },
+    // {
+    //   label: "Share",
+    //   icon: <ShareIcon className="h-2 w-2" />,
+    //   action: onShare,
+    // },
   ];
 
   const indexedHistory = History.map((element, index) => ({ index, element }));

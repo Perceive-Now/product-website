@@ -47,7 +47,7 @@ export default function QuestionForm({
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 
   return (
-    <div className="w-[900px] bg-white p-2 shadow-page-content">
+    <div className="max-w-[900px] w-full bg-white p-2 shadow-page-content">
       <div className="space-y-2.5">
         <h4
           className="text-primary-900 text-xl font-semibold"

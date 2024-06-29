@@ -150,7 +150,7 @@ export default function WebsiteLinks() {
           type="default"
           classname="w-full border border-orange-500 mt-[20px]"
           handleClick={handleContinueBtnClick}
-          disabled={isLoading}
+          disabled={websiteLinks.length > 0}
           loading={false}
         >
           <p

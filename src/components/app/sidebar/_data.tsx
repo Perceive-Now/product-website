@@ -5,7 +5,7 @@ import type { ReactElement } from "react";
 import NewChatIcon from "../../icons/side-bar/new-chat";
 import NewReportIcon from "../../icons/side-bar/new-report";
 import DraftIcon from "../../icons/side-bar/draft-icon";
-import ReportsListIcon from "src/components/icons/side-bar/reports-list";
+// import ReportsListIcon from "src/components/icons/side-bar/reports-list";
 import IndustriesIcon from "src/components/icons/side-bar/industries-icon";
 
 const sidebarItems: ISidebarListItem[] = [
