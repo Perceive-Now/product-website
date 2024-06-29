@@ -158,6 +158,10 @@ export default function AdditionalQuestions() {
     (answer) => currentQuestion?.questionId === answer?.questionId,
   );
 
+  if (!currentQuestion) {
+    handleSkipBtnClick();
+  }
+
   return (
     <>
       {currentQuestion && (

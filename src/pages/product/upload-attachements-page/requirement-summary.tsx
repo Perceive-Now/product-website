@@ -3,7 +3,7 @@ import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
 import { useAppSelector } from "src/hooks/redux";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
-  const { requirementSummary, fetchRequirementSummaryState } = useAppSelector(
+  const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
     (state) => state.uploadAttachments,
   );
 
