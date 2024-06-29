@@ -2,7 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jsCookie from "js-cookie";
 
-import { questionList } from "src/pages/product/report-q&a/_question";
+// import { questionList } from "src/pages/product/report-q&a/_question";
 
 const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
@@ -125,14 +125,7 @@ export const initialState: IQAState = {
     status: "",
     userID: "",
   },
-  questionsList: questionList.map((q) => ({
-    question: q.question,
-    questionId: q.questionId,
-    useCaseId: q.useCaseId,
-    usecase: q.usecase,
-    answer: "",
-    exampleAnswer: q.answer,
-  })),
+  questionsList: [],
   skippedQuestionList: [],
   generateAnswerError: false,
   generateAnswerSuccess: false,

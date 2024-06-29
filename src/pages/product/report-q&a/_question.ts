@@ -349,7 +349,7 @@ export const questionList = [
     usecase: "market-analysis",
     question:
       "How does your company assess the impact of global market drivers and restraints on its product development and marketing strategies?",
-    answer: `NeuraWear utilizes a comprehensive analysis approach to adapt our strategies based on global market drivers and restraints:\n• Economic Indicators: We monitor global economic trends, such as inflation rates and consumer spending patterns, to forecast demand and adjust our pricing strategy accordingly.\n• Consumer Trends: Through ongoing market research, we track changes in consumer preferences and technology adoption rates, which guide our product development and feature prioritization.\nRegulatory Changes: We keep abreast of new regulations in key markets, adapting our compliance strategies to ensure seamless market entry and sustained operations.`,
+    answer: `NeuraWear utilizes a comprehensive analysis approach to adapt our strategies based on global market drivers and restraints:\n• Economic Indicators: We monitor global economic trends, such as inflation rates and consumer spending patterns, to forecast demand and adjust our pricing strategy accordingly.\n• Consumer Trends: Through ongoing market research, we track changes in consumer preferences and technology adoption rates, which guide our product development and feature prioritization. Regulatory Changes: We keep abreast of new regulations in key markets, adapting our compliance strategies to ensure seamless market entry and sustained operations.`,
   },
   {
     questionId: 45,
@@ -397,7 +397,7 @@ export const questionList = [
     useCaseId: 1,
     usecase: "market-analysis",
     question:
-      ". Can you describe the competitive advantages of your latest product compared to its main competitors?",
+      "Can you describe the competitive advantages of your latest product compared to its main competitors?",
     answer:
       "Our latest device, the NeuroBand X, offers unique features such as real-time mood assessment using EEG signals and adaptive learning algorithms that personalize health recommendations based on user behavior. These features set us apart from competitors by offering a deeper level of health monitoring and customization.",
   },
