@@ -65,8 +65,7 @@ const ReportPage = () => {
     if (questionWithUsecase && questionWithUsecase?.length > 0) {
       dispatch(questionWithUseCases(questionWithUsecase));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, questionWithUsecase]);
 
   const question = useMemo(
     () =>
