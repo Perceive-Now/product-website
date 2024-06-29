@@ -137,7 +137,8 @@ function App() {
               element={<MarketIntelligenceKnowNow />}
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
-            {/*  */}
+
+            {/* For demo only */}
             <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} />
             <Route path="/chats" element={<ChatComponent />} />
 
