@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import ProfileModal from "../../../components/modal/profile-modal";
 import ChangePasswordModal from "../../../components/modal/changepassword";
 
-import Button from "../../../components/reusable/button";
 import Loading from "../../../components/reusable/loading";
 import ProfileIcon from "../../../components/icons/common/profile";
 import EditIcon from "../../../components/icons/miscs/Edit";

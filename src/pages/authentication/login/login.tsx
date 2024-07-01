@@ -48,6 +48,8 @@ export default function LoginPage() {
 
   //
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: ILoginFormValues = {
@@ -114,16 +116,9 @@ export default function LoginPage() {
   if (isLoading) return <></>;
 
   return (
-    <div className="flex justify-center items-center px-2 h-full">
-      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px] h-full">
+    <div className="flex h-full 2xl:h-[calc(100vh-200px)] justify-center items-center px-2">
+      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px]">
         <div className="flex flex-col items-center">
-          {/* <img
-            src={Logo}
-            width={76}
-            height={60}
-            alt="PerceiveNow logo"
-            className="w-9 h-8 object-contain"
-          /> */}
           <h1 className="text-4xl font-extrabold text-secondary-800 mt-5">Sign In</h1>
         </div>
 
@@ -189,7 +184,7 @@ export default function LoginPage() {
           <Button
             classname="w-full"
             htmlType="submit"
-            // disabled={!userNameValue || !passwordValue}
+            disabled={isSubmitting || isGoogleSubmitting}
             loading={isSubmitting}
             type="auth"
           >
@@ -199,12 +194,25 @@ export default function LoginPage() {
 
         <p className="text-center mt-2.5">
           <span>Don’t have an account?</span>
-          <Link to={"/signup"} className="ml-2 font-bold text-primary-500">
+
+          <Link
+            to={"/signup"}
+            className={classNames("ml-2 font-bold text-primary-500", {
+              "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
+            })}
+            aria-disabled={isSubmitting}
+          >
             Sign Up
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <GoogleAuth type="signin" isAgree={true} title="Sign in with Google" />
+        <GoogleAuth
+          type="signin"
+          isAgree={true}
+          title="Sign in with Google"
+          isSubmitting={isGoogleSubmitting}
+          setIsSubmitting={setIsGoogleSubmitting}
+        />
       </form>
     </div>
   );
