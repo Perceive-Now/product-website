@@ -193,7 +193,7 @@ const UserProfile = () => {
                     <div>{profile.value || "N/A"}</div>
                   </div>
                 ))}
-                <div className="flex items-center justify-end">
+                {/* <div className="flex items-center justify-end">
                   <Button
                     startIcon={<EditIcon className="text-primary-900" />}
                     htmlType="button"
@@ -204,7 +204,7 @@ const UserProfile = () => {
                   >
                     <span>Change Password</span>
                   </Button>
-                </div>
+                </div> */}
               </div>
             </ProfileComponent>
 
