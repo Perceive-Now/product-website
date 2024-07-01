@@ -76,7 +76,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     async (value: IProfile) => {
       const values = {
         first_name: value.first_name,
-        last_name: value.first_name,
+        last_name: value.last_name,
         username: value.username,
         phone_number: value.phone_number,
         topics_of_interest: value.topics_of_interest,
