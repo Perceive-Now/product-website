@@ -25,8 +25,8 @@ const StayTuned = () => {
           questions or need further help in the meantime.
         </div>
         <div className="flex justify-center gap-2">
-          <Link to="/my-reports">
-            <Button type="secondary" size="small">
+          <Link to="/my-reports" aria-disabled="true">
+            <Button type="secondary" size="small" disabled>
               See all your reports
             </Button>
           </Link>
