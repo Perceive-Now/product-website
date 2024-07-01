@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 import { questionList } from "src/pages/product/report-q&a/_question";
-import Button from "../reusable/button";
 import { generateKnowId } from "src/utils/helpers";
+import Button from "../reusable/button";
 
 const MarketAnalysisSections = [
   {

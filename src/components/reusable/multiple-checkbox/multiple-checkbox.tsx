@@ -19,28 +19,6 @@ export const MultipleCheckbox: FunctionComponent<Props> = ({
   value,
   classname,
 }) => {
-  // const handleOnChange = useCallback(
-  //   (e: ChangeEvent<HTMLInputElement>) => {
-  //     const updatedValue = [...value];
-  //     const { value: checkboxValue, checked } = e.target;
-  //     if (checked) {
-  //       console.log(checked)
-  //       // updatedValue.push(e.target.value.toString());
-  //       updatedValue.push({ value: checkboxValue, label: e.target.id });
-  //       onChange(updatedValue);
-
-  //     } else {
-
-  //       const filteredValue = updatedValue.filter(
-  //         (item) => item.value !== checkboxValue
-  //       );
-  //       onChange(filteredValue);
-  //     }
-  //     console.log(updatedValue)
-
-  //   },
-  //   [onChange, value],
-  // );
   const handleOnChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const { value: checkboxValue, checked } = e.target;

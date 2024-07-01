@@ -1,17 +1,26 @@
 import { useCallback, useMemo, useState } from "react";
-import axiosInstance from "../../../utils/axios";
-import { API_URL, Auth_CODE } from "../../../utils/constants";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+//
+import axiosInstance from "../../../utils/axios";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+
+//
 import { setSession } from "../../../stores/session";
-import Button from "../../../components/reusable/button";
+import { AppConfig } from "src/config/app.config";
 
 interface IPaymentIntent {
   payment_intent_id: string;
   clientSecret: string;
 }
 
+const Auth_CODE = AppConfig.Auth_CODE;
+const API_URL = AppConfig.API_URL;
+
+/**
+ *
+ */
 const useToPayment = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

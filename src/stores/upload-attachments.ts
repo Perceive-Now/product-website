@@ -1,8 +1,9 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { questionList } from "src/pages/product/report-q&a/_question";
+import { AppConfig } from "src/config/app.config";
 
-const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
 export const EUploadAttachmentsPages = {
   UploadAttachments: 0,

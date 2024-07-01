@@ -1,6 +1,7 @@
+import { AppConfig } from "src/config/app.config";
 import axiosInstance from "../axios";
 
-const authCode = process.env.REACT_APP_AUTH_CODE;
+const authCode = AppConfig.Auth_CODE;
 
 export async function getProducts() {
   const response = await axiosInstance.get<IProductResponse>(

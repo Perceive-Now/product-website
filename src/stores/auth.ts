@@ -10,13 +10,10 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
 import { AppConfig } from "../config/app.config";
-// import { useAppDispatch } from "../hooks/redux";
-// import { setSession } from "./session";
 
 /**
  * Interfaces
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface IResponse<T = any> {
   success: boolean;
   message: string;

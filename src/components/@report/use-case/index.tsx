@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import classNames from "classnames";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
@@ -13,7 +12,7 @@ import {
   uploadUseCases,
 } from "../../../stores/use-case";
 
-import { UseCaseOptions, UsecaseOptions } from "./__use-cases";
+import { UseCaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 
 import { reset as resetQA } from "src/stores/Q&A";
@@ -55,8 +54,6 @@ const UseCaseSelect = () => {
 
   const [selected, setSelected] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
-  const [useCaseSelected, setUseCaseSelected] = useState<any>(UseCaseOptions);
-  const [useCaseType, setUseCaseType] = useState(UsecaseOptions[0].value);
   const [reports, setReport] = useState<any>([]);
 
   useEffect(() => {
@@ -193,11 +190,6 @@ const UseCaseSelect = () => {
     [dispatch, sessionDetail],
   );
 
-  const chooseUseCase = useCallback((options: any) => {
-    setUseCaseType(options.value);
-    setUseCaseSelected(UseCaseOptions);
-  }, []);
-
   return (
     <div className="h-full">
       <p className="text-heroDark-900 text-5xl font-bold">
@@ -206,28 +198,10 @@ const UseCaseSelect = () => {
       <ProgressBar />
       <div className="w-full mt-2">
         <div className="flex justify-between border bg-white p-2 rounded-lg w-full">
-          {/* <div className="w-[200px]">
-            {UsecaseOptions.map((usecase, idx) => (
-              <div key={idx * 99} className="w-full ">
-                <button
-                  type="button"
-                  className={classNames(
-                    "py-[12px] px-2 w-full rounded flex justify-start",
-                    useCaseType === usecase.value
-                      ? "bg-white text-primary-900 font-bold"
-                      : "text-secondary-800",
-                  )}
-                  onClick={() => chooseUseCase(usecase)}
-                >
-                  {usecase.reportName}
-                </button>
-              </div>
-            ))}
-          </div> */}
           <div className="w-full bg-white pb-8">
             <div className="w-full">
               <UseCaseTab
-                UseCaseOptions={useCaseSelected}
+                UseCaseOptions={UseCaseOptions}
                 selected={selected}
                 handleChange={handleChange}
                 reports={reports}

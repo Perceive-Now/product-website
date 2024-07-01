@@ -2,19 +2,28 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
+//
 import ArrowLeftIcon from "../../../../components/icons/common/arrow-left";
 
+//
 import Button from "../../../../components/reusable/button";
 import Loading from "../../../../components/reusable/loading";
 
+//
 import { IProduct, getProducts } from "../../../../utils/api/product";
 
+//
 import axiosInstance from "../../../../utils/axios";
 
-import { API_URL, Auth_CODE } from "../../../../utils/constants";
-
+//
 import StripePayment from "../stripe";
 
+//
+import { AppConfig } from "src/config/app.config";
+
+//
+const Auth_CODE = AppConfig.Auth_CODE;
+const API_URL = AppConfig.API_URL;
 interface Props {
   changeActiveStep: (step: number) => void;
 }
@@ -63,6 +72,9 @@ interface IPaymentIntent {
   clientSecret: string;
 }
 
+/**
+ *
+ */
 const SubscriptionPlan = ({ changeActiveStep }: Props) => {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-import ReportChatQuestionAnswer from "src/components/@report-chat/Q&A/Question";
+import ReportChatQuestionAnswer from "src/components/@report/Q&A/Question";
 
 export const QAPagesList = [
   {
