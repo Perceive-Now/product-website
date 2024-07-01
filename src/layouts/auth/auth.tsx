@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 //
-import PageLoading from "../../components/app/pageLoading";
+import PageLoading from "../pageLoading";
 
 //
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";

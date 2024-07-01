@@ -1,8 +1,13 @@
 import { Elements } from "@stripe/react-stripe-js";
-import { STRIPE_PROMISE } from "../../../../utils/constants";
-
-import StripePaymentForm from "./stripe-form";
 import { loadStripe } from "@stripe/stripe-js";
+
+//
+import StripePaymentForm from "./stripe-form";
+
+//
+import { AppConfig } from "src/config/app.config";
+
+//
 import { IProducts } from "../../../../utils/api/product";
 
 interface Props {
@@ -11,6 +16,11 @@ interface Props {
   selectedPlan: IProducts[];
 }
 
+const STRIPE_PROMISE = AppConfig.STRIPE_PUBLISHABLE_KEY;
+
+/**
+ *
+ */
 const StripePayment = ({ clientSecret, changeActiveStep, selectedPlan }: Props) => {
   return (
     <div className="w-full">

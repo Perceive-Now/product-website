@@ -10,7 +10,7 @@ import Button from "src/components/reusable/button";
 import { useAppDispatch } from "src/hooks/redux";
 
 //
-import { generateNewId } from "src/stores/know-now1";
+import { generateNewId } from "src/stores/know-now";
 import { getMarketThread, resetKnowNowMarket } from "src/stores/knownow-market";
 
 //

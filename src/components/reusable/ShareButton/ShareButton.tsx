@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActionButton } from "../../@product/publicationItem/publicationItem";
+import { ActionButton } from "../../@chart/publicationItem/publicationItem";
 import { ShareIcon } from "../../icons";
 
 //

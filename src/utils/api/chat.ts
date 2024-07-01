@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import toast from "react-hot-toast";
-// import axiosInstance from "../axios";
+import { AppConfig } from "src/config/app.config";
 
-const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
 export async function getChatBotAnswer(body: IChat) {
   try {

@@ -1,11 +1,11 @@
 import EmailIcon from "../../../../components/icons/common/email";
-import Button from "../../../../components/reusable/button";
 
 import * as yup from "yup";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import classNames from "classnames";
+import Button from "src/components/reusable/button";
 
 interface IConfirmEmail {
   verification_code: string;

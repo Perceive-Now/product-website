@@ -3,7 +3,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { quickPromptContent } from "./quick-prompt-content";
 import { type AnyObject } from "yup/lib/types";
-import Button from "../../../components/reusable/button";
 import classNames from "classnames";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
@@ -15,6 +14,7 @@ import jsCookie from "js-cookie";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import useToPayment from "./use-to-payment";
+import Button from "src/components/reusable/button";
 
 export default function QuickPromptForm() {
   const dispatch = useAppDispatch();

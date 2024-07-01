@@ -14,8 +14,6 @@ const LiquidSphereLoaderIcon: React.FC<LiquidSphereLoaderProps> = ({
 
   const yPosition = -`${160 - ((100 - percentage) / 100) * 160}`;
 
-  console.log(yPosition);
-
   return (
     <svg viewBox="0 0 164 164" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <g id="sphere">

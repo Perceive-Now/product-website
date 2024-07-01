@@ -9,21 +9,14 @@ import { setSession } from "../../../stores/session";
 import { questionList } from "./_question";
 
 import Loading from "../../../components/reusable/loading";
-// import BackButton from "../../../components/reusable/back-button";
 
-import IPStepper from "../../../components/@report-chat/ip-analysis/stepper";
-// import Thankyou from "../../../components/@report-chat/ip-analysis/use-case/thank-you";
-// import IPReview from "../../../components/@report-chat/Q&A/review/review";
-import NewQuestion from "../../../components/@report-chat/ip-analysis/use-case/new-question";
-import EditQuestion from "../../../components/@report-chat/ip-analysis/use-case/question/edit-question";
-import ChatQuestionAnswer from "../../../components/@report-chat/ip-analysis/use-case/question/question-1";
-
-// import SkippedQuestion from "./skipped-question";
-
+import IPStepper from "../../../components/@report/use-case/stepper";
+import ChatQuestionAnswer from "src/components/@report/use-case/question/question-1";
+import Thankyou from "src/components/@report/use-case/thank-you";
+import EditQuestion from "src/components/@report/use-case/question/edit-question";
+import NewQuestion from "src/components/@report/use-case/new-question";
+import SkippedQuestionAnswer from "src/components/@report/use-case/question/skipped-question";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
-import SkippedQuestionAnswer from "src/components/@report-chat/ip-analysis/use-case/question/skipped-question";
-import Thankyou from "src/components/@report-chat/ip-analysis/use-case/thank-you";
-// import Payment from "src/components/@report-chat/ip-analysis/use-case/payment";
 
 /**
  *
@@ -103,11 +96,6 @@ export default function ReportQuestionAnswerPage() {
       value: 5,
       component: <Thankyou changeActiveStep={changeActiveStep} />,
     },
-    // {
-    //   label: "Review",
-    //   value: 6,
-    //   component: <IPReview changeActiveStep={changeActiveStep} activeStep={activeStep} />,
-    // },
     {
       label: "Edit",
       value: 7,
@@ -205,18 +193,6 @@ export default function ReportQuestionAnswerPage() {
               ))}
             </div>
           </div>
-          {/* {sessionDetail?.step_id !== 6 && (
-            <div className="flex-shrink-0 2xl:w-[300px]">
-              <SkippedQuestion
-                questions={
-                  questionList
-                    .filter((q) => sessionDetail?.skipped_question?.includes(q.questionId))
-                    .map((q) => q) || []
-                }
-                questionWithUsecase={questionWithUsecase}
-              />
-            </div>
-          )} */}
         </div>
       </div>
     </>
