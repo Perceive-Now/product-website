@@ -44,11 +44,11 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
         const userDetail = res.data as IGoogleDetail;
 
         const params = {
-          username: userDetail?.email || "",
+          username: userDetail?.email || "user",
           email: userDetail?.email || "",
           password: "",
-          first_name: userDetail?.given_name,
-          last_name: userDetail?.family_name,
+          first_name: userDetail?.given_name || "user",
+          last_name: userDetail?.family_name || "user",
           company_id: "",
           accept_terms: true,
           two_fa: false,
