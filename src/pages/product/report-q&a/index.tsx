@@ -22,6 +22,7 @@ import {
 import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
 import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
 import { questionList } from "./_question";
+import { LiquidSphereLoaderIcon } from "src/components/icons";
 
 /**
  *
@@ -38,12 +39,17 @@ const ReportPage = () => {
     (state) => state.QA,
   );
 
+  const totalQuestions = questionsList.length + skippedQuestionList.length;
+  const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
+  const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
+
   useEffect(() => {
     if (sessionDetail?.use_cases) {
       setUseCases(sessionDetail?.use_cases);
     }
   }, [sessionDetail]);
 
+  //
   const questionWithUsecase = useMemo(() => {
     if (useCases && useCases.length > 0 && questionsList.length === 0) {
       return questionList
@@ -126,6 +132,8 @@ const ReportPage = () => {
     }
   }, [currentPageId, currentQuestionId, dispatch, navigate, questionWithUsecase]);
 
+  console.log(percentage);
+
   return (
     <div className="w-full">
       <button className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit" onClick={onBack}>
@@ -158,11 +166,19 @@ const ReportPage = () => {
             ))}
           </div>
         </div>
-        {currentPageId !== 2 && (
-          <div className="flex-shrink-0 lg:w-[300px]">
-            {<SkippedQuestion questions={skippedQuestionList || []} />}
+        <div>
+          <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden">
+            <LiquidSphereLoaderIcon className="row-start-1 col-start-1" percentage={percentage} />
+            <p className="col-start-1 row-start-1 text-white flex flex-row items-center justify-center text-center w-full mix-blend-difference">
+              <>{percentage}%</>
+            </p>
           </div>
-        )}
+          {currentPageId !== 2 && (
+            <div className="flex-shrink-0 lg:w-[300px]">
+              {<SkippedQuestion questions={skippedQuestionList || []} />}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
