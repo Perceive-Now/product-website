@@ -1,9 +1,10 @@
+import { AppConfig } from "src/config/app.config";
 import axiosInstance from "../axios";
 
 /**
  *
  */
-const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
+const authCode = AppConfig.Auth_CODE;
 
 export async function getPatentsYearly(keywords: string[]) {
   const response = await axiosInstance.get<IPatent>(

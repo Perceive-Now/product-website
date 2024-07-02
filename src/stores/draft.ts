@@ -1,5 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+//
 import {
   IUploadAttachmentsState,
   initialState as initialStateUploadAttachments,
@@ -8,10 +10,15 @@ import {
   IUploadQuickPromptsState,
   initialState as initialStateUploadQuickPrompt,
 } from "./upload-quick-prompt";
+
+//
 import { IUseCase, initialState as initialStateUseCase } from "./use-case";
+import { AppConfig } from "src/config/app.config";
 
-const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+//
+const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
+//
 export const EReportSectionPageIDs = {
   UseCases: "new-report",
   InteractionMethod: "interaction-method",

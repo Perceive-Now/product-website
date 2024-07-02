@@ -19,7 +19,9 @@ import { useAppDispatch } from "../../../hooks/redux";
 import { signUpUser } from "../../../stores/auth";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import GoogleAuth from "../../../components/@auth/google";
-import { WEBSITE_URL } from "../../../utils/constants";
+import { AppConfig } from "src/config/app.config";
+
+const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
 /**
  *

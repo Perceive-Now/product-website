@@ -10,9 +10,6 @@ import ForgotPasswordPage from "./pages/authentication/forgot-password";
 import HelpPage from "./pages/miscs/help";
 import FeedbackPage from "./pages/miscs/feedback";
 
-// Product dashboard
-import DashboardPage from "./pages/product/dashboard";
-
 //
 import PageNotFound404 from "./pages/404";
 
@@ -32,8 +29,8 @@ import MyReport from "./pages/my-account/my-reports";
 import Setting from "./pages/my-account/setting";
 
 // Payment
-import StayTuned from "./components/default";
-import Payment from "./components/@report-chat/ip-analysis/use-case/payment";
+import StayTunedPage from "./pages/stay-tuned";
+import Payment from "./components/@report/use-case/payment";
 
 import { WelcomePage } from "./components/@signup-complete";
 
@@ -42,7 +39,7 @@ import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 
 // analytics
-import IPFullReport from "./pages/product/ip-landscaping/Full-report";
+import IPFullReport from "./pages/product/analytics/Full-report";
 
 // Report
 import UseCasePage from "./pages/product/use-case";
@@ -62,8 +59,8 @@ import ReportSectionStateManagementService from "./layouts/report-section-state-
 import { EReportSectionPageIDs } from "./stores/draft";
 import KnowNowPage from "./pages/product/know-now";
 import ShareKnowNowPage from "./pages/product/share";
-import ChatComponent from "./pages/product/know-now/chat-test";
-import MarketIntelligenceKnowNowSocket from "./pages/product/know-now/socket";
+
+// Demo
 import GenerateMarketReport from "./components/@report-generate/market-report-generate";
 
 /**
@@ -97,7 +94,7 @@ function App() {
             <Route path="/" element={<Landing />} />
 
             <Route path="/payment" element={<Payment />} />
-            <Route path="/stay-tuned" element={<StayTuned />} />
+            <Route path="/stay-tuned" element={<StayTunedPage />} />
 
             {/* Account */}
             <Route path="/profile" element={<UserProfile />} />
@@ -138,18 +135,8 @@ function App() {
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
 
-            {/* For demo only */}
-            <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} />
-            <Route path="/chats" element={<ChatComponent />} />
-
-            {/* <Route path="/chat" element={<MarketIntelligenceKnowNowSocket />} /> */}
-            {/* <Route path="/chats" element={<ChatComponent />} /> */}
-
             {/*Graph */}
-            <Route path="/ip-analysis/analytics" element={<IPFullReport />} />
-
-            {/* Previous graph and code */}
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/analytics" element={<IPFullReport />} />
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />

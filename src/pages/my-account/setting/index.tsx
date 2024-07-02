@@ -1,9 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-import ProfileComponent from "../profile/profile";
-import { getBillingHistory } from "../../../utils/api/product";
 import { useEffect } from "react";
+
+//
+import ProfileComponent from "../profile/profile";
+
+//
+import { getBillingHistory } from "../../../utils/api/product";
+
+//
 import Loading from "../../../components/reusable/loading";
 
+/**
+ *
+ */
 const Setting = () => {
   const {
     data: billings,

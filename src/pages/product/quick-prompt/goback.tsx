@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ArrowLeftIcon from "../../../components/icons/common/arrow-left";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch } from "../../../hooks/redux";
 import { decrementStep } from "../../../stores/upload-quick-prompt";
 
 const BackButtonUI = () => {

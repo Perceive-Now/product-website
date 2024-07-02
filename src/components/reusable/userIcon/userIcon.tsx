@@ -1,12 +1,9 @@
-// import { useAppSelector } from "../../../hooks/redux";
-
-// import { convertToBase64String } from "../../../utils/helpers";
-
 interface Props {
   first_name: string;
   last_name: string;
   profile_photo?: string;
 }
+
 /**
  *
  */

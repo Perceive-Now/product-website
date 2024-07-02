@@ -5,11 +5,11 @@ import jsCookie from "js-cookie";
 import debounce from "lodash.debounce";
 
 //
-import AddQuery from "../../../components/@chat/add-query";
+import AddQuery from "../../../components/@know-now/add-query";
 
 //
-import QueryAnswer from "../../../components/@chat/query-answer";
-import ChatQuery from "../../../components/@chat/chat-question";
+import QueryAnswer from "../../../components/@know-now/query-answer";
+import ChatQuery from "../../../components/@know-now/chat-question";
 
 //
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";

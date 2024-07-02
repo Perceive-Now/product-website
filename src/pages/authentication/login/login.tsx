@@ -12,10 +12,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../../components/reusable/button";
 import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
-//
-// import Logo from "../../../assets/images/logo-small.svg";
-// import { WEBSITE_URL } from "../../../utils/constants";
-
 // Store
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
@@ -174,10 +170,9 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
             )}
           </fieldset>
-          {/* Staging Comment */}
-          {/* <div className="text-sm text-primary-500 font-bold mt-0.5">
+          <div className="text-sm text-primary-500 font-bold mt-0.5">
             <Link to="/forgot-password">Forgot password?</Link>
-          </div> */}
+          </div>
         </div>
 
         <div className="flex justify-center w-full mt-3">
