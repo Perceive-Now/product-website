@@ -1,10 +1,9 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jsCookie from "js-cookie";
+import { AppConfig } from "src/config/app.config";
 
-// import { questionList } from "src/pages/product/report-q&a/_question";
-
-const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
 interface IResponse<T = any> {
   success: boolean;

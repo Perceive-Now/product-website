@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+const authCode = AppConfig.Auth_CODE;
 
-const authCode = process.env.REACT_APP_AUTH_CODE;
-
+import { AppConfig } from "src/config/app.config";
 import axiosInstance from "../axios";
 
 /**
@@ -58,9 +57,4 @@ export async function getCompanies() {
     `/api/get_company_list?code=${authCode}&clientId=default`,
   );
   return response.data.companies;
-}
-export async function patchUserProfile({ body }: any) {
-  const response = await axiosInstance.patch(``, body);
-
-  return response.data;
 }

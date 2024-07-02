@@ -4,9 +4,9 @@ import jsCookie from "js-cookie";
 import axios from "axios";
 
 //
-import AddQuery from "../../../components/@chat/add-query";
-import ChatQuery from "../../../components/@chat/chat-question";
-import QueryAnswer from "../../../components/@chat/query-answer";
+import AddQuery from "../../../components/@know-now/add-query";
+import ChatQuery from "../../../components/@know-now/chat-question";
+import QueryAnswer from "../../../components/@know-now/query-answer";
 
 //
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";

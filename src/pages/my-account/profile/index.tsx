@@ -17,6 +17,9 @@ import { setUser } from "../../../stores/auth";
 
 type IModal = "profile" | "password";
 
+/**
+ *
+ */
 const UserProfile = () => {
   const dispatch = useAppDispatch();
 

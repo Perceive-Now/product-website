@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 import { questionList } from "src/pages/product/report-q&a/_question";
-import Button from "../reusable/button";
 import { generateKnowId } from "src/utils/helpers";
+import Button from "../reusable/button";
 
 const MarketAnalysisSections = [
   {
@@ -129,9 +129,6 @@ const GenerateMarketReport = () => {
       console.log(error);
     }
   }, [marketAnalysisQA, onLiveChat]);
-
-  const answer =
-    "Significant Market Trends:\n\n1. AI and Machine Learning Integration:\n   - AI and machine learning technologies are being increasingly integrated into wearable devices, enhancing the ability to provide personalized health insights and recommendations based on user behavior.\n\n2. Focus on Health-Conscious Consumers:\n   - The target market for wearable technology has become more focused on health-conscious consumers, particularly those who are tech-savvy and value using technology to improve their health and lifestyle.\n\n3. Increased Market Penetration:\n   - Companies are aiming for higher market penetration, with goals like a 5% year-over-year increase in market share, indicating successful strategies in customer acquisition and market expansion.\n\n4. Wearable Device Aesthetics:\n   - The design and aesthetic appeal of wearable devices have become significant factors influencing consumer purchasing decisions, alongside the functionality and accuracy of health tracking.\n\n5. Consumer Feedback-Driven Development:\n   - Consumer feedback is directly shaping the development of new wearable features, such as enhanced sleep tracking and stress management tools, ensuring products meet evolving user needs.\n\n6. Intellectual Property for Product Differentiation:\n   - Intellectual property, including patents related to biometric sensors and machine learning processes, plays a key role in maintaining a competitive edge and differentiating products in the market.\n\n7. Emerging Markets Focus:\n   - Companies are targeting significant customer base expansion in emerging markets, aiming for growth rates higher than in established markets, to tap into new consumer segments.\n\n8. Customer Acquisition and Retention:\n   - Firms are setting specific targets for customer acquisition and retention, using metrics like cost per acquisition, conversion rates, and customer satisfaction scores to measure success.\n\n9. R&D Investment:\n   - Strategic investments in R&D, particularly in AI and machine learning capabilities, are being made in response to projected market growth and consumer demand for advanced technology integration.\n\n10. Regulatory Adaptation:\n   - Companies are closely monitoring regulatory changes in key markets to adapt their compliance strategies, ensuring seamless market entry and sustained operations.\n\nCitations:\n- [2024 Smart Wearables Market Trends](https://www.linkedin.com/pulse/2024-smart-wearables-market-trends-203294-pages-caijf)\n- [2024 IoT And Smart Device Trends](https://www.forbes.com/sites/bernardmarr/2023/10/19/2024-iot-and-smart-device-trends-what-you-need-to-know-for-the-future/)";
 
   function formtAnswer(report: string) {
     const formattedAnswer = report.replace(/\n/, "<br>").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");

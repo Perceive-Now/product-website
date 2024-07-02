@@ -4,20 +4,25 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
+//
 import Label from "../reusable/label";
 import Modal from "../reusable/modal";
 
+//
 import { IOption } from "../../@types/entities/IType";
 import { IProfile } from "../../@types/entities/IProfile";
 
+//
 import Input from "../reusable/input";
 import Button from "../reusable/button";
 import PhoneNumberInput from "../reusable/phone-input";
 import SelectBox from "../reusable/select-box";
 
+//
 import { updateUserProfile } from "../../utils/api/userProfile";
 import { Countries } from "../../utils/constants";
 
+//
 import { useAppDispatch } from "../../hooks/redux";
 import { setUser } from "../../stores/auth";
 import IconButton from "../reusable/icon-button";
@@ -31,6 +36,9 @@ interface Props {
   photo: string;
 }
 
+/**
+ *
+ */
 const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) => {
   const dispatch = useAppDispatch();
 
@@ -76,7 +84,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     async (value: IProfile) => {
       const values = {
         first_name: value.first_name,
-        last_name: value.first_name,
+        last_name: value.last_name,
         username: value.username,
         phone_number: value.phone_number,
         topics_of_interest: value.topics_of_interest,
