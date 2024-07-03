@@ -19,6 +19,7 @@ import {
   setCurrentQuestionId,
 } from "src/stores/Q&A";
 
+//
 import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
 import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
 import { questionList } from "./_question";
@@ -39,11 +40,10 @@ const ReportPage = () => {
     (state) => state.QA,
   );
 
+  // Percentage calculation
   const totalQuestions = questionsList.length + skippedQuestionList.length;
   const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
   const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
-
-  console.log(percentage);
 
   useEffect(() => {
     if (sessionDetail?.use_cases) {
@@ -51,7 +51,7 @@ const ReportPage = () => {
     }
   }, [sessionDetail]);
 
-  //
+  //Check selectred usecase and filter questions
   const questionWithUsecase = useMemo(() => {
     if (useCases && useCases.length > 0 && questionsList.length === 0) {
       return questionList
@@ -75,6 +75,7 @@ const ReportPage = () => {
     }
   }, [dispatch, questionWithUsecase]);
 
+  // Select new question after save or skip
   const question = useMemo(
     () =>
       questionWithUsecase?.find((q) => {
@@ -91,7 +92,8 @@ const ReportPage = () => {
       },
     [currentQuestionId, questionWithUsecase],
   );
-  //
+
+  //Detail QA steps
   const QAPagesList = [
     {
       id: 1,
@@ -118,6 +120,7 @@ const ReportPage = () => {
     },
   ];
 
+  // Back function
   const onBack = useCallback(() => {
     const currentIndex = questionWithUsecase?.findIndex((q) => q.questionId === currentQuestionId);
     const prevQiestionId =

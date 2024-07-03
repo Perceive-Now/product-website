@@ -55,6 +55,75 @@ const MarketAnalysisSections = [
     id: 12,
     question: "Generate section Consumer preferences & buying habits?",
   },
+  {
+    id: 13,
+    question: "Generate section Profitability drivers in public companies?",
+  },
+  {
+    id: 14,
+    question: "Generate section Sales & Revenue Trends?",
+  },
+  {
+    id: 15,
+    question: "Generate section Target Market?",
+  },
+  {
+    id: 16,
+    question:
+      "Generate section Total Addressable Market (TAM),Serviceable Addressable Market (SAM),Serviceable Obtainable Market (SOM)?",
+  },
+  {
+    id: 17,
+    question: "Generate section Competitive landscape - Market leaders?",
+  },
+  {
+    id: 18,
+    question: "Generate section Significant competitors in early-stage startup phase?",
+  },
+  {
+    id: 19,
+    question: "Generate section Additional details on Top Direct Competitors?",
+  },
+  {
+    id: 20,
+    question: "Generate section Indirect Competitors?",
+  },
+  {
+    id: 21,
+    question: "Generate section Difficulty in Capturing Market Share?",
+  },
+  {
+    id: 22,
+    question: "Generate section SWOT analysis?",
+  },
+  {
+    id: 23,
+    question: "Generate section Opportunities are available within the market?",
+  },
+  {
+    id: 24,
+    question: "Generate section Threats main threats confronting companies in the market?",
+  },
+  {
+    id: 24,
+    question: "Generate section Regulatory Compliance (region wise where the startup is belong)?",
+  },
+  {
+    id: 26,
+    question: "Generate section Overview of Major Regulations?",
+  },
+  {
+    id: 27,
+    question: "Generate section Regulatory Pathways and Approvals?",
+  },
+  {
+    id: 28,
+    question: "Generate section Current Challenges and Bottlenecks?",
+  },
+  {
+    id: 29,
+    question: "Generate section Recent Changes and Updates to Regulatory Pathways?",
+  },
 ];
 
 const GenerateMarketReport = () => {
@@ -64,7 +133,7 @@ const GenerateMarketReport = () => {
   const [reportData, setReportData] = useState([]);
 
   const [complete, setComplete] = useState(false);
-  // const { questionsList } = useAppSelector((state) => state.QA);
+  // const { questionsList } = useAppSelecto((state) => state.QA);
 
   const marketAnalysisQA = questionList
     .filter((q) => q.usecase === "market-analysis")
