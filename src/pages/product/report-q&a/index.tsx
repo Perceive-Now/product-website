@@ -43,6 +43,8 @@ const ReportPage = () => {
   const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
   const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
 
+  console.log(percentage);
+
   useEffect(() => {
     if (sessionDetail?.use_cases) {
       setUseCases(sessionDetail?.use_cases);
@@ -132,8 +134,6 @@ const ReportPage = () => {
     }
   }, [currentPageId, currentQuestionId, dispatch, navigate, questionWithUsecase]);
 
-  console.log(percentage);
-
   return (
     <div className="w-full">
       <button className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit" onClick={onBack}>
@@ -167,10 +167,13 @@ const ReportPage = () => {
           </div>
         </div>
         <div>
-          <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden">
-            <LiquidSphereLoaderIcon className="row-start-1 col-start-1" percentage={percentage} />
+          <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden mb-2 ml-0.5">
+            <LiquidSphereLoaderIcon
+              className="row-start-1 col-start-1"
+              percentage={!Number.isNaN(percentage) ? percentage : 0}
+            />
             <p className="col-start-1 row-start-1 text-white flex flex-row items-center justify-center text-center w-full mix-blend-difference">
-              <>{percentage}%</>
+              {percentage}%
             </p>
           </div>
           {currentPageId !== 2 && (
