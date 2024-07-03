@@ -152,7 +152,7 @@ const GenerateMarketReport = () => {
       const section = MarketAnalysisSections[sectionIndex].question;
       setIsGenerating(true);
       try {
-        const res = await axios.post("http://172.203.243.82:8000/live_chat", {
+        const res = await axios.post("https://report.api.perceivenow.ai/live_chat", {
           data: `${marketAnalysisQA}`,
           file_name: file_name,
           model: "web_gpt4",
