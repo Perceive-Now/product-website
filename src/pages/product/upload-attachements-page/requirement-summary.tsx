@@ -3,11 +3,11 @@ import { UseCaseOptions } from "src/components/@report/use-case/__use-cases";
 import { useAppSelector } from "src/hooks/redux";
 import { questionList } from "../report-q&a/_question";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
-  const { fetchRequirementSummaryState, requirementSummary } = useAppSelector(
-    (state) => state.uploadAttachments,
-  );
+  const { fetchRequirementSummaryState, requirementSummary, requirementPercentage } =
+    useAppSelector((state) => state.uploadAttachments);
   const { usecases } = useAppSelector((state) => state.usecases);
 
   const transformedRequirementSummary = requirementSummary
@@ -45,7 +45,7 @@ export default function RequirementSummary({ children }: { children: ReactNode }
   return (
     <div className="flex flex-row justify-between gap-x-[50px]">
       <div className="flex xl:grid xl:grid-cols-2 flex-col lg:min-w-[400px] xl:max-w-[800px] 2xl:max-w-[900px] w-full min-h-[400px] max-h-[500px] pn_scroller overflow-y-auto bg-white rounded-lg p-2 shadow-page-content">
-        <div className="flex flex-col">
+        <div className={classNames("flex flex-col", { "col-span-2": requirementPercentage > 95 })}>
           {transformedRequirementSummary.length > 0 && (
             <>
               <p className="font-bold text-[32px] text-secondary-900">Here's a sneak peek!</p>
@@ -96,7 +96,11 @@ export default function RequirementSummary({ children }: { children: ReactNode }
           </div>
         </div>
 
-        <div className="flex flex-row h-fit w-full">
+        <div
+          className={classNames("flex flex-row h-fit w-full", {
+            hidden: requirementPercentage > 95,
+          })}
+        >
           <div className="w-[2px] min-h-[400px]  my-[5px] bg-appGray-200 mx-[20px] xl:block hidden"></div>
           <div className="flex flex-col">
             {fullQuestionsList.length > 0 && (
