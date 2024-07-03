@@ -29,7 +29,15 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     .filter((f) => f !== null);
 
   const fullQuestionsList = questionList
-    .filter((question) => usecases.includes(question.usecase))
+    .filter(
+      (question) => usecases.includes(question.usecase) || question.usecase === "common-question",
+    )
+    .filter((question) => {
+      if (question.usecase !== "common-question") return true;
+      const usecase = usecases.find((usecase) => usecase === question.usecase);
+      const usecaseOption = UseCaseOptions.find((option) => option.value === usecase);
+      return usecaseOption?.commonQuestionIds.includes(question.questionId) ?? false;
+    })
     .map((question) => {
       return question.question;
     });
