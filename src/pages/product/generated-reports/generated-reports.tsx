@@ -4,18 +4,18 @@ import { type IDraft } from "src/stores/draft";
 import { setUploadAttachmentsStateFromDraft } from "src/stores/upload-attachments";
 import { setQuickPromtsStateFromDraft } from "src/stores/upload-quick-prompt";
 import { setUseCaseStateFromDraft } from "src/stores/use-case";
-import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import { useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/themes/light.css";
 import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis";
-import DropdownDownloadIcon from "../generated-reports/dropdown-download-icon";
-import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
-import DropdownShareIcon from "../generated-reports/dropdown-share-icon";
-import ReportSummaryPopup from "../generated-reports/report-summary-popup";
+import DropdownDownloadIcon from "./dropdown-download-icon";
+import DropdownDeleteIcon from "./dropdown-delete-icon";
+import DropdownShareIcon from "./dropdown-share-icon";
+import ReportSummaryPopup from "./report-summary-popup";
 import Modal from "../../../components/reusable/modal";
+import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 
 interface IRow {
   reportId: string;
@@ -73,7 +73,7 @@ function EditCellRenderer(props: CustomCellRendererProps) {
   );
 }
 
-export default function DraftReports() {
+export default function GeneratedReports() {
   // const navigate = useNavigate();
   // const dispatch = useAppDispatch();
   // const { draftsArray } = useAppSelector((state) => state.draft);

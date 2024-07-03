@@ -62,8 +62,8 @@ import ShareKnowNowPage from "./pages/product/share";
 
 // Demo
 import GenerateMarketReport from "./components/@report-generate/market-report-generate";
-import ReportsList from "./pages/product/generated-reports/reports-list";
 import GeneratedReport from "./pages/product/generated-report/generated-report";
+import GeneratedReports from "./pages/product/generated-reports/generated-reports";
 
 /**
  *
@@ -105,7 +105,7 @@ function App() {
 
             {/* Report-section */}
             <Route path="/draft-reports" element={<DraftReports />} />
-            <Route path="/reports-list" element={<ReportsList />} />
+            <Route path="/reports-list" element={<GeneratedReports />} />
 
             <Route path="/report/:reportId" element={<GeneratedReport />} />
 

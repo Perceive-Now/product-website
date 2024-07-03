@@ -6,19 +6,25 @@ import "ag-grid-community/styles/ag-grid.css";
 // Core CSS
 import "./ag-grid-theme-builder.css";
 import React from "react";
-import { overflows } from "@headlessui/react/dist/hooks/document-overflow/overflow-store";
 
-interface IAGGrdidProps<T> {
+interface IAGGridProps<T> {
   rowData: T[];
   colDefs: ColDef<T>[];
+  onRowClicked?: (event: any) => void;
+  isLoading: boolean;
 }
 
 // Create new GridExample component
-export default function AgGrid<T>({ rowData, colDefs }: IAGGrdidProps<T>) {
+export default function AgGrid<T>({ rowData, colDefs, onRowClicked, isLoading }: IAGGridProps<T>) {
   // Container: Defines the grid's theme & dimensions.
   return (
     <div className={"w-full h-full"}>
-      <AgGridReact rowData={rowData} columnDefs={colDefs} rowSelection={"multiple"} />
+      <AgGridReact
+        rowData={rowData}
+        columnDefs={colDefs}
+        onRowClicked={onRowClicked}
+        loading={isLoading}
+      />
     </div>
   );
 }
