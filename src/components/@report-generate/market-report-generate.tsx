@@ -126,6 +126,13 @@ const MarketAnalysisSections = [
   },
 ];
 
+const ConsumerBehaviour = [
+  {
+    id: 1,
+    question: "Generate section Significant Trends?",
+  },
+];
+
 const GenerateMarketReport = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fileName, setFileName] = useState("");
@@ -189,7 +196,7 @@ const GenerateMarketReport = () => {
         text: `${marketAnalysisQA}`,
       });
       if (res.status === 200) {
-        onLiveChat(filename, "1", 0); // Start processing sections from index 0
+        onLiveChat(filename, "2", 0); // Start processing sections from index 0
       }
       setIsLoading(false);
       console.log(res);

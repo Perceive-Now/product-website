@@ -42,7 +42,9 @@ const Payment = () => {
     //
   }, [products]);
 
-  const selectedReports = UseCaseOptions?.filter((p) => ItemId?.includes(p.id));
+  const selectedReports = UseCaseOptions?.filter((p) => ItemId?.includes(p.id)).sort(
+    (a, b) => a.sn - b.sn,
+  );
 
   useEffect(() => {
     if (!clientSecret && !selectedReports) {
