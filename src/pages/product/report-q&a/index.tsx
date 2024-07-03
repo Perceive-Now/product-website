@@ -19,9 +19,11 @@ import {
   setCurrentQuestionId,
 } from "src/stores/Q&A";
 
+//
 import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
 import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
 import { questionList } from "./_question";
+import { LiquidSphereLoaderIcon } from "src/components/icons";
 
 /**
  *
@@ -38,12 +40,18 @@ const ReportPage = () => {
     (state) => state.QA,
   );
 
+  // Percentage calculation
+  const totalQuestions = questionsList.length + skippedQuestionList.length;
+  const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
+  const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
+
   useEffect(() => {
     if (sessionDetail?.use_cases) {
       setUseCases(sessionDetail?.use_cases);
     }
   }, [sessionDetail]);
 
+  //Check selectred usecase and filter questions
   const questionWithUsecase = useMemo(() => {
     if (useCases && useCases.length > 0 && questionsList.length === 0) {
       return questionList
@@ -67,6 +75,7 @@ const ReportPage = () => {
     }
   }, [dispatch, questionWithUsecase]);
 
+  // Select new question after save or skip
   const question = useMemo(
     () =>
       questionWithUsecase?.find((q) => {
@@ -83,7 +92,8 @@ const ReportPage = () => {
       },
     [currentQuestionId, questionWithUsecase],
   );
-  //
+
+  //Detail QA steps
   const QAPagesList = [
     {
       id: 1,
@@ -110,6 +120,7 @@ const ReportPage = () => {
     },
   ];
 
+  // Back function
   const onBack = useCallback(() => {
     const currentIndex = questionWithUsecase?.findIndex((q) => q.questionId === currentQuestionId);
     const prevQiestionId =
@@ -158,11 +169,22 @@ const ReportPage = () => {
             ))}
           </div>
         </div>
-        {currentPageId !== 2 && (
-          <div className="flex-shrink-0 lg:w-[300px]">
-            {<SkippedQuestion questions={skippedQuestionList || []} />}
+        <div>
+          <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden mb-2 ml-0.5">
+            <LiquidSphereLoaderIcon
+              className="row-start-1 col-start-1"
+              percentage={!Number.isNaN(percentage) ? percentage : 0}
+            />
+            <p className="col-start-1 row-start-1 text-white flex flex-row items-center justify-center text-center w-full mix-blend-difference">
+              {percentage}%
+            </p>
           </div>
-        )}
+          {currentPageId !== 2 && (
+            <div className="flex-shrink-0 lg:w-[300px]">
+              {<SkippedQuestion questions={skippedQuestionList || []} />}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
