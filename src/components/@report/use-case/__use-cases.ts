@@ -11,6 +11,7 @@ export function mergeArrays(arr1: any, arr2: any) {
 
 export const UseCaseOptions = [
   {
+    sn: 1,
     id: 11,
     label: "Prior art search",
     value: "prior-art-search",
@@ -21,6 +22,7 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
+    sn: 2,
     id: 12,
     label: "Patent validity/invalidity",
     value: "patent-validity",
@@ -31,6 +33,7 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
+    sn: 3,
     id: 18,
     label: "Patent valuation",
     value: "ip-valuation",
@@ -41,6 +44,7 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
+    sn: 4,
     id: 15,
     label: "Patent Licensing targets",
     value: "ip-licensing-opportunity",
@@ -75,6 +79,7 @@ export const UseCaseOptions = [
   // },
 
   {
+    sn: 5,
     id: 7,
     label: "Market Analysis",
     value: "market-analysis",
@@ -85,6 +90,7 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
+    sn: 6,
     id: 8,
     label: "Competitive Landscape",
     value: "competitive-landscape",
@@ -95,6 +101,7 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
+    sn: 7,
     id: 9,
     label: "Consumer Landscape",
     value: "consumer-landscape",
@@ -105,6 +112,7 @@ export const UseCaseOptions = [
     reportPlan: "pro",
   },
   {
+    sn: 8,
     id: 10,
     label: "Regulatory Pathways",
     value: "regulatory-pathways",
@@ -116,6 +124,7 @@ export const UseCaseOptions = [
   },
   // -------Premium------
   {
+    sn: 9,
     id: 13,
     label: "M&A Trends and Strategy",
     value: "m&a",
@@ -126,6 +135,7 @@ export const UseCaseOptions = [
     reportPlan: "premium",
   },
   {
+    sn: 10,
     id: 14,
     label: "Commercialization Assessment",
     value: "commercialization-assessment",

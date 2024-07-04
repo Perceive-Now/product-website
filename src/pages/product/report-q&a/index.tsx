@@ -6,10 +6,13 @@ import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 //
 //
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import { LiquidSphereLoaderIcon } from "src/components/icons";
+
 //
-import SkippedQuestion from "./skipped-question";
 import ReportChatQuestionAnswer from "src/components/@report/Q&A/Question";
 import IPReview from "src/components/@report/Q&A/review/review";
+import SkippedQuestion from "./skipped-question";
+
 //
 import {
   QAPages,
@@ -20,10 +23,9 @@ import {
 } from "src/stores/Q&A";
 
 //
-import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
-import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
 import { questionList } from "./_question";
-import { LiquidSphereLoaderIcon } from "src/components/icons";
+import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
+import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
 
 /**
  *

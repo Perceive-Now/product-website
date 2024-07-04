@@ -26,9 +26,9 @@ interface OptionMappings {
 
 const optionMappings: OptionMappings = {
   "freedom-to-operate": "ip-validity-analysis",
+  "patent-infringement": "ip-validity-analysis",
   "prior-art-search": "ip-validity-analysis",
   "patent-validity": "ip-validity-analysis",
-  "patent-infringement": "ip-validity-analysis",
   "ip-valuation": "ip-valuation",
   "ip-licensing-opportunity": "ip-licensing-opportunity",
   //

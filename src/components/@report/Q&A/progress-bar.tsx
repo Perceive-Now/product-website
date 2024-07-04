@@ -29,5 +29,5 @@ export default function DetailQAProgressBar({ questionWithUsecase, QAPagesList }
     skippedQuestionList.length,
   ]);
 
-  return <ProgressBar currentStep={currentStep + 1} totalSteps={totalSteps + 1} />;
+  return <ProgressBar currentStep={currentStep + 1} totalSteps={totalSteps} />;
 }
