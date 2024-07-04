@@ -4,9 +4,18 @@ import { useAppSelector } from "src/hooks/redux";
 import { questionList } from "../report-q&a/_question";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import uploadAttachmentsPages from "./upload-attachment-pages-list";
+import {
+  decrementStep,
+  EUploadAttachmentsPages,
+  setCurrentPageId,
+} from "../../../stores/upload-attachments";
+import { useDispatch } from "react-redux";
 
 export default function RequirementSummary({ children }: { children: ReactNode }) {
-  const { fetchRequirementSummaryState, requirementSummary, requirementPercentage } =
+  const dispatch = useDispatch();
+
+  const { fetchRequirementSummaryState, requirementSummary, requirementPercentage, currentPageId } =
     useAppSelector((state) => state.uploadAttachments);
   const { usecases } = useAppSelector((state) => state.usecases);
 
@@ -41,6 +50,19 @@ export default function RequirementSummary({ children }: { children: ReactNode }
     .map((question) => {
       return question.question;
     });
+
+  const handleBackToAttachments = () => {
+    const currentPageIdIndex = uploadAttachmentsPages.findIndex(
+      (page) => page.id === currentPageId,
+    );
+    const uploadAttachmentsPageIndex = uploadAttachmentsPages.findIndex(
+      (page) => page.id === EUploadAttachmentsPages.UploadAttachments,
+    );
+    const difference = currentPageIdIndex - uploadAttachmentsPageIndex;
+    for (let i = 0; i < difference; i++) dispatch(decrementStep());
+
+    dispatch(setCurrentPageId(EUploadAttachmentsPages.UploadAttachments));
+  };
 
   return (
     <div className="flex flex-row justify-between gap-x-[50px]">
@@ -113,7 +135,7 @@ export default function RequirementSummary({ children }: { children: ReactNode }
                 <Link
                   to=""
                   onClick={() => {
-                    console.log("hello");
+                    handleBackToAttachments();
                   }}
                   className="text-right text-primary-900 font-bold underline mt-1"
                 >
