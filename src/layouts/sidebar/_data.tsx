@@ -21,18 +21,18 @@ const sidebarItems: ISidebarListItem[] = [
     icon: NewReportIcon,
     to: "/new-report",
   },
-  {
-    title: "Reports",
-    key: "reports",
-    icon: NewReportIcon,
-    to: "/reports-list",
-  },
-  {
-    title: "Draft",
-    key: "draft",
-    icon: DraftIcon,
-    to: "/draft-reports",
-  },
+  // {
+  //   title: "Reports",
+  //   key: "reports",
+  //   icon: NewReportIcon,
+  //   to: "/reports-list",
+  // },
+  // {
+  //   title: "Draft",
+  //   key: "draft",
+  //   icon: DraftIcon,
+  //   to: "/draft-reports",
+  // },
   {
     title: "Industries",
     key: "industries",
