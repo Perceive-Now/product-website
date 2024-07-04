@@ -34,7 +34,7 @@ export const questionList = [
   {
     questionId: 5,
     useCaseId: 1,
-    usecase: "common-question",
+    usecase: "ip-validity-analysis",
     question:
       "Can you provide key single-word terms that describe the core technologies or features of your innovation? For keywords that consist of two or three words, please separate each word with a comma. These keywords will be used to conduct a comprehensive prior art search to ensure the uniqueness of your intellectual property.",
     answer: `To safeguard the intellectual property of ARSight, NextGen Innovations has pursued an aggressive patent filing strategy, focusing on our unique spatial computing algorithm, the ergonomic and technologically advanced design of our AR glasses, and the adaptive learning capabilities of our software. During our prior art search, we encountered patents related to AR display technologies but none that integrated our specific approach to spatial computing efficiency, display clarity, and dynamic user engagement. Our strategy revolves around continually innovating and expanding our IP portfolio to maintain a competitive edge, highlighting the novel integration and application of our technologies as distinct from existing precedents.`,

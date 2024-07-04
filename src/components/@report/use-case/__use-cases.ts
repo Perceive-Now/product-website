@@ -25,7 +25,7 @@ export const UseCaseOptions = [
     sn: 2,
     id: 12,
     label: "Patent validity/invalidity",
-    value: "patent-validity",
+    value: "ip-validity-analysis",
     desc: "Assess the enforceability of a patent’s claims against existing prior art, essential for defending against infringement allegations or challenging a competitor’s patent. Critical insights help fortify your legal and competitive position",
     useCaseId: 2,
     reportType: "ip",

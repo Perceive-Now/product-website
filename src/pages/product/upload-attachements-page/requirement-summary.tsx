@@ -39,13 +39,33 @@ export default function RequirementSummary({ children }: { children: ReactNode }
 
   const fullQuestionsList = questionList
     .filter(
-      (question) => usecases.includes(question.usecase) || question.usecase === "common-question",
+      (question) =>
+        usecases.includes(question.usecase) ||
+        question.usecase === "common-question" ||
+        question.usecase === "ip-validity-analysis" ||
+        question.usecase === "prior-art-search",
     )
     .filter((question) => {
+      if (question.usecase !== "ip-validity-analysis" && question.usecase !== "prior-art-search")
+        return true;
+      if (usecases.includes("ip-validity-analysis") && question.usecase === "ip-validity-analysis")
+        return true;
+      if (usecases.includes("prior-art-search") && question.usecase === "prior-art-search")
+        return true;
+      if (usecases.includes("ip-validity-analysis") && question.usecase === "prior-art-search")
+        return true;
+      if (usecases.includes("prior-art-search") && question.usecase === "ip-validity-analysis")
+        return true;
+    })
+    .filter((question) => {
       if (question.usecase !== "common-question") return true;
-      const usecase = usecases.find((usecase) => usecase === question.usecase);
-      const usecaseOption = UseCaseOptions.find((option) => option.value === usecase);
-      return usecaseOption?.commonQuestionIds.includes(question.questionId) ?? false;
+      let isIncludeCommonQuestion = false;
+      usecases.forEach((usecase) => {
+        const usecaseOption = UseCaseOptions.find((option) => option.value === usecase);
+        if (usecaseOption?.commonQuestionIds.includes(question.questionId))
+          isIncludeCommonQuestion = true;
+      });
+      return isIncludeCommonQuestion;
     })
     .map((question) => {
       return question.question;
