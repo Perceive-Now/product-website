@@ -137,7 +137,9 @@ export default function RequirementSummary({ children }: { children: ReactNode }
                   onClick={() => {
                     handleBackToAttachments();
                   }}
-                  className="text-right text-primary-900 font-bold underline mt-1"
+                  className={classNames("text-right text-primary-900 font-bold underline mt-1", {
+                    hidden: requirementPercentage > 60,
+                  })}
                 >
                   Add attachments
                 </Link>
