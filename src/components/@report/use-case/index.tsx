@@ -29,6 +29,7 @@ const optionMappings: OptionMappings = {
   "patent-infringement": "ip-validity-analysis",
   "prior-art-search": "ip-validity-analysis",
   "patent-validity": "ip-validity-analysis",
+  "ip-validity-analysis": "ip-validity-analysis",
   "ip-valuation": "ip-valuation",
   "ip-licensing-opportunity": "ip-licensing-opportunity",
   //
