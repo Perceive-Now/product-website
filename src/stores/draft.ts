@@ -3,16 +3,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //
 import {
-  IUploadAttachmentsState,
   initialState as initialStateUploadAttachments,
+  IUploadAttachmentsState,
 } from "./upload-attachments";
 import {
-  IUploadQuickPromptsState,
   initialState as initialStateUploadQuickPrompt,
+  IUploadQuickPromptsState,
 } from "./upload-quick-prompt";
 
 //
-import { IUseCase, initialState as initialStateUseCase } from "./use-case";
+import { initialState as initialStateUseCase, IUseCase } from "./use-case";
 import { AppConfig } from "src/config/app.config";
 
 //
@@ -39,6 +39,12 @@ interface draftState {
     isError: boolean;
     message: string;
   };
+  getDraftsByUserIdState: {
+    isSuccess: boolean;
+    isError: boolean;
+    message: string;
+    isLoading: boolean;
+  };
   draftsArray: TDraftArray;
 }
 
@@ -49,6 +55,12 @@ const initialState: draftState = {
     isSuccess: false,
     isError: false,
     message: "",
+  },
+  getDraftsByUserIdState: {
+    isSuccess: false,
+    isError: false,
+    message: "",
+    isLoading: false,
   },
   draftsArray: [],
 };
@@ -80,26 +92,21 @@ export const uploadDraft = createAsyncThunk<
 });
 
 // -----------------------------------------------------------------------
-export const fetchDraftByIds = createAsyncThunk<
-  IuploadDraftResponse,
-  IuploadDraftRequest,
+export const getDraftsByUserId = createAsyncThunk<
+  { data: IDraft[] },
+  { userId: string },
   {
     rejectValue: IResponseError;
   }
->("uploadDraft", async (request: IuploadDraftRequest, thunkAPI) => {
+>("getDraftsByUserId", async (request, thunkAPI) => {
   try {
-    const dataObj = {
-      requirement_gathering_id: request.requirementGatheringId,
-      user_id: request.userId ?? "",
-      current_page: request.current_page ?? "",
-      other_data: request.other_data ?? [],
-    };
-
-    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", dataObj); // TODO change endpoint
+    return await axios.get(
+      `${BASE_PN_REPORT_URL}/reports-by-user-id?user_id=${encodeURIComponent(request.userId)}`,
+    );
   } catch (error) {
     const errorObj = {
       resError: String(error),
-      message: "Unable to upload quick prompts",
+      message: "Unable to fetch generated reports",
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -112,7 +119,7 @@ export const fetchDraftsByUserId = createAsyncThunk<
   {
     rejectValue: IResponseError;
   }
->("uploadDraft", async (request: { userId: string }, thunkAPI) => {
+>("fetchDraftsByUserId", async (request: { userId: string }, thunkAPI) => {
   try {
     return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", request.userId); // TODO change endpoint
   } catch (error) {
@@ -197,6 +204,16 @@ export const draftSlice = createSlice({
     },
 
     // -----------------------------------------------------------------------
+    setGetDraftsByUserIdState: (state) => {
+      state.getDraftsByUserIdState = {
+        isError: false,
+        isSuccess: false,
+        message: "",
+        isLoading: true,
+      };
+    },
+
+    // -----------------------------------------------------------------------
     getDraftSliceState: (state) => state,
 
     // -----------------------------------------------------------------------
@@ -226,6 +243,33 @@ export const draftSlice = createSlice({
         isError: true,
         isSuccess: true,
         message: action.error.message ?? "Unable to sync with server",
+      };
+    });
+
+    // -----------------------------------------------------------------------
+    builder.addCase(getDraftsByUserId.pending, (state) => {
+      state.getDraftsByUserIdState = {
+        isError: false,
+        isSuccess: false,
+        message: "",
+        isLoading: true,
+      };
+    });
+    builder.addCase(getDraftsByUserId.fulfilled, (state, action) => {
+      state.getDraftsByUserIdState = {
+        isError: false,
+        isSuccess: true,
+        message: "",
+        isLoading: false,
+      };
+      state.draftsArray = action.payload.data;
+    });
+    builder.addCase(getDraftsByUserId.rejected, (state, action) => {
+      state.getDraftsByUserIdState = {
+        isError: true,
+        isSuccess: true,
+        message: action.error.message ?? "Unable to sync with server",
+        isLoading: false,
       };
     });
   },
@@ -275,6 +319,7 @@ interface IOtherDataOptional {
   uploadAttachmentsSliceState?: IUploadAttachmentsState;
   uploadQuickPromptsSliceState?: IUploadQuickPromptsState;
   useCasesSliceState?: IUseCase;
+
   [key: string]: any;
 }
 

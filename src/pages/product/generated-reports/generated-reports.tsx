@@ -4,7 +4,7 @@ import { type IDraft } from "src/stores/draft";
 import { setUploadAttachmentsStateFromDraft } from "src/stores/upload-attachments";
 import { setQuickPromtsStateFromDraft } from "src/stores/upload-quick-prompt";
 import { setUseCaseStateFromDraft } from "src/stores/use-case";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
@@ -16,6 +16,13 @@ import DropdownShareIcon from "./dropdown-share-icon";
 import ReportSummaryPopup from "./report-summary-popup";
 import Modal from "../../../components/reusable/modal";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
+import {
+  getReportsByUserId,
+  IReport,
+  resetGetReportsByUserIdState,
+} from "../../../stores/genrated-reports";
+import jsCookie from "js-cookie";
+import toast from "react-hot-toast";
 
 interface IRow {
   reportId: string;
@@ -73,94 +80,57 @@ function EditCellRenderer(props: CustomCellRendererProps) {
   );
 }
 
+const colDefs: ColDef<IReport & { edit: string }>[] = [
+  { field: "requirement_gathering_id", hide: true },
+  { field: "user_id", hide: true },
+  { field: "user_case_id", hide: true },
+  {
+    field: "title",
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    showDisabledCheckboxes: true,
+    minWidth: 500,
+    flex: 1,
+  },
+  { field: "date_created", filter: "agDateColumnFilter" },
+  { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
+];
+
 export default function GeneratedReports() {
-  // const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
-  // const { draftsArray } = useAppSelector((state) => state.draft);
+  const dispatch = useAppDispatch();
+  const { reports, getReportsByUserIdState } = useAppSelector((state) => state.generatedReports);
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
 
-  const [rowData, setRowData] = useState<IRow[]>([
-    {
-      reportId: "1",
-      reportName: "Sales Report",
-      dateCreated: new Date("2023-06-15"),
-      edit: "Edit",
-    },
-    {
-      reportId: "2",
-      reportName: "Financial Summary",
-      dateCreated: new Date("2023-05-28"),
-      edit: "Edit",
-    },
-    {
-      reportId: "3",
-      reportName: "Marketing Analysis",
-      dateCreated: new Date("2023-06-02"),
-      edit: "Edit",
-    },
-    {
-      reportId: "4",
-      reportName: "Product Development Update",
-      dateCreated: new Date("2023-06-10"),
-      edit: "Edit",
-    },
-    {
-      reportId: "5",
-      reportName: "Customer Satisfaction Survey",
-      dateCreated: new Date("2023-05-20"),
-      edit: "Edit",
-    },
-    {
-      reportId: "6",
-      reportName: "Quality Assurance Review",
-      dateCreated: new Date("2023-06-08"),
-      edit: "Edit",
-    },
-    {
-      reportId: "7",
-      reportName: "Employee Performance Evaluation",
-      dateCreated: new Date("2023-05-25"),
-      edit: "Edit",
-    },
-    {
-      reportId: "8",
-      reportName: "Supply Chain Analysis",
-      dateCreated: new Date("2023-06-05"),
-      edit: "Edit",
-    },
-  ]);
+  useEffect(() => {
+    if (getReportsByUserIdState.isError) {
+      toast.error(getReportsByUserIdState.message);
+      dispatch(resetGetReportsByUserIdState());
+    }
 
-  const [colDefs, setColDefs] = useState<ColDef<IRow>[]>([
-    { field: "reportId", hide: true },
-    {
-      field: "reportName",
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
-      showDisabledCheckboxes: true,
-      minWidth: 500,
-      flex: 1,
-    },
-    { field: "dateCreated", filter: "agDateColumnFilter" },
-    { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
-  ]);
+    if (getReportsByUserIdState.isSuccess) {
+      dispatch(resetGetReportsByUserIdState());
+    }
+  }, [getReportsByUserIdState, dispatch]);
+
+  useEffect(() => {
+    dispatch(getReportsByUserId({ userId: jsCookie.get("user_id") ?? "0" }));
+  }, []);
 
   const handleRowClick = (event: any) => {
     setIsOpenDialog(true);
     setCurrentEvent(event);
-
-    // // update slices with the selected draft
-    // dispatch(setUseCaseStateFromDraft(draft.other_data.useCasesSliceState));
-    // dispatch(setQuickPromtsStateFromDraft(draft.other_data.uploadQuickPromptsSliceState));
-    // dispatch(setUploadAttachmentsStateFromDraft(draft.other_data.uploadAttachmentsSliceState));
-    // todo add use case information
-
-    // navigate to the relevent page
-    // navigate(`/${draft.current_page}`);
   };
 
-  const isLoading = false;
+  const transformedReports = reports.map((report) => {
+    return {
+      ...report,
+      edit: "Edit",
+    };
+  });
+
+  const isLoading = getReportsByUserIdState.isLoading;
 
   return (
     <>
@@ -172,8 +142,8 @@ export default function GeneratedReports() {
         />
       </Modal>
       <div className="w-full h-[400px] max-h-[450px] ">
-        <AgGrid<IRow>
-          rowData={rowData}
+        <AgGrid<IReport & { edit: string }>
+          rowData={transformedReports}
           colDefs={colDefs}
           onRowClicked={handleRowClick}
           isLoading={isLoading}

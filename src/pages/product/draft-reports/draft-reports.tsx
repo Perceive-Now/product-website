@@ -1,11 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { type IDraft } from "src/stores/draft";
-import { setUploadAttachmentsStateFromDraft } from "src/stores/upload-attachments";
-import { setQuickPromtsStateFromDraft } from "src/stores/upload-quick-prompt";
-import { setUseCaseStateFromDraft } from "src/stores/use-case";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
@@ -14,8 +11,9 @@ import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis
 import DropdownDownloadIcon from "../generated-reports/dropdown-download-icon";
 import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
 import DropdownShareIcon from "../generated-reports/dropdown-share-icon";
-import ReportSummaryPopup from "../generated-reports/report-summary-popup";
-import Modal from "../../../components/reusable/modal";
+import toast from "react-hot-toast";
+import { getReportsByUserId, resetGetReportsByUserIdState } from "../../../stores/genrated-reports";
+import jsCookie from "js-cookie";
 
 interface IRow {
   reportId: string;
@@ -73,111 +71,40 @@ function EditCellRenderer(props: CustomCellRendererProps) {
   );
 }
 
+const colDefs: ColDef<IRow>[] = [
+  { field: "reportId", hide: true },
+  {
+    field: "reportName",
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    showDisabledCheckboxes: true,
+    minWidth: 500,
+    flex: 1,
+  },
+  { field: "dateCreated", filter: "agDateColumnFilter" },
+  { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
+];
+
 export default function DraftReports() {
-  // const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
-  // const { draftsArray } = useAppSelector((state) => state.draft);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { draftsArray } = useAppSelector((state) => state.draft);
 
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<any>(null);
-
-  const [rowData, setRowData] = useState<IRow[]>([
-    {
-      reportId: "1",
-      reportName: "Sales Report",
-      dateCreated: new Date("2023-06-15"),
-      edit: "Edit",
-    },
-    {
-      reportId: "2",
-      reportName: "Financial Summary",
-      dateCreated: new Date("2023-05-28"),
-      edit: "Edit",
-    },
-    {
-      reportId: "3",
-      reportName: "Marketing Analysis",
-      dateCreated: new Date("2023-06-02"),
-      edit: "Edit",
-    },
-    {
-      reportId: "4",
-      reportName: "Product Development Update",
-      dateCreated: new Date("2023-06-10"),
-      edit: "Edit",
-    },
-    {
-      reportId: "5",
-      reportName: "Customer Satisfaction Survey",
-      dateCreated: new Date("2023-05-20"),
-      edit: "Edit",
-    },
-    {
-      reportId: "6",
-      reportName: "Quality Assurance Review",
-      dateCreated: new Date("2023-06-08"),
-      edit: "Edit",
-    },
-    {
-      reportId: "7",
-      reportName: "Employee Performance Evaluation",
-      dateCreated: new Date("2023-05-25"),
-      edit: "Edit",
-    },
-    {
-      reportId: "8",
-      reportName: "Supply Chain Analysis",
-      dateCreated: new Date("2023-06-05"),
-      edit: "Edit",
-    },
-  ]);
-
-  const [colDefs, setColDefs] = useState<ColDef<IRow>[]>([
-    { field: "reportId", hide: true },
-    {
-      field: "reportName",
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
-      showDisabledCheckboxes: true,
-      minWidth: 500,
-      flex: 1,
-    },
-    { field: "dateCreated", filter: "agDateColumnFilter" },
-    { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
-  ]);
-
-  const handleRowClick = (event: any) => {
-    setIsOpenDialog(true);
-    setCurrentEvent(event);
-
-    // // update slices with the selected draft
-    // dispatch(setUseCaseStateFromDraft(draft.other_data.useCasesSliceState));
-    // dispatch(setQuickPromtsStateFromDraft(draft.other_data.uploadQuickPromptsSliceState));
-    // dispatch(setUploadAttachmentsStateFromDraft(draft.other_data.uploadAttachmentsSliceState));
-    // todo add use case information
-
-    // navigate to the relevent page
-    // navigate(`/${draft.current_page}`);
-  };
+  const rowData: IRow[] = draftsArray.map((draft: IDraft) => {
+    return {
+      reportId: draft.requirement_gathering_id,
+      reportName: "Draft Report Name",
+      dateCreated: new Date(),
+      edit: "edit",
+    };
+  });
 
   const isLoading = false;
 
   return (
     <>
-      <Modal open={isOpenDialog} handleOnClose={() => setIsOpenDialog(false)}>
-        <ReportSummaryPopup
-          handleViewFullReportCallback={() => console.log("what")}
-          setIsOpenDialog={setIsOpenDialog}
-          event={currentEvent}
-        />
-      </Modal>
       <div className="w-full h-[400px] max-h-[450px] ">
-        <AgGrid<IRow>
-          rowData={rowData}
-          colDefs={colDefs}
-          onRowClicked={handleRowClick}
-          isLoading={isLoading}
-        />
+        <AgGrid<IRow> rowData={rowData} colDefs={colDefs} isLoading={isLoading} />
       </div>
     </>
   );

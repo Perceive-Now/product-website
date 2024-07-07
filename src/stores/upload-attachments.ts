@@ -475,7 +475,7 @@ export const UploadAttachmentsSlice = createSlice({
       state.fetchRequirementPercentageState = {
         isError: false,
         isSuccess: true,
-        isLoading: true,
+        isLoading: false,
         message: "",
       };
       state.requirementPercentage = action.payload.data.completion_percentage;

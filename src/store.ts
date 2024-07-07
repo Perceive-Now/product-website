@@ -16,6 +16,9 @@ import KnownowIPSlice from "./stores/knownow-ip";
 import KnownowMarketSlice from "./stores/knownow-market";
 
 //
+import GeneratedReportsSlice from "./stores/genrated-reports";
+
+//
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
@@ -29,6 +32,7 @@ export const store = configureStore({
     uploadQuickPrompt: uploadQuickPrompt,
     draft: draftSlice,
     QA: QuestionAnswerSlice,
+    generatedReports: GeneratedReportsSlice,
   },
 });
 
