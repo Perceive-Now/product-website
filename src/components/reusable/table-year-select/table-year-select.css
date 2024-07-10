@@ -1,0 +1,20 @@
+.table-year-select {
+  cursor: pointer;
+  width: 100%;
+}
+
+.table-year-select .select__control {
+  outline: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.table-year-select .select__single-value {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  margin-right: 8px;
+}
+
+.table-year-select .select__control:hover {
+  outline: 0;
+}
