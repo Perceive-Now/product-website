@@ -1,0 +1,30 @@
+.circle-loader-container {
+  width: 100px;
+  height: 100px;
+}
+
+.circle-loader {
+  width: 100%;
+  height: 100%;
+}
+
+.circle-loader-background {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 6;
+}
+
+.circle-loader-progress {
+  fill: none;
+  stroke: #007bff; /* Change color as needed */
+  stroke-width: 6;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.circle-loader-text {
+  fill: #333; /* Change color as needed */
+  font-size: 16px;
+}
