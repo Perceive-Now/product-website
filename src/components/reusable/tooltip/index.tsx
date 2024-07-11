@@ -11,7 +11,7 @@ export default function PopOverHover({ desc }: Props) {
         <InfoIcon className="h-2 w-2" />
       </div>
 
-      <div className="group-hover:block hidden absolute z-10 w-[540px]  -left-[240px] bottom-4 bg-primary-900 rounded-lg shadow-pop border border-primary-900 p-[10px] text-white text-justify">
+      <div className="group-hover:block hidden absolute z-10 w-[540px] -left-[200px]  2xl:-left-[220px] bottom-4 bg-primary-900 rounded-lg shadow-pop border border-primary-900 p-[10px] text-white text-justify">
         {desc}
       </div>
     </div>

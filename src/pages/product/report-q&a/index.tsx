@@ -22,11 +22,12 @@ import {
 import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
 import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
 import { questionList } from "./_question";
+import { LiquidSphereLoaderIcon } from "src/components/icons";
 
 /**
  *
  */
-const ReportPage = () => {
+const DetailedQAPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -37,6 +38,11 @@ const ReportPage = () => {
   const { questionsList, currentQuestionId, skippedQuestionList, currentPageId } = useAppSelector(
     (state) => state.QA,
   );
+
+  // Percentage calculation
+  const totalQuestions = questionsList.length + skippedQuestionList.length;
+  const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
+  const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
 
   useEffect(() => {
     if (sessionDetail?.use_cases) {
@@ -128,20 +134,26 @@ const ReportPage = () => {
 
   return (
     <div className="w-full">
-      <button className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit" onClick={onBack}>
-        <ArrowLeftIcon /> Back
-      </button>
-      <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
-      <div className="w-full overflow-hidden">
-        <DetailQAProgressBar
-          questionWithUsecase={questionWithUsecase || ([] as any)}
-          QAPagesList={QAPagesList}
-        />
+      <div className="">
+        <button
+          type="button"
+          className="flex flex-row items-center gap-x-1 font-bold text-secondary-800 w-fit"
+          onClick={onBack}
+        >
+          <ArrowLeftIcon /> <span className="text-3xl font-[800]">Detailed Q&A</span>
+        </button>
+        <div className="w-full overflow-hidden">
+          <DetailQAProgressBar
+            questionWithUsecase={questionWithUsecase || ([] as any)}
+            QAPagesList={QAPagesList}
+          />
+        </div>
       </div>
-      <div className="flex mt-2.5 justify-between gap-8">
+
+      <div className="flex justify-between gap-2 2xl:gap-8">
         <div
           className={classNames(
-            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full shadow border rounded-md w-[932px] p-2 bg-white",
+            "relative h-[calc(100vh-400px)] md:h-[calc(100vh-180px)] xl:h-[calc(100vh-180px)] 2xl:h-full max-h-full shadow border rounded-md w-full p-2 bg-white overflow-auto pn_scroller",
             currentPageId === 2 ? "mx-auto" : "",
           )}
         >
@@ -158,14 +170,25 @@ const ReportPage = () => {
             ))}
           </div>
         </div>
-        {currentPageId !== 2 && (
-          <div className="flex-shrink-0 lg:w-[300px]">
-            {<SkippedQuestion questions={skippedQuestionList || []} />}
+        <div>
+          <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden mb-2 ml-0.5">
+            <LiquidSphereLoaderIcon
+              className="row-start-1 col-start-1"
+              percentage={!Number.isNaN(percentage) ? percentage : 0}
+            />
+            <p className="col-start-1 row-start-1 text-white flex flex-row items-center justify-center text-center w-full mix-blend-difference">
+              {percentage}%
+            </p>
           </div>
-        )}
+          {currentPageId !== 2 && (
+            <div className="shrink-0 w-[260px] 2xl:w-[300px]">
+              {<SkippedQuestion questions={skippedQuestionList || []} />}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default ReportPage;
+export default DetailedQAPage;

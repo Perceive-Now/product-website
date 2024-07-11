@@ -79,6 +79,7 @@ export default function EditQuestionAnswer() {
         showSkip={false}
         resetForm={resetForm}
         setResetForm={setResetForm}
+        questionId={0}
       />
     </>
   );

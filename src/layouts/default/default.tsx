@@ -17,7 +17,7 @@ export default function DefaultLayout() {
         <div className="flex h-full">
           <AppSidebar />
           <div className="h-full w-full duration-500 px-4">
-            <AppHeader />
+            {/* <AppHeader /> */}
             <div className="relative py-3 h-full w-full pl-1 container ">
               <Outlet />
             </div>
