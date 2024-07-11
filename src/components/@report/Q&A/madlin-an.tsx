@@ -64,7 +64,7 @@ const DiagnosticPlatform = ({
           {section.answer.split(/(\[[^\]]+\])/g).map((part, index) => {
             if (part.startsWith("[") && part.endsWith("]")) {
               const placeholder = part.substring(1, part.length - 1);
-              const inputWidth = Math.max(placeholder.length * 8, 60); // Minimum width of 32px
+              const inputWidth = Math.max(placeholder.length * 7.5, 60); // Minimum width of 32px
 
               return (
                 <input
@@ -95,20 +95,22 @@ const DiagnosticPlatform = ({
           })}
         </div>
       ))}
-      {hasSkippedQuestion ? (
-        <div>Answer all the skipped questions to continue.</div>
-      ) : (
-        <div className="mt-4 pb-4 flex gap-2 items-center">
-          {showSkip && (
-            <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
-              Skip for now
+      <div className="">
+        {hasSkippedQuestion ? (
+          <div>Answer all the skipped questions to continue.</div>
+        ) : (
+          <div className="mt-4 pb-4 flex gap-2 items-center">
+            {showSkip && (
+              <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
+                Skip for now
+              </Button>
+            )}
+            <Button loading={isLoading} handleClick={handleContinue} rounded={"medium"}>
+              Save & Continue
             </Button>
-          )}
-          <Button loading={isLoading} handleClick={handleContinue} rounded={"medium"}>
-            Save & Continue
-          </Button>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

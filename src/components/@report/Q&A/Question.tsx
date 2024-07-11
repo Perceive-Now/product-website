@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import toast from "react-hot-toast";
-import jsCookie from "js-cookie";
+// import jsCookie from "js-cookie";
 
 import QuestionAnswerForm from "./question-form";
 import {
@@ -17,7 +17,7 @@ import {
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
 // import axiosInstance from "src/utils/axios";
-import axios from "axios";
+// import axios from "axios";
 
 // const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
@@ -43,17 +43,17 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
 
-  const userId = jsCookie.get("user_id");
+  // const userId = jsCookie.get("user_id");
 
   //
   const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
-  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+  // const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
   //
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setLoading(true);
-      console.log(value);
+      // console.log(value);
       try {
         // const res = await axios.post(
         //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(

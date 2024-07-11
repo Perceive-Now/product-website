@@ -33,6 +33,7 @@ const optionMappings: OptionMappings = {
   "ip-licensing-opportunity": "ip-licensing-opportunity",
   //
   "m&a": "m&a",
+  "market-potential": "market-potential",
   "market-analysis": "market-analysis",
   "competitive-landscape": "competitive-landscape",
   "consumer-landscape": "consumer-landscape",
