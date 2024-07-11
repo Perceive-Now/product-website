@@ -57,9 +57,10 @@ function KnowNowIP() {
 
   //
   const [loadingIndex, setLoadingIndex] = useState<number | null>(null);
+  const [chatIndex, setChatIndex] = useState<number | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
   const [isLoading, setIsloading] = useState(false);
   const [query, setQuery] = useState("");
-  const [chatIndex, setChatIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (queryStatus) {
@@ -77,6 +78,8 @@ function KnowNowIP() {
       dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]));
     }
     if (id && isSaved) {
+      setIsFetching(true);
+
       dispatch(
         getIPChatById({
           user_id: userId || "",
@@ -85,12 +88,14 @@ function KnowNowIP() {
       )
         .unwrap()
         .then((res) => {
+          setIsFetching(false);
           if (!res.success) {
             toast.error("Unable to fetch Conversations");
             navigate("/start-conversation");
           }
         })
         .catch(() => {
+          setIsFetching(false);
           toast.error("Something went wrong");
           navigate("/start-conversation");
         });
@@ -249,7 +254,7 @@ function KnowNowIP() {
           ref={chatRef}
           className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
-          {(chats && chats.length <= 0 && id) || isSaved ? (
+          {(isFetching && chats && chats.length <= 0 && id) || isSaved ? (
             <div className="flex justify-center items-center h-full">
               <LoadingIcon className="h-5 w-5 text-primary-900" />
             </div>

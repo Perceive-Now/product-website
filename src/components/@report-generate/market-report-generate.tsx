@@ -5,61 +5,11 @@ import axios from "axios";
 import { questionList } from "src/pages/product/report-q&a/_question";
 import { generateKnowId } from "src/utils/helpers";
 import Button from "../reusable/button";
-
-const MarketAnalysisSections = [
-  {
-    id: 1,
-    question: "Generate section Significant Trends?",
-  },
-  {
-    id: 2,
-    question: "Generate section Emerging Technologies and Innovations?",
-  },
-  {
-    id: 3,
-    question: "Generate section Consumer Preferences and Buying Habits?",
-  },
-  {
-    id: 4,
-    question: "Generate section Relevant Policies?",
-  },
-  {
-    id: 5,
-    question: "Generate section Market Growth and Regional Insights?",
-  },
-  {
-    id: 6,
-    question: "Generate section Recent Investments Startups (about 3 years back from till now)?",
-  },
-  {
-    id: 7,
-    question: "Generate section Startups working in companion technologies?",
-  },
-  {
-    id: 8,
-    question: "Generate section Recent Acquisitions and Mergers of company?",
-  },
-  {
-    id: 9,
-    question: "Generate section Recent Investor Exits or IPOs?",
-  },
-  {
-    id: 10,
-    question: "Generate section Profitability indicators?",
-  },
-  {
-    id: 11,
-    question: "Generate section Emerging technologies & innovations?",
-  },
-  {
-    id: 12,
-    question: "Generate section Consumer preferences & buying habits?",
-  },
-];
+import { CompetitiveQuestions, ConsumerQuestions } from "./_market-report-question";
 
 const GenerateMarketReport = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [fileName, setFileName] = useState("");
+  const [fileName, setFileName] = useState("gautamjune8e");
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportData, setReportData] = useState([]);
 
@@ -67,7 +17,7 @@ const GenerateMarketReport = () => {
   // const { questionsList } = useAppSelector((state) => state.QA);
 
   const marketAnalysisQA = questionList
-    .filter((q) => q.usecase === "market-analysis")
+    .filter((q) => q.usecase === "consumer-landscape")
     .map((q) => `Question: ${q.question}\nAnswer: ${q.answer}`)
     .join("\n\n");
 
@@ -75,12 +25,12 @@ const GenerateMarketReport = () => {
 
   const onLiveChat = useCallback(
     async (file_name: string, case_id: string, sectionIndex: number) => {
-      if (sectionIndex >= MarketAnalysisSections.length) {
+      if (sectionIndex >= ConsumerQuestions.length) {
         // All sections processed
         return;
       }
 
-      const section = MarketAnalysisSections[sectionIndex].question;
+      const section = ConsumerQuestions[sectionIndex].question;
       setIsGenerating(true);
       try {
         const res = await axios.post("http://172.203.243.82:8000/live_chat", {
@@ -110,24 +60,25 @@ const GenerateMarketReport = () => {
   );
 
   const onGenerateReport = useCallback(async () => {
-    setIsLoading(true);
-    const filename = generateKnowId();
-    setFileName(filename);
-    try {
-      const res = await axios.post("https://report.api.perceivenow.ai/create_file_usecase", {
-        file_name: filename,
-        number: "1",
-        text: `${marketAnalysisQA}`,
-      });
-      if (res.status === 200) {
-        onLiveChat(filename, "1", 0); // Start processing sections from index 0
-      }
-      setIsLoading(false);
-      console.log(res);
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-    }
+    onLiveChat(fileName, "2", 0); // Start processing sections from index 0
+
+    // setIsLoading(true);
+    // const filename = generateKnowId();
+    // setFileName(filename);
+    // try {
+    //   const res = await axios.post("https://report.api.perceivenow.ai/create_file_usecase", {
+    //     file_name: filename,
+    //     number: "3",
+    //     text: `${marketAnalysisQA}`,
+    //   });
+    //   if (res.status === 200) {
+    //   }
+    //   setIsLoading(false);
+    //   console.log(res);
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   console.log(error);
+    // }
   }, [marketAnalysisQA, onLiveChat]);
 
   function formtAnswer(report: string) {
@@ -137,7 +88,7 @@ const GenerateMarketReport = () => {
 
   return (
     <div>
-      <h4 className="font-bold text-xl py-2">Use-case: Market Analysis Report</h4>
+      <h4 className="font-bold text-xl py-2">Use-case: Consumer Report</h4>
       <Button handleClick={onGenerateReport} loading={isLoading}>
         Generate Report
       </Button>
