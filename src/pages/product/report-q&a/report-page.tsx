@@ -28,6 +28,7 @@ import { LiquidSphereLoaderIcon } from "src/components/icons";
 
 //
 import { NewQAList } from "./_new-question";
+import ToolTip from "src/components/reusable/tool-tip";
 
 /**
  *
@@ -145,7 +146,10 @@ const ReportDetailedQAPage = () => {
           className="flex items-center flex-row gap-x-1 font-bold text-secondary-800 w-fit"
           onClick={onBack}
         >
-          <ArrowLeftIcon /> <span className="text-3xl font-[800]">Detailed Q&A</span>
+          <ToolTip title="Back">
+            <ArrowLeftIcon />
+          </ToolTip>
+          <span className="text-3xl font-[800]">Detailed Q&A</span>
         </button>
 
         <div className="w-full overflow-hidden">
@@ -159,7 +163,7 @@ const ReportDetailedQAPage = () => {
       <div className="flex justify-between gap-2 2xl:gap-8">
         <div
           className={classNames(
-            "relative h-[calc(100vh-185px)] 2xl:h-full max-h-full  shadow border rounded-md w-full p-2 bg-white overflow-auto pn_scroller",
+            "relative h-[calc(100vh-176px)] shadow border rounded-md w-full p-2 pb-0 bg-white ",
             currentPageId === 2 ? "mx-auto" : "",
           )}
         >
@@ -169,7 +173,10 @@ const ReportDetailedQAPage = () => {
             {QAPagesList.map((step, idx) => (
               <div
                 key={idx}
-                className={classNames("px-1 h-full w-full", currentPageId !== step.id && "hidden")}
+                className={classNames(
+                  "px-1 h-full w-full relative",
+                  currentPageId !== step.id && "hidden",
+                )}
               >
                 {step.Component}
               </div>
@@ -187,8 +194,13 @@ const ReportDetailedQAPage = () => {
             </p>
           </div>
           {currentPageId !== 2 && (
-            <div className="shrink-0 w-[260px] 2xl:w-[300px] h-[calc(100vh-300px)] overflow-auto pn_scroller">
-              {<SkippedQuestion questions={skippedQuestionList || []} />}
+            <div>
+              <h4 className="text-primary-900 font-semibold px-[12px] border-b pb-0.5 mb-0.5">
+                Skipped questions
+              </h4>
+              <div className="shrink-0 w-[260px] 2xl:w-[300px] h-[calc(100vh-280px)] overflow-auto pn_scroller">
+                {<SkippedQuestion questions={skippedQuestionList || []} />}
+              </div>
             </div>
           )}
         </div>

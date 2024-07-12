@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import toast from "react-hot-toast";
-// import jsCookie from "js-cookie";
+import jsCookie from "js-cookie";
 
 import QuestionAnswerForm from "./question-form";
 import {
@@ -16,6 +16,7 @@ import {
 } from "src/stores/Q&A";
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
+import axios from "axios";
 // import axiosInstance from "src/utils/axios";
 // import axios from "axios";
 
@@ -43,11 +44,11 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
 
-  // const userId = jsCookie.get("user_id");
+  const userId = jsCookie.get("user_id");
 
   //
   const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
-  // const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
   //
   const onContinue = useCallback(
@@ -62,20 +63,23 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         //     requirementGatheringId,
         //   )}&QuestionID=${question.questionId}`,
         // );
-        // const res = await axios.post("https://templateuserrequirements.azurewebsites.net/create-items", {
-        //   "questionId": question.questionId,
-        //   "question": question.question,
-        //   "answer": value.answer,
-        //   "usecase": question.usecase,
-        //   "userId": userId,
-        //   "requirementId": requirementGatheringId
-        // })
-        const res = {
-          data: {
-            question: "",
-            status: "true",
+        const res = await axios.post(
+          "https://templateuserrequirements.azurewebsites.net/create-items/",
+          {
+            questionId: String(question.questionId),
+            question: String(question.question),
+            answer: value.answer,
+            usecase: question.usecase,
+            userId: String(userId),
+            requirementId: String(requirementGatheringId),
           },
-        };
+        );
+        // const res = {
+        //   data: {
+        //     question: "",
+        //     status: "true",
+        //   },
+        // };
         const new_question = res.data.question;
         setLoading(false);
         setResetForm(true);
@@ -114,7 +118,16 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         setLoading(false);
       }
     },
-    [currentQuestionId, dispatch, questionWithUsecase],
+    [
+      currentQuestionId,
+      dispatch,
+      question.question,
+      question.questionId,
+      question.usecase,
+      questionWithUsecase,
+      requirementGatheringId,
+      userId,
+    ],
   );
 
   const onSkip = useCallback(() => {

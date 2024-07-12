@@ -23,7 +23,9 @@ export async function addAnswer(value: IAnswers) {
 
 export async function getUserChats(user_id: string, requirement_gathering_id: string) {
   const response = await axios.get<IAnswers[]>(
-    `${BASE_PN_REPORT_URL}/get-answers/?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
+    `https://templateuserrequirements.azurewebsites.net/get-items?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
+    {},
+    // `${BASE_PN_REPORT_URL}/get-answers/?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
   );
 
   return response.data;

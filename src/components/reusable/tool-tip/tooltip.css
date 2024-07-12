@@ -5,6 +5,7 @@
   font-weight: 600;
 }
 
-/* .pn-tooltip-theme .tippy-arrow {
-  color: ;
-} */
+.pn-tooltip-theme.tippy-arrow {
+  background-color: #442873 !important;
+  fill: #442873 !important;
+}

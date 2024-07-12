@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useCallback, useEffect, useState } from "react";
+// import { useForm } from "react-hook-form";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import classNames from "classnames";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import classNames from "classnames";
 
-import * as yup from "yup";
+// import * as yup from "yup";
 
 //
 import Button from "../../reusable/button";
@@ -32,56 +32,56 @@ export default function QuestionAnswerForm({
   question,
   isLoading,
   exampleAnswer,
-  answer,
+  // answer,
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
-  resetForm,
-  setResetForm,
+  // resetForm,
+  // setResetForm,
   questionId,
 }: Props) {
-  const [updatedAnswer, setUpdatedAnswer] = useState("");
-  const [example, setExample] = useState(false);
+  // const [updatedAnswer, setUpdatedAnswer] = useState("");
+  // const [example, setExample] = useState(false);
 
-  const formResolver = yup.object().shape({
-    answer: yup.string().trim().required("Please provide your answer"),
-  });
+  // const formResolver = yup.object().shape({
+  //   answer: yup.string().trim().required("Please provide your answer"),
+  // });
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    setValue,
-    reset,
-  } = useForm({
-    defaultValues: {
-      answer: updatedAnswer,
-    },
-    resolver: yupResolver(formResolver),
-    mode: "onBlur",
-  });
+  // const {
+  //   register,
+  //   formState: { errors },
+  //   handleSubmit,
+  //   setValue,
+  //   reset,
+  // } = useForm({
+  //   defaultValues: {
+  //     answer: updatedAnswer,
+  //   },
+  //   resolver: yupResolver(formResolver),
+  //   mode: "onBlur",
+  // });
 
-  useEffect(() => {
-    setUpdatedAnswer(answer || "");
-    // setValue("answer", answer || "");
-  }, [answer, setValue]);
-  //
-  const useExample = useCallback(() => {
-    setExample(true);
-    // setValue("answer", exampleAnswer); // Update the form value
-  }, []);
+  // useEffect(() => {
+  //   setUpdatedAnswer(answer || "");
+  //   // setValue("answer", answer || "");
+  // }, [answer, setValue]);
+  // //
+  // const useExample = useCallback(() => {
+  //   setExample(true);
+  //   // setValue("answer", exampleAnswer); // Update the form value
+  // }, []);
 
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 
-  useEffect(() => {
-    if (resetForm) {
-      reset();
-      setResetForm(false);
-    }
-  });
+  // useEffect(() => {
+  //   if (resetForm) {
+  //     reset();
+  //     setResetForm(false);
+  //   }
+  // });
 
   return (
-    <div className="">
+    <div className="h-[calc(100vh-280px)] overflow-auto bg-white pn_scroller">
       <div className="space-y-[10px]">
         <h4
           className="text-primary-900 text-lg 2xl:text-xl font-semibold"
@@ -97,21 +97,23 @@ export default function QuestionAnswerForm({
           size="small"
           rounded="small"
           classname="px-0.5 py-[6px] text-xs font-semibold"
-          handleClick={useExample}
+          // handleClick={useExample}
         >
-          Use this example
+          Example
         </Button>
       </div>
-      {example ? (
-        <DiagnosticPlatform
-          hasSkippedQuestion={hasSkippedQuestion}
-          showSkip={showSkip}
-          onSkip={onSkip}
-          questionId={questionId}
-          onContinue={onContinue}
-          isLoading={isLoading}
-        />
-      ) : (
+      <DiagnosticPlatform
+        hasSkippedQuestion={hasSkippedQuestion}
+        showSkip={showSkip}
+        onSkip={onSkip}
+        questionId={questionId}
+        onContinue={onContinue}
+        isLoading={isLoading}
+      />
+      {/* {example ? (
+        
+      ) 
+      : (
         <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
           <div className="">
             <label className=" text-sm font-medium leading-5 text-gray-700">
@@ -159,7 +161,7 @@ export default function QuestionAnswerForm({
             </div>
           )}
         </form>
-      )}
+      )} */}
     </div>
   );
 }

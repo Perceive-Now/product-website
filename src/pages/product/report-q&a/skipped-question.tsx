@@ -57,8 +57,7 @@ const SkippedQuestion = ({ questions }: Props) => {
   );
 
   return (
-    <div>
-      <h4 className="text-primary-900 font-semibold px-[12px]">Skipped questions</h4>
+    <>
       <div className="space-y-1 mt-1">
         {questions.map((question, idx) => (
           <p
@@ -70,7 +69,7 @@ const SkippedQuestion = ({ questions }: Props) => {
           </p>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
