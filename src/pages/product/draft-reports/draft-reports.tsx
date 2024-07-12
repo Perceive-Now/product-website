@@ -6,7 +6,7 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/themes/light.css";
 import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis";
 import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
-import DropdownShareIcon from "../generated-reports/dropdown-share-icon";
+import DropdownContinueIcon from "../generated-reports/dropdown-continue-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import { getDraftsByUserId, resetGetDraftsByUserIdState, IDraft } from "../../../stores/draft";
 import jsCookie from "js-cookie";
@@ -35,8 +35,8 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         <DropdownDeleteIcon />
       </button>
       <button onClick={handleContinue} className="flex flex-row gap-x-2 justify-between w-full">
-        <p> Share </p>
-        <DropdownShareIcon />
+        <p> Continue report </p>
+        <DropdownContinueIcon />
       </button>
     </div>
   );
