@@ -45,7 +45,7 @@ const DiagnosticPlatform = ({
         for (const placeholder of placeholders) {
           const key = placeholder.substring(1, placeholder.length - 1);
           if (!inputs[key]) {
-            return "Please fill in all the inputs.";
+            return "Please fill in all the answers.";
           }
         }
       }
