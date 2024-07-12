@@ -119,7 +119,7 @@ const DiagnosticPlatform = ({
           {QA.map((section, sectionIndex) => (
             <div
               key={sectionIndex}
-              className="space-y-[6px] font-semibold text-secondary-800 text-sm mt-2.5 border py-1 px-2 rounded-md bg-appGray-100 h-[180px]"
+              className="space-y-[6px] font-semibold text-secondary-800 text-sm mt-2.5 border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px]"
             >
               {section.answer.split(/(\[[^\]]+\])/g).map((part, index) => {
                 if (part.startsWith("[") && part.endsWith("]")) {
@@ -129,11 +129,11 @@ const DiagnosticPlatform = ({
                   return (
                     <input
                       className={classNames(
-                        "focus:outline-none bg-transparent inline overflow-x-auto text-gray-500 shrink-0 placeholder:text-gray-500 border-b border-secondary-800",
+                        "focus:outline-none bg-transparent inline overflow-x-auto text-gray-500 shrink-0 placeholder:text-gray-500 border-b border-secondary-800 max-w-[780px]",
                       )}
                       key={index}
                       placeholder={placeholder}
-                      style={{ width: inputWidth }}
+                      style={{ minWidth: inputWidth }}
                       value={resetInputs ? "" : userInputs[placeholder] || ""}
                       onChange={(e) => handleInputChange(placeholder, e.target.value)}
                     />

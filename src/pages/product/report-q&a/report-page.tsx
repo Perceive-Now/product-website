@@ -163,7 +163,7 @@ const ReportDetailedQAPage = () => {
       <div className="flex justify-between gap-2 2xl:gap-8">
         <div
           className={classNames(
-            "relative h-[calc(100vh-176px)] shadow border rounded-md w-full p-2 pb-0 bg-white ",
+            "relative h-[calc(100vh-176px)] shadow border rounded-md w-full p-2 pb-0 bg-white grow-0",
             currentPageId === 2 ? "mx-auto" : "",
           )}
         >
@@ -183,7 +183,7 @@ const ReportDetailedQAPage = () => {
             ))}
           </div>
         </div>
-        <div>
+        <div className="shrink-0">
           <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden mb-2 ml-0.5">
             <LiquidSphereLoaderIcon
               className="row-start-1 col-start-1"

@@ -81,7 +81,7 @@ export default function QuestionAnswerForm({
   // });
 
   return (
-    <div className="h-[calc(100vh-280px)] overflow-auto bg-white pn_scroller">
+    <div className="h-[calc(100vh-284px)] overflow-auto bg-white pn_scroller pr-2">
       <div className="space-y-[10px]">
         <h4
           className="text-primary-900 text-lg 2xl:text-xl font-semibold"
