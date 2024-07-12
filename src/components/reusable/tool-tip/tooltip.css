@@ -5,7 +5,18 @@
   font-weight: 600;
 }
 
-.pn-tooltip-theme.tippy-arrow {
-  background-color: #442873 !important;
-  fill: #442873 !important;
+.tippy-box[data-placement^="right"] > .tippy-arrow:before {
+  border-right-color: #442873;
+}
+
+.tippy-box[data-placement^="top"] > .tippy-arrow:before {
+  border-top-color: #442873;
+}
+
+.tippy-box[data-placement^="left"] > .tippy-arrow:before {
+  border-left-color: #442873;
+}
+
+.tippy-box[data-placement^="bottom"] > .tippy-arrow:before {
+  border-bottom-color: #442873;
 }

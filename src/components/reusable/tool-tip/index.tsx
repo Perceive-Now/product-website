@@ -24,8 +24,13 @@ interface Props {
 
 const ToolTip = ({ children, title, placement = "top" }: Props) => {
   return (
-    <Tippy content={title} className="pn-tooltip-theme" placement={placement}>
-      <div>{children}</div>
+    <Tippy
+      content={title}
+      className="pn-tooltip-theme text-justify"
+      placement={placement}
+      // visible={true}
+    >
+      <span className="text-justify">{children}</span>
     </Tippy>
   );
 };
