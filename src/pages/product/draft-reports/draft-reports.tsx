@@ -5,7 +5,6 @@ import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/themes/light.css";
 import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis";
-import DropdownDownloadIcon from "../generated-reports/dropdown-download-icon";
 import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
 import DropdownShareIcon from "../generated-reports/dropdown-share-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
@@ -106,8 +105,6 @@ export default function DraftReports() {
       edit: "edit",
     };
   });
-
-  console.log("Row Data:", rowData); // Log rowData to verify the mapping
 
   const isLoading = getDraftsByUserIdState.isLoading;
 
