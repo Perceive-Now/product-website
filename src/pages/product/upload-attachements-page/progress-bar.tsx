@@ -40,7 +40,7 @@ export default function ProgressBar({
   }
 
   return (
-    <div className="h-[28px] w-full flex flex-row items-center gap-x-[4px] text-sm mt-1 mb-5">
+    <div className="h-[24px] w-full flex flex-row items-center gap-x-[4px] text-sm mt-1 mb-2.5">
       {/* usecase */}
       <div className="bg-progressbar-gradient-lr w-[260px] flex flex-col justify-center h-full rounded-l-[4px] overflow-hidden">
         <p className="text-white pl-[20px]">Use case selected</p>
@@ -58,7 +58,7 @@ export default function ProgressBar({
         <div className="bg-primary-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
           <div
             className="bg-progressbar-gradient-rl w-full flex flex-col justify-center h-full col-start-1 row-start-1"
-            style={{ width: `${100}%` }}
+            // style={{ width: `${100}%` }}
           ></div>
           <p className="text-white pl-[20px] col-start-1 row-start-1">
             {requirmentGatheringMethod}
@@ -66,17 +66,17 @@ export default function ProgressBar({
         </div>
       )}
       {currentPageName !== "1" && currentPageName !== "2" && (
-        <div className="bg-primary-50 w-full justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden">
+        <div className="bg-primary-50 justify-center items-center h-full grid grid-cols-1 grid-rows-1 overflow-hidden shrink w-full">
           <div
-            className="bg-progressbar-gradient-rl w-full flex flex-col justify-center h-full col-start-1 row-start-1"
-            style={{ width: `${((currentStep + 2) / (totalSteps + 2)) * 100}%`, minWidth: "200px" }}
+            className="bg-progressbar-gradient-rl flex flex-col justify-center h-full col-start-1 row-start-1 w-[200px]"
+            style={{ width: `${((currentStep + 2) / (totalSteps + 2)) * 100}%` }}
           ></div>
           <p className="text-white pl-[20px] col-start-1 row-start-1">{currentPageName}</p>
         </div>
       )}
 
       {/* payment */}
-      <div className="bg-primary-50 w-[260px] flex flex-col justify-center h-full rounded-r-[4px] overflow-hidden">
+      <div className="bg-primary-50 w-[200px] 2xl:w-[260px] flex flex-col justify-center h-full rounded-r-[4px] overflow-hidden shrink-0">
         <p className="text-primary-900 pl-[20px] font-semibold">Payment</p>
       </div>
     </div>

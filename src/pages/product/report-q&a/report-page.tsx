@@ -1,200 +1,212 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 //
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-
-import { setSession } from "../../../stores/session";
-import { questionList } from "./_question";
-
-import Loading from "../../../components/reusable/loading";
-
-import IPStepper from "../../../components/@report/use-case/stepper";
-import ChatQuestionAnswer from "src/components/@report/use-case/question/question-1";
-import Thankyou from "src/components/@report/use-case/thank-you";
-import EditQuestion from "src/components/@report/use-case/question/edit-question";
-import NewQuestion from "src/components/@report/use-case/new-question";
-import SkippedQuestionAnswer from "src/components/@report/use-case/question/skipped-question";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+//
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+
+//
+import SkippedQuestion from "./skipped-question";
+import ReportChatQuestionAnswer from "src/components/@report/Q&A/Question";
+import IPReview from "src/components/@report/Q&A/review/review";
+
+//
+import {
+  QAPages,
+  decrementStep,
+  questionWithUseCases,
+  setCurrentPageId,
+  setCurrentQuestionId,
+} from "src/stores/Q&A";
+
+//
+import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
+import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
+import { LiquidSphereLoaderIcon } from "src/components/icons";
+
+//
+import { NewQAList } from "./_new-question";
+import ToolTip from "src/components/reusable/tool-tip";
 
 /**
  *
  */
-export default function ReportQuestionAnswerPage() {
+const ReportDetailedQAPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const session = useAppSelector((state) => state.sessionDetail.session);
-  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-
-  const activeIndex = useMemo(
-    () => sessionDetail?.active_index || 0,
-    [sessionDetail?.active_index],
-  );
-
-  const [loading, setLoading] = useState(false);
-  const [activeStep, setActiveStep] = useState<any>(0);
   const [useCases, setUseCases] = useState<string[]>([]);
 
+  const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+
+  const { questionsList, currentQuestionId, skippedQuestionList, currentPageId } = useAppSelector(
+    (state) => state.QA,
+  );
+
+  // Percentage calculation
+  const totalQuestions = questionsList.length + skippedQuestionList.length;
+  const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
+  const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
+
   useEffect(() => {
-    if (sessionDetail === undefined) {
-      setLoading(true);
+    if (sessionDetail?.use_cases) {
+      setUseCases(sessionDetail?.use_cases);
     }
-    if (sessionDetail) {
-      if (sessionDetail?.step_id) {
-        setActiveStep(sessionDetail?.step_id);
-      }
-      if (sessionDetail?.use_cases) {
-        setUseCases(sessionDetail?.use_cases);
-      }
-    }
-    setLoading(false);
   }, [sessionDetail]);
 
-  //
-  const changeActiveStep = useCallback((stepValue: number) => {
-    if (stepValue < steps.length - 1 && stepValue >= 0) {
-      setActiveStep(stepValue);
+  const questionWithUsecase = useMemo(() => {
+    if (useCases && useCases.length > 0 && questionsList.length === 0) {
+      return NewQAList.filter(
+        (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
+      ).map((q) => ({
+        question: q.question,
+        questionId: q.questionId,
+        useCaseId: q.useCaseId,
+        usecase: q.usecase,
+        answer: "",
+        exampleAnswer: q.answer, // Assigning the answer to exampleAnswer
+      }));
+    } else {
+      return questionsList;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [questionsList, useCases]);
 
-  const questionId = useMemo(() => sessionDetail?.question_id, [sessionDetail?.question_id]);
-  //
-  const questionWithUsecase = questionList.filter(
-    (q) => q.usecase === "common-question" || useCases.includes(q.usecase),
-  );
+  useEffect(() => {
+    if (questionWithUsecase && questionWithUsecase?.length > 0) {
+      dispatch(questionWithUseCases(questionWithUsecase));
+    }
+  }, [dispatch, questionWithUsecase]);
 
   const question = useMemo(
     () =>
-      questionWithUsecase.find((q, idx) => {
-        if (idx === activeIndex) {
+      questionWithUsecase?.find((q) => {
+        if (q.questionId === currentQuestionId) {
           return q;
         }
-      }) || { questionId: Number(questionId), question: "", usecase: "", answer: "" },
-    [activeIndex, questionId, questionWithUsecase],
+      }) || {
+        questionId: Number(currentQuestionId),
+        question: "",
+        usecase: "",
+        answer: "",
+        useCaseId: 0,
+        exampleAnswer: "",
+      },
+    [currentQuestionId, questionWithUsecase],
   );
-
   //
-  const steps = [
+  const QAPagesList = [
     {
-      label: "",
-      value: 3,
-      component: (
-        <ChatQuestionAnswer
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
+      id: 1,
+      title: "",
+      description: "",
+      Component: (
+        <ReportChatQuestionAnswer
           question={question}
-          activeIndex={activeIndex}
-          totalQuestion={questionWithUsecase.length}
+          questionWithUsecase={questionWithUsecase || []}
         />
       ),
     },
     {
-      label: "",
-      value: 5,
-      component: <Thankyou changeActiveStep={changeActiveStep} />,
+      id: 2,
+      title: "",
+      description: "",
+      Component: <IPReview />,
     },
     {
-      label: "Edit",
-      value: 7,
-      component: <EditQuestion changeActiveStep={changeActiveStep} />,
-    },
-    {
-      label: "",
-      value: 8,
-      component: (
-        <NewQuestion
-          changeActiveStep={changeActiveStep}
-          activeStep={activeStep}
-          exampleAnswer={question.answer}
-          activeIndex={activeIndex}
-        />
-      ),
-    },
-    {
-      label: "skipped-question",
-      value: 9,
-      component: (
-        <SkippedQuestionAnswer
-          changeActiveStep={changeActiveStep}
-          activeIndex={activeIndex}
-          questionWithUsecase={questionWithUsecase}
-        />
-      ),
+      id: 3,
+      title: "",
+      description: "",
+      Component: <EditQuestionAnswer />,
     },
   ];
 
   const onBack = useCallback(() => {
-    if (activeIndex === 0) {
+    const currentIndex = questionWithUsecase?.findIndex((q) => q.questionId === currentQuestionId);
+    const prevQiestionId =
+      questionWithUsecase && currentIndex && questionWithUsecase[currentIndex - 1].questionId;
+    if (currentPageId === 3) {
+      dispatch(setCurrentPageId(QAPages.Review));
+    } else if (currentIndex === 0) {
       navigate("/interaction-method");
+    } else if (currentPageId === 2) {
+      dispatch(setCurrentPageId(QAPages.QA));
     } else {
-      dispatch(
-        setSession({
-          session_data: {
-            ...sessionDetail,
-            question_id: questionId,
-            step_id: 3,
-            active_index: activeIndex - 1,
-          },
-        }),
-      );
+      dispatch(setCurrentQuestionId(prevQiestionId || 0));
+      dispatch(decrementStep());
     }
-  }, [activeIndex, dispatch, navigate, questionId, sessionDetail]);
-
-  //
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [activeStep]);
-
-  if (loading || session === undefined) {
-    return <Loading isLoading={loading || session === undefined} />;
-  }
+  }, [currentPageId, currentQuestionId, dispatch, navigate, questionWithUsecase]);
 
   return (
-    <>
-      <div className="w-full">
+    <div className="w-full">
+      <div className="">
         <button
-          className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit"
+          type="button"
+          className="flex items-center flex-row gap-x-1 font-bold text-secondary-800 w-fit"
           onClick={onBack}
         >
-          <ArrowLeftIcon /> Back
+          <ToolTip title="Back">
+            <ArrowLeftIcon />
+          </ToolTip>
+          <span className="text-3xl font-[800]">Detailed Q&A</span>
         </button>
-        <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
+
         <div className="w-full overflow-hidden">
-          <IPStepper steps={questionWithUsecase} activeStep={activeIndex} />
-        </div>
-        <div className="flex mt-2.5 justify-between gap-8">
-          <div
-            className={classNames(
-              "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full shadow border rounded-md w-[932px] p-2 bg-white",
-              sessionDetail?.step_id === 6 ? "mx-auto" : "",
-            )}
-          >
-            <div
-              className={`translate-y-[${
-                activeStep * 9
-              }% flex flex-col gap-y-5 transition duration-500 ease-in-out  h-full w-full `}
-              style={{
-                transform: `translateY(-${activeStep * 0}%)`,
-              }}
-            >
-              {steps.map((step, idx) => (
-                <div
-                  key={idx}
-                  className={classNames(
-                    activeStep !== step.value && "hidden",
-                    "px-1 h-full w-full",
-                  )}
-                >
-                  {step.component}
-                </div>
-              ))}
-            </div>
-          </div>
+          <DetailQAProgressBar
+            questionWithUsecase={questionWithUsecase || ([] as any)}
+            QAPagesList={QAPagesList}
+          />
         </div>
       </div>
-    </>
+
+      <div className="flex justify-between gap-2 2xl:gap-8">
+        <div
+          className={classNames(
+            "relative h-[calc(100vh-176px)] shadow border rounded-md  p-2 pb-0 bg-white grow-0",
+            currentPageId === 2 ? "mx-auto w-full xl:w-[900px]" : "w-full",
+          )}
+        >
+          <div
+            className={`flex flex-col gap-y-5 transition duration-500 ease-in-out  h-full w-full `}
+          >
+            {QAPagesList.map((step, idx) => (
+              <div
+                key={idx}
+                className={classNames(
+                  "px-1 h-full w-full relative",
+                  currentPageId !== step.id && "hidden",
+                )}
+              >
+                {step.Component}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="shrink-0">
+          <div className="h-[60px] min-w-[60px] max-w-[61px] grid grid-cols-1 justify-center items-center grid-rows-1 overflow-hidden mb-2 ml-0.5">
+            <LiquidSphereLoaderIcon
+              className="row-start-1 col-start-1"
+              percentage={!Number.isNaN(percentage) ? percentage : 0}
+            />
+            <p className="col-start-1 row-start-1 text-white flex flex-row items-center justify-center text-center w-full mix-blend-difference">
+              {percentage}%
+            </p>
+          </div>
+          {currentPageId !== 2 && (
+            <div>
+              <h4 className="text-primary-900 font-semibold px-[12px] border-b pb-0.5 mb-0.5">
+                Skipped questions
+              </h4>
+              <div className="shrink-0 w-[260px] 2xl:w-[300px] h-[calc(100vh-280px)] overflow-auto pn_scroller">
+                {<SkippedQuestion questions={skippedQuestionList || []} />}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default ReportDetailedQAPage;

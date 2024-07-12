@@ -34,8 +34,8 @@ const stepsList = [
 export default function Landing() {
   return (
     <div className="h-[80vh] flex justify-center items-center">
-      <div className="flex flex-row w-fit space-x-1 xl:space-x-5 h-[500px] items-end">
-        <div className="w-full max-w-[350px] lg:max-w-[400px] xl:max-w-[500px]">
+      <div className="flex flex-row w-fit space-x-1 h-[500px] items-end">
+        <div className="w-full max-w-[340px]  2xl:max-w-[500px] ">
           <div className="space-y-2">
             <Title text="Create" />
             <Title text="Your Perfect Report" />
@@ -53,7 +53,7 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="text-white space-y-1">
+        <div className="text-white space-y-1 ">
           <StepWrapper className="ml-[0px]">
             <ContentWrapper className="justify-start">
               <NumberCircle number={1} className="text-primary-900 ml-[30px] mr-1" />

@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 //
 
@@ -11,14 +11,15 @@ import AppHeader from "../header";
  *
  */
 export default function DefaultLayout() {
+  const location = useLocation();
   return (
     <div className="bg-white-gradient">
       <div className={classNames("w-full min-h-[calc(100vh-40px)] mt-0.5")}>
         <div className="flex h-full">
           <AppSidebar />
           <div className="h-full w-full duration-500 px-4">
-            <AppHeader />
-            <div className="relative py-3 h-full w-full pl-1 container ">
+            {location.pathname !== "/q&a" && <AppHeader />}
+            <div className="relative py-2 h-full w-full pl-1 container ">
               <Outlet />
             </div>
           </div>

@@ -1,11 +1,15 @@
-import { useForm } from "react-hook-form";
+// import { useCallback, useEffect, useState } from "react";
+// import { useForm } from "react-hook-form";
 
-import { yupResolver } from "@hookform/resolvers/yup";
-import classNames from "classnames";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import classNames from "classnames";
 
-import * as yup from "yup";
+// import * as yup from "yup";
+
+//
 import Button from "../../reusable/button";
-import { useCallback, useEffect, useState } from "react";
+import MadlibEdit from "./madlib-edit";
+import DiagnosticPlatform from "./madlin-an";
 
 interface Props {
   onContinue: any;
@@ -18,8 +22,14 @@ interface Props {
   showSkip?: boolean;
   resetForm: boolean;
   setResetForm: (reset: boolean) => void;
+  questionId: number;
+  chatRef?: any;
+  isEdit: boolean;
 }
 
+/**
+ *
+ */
 export default function QuestionAnswerForm({
   onContinue,
   question,
@@ -29,107 +39,154 @@ export default function QuestionAnswerForm({
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
-  resetForm,
-  setResetForm,
+  // resetForm,
+  // setResetForm,
+  questionId,
+  chatRef,
+  isEdit,
 }: Props) {
-  const [updatedAnswer, setUpdatedAnswer] = useState("");
+  // -------------------------------- Previous code Start -----------------------------------//
+  // const [updatedAnswer, setUpdatedAnswer] = useState("");
+  // const [example, setExample] = useState(false);
 
-  const formResolver = yup.object().shape({
-    answer: yup.string().trim().required("Please provide your answer"),
-  });
+  // const formResolver = yup.object().shape({
+  //   answer: yup.string().trim().required("Please provide your answer"),
+  // });
 
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    setValue,
-    reset,
-  } = useForm({
-    defaultValues: {
-      answer: updatedAnswer,
-    },
-    resolver: yupResolver(formResolver),
-    mode: "onBlur",
-  });
+  // const {
+  //   register,
+  //   formState: { errors },
+  //   handleSubmit,
+  //   setValue,
+  //   reset,
+  // } = useForm({
+  //   defaultValues: {
+  //     answer: updatedAnswer,
+  //   },
+  //   resolver: yupResolver(formResolver),
+  //   mode: "onBlur",
+  // });
 
-  useEffect(() => {
-    setUpdatedAnswer(answer || "");
-    setValue("answer", answer || "");
-  }, [answer, setValue]);
-  //
-  const useExample = useCallback(() => {
-    setValue("answer", exampleAnswer); // Update the form value
-  }, [exampleAnswer, setValue]);
+  // useEffect(() => {
+  //   setUpdatedAnswer(answer || "");
+  //   // setValue("answer", answer || "");
+  // }, [answer, setValue]);
+  // //
+  // const useExample = useCallback(() => {
+  //   setExample(true);
+  //   // setValue("answer", exampleAnswer); // Update the form value
+  // }, []);
+
+  // useEffect(() => {
+  //   if (resetForm) {
+  //     reset();
+  //     setResetForm(false);
+  //   }
+  // });
+
+  // -------------------------------- Previous code End ------------------------------------//
 
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 
-  useEffect(() => {
-    if (resetForm) {
-      reset();
-      setResetForm(false);
-    }
-  });
-
   return (
-    <div className="">
-      {/* <Loading isLoading={isLoading} /> */}
-      <div className="space-y-2.5">
+    <div ref={chatRef} className="h-[calc(100vh-284px)] overflow-auto bg-white pn_scroller pr-2">
+      <div className="space-y-[10px]">
         <h4
-          className="text-primary-900 text-xl font-semibold"
+          className="text-primary-900 text-lg 2xl:text-xl font-semibold"
           dangerouslySetInnerHTML={{ __html: `${question}` }}
         />
         <p
           id="exampleText"
-          className="text-gray-600 text-sm"
+          className="text-gray-600 text-xs 2xl:text-sm"
           dangerouslySetInnerHTML={{ __html: `Eg: ${formattedAnswer}` }}
         />
         <Button
           type="gray"
           size="small"
           rounded="small"
-          classname="px-0.5 py-[6px] text-xs font-semibold"
-          handleClick={useExample}
+          classname="px-0.5 py-[6px] text-xs font-semibold hover:cursor-default"
+          // handleClick={useExample}
         >
-          Use this example
+          Example
         </Button>
       </div>
-      <form onSubmit={handleSubmit(onContinue)} className="mt-4">
-        <fieldset className="mt-3">
-          <label className=" text-sm font-medium leading-5 text-gray-700">
-            <div className="mt-0.5 rounded-md">
-              <textarea
-                rows={5}
-                disabled={isLoading}
-                {...register("answer")}
-                className={classNames(
-                  "appearance-none w-full px-2 py-[10px] bg-appGray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
-                  errors.answer
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                )}
-                placeholder="Please provide your answer here."
-              />
-            </div>
-          </label>
-          {errors.answer?.message && (
-            <div className="text-xs text-danger-500">{errors.answer?.message}</div>
-          )}
-        </fieldset>
-        {hasSkippedQuestion ? (
-          <div>Answer all the skipped questions to continue.</div>
-        ) : (
-          <div className="mt-4 pb-4 flex gap-2 items-center">
-            {showSkip && (
-              <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
-                Skip for now
-              </Button>
+      {isEdit ? (
+        <MadlibEdit
+          hasSkippedQuestion={hasSkippedQuestion}
+          showSkip={showSkip}
+          onSkip={onSkip}
+          question={[
+            {
+              question: question,
+              answer: answer || "",
+              questionId: questionId,
+            },
+          ]}
+          onContinue={onContinue}
+          isLoading={isLoading}
+        />
+      ) : (
+        <DiagnosticPlatform
+          hasSkippedQuestion={hasSkippedQuestion}
+          showSkip={showSkip}
+          onSkip={onSkip}
+          questionId={questionId}
+          onContinue={onContinue}
+          isLoading={isLoading}
+        />
+      )}
+
+      {/*------------------------------- Previous code for giving manual QA ---------------------*/}
+
+      {/* <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
+          <div className="">
+            <label className=" text-sm font-medium leading-5 text-gray-700">
+              <div className="mt-0.5 rounded-md">
+                <textarea
+                  rows={5}
+                  disabled={isLoading}
+                  {...register("answer")}
+                  className={classNames(
+                    "appearance-none w-full px-2 py-[10px] bg-appGray-100 border border-gray-300 rounded-md placeholder:text-gray-400 focus:ring-0.5 min-h-[160px] pn_scroller ",
+                    errors.answer
+                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                  )}
+                  placeholder="Please provide your answer here."
+                />
+              </div>
+            </label>
+            {errors.answer?.message && (
+              <div className="text-xs text-danger-500">{errors.answer?.message}</div>
             )}
-            <Button htmlType={"submit"} rounded={"medium"} loading={isLoading} disabled={isLoading}>
-              Save & Continue
-            </Button>
           </div>
-        )}
-      </form>
+          {hasSkippedQuestion ? (
+            <div>Answer all the skipped questions to continue.</div>
+          ) : (
+            <div className="mt-4 pb-4 flex gap-2 items-center">
+              {showSkip && (
+                <Button
+                  htmlType={"button"}
+                  type="secondary"
+                  rounded={"medium"}
+                  handleClick={onSkip}
+                >
+                  Skip for now
+                </Button>
+              )}
+              <Button
+                htmlType={"submit"}
+                rounded={"medium"}
+                loading={isLoading}
+                disabled={isLoading}
+              >
+                Save & Continue
+              </Button>
+            </div>
+          )}
+        </form> */}
+
+      {/* -------------------------------------------------------------------------------- */}
     </div>
   );
 }

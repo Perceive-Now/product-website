@@ -34,7 +34,7 @@ const SelectedReport = ({ reports, onContinue, isUploading = false }: Props) => 
       <div className="bg-primary-900 text-white text-lg font-bold p-1 rounded-t-md">
         Selected reports
       </div>
-      <div className="bg-appGray-100 border border-appGray-200 p-1 w-full">
+      <div className="bg-appGray-100 border border-appGray-200 p-1 w-full max-h-[160px] overflow-auto pn_scroller">
         <div className="space-y-1 rounde-b-md w-full">
           {reports.length > 0 ? (
             <>

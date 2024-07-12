@@ -10,8 +10,7 @@ import ReviewQuestionAnswer from "./review-answer-question";
 import Button from "../../../reusable/button";
 import { LoadingIcon } from "../../../icons";
 
-import { IAnswers, getUserChats } from "../../../../utils/api/chat";
-import { questionList } from "../../../../pages/product/report-q&a/_question";
+import { IAnswer, getUserChats } from "../../../../utils/api/chat";
 
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
@@ -19,6 +18,7 @@ import { setSession } from "../../../../stores/session";
 
 import { QAPages, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
 import { AppConfig } from "src/config/app.config";
+import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 
 interface IPaymentIntent {
   payment_intent_id: string;
@@ -38,7 +38,7 @@ export default function IPReview() {
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   const { currentPageId } = useAppSelector((state) => state.QA);
 
-  const [userChats, setUserChats] = useState<IAnswers[]>();
+  const [userChats, setUserChats] = useState<IAnswer[]>();
   const [loading, setLoading] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
 
@@ -49,7 +49,7 @@ export default function IPReview() {
   const item_id = storedPlanIds ? JSON.parse(storedPlanIds) : [];
 
   const user_id = jsCookie.get("user_id") ?? "";
-  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id") ?? "";
 
   const handlePayment = useCallback(async () => {
     setPaymentLoading(true);
@@ -91,20 +91,22 @@ export default function IPReview() {
   useEffect(() => {
     if (currentPageId === 2) {
       setLoading(true);
-      getUserChats(user_id, String(requirementGatheringId))
-        .then((data) => {
-          setUserChats(data as any);
-          setLoading(false);
-        })
-        .catch(() => {
-          toast.error("Something went wrong");
-          setLoading(false);
-        });
+      if (requirementGatheringId) {
+        getUserChats(user_id, requirementGatheringId)
+          .then((data) => {
+            setUserChats(data as any);
+            setLoading(false);
+          })
+          .catch(() => {
+            toast.error("Something went wrong");
+            setLoading(false);
+          });
+      }
     }
   }, [currentPageId, requirementGatheringId, user_id]);
   //
   const mergedData = userChats?.map((chat) => {
-    const question = questionList.find((q) => q.questionId == chat.question_id);
+    const question = NewQAList.find((q) => q.questionId == Number(chat.questionId));
     return {
       ...chat,
       question: question?.question,
@@ -115,7 +117,7 @@ export default function IPReview() {
   //
   const onEdit = useCallback(
     (chat: any) => {
-      dispatch(setCurrentQuestionId(Number(chat.question_id)));
+      dispatch(setCurrentQuestionId(Number(chat.questionId)));
       dispatch(setCurrentPageId(QAPages.edit));
     },
     [dispatch],
@@ -123,8 +125,8 @@ export default function IPReview() {
 
   return (
     <>
-      <div className="space-y-2.5 w-full shrink-0">
-        <div className="w-full">
+      <div className="shrink-0 h-full">
+        <div className="w-full h-[calc(100vh-280px)] overflow-auto pn_scroller pr-1">
           <div>
             <h5 className="text-xl font-semibold text-black">
               Here's a quick look at the answers you gave.
@@ -133,15 +135,15 @@ export default function IPReview() {
               Take a moment to review them, and when you're ready, you can keep going.
             </p>
           </div>
-          <div className="relative">
+          <div className="relative h-full">
             {loading ? (
-              <div className="flex justify-center items-center h-[calc(100vh-200px)]">
+              <div className="flex justify-center items-center h-full">
                 <LoadingIcon fontSize={52} className="animate-spin text-primary-900" />
               </div>
             ) : (
               <div className="mt-2 space-y-2.5 w-full">
                 {mergedData
-                  ?.sort((a, b) => Number(a.question_id) - Number(b.question_id))
+                  ?.sort((a, b) => Number(a.questionId) - Number(b.questionId))
                   .map((u, idx) => (
                     <ReviewQuestionAnswer
                       key={idx * 59}
@@ -154,7 +156,7 @@ export default function IPReview() {
             )}
           </div>
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center border-t pt-1 mt-1">
           <Button
             loading={paymentLoading}
             htmlType={"button"}

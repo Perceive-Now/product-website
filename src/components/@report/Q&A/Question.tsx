@@ -1,8 +1,12 @@
-import { useCallback, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import { useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
+import axios from "axios";
 
+//
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+
+//
 import QuestionAnswerForm from "./question-form";
 import {
   QAPages,
@@ -16,9 +20,8 @@ import {
 } from "src/stores/Q&A";
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
-import axiosInstance from "src/utils/axios";
 
-const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+// const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 interface IQuestionUsecase {
   questionId: number;
@@ -34,31 +37,59 @@ interface Props {
   questionWithUsecase: IQuestionUsecase[];
 }
 
+/**
+ *
+ */
 const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
 
+  const chatRef = useRef<HTMLInputElement>(null);
+
   const userId = jsCookie.get("user_id");
 
+  //
   const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
-
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
+  //
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setLoading(true);
+
+      // console.log(value);
       try {
-        const res = await axiosInstance.post(
-          `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
-            value.answer,
-          )}&userID=${userId}&requirement_gathering_id=${Number(
-            requirementGatheringId,
-          )}&QuestionID=${question.questionId}`,
+        // ---------------- previous report endponint  ----------------
+        // const res = await axios.post(
+        //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
+        //     value.answer,
+        //   )}&userID=${userId}&requirement_gathering_id=${Number(
+        //     requirementGatheringId,
+        //   )}&QuestionID=${question.questionId}`,
+        // );
+
+        const res = await axios.post(
+          "https://templateuserrequirements.azurewebsites.net/create-items/",
+          {
+            questionId: String(question.questionId),
+            question: String(question.question),
+            answer: value.answer,
+            usecase: question.usecase,
+            userId: String(userId),
+            requirementId: String(requirementGatheringId),
+          },
         );
+        // const res = {
+        //   data: {
+        //     question: "",
+        //     status: "true",
+        //   },
+        // };
         const new_question = res.data.question;
         setLoading(false);
         setResetForm(true);
+        scrollToTop();
 
         if (res.data.status === "false") {
           toast.error("Give a more detailed answer");
@@ -91,13 +122,16 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
           }
         }
       } catch (e: any) {
+        scrollToTop();
         setLoading(false);
       }
     },
     [
       currentQuestionId,
       dispatch,
+      question.question,
       question.questionId,
+      question.usecase,
       questionWithUsecase,
       requirementGatheringId,
       userId,
@@ -132,10 +166,18 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     questionWithUsecase,
   ]);
 
+  const scrollToTop = () => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = 0;
+    }
+  };
+
   return (
     <>
       <QuestionAnswerForm
+        chatRef={chatRef}
         onContinue={onContinue}
+        questionId={question.questionId}
         question={question?.question || ""}
         exampleAnswer={question?.exampleAnswer || ""}
         answer={question.answer}
@@ -143,6 +185,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         onSkip={onSkip}
         setResetForm={setResetForm}
         resetForm={resetForm}
+        isEdit={false}
         hasSkippedQuestion={
           skippedQuestionList.length > 0 &&
           questionWithUsecase[questionWithUsecase.length - 1]?.questionId === currentQuestionId

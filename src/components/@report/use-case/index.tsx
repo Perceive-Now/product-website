@@ -33,6 +33,7 @@ const optionMappings: OptionMappings = {
   "ip-licensing-opportunity": "ip-licensing-opportunity",
   //
   "m&a": "m&a",
+  "market-potential": "market-potential",
   "market-analysis": "market-analysis",
   "competitive-landscape": "competitive-landscape",
   "consumer-landscape": "consumer-landscape",
@@ -191,13 +192,13 @@ const UseCaseSelect = () => {
   );
 
   return (
-    <div className="h-full">
-      <p className="text-heroDark-900 text-5xl font-bold">
+    <div className="h-[calc(100vh-220px)]">
+      <p className="text-heroDark-900 text-3xl 2xl:text-5xl font-bold">
         Please select use cases for your report
       </p>
       <ProgressBar />
-      <div className="w-full mt-2">
-        <div className="flex justify-between border bg-white p-2 rounded-lg w-full">
+      <div className="w-full mt-2 h-full">
+        <div className="flex justify-between border bg-white h-full  p-2 rounded-lg w-full overflow-auto pn_scroller">
           <div className="w-full bg-white pb-8">
             <div className="w-full">
               <UseCaseTab
