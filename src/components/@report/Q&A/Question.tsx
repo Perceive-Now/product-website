@@ -1,8 +1,12 @@
-import { useCallback, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import { useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
+import axios from "axios";
 
+//
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+
+//
 import QuestionAnswerForm from "./question-form";
 import {
   QAPages,
@@ -16,9 +20,6 @@ import {
 } from "src/stores/Q&A";
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
-import axios from "axios";
-// import axiosInstance from "src/utils/axios";
-// import axios from "axios";
 
 // const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
@@ -44,6 +45,8 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
 
+  const chatRef = useRef<HTMLInputElement>(null);
+
   const userId = jsCookie.get("user_id");
 
   //
@@ -54,8 +57,10 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setLoading(true);
+
       // console.log(value);
       try {
+        // ---------------- previous report endponint  ----------------
         // const res = await axios.post(
         //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
         //     value.answer,
@@ -63,6 +68,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         //     requirementGatheringId,
         //   )}&QuestionID=${question.questionId}`,
         // );
+
         const res = await axios.post(
           "https://templateuserrequirements.azurewebsites.net/create-items/",
           {
@@ -83,6 +89,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         const new_question = res.data.question;
         setLoading(false);
         setResetForm(true);
+        scrollToTop();
 
         if (res.data.status === "false") {
           toast.error("Give a more detailed answer");
@@ -115,6 +122,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
           }
         }
       } catch (e: any) {
+        scrollToTop();
         setLoading(false);
       }
     },
@@ -158,9 +166,16 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     questionWithUsecase,
   ]);
 
+  const scrollToTop = () => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = 0;
+    }
+  };
+
   return (
     <>
       <QuestionAnswerForm
+        chatRef={chatRef}
         onContinue={onContinue}
         questionId={question.questionId}
         question={question?.question || ""}
@@ -170,6 +185,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         onSkip={onSkip}
         setResetForm={setResetForm}
         resetForm={resetForm}
+        isEdit={false}
         hasSkippedQuestion={
           skippedQuestionList.length > 0 &&
           questionWithUsecase[questionWithUsecase.length - 1]?.questionId === currentQuestionId

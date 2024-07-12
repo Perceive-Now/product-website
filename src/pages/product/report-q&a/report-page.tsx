@@ -163,8 +163,8 @@ const ReportDetailedQAPage = () => {
       <div className="flex justify-between gap-2 2xl:gap-8">
         <div
           className={classNames(
-            "relative h-[calc(100vh-176px)] shadow border rounded-md w-full p-2 pb-0 bg-white grow-0",
-            currentPageId === 2 ? "mx-auto" : "",
+            "relative h-[calc(100vh-176px)] shadow border rounded-md  p-2 pb-0 bg-white grow-0",
+            currentPageId === 2 ? "mx-auto w-full xl:w-[900px]" : "w-full",
           )}
         >
           <div

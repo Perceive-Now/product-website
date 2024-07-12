@@ -22,13 +22,14 @@ export async function addAnswer(value: IAnswers) {
 }
 
 export async function getUserChats(user_id: string, requirement_gathering_id: string) {
-  const response = await axios.get<IAnswers[]>(
-    `https://templateuserrequirements.azurewebsites.net/get-items?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
-    {},
+  const response = await axios.get<IData>(
+    `https://templateuserrequirements.azurewebsites.net/get-items?userId=${String(
+      user_id,
+    )}&requirementId=${String(requirement_gathering_id)}`,
     // `${BASE_PN_REPORT_URL}/get-answers/?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
   );
 
-  return response.data;
+  return response.data?.items;
 }
 
 interface IChat {
@@ -44,4 +45,18 @@ export interface IAnswers {
   session_id: string;
   user_id: string;
   answer: string;
+}
+
+interface IData {
+  items: IAnswer[];
+  message: string;
+}
+
+export interface IAnswer {
+  question: string;
+  userId: string;
+  answer: string;
+  usecase: string;
+  requirementId: string;
+  questionId: string;
 }

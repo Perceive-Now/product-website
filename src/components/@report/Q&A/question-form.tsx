@@ -8,6 +8,7 @@
 
 //
 import Button from "../../reusable/button";
+import MadlibEdit from "./madlib-edit";
 import DiagnosticPlatform from "./madlin-an";
 
 interface Props {
@@ -22,6 +23,8 @@ interface Props {
   resetForm: boolean;
   setResetForm: (reset: boolean) => void;
   questionId: number;
+  chatRef?: any;
+  isEdit: boolean;
 }
 
 /**
@@ -32,14 +35,17 @@ export default function QuestionAnswerForm({
   question,
   isLoading,
   exampleAnswer,
-  // answer,
+  answer,
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
   // resetForm,
   // setResetForm,
   questionId,
+  chatRef,
+  isEdit,
 }: Props) {
+  // -------------------------------- Previous code Start -----------------------------------//
   // const [updatedAnswer, setUpdatedAnswer] = useState("");
   // const [example, setExample] = useState(false);
 
@@ -71,8 +77,6 @@ export default function QuestionAnswerForm({
   //   // setValue("answer", exampleAnswer); // Update the form value
   // }, []);
 
-  const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
-
   // useEffect(() => {
   //   if (resetForm) {
   //     reset();
@@ -80,8 +84,12 @@ export default function QuestionAnswerForm({
   //   }
   // });
 
+  // -------------------------------- Previous code End ------------------------------------//
+
+  const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
+
   return (
-    <div className="h-[calc(100vh-284px)] overflow-auto bg-white pn_scroller pr-2">
+    <div ref={chatRef} className="h-[calc(100vh-284px)] overflow-auto bg-white pn_scroller pr-2">
       <div className="space-y-[10px]">
         <h4
           className="text-primary-900 text-lg 2xl:text-xl font-semibold"
@@ -96,25 +104,41 @@ export default function QuestionAnswerForm({
           type="gray"
           size="small"
           rounded="small"
-          classname="px-0.5 py-[6px] text-xs font-semibold"
+          classname="px-0.5 py-[6px] text-xs font-semibold hover:cursor-default"
           // handleClick={useExample}
         >
           Example
         </Button>
       </div>
-      <DiagnosticPlatform
-        hasSkippedQuestion={hasSkippedQuestion}
-        showSkip={showSkip}
-        onSkip={onSkip}
-        questionId={questionId}
-        onContinue={onContinue}
-        isLoading={isLoading}
-      />
-      {/* {example ? (
-        
-      ) 
-      : (
-        <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
+      {isEdit ? (
+        <MadlibEdit
+          hasSkippedQuestion={hasSkippedQuestion}
+          showSkip={showSkip}
+          onSkip={onSkip}
+          question={[
+            {
+              question: question,
+              answer: answer || "",
+              questionId: questionId,
+            },
+          ]}
+          onContinue={onContinue}
+          isLoading={isLoading}
+        />
+      ) : (
+        <DiagnosticPlatform
+          hasSkippedQuestion={hasSkippedQuestion}
+          showSkip={showSkip}
+          onSkip={onSkip}
+          questionId={questionId}
+          onContinue={onContinue}
+          isLoading={isLoading}
+        />
+      )}
+
+      {/*------------------------------- Previous code for giving manual QA ---------------------*/}
+
+      {/* <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
           <div className="">
             <label className=" text-sm font-medium leading-5 text-gray-700">
               <div className="mt-0.5 rounded-md">
@@ -160,8 +184,9 @@ export default function QuestionAnswerForm({
               </Button>
             </div>
           )}
-        </form>
-      )} */}
+        </form> */}
+
+      {/* -------------------------------------------------------------------------------- */}
     </div>
   );
 }

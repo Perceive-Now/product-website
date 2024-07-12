@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import classNames from "classnames";
 
 //
-import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 import Button from "src/components/reusable/button";
 
 //
@@ -16,7 +15,11 @@ interface Props {
   hasSkippedQuestion?: boolean;
   showSkip: boolean;
   onSkip: () => void;
-  questionId: number;
+  question: {
+    question: string;
+    answer: string;
+    questionId: number;
+  }[];
   onContinue: ({ answer }: IAnswer) => void;
   isLoading: boolean;
 }
@@ -24,11 +27,11 @@ interface Props {
 /**
  *
  */
-const DiagnosticPlatform = ({
+const MadlibEdit = ({
   hasSkippedQuestion,
   showSkip,
   onSkip,
-  questionId,
+  question,
   onContinue,
   isLoading,
 }: Props) => {
@@ -36,7 +39,7 @@ const DiagnosticPlatform = ({
   const [resetInputs, setResetInputs] = useState(false);
   const [error, setError] = useState<string | null>(null); // State for error message
 
-  const QA = NewQAList.filter((q) => q.questionId === questionId);
+  const QA = question;
 
   // Input Validation
   const validateInputs = (inputs: UserInputs) => {
@@ -89,8 +92,8 @@ const DiagnosticPlatform = ({
     let combinedText = "";
     QA.forEach((section) => {
       combinedText += section.answer.replace(/\[(.*?)\]/g, (match, placeholder) => {
-        return `[${userInputs[placeholder]}]`;
-        // || `[${placeholder}]`;
+        return `[${userInputs[placeholder]}]` || `[${placeholder}]`;
+        // ;
       });
     });
 
@@ -133,6 +136,7 @@ const DiagnosticPlatform = ({
                       key={index}
                       placeholder={placeholder}
                       style={{ minWidth: inputWidth }}
+                      defaultValue={placeholder}
                       value={resetInputs ? "" : userInputs[placeholder] || ""}
                       onChange={(e) => handleInputChange(placeholder, e.target.value)}
                     />
@@ -176,7 +180,7 @@ const DiagnosticPlatform = ({
   );
 };
 
-export default DiagnosticPlatform;
+export default MadlibEdit;
 
 // const handleInputChange = (placeholder: string, value: string) => {
 //   setUserInputs((prevInputs) => ({
