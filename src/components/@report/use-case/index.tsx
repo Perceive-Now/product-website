@@ -192,8 +192,8 @@ const UseCaseSelect = () => {
   );
 
   return (
-    <div className="h-[calc(100vh-234px)]">
-      <p className="text-heroDark-900 text-5xl font-bold">
+    <div className="h-[calc(100vh-220px)]">
+      <p className="text-heroDark-900 text-3xl 2xl:text-5xl font-bold">
         Please select use cases for your report
       </p>
       <ProgressBar />
