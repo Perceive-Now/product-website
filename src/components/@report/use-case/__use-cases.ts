@@ -48,15 +48,15 @@ export const UseCaseOptions = [
   },
 
   //--------------------- Need to add--------------------
-  // {
-  //   label: "Freedom to Operate",
-  //   value: "freedom-to-operate",
-  //   desc: "Minimize legal risks associated with intellectual property infringement with our Freedom to Operate report. It’s crucial for businesses seeking to innovate freely without legal encumbrances.",
-  // useCaseId: 0,
-  // reportType: "ip",
-  // reportPlan: "premium"
-
-  // },
+  {
+    id: 16,
+    label: "Freedom to Operate",
+    value: "freedom-to-operate",
+    desc: "Minimize legal risks associated with intellectual property infringement with our Freedom to Operate report. It’s crucial for businesses seeking to innovate freely without legal encumbrances.",
+    useCaseId: 0,
+    reportType: "ip",
+    reportPlan: "premium",
+  },
 
   // {
   //   label: "Patent infringement",
@@ -101,6 +101,15 @@ export const UseCaseOptions = [
     value: "regulatory-pathways",
     desc: "Navigate the complexities of industry regulations with our comprehensive guide to compliance. This report is indispensable for ensuring that your business operations and strategies adhere to all relevant legal standards.",
     useCaseId: 9,
+    reportType: "market-research",
+    reportPlan: "pro",
+  },
+  {
+    id: 19,
+    label: "Market Potential",
+    value: "market-potential",
+    desc: "Dive deep into the dynamics of your target market with this report, which covers current trends and projections to help you anticipate future opportunities and challenges. It’s an essential tool for businesses looking to solidify their market understanding and strategic planning.",
+    useCaseId: 6,
     reportType: "market-research",
     reportPlan: "pro",
   },
