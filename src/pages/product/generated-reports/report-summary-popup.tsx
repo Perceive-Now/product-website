@@ -1,4 +1,3 @@
-// ReportSummaryPopup.js
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";

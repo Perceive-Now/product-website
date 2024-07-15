@@ -172,7 +172,7 @@ export const saveDraft = createAsyncThunk<
     await axios.post(`${BASE_PN_REPORT_URL}/draft/`, {
       requirement_gathering_id: usecases.requirementGatheringId, // Get it from usecases state
       user_id: QA.userId,
-      current_page: QA.currentQuestionId.toString(), // Assuming current page is identified by currentQuestionId
+      current_page: "/q&a", 
       other_data: QA,
       date: new Date().toISOString(),
       report_name: "User's Report", // Replace with the actual report name if available

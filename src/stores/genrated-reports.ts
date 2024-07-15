@@ -80,7 +80,7 @@ export const GeneratedReportsSlice = createSlice({
         return {
           ...report,
           title:
-            "Some report title " + report.user_case_id + " - " + report.requirement_gathering_id,
+            "Report title " + report.user_case_id + " - " + report.requirement_gathering_id,
           created_data: new Date(),
         };
       });
