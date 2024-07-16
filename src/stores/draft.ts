@@ -89,9 +89,9 @@ export const getDraftsByUserId = createAsyncThunk<
     const response = await axios.get(
       `${BASE_PN_REPORT_URL}/drafts-by-user-id/?user_id=${encodeURIComponent(request.userId)}`
     );
-    console.log("API Response Full:", response); // Log the full response
-    console.log("API Response Data:", response.data); // Log the data part of the response
-    return response.data; // Directly return the data array
+    //console.log("API Response Full:", response); // Log the full response
+    //console.log("API Response Data:", response.data); // Log the data part of the response
+    return response.data; 
   } catch (error) {
     const errorObj = {
       resError: String(error),

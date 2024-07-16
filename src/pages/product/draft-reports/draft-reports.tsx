@@ -6,15 +6,16 @@ import Tippy from "@tippyjs/react";
 import "tippy.js/themes/light.css";
 import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis";
 import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
-import DropdownShareIcon from "../generated-reports/dropdown-share-icon";
+import DropdownContinueIcon from "../generated-reports/dropdown-continue-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import { getDraftsByUserId, resetGetDraftsByUserIdState, IDraft } from "../../../stores/draft";
-import { setCurrentPageId, questionWithUseCases, QAPages } from "src/stores/Q&A";
+import { setCurrentPageId, questionWithUseCases, setSkippedQuestions } from "src/stores/Q&A";
+import { setRequirementGatheringId } from "src/stores/use-case";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
 import axiosInstance from "src/utils/axios";
 import { AppConfig } from "src/config/app.config";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { useNavigate } from "react-router-dom";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -27,10 +28,30 @@ interface IRow {
 
 const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRendererProps }) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     console.log("delete", cellRendereProps.data.reportId);
+
+    const reportId = cellRendereProps.data.reportId;
+    const userId = jsCookie.get("user_id");
+
+    try {
+      const response = await axiosInstance.delete(
+        `${BASE_PN_REPORT_URL}/draft/?requirement_gathering_id=${reportId}&user_id=${userId}`,
+      );
+
+      if (response.status === 200) {
+        toast.success("Draft deleted successfully");
+        // Reload drafts list
+        dispatch(getDraftsByUserId({ userId: jsCookie.get("user_id") ?? "0" }));
+      } else {
+        throw new Error("Failed to delete draft");
+      }
+    } catch (error) {
+      console.error("Failed to delete draft:", error);
+      toast.error("Failed to delete draft");
+    }
   };
 
   const handleContinue = async () => {
@@ -47,7 +68,7 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
       console.log("API response:", response);
 
       if (response.status === 200 && response.data.length > 0) {
-        const draft = response.data[0]; // Assuming response.data is an array and we need the first item
+        const draft = response.data[0];
         console.log("Draft data:", draft);
 
         // Log the other_data to understand its structure
@@ -58,6 +79,14 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
           // Update the Q&A slice state with the data from other_data
           dispatch(questionWithUseCases(draft.other_data.questionsList));
           dispatch(setCurrentPageId(draft.other_data.currentPageId));
+
+          // Check and update skipped questions if they exist
+          if (draft.other_data.skippedQuestionList) {
+            dispatch(setSkippedQuestions(draft.other_data.skippedQuestionList));
+          }
+
+          // Update the requirementGatheringId in the usecases slice
+          dispatch(setRequirementGatheringId(draft.requirement_gathering_id));
 
           // Navigate to the current_page from the draft
           navigate(draft.current_page);
@@ -82,8 +111,8 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         <DropdownDeleteIcon />
       </button>
       <button onClick={handleContinue} className="flex flex-row gap-x-2 justify-between w-full">
-        <p> Continue </p>
-        <DropdownShareIcon />
+        <p> Continue Report </p>
+        <DropdownContinueIcon />
       </button>
     </div>
   );

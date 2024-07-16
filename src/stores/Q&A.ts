@@ -156,7 +156,7 @@ export const generateQuestionAnswer = createAsyncThunk<
   }
 });
 
-// New async thunk to save the draft
+// async thunk to save the draft
 export const saveDraft = createAsyncThunk<
   void,
   void,
@@ -175,7 +175,7 @@ export const saveDraft = createAsyncThunk<
       current_page: "/q&a", 
       other_data: QA,
       date: new Date().toISOString(),
-      report_name: "User's Report", // Replace with the actual report name if available
+      report_name: "User's Report", 
     });
   } catch (error) {
     const errorObj = {
@@ -230,6 +230,14 @@ export const QuestionAnswerSlice = createSlice({
     },
     setCurrentQuestionId: (state, action: PayloadAction<number>) => {
       state.currentQuestionId = action.payload;
+    },
+    setSkippedQuestions: (state, action: PayloadAction<IQuestionAnswer[]>) => {
+      action.payload.forEach((skippedQuestion) => {
+        state.questionsList = state.questionsList.filter(
+          (question) => question.questionId !== skippedQuestion.questionId,
+        );
+      });
+      state.skippedQuestionList = action.payload;
     },
     updateQuestionAnswer: (
       state,
@@ -346,7 +354,8 @@ export const {
   setGenerateAnswerSuccess,
   questionWithUseCases,
   updateQuestionAnswer,
-  setRequirementGatheringId, // Export the action
+  setRequirementGatheringId,
+  setSkippedQuestions,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;

@@ -13,7 +13,7 @@ import {
   setGenerateAnswerSuccess,
   updateQuestionAnswer,
   updateQuestionList,
-  saveDraft, // Import the saveDraft action
+  saveDraft,
 } from "src/stores/Q&A";
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
@@ -108,7 +108,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     ],
   );
 
-  const onSkip = useCallback(() => {
+  const onSkip = useCallback(async () => {
     dispatch(
       addToSkippedQuestionList({
         question: question.question,
@@ -125,6 +125,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
 
     const nextQuestionId = questionWithUsecase[nextQuestionIndex].questionId;
     dispatch(setCurrentQuestionId(nextQuestionId));
+
+    // Save progress to the backend after skipping the question
+    await dispatch(saveDraft());
   }, [
     currentQuestionId,
     dispatch,
