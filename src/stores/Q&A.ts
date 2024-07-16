@@ -306,6 +306,7 @@ export const QuestionAnswerSlice = createSlice({
     setRequirementGatheringId: (state, action: PayloadAction<number>) => {
       state.requirementGatheringId = action.payload;
     },
+    
   },
   extraReducers(builder) {
     builder.addCase(generateQuestionAnswer.pending, (state) => {

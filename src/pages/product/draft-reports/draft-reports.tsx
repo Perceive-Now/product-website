@@ -9,7 +9,12 @@ import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
 import DropdownContinueIcon from "../generated-reports/dropdown-continue-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import { getDraftsByUserId, resetGetDraftsByUserIdState, IDraft } from "../../../stores/draft";
-import { setCurrentPageId, questionWithUseCases, setSkippedQuestions } from "src/stores/Q&A";
+import {
+  setCurrentPageId,
+  questionWithUseCases,
+  setSkippedQuestions,
+  setCurrentQuestionId,
+} from "src/stores/Q&A";
 import { setRequirementGatheringId } from "src/stores/use-case";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
@@ -24,6 +29,15 @@ interface IRow {
   reportName: string;
   dateCreated: Date;
   edit: string;
+}
+
+interface IQuestionUsecase {
+  questionId: number;
+  useCaseId: number;
+  question: string;
+  usecase: string;
+  answer: string;
+  exampleAnswer: string;
 }
 
 const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRendererProps }) => {
@@ -85,6 +99,26 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
             dispatch(setSkippedQuestions(draft.other_data.skippedQuestionList));
           }
 
+          // Find the last answered question
+          const lastAnsweredQuestion = draft.other_data.questionsList
+            .slice()
+            .reverse()
+            .find((question: IQuestionUsecase) => question.answer !== "");
+
+          // Set the current question to the last answered question or the first non-skipped question
+          const currentQuestionId = lastAnsweredQuestion
+            ? lastAnsweredQuestion.questionId
+            : draft.other_data.questionsList.find(
+                (question: IQuestionUsecase) =>
+                  !draft.other_data.skippedQuestionList.some(
+                    (skipped: IQuestionUsecase) => skipped.questionId === question.questionId,
+                  ),
+              )?.questionId;
+
+          if (currentQuestionId) {
+            dispatch(setCurrentQuestionId(currentQuestionId));
+          }
+
           // Update the requirementGatheringId in the usecases slice
           dispatch(setRequirementGatheringId(draft.requirement_gathering_id));
 
@@ -111,7 +145,7 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         <DropdownDeleteIcon />
       </button>
       <button onClick={handleContinue} className="flex flex-row gap-x-2 justify-between w-full">
-        <p> Continue Report </p>
+        <p> Continue report </p>
         <DropdownContinueIcon />
       </button>
     </div>
