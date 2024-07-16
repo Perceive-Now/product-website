@@ -13,6 +13,7 @@ import {
   setGenerateAnswerSuccess,
   updateQuestionAnswer,
   updateQuestionList,
+  saveDraft,
 } from "src/stores/Q&A";
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
@@ -42,7 +43,6 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const userId = jsCookie.get("user_id");
 
   const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
-
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
   const onContinue = useCallback(
@@ -77,6 +77,10 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               answer: value.answer,
             }),
           );
+
+          // Save progress to the backend
+          await dispatch(saveDraft());
+
           const nextQuestionIndex =
             questionWithUsecase.findIndex(
               (questionId) => currentQuestionId === questionId.questionId,
@@ -104,7 +108,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     ],
   );
 
-  const onSkip = useCallback(() => {
+  const onSkip = useCallback(async () => {
     dispatch(
       addToSkippedQuestionList({
         question: question.question,
@@ -121,6 +125,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
 
     const nextQuestionId = questionWithUsecase[nextQuestionIndex].questionId;
     dispatch(setCurrentQuestionId(nextQuestionId));
+
+    // Save progress to the backend after skipping the question
+    await dispatch(saveDraft());
   }, [
     currentQuestionId,
     dispatch,

@@ -1,11 +1,9 @@
 import { useForm } from "react-hook-form";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
-
 import * as yup from "yup";
 import Button from "../../reusable/button";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface Props {
   onContinue: any;
@@ -56,9 +54,9 @@ export default function QuestionAnswerForm({
     setUpdatedAnswer(answer || "");
     setValue("answer", answer || "");
   }, [answer, setValue]);
-  //
+
   const useExample = useCallback(() => {
-    setValue("answer", exampleAnswer); // Update the form value
+    setValue("answer", exampleAnswer);
   }, [exampleAnswer, setValue]);
 
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
@@ -68,11 +66,10 @@ export default function QuestionAnswerForm({
       reset();
       setResetForm(false);
     }
-  });
+  }, [reset, resetForm, setResetForm]);
 
   return (
     <div className="">
-      {/* <Loading isLoading={isLoading} /> */}
       <div className="space-y-2.5">
         <h4
           className="text-primary-900 text-xl font-semibold"

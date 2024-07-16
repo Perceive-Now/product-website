@@ -129,6 +129,7 @@ function App() {
               />
             </Route>
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
+            <Route path="/q&a" element={<ReportPage />} />
 
             {/* Know-now */}
             <Route path="/start-conversation" element={<KnowNowPage />} />
