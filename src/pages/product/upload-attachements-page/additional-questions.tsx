@@ -13,6 +13,7 @@ import {
   setisUploadAnswerToAddtionalQuestionsSuccess,
   updateQuestionList,
   uploadAnswerToAddtionalQuestions,
+  saveDraft
 } from "../../../stores/upload-attachments";
 import toast from "react-hot-toast";
 import QuestionForm from "./question-form";
@@ -127,11 +128,17 @@ export default function AdditionalQuestions() {
     }
 
     dispatch(setAnswers(updatedAnswers));
+    await dispatch(saveDraft());
+    console.log(jsCookie.get("user_id"));
+    console.log(currentQuestion.useCaseId);
+    console.log(answer);
+    console.log(currentQuestionId);
+    console.log(requirementGatheringId);
 
     dispatch(
       uploadAnswerToAddtionalQuestions({
         userId: jsCookie.get("user_id") ?? "",
-        useCaseId: useCaseIds[0] ?? "", // TODO get correct use case ids
+        useCaseId: String(currentQuestion.useCaseId) ?? "", // TODO get correct use case ids
         answer: { answer, questionId: currentQuestionId },
         questionId: currentQuestionId,
         requirementGatheringId: requirementGatheringId,

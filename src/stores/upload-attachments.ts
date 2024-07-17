@@ -2,6 +2,7 @@ import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { questionList } from "src/pages/product/report-q&a/_question";
 import { AppConfig } from "src/config/app.config";
+import { RootState } from 'src/store';
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -15,6 +16,17 @@ export const EUploadAttachmentsPages = {
 
 export type TUploadAttachmentsPages =
   (typeof EUploadAttachmentsPages)[keyof typeof EUploadAttachmentsPages];
+
+interface IQuestionAnswer {
+  questionId: number;
+  useCaseId: number;
+  question: string;
+  usecase: string;
+  answer: string;
+}
+interface IAdditionalQuestionId {
+  question_id: number
+}
 
 export interface IUploadAttachmentsState {
   currentPageId: TUploadAttachmentsPages;
@@ -154,6 +166,35 @@ export const uploadAttachments = createAsyncThunk<
     const errorObj = {
       resError: String(error),
       message,
+    };
+    return thunkAPI.rejectWithValue(errorObj);
+  }
+});
+
+export const saveDraft = createAsyncThunk<
+  void,
+  void,
+  {
+    state: RootState;
+    rejectValue: IResponseError;
+  }
+>("uploadAttachments/saveDraft", async (_, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const { QA, uploadAttachments, usecases } = state;
+
+  try {
+    await axios.post(`${BASE_PN_REPORT_URL}/draft/`, {
+      requirement_gathering_id: usecases.requirementGatheringId, // Get it from usecases state
+      user_id: QA.userId,
+      current_page: "/upload-attachments", 
+      other_data: uploadAttachments,
+      date: new Date().toISOString(),
+      report_name: "User's Report", 
+    });
+  } catch (error) {
+    const errorObj = {
+      resError: String(error),
+      message: "Failed to save draft",
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -309,6 +350,15 @@ export const UploadAttachmentsSlice = createSlice({
 
     setRequirementPercentage: (state, action: PayloadAction<number>) => {
       state.requirementPercentage = action.payload;
+    },
+    setRequirementSummary: (state, action: PayloadAction <TSingleRequirementSummary[]>) => {
+      state.requirementSummary = action.payload;
+    },
+    setQuestionsList: (state, action: PayloadAction <IQuestionAnswer[]>) => {
+      state.questionsList = action.payload;
+    },
+    setAddtionalQuestionIds: (state, action: PayloadAction <IAdditionalQuestionId[]>) => {
+      state.additionalQuestionIds = action.payload;
     },
 
     // -----------------------------------------------------------------------
@@ -511,6 +561,9 @@ export const {
   setWebsiteLinks,
   setRequirementPercentage,
   resetFetchRequirementPercentageState,
+  setRequirementSummary,
+  setQuestionsList,
+  setAddtionalQuestionIds
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;
