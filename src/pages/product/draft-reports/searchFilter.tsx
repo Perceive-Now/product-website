@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 import FilterIcon from "../generated-reports/filter-icon";
 import MagnifierGlassIcon from "../generated-reports/magnifier-glass-icon";
+import ArrowIcon from "../generated-reports/arrow-icon";
+import { DateFilter, UseCaseFilter, TagFilter } from "./Filters";
 
 interface SearchFilterProps {
   searchTerm: string;
@@ -8,21 +12,101 @@ interface SearchFilterProps {
   onFilterClick: () => void;
 }
 
-const SearchFilter: React.FC<SearchFilterProps> = ({
-  searchTerm,
-  setSearchTerm,
-  onFilterClick,
-}) => {
+const SearchFilter: React.FC<SearchFilterProps> = ({ searchTerm, setSearchTerm }) => {
+  const [parentVisible, setParentVisible] = useState(false);
+  const [dateVisible, setDateVisible] = useState(false);
+  const [useCaseVisible, setUseCaseVisible] = useState(false);
+  const [tagVisible, setTagVisible] = useState(false);
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
+  const filterContent = (
+    <div className="text-black space-y-1">
+      <Tippy
+        content={<DateFilter />}
+        interactive={true}
+        visible={dateVisible}
+        onClickOutside={() => setDateVisible(false)}
+        onHide={() => setParentVisible(true)}
+        placement="right-start"
+        theme="light"
+      >
+        <div
+          className="flex flex-row  justify-between w-full cursor-pointer"
+          onClick={() => {
+            setDateVisible(true);
+            setParentVisible(true);
+          }}
+        >
+          <p className="font-semibold ">Date</p>
+          <ArrowIcon />
+        </div>
+      </Tippy>
+      <Tippy
+        content={<UseCaseFilter />}
+        interactive={true}
+        visible={useCaseVisible}
+        onClickOutside={() => setUseCaseVisible(false)}
+        onHide={() => setParentVisible(true)}
+        placement="right-start"
+      >
+        <div
+          className="flex flex-row gap-x-14 justify-between w-full cursor-pointer"
+          onClick={() => {
+            setUseCaseVisible(true);
+            setParentVisible(true);
+          }}
+        >
+          <p className="font-semibold">Use cases</p>
+          <ArrowIcon />
+        </div>
+      </Tippy>
+      <Tippy
+        content={<TagFilter />}
+        interactive={true}
+        visible={tagVisible}
+        onClickOutside={() => setTagVisible(false)}
+        onHide={() => setParentVisible(true)}
+        placement="right-start"
+      >
+        <div
+          className="flex flex-row gap-x-14 justify-between w-full cursor-pointer"
+          onClick={() => {
+            setTagVisible(true);
+            setParentVisible(true);
+          }}
+        >
+          <p className="font-semibold">Tags</p>
+          <ArrowIcon />
+        </div>
+      </Tippy>
+    </div>
+  );
+
   return (
     <div className="flex items-center mb-4">
-      <button className="mr-2 flex items-center" onClick={onFilterClick}>
-        <span className="mr-1 text-[#442873]">Filter</span>
-        <FilterIcon />
-      </button>
+      <Tippy
+        content={filterContent}
+        interactive={true}
+        visible={parentVisible}
+        onClickOutside={() => setParentVisible(false)}
+        theme="light"
+        appendTo={document.body}
+        arrow={false}
+        allowHTML={true}
+        hideOnClick={false}
+        placement="right-start"
+      >
+        <div
+          className="mr-2 flex items-center cursor-pointer"
+          onClick={() => setParentVisible(true)}
+        >
+          <span className="mr-1 text-[#442873]">Filter</span>
+          <FilterIcon />
+        </div>
+      </Tippy>
       <div className="relative w-[800px]">
         <input
           type="text"
