@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import Title from "src/components/reusable/title/title";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
@@ -9,18 +10,21 @@ import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
 import DropdownContinueIcon from "../generated-reports/dropdown-continue-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import { getDraftsByUserId, resetGetDraftsByUserIdState, IDraft } from "../../../stores/draft";
-import {
-  setCurrentPageId,
-  questionWithUseCases,
-  setSkippedQuestions,
-  setCurrentQuestionId,
-} from "src/stores/Q&A";
 import { setRequirementGatheringId } from "src/stores/use-case";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
 import axiosInstance from "src/utils/axios";
 import { AppConfig } from "src/config/app.config";
 import { useNavigate } from "react-router-dom";
+import GoBack from "../quick-prompt/goback";
+import SearchFilter from "./searchFilter";
+
+import {
+  setCurrentPageId,
+  questionWithUseCases,
+  setSkippedQuestions,
+  setCurrentQuestionId,
+} from "src/stores/Q&A";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -45,7 +49,7 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
   const navigate = useNavigate();
 
   const handleDelete = async () => {
-    console.log("delete", cellRendereProps.data.reportId);
+    //console.log("delete", cellRendereProps.data.reportId);
 
     const reportId = cellRendereProps.data.reportId;
     const userId = jsCookie.get("user_id");
@@ -63,7 +67,7 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         throw new Error("Failed to delete draft");
       }
     } catch (error) {
-      console.error("Failed to delete draft:", error);
+      //console.error("Failed to delete draft:", error);
       toast.error("Failed to delete draft");
     }
   };
@@ -73,20 +77,23 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
     const userId = jsCookie.get("user_id");
 
     try {
-      console.log(`Fetching draft for reportId: ${reportId}, userId: ${userId}`);
+      //console.log(`Fetching draft for reportId: ${reportId}, userId: ${userId}`);
 
       const response = await axiosInstance.get(
         `${BASE_PN_REPORT_URL}/draft-by-ids/?requirement_gathering_id=${reportId}&user_id=${userId}`,
       );
 
-      console.log("API response:", response);
+      //console.log("API response:", response);
 
       if (response.status === 200 && response.data.length > 0) {
         const draft = response.data[0];
-        console.log("Draft data:", draft);
+        // console.log("Draft data:", draft);
 
-        // Log the other_data to understand its structure
-        console.log("other_data:", draft.other_data);
+        {
+          /*  // Log the other_data to understand its structure
+        console.log("other_data:", draft.other_data); 
+        */
+        }
 
         // Check if other_data is in the correct format
         if (draft.other_data && draft.other_data.questionsList && draft.other_data.currentPageId) {
@@ -133,7 +140,7 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         throw new Error("Invalid response data");
       }
     } catch (error) {
-      console.error("Failed to load draft:", error);
+      //console.error("Failed to load draft:", error);
       toast.error("Failed to load draft");
     }
   };
@@ -177,16 +184,17 @@ const colDefs: ColDef<IRow>[] = [
     headerCheckboxSelection: true,
     checkboxSelection: true,
     showDisabledCheckboxes: true,
-    minWidth: 500,
+    minWidth: 200,
     flex: 1,
   },
-  { field: "dateCreated", filter: "agDateColumnFilter" },
+  { field: "dateCreated", width: 300 },
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
 export default function DraftReports() {
   const dispatch = useAppDispatch();
-  const { draftsArray = [], getDraftsByUserIdState } = useAppSelector((state) => state.draft); // Default value for draftsArray
+  const { draftsArray = [], getDraftsByUserIdState } = useAppSelector((state) => state.draft);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     if (getDraftsByUserIdState.isError) {
@@ -203,24 +211,47 @@ export default function DraftReports() {
     dispatch(getDraftsByUserId({ userId: jsCookie.get("user_id") ?? "0" }));
   }, [dispatch]);
 
-  useEffect(() => {
+  {
+    /* 
+    useEffect(() => {
     console.log("Drafts Array:", draftsArray); // Log draftsArray to verify data
   }, [draftsArray]);
+  */
+  }
 
-  const rowData: IRow[] = draftsArray.map((draft: IDraft) => {
-    return {
-      reportId: draft.requirement_gathering_id,
-      reportName: `Draft Report - ${draft.requirement_gathering_id}`,
-      dateCreated: new Date(),
-      edit: "edit",
-    };
-  });
+  const filteredRowData: IRow[] = draftsArray
+    .filter(
+      (draft: IDraft) =>
+        draft.requirement_gathering_id.toString().includes(searchTerm) ||
+        `Draft Report - ${draft.requirement_gathering_id}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()),
+    )
+    .map((draft: IDraft) => {
+      return {
+        reportId: draft.requirement_gathering_id,
+        reportName: `Draft Report - ${draft.requirement_gathering_id}`,
+        dateCreated: new Date(),
+        edit: "edit",
+      };
+    });
 
   const isLoading = getDraftsByUserIdState.isLoading;
 
   return (
-    <div className="w-full h-[400px] max-h-[450px]">
-      <AgGrid<IRow> rowData={rowData} colDefs={colDefs} isLoading={isLoading} />
-    </div>
+    <>
+      <div className="w-full h-[400px] max-h-[400px] ">
+        <GoBack />
+        <Title text="Drafts" className="mt-3 mb-3" />
+        <SearchFilter
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          onFilterClick={() => {
+            /*should put a logic here*/
+          }}
+        />
+        <AgGrid<IRow> rowData={filteredRowData} colDefs={colDefs} isLoading={isLoading} />
+      </div>
+    </>
   );
 }

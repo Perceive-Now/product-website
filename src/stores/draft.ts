@@ -216,7 +216,7 @@ export const draftSlice = createSlice({
         message: "",
         isLoading: false,
       };
-      console.log("Fulfilled action payload:", action.payload); // Log the payload
+      //console.log("Fulfilled action payload:", action.payload); // Log the payload
       state.draftsArray = action.payload; // Directly assign the data array to draftsArray
     });
     
