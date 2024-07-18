@@ -2,7 +2,7 @@ import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { questionList } from "src/pages/product/report-q&a/_question";
 import { AppConfig } from "src/config/app.config";
-import { RootState } from 'src/store';
+import { RootState } from "src/store";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -25,7 +25,7 @@ interface IQuestionAnswer {
   answer: string;
 }
 interface IAdditionalQuestionId {
-  question_id: number
+  question_id: number;
 }
 
 export interface IUploadAttachmentsState {
@@ -186,10 +186,10 @@ export const saveDraft = createAsyncThunk<
     await axios.post(`${BASE_PN_REPORT_URL}/draft/`, {
       requirement_gathering_id: usecases.requirementGatheringId, // Get it from usecases state
       user_id: QA.userId,
-      current_page: "/upload-attachments", 
+      current_page: "/upload-attachments",
       other_data: uploadAttachments,
       date: new Date().toISOString(),
-      report_name: "User's Report", 
+      report_name: "User's Report",
     });
   } catch (error) {
     const errorObj = {
@@ -351,13 +351,13 @@ export const UploadAttachmentsSlice = createSlice({
     setRequirementPercentage: (state, action: PayloadAction<number>) => {
       state.requirementPercentage = action.payload;
     },
-    setRequirementSummary: (state, action: PayloadAction <TSingleRequirementSummary[]>) => {
+    setRequirementSummary: (state, action: PayloadAction<TSingleRequirementSummary[]>) => {
       state.requirementSummary = action.payload;
     },
-    setQuestionsList: (state, action: PayloadAction <IQuestionAnswer[]>) => {
+    setQuestionsList: (state, action: PayloadAction<IQuestionAnswer[]>) => {
       state.questionsList = action.payload;
     },
-    setAddtionalQuestionIds: (state, action: PayloadAction <IAdditionalQuestionId[]>) => {
+    setAddtionalQuestionIds: (state, action: PayloadAction<IAdditionalQuestionId[]>) => {
       state.additionalQuestionIds = action.payload;
     },
 
@@ -563,7 +563,7 @@ export const {
   resetFetchRequirementPercentageState,
   setRequirementSummary,
   setQuestionsList,
-  setAddtionalQuestionIds
+  setAddtionalQuestionIds,
 } = UploadAttachmentsSlice.actions;
 
 export default UploadAttachmentsSlice.reducer;

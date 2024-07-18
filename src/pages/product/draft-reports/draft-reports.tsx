@@ -22,8 +22,8 @@ import {
   setRequirementPercentage,
   setRequirementSummary,
   setQuestionsList,
-  setAddtionalQuestionIds
-} from 'src/stores/upload-attachments';
+  setAddtionalQuestionIds,
+} from "src/stores/upload-attachments";
 import { setRequirementGatheringId } from "src/stores/use-case";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
@@ -130,23 +130,22 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
             dispatch(setCurrentQuestionId(currentQuestionId));
           }
 
-
           // Update the requirementGatheringId in the usecases slice
           dispatch(setRequirementGatheringId(draft.requirement_gathering_id));
-          if(draft.other_data.answers){
+          if (draft.other_data.answers) {
             dispatch(setAnswers(draft.other_data.answers));
             dispatch(setCurrentQuestionIdUpload(draft.other_data.currentQuestionId));
           }
-          if(draft.other_data.requirementPercentage){
+          if (draft.other_data.requirementPercentage) {
             dispatch(setRequirementPercentage(draft.other_data.requirementPercentage));
           }
-          if(draft.other_data.requirementSummary){
+          if (draft.other_data.requirementSummary) {
             dispatch(setRequirementSummary(draft.other_data.requirementSummary));
           }
-          if(draft.other_data.additionalQuestionIds){
+          if (draft.other_data.additionalQuestionIds) {
             dispatch(setAddtionalQuestionIds(draft.other_data.additionalQuestionIds));
           }
-          
+
           // Navigate to the current_page from the draft
           navigate(draft.current_page);
 
