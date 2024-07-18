@@ -1,8 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppConfig } from "src/config/app.config";
-import { IUploadAttachmentsState, initialState as initialStateUploadAttachments } from "./upload-attachments";
-import { IUploadQuickPromptsState, initialState as initialStateUploadQuickPrompt } from "./upload-quick-prompt";
+import {
+  IUploadAttachmentsState,
+  initialState as initialStateUploadAttachments,
+} from "./upload-attachments";
+import {
+  IUploadQuickPromptsState,
+  initialState as initialStateUploadQuickPrompt,
+} from "./upload-quick-prompt";
 import { IUseCase, initialState as initialStateUseCase } from "./use-case";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
@@ -16,7 +22,8 @@ export const EReportSectionPageIDs = {
   Payment: "payment",
 };
 
-export type TReportSectionPageIDs = (typeof EReportSectionPageIDs)[keyof typeof EReportSectionPageIDs];
+export type TReportSectionPageIDs =
+  (typeof EReportSectionPageIDs)[keyof typeof EReportSectionPageIDs];
 
 interface draftState {
   isUploading: boolean;
@@ -87,11 +94,11 @@ export const getDraftsByUserId = createAsyncThunk<
 >("getDraftsByUserId", async (request, thunkAPI) => {
   try {
     const response = await axios.get(
-      `${BASE_PN_REPORT_URL}/drafts-by-user-id/?user_id=${encodeURIComponent(request.userId)}`
+      `${BASE_PN_REPORT_URL}/drafts-by-user-id/?user_id=${encodeURIComponent(request.userId)}`,
     );
     //console.log("API Response Full:", response); // Log the full response
     //console.log("API Response Data:", response.data); // Log the data part of the response
-    return response.data; 
+    return response.data;
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -100,7 +107,6 @@ export const getDraftsByUserId = createAsyncThunk<
     return thunkAPI.rejectWithValue(errorObj);
   }
 });
-
 
 export const draftSlice = createSlice({
   name: "draft",
@@ -111,7 +117,7 @@ export const draftSlice = createSlice({
     },
     updateDraftsArray: (state, action: PayloadAction<IDraftOptional>) => {
       const index = state.draftsArray.findIndex(
-        (draft) => draft.requirement_gathering_id === action.payload.requirement_gathering_id
+        (draft) => draft.requirement_gathering_id === action.payload.requirement_gathering_id,
       );
 
       if (index < 0) {
@@ -121,10 +127,13 @@ export const draftSlice = createSlice({
           current_page: action.payload.current_page,
           other_data: {
             uploadAttachmentsSliceState:
-              action.payload.other_data?.uploadAttachmentsSliceState ?? initialStateUploadAttachments,
+              action.payload.other_data?.uploadAttachmentsSliceState ??
+              initialStateUploadAttachments,
             uploadQuickPromptsSliceState:
-              action.payload.other_data?.uploadQuickPromptsSliceState ?? initialStateUploadQuickPrompt,
-            useCasesSliceState: action.payload.other_data?.useCasesSliceState ?? initialStateUseCase,
+              action.payload.other_data?.uploadQuickPromptsSliceState ??
+              initialStateUploadQuickPrompt,
+            useCasesSliceState:
+              action.payload.other_data?.useCasesSliceState ?? initialStateUseCase,
           },
         };
 
@@ -142,7 +151,8 @@ export const draftSlice = createSlice({
               action.payload.other_data?.uploadQuickPromptsSliceState ??
               state.draftsArray[index].other_data.uploadQuickPromptsSliceState,
             useCasesSliceState:
-              action.payload.other_data?.useCasesSliceState ?? state.draftsArray[index].other_data.useCasesSliceState,
+              action.payload.other_data?.useCasesSliceState ??
+              state.draftsArray[index].other_data.useCasesSliceState,
           },
         };
 
@@ -154,7 +164,7 @@ export const draftSlice = createSlice({
     },
     setDraftUploadState: (
       state,
-      action: PayloadAction<{ isSuccess: boolean; isError: boolean; message: string }>
+      action: PayloadAction<{ isSuccess: boolean; isError: boolean; message: string }>,
     ) => {
       state.draftUploadState = action.payload;
     },
@@ -219,7 +229,7 @@ export const draftSlice = createSlice({
       //console.log("Fulfilled action payload:", action.payload); // Log the payload
       state.draftsArray = action.payload; // Directly assign the data array to draftsArray
     });
-    
+
     builder.addCase(getDraftsByUserId.rejected, (state, action) => {
       state.getDraftsByUserIdState = {
         isError: true,
@@ -231,7 +241,13 @@ export const draftSlice = createSlice({
   },
 });
 
-export const { reset, setDraftsArray, setCurrentPageId, setDraftUploadState, resetGetDraftsByUserIdState } = draftSlice.actions;
+export const {
+  reset,
+  setDraftsArray,
+  setCurrentPageId,
+  setDraftUploadState,
+  resetGetDraftsByUserIdState,
+} = draftSlice.actions;
 
 export default draftSlice.reducer;
 

@@ -2,7 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import { AppConfig } from "src/config/app.config";
-import { RootState } from 'src/store';
+import { RootState } from "src/store";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -172,10 +172,10 @@ export const saveDraft = createAsyncThunk<
     await axios.post(`${BASE_PN_REPORT_URL}/draft/`, {
       requirement_gathering_id: usecases.requirementGatheringId, // Get it from usecases state
       user_id: QA.userId,
-      current_page: "/q&a", 
+      current_page: "/q&a",
       other_data: QA,
       date: new Date().toISOString(),
-      report_name: "User's Report", 
+      report_name: "User's Report",
     });
   } catch (error) {
     const errorObj = {
@@ -306,7 +306,6 @@ export const QuestionAnswerSlice = createSlice({
     setRequirementGatheringId: (state, action: PayloadAction<number>) => {
       state.requirementGatheringId = action.payload;
     },
-    
   },
   extraReducers(builder) {
     builder.addCase(generateQuestionAnswer.pending, (state) => {

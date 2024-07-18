@@ -4,6 +4,7 @@ import type { ReactElement } from "react";
 
 import NewChatIcon from "../../components/icons/side-bar/new-chat";
 import NewReportIcon from "../../components/icons/side-bar/new-report";
+import ReportList from "../../components/icons/side-bar/reports-list";
 import DraftIcon from "../../components/icons/side-bar/draft-icon";
 // import ReportsListIcon from "src/components/icons/side-bar/reports-list";
 import IndustriesIcon from "src/components/icons/side-bar/industries-icon";
@@ -21,18 +22,18 @@ const sidebarItems: ISidebarListItem[] = [
     icon: NewReportIcon,
     to: "/new-report",
   },
-  // {
-  //   title: "Reports",
-  //   key: "reports",
-  //   icon: NewReportIcon,
-  //   to: "/reports-list",
-  // },
-  // {
-  //   title: "Draft",
-  //   key: "draft",
-  //   icon: DraftIcon,
-  //   to: "/draft-reports",
-  // },
+  {
+    title: "Reports",
+    key: "reports",
+    icon: ReportList,
+    to: "/reports-list",
+  },
+  {
+    title: "Draft",
+    key: "draft",
+    icon: DraftIcon,
+    to: "/draft-reports",
+  },
   {
     title: "Industries",
     key: "industries",
