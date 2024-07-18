@@ -1,24 +1,18 @@
-import axios from "axios";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-//
+import axios from "axios";
+import { AppConfig } from "src/config/app.config";
 import {
-  initialState as initialStateUploadAttachments,
   IUploadAttachmentsState,
+  initialState as initialStateUploadAttachments,
 } from "./upload-attachments";
 import {
-  initialState as initialStateUploadQuickPrompt,
   IUploadQuickPromptsState,
+  initialState as initialStateUploadQuickPrompt,
 } from "./upload-quick-prompt";
+import { IUseCase, initialState as initialStateUseCase } from "./use-case";
 
-//
-import { initialState as initialStateUseCase, IUseCase } from "./use-case";
-import { AppConfig } from "src/config/app.config";
-
-//
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
-//
 export const EReportSectionPageIDs = {
   UseCases: "new-report",
   InteractionMethod: "interaction-method",
@@ -65,7 +59,7 @@ const initialState: draftState = {
   draftsArray: [],
 };
 
-// -----------------------------------------------------------------------
+// Async thunks
 export const uploadDraft = createAsyncThunk<
   IuploadDraftResponse,
   IuploadDraftRequest,
@@ -81,7 +75,7 @@ export const uploadDraft = createAsyncThunk<
       other_data: request.other_data ?? {},
     };
 
-    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", dataObj); // TODO change endpoint
+    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", dataObj);
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -91,18 +85,20 @@ export const uploadDraft = createAsyncThunk<
   }
 });
 
-// -----------------------------------------------------------------------
 export const getDraftsByUserId = createAsyncThunk<
-  { data: IDraft[] },
+  IDraft[], // The thunk should directly return an array of IDraft
   { userId: string },
   {
     rejectValue: IResponseError;
   }
 >("getDraftsByUserId", async (request, thunkAPI) => {
   try {
-    return await axios.get(
-      `${BASE_PN_REPORT_URL}/reports-by-user-id?user_id=${encodeURIComponent(request.userId)}`,
+    const response = await axios.get(
+      `${BASE_PN_REPORT_URL}/drafts-by-user-id/?user_id=${encodeURIComponent(request.userId)}`,
     );
+    //console.log("API Response Full:", response); // Log the full response
+    //console.log("API Response Data:", response.data); // Log the data part of the response
+    return response.data;
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -112,39 +108,13 @@ export const getDraftsByUserId = createAsyncThunk<
   }
 });
 
-// -----------------------------------------------------------------------
-export const fetchDraftsByUserId = createAsyncThunk<
-  IuploadDraftResponse,
-  IuploadDraftRequest,
-  {
-    rejectValue: IResponseError;
-  }
->("fetchDraftsByUserId", async (request: { userId: string }, thunkAPI) => {
-  try {
-    return await axios.post(BASE_PN_REPORT_URL + "/quick-prompt/", request.userId); // TODO change endpoint
-  } catch (error) {
-    const errorObj = {
-      resError: String(error),
-      message: "Unable to upload quick prompts",
-    };
-    return thunkAPI.rejectWithValue(errorObj);
-  }
-});
-
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-
 export const draftSlice = createSlice({
   name: "draft",
   initialState,
   reducers: {
-    // -----------------------------------------------------------------------
     setDraftsArray: (state, action: PayloadAction<IDraft>) => {
       state.draftsArray = [...state.draftsArray, action.payload];
     },
-
-    // -----------------------------------------------------------------------
     updateDraftsArray: (state, action: PayloadAction<IDraftOptional>) => {
       const index = state.draftsArray.findIndex(
         (draft) => draft.requirement_gathering_id === action.payload.requirement_gathering_id,
@@ -189,21 +159,15 @@ export const draftSlice = createSlice({
         state.draftsArray[index] = draftObj;
       }
     },
-
-    // -----------------------------------------------------------------------
     setCurrentPageId: (state, action: PayloadAction<TReportSectionPageIDs>) => {
       state.currentPageId = action.payload;
     },
-
-    // -----------------------------------------------------------------------
     setDraftUploadState: (
       state,
       action: PayloadAction<{ isSuccess: boolean; isError: boolean; message: string }>,
     ) => {
       state.draftUploadState = action.payload;
     },
-
-    // -----------------------------------------------------------------------
     setGetDraftsByUserIdState: (state) => {
       state.getDraftsByUserIdState = {
         isError: false,
@@ -212,15 +176,17 @@ export const draftSlice = createSlice({
         isLoading: true,
       };
     },
-
-    // -----------------------------------------------------------------------
-    getDraftSliceState: (state) => state,
-
-    // -----------------------------------------------------------------------
     reset: () => initialState,
+    resetGetDraftsByUserIdState: (state) => {
+      state.getDraftsByUserIdState = {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        message: "",
+      };
+    },
   },
-  extraReducers(builder) {
-    // -----------------------------------------------------------------------
+  extraReducers: (builder) => {
     builder.addCase(uploadDraft.pending, (state) => {
       state.isUploading = true;
       state.draftUploadState = {
@@ -241,12 +207,10 @@ export const draftSlice = createSlice({
       state.isUploading = false;
       state.draftUploadState = {
         isError: true,
-        isSuccess: true,
+        isSuccess: false,
         message: action.error.message ?? "Unable to sync with server",
       };
     });
-
-    // -----------------------------------------------------------------------
     builder.addCase(getDraftsByUserId.pending, (state) => {
       state.getDraftsByUserIdState = {
         isError: false,
@@ -262,21 +226,28 @@ export const draftSlice = createSlice({
         message: "",
         isLoading: false,
       };
-      state.draftsArray = action.payload.data;
+      //console.log("Fulfilled action payload:", action.payload); // Log the payload
+      state.draftsArray = action.payload; // Directly assign the data array to draftsArray
     });
+
     builder.addCase(getDraftsByUserId.rejected, (state, action) => {
       state.getDraftsByUserIdState = {
         isError: true,
-        isSuccess: true,
-        message: action.error.message ?? "Unable to sync with server",
+        isSuccess: false,
+        message: action.payload?.message ?? "Unable to sync with server",
         isLoading: false,
       };
     });
   },
 });
 
-export const { reset, getDraftSliceState, setDraftsArray, setCurrentPageId, setDraftUploadState } =
-  draftSlice.actions;
+export const {
+  reset,
+  setDraftsArray,
+  setCurrentPageId,
+  setDraftUploadState,
+  resetGetDraftsByUserIdState,
+} = draftSlice.actions;
 
 export default draftSlice.reducer;
 
@@ -319,7 +290,6 @@ interface IOtherDataOptional {
   uploadAttachmentsSliceState?: IUploadAttachmentsState;
   uploadQuickPromptsSliceState?: IUploadQuickPromptsState;
   useCasesSliceState?: IUseCase;
-
   [key: string]: any;
 }
 

@@ -18,12 +18,13 @@ interface IAGGridProps<T> {
 export default function AgGrid<T>({ rowData, colDefs, onRowClicked, isLoading }: IAGGridProps<T>) {
   // Container: Defines the grid's theme & dimensions.
   return (
-    <div className={"w-full h-full"}>
+    <div className={"w-full h-[90%] "}>
       <AgGridReact
         rowData={rowData}
         columnDefs={colDefs}
         onRowClicked={onRowClicked}
         loading={isLoading}
+        rowSelection="multiple"
       />
     </div>
   );

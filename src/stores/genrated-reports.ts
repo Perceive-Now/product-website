@@ -79,8 +79,7 @@ export const GeneratedReportsSlice = createSlice({
       state.reports = action.payload.data.map((report) => {
         return {
           ...report,
-          title:
-            "Some report title " + report.user_case_id + " - " + report.requirement_gathering_id,
+          title: "Report title " + report.user_case_id + " - " + report.requirement_gathering_id,
           created_data: new Date(),
         };
       });

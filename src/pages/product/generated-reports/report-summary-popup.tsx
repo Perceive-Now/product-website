@@ -1,8 +1,8 @@
 import React from "react";
-import { useAppSelector } from "../../../hooks/redux";
-import { ConfirmationGuyIcon } from "../../../components/icons";
-import Button from "../../../components/reusable/button";
+import { useNavigate } from "react-router-dom";
 import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";
+import Markdown from "react-markdown";
+import Button from "../../../components/reusable/button";
 
 const ReportSummaryPopup = ({
   handleViewFullReportCallback,
@@ -13,18 +13,16 @@ const ReportSummaryPopup = ({
   setIsOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
   event: any;
 }) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleViewFullReport = () => {
     setIsOpenDialog(false);
-    handleViewFullReportCallback();
+    navigate("/full-report", { state: { title: event.data.title, report: event.data.report } });
   };
 
   const useCaseName = UseCaseOptions.find(
     (useCase) => useCase.useCaseId === Number(event.data.user_case_id),
   )?.label;
-
-  console.log(useCaseName);
 
   return (
     <div className="bg-white p-5 flex flex-col justify-center items-start text-left w-[800px] rounded-lg">
@@ -42,12 +40,14 @@ const ReportSummaryPopup = ({
           </p>
         </div>
         <div>
-          <p> {event.data.created_date}</p>
+          <p>{event.data.created_date}</p>
         </div>
       </div>
 
       <div className="mt-[20px]">
-        <p className="text-sm line-clamp-4">{event.data.report}</p>
+        <p className="text-sm line-clamp-4">
+          <Markdown>{event.data.report}</Markdown>
+        </p>
       </div>
 
       <Button type="primary" classname="w-[250px] mt-[20px]" handleClick={handleViewFullReport}>

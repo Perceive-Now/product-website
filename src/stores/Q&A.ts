@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import { AppConfig } from "src/config/app.config";
+import { RootState } from "src/store";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -26,17 +27,6 @@ interface IAnswerQuestionsRequestAPI {
   answer: string;
   user_case_id: string;
 }
-
-// interface IQA {
-//   answerResponse: IQuestionAnswerResponse,
-//   questionsList: {
-//     questionId: number;
-//     useCaseId: number;
-//     question: string;
-//     usecase: string;
-//     answer: string;
-//   }[]
-// }
 
 interface IAnswerQuestionsResponseAPI {
   data: {
@@ -95,6 +85,8 @@ export interface IQAState {
     exampleAnswer: string;
   }[];
   updatedQAList: IAnswers[];
+  requirementGatheringId: number;
+  userId: string;
 }
 
 export interface IAnswers {
@@ -129,6 +121,8 @@ export const initialState: IQAState = {
   generateAnswerError: false,
   generateAnswerSuccess: false,
   updatedQAList: [],
+  requirementGatheringId: 0, // Initialize with default value
+  userId: jsCookie.get("user_id") || "", // Initialize with value from cookies
 };
 
 export const generateQuestionAnswer = createAsyncThunk<
@@ -153,15 +147,40 @@ export const generateQuestionAnswer = createAsyncThunk<
         answersObj.requirement_gathering_id
       }&user_case_id=${answersObj.user_case_id}`,
     );
-    // return {
-    //   status: res.data.status,
-    //   question: res.data.question || "",
-    //   questionId: res.data.questionId
-    // }
   } catch (error) {
     const errorObj = {
       resError: String(error),
       message: "Failed to generate answer",
+    };
+    return thunkAPI.rejectWithValue(errorObj);
+  }
+});
+
+// async thunk to save the draft
+export const saveDraft = createAsyncThunk<
+  void,
+  void,
+  {
+    state: RootState;
+    rejectValue: IResponseError;
+  }
+>("q&a/saveDraft", async (_, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const { QA, usecases } = state;
+
+  try {
+    await axios.post(`${BASE_PN_REPORT_URL}/draft/`, {
+      requirement_gathering_id: usecases.requirementGatheringId, // Get it from usecases state
+      user_id: QA.userId,
+      current_page: "/q&a",
+      other_data: QA,
+      date: new Date().toISOString(),
+      report_name: "User's Report",
+    });
+  } catch (error) {
+    const errorObj = {
+      resError: String(error),
+      message: "Failed to save draft",
     };
     return thunkAPI.rejectWithValue(errorObj);
   }
@@ -194,35 +213,32 @@ export const QuestionAnswerSlice = createSlice({
   name: "q&a",
   initialState,
   reducers: {
-    // -----------------------------------------------------------------------
     setCurrentPageId: (state, action: PayloadAction<IQAPage>) => {
       state.currentPageId = action.payload;
     },
-
-    // -----------------------------------------------------------------------
     incrementStep: (state) => {
       state.currentStep += 1;
     },
-
-    // -----------------------------------------------------------------------
     decrementStep: (state) => {
       state.currentStep -= 1;
     },
-    // -----------------------------------------------------------------------
     setGenerateAnswerError: (state, action: PayloadAction<boolean>) => {
       state.generateAnswerError = action.payload;
     },
-
-    // -----------------------------------------------------------------------
     setGenerateAnswerSuccess: (state, action: PayloadAction<boolean>) => {
       state.generateAnswerSuccess = action.payload;
     },
-
-    // -----------------------------------------------------------------------
     setCurrentQuestionId: (state, action: PayloadAction<number>) => {
       state.currentQuestionId = action.payload;
     },
-    // -----------------------------------------------------------------------
+    setSkippedQuestions: (state, action: PayloadAction<IQuestionAnswer[]>) => {
+      action.payload.forEach((skippedQuestion) => {
+        state.questionsList = state.questionsList.filter(
+          (question) => question.questionId !== skippedQuestion.questionId,
+        );
+      });
+      state.skippedQuestionList = action.payload;
+    },
     updateQuestionAnswer: (
       state,
       action: PayloadAction<{ questionId: number; answer: string }>,
@@ -234,7 +250,6 @@ export const QuestionAnswerSlice = createSlice({
         return question;
       });
     },
-    // -----------------------------------------------------------------------
     updateQuestionList: (
       state,
       action: PayloadAction<{ questionId: number; question: string }>,
@@ -249,15 +264,12 @@ export const QuestionAnswerSlice = createSlice({
     questionWithUseCases: (state, action: PayloadAction<IQuestionAnswer[]>) => {
       state.questionsList = action.payload;
     },
-
-    // ----------------------------------------------------------------------
     addToSkippedQuestionList: (state, action: PayloadAction<IQuestionAnswer>) => {
       state.questionsList = state.questionsList.filter(
         (question) => question.questionId !== action.payload.questionId,
       );
       state.skippedQuestionList = [...state.skippedQuestionList, action.payload];
     },
-    // -----------------------------------------------------------------------
     removeFromSkippedQuestionList: (state, action: PayloadAction<IQuestionAnswer>) => {
       // Remove the question from skippedQuestionList
       state.skippedQuestionList = state.skippedQuestionList.filter(
@@ -280,8 +292,6 @@ export const QuestionAnswerSlice = createSlice({
         }
       }
     },
-
-    // -----------------------------------------------------------------------
     updateNewQuestionList: (state, action: PayloadAction<IUpdateQuestionPayload>) => {
       const { questionAnswer, currentId } = action.payload;
       const questionIndex = state.questionsList.findIndex((q) => q.questionId === currentId);
@@ -292,8 +302,10 @@ export const QuestionAnswerSlice = createSlice({
         state.questionsList.push(action.payload.questionAnswer);
       }
     },
-    // ------------------------------------------------------------------------
     reset: () => initialState,
+    setRequirementGatheringId: (state, action: PayloadAction<number>) => {
+      state.requirementGatheringId = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(generateQuestionAnswer.pending, (state) => {
@@ -314,6 +326,12 @@ export const QuestionAnswerSlice = createSlice({
       const payloadData = action.payload.data;
       state.updatedQAList = payloadData;
     });
+    builder.addCase(saveDraft.fulfilled, (state) => {
+      state.message = "Draft saved successfully";
+    });
+    builder.addCase(saveDraft.rejected, (state, action) => {
+      state.message = "Failed to save draft" ?? action.error.message;
+    });
   },
 });
 
@@ -322,7 +340,6 @@ interface IUpdateQuestionPayload {
   currentId: number;
 }
 
-//
 export const {
   reset,
   setCurrentPageId,
@@ -337,6 +354,8 @@ export const {
   setGenerateAnswerSuccess,
   questionWithUseCases,
   updateQuestionAnswer,
+  setRequirementGatheringId,
+  setSkippedQuestions,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;

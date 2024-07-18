@@ -75,6 +75,10 @@ export const UseCaseSlice = createSlice({
       state.requirmentGatheringMethod = action.payload;
     },
 
+    setRequirementGatheringId: (state, action: PayloadAction<number>) => {
+      state.requirementGatheringId = action.payload;
+    },
+
     // -----------------------------------------------------------------------
     setUseCasesUploadState: (
       state,
@@ -140,6 +144,7 @@ export const {
   setUseCaseStateFromDraft,
   setUseCasesUploadState,
   setSequirmentGatheringMethod,
+  setRequirementGatheringId,
 } = UseCaseSlice.actions;
 export default UseCaseSlice.reducer;
 

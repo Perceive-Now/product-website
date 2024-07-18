@@ -46,6 +46,7 @@ import UseCasePage from "./pages/product/use-case";
 import Landing from "./pages/product/landing/landing";
 import ReportPage from "./pages/product/report-q&a";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
+import FullReportPage from "./pages/product/generated-reports/fullreportpage";
 
 //
 import InteractionMethod from "./pages/product/interaction-method/interaction-method";
@@ -106,6 +107,7 @@ function App() {
             {/* Report-section */}
             <Route path="/draft-reports" element={<DraftReports />} />
             <Route path="/reports-list" element={<GeneratedReports />} />
+            <Route path="full-report" element={<FullReportPage />} />
 
             <Route path="/report/:reportId" element={<GeneratedReport />} />
 
@@ -127,6 +129,8 @@ function App() {
               />
             </Route>
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
+            <Route path="/q&a" element={<ReportPage />} />
+            <Route path="/upload-attachments" element={<UploadAttachmentsPage />} />
 
             {/* Know-now */}
             <Route path="/start-conversation" element={<KnowNowPage />} />
