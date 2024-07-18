@@ -10,6 +10,21 @@ import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
 import DropdownContinueIcon from "../generated-reports/dropdown-continue-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import { getDraftsByUserId, resetGetDraftsByUserIdState, IDraft } from "../../../stores/draft";
+import {
+  setCurrentPageId,
+  questionWithUseCases,
+  setSkippedQuestions,
+  setCurrentQuestionId,
+} from "src/stores/Q&A";
+import {
+  setCurrentPageId as setCurrentPageIdUpload,
+  setCurrentQuestionId as setCurrentQuestionIdUpload,
+  setAnswers,
+  setRequirementPercentage,
+  setRequirementSummary,
+  setQuestionsList,
+  setAddtionalQuestionIds,
+} from "src/stores/upload-attachments";
 import { setRequirementGatheringId } from "src/stores/use-case";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
@@ -18,13 +33,6 @@ import { AppConfig } from "src/config/app.config";
 import { useNavigate } from "react-router-dom";
 import GoBack from "../quick-prompt/goback";
 import SearchFilter from "./searchFilter";
-
-import {
-  setCurrentPageId,
-  questionWithUseCases,
-  setSkippedQuestions,
-  setCurrentQuestionId,
-} from "src/stores/Q&A";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -49,8 +57,6 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
   const navigate = useNavigate();
 
   const handleDelete = async () => {
-    //console.log("delete", cellRendereProps.data.reportId);
-
     const reportId = cellRendereProps.data.reportId;
     const userId = jsCookie.get("user_id");
 
@@ -67,7 +73,6 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         throw new Error("Failed to delete draft");
       }
     } catch (error) {
-      //console.error("Failed to delete draft:", error);
       toast.error("Failed to delete draft");
     }
   };
@@ -77,29 +82,20 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
     const userId = jsCookie.get("user_id");
 
     try {
-      //console.log(`Fetching draft for reportId: ${reportId}, userId: ${userId}`);
-
       const response = await axiosInstance.get(
         `${BASE_PN_REPORT_URL}/draft-by-ids/?requirement_gathering_id=${reportId}&user_id=${userId}`,
       );
 
-      //console.log("API response:", response);
-
       if (response.status === 200 && response.data.length > 0) {
         const draft = response.data[0];
-        // console.log("Draft data:", draft);
-
-        {
-          /*  // Log the other_data to understand its structure
-        console.log("other_data:", draft.other_data); 
-        */
-        }
 
         // Check if other_data is in the correct format
         if (draft.other_data && draft.other_data.questionsList && draft.other_data.currentPageId) {
           // Update the Q&A slice state with the data from other_data
           dispatch(questionWithUseCases(draft.other_data.questionsList));
+          dispatch(setQuestionsList(draft.other_data.questionsList));
           dispatch(setCurrentPageId(draft.other_data.currentPageId));
+          dispatch(setCurrentPageIdUpload(draft.other_data.currentPageId));
 
           // Check and update skipped questions if they exist
           if (draft.other_data.skippedQuestionList) {
@@ -128,6 +124,19 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
 
           // Update the requirementGatheringId in the usecases slice
           dispatch(setRequirementGatheringId(draft.requirement_gathering_id));
+          if (draft.other_data.answers) {
+            dispatch(setAnswers(draft.other_data.answers));
+            dispatch(setCurrentQuestionIdUpload(draft.other_data.currentQuestionId));
+          }
+          if (draft.other_data.requirementPercentage) {
+            dispatch(setRequirementPercentage(draft.other_data.requirementPercentage));
+          }
+          if (draft.other_data.requirementSummary) {
+            dispatch(setRequirementSummary(draft.other_data.requirementSummary));
+          }
+          if (draft.other_data.additionalQuestionIds) {
+            dispatch(setAddtionalQuestionIds(draft.other_data.additionalQuestionIds));
+          }
 
           // Navigate to the current_page from the draft
           navigate(draft.current_page);
@@ -140,7 +149,6 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         throw new Error("Invalid response data");
       }
     } catch (error) {
-      //console.error("Failed to load draft:", error);
       toast.error("Failed to load draft");
     }
   };
@@ -210,14 +218,6 @@ export default function DraftReports() {
   useEffect(() => {
     dispatch(getDraftsByUserId({ userId: jsCookie.get("user_id") ?? "0" }));
   }, [dispatch]);
-
-  {
-    /* 
-    useEffect(() => {
-    console.log("Drafts Array:", draftsArray); // Log draftsArray to verify data
-  }, [draftsArray]);
-  */
-  }
 
   const filteredRowData: IRow[] = draftsArray
     .filter(
