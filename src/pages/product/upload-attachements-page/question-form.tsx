@@ -99,10 +99,10 @@ export default function QuestionForm({
             handleClick={onSkipBtnClick}
             type="secondary"
           >
-            Skip and continue
+            Skip & Continue
           </Button>
           <Button htmlType={"submit"} rounded={"medium"} loading={isLoading} disabled={isLoading}>
-            Continue
+            Save & Continue
           </Button>
         </div>
       </form>
