@@ -50,7 +50,10 @@ export default function QuestionAnswerForm({
   isEdit,
 }: Props) {
   const [updatedAnswer, setUpdatedAnswer] = useState("");
-  const [hasContent, setHasContent] = useState(true);
+
+  console.log(updatedAnswer);
+
+  // ----------------------Previous Code -------------------------------------------
 
   // const [madlibAnswer, setMadlibAnswer] = useState("");
   // const [edit, setEdit] = useState(false);
@@ -78,17 +81,16 @@ export default function QuestionAnswerForm({
 
   // useEffect(() => {
   //   setUpdatedAnswer(answer || "");
-  //   // setValue("answer", answer || "");
-  // }, [answer]);
+  //   setValue("answer", answer || "");
+  // }, [answer, exampleAnswer, setValue]);
 
   //
   // const onEdit = useCallback((answer: string) => {
   //   setEdit(!edit);
   //   setMadlibAnswer(answer);
-  //   // setValue("answer", answer); // Update the form value
-  // }, [edit])
+  //   setValue("answer", answer); // Update the form value
+  // }, [edit, setValue])
 
-  //
   // useEffect(() => {
   //   if (resetForm) {
   //     reset();
@@ -96,7 +98,8 @@ export default function QuestionAnswerForm({
   //   }
   // });
 
-  //
+  //--------------------------------------Previous Code ------------------------------
+
   const useExample = useCallback(() => {
     setUpdatedAnswer(exampleAnswer);
   }, [exampleAnswer]);
@@ -115,43 +118,64 @@ export default function QuestionAnswerForm({
           className="text-gray-600 text-xs 2xl:text-sm"
           dangerouslySetInnerHTML={{ __html: `Eg: ${formattedAnswer}` }}
         />
-        <Button
-          type="gray"
-          size="small"
-          rounded="small"
-          classname="px-0.5 py-[6px] text-xs font-semibold hover:cursor-default"
-          handleClick={useExample}
-        >
-          Use this Example
-        </Button>
+        <div className="">
+          <Button
+            type="gray"
+            size="small"
+            rounded="small"
+            classname="px-0.5 py-[6px] text-xs font-semibold"
+            handleClick={useExample}
+          >
+            Use this Example
+          </Button>
+          {/* <Button
+            type="gray"
+            size="small"
+            rounded="small"
+            classname="px-0.5 py-[6px] text-xs font-semibold"
+            handleClick={() => onEdit(madlibAnswer)}
+          >
+            {
+              edit ?
+                <span>Madlib format</span> :
+                <span>Normal format</span>
+            }
+          </Button> */}
+        </div>
       </div>
 
-      {isEdit ? (
-        <MadlibEdit
-          hasSkippedQuestion={hasSkippedQuestion}
-          showSkip={showSkip}
-          onSkip={onSkip}
-          question={[
-            {
-              question: question,
-              answer: answer || "",
-              questionId: questionId,
-            },
-          ]}
-          onContinue={onContinue}
-          isLoading={isLoading}
-        />
-      ) : (
-        <DiagnosticPlatform
-          hasSkippedQuestion={hasSkippedQuestion}
-          showSkip={showSkip}
-          onSkip={onSkip}
-          onContinue={onContinue}
-          isLoading={isLoading}
-          answer={updatedAnswer}
-          setHasContent={setHasContent}
-        />
-      )}
+      <>
+        {isEdit ? (
+          <MadlibEdit
+            hasSkippedQuestion={hasSkippedQuestion}
+            showSkip={showSkip}
+            onSkip={onSkip}
+            question={[
+              {
+                question: question,
+                answer: answer || "",
+                questionId: questionId,
+              },
+            ]}
+            onContinue={onContinue}
+            isLoading={isLoading}
+          />
+        ) : (
+          <DiagnosticPlatform
+            hasSkippedQuestion={hasSkippedQuestion}
+            showSkip={showSkip}
+            onSkip={onSkip}
+            onContinue={onContinue}
+            isLoading={isLoading}
+            answer={updatedAnswer}
+            setUpdatedAnswer={setUpdatedAnswer}
+            // onEdit={onEdit}
+            // setUpdatedAnswer={setUpdatedAnswer}
+            // updatedAnswer={updatedAnswer}
+          />
+        )}
+      </>
+
       {/* {
         edit ?
           <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
@@ -189,7 +213,7 @@ export default function QuestionAnswerForm({
               {hasSkippedQuestion ? (
                 <div>Please answer all the skipped questions to continue.</div>
               ) : (
-               
+               <>
               )}
               <div className=" flex gap-2 items-center">
                 {showSkip && (
@@ -203,7 +227,8 @@ export default function QuestionAnswerForm({
               </div>
             </div>
           </form> :
-          
+         
+
       } */}
     </div>
   );

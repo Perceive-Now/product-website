@@ -35,6 +35,7 @@ const optionMappings: OptionMappings = {
   "freedom-to-operate": "freedom-to-operate",
   "prior-art-search": "ip-validity-analysis",
   "patent-validity": "ip-validity-analysis",
+  "ip-validity-analysis": "ip-validity-analysis",
   "patent-infringement": "ip-validity-analysis",
   "ip-valuation": "ip-valuation",
   "ip-licensing-opportunity": "ip-licensing-opportunity",

@@ -1,15 +1,10 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import classNames from "classnames";
-
-//
-import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 import Button from "src/components/reusable/button";
 
-//
 import { IAnswer } from "src/@types/entities/IPLandscape";
-// import EditIcon from "src/components/icons/miscs/Edit";
-// import ToolTip from "src/components/reusable/tool-tip";
-// import BreakableInput from "./breafable-input";
+
+import "./madlib.css";
 
 interface UserInputs {
   [key: string]: string;
@@ -21,12 +16,11 @@ interface Props {
   hasSkippedQuestion?: boolean;
   showSkip: boolean;
   onSkip: () => void;
-  // questionId: number;
   onContinue: ({ answer }: IAnswer) => void;
   isLoading: boolean;
   answer: string;
-  setHasContent: any;
-  // React.Dispatch<React.SetStateAction<string>>;
+  setUpdatedAnswer: (answer: string) => void;
+  // onEdit: (updatedAnswer: string) => void;
 }
 
 /**
@@ -39,33 +33,23 @@ const DiagnosticPlatform = ({
   onContinue,
   isLoading,
   answer,
-  setHasContent,
+  setUpdatedAnswer,
 }: Props) => {
+  const [hasInput, setHasInput] = useState(false);
   const [userInputs, setUserInputs] = useState<UserInputs>({});
-  const [updatedAnswer, setUpdatedAnswer] = useState("");
 
   const [resetInputs, setResetInputs] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // const QA = NewQAList.filter((q) => q.questionId === questionId);
+  useEffect(() => {
+    if (resetInputs) {
+      setUserInputs({});
+      setResetInputs(false);
+    }
+  }, [resetInputs]);
 
-  // Input Validation
-  // const validateInputs = (inputs: UserInputs) => {
-  //   for (const section of QA) {
-  //     const placeholders = section.answer.match(/\[(.*?)\]/g);
-  //     if (placeholders) {
-  //       for (const placeholder of placeholders) {
-  //         const key = placeholder.substring(1, placeholder.length - 1);
-  //         if (!inputs[key]) {
-  //           return "Please fill in all the answers.";
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // };
-
+  //
   const handleInputChange = (placeholder: string, value: string) => {
     const updatedInputs = { ...userInputs, [placeholder]: value };
     setUserInputs(updatedInputs);
@@ -75,73 +59,156 @@ const DiagnosticPlatform = ({
     // setError(errorMessage);
   };
 
-  const handleContentChange = () => {
-    if (contentRef.current) {
-      const updatedText = contentRef.current.innerText;
-      setUpdatedAnswer(updatedText);
-      console.log(updatedText.length);
+  // const handleContentChange = () => {
+  //   if (contentRef.current) {
+  //     const updatedText = contentRef.current.innerText;
+  //     // setUpdatedAnswer(updatedText)
 
-      if (updatedText.length - 1 <= 0) {
-        setHasContent(false);
-        setError("Please provide answer");
+  //     if (updatedText.trim().length <= 0) {
+  //       // setUpdatedAnswer("")
+  //       setError("Please provide answer");
+  //     } else {
+  //       setError(null);
+  //     }
+  //   }
+  // };
+
+  //
+
+  const handleContentChange = useCallback(() => {
+    if (contentRef.current) {
+      const updatedText = contentRef.current.innerHTML.trim();
+      if (updatedText.length <= 0) {
+        setUpdatedAnswer("");
+        setHasInput(false);
+        setError("Please provide an answer");
       } else {
+        setHasInput(true);
         setError(null);
+        // setUpdatedAnswer(updatedText);
       }
     }
-  };
+  }, [setUpdatedAnswer]);
 
-  // OnContinue
+  //
   const handleContinue = useCallback(
     (type: IType) => {
-      // let hasError = false;
+      const content = contentRef.current?.innerHTML || "";
+      if (content.trim().length <= 0) {
+        // setUpdatsedAnswer("")
+        setError("Please provide an answer");
+      }
+      let combinedText = content.replace(
+        /<input[^>]*placeholder="([^"]*)"[^>]*value="([^"]*)"[^>]*>/g,
+        (match, placeholder, value) => {
+          // console.log(placeholder, match, value)
+          return `[${value || placeholder}]`;
+        },
+      );
 
-      // QA.forEach((section) => {
-      //   const placeholders = section.answer.match(/\[(.*?)\]/g);
-      //   if (placeholders) {
-      //     placeholders.forEach((placeholder) => {
-      //       const key = placeholder.substring(1, placeholder.length - 1);
-      //       if (!userInputs[key]) {
-      //         hasError = true;
-      //       }
-      //     });
-      //   }
-      // });
-
-      // if (hasError) {
-      //   setError("Please fill in all the answers.");
-      //   return;
-      // }
-
-      // setError(null);
-
-      let combinedText = "";
-      combinedText += answer?.replace(/\[(.*?)\]/g, (match, placeholder) => {
-        return userInputs[placeholder] !== undefined ? `[${userInputs[placeholder]}]` : match;
-      });
-
-      const finalText = updatedAnswer + combinedText;
+      // Clean up any remaining HTML tags, if needed
+      combinedText = combinedText.replace(/<\/?[^>]+>/g, "");
 
       if (type === "continue") {
-        onContinue({ answer: finalText });
+        onContinue({ answer: combinedText });
+
         if (isLoading) {
           setResetInputs(true);
-          setUserInputs({});
         }
-        setResetInputs(false);
       }
-
-      // if (type === 'edit') {
-      //   onEdit(combinedText);
-      // }
     },
-    [answer, isLoading, onContinue, updatedAnswer, userInputs],
+    [isLoading, onContinue],
   );
+
+  //
+  // const createEditableContentHTM = (text: string) => {
+  //   return text.split(/(\[[^\]]+\])/g).map((part, idx) => {
+  //     if (part.startsWith("[") && part.endsWith("]")) {
+  //       const placeholder = part.substring(1, part.length - 1);
+  //       const inputWidth = Math.max(placeholder.length, 20); // Adjusted minimum width
+  //       return (
+  //         <input
+  //           key={idx}
+  //           className="focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[600px] 2xl:max-w-[920px] placeholder"
+  //           placeholder={placeholder}
+  //           style={{ minWidth: `${inputWidth}px`, whiteSpace: "normal", wordBreak: "break-all" }}
+  //           value={resetInputs ? "" : userInputs[placeholder] || ""}
+  //           onChange={(e) => handleInputChange(placeholder, e.target.value)}
+  //         />
+  //       );
+
+  //       // `<input
+  //       //   class="focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[600px] 2xl:max-w-[920px] placeholder"
+  //       //   placeholder="${placeholder}"
+  //       //   style="min-width: ${inputWidth}px; white-space: normal; word-break: break-all;"
+  //       //   value="${resetInputs ? "" : userInputs[placeholder] || ""}"
+  //       //   onInput="handleInputChange('${placeholder}', this.value)"
+  //       //   />`;
+
+  //       //  onChange="${(e: { target: { value: string; }; }) => { return handleInputChange(placeholder, e.target.value) }}"
+
+  //       // <InputField
+  //       //   key={idx}
+  //       //   style={`min-width: ${inputWidth}px; white-space: normal; word-break: break-all;`}
+  //       //   placeholder={placeholder}
+  //       //   value={resetInputs ? "" : userInputs[placeholder] || ""}
+  //       //   onChange={(e: { target: { value: string; }; }) => handleInputChange(placeholder, e.target.value)}
+  //       // />
+  //     } else {
+  //       return part.replace(/\n/g, "<br />");
+  //     }
+  //   }).join("");
+
+  // };
+
+  const createEditableContentHTML = (text: string) => {
+    const content = text ? text : "  ";
+    return content?.split(/(\[[^\]]+\])/g).map((part, index) => {
+      if (part?.startsWith("[") && part.endsWith("]")) {
+        const placeholder = part?.substring(1, part?.length - 1);
+        const inputWidth = Math.max(placeholder?.length);
+
+        return (
+          <input
+            key={`${placeholder}-${index}`}
+            className="focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[600px] 2xl:max-w-[920px]"
+            placeholder={placeholder}
+            style={{ minWidth: inputWidth, whiteSpace: "normal", wordBreak: "break-all" }}
+            value={resetInputs ? "" : userInputs[placeholder] || ""}
+            onChange={(e) => handleInputChange(placeholder, e.target.value)}
+          />
+        );
+      } else {
+        const textParts = part?.split("\n");
+        return (
+          <span key={index}>
+            {textParts?.map((text, idx) => (
+              <React.Fragment key={idx}>
+                {idx > 0 && <br />}
+                <span className="inline" dangerouslySetInnerHTML={{ __html: text }} />
+              </React.Fragment>
+            ))}
+          </span>
+        );
+      }
+    });
+  };
+
+  useEffect(() => {
+    // Scroll to the bottom whenever the component updates
+    contentRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <>
-      <div className="flex flex-col w-full justify-between ">
-        <div className="h-[px]">
+      <div className="flex flex-col w-full justify-between">
+        <div className="relative h-auto">
           {error && <div className="text-red-500 text-xs mt-1 mb-0.5">{error}</div>}
+          {answer.length <= 0 && !hasInput && (
+            <div className="absolute top-4.5 z-10 px-2.5  text-sm text-appGray-400">
+              Please provide your answer here.
+            </div>
+          )}
           <div
             contentEditable
             ref={contentRef}
@@ -149,65 +216,21 @@ const DiagnosticPlatform = ({
             placeholder="Please provide your answer here."
             className={classNames(
               error ? "border-red-500" : "border-appGray-400 mt-2.5",
-              "space-y-[px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none",
+              "space-y-[2px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none content-editable",
             )}
           >
-            {answer?.split(/(\[[^\]]+\])/g).map((part, index) => {
-              if (part.startsWith("[") && part.endsWith("]")) {
-                const placeholder = part.substring(1, part.length - 1);
-                const inputWidth = Math.max(placeholder.length);
-
-                return (
-                  <input
-                    className={classNames(
-                      // error ? "border-red-500" : "border-appGray-400 ",
-                      "focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[600px] 2xl:max-w-[920px]",
-                    )}
-                    key={index}
-                    placeholder={placeholder}
-                    style={{ minWidth: inputWidth, whiteSpace: "normal", wordBreak: "break-all" }}
-                    value={resetInputs ? "" : userInputs[placeholder] || ""}
-                    onChange={(e) => handleInputChange(placeholder, e.target.value)}
-                  />
-                );
-              } else {
-                // Handle line breaks
-                const textParts = part.split("\n");
-                return (
-                  <span key={index} contentEditable>
-                    {textParts.map((text, idx) => (
-                      <span key={idx}>
-                        {idx > 0 && <br />}
-                        <span className="inline" dangerouslySetInnerHTML={{ __html: text }} />
-                      </span>
-                    ))}
-                  </span>
-                );
-              }
-            })}
+            {createEditableContentHTML(answer)}
           </div>
-          {/* ))} */}
         </div>
       </div>
       <div className="bottom-0 left-0 right-0 absolute w-full bg-white pb-2 pt-2 mt-1 border-t">
-        <div className=" flex gap-2 items-center">
-          {hasSkippedQuestion ? (
-            <div></div>
-          ) : (
-            <>
-              {showSkip && (
-                <Button
-                  htmlType={"button"}
-                  type="secondary"
-                  rounded={"medium"}
-                  handleClick={onSkip}
-                >
-                  Skip for now
-                </Button>
-              )}
-            </>
+        {hasSkippedQuestion ? <div>Please answer all the skipped questions.</div> : <></>}
+        <div className="flex gap-2 items-center">
+          {showSkip && !hasSkippedQuestion && (
+            <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
+              Skip for now
+            </Button>
           )}
-
           <Button
             loading={isLoading}
             handleClick={() => handleContinue("continue")}
@@ -222,14 +245,3 @@ const DiagnosticPlatform = ({
 };
 
 export default DiagnosticPlatform;
-
-// const handleInputChange = (placeholder: string, value: string) => {
-//   setUserInputs((prevInputs) => ({
-//     ...prevInputs,
-//     [placeholder]: value,
-//   }));
-//   // Clear error message if the input is filled
-//   if (value.trim() !== '') {
-//     setError(null);
-//   }
-// };

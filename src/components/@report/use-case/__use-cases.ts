@@ -18,6 +18,7 @@ export const UseCaseOptions = [
     useCaseId: 1,
     reportType: "ip",
     reportPlan: "pro",
+    quickPrompt: false,
   },
   {
     id: 12,
@@ -27,6 +28,7 @@ export const UseCaseOptions = [
     useCaseId: 2,
     reportType: "ip",
     reportPlan: "pro",
+    quickPrompt: false,
   },
   {
     id: 18,
@@ -36,6 +38,7 @@ export const UseCaseOptions = [
     useCaseId: 4,
     reportType: "ip",
     reportPlan: "pro",
+    quickPrompt: false,
   },
   {
     id: 15,
@@ -45,6 +48,7 @@ export const UseCaseOptions = [
     useCaseId: 3,
     reportType: "ip",
     reportPlan: "premium",
+    quickPrompt: true,
   },
 
   //--------------------- Need to add--------------------
@@ -56,6 +60,7 @@ export const UseCaseOptions = [
     useCaseId: 0,
     reportType: "ip",
     reportPlan: "premium",
+    quickPrompt: false,
   },
 
   // {
@@ -76,6 +81,7 @@ export const UseCaseOptions = [
     useCaseId: 6,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 8,
@@ -85,6 +91,7 @@ export const UseCaseOptions = [
     useCaseId: 8,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 9,
@@ -94,6 +101,7 @@ export const UseCaseOptions = [
     useCaseId: 10,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 10,
@@ -103,6 +111,7 @@ export const UseCaseOptions = [
     useCaseId: 9,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 19,
@@ -112,6 +121,7 @@ export const UseCaseOptions = [
     useCaseId: 6,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   // -------Premium------
   {
@@ -122,6 +132,7 @@ export const UseCaseOptions = [
     useCaseId: 7,
     reportType: "market-research",
     reportPlan: "premium",
+    quickPrompt: true,
   },
   {
     id: 14,
@@ -131,7 +142,17 @@ export const UseCaseOptions = [
     useCaseId: 86,
     reportType: "market-research",
     reportPlan: "premium",
+    quickPrompt: true,
   },
 ];
 
 //
+
+export const quickPromptUseCase = [
+  "ip-licensing-opportunity",
+  "market-analysis",
+  "competitive-landscape",
+  "consumer-landscape",
+  "commercialization-assessment",
+  "regulatory-pathways",
+];
