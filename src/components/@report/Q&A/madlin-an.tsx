@@ -79,7 +79,7 @@ const DiagnosticPlatform = ({
     if (contentRef.current) {
       const updatedText = contentRef.current.innerHTML.trim();
       if (updatedText.length <= 0) {
-        setUpdatedAnswer("");
+        // setUpdatedAnswer("");
         setHasInput(false);
         setError("Please provide an answer");
       } else {
@@ -88,7 +88,7 @@ const DiagnosticPlatform = ({
         // setUpdatedAnswer(updatedText);
       }
     }
-  }, [setUpdatedAnswer]);
+  }, []);
 
   //
   const handleContinue = useCallback(
@@ -113,7 +113,7 @@ const DiagnosticPlatform = ({
         onContinue({ answer: combinedText });
 
         if (isLoading) {
-          setResetInputs(true);
+          // setResetInputs(true);
         }
       }
     },
