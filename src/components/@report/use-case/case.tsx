@@ -1,7 +1,9 @@
-import UseCaseSelectButton from "../../../components/reusable/usecase-select";
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
+
+//
 import SelectedReport from "./selected-report";
+import UseCaseSelectButton from "../../../components/reusable/usecase-select";
 
 interface Props {
   UseCaseOptions: any[];
@@ -21,6 +23,9 @@ const Tabs = [
   },
 ];
 
+/**
+ *
+ */
 const UseCaseTab = ({
   UseCaseOptions,
   selected,

@@ -1,7 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "../../../components/reusable/button";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
+
+//
+import Button from "../../../components/reusable/button";
 import {
   DetailedQAAIcon,
   QuickPromptIcon,
@@ -14,6 +16,7 @@ import { setSequirmentGatheringMethod, TRequirementGatheringMethod } from "src/s
 import ProgressBar from "../upload-attachements-page/progress-bar";
 
 const validUseCasesForQuickPrompts: string[] = [];
+
 UseCaseOptions.forEach((usecase) => {
   if (usecase.reportType === "market-research") {
     validUseCasesForQuickPrompts.push(String(usecase.useCaseId));
@@ -48,6 +51,9 @@ const interactionMethods = [
   },
 ];
 
+/**
+ *
+ */
 export default function InteractionMethod() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -81,7 +87,7 @@ export default function InteractionMethod() {
               return (
                 (method.title === "Quick prompt" &&
                   // check if usecaseids only include validusecasesforquickprompts
-                  !useCaseIds.some((n) => validUseCasesForQuickPrompts.indexOf(n) === -1)) ||
+                  !useCaseIds.every((n) => validUseCasesForQuickPrompts.indexOf(n) === -1)) ||
                 method.title !== "Quick prompt"
               );
             })

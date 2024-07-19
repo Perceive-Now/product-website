@@ -21,6 +21,9 @@ import {
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
 
+// import { quickPromptUseCase, UseCaseOptions } from "../use-case/__use-cases";
+// import { useNavigate } from "react-router-dom";
+
 // const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 interface IQuestionUsecase {
@@ -42,8 +45,11 @@ interface Props {
  */
 const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const dispatch = useAppDispatch();
+
+  // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
+  const [prevCase, setPrevCase] = useState("");
 
   const chatRef = useRef<HTMLInputElement>(null);
 
@@ -57,8 +63,11 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const onContinue = useCallback(
     async (value: IAnswer) => {
       setLoading(true);
+      setPrevCase(question.usecase);
 
-      // console.log(value);
+      // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
+      // console.log(filterUsecases)
+
       try {
         // ---------------- previous report endponint  ----------------
         // const res = await axios.post(
@@ -68,6 +77,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         //     requirementGatheringId,
         //   )}&QuestionID=${question.questionId}`,
         // );
+        // ---------------- previous report endponint  -----------------
 
         const res = await axios.post(
           "https://templateuserrequirements.azurewebsites.net/create-items/",
@@ -80,12 +90,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
             requirementId: String(requirementGatheringId),
           },
         );
-        // const res = {
-        //   data: {
-        //     question: "",
-        //     status: "true",
-        //   },
-        // };
+
         const new_question = res.data.question;
         setLoading(false);
         setResetForm(true);
@@ -108,10 +113,22 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               answer: value.answer,
             }),
           );
+
+          //
           const nextQuestionIndex =
             questionWithUsecase.findIndex(
               (questionId) => currentQuestionId === questionId.questionId,
             ) + 1;
+
+          // const nextUsecase = questionWithUsecase[nextQuestionIndex].usecase;
+          // const check = filterUsecases.some((q) => q === nextUsecase);
+
+          // console.log(check);
+          // console.log(nextUsecase)
+          // if (check) {
+          //   navigate('/interaction-method')
+          // } else {
+          // }
 
           if (nextQuestionIndex === questionWithUsecase.length) {
             dispatch(setCurrentPageId(QAPages.Review));
@@ -124,6 +141,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       } catch (e: any) {
         scrollToTop();
         setLoading(false);
+        toast.error("Server error");
       }
     },
     [
@@ -138,6 +156,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     ],
   );
 
+  //
   const onSkip = useCallback(() => {
     dispatch(
       addToSkippedQuestionList({

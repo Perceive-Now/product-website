@@ -18,6 +18,7 @@ export const UseCaseOptions = [
     useCaseId: 1,
     reportType: "ip",
     reportPlan: "pro",
+    quickPrompt: false,
   },
   {
     id: 12,
@@ -27,6 +28,7 @@ export const UseCaseOptions = [
     useCaseId: 2,
     reportType: "ip",
     reportPlan: "pro",
+    quickPrompt: false,
   },
   {
     id: 18,
@@ -36,6 +38,7 @@ export const UseCaseOptions = [
     useCaseId: 4,
     reportType: "ip",
     reportPlan: "pro",
+    quickPrompt: false,
   },
   {
     id: 15,
@@ -45,18 +48,20 @@ export const UseCaseOptions = [
     useCaseId: 3,
     reportType: "ip",
     reportPlan: "premium",
+    quickPrompt: true,
   },
 
   //--------------------- Need to add--------------------
-  // {
-  //   label: "Freedom to Operate",
-  //   value: "freedom-to-operate",
-  //   desc: "Minimize legal risks associated with intellectual property infringement with our Freedom to Operate report. It’s crucial for businesses seeking to innovate freely without legal encumbrances.",
-  // useCaseId: 0,
-  // reportType: "ip",
-  // reportPlan: "premium"
-
-  // },
+  {
+    id: 16,
+    label: "Freedom to Operate",
+    value: "freedom-to-operate",
+    desc: "Minimize legal risks associated with intellectual property infringement with our Freedom to Operate report. It’s crucial for businesses seeking to innovate freely without legal encumbrances.",
+    useCaseId: 0,
+    reportType: "ip",
+    reportPlan: "premium",
+    quickPrompt: false,
+  },
 
   // {
   //   label: "Patent infringement",
@@ -76,6 +81,7 @@ export const UseCaseOptions = [
     useCaseId: 6,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 8,
@@ -85,6 +91,7 @@ export const UseCaseOptions = [
     useCaseId: 8,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 9,
@@ -94,6 +101,7 @@ export const UseCaseOptions = [
     useCaseId: 10,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
   },
   {
     id: 10,
@@ -103,6 +111,17 @@ export const UseCaseOptions = [
     useCaseId: 9,
     reportType: "market-research",
     reportPlan: "pro",
+    quickPrompt: true,
+  },
+  {
+    id: 19,
+    label: "Market Potential",
+    value: "market-potential",
+    desc: "Dive deep into the dynamics of your target market with this report, which covers current trends and projections to help you anticipate future opportunities and challenges. It’s an essential tool for businesses looking to solidify their market understanding and strategic planning.",
+    useCaseId: 6,
+    reportType: "market-research",
+    reportPlan: "pro",
+    quickPrompt: true,
   },
   // -------Premium------
   {
@@ -113,6 +132,7 @@ export const UseCaseOptions = [
     useCaseId: 7,
     reportType: "market-research",
     reportPlan: "premium",
+    quickPrompt: true,
   },
   {
     id: 14,
@@ -122,7 +142,17 @@ export const UseCaseOptions = [
     useCaseId: 86,
     reportType: "market-research",
     reportPlan: "premium",
+    quickPrompt: true,
   },
 ];
 
 //
+
+export const quickPromptUseCase = [
+  "ip-licensing-opportunity",
+  "market-analysis",
+  "competitive-landscape",
+  "consumer-landscape",
+  "commercialization-assessment",
+  "regulatory-pathways",
+];
