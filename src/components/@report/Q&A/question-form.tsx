@@ -1,10 +1,4 @@
-import { useCallback, useState } from "react";
-// import { useForm } from "react-hook-form";
-
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import classNames from "classnames";
-
-// import * as yup from "yup";
+import { useCallback, useEffect, useState } from "react";
 
 //
 import Button from "../../reusable/button";
@@ -12,8 +6,6 @@ import MadlibEdit from "./madlib-edit";
 import DiagnosticPlatform from "./madlin-an";
 
 //
-// import EditIcon from "src/components/icons/miscs/Edit";
-// import ToolTip from "src/components/reusable/tool-tip";
 
 interface Props {
   onContinue: any;
@@ -43,7 +35,7 @@ export default function QuestionAnswerForm({
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
-  // resetForm,
+  resetForm,
   // setResetForm,
   questionId,
   chatRef,
@@ -51,9 +43,13 @@ export default function QuestionAnswerForm({
 }: Props) {
   const [updatedAnswer, setUpdatedAnswer] = useState("");
 
-  console.log(updatedAnswer);
+  useEffect(() => {
+    if (resetForm) {
+      setUpdatedAnswer("");
+    }
+  }, [resetForm]);
 
-  // ----------------------Previous Code -------------------------------------------
+  // ------------------------------------Previous Code -------------------------------------------
 
   // const [madlibAnswer, setMadlibAnswer] = useState("");
   // const [edit, setEdit] = useState(false);
@@ -98,7 +94,7 @@ export default function QuestionAnswerForm({
   //   }
   // });
 
-  //--------------------------------------Previous Code ------------------------------
+  //--------------------------------------Previous Code ---------------------------------------------
 
   const useExample = useCallback(() => {
     setUpdatedAnswer(exampleAnswer);
@@ -128,19 +124,6 @@ export default function QuestionAnswerForm({
           >
             Use this Example
           </Button>
-          {/* <Button
-            type="gray"
-            size="small"
-            rounded="small"
-            classname="px-0.5 py-[6px] text-xs font-semibold"
-            handleClick={() => onEdit(madlibAnswer)}
-          >
-            {
-              edit ?
-                <span>Madlib format</span> :
-                <span>Normal format</span>
-            }
-          </Button> */}
         </div>
       </div>
 
@@ -169,9 +152,6 @@ export default function QuestionAnswerForm({
             isLoading={isLoading}
             answer={updatedAnswer}
             setUpdatedAnswer={setUpdatedAnswer}
-            // onEdit={onEdit}
-            // setUpdatedAnswer={setUpdatedAnswer}
-            // updatedAnswer={updatedAnswer}
           />
         )}
       </>
@@ -227,8 +207,6 @@ export default function QuestionAnswerForm({
               </div>
             </div>
           </form> :
-         
-
       } */}
     </div>
   );

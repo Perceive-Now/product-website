@@ -95,6 +95,7 @@ export interface IQAState {
     exampleAnswer: string;
   }[];
   updatedQAList: IAnswers[];
+  isResponseGood: boolean;
 }
 
 export interface IAnswers {
@@ -129,6 +130,7 @@ export const initialState: IQAState = {
   generateAnswerError: false,
   generateAnswerSuccess: false,
   updatedQAList: [],
+  isResponseGood: true,
 };
 
 export const generateQuestionAnswer = createAsyncThunk<
@@ -258,6 +260,11 @@ export const QuestionAnswerSlice = createSlice({
       state.skippedQuestionList = [...state.skippedQuestionList, action.payload];
     },
     // -----------------------------------------------------------------------
+    updateResponse: (state, action: PayloadAction<boolean>) => {
+      console.log(action.payload);
+      state.isResponseGood = action.payload;
+    },
+    // -----------------------------------------------------------------------
     removeFromSkippedQuestionList: (state, action: PayloadAction<IQuestionAnswer>) => {
       // Remove the question from skippedQuestionList
       state.skippedQuestionList = state.skippedQuestionList.filter(
@@ -337,6 +344,7 @@ export const {
   setGenerateAnswerSuccess,
   questionWithUseCases,
   updateQuestionAnswer,
+  updateResponse,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;

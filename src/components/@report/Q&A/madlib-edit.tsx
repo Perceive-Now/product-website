@@ -181,14 +181,3 @@ const MadlibEdit = ({
 };
 
 export default MadlibEdit;
-
-// const handleInputChange = (placeholder: string, value: string) => {
-//   setUserInputs((prevInputs) => ({
-//     ...prevInputs,
-//     [placeholder]: value,
-//   }));
-//   // Clear error message if the input is filled
-//   if (value.trim() !== '') {
-//     setError(null);
-//   }
-// };

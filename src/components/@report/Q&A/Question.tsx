@@ -17,6 +17,7 @@ import {
   setGenerateAnswerSuccess,
   updateQuestionAnswer,
   updateQuestionList,
+  updateResponse,
 } from "src/stores/Q&A";
 
 import { IAnswer } from "src/@types/entities/IPLandscape";
@@ -56,7 +57,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const userId = jsCookie.get("user_id");
 
   //
-  const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
+  const { currentQuestionId, skippedQuestionList, isResponseGood } = useAppSelector(
+    (state) => state.QA,
+  );
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
   //
@@ -68,45 +71,74 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
       // console.log(filterUsecases)
 
-      try {
-        // ---------------- previous report endponint  ----------------
-        // const res = await axios.post(
-        //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
-        //     value.answer,
-        //   )}&userID=${userId}&requirement_gathering_id=${Number(
-        //     requirementGatheringId,
-        //   )}&QuestionID=${question.questionId}`,
-        // );
-        // ---------------- previous report endponint  -----------------
+      // ------------------ previous report endponint  -----------------------
+      // const res = await axios.post(
+      //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
+      //     value.answer,
+      //   )}&userID=${userId}&requirement_gathering_id=${Number(
+      //     requirementGatheringId,
+      //   )}&QuestionID=${question.questionId}`,
+      // );
+      // ------------------- previous report endponint  ----------------------
 
-        const res = await axios.post(
-          "https://templateuserrequirements.azurewebsites.net/create-items/",
+      try {
+        const res = isResponseGood
+          ? await axios.post("https://templateuserrequirements.azurewebsites.net/create-items/", {
+              questionId: String(question.questionId),
+              question: String(question.question),
+              answer: value.answer,
+              usecase: question.usecase,
+              userId: String(userId),
+              requirementId: String(requirementGatheringId),
+            })
+          : await axios.put(
+              `https://templateuserrequirements.azurewebsites.net/update-items/?userId=${String(
+                userId,
+              )}&requirementId=${String(requirementGatheringId)}&questionId=${String(
+                question.questionId,
+              )}&usecaseId=${question.usecase}`,
+              {
+                question: String(question.question),
+                answer: value.answer,
+              },
+            );
+
+        const check = await axios.post(
+          "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
           {
-            questionId: String(question.questionId),
-            question: String(question.question),
-            answer: value.answer,
-            usecase: question.usecase,
-            userId: String(userId),
-            requirementId: String(requirementGatheringId),
+            text: `question:${question.question} answer:${value.answer}`,
           },
         );
 
-        const new_question = res.data.question;
+        const responseText = check.data.response.Response;
+        const badMarker = "@@bad@@";
+        const badResponse = responseText.includes(badMarker);
+        const indexOfBadMarker = responseText.indexOf(badMarker);
+
+        const newQuestion = responseText.substring(indexOfBadMarker + badMarker.length).trim();
+
+        // console.log(res)
+        // console.log(check);
+        // console.log(badResponse);
+
+        // const new_question = res.data.question;
         setLoading(false);
-        setResetForm(true);
         scrollToTop();
 
-        if (res.data.status === "false") {
+        if (badResponse) {
+          dispatch(updateResponse(false));
           toast.error("Give a more detailed answer");
           dispatch(
             updateQuestionList({
               questionId: currentQuestionId,
-              question: new_question,
+              question: newQuestion,
             }),
           );
           dispatch(setGenerateAnswerSuccess(false));
-          return;
+          // return;
         } else {
+          setResetForm(true);
+          dispatch(updateResponse(true));
           dispatch(
             updateQuestionAnswer({
               questionId: currentQuestionId,
@@ -147,9 +179,8 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     [
       currentQuestionId,
       dispatch,
-      question.question,
-      question.questionId,
-      question.usecase,
+      isResponseGood,
+      question,
       questionWithUsecase,
       requirementGatheringId,
       userId,
