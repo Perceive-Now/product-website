@@ -19,7 +19,7 @@ import {
   updateQuestionList,
 } from "src/stores/Q&A";
 
-import { IAnswer } from "src/@types/entities/IPLandscape";
+// import { getUserChats, IAnswer } from "src/utils/api/chat";
 
 // import { quickPromptUseCase, UseCaseOptions } from "../use-case/__use-cases";
 // import { useNavigate } from "react-router-dom";
@@ -50,6 +50,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
   const [prevCase, setPrevCase] = useState("");
+  // const [userChats, setUserChats] = useState<IAnswer[]>();
+
+  // const user_id = jsCookie.get("user_id") ?? "";
 
   const chatRef = useRef<HTMLInputElement>(null);
 
@@ -59,9 +62,25 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
   const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
+  // useEffect(() => {
+  //   if (requirementGatheringId) {
+  //     getUserChats(user_id, requirementGatheringId)
+  //       .then((data) => {
+  //         setUserChats(data as any);
+  //         setLoading(false);
+  //       })
+  //       .catch(() => {
+  //         toast.error("Something went wrong");
+  //         setLoading(false);
+  //       });
+  //   }
+  // }, [requirementGatheringId, user_id]);
+
+  // const hasQuestion = userChats?.some(answer => String(answer.questionId) === String(question.questionId)) ?? false;
+
   //
   const onContinue = useCallback(
-    async (value: IAnswer) => {
+    async (value: { answer: string }) => {
       setLoading(true);
       setPrevCase(question.usecase);
 
@@ -79,24 +98,34 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         // );
         // ---------------- previous report endponint  ----------------------------
 
-        // const res = await axios.post(
-        //   "https://templateuserrequirements.azurewebsites.net/create-items/",
-        //   {
-        //     questionId: String(question.questionId),
-        //     question: String(question.question),
-        //     answer: value.answer,
-        //     usecase: question.usecase,
-        //     userId: String(userId),
-        //     requirementId: String(requirementGatheringId),
-        //   },
-        // );
-
-        const res = {
-          data: {
-            question: "",
-            status: "",
+        const res = await axios.post(
+          "https://templateuserrequirements.azurewebsites.net/create-items/",
+          {
+            questionId: String(question.questionId),
+            question: String(question.question),
+            answer: value.answer,
+            usecase: question.usecase,
+            userId: String(userId),
+            requirementId: String(requirementGatheringId),
           },
-        };
+        );
+
+        // hasQuestion ?
+        // ) :
+        //   await axios.put(
+        //     `https://templateuserrequirements.azurewebsites.net/update-items/?userId=${String(userId)}&requirementId=${String(requirementGatheringId)}&questionId=${String(question.questionId)}&usecaseId=${question.usecase}`,
+        //     {
+        //       question: String(question.question),
+        //       answer: value.answer,
+        //     },
+        //   );
+
+        // const res = {
+        //   data: {
+        //     question: "",
+        //     status: ""
+        //   }
+        // }
 
         const new_question = res.data.question;
         setLoading(false);

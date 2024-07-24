@@ -30,8 +30,6 @@ import { LiquidSphereLoaderIcon } from "src/components/icons";
 import { NewQAList } from "./_new-question";
 import ToolTip from "src/components/reusable/tool-tip";
 
-import jsCookie from "js-cookie";
-
 /**
  *
  */
@@ -47,13 +45,13 @@ const ReportDetailedQAPage = () => {
     (state) => state.QA,
   );
 
-  // const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
-  // useEffect(() => {
-  //   if (requirementGatheringId === 0) {
-  //     navigate('/new-report');
-  //   }
-  // }, [navigate, requirementGatheringId])
+  useEffect(() => {
+    if (requirementGatheringId === 0) {
+      navigate("/new-report");
+    }
+  }, [navigate, requirementGatheringId]);
 
   // Percentage calculation
   const totalQuestions = questionsList.length + skippedQuestionList.length;
@@ -113,6 +111,7 @@ const ReportDetailedQAPage = () => {
       description: "",
       Component: (
         <ReportChatQuestionAnswer
+          key={`qa-question-${question.questionId}`}
           question={question}
           questionWithUsecase={questionWithUsecase || []}
         />
@@ -122,13 +121,13 @@ const ReportDetailedQAPage = () => {
       id: 2,
       title: "",
       description: "",
-      Component: <IPReview />,
+      Component: <IPReview key={`qa-ipreview-${question.questionId}`} />,
     },
     {
       id: 3,
       title: "",
       description: "",
-      Component: <EditQuestionAnswer />,
+      Component: <EditQuestionAnswer key={`qa-edit-${question.questionId}`} />,
     },
   ];
 

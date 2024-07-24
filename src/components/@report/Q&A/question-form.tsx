@@ -55,7 +55,6 @@ export default function QuestionAnswerForm({
     if (resetForm) {
       setUpdatedAnswer("");
     }
-    // setUpdatedAnswer(exampleAnswer)
   }, [exampleAnswer, resetForm]);
 
   // useEffect(() => {
@@ -139,19 +138,6 @@ export default function QuestionAnswerForm({
           >
             Use this Example
           </Button>
-          {/* <Button
-            type="gray"
-            size="small"
-            rounded="small"
-            classname="px-0.5 py-[6px] text-xs font-semibold"
-            handleClick={() => onEdit(madlibAnswer)}
-          >
-            {
-              edit ?
-                <span>Madlib format</span> :
-                <span>Normal format</span>
-            }
-          </Button> */}
         </div>
       </div>
 
@@ -178,7 +164,7 @@ export default function QuestionAnswerForm({
             onSkip={onSkip}
             onContinue={onContinue}
             isLoading={isLoading}
-            answer={exampleAnswer}
+            answer={updatedAnswer}
             setUpdatedAnswer={setUpdatedAnswer}
             setResetForm={setResetForm}
             resetForm={resetForm}
@@ -186,6 +172,7 @@ export default function QuestionAnswerForm({
         )}
       </>
 
+      {/* --------------------------------------Previous Code ------------------------------ */}
       {/* {
         edit ?
           <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
@@ -240,6 +227,7 @@ export default function QuestionAnswerForm({
          
 
       } */}
+      {/* --------------------------------------Previous Code ------------------------------ */}
     </div>
   );
 }
