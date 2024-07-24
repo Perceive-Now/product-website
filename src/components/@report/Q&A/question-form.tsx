@@ -1,4 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
+// import { useForm } from "react-hook-form";
+
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import classNames from "classnames";
+
+// import * as yup from "yup";
 
 //
 import Button from "../../reusable/button";
@@ -36,7 +42,7 @@ export default function QuestionAnswerForm({
   hasSkippedQuestion,
   showSkip = true,
   resetForm,
-  // setResetForm,
+  setResetForm,
   questionId,
   chatRef,
   isEdit,
@@ -47,7 +53,13 @@ export default function QuestionAnswerForm({
     if (resetForm) {
       setUpdatedAnswer("");
     }
-  }, [resetForm]);
+  }, [exampleAnswer, resetForm]);
+
+  // useEffect(() => {
+  //   if (resetForm) {
+  //     setUpdatedAnswer("")
+  //   }
+  // }, [resetForm])
 
   // ------------------------------------Previous Code -------------------------------------------
 
@@ -152,10 +164,13 @@ export default function QuestionAnswerForm({
             isLoading={isLoading}
             answer={updatedAnswer}
             setUpdatedAnswer={setUpdatedAnswer}
+            setResetForm={setResetForm}
+            resetForm={resetForm}
           />
         )}
       </>
 
+      {/* --------------------------------------Previous Code ------------------------------ */}
       {/* {
         edit ?
           <form onSubmit={handleSubmit(onContinue)} className="mt-2.5">
@@ -208,6 +223,7 @@ export default function QuestionAnswerForm({
             </div>
           </form> :
       } */}
+      {/* --------------------------------------Previous Code ------------------------------ */}
     </div>
   );
 }

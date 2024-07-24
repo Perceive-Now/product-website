@@ -20,7 +20,7 @@ import {
   updateResponse,
 } from "src/stores/Q&A";
 
-import { IAnswer } from "src/@types/entities/IPLandscape";
+// import { getUserChats, IAnswer } from "src/utils/api/chat";
 
 // import { quickPromptUseCase, UseCaseOptions } from "../use-case/__use-cases";
 // import { useNavigate } from "react-router-dom";
@@ -51,6 +51,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
   const [prevCase, setPrevCase] = useState("");
+  // const [userChats, setUserChats] = useState<IAnswer[]>();
+
+  // const user_id = jsCookie.get("user_id") ?? "";
 
   const chatRef = useRef<HTMLInputElement>(null);
 
@@ -64,7 +67,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
 
   //
   const onContinue = useCallback(
-    async (value: IAnswer) => {
+    async (value: { answer: string }) => {
       setLoading(true);
       setPrevCase(question.usecase);
 
