@@ -86,7 +86,7 @@ export const uploadDraft = createAsyncThunk<
 });
 
 export const getDraftsByUserId = createAsyncThunk<
-  IDraft[], // The thunk should directly return an array of IDraft
+  IDraft[], 
   { userId: string },
   {
     rejectValue: IResponseError;
@@ -96,8 +96,6 @@ export const getDraftsByUserId = createAsyncThunk<
     const response = await axios.get(
       `${BASE_PN_REPORT_URL}/drafts-by-user-id/?user_id=${encodeURIComponent(request.userId)}`,
     );
-    //console.log("API Response Full:", response); // Log the full response
-    //console.log("API Response Data:", response.data); // Log the data part of the response
     return response.data;
   } catch (error) {
     const errorObj = {
@@ -120,42 +118,30 @@ export const draftSlice = createSlice({
         (draft) => draft.requirement_gathering_id === action.payload.requirement_gathering_id,
       );
 
-      if (index < 0) {
-        const draftObj = {
-          requirement_gathering_id: action.payload.requirement_gathering_id,
-          user_id: action.payload.user_id,
-          current_page: action.payload.current_page,
-          other_data: {
-            uploadAttachmentsSliceState:
-              action.payload.other_data?.uploadAttachmentsSliceState ??
-              initialStateUploadAttachments,
-            uploadQuickPromptsSliceState:
-              action.payload.other_data?.uploadQuickPromptsSliceState ??
-              initialStateUploadQuickPrompt,
-            useCasesSliceState:
-              action.payload.other_data?.useCasesSliceState ?? initialStateUseCase,
-          },
-        };
+      const draftObj = {
+        requirement_gathering_id: action.payload.requirement_gathering_id,
+        user_id: action.payload.user_id,
+        current_page: action.payload.current_page,
+        other_data: {
+          uploadAttachmentsSliceState:
+            action.payload.other_data?.uploadAttachmentsSliceState ??
+            state.draftsArray[index]?.other_data.uploadAttachmentsSliceState ??
+            initialStateUploadAttachments,
+          uploadQuickPromptsSliceState:
+            action.payload.other_data?.uploadQuickPromptsSliceState ??
+            state.draftsArray[index]?.other_data.uploadQuickPromptsSliceState ??
+            initialStateUploadQuickPrompt,
+          useCasesSliceState:
+            action.payload.other_data?.useCasesSliceState ??
+            state.draftsArray[index]?.other_data.useCasesSliceState ??
+            initialStateUseCase,
+        },
+        date: state.draftsArray[index]?.date ?? new Date().toISOString(),
+      };
 
+      if (index < 0) {
         state.draftsArray.push(draftObj);
       } else {
-        const draftObj = {
-          requirement_gathering_id: action.payload.requirement_gathering_id,
-          user_id: action.payload.user_id,
-          current_page: action.payload.current_page,
-          other_data: {
-            uploadAttachmentsSliceState:
-              action.payload.other_data?.uploadAttachmentsSliceState ??
-              state.draftsArray[index].other_data.uploadAttachmentsSliceState,
-            uploadQuickPromptsSliceState:
-              action.payload.other_data?.uploadQuickPromptsSliceState ??
-              state.draftsArray[index].other_data.uploadQuickPromptsSliceState,
-            useCasesSliceState:
-              action.payload.other_data?.useCasesSliceState ??
-              state.draftsArray[index].other_data.useCasesSliceState,
-          },
-        };
-
         state.draftsArray[index] = draftObj;
       }
     },
@@ -226,7 +212,6 @@ export const draftSlice = createSlice({
         message: "",
         isLoading: false,
       };
-      //console.log("Fulfilled action payload:", action.payload); // Log the payload
       state.draftsArray = action.payload; // Directly assign the data array to draftsArray
     });
 
@@ -282,6 +267,7 @@ export interface IDraft {
   user_id: string;
   current_page: string;
   other_data: IOtherData;
+  date: string; 
 }
 
 type TDraftArray = IDraft[];
@@ -298,4 +284,5 @@ interface IDraftOptional {
   user_id: string;
   current_page: string;
   other_data: IOtherDataOptional;
+  date: string; 
 }

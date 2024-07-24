@@ -231,7 +231,7 @@ export default function DraftReports() {
       return {
         reportId: draft.requirement_gathering_id,
         reportName: `Draft Report - ${draft.requirement_gathering_id}`,
-        dateCreated: new Date(),
+        dateCreated: new Date(draft.date),
         edit: "edit",
       };
     });
