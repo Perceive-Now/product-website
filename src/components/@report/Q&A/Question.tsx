@@ -57,7 +57,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
 
   //
   const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
-  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
 
   //
   const onContinue = useCallback(
@@ -69,7 +69,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       // console.log(filterUsecases)
 
       try {
-        // ---------------- previous report endponint  ----------------
+        // ---------------- previous report endponint  ---------------------------
         // const res = await axios.post(
         //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
         //     value.answer,
@@ -77,19 +77,26 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         //     requirementGatheringId,
         //   )}&QuestionID=${question.questionId}`,
         // );
-        // ---------------- previous report endponint  -----------------
+        // ---------------- previous report endponint  ----------------------------
 
-        const res = await axios.post(
-          "https://templateuserrequirements.azurewebsites.net/create-items/",
-          {
-            questionId: String(question.questionId),
-            question: String(question.question),
-            answer: value.answer,
-            usecase: question.usecase,
-            userId: String(userId),
-            requirementId: String(requirementGatheringId),
+        // const res = await axios.post(
+        //   "https://templateuserrequirements.azurewebsites.net/create-items/",
+        //   {
+        //     questionId: String(question.questionId),
+        //     question: String(question.question),
+        //     answer: value.answer,
+        //     usecase: question.usecase,
+        //     userId: String(userId),
+        //     requirementId: String(requirementGatheringId),
+        //   },
+        // );
+
+        const res = {
+          data: {
+            question: "",
+            status: "",
           },
-        );
+        };
 
         const new_question = res.data.question;
         setLoading(false);

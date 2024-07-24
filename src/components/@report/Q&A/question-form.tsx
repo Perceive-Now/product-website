@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // import { useForm } from "react-hook-form";
 
 // import { yupResolver } from "@hookform/resolvers/yup";
@@ -43,15 +43,26 @@ export default function QuestionAnswerForm({
   onSkip,
   hasSkippedQuestion,
   showSkip = true,
-  // resetForm,
-  // setResetForm,
+  resetForm,
+  setResetForm,
   questionId,
   chatRef,
   isEdit,
 }: Props) {
   const [updatedAnswer, setUpdatedAnswer] = useState("");
 
-  console.log(updatedAnswer);
+  useEffect(() => {
+    if (resetForm) {
+      setUpdatedAnswer("");
+    }
+    // setUpdatedAnswer(exampleAnswer)
+  }, [exampleAnswer, resetForm]);
+
+  // useEffect(() => {
+  //   if (resetForm) {
+  //     setUpdatedAnswer("")
+  //   }
+  // }, [resetForm])
 
   // ----------------------Previous Code -------------------------------------------
 
@@ -167,11 +178,10 @@ export default function QuestionAnswerForm({
             onSkip={onSkip}
             onContinue={onContinue}
             isLoading={isLoading}
-            answer={updatedAnswer}
+            answer={exampleAnswer}
             setUpdatedAnswer={setUpdatedAnswer}
-            // onEdit={onEdit}
-            // setUpdatedAnswer={setUpdatedAnswer}
-            // updatedAnswer={updatedAnswer}
+            setResetForm={setResetForm}
+            resetForm={resetForm}
           />
         )}
       </>

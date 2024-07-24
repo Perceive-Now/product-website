@@ -5,6 +5,7 @@ import Button from "src/components/reusable/button";
 import { IAnswer } from "src/@types/entities/IPLandscape";
 
 import "./madlib.css";
+import ErrorBoundary from "src/utils/error-handling";
 
 interface UserInputs {
   [key: string]: string;
@@ -20,7 +21,8 @@ interface Props {
   isLoading: boolean;
   answer: string;
   setUpdatedAnswer: (answer: string) => void;
-  // onEdit: (updatedAnswer: string) => void;
+  setResetForm: (reset: boolean) => void;
+  resetForm: boolean;
 }
 
 /**
@@ -34,6 +36,8 @@ const DiagnosticPlatform = ({
   isLoading,
   answer,
   setUpdatedAnswer,
+  resetForm,
+  setResetForm,
 }: Props) => {
   const [hasInput, setHasInput] = useState(false);
   const [userInputs, setUserInputs] = useState<UserInputs>({});
@@ -112,12 +116,13 @@ const DiagnosticPlatform = ({
       if (type === "continue") {
         onContinue({ answer: combinedText });
 
-        if (isLoading) {
+        if (resetForm) {
+          setResetForm(false);
           // setResetInputs(true);
         }
       }
     },
-    [isLoading, onContinue],
+    [onContinue, resetForm, setResetForm],
   );
 
   //
@@ -170,7 +175,7 @@ const DiagnosticPlatform = ({
 
         return (
           <input
-            key={`${placeholder}-${index}`}
+            key={`input-${index}-${placeholder}`}
             className="focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[600px] 2xl:max-w-[920px]"
             placeholder={placeholder}
             style={{ minWidth: inputWidth, whiteSpace: "normal", wordBreak: "break-all" }}
@@ -209,18 +214,21 @@ const DiagnosticPlatform = ({
               Please provide your answer here.
             </div>
           )}
-          <div
-            contentEditable
-            ref={contentRef}
-            onInput={handleContentChange}
-            placeholder="Please provide your answer here."
-            className={classNames(
-              error ? "border-red-500" : "border-appGray-400 mt-2.5",
-              "space-y-[2px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none content-editable",
-            )}
-          >
-            {createEditableContentHTML(answer)}
-          </div>
+          <ErrorBoundary fallback={<div>Something went wrong. Please try again later.</div>}>
+            <div
+              contentEditable
+              suppressContentEditableWarning
+              ref={contentRef}
+              onInput={handleContentChange}
+              placeholder="Please provide your answer here."
+              className={classNames(
+                error ? "border-red-500" : "border-appGray-400 mt-2.5",
+                "space-y-[2px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none content-editable",
+              )}
+            >
+              {createEditableContentHTML(answer)}
+            </div>
+          </ErrorBoundary>
         </div>
       </div>
       <div className="bottom-0 left-0 right-0 absolute w-full bg-white pb-2 pt-2 mt-1 border-t">
