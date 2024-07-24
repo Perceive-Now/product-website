@@ -1,9 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import { type IDraft } from "src/stores/draft";
-import { setUploadAttachmentsStateFromDraft } from "src/stores/upload-attachments";
-import { setQuickPromtsStateFromDraft } from "src/stores/upload-quick-prompt";
-import { setUseCaseStateFromDraft } from "src/stores/use-case";
 import { useEffect, useState } from "react";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
@@ -99,6 +95,7 @@ const colDefs: ColDef<IReport & { edit: string }>[] = [
 export default function GeneratedReports() {
   const dispatch = useAppDispatch();
   const { reports, getReportsByUserIdState } = useAppSelector((state) => state.generatedReports);
+  const navigate = useNavigate();
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
@@ -120,7 +117,7 @@ export default function GeneratedReports() {
 
   const handleRowClick = (event: any) => {
     setIsOpenDialog(true);
-    setCurrentEvent(event);
+    setCurrentEvent(event.data);
   };
 
   const transformedReports = reports.map((report) => {

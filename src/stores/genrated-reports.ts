@@ -24,6 +24,19 @@ const initialState: IReportSliceState = {
     user_case_id: -1,
     report: "",
     date_created: new Date(),
+    data: {
+      prompt1: "",
+      prompt2: "",
+      prompt2graph: "",
+      prompt2_2graph: "",
+      prompt3: "",
+      prompt3graph: "",
+      prompt4: "",
+      prompt4graph: "",
+      prompt5: "",
+      prompt5graph: "",
+      prompt6: "",
+    },
   },
   reports: [],
   getReportsByUserIdState: {
@@ -43,9 +56,25 @@ export const getReportsByUserId = createAsyncThunk<
   }
 >("getReportsByUserId", async (request, thunkAPI) => {
   try {
-    return await axios.get(
+    const response = await axios.get(
       `${BASE_PN_REPORT_URL}/reports-by-user-id?user_id=${encodeURIComponent(request.userId)}`,
     );
+
+    const parsedData = response.data.map((report: any) => {
+      let reportData;
+      try {
+        reportData = JSON.parse(report.data);
+      } catch (error) {
+        console.error("Error parsing report data:", error);
+        reportData = initialState.report.data; // fallback to empty data structure
+      }
+      return {
+        ...report,
+        data: reportData,
+      };
+    });
+
+    return { data: parsedData };
   } catch (error) {
     const errorObj = {
       resError: String(error),
@@ -56,7 +85,7 @@ export const getReportsByUserId = createAsyncThunk<
 });
 
 export const GeneratedReportsSlice = createSlice({
-  name: "chat",
+  name: "generatedReports",
   initialState,
   reducers: {
     setReport: (state, action: PayloadAction<IReport>) => {
@@ -73,9 +102,7 @@ export const GeneratedReportsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // -----------------------------------------------------------------------
     builder.addCase(getReportsByUserId.fulfilled, (state, action) => {
-      console.log(action.payload.data);
       state.reports = action.payload.data.map((report) => {
         return {
           ...report,
@@ -119,6 +146,21 @@ export interface IReport {
   user_case_id: number;
   report: string;
   date_created: Date;
+  data: IReportData;
+}
+
+interface IReportData {
+  prompt1: string;
+  prompt2: string;
+  prompt2graph: string;
+  prompt2_2graph: string;
+  prompt3: string;
+  prompt3graph: string;
+  prompt4: string;
+  prompt4graph: string;
+  prompt5: string;
+  prompt5graph: string;
+  prompt6: string;
 }
 
 interface IResponseError {

@@ -16,12 +16,31 @@ const ReportSummaryPopup = ({
   const navigate = useNavigate();
 
   const handleViewFullReport = () => {
+    //console.log("handleViewFullReport called");
     setIsOpenDialog(false);
-    navigate("/full-report", { state: { title: event.data.title, report: event.data.report } });
+
+    // Directly use event.data without parsing
+    const fullReportData = event.data;
+
+    {
+      /*console.log("Navigating with state:", 
+    {
+      title: event.title,
+      data: fullReportData,
+    });*/
+    }
+
+    navigate("/full-report", {
+      state: {
+        title: event.title,
+        data: fullReportData,
+        requirement_gathering_id: event.requirement_gathering_id,
+      },
+    });
   };
 
   const useCaseName = UseCaseOptions.find(
-    (useCase) => useCase.useCaseId === Number(event.data.user_case_id),
+    (useCase) => useCase.useCaseId === Number(event.user_case_id),
   )?.label;
 
   return (
@@ -33,20 +52,20 @@ const ReportSummaryPopup = ({
 
       <div className="flex flex-row justify-between w-full mt-[20px]">
         <div>
-          <p className="font-bold text-[18px] text-primary-900 text-left">{event.data.title}</p>
+          <p className="font-bold text-[18px] text-primary-900 text-left">{event.title}</p>
           <p>
             <span className="text-gray-500">Use Case : </span>{" "}
             <span className="text-[#373D3F]">{useCaseName}</span>
           </p>
         </div>
         <div>
-          <p>{event.data.created_date}</p>
+          <p>{event.date_created}</p>
         </div>
       </div>
 
       <div className="mt-[20px]">
         <p className="text-sm line-clamp-4">
-          <Markdown>{event.data.report}</Markdown>
+          <Markdown>{event.report}</Markdown>
         </p>
       </div>
 
