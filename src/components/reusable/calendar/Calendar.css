@@ -1,0 +1,111 @@
+.calendar {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 16px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .icon {
+    cursor: pointer;
+  }
+  
+  .days {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .row {
+    display: flex;
+  }
+  
+  .col {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  .cell {
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  
+  .cell:hover {
+    background: #E1D5F2;
+  }
+  
+  .disabled {
+    color: #ccc;
+    pointer-events: none;
+  }
+  
+  .selected {
+    background: #fff;
+    color: #5C1FC4;
+  }
+  
+  .number {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  
+  .footer button {
+    background: #442873;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  
+  .footer button:hover {
+    background: #341f5f;
+  }
+
+  .cancel {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  
+  .cancel button {
+    background: #fff;
+    color: #442873;
+    border: #442873;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  
+  .cancel button:hover {
+    background: none;
+  }
+  

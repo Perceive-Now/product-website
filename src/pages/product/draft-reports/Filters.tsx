@@ -1,15 +1,26 @@
 import React, { useState } from "react";
-import DateRangePick from "../../../components/reusable/date-range/index";
+import Calendar from "../../../components/reusable/calendar/Calendar";
+import CalendarIcon from "../../../components/icons/common/calendar-icon";
 
 export const DateFilter: React.FC = () => {
   const [classification, setClassification] = useState<"recent" | "specific" | "none">("none");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isCalendarOpen, setIsCalendarOpen] = useState<{ from: boolean; to: boolean }>({
+    from: false,
+    to: false,
+  });
+  const [dateRange, setDateRange] = useState<{ from: Date | null; to: Date | null }>({
+    from: null,
+    to: null,
+  });
 
   const handleClassificationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setClassification(event.target.value as "recent" | "specific" | "none");
   };
 
-  const handleGetValues = (data: { start_date: string; end_date: string }) => {
-    //console.log("Selected Date Range:", data);
+  const handleDateChange = (date: Date, type: "from" | "to") => {
+    setDateRange((prev) => ({ ...prev, [type]: date }));
+    setIsCalendarOpen((prev) => ({ ...prev, [type]: false }));
   };
 
   return (
@@ -23,6 +34,7 @@ export const DateFilter: React.FC = () => {
           checked={classification === "recent"}
           onChange={handleClassificationChange}
         />
+
         <label htmlFor="mostRecent" className="ml-2">
           Most recent (Past 2 years)
         </label>
@@ -40,13 +52,69 @@ export const DateFilter: React.FC = () => {
           Specific date range
         </label>
       </div>
-      {classification !== "none" && (
-        <DateRangePick classification={classification} getValues={handleGetValues} />
+      {classification === "specific" && (
+        <div>
+          <div className="flex items-center mb-2">
+            <div className="mr-2">
+              <label htmlFor="fromDate">From</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  id="fromDate"
+                  placeholder="DD-MM-YYYY      "
+                  value={dateRange.from ? dateRange.from.toISOString().split("T")[0] : ""}
+                  readOnly
+                  onClick={() => setIsCalendarOpen({ from: true, to: false })}
+                  className="border px-2 py-1"
+                />
+                {!dateRange.from && (
+                  <span className="absolute inset-y-0 right-0 flex items-center ">
+                    <CalendarIcon className="w-4 h-4 text-gray-600" />
+                  </span>
+                )}
+              </div>
+            </div>
+            <div>
+              <label htmlFor="toDate">To</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  id="toDate"
+                  placeholder="DD-MM-YYYY      "
+                  value={dateRange.to ? dateRange.to.toISOString().split("T")[0] : ""}
+                  readOnly
+                  onClick={() => setIsCalendarOpen({ from: false, to: true })}
+                  className="border px-2 py-1"
+                />
+                {!dateRange.from && (
+                  <span className="absolute inset-y-0 right-0 flex items-center ">
+                    <CalendarIcon className="w-4 h-4 text-gray-600" />
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+          {isCalendarOpen.from && (
+            <Calendar
+              selectedDate={dateRange.from || new Date()}
+              onDateChange={(date) => handleDateChange(date, "from")}
+            />
+          )}
+          {isCalendarOpen.to && (
+            <Calendar
+              selectedDate={dateRange.to || new Date()}
+              onDateChange={(date) => handleDateChange(date, "to")}
+            />
+          )}
+        </div>
       )}
       <div className="flex space-x-2 mt-2 justify-end ">
         <button
           className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2"
-          onClick={() => setClassification("none")}
+          onClick={() => {
+            setClassification("none");
+            setDateRange({ from: null, to: null });
+          }}
         >
           Clear
         </button>

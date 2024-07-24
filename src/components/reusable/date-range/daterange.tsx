@@ -89,9 +89,6 @@ export default function DateRangePick({ classification, getValues }: Props) {
           disabled={classification === "none"}
           maxDate={today}
           isClearable={classification === "specific"}
-
-          // showMonthYearDropdown
-          // scrollableMonthYearDropdown
         />
       </div>
     </div>

@@ -39,7 +39,7 @@ interface ReportData {
   prompt5: string;
   prompt5graph: string;
   prompt6: string;
-  user_case_id?: number; // Ensure this property exists
+  user_case_id?: number;
 }
 
 const preprocessMarkdown = (markdown: string) => {
@@ -52,7 +52,7 @@ const preprocessMarkdown = (markdown: string) => {
 const FullReportPage: React.FC = () => {
   const location = useLocation();
   const { title, requirement_gathering_id } = location.state || {};
-  const reports = useAppSelector((state) => state.generatedReports.reports); // Assuming you have this in your Redux state
+  const reports = useAppSelector((state) => state.generatedReports.reports);
   const [reportData, setReportData] = useState<ReportData | null>(null);
   const [useCase, setUseCase] = useState<{ label: string; value: string } | null>(null);
 
