@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Title from "src/components/reusable/title/title";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
@@ -33,6 +34,7 @@ import { AppConfig } from "src/config/app.config";
 import { useNavigate } from "react-router-dom";
 import GoBack from "../quick-prompt/goback";
 import SearchFilter from "./searchFilter";
+import { RootState } from "src/store";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -201,8 +203,12 @@ const colDefs: ColDef<IRow>[] = [
 
 export default function DraftReports() {
   const dispatch = useAppDispatch();
-  const { draftsArray = [], getDraftsByUserIdState } = useAppSelector((state) => state.draft);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const {
+    draftsArray = [],
+    getDraftsByUserIdState,
+    filters,
+  } = useAppSelector((state) => state.draft);
+  const { searchTerm, dateRange } = filters;
 
   useEffect(() => {
     if (getDraftsByUserIdState.isError) {
@@ -220,6 +226,13 @@ export default function DraftReports() {
   }, [dispatch]);
 
   const filteredRowData: IRow[] = draftsArray
+    .filter((draft: IDraft) => {
+      const draftDate = new Date(draft.date);
+      if (dateRange.from && dateRange.to) {
+        return draftDate >= dateRange.from && draftDate <= dateRange.to;
+      }
+      return true;
+    })
     .filter(
       (draft: IDraft) =>
         draft.requirement_gathering_id.toString().includes(searchTerm) ||
@@ -243,13 +256,7 @@ export default function DraftReports() {
       <div className="w-full h-[400px] max-h-[400px] ">
         <GoBack />
         <Title text="Drafts" className="mt-3 mb-3" />
-        <SearchFilter
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          onFilterClick={() => {
-            /*should put a logic here*/
-          }}
-        />
+        <SearchFilter />
         <AgGrid<IRow> rowData={filteredRowData} colDefs={colDefs} isLoading={isLoading} />
       </div>
     </>

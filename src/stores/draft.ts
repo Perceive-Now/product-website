@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppConfig } from "src/config/app.config";
 import {
@@ -25,6 +25,11 @@ export const EReportSectionPageIDs = {
 export type TReportSectionPageIDs =
   (typeof EReportSectionPageIDs)[keyof typeof EReportSectionPageIDs];
 
+interface FilterState {
+  searchTerm: string;
+  dateRange: { from: Date | null; to: Date | null };
+}
+
 interface draftState {
   isUploading: boolean;
   currentPageId: TReportSectionPageIDs;
@@ -40,6 +45,7 @@ interface draftState {
     isLoading: boolean;
   };
   draftsArray: TDraftArray;
+  filters: FilterState;
 }
 
 const initialState: draftState = {
@@ -57,6 +63,10 @@ const initialState: draftState = {
     isLoading: false,
   },
   draftsArray: [],
+  filters: {
+    searchTerm: "",
+    dateRange: { from: null, to: null },
+  },
 };
 
 // Async thunks
@@ -86,7 +96,7 @@ export const uploadDraft = createAsyncThunk<
 });
 
 export const getDraftsByUserId = createAsyncThunk<
-  IDraft[], 
+  IDraft[], // The thunk should directly return an array of IDraft
   { userId: string },
   {
     rejectValue: IResponseError;
@@ -136,7 +146,7 @@ export const draftSlice = createSlice({
             state.draftsArray[index]?.other_data.useCasesSliceState ??
             initialStateUseCase,
         },
-        date: state.draftsArray[index]?.date ?? new Date().toISOString(),
+        date: state.draftsArray[index]?.date ?? new Date().toISOString(), // Include dateCreated
       };
 
       if (index < 0) {
@@ -170,6 +180,12 @@ export const draftSlice = createSlice({
         isSuccess: false,
         message: "",
       };
+    },
+    setSearchTerm: (state, action: PayloadAction<string>) => {
+      state.filters.searchTerm = action.payload;
+    },
+    setDateRange: (state, action: PayloadAction<{ from: Date | null; to: Date | null }>) => {
+      state.filters.dateRange = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -232,6 +248,8 @@ export const {
   setCurrentPageId,
   setDraftUploadState,
   resetGetDraftsByUserIdState,
+  setSearchTerm,
+  setDateRange,
 } = draftSlice.actions;
 
 export default draftSlice.reducer;

@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import Calendar from "../../../components/reusable/calendar/Calendar";
 import CalendarIcon from "../../../components/icons/common/calendar-icon";
 
-export const DateFilter: React.FC = () => {
+interface DateFilterProps {
+  onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
+}
+
+export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => {
   const [classification, setClassification] = useState<"recent" | "specific" | "none">("none");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<{ from: boolean; to: boolean }>({
@@ -23,6 +27,10 @@ export const DateFilter: React.FC = () => {
     setIsCalendarOpen((prev) => ({ ...prev, [type]: false }));
   };
 
+  const handleDoneClick = () => {
+    onDateRangeChange(dateRange);
+  };
+
   return (
     <div className="p-4 bg-white text-black">
       <div className="flex items-center mb-2">
@@ -34,7 +42,6 @@ export const DateFilter: React.FC = () => {
           checked={classification === "recent"}
           onChange={handleClassificationChange}
         />
-
         <label htmlFor="mostRecent" className="ml-2">
           Most recent (Past 2 years)
         </label>
@@ -61,7 +68,7 @@ export const DateFilter: React.FC = () => {
                 <input
                   type="text"
                   id="fromDate"
-                  placeholder="DD-MM-YYYY      "
+                  placeholder="DD-MM-YYYY"
                   value={dateRange.from ? dateRange.from.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: true, to: false })}
@@ -80,7 +87,7 @@ export const DateFilter: React.FC = () => {
                 <input
                   type="text"
                   id="toDate"
-                  placeholder="DD-MM-YYYY      "
+                  placeholder="DD-MM-YYYY"
                   value={dateRange.to ? dateRange.to.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: false, to: true })}
@@ -118,7 +125,9 @@ export const DateFilter: React.FC = () => {
         >
           Clear
         </button>
-        <button className="bg-[#442873] text-white px-4 py-1 rounded">Done</button>
+        <button className="bg-[#442873] text-white px-4 py-1 rounded" onClick={handleDoneClick}>
+          Done
+        </button>
       </div>
     </div>
   );
