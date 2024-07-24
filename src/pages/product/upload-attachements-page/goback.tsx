@@ -8,18 +8,23 @@ import {
   EUploadAttachmentsPages,
 } from "../../../stores/upload-attachments";
 import uploadAttachmentsPages from "./upload-attachment-pages-list";
+import ToolTip from "src/components/reusable/tool-tip";
+import Title from "src/components/reusable/title/title";
 
-const BackButton = () => {
+const BackButton = ({ currentPageTitle }: { currentPageTitle: string }) => {
   return (
-    <>
-      <ArrowLeftIcon /> Back
-    </>
+    <div className="flex items-center gap-0.5 text-sm">
+      <ToolTip title="Back" placement="top">
+        <ArrowLeftIcon className="h-2.5 w-2.5" />
+      </ToolTip>
+      <Title text={currentPageTitle} className="" />
+    </div>
   );
 };
 
 const buttonStyle = "flex flex-row gap-x-1 font-bold text-secondary-800 w-fit";
 
-export default function GoBack() {
+export default function GoBack({ currentPageTitle }: { currentPageTitle: string }) {
   const dispatch = useAppDispatch();
 
   const { currentPageId, additionalQuestionIds, currentQuestionId } = useAppSelector(
@@ -29,7 +34,7 @@ export default function GoBack() {
   if (currentPageId === EUploadAttachmentsPages.UploadAttachments) {
     return (
       <Link to="/interaction-method" className={buttonStyle}>
-        <BackButton />
+        <BackButton currentPageTitle={currentPageTitle} />
       </Link>
     );
   }
@@ -47,7 +52,7 @@ export default function GoBack() {
         }}
         className={buttonStyle}
       >
-        <BackButton />
+        <BackButton currentPageTitle={currentPageTitle} />
       </button>
     );
   }
@@ -74,7 +79,7 @@ export default function GoBack() {
 
   return (
     <button onClick={handlBackBtnClickInAdditionalQuestions} className={buttonStyle}>
-      <BackButton />
+      <BackButton currentPageTitle={currentPageTitle} />
     </button>
   );
 }

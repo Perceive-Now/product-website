@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+//
 import Button from "../../../components/reusable/button";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
@@ -6,11 +8,20 @@ import {
   incrementStep,
   setCurrentPageId,
 } from "../../../stores/upload-attachments";
+
+//
 import ToPayementButton, { useHandlePayment } from "./to-payement-button";
 import RequirementSummary from "./requirement-summary";
+
+//
 import Modal from "src/components/reusable/modal";
+
+//
 import { ConfirmationGuyIcon } from "src/components/icons";
 
+/**
+ *
+ */
 export default function WaitingWrapper({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
 
@@ -34,12 +45,12 @@ export default function WaitingWrapper({ children }: { children: React.ReactNode
 
   return (
     <RequirementSummary>
-      <div className="max-w-[250px] lg:max-w-[300px] xl:max-w-[400px] w-full shrink-0">
+      <div className="w-[300px] shrink-0">
         {children}
-        <div className="mt-5"></div>
+        <div className="mt-4"></div>
         {nextPayement && <ToPayementButton />}
         {!nextPayement && (
-          <div className="space-y-[20px] ">
+          <div className="space-y-[16px] ">
             <Modal open={isOpenDialog} handleOnClose={() => setIsOpenDialog(false)}>
               <ConfirmationDialog
                 handleContinueCreateReportCallback={handleContinueCreateReport}
@@ -53,7 +64,7 @@ export default function WaitingWrapper({ children }: { children: React.ReactNode
               handleClick={handleContinueDetailsBtnClick}
               disabled={loading}
             >
-              <p className="text-secondary-800">Continue to provide more details</p>
+              <p className="text-secondary-800 text-sm">Continue to provide more details</p>
             </Button>
             <Button
               type="default"
@@ -61,7 +72,7 @@ export default function WaitingWrapper({ children }: { children: React.ReactNode
               handleClick={() => setIsOpenDialog(true)}
               disabled={loading}
             >
-              <p className="text-secondary-800">Skip details and continue</p>
+              <p className="text-secondary-800 text-sm">Skip details and continue</p>
             </Button>
           </div>
         )}

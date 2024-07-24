@@ -167,16 +167,19 @@ export default function AdditionalQuestions() {
     <>
       {currentQuestion && (
         <LeftContentWrapper>
-          <QuestionForm
-            isLoading={isUploading}
-            exampleAnswer={currentQuestion.answer}
-            question={currentQuestion.question}
-            onContinue={handleOnContinue}
-            onSkipBtnClick={handleSkipBtnClick}
-            key={currentQuestionId}
-            answer={answerForCurrentQuestion?.answer}
-          />
-          <div className="max-w-[250px] lg:max-w-[300px] xl:max-w-[400px] w-full shrink-0">
+          <div className="h-[calc(100vh-200px)] bg-white w-full p-2 shadow-page-content  relative rounded-lg overflow-hidden">
+            <QuestionForm
+              isLoading={isUploading}
+              exampleAnswer={currentQuestion.answer}
+              question={currentQuestion.question}
+              onContinue={handleOnContinue}
+              onSkipBtnClick={handleSkipBtnClick}
+              key={currentQuestionId}
+              answer={answerForCurrentQuestion?.answer}
+            />
+          </div>
+
+          <div className="w-[240px] 2xl:w-[300px] shrink-0">
             <p className="font-bold text-lg text-purple-900 mb-1">Report requirements</p>
             <ReportPercentage isAdditionalQuestions={true} />
           </div>

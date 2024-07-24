@@ -45,16 +45,16 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
 
   return (
     <div>
-      <div className="flex flex-col xl:flex-row gap-3 xl:gap-5 mt-6 xl:mt-15 mb-4 xl:mb-[68px] justify-center items-center">
+      <div className="flex flex-col xl:flex-row gap-3 xl:gap-5 mt-6 xl:mt-10 mb-4 xl:mb-[50px] justify-center items-center">
         <form onSubmit={handleSubmit(addWebsiteLink)}>
           <fieldset className="flex flex-col justify-center items-center gap-y-[20px] text-lg font-bold">
             <label>Type or Paste Your URL</label>
-            <div className="flex flex-row h-6 w-[480px]">
+            <div className="flex flex-row items-center h-5 w-[380px]">
               <input
                 {...register("websiteLinkInput")}
                 placeholder="https://www.example.com/"
                 className={classNames(
-                  "h-full w-full max-w-[400px] border border-appGray-600 rounded-l-lg p-2 placeholder:text-base placeholder:text-appGray-500 placeholder:font-medium font-medium",
+                  "h-full w-full max-w-[400px] border border-appGray-600 rounded-l-lg p-2 text-sm placeholder:text-sm placeholder:text-appGray-500 placeholder:font-medium font-medium focus:outline-none",
                   {
                     " border-appGray-600 ": !errors.websiteLinkInput,
                   },
@@ -67,7 +67,7 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
               <Button
                 htmlType="submit"
                 type="optional"
-                classname="rounded-l-none h-full w-[80px]"
+                classname="rounded-l-none h-full w-[80px] flex items-center justify-center"
                 disabled={isLoading}
               >
                 Paste
@@ -87,7 +87,6 @@ export default function WebsiteLinksForm({ isLoading }: { isLoading: boolean }) 
           </ul>
         </div>
       </div>
-
       <WhyAddWebsite />
     </div>
   );
@@ -99,7 +98,7 @@ const WhyAddWebsite = () => {
       <>
         <QuestionMarkIcon className="w-[36px] h-[36px]" />
         <div>
-          <p className="font-bold text-lg pl-2 text-heroDark-900 mb-1">Why Add Website?</p>
+          <p className="font-bold text-base pl-2 text-heroDark-900 mb-1">Why Add Website?</p>
           <ul className="list-disc pl-[20px] space-y-[4px]">
             <li className="text-sm text-secondary-800">
               <strong>Better Reports:</strong> More data means more accurate reports.

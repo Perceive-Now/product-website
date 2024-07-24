@@ -156,9 +156,9 @@ const ReportDetailedQAPage = () => {
           onClick={onBack}
         >
           <ToolTip title="Back">
-            <ArrowLeftIcon />
+            <ArrowLeftIcon className="h-2.5 w-2.5" />
           </ToolTip>
-          <span className="text-3xl font-[800]">Detailed Q&A</span>
+          <span className="text-xl font-[800]">Detailed Q&A</span>
         </button>
 
         <div className="w-full overflow-hidden">
@@ -172,7 +172,7 @@ const ReportDetailedQAPage = () => {
       <div className="flex justify-between gap-2 2xl:gap-8">
         <div
           className={classNames(
-            "relative h-[calc(100vh-176px)] shadow border rounded-md  p-2 pb-0 bg-white grow-0",
+            "relative h-[calc(100vh-164px)] shadow border rounded-md  p-2 pb-0 bg-white grow-0",
             currentPageId === 2 ? "mx-auto w-full xl:w-[900px]" : "w-full",
           )}
         >

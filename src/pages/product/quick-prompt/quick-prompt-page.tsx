@@ -1,10 +1,16 @@
+import { useEffect, useState } from "react";
+
+//
 import GoBack from "./goback";
 import { useAppSelector } from "../../../hooks/redux";
+
+//
 import quickPromptPagesList from "./quick-prompt-pages-list";
-import Title from "src/components/reusable/title/title";
-import { useEffect, useState } from "react";
 import ProgressBar from "../upload-attachements-page/progress-bar";
 
+/**
+ *
+ */
 export default function QuickPromptPage() {
   const { currentPageId } = useAppSelector((state) => state.uploadQuickPrompt);
 
@@ -13,9 +19,9 @@ export default function QuickPromptPage() {
 
   return (
     <>
-      <GoBack />
-      <div className="flex flex-col min-w-[900px] min-h-[400px] rounded-lg">
-        <Title text={currentPageTitle} className="mt-5" />
+      <GoBack currentPageTitle={currentPageTitle} />
+      <div className="h-[calc(100vh-200px)]">
+        {/* <Title text={currentPageTitle} className="" /> */}
         <ProgressBarWrapper />
         <PagesStepper />
       </div>

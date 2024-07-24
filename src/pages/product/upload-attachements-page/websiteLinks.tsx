@@ -104,14 +104,14 @@ export default function WebsiteLinks() {
 
   return (
     <LeftContentWrapper>
-      <div className="flex flex-col justify-center p-2 lg:p-[20px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-full max-w-[900px]">
+      <div className="flex flex-col justify-center p-2 lg:px-[20px] py-[16px] rounded-lg border-4 border-dashed border-primary-900 bg-white outline-none w-full max-w-[900px]">
         <WebsiteLinksForm isLoading={isLoading} />
       </div>
 
       {/* Dropped files */}
-      <div className="w-[300px]">
-        <p className="text-lg font-bold text-primary-900 mb-1">Added websites</p>
-        <div className="space-y-[4px] mb-5">
+      <div className="w-[240px] 2xl:w-[300px] shrink-0">
+        <p className="text-lg font-bold text-primary-900">Added websites</p>
+        <div className="space-y-[4px] mb-2">
           {websiteLinks.map((webLink) => (
             <div key={webLink}>
               <div className="flex flex-row justify-between gap-x-3">
@@ -131,36 +131,38 @@ export default function WebsiteLinks() {
             </div>
           ))}
         </div>
-        <Button
-          type="optional"
-          classname="text-secondary-800 w-full"
-          handleClick={handleContinueBtnClick}
-          disabled={websiteLinks.length === 0}
-          loading={isLoading}
-        >
-          <p
-            className={classNames("text-secondary-800", {
-              "opacity-50": isLoading,
-            })}
+        <div className="space-y-2">
+          <Button
+            type="optional"
+            classname="text-secondary-800 w-full border"
+            handleClick={handleContinueBtnClick}
+            disabled={websiteLinks.length === 0}
+            loading={isLoading}
           >
-            Continue
-          </p>
-        </Button>
-        <Button
-          type="default"
-          classname="w-full border border-orange-500 mt-[20px]"
-          handleClick={handleContinueBtnClick}
-          disabled={websiteLinks.length > 0}
-          loading={false}
-        >
-          <p
-            className={classNames("text-secondary-800", {
-              "opacity-50": isLoading,
-            })}
+            <p
+              className={classNames("text-secondary-800", {
+                "opacity-50": isLoading,
+              })}
+            >
+              Continue
+            </p>
+          </Button>
+          <Button
+            type="default"
+            classname="w-full border border-orange-500"
+            handleClick={handleContinueBtnClick}
+            disabled={websiteLinks.length > 0}
+            loading={false}
           >
-            Skip
-          </p>
-        </Button>
+            <p
+              className={classNames("text-secondary-800", {
+                "opacity-50": isLoading,
+              })}
+            >
+              Skip
+            </p>
+          </Button>
+        </div>
       </div>
     </LeftContentWrapper>
   );

@@ -77,8 +77,8 @@ export default function InteractionMethod() {
     <div>
       <BackButton path="new-report" />
       <ProgressBar />
-      <div className="flex flex-col items-center gap-y-8">
-        <h1 className="text-5xl font-extrabold text-secondary-900 mt-5">
+      <div className="flex flex-col items-center gap-y-6">
+        <h1 className="text-3xl font-extrabold text-secondary-900 mt-5">
           Please select interaction method
         </h1>
         <div className="flex flex-row gap-x-[20px]">
@@ -103,7 +103,7 @@ export default function InteractionMethod() {
               />
             ))}
         </div>
-        <Button type="optional" classname="w-[250px]" handleClick={handleContinueBtnClick}>
+        <Button type="optional" classname="w-[250px] mt-4" handleClick={handleContinueBtnClick}>
           <p className="text-secondary-800">Continue</p>
         </Button>
       </div>
@@ -132,7 +132,7 @@ const InteractionMethodCard = ({
     <div
       onClick={() => onClickHandler(title)}
       className={classNames(
-        "w-[220px] h-[200px] flex flex-col justify-between py-[20px] items-center text-center cursor-pointer border-primary-900 border-[1px] rounded-lg",
+        "w-[200px] h-[180px] flex flex-col justify-between py-[20px] items-center text-center cursor-pointer border-primary-900 border-[1px] rounded-lg",
         {
           "bg-primary-900": selectedMethod === title,
         },
@@ -147,7 +147,7 @@ const InteractionMethodCard = ({
               "text-white": selectedMethod === title,
               "text-primary-900": selectedMethod !== title,
             },
-            "line-clamp-1 font-semibold text-base uppercase",
+            "line-clamp-1 font-semibold text-base capitalize",
           )}
         >
           {title}
@@ -158,7 +158,7 @@ const InteractionMethodCard = ({
               "text-white": selectedMethod === title,
               "text-primary-900": selectedMethod !== title,
             },
-            "line-clamp-2 font-semibold text-sm",
+            "line-clamp-2 font-semibold text-xs 2xl:text-sm px-2",
           )}
         >
           {description}

@@ -34,7 +34,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
           "py-0.5 px-2": buttonSize === "xs",
           "p-0": buttonSize === "default",
           "py-1 px-3": buttonSize === "small",
-          "py-[12px] px-[24px]": buttonSize === "medium",
+          "py-[10px] px-[20px]": buttonSize === "medium",
         },
         {
           "rounded-md": roundValue === "small",
@@ -57,7 +57,7 @@ export default function Button(props: PropsWithChildren<IButtonProps>) {
       onClick={handleSubmit}
     >
       <div className="flex justify-center items-center gap-0.5">
-        {props.loading && <LoadingIcon width={24} height={24} className="" />}
+        {props.loading && <LoadingIcon width={16} height={16} className="" />}
         {props.startIcon && <div className="">{props.startIcon}</div>}
 
         <div>{props.children}</div>
