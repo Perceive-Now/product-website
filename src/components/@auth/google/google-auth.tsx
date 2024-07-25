@@ -1,7 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
-import { useState } from "react";
 import axios from "axios";
 
 import { useAppDispatch } from "../../../hooks/redux";
@@ -22,15 +21,17 @@ interface Props {
   title: string;
   isAgree?: boolean;
   type: "signin" | "signup";
+  isSubmitting: boolean;
+  setIsSubmitting: (submit: boolean) => void;
 }
 
-export default function GoogleAuth({ title, isAgree, type }: Props) {
+export default function GoogleAuth({ title, isAgree, type, setIsSubmitting, isSubmitting }: Props) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const callbackPath = searchParams.get("callback_path");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -44,11 +45,11 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
         const userDetail = res.data as IGoogleDetail;
 
         const params = {
-          username: userDetail?.email || "",
+          username: userDetail?.email || "user",
           email: userDetail?.email || "",
           password: "",
-          first_name: userDetail?.given_name,
-          last_name: userDetail?.family_name,
+          first_name: userDetail?.given_name || "user",
+          last_name: userDetail?.family_name || "user",
           company_id: "",
           accept_terms: true,
           two_fa: false,
@@ -98,7 +99,7 @@ export default function GoogleAuth({ title, isAgree, type }: Props) {
       classname="w-full"
       htmlType="button"
       type="gray"
-      disabled
+      disabled={!isAgree}
       startIcon={<GoogleIcon />}
     >
       {title}

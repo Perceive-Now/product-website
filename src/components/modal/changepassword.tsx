@@ -1,17 +1,21 @@
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as yup from "yup";
 
+//
 import Modal from "../reusable/modal";
 import Input from "../reusable/input";
 import Button from "../reusable/button";
 import IconButton from "../reusable/icon-button";
 
+//
 import { CrossIcon } from "../icons";
+
+//
 import axiosInstance from "../../utils/axios";
-import { Auth_CODE } from "../../utils/constants";
-import toast from "react-hot-toast";
+import { AppConfig } from "src/config/app.config";
 
 interface Props {
   open: boolean;
@@ -24,6 +28,10 @@ interface IPassword {
   confirm_password: string;
 }
 
+const Auth_CODE = AppConfig.Auth_CODE;
+/**
+ *
+ */
 const ChangePasswordModal = ({ open, onClose }: Props) => {
   const [current, setCurrent] = useState(false);
   const [newPassword, setNewPassword] = useState(false);
@@ -77,7 +85,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
         reset();
         toast.success(response.data.message || "Password updated successfully");
       } catch (error: any) {
-        toast.error(error.response.data.message || "Something went wrong");
+        toast.error(error.response.data.error || "Something went wrong");
       }
     },
     [reset],

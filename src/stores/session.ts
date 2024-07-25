@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { AppConfig } from "../utils/app.config";
+import { AppConfig } from "../config/app.config";
 import axiosInstance from "../utils/axios";
 import jsCookie from "js-cookie";
 
@@ -19,7 +19,10 @@ interface ISessionData {
   user_chat?: IUserChat;
   client_secret?: string;
   active_index?: number;
-  is_home?: boolean;
+  skipped_question?: number[];
+  hasSkippedQuestion?: boolean;
+  completed_questions?: number[];
+  prev_index?: number;
 }
 
 interface IUserChat {
@@ -57,15 +60,18 @@ export const getSessionDetails = createAsyncThunk(
           session_id: response.data.session.session_id,
           user_id: response.data.session.user_id,
           session_data: {
-            question_id: response.data.session.session_data.question_id,
-            step_id: response.data.session.session_data.step_id,
-            plans: response.data.session.session_data.plans,
+            skipped_question: response.data.session.session_data?.skipped_question,
+            question_id: response.data.session.session_data?.question_id,
+            step_id: response.data.session.session_data?.step_id,
+            plans: response.data.session.session_data?.plans,
             use_cases: response.data.session.session_data?.use_cases,
-            last_session_id: response.data.session.session_data.last_session_id,
-            user_chat: response.data.session.session_data.user_chat,
-            client_secret: response.data.session.session_data.client_secret,
-            active_index: response.data.session.session_data.active_index,
-            is_home: response.data.session.session_data.is_home || true,
+            last_session_id: response.data.session.session_data?.last_session_id,
+            user_chat: response.data.session.session_data?.user_chat,
+            client_secret: response.data.session.session_data?.client_secret,
+            active_index: response.data.session.session_data?.active_index,
+            hasSkippedQuestion: response.data.session.session_data?.hasSkippedQuestion,
+            completed_questions: response.data.session.session_data?.completed_questions,
+            prev_index: response.data.session.session_data?.prev_index,
           },
         },
       };
@@ -95,7 +101,10 @@ const updateSession = async (payload: ISession) => {
         last_session_id: payload.session_data?.last_session_id,
         client_secret: payload.session_data?.client_secret,
         active_index: payload.session_data?.active_index,
-        is_home: payload.session_data?.is_home || true,
+        skipped_question: payload.session_data?.skipped_question,
+        hasSkippedQuestion: payload.session_data?.hasSkippedQuestion,
+        completed_questions: payload.session_data?.completed_questions,
+        prev_index: payload.session_data?.prev_index,
         user_chat: {
           question_id: payload.session_data?.user_chat?.question_id,
           question: payload.session_data?.user_chat?.question,
@@ -115,37 +124,11 @@ const updateSession = async (payload: ISession) => {
   }
 };
 
-// const restoreSession = async (payload: ISession) => {
-//   try {
-//     const sessionID = jsCookie.get("session_id");
-//     const userId = jsCookie.get("user_id");
-
-//     const values = {
-//       session_id: sessionID || payload.session_id,
-//       user_id: userId || payload.user_id,
-//       session_data: {
-//         question_id: payload.session_data?.question_id,
-//         user_id: payload.session_data?.step_id,
-//         plans: payload.session_data?.plans,
-//         common_question_id: payload.session_data?.common_question_id,
-//         step_id: payload.session_data?.step_id,
-//         use_cases: payload.session_data?.use_cases,
-//         last_session_id: payload.session_data?.last_session_id
-//       }
-//     }
-//     // Make the API request to update the session
-//     const response = await axiosInstance.post(`/api/restore_session?code=${AppConfig.Auth_CODE}`, values
-//     );
-//     return response.data; // Return the updated session data
-//   } catch (error) {
-//     throw new Error("Failed to restore session"); // Handle errors
-//   }
-// };
-
 export const SessionSlice = createSlice({
   name: "Session",
   initialState,
   reducers: {
+    // -----------------------------------------------------------------------
     setSession: (state, action: PayloadAction<ISession>) => {
       state.session = {
         ...state.session, // Keep the properties from the previous session
@@ -154,14 +137,32 @@ export const SessionSlice = createSlice({
       const sessionData = state.session;
       updateSession(sessionData)
         .then((sessionData) => {
-          // Optionally handle the updated session data from the server
-          console.log("Session updated on server:", sessionData);
+          // console.log("Session updated on server");
+          return {
+            message: "Session updated on server",
+            sessionData,
+          };
         })
-        .catch((error) => {
-          // Handle errors from updating session on the server
-          console.error("Error updating session on server:", error);
+        .catch(() => {
+          // console.log("Error updating session on server");
+          return {
+            errror: "Error updating session on server",
+          };
         });
     },
+
+    // -----------------------------------------------------------------------
+    getSessionSliceState: (state) => state,
+
+    // -----------------------------------------------------------------------
+    setSessionFromDraft: (state, action: PayloadAction<ISession>) => {
+      state.session = {
+        ...action.payload,
+      };
+    },
+
+    // -----------------------------------------------------------------------
+    reset: () => initialState,
   },
   extraReducers(builder) {
     builder.addCase(getSessionDetails.fulfilled, (state, action) => {
@@ -171,5 +172,6 @@ export const SessionSlice = createSlice({
   },
 });
 
-export const { setSession } = SessionSlice.actions;
+export const { setSession, getSessionSliceState, reset, setSessionFromDraft } =
+  SessionSlice.actions;
 export default SessionSlice.reducer;

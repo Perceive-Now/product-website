@@ -9,12 +9,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 //
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
-import { AppConfig } from "../utils/app.config";
+import { AppConfig } from "../config/app.config";
 
 /**
  * Interfaces
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface IResponse<T = any> {
   success: boolean;
   message: string;
@@ -126,9 +125,11 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("logout", async (): Promise<IResponse> => {
+  // const dispatch = useAppDispatch();
   try {
     jsCookie.remove("pn_refresh");
     sessionStorage.removeItem("pn_access");
+    // dispatch(setSession({ session_data: {} }))
 
     return {
       success: true,
@@ -182,7 +183,6 @@ export const getCurrentSession = createAsyncThunk("getCurrentSession", async ():
 });
 
 export const getNewSession = createAsyncThunk("getNewSession", async (): Promise<IResponse> => {
-  // const sessionId = jsCookie.get("sessionID");
   try {
     const response = await axiosInstance.get<IRefreshResponse>(
       `/api/new_session?code=${authCode}&clientId=default`,
@@ -218,9 +218,13 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
       axiosInstance.get(`/api/get_company_list?code=${authCode}&clientId=default `),
       // axiosInstance.get(""),
     ]);
-    const companyName = companyList.data.companies.find((c: any) =>
-      c.id === userProfileResponse.data.company_id ? c.name : "N/A",
+
+    const company = companyList.data.companies.find(
+      (c: any) => c.id === userProfileResponse.data.company_id,
     );
+
+    const companyName = company ? company : "N/A";
+
     return {
       success: true,
       message: "Successfully fetched user details",
@@ -237,7 +241,7 @@ export const getUserDetails = createAsyncThunk("getUserDetails", async (): Promi
         username: userProfileResponse.data.username,
         company_name: companyName.name || userProfileResponse.data.company_name,
         email: userProfileResponse.data.email,
-        registration_completed: userProfileResponse.data.registration_completed,
+        registration_completed: userProfileResponse.data.registration_completed || false,
 
         //
       },

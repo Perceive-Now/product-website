@@ -3,26 +3,32 @@ import { configureStore } from "@reduxjs/toolkit";
 //
 import AuthReducer from "./stores/auth";
 import DashboardReducer from "./stores/dashboard";
-import SubscriptionReducer from "./stores/subscription";
-import DateSlice from "./stores/date";
-import StatesSlice from "./stores/US-states";
 import UseCaseSlice from "./stores/use-case";
 import SessionSlice from "./stores/session";
-import ChatSlice from "./stores/chat";
-import UISlice from "./stores/UI";
+import Knownow from "./stores/know-now";
+import UploadAttachmentsSlice from "./stores/upload-attachments";
+import uploadQuickPrompt from "./stores/upload-quick-prompt";
+import draftSlice from "./stores/draft";
+import QuestionAnswerSlice from "./stores/Q&A";
+
+//
+import KnownowIPSlice from "./stores/knownow-ip";
+import KnownowMarketSlice from "./stores/knownow-market";
 
 //
 export const store = configureStore({
   reducer: {
     auth: AuthReducer,
     dashboard: DashboardReducer,
-    subscription: SubscriptionReducer,
-    date: DateSlice,
-    states: StatesSlice,
-    chat: ChatSlice,
-    usecase: UseCaseSlice,
+    usecases: UseCaseSlice,
     sessionDetail: SessionSlice,
-    UI: UISlice,
+    KnowNow: Knownow,
+    KnowNowIP: KnownowIPSlice,
+    KnownowMarket: KnownowMarketSlice,
+    uploadAttachments: UploadAttachmentsSlice,
+    uploadQuickPrompt: uploadQuickPrompt,
+    draft: draftSlice,
+    QA: QuestionAnswerSlice,
   },
 });
 

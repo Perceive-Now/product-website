@@ -1,10 +1,6 @@
 import { Outlet } from "react-router-dom";
-// import MoreNavOption from "../../components/reusable/nav-options";
-// import AppSidebar from "../../components/app/sidebar";
-// import MoreNavOption from "../../components/reusable/nav-options";
-// import AppHeader from "../../components/app/header";
-import AuthHeader from "../../components/app/@auth-layout/auth-header";
-import AppFooter from "../../components/app/footer";
+import AuthHeader from "../../components/@auth/auth-layout/auth-header";
+import AppFooter from "../footer";
 
 export default function ProductLayout() {
   return (

@@ -11,23 +11,6 @@ module.exports = {
       "2xl": "1440px",
       "3xl": "1600px",
     },
-    // screens: {
-    //   'sm': '640px',
-    //   // => @media (min-width: 640px) { ... }
-
-    //   'md': '768px',
-    //   // => @media (min-width: 768px) { ... }
-
-    //   'lg': '1024px',
-    //   // => @media (min-width: 1024px) { ... }
-
-    //   'xl': '1280px',
-    //   // => @media (min-width: 1280px) { ... }
-
-    //   '2xl': '1440px',
-    //   // => @media (min-width: 1536px) { ... }
-    //   '3xl': '1800px'
-    // },
     spacing: {
       0: 0,
       0.5: "0.25rem",
@@ -48,6 +31,10 @@ module.exports = {
       13: "6.5rem",
       14: "7rem",
       15: "7.5rem",
+    },
+    fontFamily: {
+      helvetica: ["Helvetica", "Arial", "sans-serif"],
+      mulish: ["Mulish", "sans-serif"],
     },
     extend: {
       colors: {
@@ -85,7 +72,7 @@ module.exports = {
           400: "#FFB531",
           500: "#FFA300",
           700: "#CC8300",
-          800: "#373D3F"
+          800: "#373D3F",
         },
         success: {
           500: "#40A140",
@@ -95,6 +82,12 @@ module.exports = {
           500: "#A14040",
           800: "#641B1B",
         },
+        foundationOrange: {
+          100: "#FFF6E6",
+        },
+        heroDark: {
+          900: "#120824",
+        },
       },
       ringWidth: {
         0.5: "0.5px",
@@ -102,20 +95,23 @@ module.exports = {
       container: {
         center: true,
         screens: {
-          '2xl': '1440px',
+          "2xl": "1440px",
         },
       },
       backgroundImage: {
-        "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%)",
+        "primary-gradient": "linear-gradient(282deg, #120824 32.71%, #442873 133.49%);",
         "secondary-gradient": "linear-gradient(110deg, #E08236 0.32%, #423ABA 99.59%);",
+        "white-gradient": "linear-gradient(111deg, #FFF 1.62%, #F7F5FF 98.58%);",
+        "progressbar-gradient-lr":
+          "linear-gradient(270deg, #442873 0%, #643BA9 0.01%, #442873 99.97%);",
+        "progressbar-gradient-rl":
+          "linear-gradient(270deg, #442873 0.79%, #643BA9 99.98%, #442873 99.99%);",
       },
-      // boxShadow: {
-      //   'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      // },
+      boxShadow: {
+        // 'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        "page-content": "0px 0px 12px 0px rgba(36, 39, 43, 0.08)",
+      },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/line-clamp"),
-  ],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
 };

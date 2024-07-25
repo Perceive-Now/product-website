@@ -2,9 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
-// import type { IKeywordOption } from "../components/reusable/search";
-
-//
 const initialState: IDetail = {
   chat: {
     question: undefined,

@@ -19,7 +19,9 @@ import { useAppDispatch } from "../../../hooks/redux";
 import { signUpUser } from "../../../stores/auth";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import GoogleAuth from "../../../components/@auth/google";
-import { WEBSITE_URL } from "../../../utils/constants";
+import { AppConfig } from "src/config/app.config";
+
+const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
 /**
  *
@@ -36,6 +38,8 @@ export default function SignupPage() {
   //
   const [isAgree, setIsAgree] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: IRegisterForm = {
@@ -105,8 +109,16 @@ export default function SignupPage() {
   const emailValue = watch("email");
   const passwordValue = watch("password");
 
+  // if (!isGoogleSubmitting) {
+  //   return (
+  //     <div className="h-screen flex items-center justify-center opacity-50 absolute">
+  //       <LoadingIcon />
+  //     </div>
+  //   )
+  // }
+
   return (
-    <div className="flex justify-center items-center px-2 h-full">
+    <div className="flex h-full 2xl:h-[calc(100vh-200px)] justify-center items-center px-2">
       <form onSubmit={handleSubmit(handleLogin)} className="">
         <div className="w-full md:w-[400px]">
           <h1 className="text-4xl font-extrabold text-center">Sign Up</h1>
@@ -117,7 +129,6 @@ export default function SignupPage() {
                   id="email"
                   {...register("email")}
                   type="text"
-                  disabled
                   className={classNames(
                     "appearance-none block w-full px-2 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                     errors.email
@@ -139,7 +150,6 @@ export default function SignupPage() {
                   id="password"
                   {...register("password")}
                   type={isPasswordVisible ? "text" : "password"}
-                  disabled
                   className={classNames(
                     "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                     errors.password
@@ -169,7 +179,7 @@ export default function SignupPage() {
             <Button
               classname="w-full"
               htmlType="submit"
-              disabled={!emailValue || !passwordValue || !isAgree}
+              disabled={!emailValue || !passwordValue || !isAgree || isGoogleSubmitting}
               loading={isSubmitting}
               type="auth"
             >
@@ -178,20 +188,29 @@ export default function SignupPage() {
           </div>
           <p className="text-center mt-2.5">
             <span>Already have an account?</span>
-            <Link to={"/login"} className="ml-2 font-bold text-primary-500">
+            <Link
+              to={"/login"}
+              className={classNames("ml-2 font-bold text-primary-500", {
+                "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
+              })}
+              aria-disabled={isSubmitting}
+            >
               Sign In
             </Link>
           </p>
           <hr className="mt-4 mb-4 border-gray-300" />
 
-          <GoogleAuth type="signup" isAgree={isAgree} title="Sign up with Google" />
+          <GoogleAuth
+            type="signup"
+            isAgree={isAgree}
+            title="Sign up with Google"
+            isSubmitting={isGoogleSubmitting}
+            setIsSubmitting={setIsGoogleSubmitting}
+          />
         </div>
         <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput
-            disabled
             onChange={() => setIsAgree(!isAgree)}
-            // {...register("agree")}
-            // label="I agree with Terms and Conditions & Privacy Policy"
             style={{
               label: errors.agree ? "text-base text-danger-500" : "text-base",
             }}

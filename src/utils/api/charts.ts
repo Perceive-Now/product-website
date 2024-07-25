@@ -1,9 +1,10 @@
+import { AppConfig } from "src/config/app.config";
 import axiosInstance from "../axios";
 
 /**
  *
  */
-const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
+const authCode = AppConfig.Auth_CODE;
 
 export async function getPatentsYearly(keywords: string[]) {
   const response = await axiosInstance.get<IPatent>(
@@ -155,6 +156,13 @@ export async function getEmergingTechnologyTrend(keywords: string[]) {
 export async function getPatentCompetitorPortfolio(keywords: string[]) {
   const res = await axiosInstance.get<IPatentCompetitorPortfolio>(
     `/api/competitor_portfolios?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
+  );
+  return res.data.response;
+}
+
+export async function getPatentCompetitorActivity(keywords: string[]) {
+  const res = await axiosInstance.get<IPatentCompetitorActivity>(
+    `/api/competitor_activity?keywords=${keywords.join("|")}&code=${authCode}&clientId=default`,
   );
   return res.data.response;
 }
@@ -360,6 +368,14 @@ export interface IPatentCompetitorPortfolio {
   response: {
     org: string;
     count: number;
+  }[];
+}
+
+export interface IPatentCompetitorActivity {
+  response: {
+    org: string;
+    count: number;
+    year: number;
   }[];
 }
 export interface ITechnologyAnalysis {

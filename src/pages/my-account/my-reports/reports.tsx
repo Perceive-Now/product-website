@@ -1,10 +1,18 @@
 import { useMemo } from "react";
+
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef } from "@tanstack/react-table";
+
+//
 import EditIcon from "../../../components/icons/miscs/Edit";
+
+//
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import TableSearch from "../../../components/reusable/table-search";
 
+/**
+ *
+ */
 const Reports = () => {
   const columns = useMemo<ColumnDef<any>[]>(
     () => [

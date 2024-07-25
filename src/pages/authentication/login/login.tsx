@@ -12,10 +12,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../../components/reusable/button";
 import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 
-//
-// import Logo from "../../../assets/images/logo-small.svg";
-// import { WEBSITE_URL } from "../../../utils/constants";
-
 // Store
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
@@ -44,9 +40,12 @@ export default function LoginPage() {
 
   //
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   //
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: ILoginFormValues = {
@@ -69,6 +68,7 @@ export default function LoginPage() {
 
   const handleLogin = async (values: ILoginFormValues) => {
     setIsSubmitting(true);
+    setError(false);
 
     // Login user
     const response = await dispatch(loginUser(values)).unwrap();
@@ -87,13 +87,14 @@ export default function LoginPage() {
         navigate("/");
       }
     } else {
+      setError(true);
       toast.error(response.message);
     }
 
     setIsSubmitting(false);
   };
 
-  const userNameValue = watch("username");
+  // const userNameValue = watch("username");
   const passwordValue = watch("password");
 
   const getSession = useCallback(async () => {
@@ -111,16 +112,9 @@ export default function LoginPage() {
   if (isLoading) return <></>;
 
   return (
-    <div className="flex justify-center items-center px-2 h-full">
-      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px] h-full">
+    <div className="flex h-full 2xl:h-[calc(100vh-200px)] justify-center items-center px-2">
+      <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px]">
         <div className="flex flex-col items-center">
-          {/* <img
-            src={Logo}
-            width={76}
-            height={60}
-            alt="PerceiveNow logo"
-            className="w-9 h-8 object-contain"
-          /> */}
           <h1 className="text-4xl font-extrabold text-secondary-800 mt-5">Sign In</h1>
         </div>
 
@@ -130,12 +124,12 @@ export default function LoginPage() {
               <input
                 id="username"
                 {...register("username")}
-                disabled
                 type="text"
                 className={classNames(
                   "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.username
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Username/Email"
@@ -150,14 +144,14 @@ export default function LoginPage() {
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
-                disabled
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
                   "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.password
-                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                    : "border-gray-400  focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Password"
               />
@@ -185,7 +179,7 @@ export default function LoginPage() {
           <Button
             classname="w-full"
             htmlType="submit"
-            disabled={!userNameValue || !passwordValue}
+            disabled={isSubmitting || isGoogleSubmitting}
             loading={isSubmitting}
             type="auth"
           >
@@ -195,12 +189,25 @@ export default function LoginPage() {
 
         <p className="text-center mt-2.5">
           <span>Don’t have an account?</span>
-          <Link to={"/signup"} className="ml-2 font-bold text-primary-500">
+
+          <Link
+            to={"/signup"}
+            className={classNames("ml-2 font-bold text-primary-500", {
+              "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
+            })}
+            aria-disabled={isSubmitting}
+          >
             Sign Up
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <GoogleAuth type="signin" isAgree={true} title="Sign in with Google" />
+        <GoogleAuth
+          type="signin"
+          isAgree={true}
+          title="Sign in with Google"
+          isSubmitting={isGoogleSubmitting}
+          setIsSubmitting={setIsGoogleSubmitting}
+        />
       </form>
     </div>
   );

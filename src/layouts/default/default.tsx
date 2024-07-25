@@ -1,30 +1,26 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 //
 
-import AppSidebar from "../../components/app/sidebar";
-import AppFooter from "../../components/app/footer";
+import AppSidebar from "../sidebar";
+import AppFooter from "../footer";
 import classNames from "classnames";
-// import { useAppSelector } from "../../hooks/redux";
+// import AppHeader from "../header";
 
 /**
  *
  */
 export default function DefaultLayout() {
-  // const [open, setOpen] = useState(true)
-  // const { pathname } = useLocation();
-  // const isHome = useAppSelector((state) => state.sessionDetail.session?.session_data?.is_home);
-
   return (
-    <div
-      className="bg-white"
-      //  {classNames((pathname === "/" && isHome) ? "bg-secondary-gradient" : "bg-white",)}
-    >
-      <div className={classNames("w-full min-h-[calc(100vh-24px)] ")}>
+    <div className="bg-white-gradient">
+      <div className={classNames("w-full min-h-[calc(100vh-30px)] mt-0.5")}>
         <div className="flex h-full">
           <AppSidebar />
-          <div className="relative py-3 px-4 z-0 h-full w-full duration-500">
-            <Outlet />
+          <div className="h-full w-full duration-500 px-4">
+            {/* {location.pathname !== "/q&a" && <AppHeader />} */}
+            <div className="relative py-1 h-full w-full pl-1 container ">
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>

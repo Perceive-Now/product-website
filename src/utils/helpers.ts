@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { US_STATES } from "./constants";
+import { v4 as uuidv4 } from "uuid";
 
 //
 interface IFormatNumberOptions {
@@ -102,4 +103,9 @@ export function convertToBase64String(profile_photo?: string): string | undefine
   const [dataType, base64Data] = profile_photo.split("base64/") as [string, string];
   const photo = `data:${dataType};base64,/${base64Data}`;
   return photo;
+}
+
+export function generateKnowId() {
+  const newUuid = uuidv4();
+  return newUuid;
 }
