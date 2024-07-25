@@ -2,7 +2,6 @@ import GoBack from "./goback";
 import ProgressBar from "./progress-bar";
 import uploadAttachmentsPages from "./upload-attachment-pages-list";
 import { useAppSelector } from "../../../hooks/redux";
-import Title from "src/components/reusable/title/title";
 import { useEffect, useState } from "react";
 
 export default function UploadAttachmentsPage() {
@@ -12,14 +11,14 @@ export default function UploadAttachmentsPage() {
     uploadAttachmentsPages.find((page) => page.id === currentPageId)?.title ?? "Upload Attachments";
 
   return (
-    <>
-      <GoBack />
+    <div className="h-[calc(100vh-120px)]">
+      <GoBack currentPageTitle={currentPageTitle} />
       <div>
-        <Title text={currentPageTitle} className="mt-5" />
+        {/* <Title text={currentPageTitle} className="" /> */}
         <ProgressBarWrapper />
         <PagesStepper />
       </div>
-    </>
+    </div>
   );
 }
 

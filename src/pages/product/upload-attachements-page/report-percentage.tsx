@@ -63,11 +63,11 @@ export default function ReportPercentage({
           </p>
         </div>
         {!isAdditionalQuestions && (
-          <p className="text-purple-900 font-bold text-lg">{percentageContent?.title}</p>
+          <p className="text-purple-900 font-bold text-sm">{percentageContent?.title}</p>
         )}
       </div>
       {!isAdditionalQuestions && (
-        <p className="text-secondary-800 mt-1">{percentageContent?.subtitle}</p>
+        <p className="text-secondary-800 mt-1 text-sm">{percentageContent?.subtitle}</p>
       )}
     </>
   );
