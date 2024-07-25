@@ -185,7 +185,13 @@ const DiagnosticPlatform = ({
         {hasSkippedQuestion ? <div>Please answer all the skipped questions.</div> : <></>}
         <div className="flex gap-2 items-center">
           {showSkip && !hasSkippedQuestion && (
-            <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
+            <Button
+              htmlType={"button"}
+              type="secondary"
+              rounded={"medium"}
+              handleClick={onSkip}
+              disabled={isLoading}
+            >
               Skip for now
             </Button>
           )}
@@ -193,7 +199,7 @@ const DiagnosticPlatform = ({
             loading={isLoading}
             handleClick={() => handleContinue("continue")}
             rounded={"medium"}
-            disabled={error !== null || !answer}
+            disabled={error !== null || !answer || isLoading}
           >
             Save & Continue
           </Button>

@@ -19,6 +19,7 @@ import {
   updateQuestionList,
   updateResponse,
 } from "src/stores/Q&A";
+import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 
 // import { getUserChats, IAnswer } from "src/utils/api/chat";
 
@@ -53,10 +54,8 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const [prevCase, setPrevCase] = useState("");
   // const [userChats, setUserChats] = useState<IAnswer[]>();
 
-  // const user_id = jsCookie.get("user_id") ?? "";
-
+  const filterQuestion = NewQAList.filter((q) => q.questionId === question.questionId)[0] || null;
   const chatRef = useRef<HTMLInputElement>(null);
-
   const userId = jsCookie.get("user_id");
 
   //
@@ -101,7 +100,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
                 question.questionId,
               )}&usecaseId=${question.usecase}`,
               {
-                question: String(question.question),
+                question: String(filterQuestion.question),
                 answer: value.answer,
               },
             );
@@ -109,7 +108,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         const check = await axios.post(
           "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
           {
-            text: `question:${question.question} answer:${value.answer}`,
+            text: `question:${filterQuestion.question} answer:${value.answer}`,
           },
         );
 
@@ -182,8 +181,11 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     [
       currentQuestionId,
       dispatch,
+      filterQuestion.question,
       isResponseGood,
-      question,
+      question.question,
+      question.questionId,
+      question.usecase,
       questionWithUsecase,
       requirementGatheringId,
       userId,
