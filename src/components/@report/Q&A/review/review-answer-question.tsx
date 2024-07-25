@@ -1,4 +1,4 @@
-import EditIcon from "../../../icons/miscs/Edit";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 interface Props {
   question: string;

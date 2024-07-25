@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -91,7 +93,7 @@ const GenerateMarketReport = () => {
           text: section,
         });
         setComplete(true);
-        console.log(res);
+        // console.log(res);
         toast.success(`Report for section ${section[sectionIndex]} is complete`);
         setReportData((prevData) => ({
           ...prevData,

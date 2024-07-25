@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
