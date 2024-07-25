@@ -13,6 +13,7 @@ import {
 } from "../../../stores/upload-attachments";
 import classNames from "classnames";
 import LeftContentWrapper from "./left-content-wrapper";
+import ToolTip from "src/components/reusable/tool-tip";
 
 const baseStyle = {
   flex: 1,
@@ -96,7 +97,7 @@ export default function UploadAttachments() {
       </div>
 
       {/* Dropped files */}
-      <div className="w-[300px]">
+      <div className="w-[260px]">
         <p className="text-lg font-bold text-primary-900 mb-1">Uploaded Files</p>
         <div className="space-y-[4px] mb-5">
           {files.map((file) => (
@@ -109,7 +110,9 @@ export default function UploadAttachments() {
                   }}
                   className="cursor-pointer"
                 >
-                  <DustbinIcon />
+                  <ToolTip title={"Remove"}>
+                    <DustbinIcon />
+                  </ToolTip>
                 </div>
               </div>
               <div className="w-full bg-gray-200 h-[1px]"></div>

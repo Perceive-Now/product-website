@@ -55,7 +55,7 @@ const Payment = () => {
   return (
     <div className="">
       <BackButton />
-      <h5 className="text-5xl font-[800] my-2">Payment</h5>
+      <h5 className="text-2xl font-[800] mt-2">Payment</h5>
       <ProgressBar />
       {clientSecret === undefined || selectedReports === undefined ? (
         <Loading isLoading={clientSecret === undefined || selectedReports === undefined} />

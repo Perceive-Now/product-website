@@ -44,7 +44,6 @@ import IPFullReport from "./pages/product/analytics/Full-report";
 // Report
 import UseCasePage from "./pages/product/use-case";
 import Landing from "./pages/product/landing/landing";
-import ReportPage from "./pages/product/report-q&a";
 import QuickPromptPage from "./pages/product/quick-prompt/quick-prompt-page";
 import FullReportPage from "./pages/product/generated-reports/fullreportpage";
 
@@ -65,6 +64,8 @@ import ShareKnowNowPage from "./pages/product/share";
 import GenerateMarketReport from "./components/@report-generate/market-report-generate";
 import GeneratedReport from "./pages/product/generated-report/generated-report";
 import GeneratedReports from "./pages/product/generated-reports/generated-reports";
+import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
+import ReportPage from "./pages/product/report-q&a/report-page";
 
 /**
  *
@@ -118,7 +119,7 @@ function App() {
                 path={`/${EReportSectionPageIDs.InteractionMethod}`}
                 element={<InteractionMethod />}
               />
-              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportPage />} />
+              <Route path={`/${EReportSectionPageIDs.QA}`} element={<ReportDetailedQAPage />} />
               <Route
                 path={`/${EReportSectionPageIDs.UploadAttachments}`}
                 element={<UploadAttachmentsPage />}

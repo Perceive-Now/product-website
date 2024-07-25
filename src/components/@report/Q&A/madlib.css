@@ -1,0 +1,10 @@
+.content-editable {
+  direction: ltr;
+  text-align: left;
+}
+
+/* If you need to apply styles specifically to the placeholder text */
+.placeholder {
+  direction: ltr;
+  text-align: left;
+}

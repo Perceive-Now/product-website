@@ -24,13 +24,15 @@ import {
 
 //
 import { questionList } from "./_question";
-import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
+
+// 
 import DetailQAProgressBar from "src/components/@report/Q&A/progress-bar";
+import EditQuestionAnswer from "src/components/@report/Q&A/edit-Q&A";
 
 /**
  *
  */
-const ReportPage = () => {
+const DetailedQAPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -141,20 +143,26 @@ const ReportPage = () => {
 
   return (
     <div className="w-full">
-      <button className="flex flex-row gap-x-1 font-bold text-secondary-800 w-fit" onClick={onBack}>
-        <ArrowLeftIcon /> Back
-      </button>
-      <h5 className="text-5xl font-[800] my-2">Detailed Q&A</h5>
-      <div className="w-full overflow-hidden">
-        <DetailQAProgressBar
-          questionWithUsecase={questionWithUsecase || ([] as any)}
-          QAPagesList={QAPagesList}
-        />
+      <div className="">
+        <button
+          type="button"
+          className="flex flex-row items-center gap-x-1 font-bold text-secondary-800 w-fit"
+          onClick={onBack}
+        >
+          <ArrowLeftIcon /> <span className="text-3xl font-[800]">Detailed Q&A</span>
+        </button>
+        <div className="w-full overflow-hidden">
+          <DetailQAProgressBar
+            questionWithUsecase={questionWithUsecase || ([] as any)}
+            QAPagesList={QAPagesList}
+          />
+        </div>
       </div>
-      <div className="flex mt-2.5 justify-between gap-8">
+
+      <div className="flex justify-between gap-2 2xl:gap-8">
         <div
           className={classNames(
-            "relative min-h-[calc(100vh-400px)] md:min-h-[calc(100vh-400px)] xl:min-h-[calc(100vh-920px)] 2xl:min-h-full max-h-full shadow border rounded-md w-[932px] p-2 bg-white",
+            "relative h-[calc(100vh-400px)] md:h-[calc(100vh-180px)] xl:h-[calc(100vh-180px)] 2xl:h-full max-h-full shadow border rounded-md w-full p-2 bg-white overflow-auto pn_scroller",
             currentPageId === 2 ? "mx-auto" : "",
           )}
         >
@@ -182,7 +190,7 @@ const ReportPage = () => {
             </p>
           </div>
           {currentPageId !== 2 && (
-            <div className="flex-shrink-0 lg:w-[300px]">
+            <div className="shrink-0 w-[260px] 2xl:w-[300px]">
               {<SkippedQuestion questions={skippedQuestionList || []} />}
             </div>
           )}
@@ -192,4 +200,4 @@ const ReportPage = () => {
   );
 };
 
-export default ReportPage;
+export default DetailedQAPage;

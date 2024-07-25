@@ -47,29 +47,29 @@ export default function QuestionForm({
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
 
   return (
-    <div className="max-w-[900px] w-full bg-white p-2 shadow-page-content">
-      <div className="space-y-2.5">
-        <h4
-          className="text-primary-900 text-xl font-semibold"
-          dangerouslySetInnerHTML={{ __html: `${question}` }}
-        />
-        <p
-          id="exampleText"
-          className="text-gray-600 text-sm"
-          dangerouslySetInnerHTML={{ __html: `Eg: ${formattedAnswer}` }}
-        />
-        <Button
-          type="gray"
-          size="small"
-          rounded="small"
-          classname="px-0.5 py-[6px] text-xs font-semibold"
-          handleClick={useExample}
-        >
-          Use this example
-        </Button>
-      </div>
-      <form onSubmit={handleSubmit(onContinue)} className="mt-4">
-        <fieldset className="mt-3">
+    <form onSubmit={handleSubmit(onContinue)} className="h-full">
+      <div className="overflow-y-auto pn_scroller relative h-[calc(100vh-300px)] pr-2">
+        <div className="space-y-1">
+          <h4
+            className="text-primary-900 text-lg font-semibold"
+            dangerouslySetInnerHTML={{ __html: `${question}` }}
+          />
+          <p
+            id="exampleText"
+            className="text-gray-600 text-xs"
+            dangerouslySetInnerHTML={{ __html: `Eg: ${formattedAnswer}` }}
+          />
+          <Button
+            type="gray"
+            size="small"
+            rounded="small"
+            classname="px-0.5 py-[6px] text-xs font-semibold"
+            handleClick={useExample}
+          >
+            Use this example
+          </Button>
+        </div>
+        <div className="mt-2">
           <label className=" text-sm font-medium leading-5 text-gray-700">
             <div className="mt-0.5 rounded-md">
               <textarea
@@ -89,8 +89,10 @@ export default function QuestionForm({
           {errors.answer?.message && (
             <div className="text-xs text-danger-500">{errors.answer?.message}</div>
           )}
-        </fieldset>
-        <div className="mt-4 pb-4 flex gap-2 items-center">
+        </div>
+      </div>
+      <div className="bottom-0 left-0 right-0 absolute w-full bg-white pt-1 pb-2 mt-1 border-t">
+        <div className="flex gap-2 items-center px-4">
           <Button
             htmlType={"button"}
             rounded={"medium"}
@@ -105,7 +107,7 @@ export default function QuestionForm({
             Save & Continue
           </Button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }

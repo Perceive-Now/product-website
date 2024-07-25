@@ -140,8 +140,8 @@ export default function QuickPromptForm() {
 
   return (
     <form onSubmit={handleSubmit(onContinue)}>
-      <fieldset className="bg-white rounded-lg p-[20px] border border-appGray-200">
-        <div className="flex flex-wrap gap-y-2 items-center text-lg font-semibold">
+      <div className="bg-white rounded-lg p-[20px] border border-appGray-200">
+        <div className="flex flex-wrap gap-y-1 items-center text-sm font-semibold">
           {requiredQuickPrompts?.contentList.map((content, index) => {
             if (content.contentType === "text") {
               return (
@@ -171,7 +171,7 @@ export default function QuickPromptForm() {
             }
           })}
         </div>
-      </fieldset>
+      </div>
       <Button
         type="optional"
         loading={isUploadingUploadQuickPrompt || isUploadingUsecases || isLoadingToPayment}

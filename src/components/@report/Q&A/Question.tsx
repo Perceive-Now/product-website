@@ -1,25 +1,33 @@
-import { useCallback, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import { useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
+import axios from "axios";
 
+//
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+
+//
 import QuestionAnswerForm from "./question-form";
 import {
   QAPages,
   addToSkippedQuestionList,
   incrementStep,
+  saveDraft,
   setCurrentPageId,
   setCurrentQuestionId,
   setGenerateAnswerSuccess,
   updateQuestionAnswer,
   updateQuestionList,
-  saveDraft,
+  updateResponse,
 } from "src/stores/Q&A";
+import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 
-import { IAnswer } from "src/@types/entities/IPLandscape";
-import axiosInstance from "src/utils/axios";
+// import { getUserChats, IAnswer } from "src/utils/api/chat";
 
-const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
+// import { quickPromptUseCase, UseCaseOptions } from "../use-case/__use-cases";
+// import { useNavigate } from "react-router-dom";
+
+// const BASE_PN_REPORT_URL = process.env.REACT_APP_REPORT_API_URL;
 
 interface IQuestionUsecase {
   questionId: number;
@@ -35,42 +43,105 @@ interface Props {
   questionWithUsecase: IQuestionUsecase[];
 }
 
+/**
+ *
+ */
 const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const dispatch = useAppDispatch();
+
+  // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
+  const [prevCase, setPrevCase] = useState("");
+  // const [userChats, setUserChats] = useState<IAnswer[]>();
 
+  const filterQuestion = NewQAList.filter((q) => q.questionId === question.questionId)[0] || null;
+  const chatRef = useRef<HTMLInputElement>(null);
   const userId = jsCookie.get("user_id");
 
-  const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
+  //
+  const { currentQuestionId, skippedQuestionList, isResponseGood } = useAppSelector(
+    (state) => state.QA,
+  );
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
 
+  //
   const onContinue = useCallback(
-    async (value: IAnswer) => {
+    async (value: { answer: string }) => {
       setLoading(true);
-      try {
-        const res = await axiosInstance.post(
-          `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
-            value.answer,
-          )}&userID=${userId}&requirement_gathering_id=${Number(
-            requirementGatheringId,
-          )}&QuestionID=${question.questionId}`,
-        );
-        const new_question = res.data.question;
-        setLoading(false);
-        setResetForm(true);
+      setPrevCase(question.usecase);
 
-        if (res.data.status === "false") {
+      // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
+      // console.log(filterUsecases)
+
+      // ------------------ previous report endponint  -----------------------
+      // const res = await axios.post(
+      //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
+      //     value.answer,
+      //   )}&userID=${userId}&requirement_gathering_id=${Number(
+      //     requirementGatheringId,
+      //   )}&QuestionID=${question.questionId}`,
+      // );
+      // ------------------- previous report endponint  ----------------------
+
+      try {
+        const res = isResponseGood
+          ? await axios.post("https://templateuserrequirements.azurewebsites.net/create-items/", {
+            questionId: String(question.questionId),
+            question: String(question.question),
+            answer: value.answer,
+            usecase: question.usecase,
+            userId: String(userId),
+            requirementId: String(requirementGatheringId),
+          })
+          : await axios.put(
+            `https://templateuserrequirements.azurewebsites.net/update-items/?userId=${String(
+              userId,
+            )}&requirementId=${String(requirementGatheringId)}&questionId=${String(
+              question.questionId,
+            )}&usecaseId=${question.usecase}`,
+            {
+              question: String(filterQuestion.question),
+              answer: value.answer,
+            },
+          );
+
+        const check = await axios.post(
+          "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
+          {
+            text: `question:${filterQuestion.question} answer:${value.answer}`,
+          },
+        );
+
+        const responseText = check.data.response.Response;
+        const badMarker = "@@bad@@";
+        const badResponse = responseText.includes(badMarker);
+        const indexOfBadMarker = responseText.indexOf(badMarker);
+
+        const newQuestion = responseText.substring(indexOfBadMarker + badMarker.length).trim();
+
+        // console.log(res)
+        // console.log(check);
+        // console.log(badResponse);
+
+        // const new_question = res.data.question;
+        setLoading(false);
+        scrollToTop();
+
+        if (badResponse) {
+          dispatch(updateResponse(false));
           toast.error("Give a more detailed answer");
           dispatch(
             updateQuestionList({
               questionId: currentQuestionId,
-              question: new_question,
+              question: newQuestion,
             }),
           );
           dispatch(setGenerateAnswerSuccess(false));
-          return;
+          // return;
         } else {
+          setResetForm(true);
+          dispatch(updateResponse(true));
           dispatch(
             updateQuestionAnswer({
               questionId: currentQuestionId,
@@ -78,13 +149,21 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
             }),
           );
 
-          // Save progress to the backend
-          await dispatch(saveDraft());
-
+          //
           const nextQuestionIndex =
             questionWithUsecase.findIndex(
               (questionId) => currentQuestionId === questionId.questionId,
             ) + 1;
+
+          // const nextUsecase = questionWithUsecase[nextQuestionIndex].usecase;
+          // const check = filterUsecases.some((q) => q === nextUsecase);
+
+          // console.log(check);
+          // console.log(nextUsecase)
+          // if (check) {
+          //   navigate('/interaction-method')
+          // } else {
+          // }
 
           if (nextQuestionIndex === questionWithUsecase.length) {
             dispatch(setCurrentPageId(QAPages.Review));
@@ -95,20 +174,28 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
           }
         }
       } catch (e: any) {
+        scrollToTop();
         setLoading(false);
+        toast.error("Server error");
       }
     },
     [
       currentQuestionId,
       dispatch,
+      filterQuestion.question,
+      isResponseGood,
+      question.question,
       question.questionId,
+      question.usecase,
       questionWithUsecase,
       requirementGatheringId,
       userId,
     ],
   );
 
+  //Skip button
   const onSkip = useCallback(async () => {
+    dispatch(updateResponse(true));
     dispatch(
       addToSkippedQuestionList({
         question: question.question,
@@ -139,10 +226,18 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     questionWithUsecase,
   ]);
 
+  const scrollToTop = () => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = 0;
+    }
+  };
+
   return (
     <>
       <QuestionAnswerForm
+        chatRef={chatRef}
         onContinue={onContinue}
+        questionId={question.questionId}
         question={question?.question || ""}
         exampleAnswer={question?.exampleAnswer || ""}
         answer={question.answer}
@@ -150,6 +245,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         onSkip={onSkip}
         setResetForm={setResetForm}
         resetForm={resetForm}
+        isEdit={false}
         hasSkippedQuestion={
           skippedQuestionList.length > 0 &&
           questionWithUsecase[questionWithUsecase.length - 1]?.questionId === currentQuestionId

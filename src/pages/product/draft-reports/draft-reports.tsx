@@ -1,7 +1,5 @@
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import Title from "src/components/reusable/title/title";
+import { useEffect } from "react";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
@@ -34,7 +32,6 @@ import { AppConfig } from "src/config/app.config";
 import { useNavigate } from "react-router-dom";
 import GoBack from "../quick-prompt/goback";
 import SearchFilter from "./searchFilter";
-import { RootState } from "src/store";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -254,8 +251,8 @@ export default function DraftReports() {
   return (
     <>
       <div className="w-full h-[400px] max-h-[400px] ">
-        <GoBack />
-        <Title text="Drafts" className="mt-3 mb-3" />
+        <GoBack currentPageTitle={"Drafts"} />
+        {/* <Title text="Drafts" className="mt-3 mb-3" /> */}
         <SearchFilter />
         <AgGrid<IRow> rowData={filteredRowData} colDefs={colDefs} isLoading={isLoading} />
       </div>

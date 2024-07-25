@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import ProfileModal from "../../../components/modal/profile-modal";
 import ChangePasswordModal from "../../../components/modal/changepassword";
 
-import Button from "../../../components/reusable/button";
 import Loading from "../../../components/reusable/loading";
 import ProfileIcon from "../../../components/icons/common/profile";
 import EditIcon from "../../../components/icons/miscs/Edit";
@@ -196,7 +195,7 @@ const UserProfile = () => {
                     <div>{profile.value || "N/A"}</div>
                   </div>
                 ))}
-                <div className="flex items-center justify-end">
+                {/* <div className="flex items-center justify-end">
                   <Button
                     startIcon={<EditIcon className="text-primary-900" />}
                     htmlType="button"
@@ -207,7 +206,7 @@ const UserProfile = () => {
                   >
                     <span>Change Password</span>
                   </Button>
-                </div>
+                </div> */}
               </div>
             </ProfileComponent>
 

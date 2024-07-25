@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
+//
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setSession } from "../../../stores/session";
 import {
@@ -12,28 +13,35 @@ import {
   uploadUseCases,
 } from "../../../stores/use-case";
 
+//
 import { UseCaseOptions } from "./__use-cases";
 import UseCaseTab from "./case";
 
+//
 import { reset as resetQA } from "src/stores/Q&A";
 import { reset as resetUploadAttachments } from "src/stores/upload-attachments";
 import { reset as resetQuickPrompts } from "src/stores/upload-quick-prompt";
 import ProgressBar from "src/pages/product/upload-attachements-page/progress-bar";
 
+//
 interface OptionMappings {
   [key: string]: string;
 }
 
+/**
+ *
+ */
 const optionMappings: OptionMappings = {
-  "freedom-to-operate": "ip-validity-analysis",
-  "patent-infringement": "ip-validity-analysis",
+  "freedom-to-operate": "freedom-to-operate",
   "prior-art-search": "ip-validity-analysis",
   "patent-validity": "ip-validity-analysis",
   "ip-validity-analysis": "ip-validity-analysis",
+  "patent-infringement": "ip-validity-analysis",
   "ip-valuation": "ip-valuation",
   "ip-licensing-opportunity": "ip-licensing-opportunity",
   //
   "m&a": "m&a",
+  "market-potential": "market-potential",
   "market-analysis": "market-analysis",
   "competitive-landscape": "competitive-landscape",
   "consumer-landscape": "consumer-landscape",
@@ -48,15 +56,18 @@ const UseCaseSelect = () => {
   const navigation = useNavigate();
   const dispatch = useAppDispatch();
 
+  //
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   const { useCaseIds, isUploading, useCasesUploadState } = useAppSelector(
     (state) => state.usecases,
   );
 
+  //
   const [selected, setSelected] = useState<string[]>([]);
   const [options, setOptions] = useState<string[]>([]);
   const [reports, setReport] = useState<any>([]);
 
+  //
   useEffect(() => {
     if (useCasesUploadState.isUseCaseUploadError) {
       toast.error("Server error");
@@ -85,55 +96,66 @@ const UseCaseSelect = () => {
   //
   const onContinue = useCallback(() => {
     if (selected.length > 0) {
-      if (options.includes("ip-validity-analysis")) {
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              question_id: 6,
-              active_index: 0,
-              step_id: 3,
-              use_cases: options,
-            },
-          }),
-        );
-      } else if (options.includes("ip-licensing-opportunity")) {
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              question_id: 12,
-              step_id: 3,
-              active_index: 0,
-              use_cases: options,
-            },
-          }),
-        );
-      } else if (options.includes("ip-valuation")) {
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              question_id: 25,
-              step_id: 3,
-              use_cases: options,
-              active_index: 0,
-            },
-          }),
-        );
-      } else {
-        dispatch(
-          setSession({
-            session_data: {
-              ...sessionDetail,
-              question_id: 34,
-              step_id: 3,
-              use_cases: options,
-              active_index: 0,
-            },
-          }),
-        );
-      }
+      dispatch(
+        setSession({
+          session_data: {
+            ...sessionDetail,
+            question_id: 34,
+            step_id: 3,
+            use_cases: options,
+            active_index: 0,
+          },
+        }),
+      );
+      // if (options.includes("ip-validity-analysis")) {
+      //   dispatch(
+      //     setSession({
+      //       session_data: {
+      //         ...sessionDetail,
+      //         question_id: 6,
+      //         active_index: 0,
+      //         step_id: 3,
+      //         use_cases: options,
+      //       },
+      //     }),
+      //   );
+      // } else if (options.includes("ip-licensing-opportunity")) {
+      //   dispatch(
+      //     setSession({
+      //       session_data: {
+      //         ...sessionDetail,
+      //         question_id: 12,
+      //         step_id: 3,
+      //         active_index: 0,
+      //         use_cases: options,
+      //       },
+      //     }),
+      //   );
+      // } else if (options.includes("ip-valuation")) {
+      //   dispatch(
+      //     setSession({
+      //       session_data: {
+      //         ...sessionDetail,
+      //         question_id: 25,
+      //         step_id: 3,
+      //         use_cases: options,
+      //         active_index: 0,
+      //       },
+      //     }),
+      //   );
+      // } else {
+      //   dispatch(
+      //     setSession({
+      //       session_data: {
+      //         ...sessionDetail,
+      //         question_id: 34,
+      //         step_id: 3,
+      //         use_cases: options,
+      //         active_index: 0,
+      //       },
+      //     }),
+      //   );
+      // }
       dispatch(resetQA());
       dispatch(resetQuickPrompts());
       dispatch(resetUploadAttachments());
@@ -149,6 +171,7 @@ const UseCaseSelect = () => {
     }
   }, [dispatch, options, selected.length, sessionDetail, useCaseIds]);
 
+  //
   useEffect(() => {
     const newOptions: any[] | ((prevState: string[]) => string[]) = [];
 
@@ -192,13 +215,13 @@ const UseCaseSelect = () => {
   );
 
   return (
-    <div className="h-full">
-      <p className="text-heroDark-900 text-5xl font-bold">
+    <div className="h-[calc(100vh-170px)]">
+      <p className="text-heroDark-900 text-2xl  font-bold pb-1">
         Please select use cases for your report
       </p>
       <ProgressBar />
-      <div className="w-full mt-2">
-        <div className="flex justify-between border bg-white p-2 rounded-lg w-full">
+      <div className="w-full mt-2 h-full">
+        <div className="flex justify-between border bg-white h-full  p-2 rounded-lg w-full overflow-auto pn_scroller">
           <div className="w-full bg-white pb-8">
             <div className="w-full">
               <UseCaseTab

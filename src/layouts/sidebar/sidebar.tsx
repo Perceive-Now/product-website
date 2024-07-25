@@ -1,6 +1,10 @@
 import { useState, FunctionComponent, useCallback, useEffect, Fragment } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
+//
+import LogoSm from "../../assets/images/logo-small.svg";
+import Logo from "../../assets/images/logo.svg";
+
 import classNames from "classnames";
 
 //
@@ -107,10 +111,17 @@ export const AppSidebar: FunctionComponent<Props> = () => {
         <div>
           <div
             className={classNames(
-              "flex items-center gap-2",
-              open ? "justify-end" : "justify-start",
+              "flex items-center gap-1",
+              open ? "flex-row justify-between" : "justify-start flex-col",
             )}
           >
+            <Link to={"/"}>
+              <img
+                src={open ? Logo : LogoSm}
+                alt="logo"
+                className={classNames("h-[40px] w-[40x] p-1", open ? "ml-3" : "")}
+              />
+            </Link>
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
                 type="button"

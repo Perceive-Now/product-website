@@ -87,6 +87,7 @@ export interface IQAState {
   updatedQAList: IAnswers[];
   requirementGatheringId: number;
   userId: string;
+  isResponseGood: boolean;
 }
 
 export interface IAnswers {
@@ -123,6 +124,7 @@ export const initialState: IQAState = {
   updatedQAList: [],
   requirementGatheringId: 0, // Initialize with default value
   userId: jsCookie.get("user_id") || "", // Initialize with value from cookies
+  isResponseGood: true,
 };
 
 export const generateQuestionAnswer = createAsyncThunk<
@@ -270,6 +272,11 @@ export const QuestionAnswerSlice = createSlice({
       );
       state.skippedQuestionList = [...state.skippedQuestionList, action.payload];
     },
+    // -----------------------------------------------------------------------
+    updateResponse: (state, action: PayloadAction<boolean>) => {
+      state.isResponseGood = action.payload;
+    },
+    // -----------------------------------------------------------------------
     removeFromSkippedQuestionList: (state, action: PayloadAction<IQuestionAnswer>) => {
       // Remove the question from skippedQuestionList
       state.skippedQuestionList = state.skippedQuestionList.filter(
@@ -356,6 +363,7 @@ export const {
   updateQuestionAnswer,
   setRequirementGatheringId,
   setSkippedQuestions,
+  updateResponse,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;

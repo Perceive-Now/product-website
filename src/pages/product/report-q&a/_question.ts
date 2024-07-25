@@ -87,7 +87,6 @@ export const questionList = [
     usecase: "ip-validity-analysis",
     answer: `To ensure enablement in our patent applications for ARSight, we've meticulously documented the technology's development process, from conceptualization to prototyping. This includes detailed descriptions of the spatial computing algorithm, the adaptive learning system, and the energy-efficient hardware design. We provide clear, comprehensive instructions that enable a person skilled in the art to reproduce the technology without undue experimentation. Additionally, we've included examples and best practice scenarios to demonstrate the application and effectiveness of our technology in various use cases. Our thorough documentation practices aim to meet the legal requirements for enablement, demonstrating our commitment to transparency and innovation dissemination.`,
   },
-  // Ip licensing strategy
   {
     questionId: 12,
     useCaseId: 1,
