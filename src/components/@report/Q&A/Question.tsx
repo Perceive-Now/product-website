@@ -192,8 +192,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     ],
   );
 
-  //
+  //Skip button
   const onSkip = useCallback(() => {
+    dispatch(updateResponse(true));
     dispatch(
       addToSkippedQuestionList({
         question: question.question,
