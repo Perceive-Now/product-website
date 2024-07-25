@@ -40,7 +40,7 @@ const DiagnosticPlatform = ({
   onContinue,
   isLoading,
   answer,
-  setUpdatedAnswer,
+  // setUpdatedAnswer,
   resetForm,
   setResetForm,
 }: Props) => {
