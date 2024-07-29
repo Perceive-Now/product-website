@@ -105,31 +105,35 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               },
             );
 
-        const check = await axios.post(
-          "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
-          {
-            text: `question:${filterQuestion.question} answer:${value.answer}`,
-          },
-        );
+        const check =
+          question.questionId === 1 || question.questionId === 2
+            ? ("" as any)
+            : await axios.post(
+                "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
+                {
+                  text: `question:${filterQuestion.question} answer:${value.answer}`,
+                },
+              );
+        // const check = await axios.post(
+        //   "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
+        //   {
+        //     text: `question:${filterQuestion.question} answer:${value.answer}`,
+        //   },
+        // );
 
-        const responseText = check.data.response.Response;
+        const responseText = check?.data?.response?.Response || "";
         const badMarker = "@@bad@@";
         const badResponse = responseText.includes(badMarker);
         const indexOfBadMarker = responseText.indexOf(badMarker);
 
         const newQuestion = responseText.substring(indexOfBadMarker + badMarker.length).trim();
 
-        // console.log(res)
-        // console.log(check);
-        // console.log(badResponse);
-
-        // const new_question = res.data.question;
         setLoading(false);
         scrollToTop();
 
         if (badResponse) {
           dispatch(updateResponse(false));
-          toast.error("Give a more detailed answer");
+          // toast.error("Give a more detailed answer");
           dispatch(
             updateQuestionList({
               questionId: currentQuestionId,

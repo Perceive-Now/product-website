@@ -166,7 +166,7 @@ const DiagnosticPlatform = ({
               </div>
             )}
             <div
-              contentEditable
+              // contentEditable
               suppressContentEditableWarning
               ref={contentRef}
               onInput={handleContentChange}
