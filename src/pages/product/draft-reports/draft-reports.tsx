@@ -35,6 +35,7 @@ import { useNavigate } from "react-router-dom";
 import GoBack from "../quick-prompt/goback";
 import SearchFilter from "./searchFilter";
 import { RootState } from "src/store";
+import DeleteIconSvg from "../../../components/icons/common/delete-icon";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -201,6 +202,13 @@ const colDefs: ColDef<IRow>[] = [
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
+interface IRow {
+  reportId: string;
+  reportName: string;
+  dateCreated: Date;
+  edit: string;
+}
+
 export default function DraftReports() {
   const dispatch = useAppDispatch();
   const {
@@ -257,6 +265,9 @@ export default function DraftReports() {
         <GoBack />
         <Title text="Drafts" className="mt-3 mb-3" />
         <SearchFilter />
+        <div className="flex justify-end items-center mb-3">
+          <button className="flex items-center gap-2">{/* <DeleteIconSvg />*/}</button>
+        </div>
         <AgGrid<IRow> rowData={filteredRowData} colDefs={colDefs} isLoading={isLoading} />
       </div>
     </>

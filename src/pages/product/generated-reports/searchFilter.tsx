@@ -1,35 +1,35 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import FilterIcon from "../generated-reports/filter-icon";
 import MagnifierGlassIcon from "../generated-reports/magnifier-glass-icon";
 import ArrowIcon from "../generated-reports/arrow-icon";
 import { DateFilter, UseCaseFilter } from "./Filters";
-import { setSearchTerm, setDateRange } from "src/stores/draft";
-import { RootState } from "src/store";
 
-const SearchFilter: React.FC = () => {
+interface SearchFilterProps {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  onFilterClick: () => void;
+}
+
+const SearchFilter: React.FC<SearchFilterProps> = ({
+  searchTerm,
+  setSearchTerm,
+  onFilterClick,
+}) => {
   const [parentVisible, setParentVisible] = useState(false);
   const [dateVisible, setDateVisible] = useState(false);
   const [useCaseVisible, setUseCaseVisible] = useState(false);
   const [tagVisible, setTagVisible] = useState(false);
 
-  const dispatch = useDispatch();
-  const searchTerm = useSelector((state: RootState) => state.draft.filters.searchTerm);
-
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchTerm(event.target.value));
-  };
-
-  const handleDateRangeChange = (range: { from: Date | null; to: Date | null }) => {
-    dispatch(setDateRange(range));
+    setSearchTerm(event.target.value);
   };
 
   const filterContent = (
     <div className="text-black space-y-1">
       <Tippy
-        content={<DateFilter onDateRangeChange={handleDateRangeChange} />}
+        content={<DateFilter />}
         interactive={true}
         visible={dateVisible}
         onClickOutside={() => setDateVisible(false)}

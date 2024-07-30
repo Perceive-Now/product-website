@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import Calendar from "../../../components/reusable/calendar/Calendar";
 import CalendarIcon from "../../../components/icons/common/calendar-icon";
 
-interface DateFilterProps {
-  onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
-}
-
-export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => {
+export const DateFilter: React.FC = () => {
   const [classification, setClassification] = useState<"recent" | "specific" | "none">("none");
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<{ from: boolean; to: boolean }>({
     from: false,
@@ -25,10 +22,6 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
   const handleDateChange = (date: Date, type: "from" | "to") => {
     setDateRange((prev) => ({ ...prev, [type]: date }));
     setIsCalendarOpen((prev) => ({ ...prev, [type]: false }));
-  };
-
-  const handleDoneClick = () => {
-    onDateRangeChange(dateRange);
   };
 
   return (
@@ -68,7 +61,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
                 <input
                   type="text"
                   id="fromDate"
-                  placeholder="DD-MM-YYYY    "
+                  placeholder="DD-MM-YYYY      "
                   value={dateRange.from ? dateRange.from.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: true, to: false })}
@@ -87,7 +80,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
                 <input
                   type="text"
                   id="toDate"
-                  placeholder="DD-MM-YYYY    "
+                  placeholder="DD-MM-YYYY      "
                   value={dateRange.to ? dateRange.to.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: false, to: true })}
@@ -125,9 +118,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
         >
           Clear
         </button>
-        <button className="bg-[#442873] text-white px-4 py-1 rounded" onClick={handleDoneClick}>
-          Done
-        </button>
+        <button className="bg-[#442873] text-white px-4 py-1 rounded">Done</button>
       </div>
     </div>
   );
@@ -135,8 +126,4 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
 
 export const UseCaseFilter: React.FC = () => {
   return <div>Use cases content here</div>;
-};
-
-export const TagFilter: React.FC = () => {
-  return <div>Tags content here</div>;
 };

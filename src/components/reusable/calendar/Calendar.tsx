@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   format,
   addMonths,
@@ -7,10 +7,8 @@ import {
   endOfMonth,
   startOfWeek,
   endOfWeek,
-  eachDayOfInterval,
   isSameMonth,
   isSameDay,
-  parse,
   addDays,
 } from "date-fns";
 import LeftIcon from "./left-icon";
@@ -24,7 +22,12 @@ interface CalendarProps {
 }
 
 const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
-  const [currentMonth, setCurrentMonth] = useState(selectedDate);
+  const [currentMonth, setCurrentMonth] = useState(startOfMonth(selectedDate));
+
+  useEffect(() => {
+    console.log("Selected Date:", selectedDate);
+    console.log("Current Month:", currentMonth);
+  }, [selectedDate, currentMonth]);
 
   const handlePreviousMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -35,7 +38,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
   };
 
   const handleDateClick = (day: Date) => {
-    onDateChange(day);
+    const localDay = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+    onDateChange(localDay);
   };
 
   const renderHeader = () => {

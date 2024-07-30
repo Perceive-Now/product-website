@@ -12,6 +12,7 @@ import DropdownShareIcon from "./dropdown-share-icon";
 import ReportSummaryPopup from "./report-summary-popup";
 import Modal from "../../../components/reusable/modal";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
+import Title from "src/components/reusable/title/title";
 import {
   getReportsByUserId,
   IReport,
@@ -19,6 +20,8 @@ import {
 } from "../../../stores/genrated-reports";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
+import GoBack from "./go-back-report-listing/go-back-report-listing";
+import SearchFilter from "./searchFilter";
 
 interface IRow {
   reportId: string;
@@ -88,7 +91,7 @@ const colDefs: ColDef<IReport & { edit: string }>[] = [
     minWidth: 500,
     flex: 1,
   },
-  { field: "date_created", filter: "agDateColumnFilter" },
+  { field: "date_created", width: 300 },
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
@@ -96,6 +99,7 @@ export default function GeneratedReports() {
   const dispatch = useAppDispatch();
   const { reports, getReportsByUserIdState } = useAppSelector((state) => state.generatedReports);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<any>(null);
@@ -120,12 +124,14 @@ export default function GeneratedReports() {
     setCurrentEvent(event.data);
   };
 
-  const transformedReports = reports.map((report) => {
-    return {
-      ...report,
-      edit: "Edit",
-    };
-  });
+  const transformedReports = reports
+    .filter((report) => report.title.toLowerCase().includes(searchTerm.toLowerCase()))
+    .map((report) => {
+      return {
+        ...report,
+        edit: "Edit",
+      };
+    });
 
   const isLoading = getReportsByUserIdState.isLoading;
 
@@ -139,6 +145,15 @@ export default function GeneratedReports() {
         />
       </Modal>
       <div className="w-full h-[400px] max-h-[450px] ">
+        <GoBack />
+        <Title text="Reports" className="mt-3 mb-3" />
+        <SearchFilter
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          onFilterClick={() => {
+            /*should put a logic here*/
+          }}
+        />
         <AgGrid<IReport & { edit: string }>
           rowData={transformedReports}
           colDefs={colDefs}
