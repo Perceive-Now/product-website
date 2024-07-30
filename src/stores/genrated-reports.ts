@@ -24,19 +24,7 @@ const initialState: IReportSliceState = {
     user_case_id: -1,
     report: "",
     date_created: new Date(),
-    data: {
-      prompt1: "",
-      prompt2: "",
-      prompt2graph: "",
-      prompt2_2graph: "",
-      prompt3: "",
-      prompt3graph: "",
-      prompt4: "",
-      prompt4graph: "",
-      prompt5: "",
-      prompt5graph: "",
-      prompt6: "",
-    },
+    data: {}, 
   },
   reports: [],
   getReportsByUserIdState: {
@@ -66,7 +54,7 @@ export const getReportsByUserId = createAsyncThunk<
         reportData = JSON.parse(report.data);
       } catch (error) {
         console.error("Error parsing report data:", error);
-        reportData = initialState.report.data; // fallback to empty data structure
+        reportData = report.data; // fallback to raw data if parsing fails
       }
       return {
         ...report,
@@ -146,21 +134,7 @@ export interface IReport {
   user_case_id: number;
   report: string;
   date_created: Date;
-  data: IReportData;
-}
-
-interface IReportData {
-  prompt1: string;
-  prompt2: string;
-  prompt2graph: string;
-  prompt2_2graph: string;
-  prompt3: string;
-  prompt3graph: string;
-  prompt4: string;
-  prompt4graph: string;
-  prompt5: string;
-  prompt5graph: string;
-  prompt6: string;
+  data: Record<string, any> | string; 
 }
 
 interface IResponseError {
