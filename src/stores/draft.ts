@@ -28,6 +28,7 @@ export type TReportSectionPageIDs =
 interface FilterState {
   searchTerm: string;
   dateRange: { from: Date | null; to: Date | null };
+  useCases: number[]; 
 }
 
 interface draftState {
@@ -66,6 +67,7 @@ const initialState: draftState = {
   filters: {
     searchTerm: "",
     dateRange: { from: null, to: null },
+    useCases: [], 
   },
 };
 
@@ -146,7 +148,7 @@ export const draftSlice = createSlice({
             state.draftsArray[index]?.other_data.useCasesSliceState ??
             initialStateUseCase,
         },
-        date: state.draftsArray[index]?.date ?? new Date().toISOString(), // Include dateCreated
+        date: state.draftsArray[index]?.date ?? new Date().toISOString(), 
       };
 
       if (index < 0) {
@@ -186,6 +188,9 @@ export const draftSlice = createSlice({
     },
     setDateRange: (state, action: PayloadAction<{ from: Date | null; to: Date | null }>) => {
       state.filters.dateRange = action.payload;
+    },
+    setUseCaseFilter: (state, action: PayloadAction<number[]>) => {
+      state.filters.useCases = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -250,6 +255,7 @@ export const {
   resetGetDraftsByUserIdState,
   setSearchTerm,
   setDateRange,
+  setUseCaseFilter,
 } = draftSlice.actions;
 
 export default draftSlice.reducer;
@@ -285,7 +291,7 @@ export interface IDraft {
   user_id: string;
   current_page: string;
   other_data: IOtherData;
-  date: string; 
+  date: string;
 }
 
 type TDraftArray = IDraft[];
@@ -302,5 +308,5 @@ interface IDraftOptional {
   user_id: string;
   current_page: string;
   other_data: IOtherDataOptional;
-  date: string; 
+  date: string;
 }

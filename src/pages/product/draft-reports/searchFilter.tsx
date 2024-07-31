@@ -1,35 +1,40 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
 import FilterIcon from "../generated-reports/filter-icon";
 import MagnifierGlassIcon from "../generated-reports/magnifier-glass-icon";
 import ArrowIcon from "../generated-reports/arrow-icon";
 import { DateFilter, UseCaseFilter } from "./Filters";
-import { setSearchTerm, setDateRange } from "src/stores/draft";
-import { RootState } from "src/store";
 
-const SearchFilter: React.FC = () => {
+interface SearchFilterProps {
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  onFilterClick: () => void;
+  onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
+  onUseCaseChange: (selectedUseCases: number[]) => void;
+  useCases: { id: number; label: string; count: number }[];
+}
+
+const SearchFilter: React.FC<SearchFilterProps> = ({
+  searchTerm,
+  setSearchTerm,
+  onFilterClick,
+  onDateRangeChange,
+  onUseCaseChange,
+  useCases,
+}) => {
   const [parentVisible, setParentVisible] = useState(false);
   const [dateVisible, setDateVisible] = useState(false);
   const [useCaseVisible, setUseCaseVisible] = useState(false);
-  const [tagVisible, setTagVisible] = useState(false);
-
-  const dispatch = useDispatch();
-  const searchTerm = useSelector((state: RootState) => state.draft.filters.searchTerm);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchTerm(event.target.value));
-  };
-
-  const handleDateRangeChange = (range: { from: Date | null; to: Date | null }) => {
-    dispatch(setDateRange(range));
+    setSearchTerm(event.target.value);
   };
 
   const filterContent = (
     <div className="text-black space-y-1">
       <Tippy
-        content={<DateFilter onDateRangeChange={handleDateRangeChange} />}
+        content={<DateFilter onDateRangeChange={onDateRangeChange} />}
         interactive={true}
         visible={dateVisible}
         onClickOutside={() => setDateVisible(false)}
@@ -38,7 +43,7 @@ const SearchFilter: React.FC = () => {
         theme="light"
       >
         <div
-          className="flex flex-row  justify-between w-full cursor-pointer"
+          className="flex flex-row justify-between w-full cursor-pointer"
           onClick={() => {
             setDateVisible(true);
             setParentVisible(true);
@@ -48,13 +53,16 @@ const SearchFilter: React.FC = () => {
           <ArrowIcon />
         </div>
       </Tippy>
+
+      {/*
       <Tippy
-        content={<UseCaseFilter />}
+        content={<UseCaseFilter onUseCaseChange={onUseCaseChange} useCases={useCases} />}
         interactive={true}
         visible={useCaseVisible}
         onClickOutside={() => setUseCaseVisible(false)}
         onHide={() => setParentVisible(true)}
         placement="right-start"
+        theme="light"
       >
         <div
           className="flex flex-row gap-x-14 justify-between w-full cursor-pointer"
@@ -67,6 +75,7 @@ const SearchFilter: React.FC = () => {
           <ArrowIcon />
         </div>
       </Tippy>
+      */}
     </div>
   );
 
@@ -82,7 +91,7 @@ const SearchFilter: React.FC = () => {
         arrow={false}
         allowHTML={true}
         hideOnClick={false}
-        placement="right-start"
+        placement="bottom-start"
       >
         <div
           className="mr-2 flex items-center cursor-pointer"

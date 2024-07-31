@@ -12,7 +12,7 @@ interface SearchFilterProps {
   onFilterClick: () => void;
   onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
   onUseCaseChange: (selectedUseCases: number[]) => void;
-  useCases: { id: number; label: string }[];
+  useCases: { id: number; label: string; count: number }[];
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({

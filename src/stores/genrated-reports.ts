@@ -45,7 +45,7 @@ const initialState: IReportSliceState = {
   filters: {
     searchTerm: "",
     dateRange: { from: null, to: null },
-    useCases: [], // Initialize use cases filter
+    useCases: [], 
   },
 };
 
@@ -206,7 +206,7 @@ export interface IReport {
   requirement_gathering_id: number;
   user_id: string;
   user_case_id: number;
-  report: string;
+  report?: string;
   date_created: Date;
   data: Record<string, any> | string;
   report_id: string;

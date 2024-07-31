@@ -1,7 +1,5 @@
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import Title from "src/components/reusable/title/title";
 import { ColDef } from "ag-grid-community";
 import { CustomCellRendererProps } from "ag-grid-react";
 import Tippy from "@tippyjs/react";
@@ -10,7 +8,15 @@ import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis
 import DropdownDeleteIcon from "../generated-reports/dropdown-delete-icon";
 import DropdownContinueIcon from "../generated-reports/dropdown-continue-icon";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
-import { getDraftsByUserId, resetGetDraftsByUserIdState, IDraft } from "../../../stores/draft";
+import Title from "src/components/reusable/title/title";
+import {
+  getDraftsByUserId,
+  resetGetDraftsByUserIdState,
+  IDraft,
+  setSearchTerm,
+  setDateRange,
+  setUseCaseFilter,
+} from "../../../stores/draft";
 import {
   setCurrentPageId,
   questionWithUseCases,
@@ -34,8 +40,7 @@ import { AppConfig } from "src/config/app.config";
 import { useNavigate } from "react-router-dom";
 import GoBack from "../quick-prompt/goback";
 import SearchFilter from "./searchFilter";
-import { RootState } from "src/store";
-import DeleteIconSvg from "../../../components/icons/common/delete-icon";
+import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -64,9 +69,9 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
     const userId = jsCookie.get("user_id");
 
     try {
-      const response = await axiosInstance.delete(
-        `${BASE_PN_REPORT_URL}/draft/?requirement_gathering_id=${reportId}&user_id=${userId}`,
-      );
+      const response = await axiosInstance.delete(`${BASE_PN_REPORT_URL}/draft/`, {
+        data: [reportId],
+      });
 
       if (response.status === 200) {
         toast.success("Draft deleted successfully");
@@ -202,11 +207,14 @@ const colDefs: ColDef<IRow>[] = [
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
-interface IRow {
-  reportId: string;
-  reportName: string;
-  dateCreated: Date;
-  edit: string;
+// Define the type predicate function
+function isValidUseCase(option: any): option is { id: number; label: string; count: number } {
+  return (
+    option !== undefined &&
+    typeof option.id === "number" &&
+    typeof option.label === "string" &&
+    typeof option.count === "number"
+  );
 }
 
 export default function DraftReports() {
@@ -216,7 +224,7 @@ export default function DraftReports() {
     getDraftsByUserIdState,
     filters,
   } = useAppSelector((state) => state.draft);
-  const { searchTerm, dateRange } = filters;
+  const { searchTerm, dateRange, useCases } = filters;
 
   useEffect(() => {
     if (getDraftsByUserIdState.isError) {
@@ -233,13 +241,43 @@ export default function DraftReports() {
     dispatch(getDraftsByUserId({ userId: jsCookie.get("user_id") ?? "0" }));
   }, [dispatch]);
 
-  const filteredRowData: IRow[] = draftsArray
-    .filter((draft: IDraft) => {
+  const handleDateRangeChange = (range: { from: Date | null; to: Date | null }) => {
+    dispatch(setDateRange(range));
+  };
+
+  const handleUseCaseChange = (selectedUseCases: number[]) => {
+    dispatch(setUseCaseFilter(selectedUseCases));
+  };
+
+  // Extract unique use cases from the drafts
+  const uniqueUseCases = draftsArray
+    .map((draft) => Number(draft.other_data?.useCasesSliceState?.useCaseIds)) // Convert useCaseIds to number
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map((useCaseId) => {
+      const option = UseCaseOptions.find((option) => option.useCaseId === useCaseId);
+      return option ? { id: option.useCaseId, label: option.label, count: 0 } : undefined;
+    })
+    .filter(isValidUseCase)
+    .map((option) => ({
+      ...option,
+      count: draftsArray.filter(
+        (draft) => Number(draft.other_data?.useCasesSliceState?.useCaseIds) === option.id,
+      ).length,
+    }));
+
+  const filteredDrafts = draftsArray
+    .filter((draft) => {
       const draftDate = new Date(draft.date);
       if (dateRange.from && dateRange.to) {
         return draftDate >= dateRange.from && draftDate <= dateRange.to;
       }
       return true;
+    })
+    .filter((draft) => {
+      if (useCases.length === 0) {
+        return true;
+      }
+      return useCases.includes(Number(draft.other_data?.useCasesSliceState?.useCaseIds)); // Convert useCaseIds to number
     })
     .filter(
       (draft: IDraft) =>
@@ -264,11 +302,20 @@ export default function DraftReports() {
       <div className="w-full h-[400px] max-h-[400px] ">
         <GoBack />
         <Title text="Drafts" className="mt-3 mb-3" />
-        <SearchFilter />
+        <SearchFilter
+          searchTerm={searchTerm}
+          setSearchTerm={(term) => dispatch(setSearchTerm(term))}
+          onFilterClick={() => {
+            /*should put a logic here*/
+          }}
+          onDateRangeChange={handleDateRangeChange}
+          onUseCaseChange={handleUseCaseChange}
+          useCases={uniqueUseCases}
+        />
         <div className="flex justify-end items-center mb-3">
           <button className="flex items-center gap-2">{/* <DeleteIconSvg />*/}</button>
         </div>
-        <AgGrid<IRow> rowData={filteredRowData} colDefs={colDefs} isLoading={isLoading} />
+        <AgGrid<IRow> rowData={filteredDrafts} colDefs={colDefs} isLoading={isLoading} />
       </div>
     </>
   );

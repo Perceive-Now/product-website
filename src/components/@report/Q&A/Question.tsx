@@ -79,7 +79,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
           );
 
           // Save progress to the backend
-          await dispatch(saveDraft());
+          dispatch(saveDraft());
 
           const nextQuestionIndex =
             questionWithUsecase.findIndex(

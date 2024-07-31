@@ -9,6 +9,7 @@ interface DateFilterProps {
 export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => {
   const [classification, setClassification] = useState<"recent" | "specific" | "none">("none");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<{ from: boolean; to: boolean }>({
     from: false,
     to: false,
@@ -25,6 +26,10 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
   const handleDateChange = (date: Date, type: "from" | "to") => {
     setDateRange((prev) => ({ ...prev, [type]: date }));
     setIsCalendarOpen((prev) => ({ ...prev, [type]: false }));
+  };
+
+  const handleCloseCalendar = () => {
+    setIsCalendarOpen({ from: false, to: false });
   };
 
   const handleDoneClick = () => {
@@ -68,7 +73,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
                 <input
                   type="text"
                   id="fromDate"
-                  placeholder="DD-MM-YYYY    "
+                  placeholder="DD-MM-YYYY"
                   value={dateRange.from ? dateRange.from.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: true, to: false })}
@@ -87,7 +92,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
                 <input
                   type="text"
                   id="toDate"
-                  placeholder="DD-MM-YYYY    "
+                  placeholder="DD-MM-YYYY"
                   value={dateRange.to ? dateRange.to.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: false, to: true })}
@@ -105,12 +110,14 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
             <Calendar
               selectedDate={dateRange.from || new Date()}
               onDateChange={(date) => handleDateChange(date, "from")}
+              onClose={handleCloseCalendar}
             />
           )}
           {isCalendarOpen.to && (
             <Calendar
               selectedDate={dateRange.to || new Date()}
               onDateChange={(date) => handleDateChange(date, "to")}
+              onClose={handleCloseCalendar}
             />
           )}
         </div>
@@ -133,10 +140,46 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
   );
 };
 
-export const UseCaseFilter: React.FC = () => {
-  return <div>Use cases content here</div>;
-};
+interface UseCaseFilterProps {
+  onUseCaseChange: (selectedUseCases: number[]) => void;
+  useCases: { id: number; label: string; count: number }[];
+}
 
-export const TagFilter: React.FC = () => {
-  return <div>Tags content here</div>;
+export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange, useCases }) => {
+  const [selectedUseCases, setSelectedUseCases] = useState<number[]>([]);
+
+  const handleCheckboxChange = (id: number) => {
+    const newSelected = selectedUseCases.includes(id)
+      ? selectedUseCases.filter((useCaseId) => useCaseId !== id)
+      : [...selectedUseCases, id];
+    setSelectedUseCases(newSelected);
+    onUseCaseChange(newSelected);
+  };
+
+  return (
+    <div className="p-4 bg-white text-black">
+      {useCases.map((useCase) => (
+        <div key={useCase.id} className="flex items-center mb-2">
+          <input
+            type="checkbox"
+            id={`useCase-${useCase.id}`}
+            checked={selectedUseCases.includes(useCase.id)}
+            onChange={() => handleCheckboxChange(useCase.id)}
+          />
+          <label htmlFor={`useCase-${useCase.id}`} className="ml-2">
+            {useCase.label} ({useCase.count})
+          </label>
+        </div>
+      ))}
+      <div className="flex space-x-2 mt-2 justify-end ">
+        <button
+          className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2"
+          onClick={() => setSelectedUseCases([])}
+        >
+          Clear
+        </button>
+        <button className="bg-[#442873] text-white px-4 py-1 rounded">Done</button>
+      </div>
+    </div>
+  );
 };

@@ -49,8 +49,6 @@ const FullReportPage: React.FC = () => {
     (useCase) => useCase.useCaseId === Number(currentReport?.user_case_id),
   )?.label;
 
-  console.log("usecaseID2", useCaseName);
-
   useEffect(() => {
     if (currentReport) {
       const userCaseId =

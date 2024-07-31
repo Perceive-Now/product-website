@@ -9,7 +9,7 @@ import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis
 import DropdownDownloadIcon from "./dropdown-download-icon";
 import DropdownDeleteIcon from "./dropdown-delete-icon";
 import ReportSummaryPopup from "./report-summary-popup";
-import DownloadModal from "./download-modal"; // Import the new DownloadModal component
+import DownloadModal from "./download-modal";
 import Modal from "../../../components/reusable/modal";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import Title from "src/components/reusable/title/title";
@@ -120,9 +120,13 @@ const colDefs: ColDef<IReport & { edit: string }>[] = [
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
-// Define the type predicate function
-function isValidUseCase(option: any): option is { id: number; label: string } {
-  return option !== undefined && typeof option.id === "number" && typeof option.label === "string";
+function isValidUseCase(option: any): option is { id: number; label: string; count: number } {
+  return (
+    option !== undefined &&
+    typeof option.id === "number" &&
+    typeof option.label === "string" &&
+    typeof option.count === "number"
+  );
 }
 
 export default function GeneratedReports() {
@@ -166,15 +170,18 @@ export default function GeneratedReports() {
     dispatch(setUseCaseFilter(selectedUseCases));
   };
 
-  // Extract unique use cases from the reports
   const uniqueUseCases = reports
-    .map((report) => Number(report.user_case_id)) // Convert user_case_id to number
+    .map((report) => Number(report.user_case_id))
     .filter((value, index, self) => self.indexOf(value) === index)
     .map((useCaseId) => {
-      const option = UseCaseOptions.find((option) => option.useCaseId === useCaseId); // Use useCaseId here
-      return option ? { id: option.useCaseId, label: option.label } : undefined;
+      const option = UseCaseOptions.find((option) => option.useCaseId === useCaseId);
+      return option ? { id: option.useCaseId, label: option.label, count: 0 } : undefined;
     })
-    .filter(isValidUseCase); // Use the type predicate here
+    .filter(isValidUseCase) // Use the type predicate here
+    .map((option) => ({
+      ...option,
+      count: reports.filter((report) => Number(report.user_case_id) === option.id).length,
+    }));
 
   const filteredReports = reports
     .filter((report) => {
@@ -189,14 +196,14 @@ export default function GeneratedReports() {
       if (filters.useCases.length === 0) {
         return true;
       }
-      return filters.useCases.includes(Number(report.user_case_id)); // Convert user_case_id to number
+      return filters.useCases.includes(Number(report.user_case_id));
     })
     .filter((report) => report.title.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((report) => {
       return {
         ...report,
         edit: "Edit",
-        date_created: report.date ? new Date(report.date) : report.date_created, // Ensure the date is a Date object
+        date_created: report.date ? new Date(report.date) : report.date_created,
       };
     });
 
@@ -221,7 +228,7 @@ export default function GeneratedReports() {
           }}
           onDateRangeChange={handleDateRangeChange}
           onUseCaseChange={handleUseCaseChange}
-          useCases={uniqueUseCases} // Pass the unique use cases here
+          useCases={uniqueUseCases}
         />
         <AgGrid<IReport & { edit: string }>
           rowData={filteredReports}

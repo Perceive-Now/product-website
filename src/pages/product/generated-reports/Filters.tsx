@@ -9,6 +9,7 @@ interface DateFilterProps {
 export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => {
   const [classification, setClassification] = useState<"recent" | "specific" | "none">("none");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<{ from: boolean; to: boolean }>({
     from: false,
     to: false,
@@ -27,12 +28,16 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
     setIsCalendarOpen((prev) => ({ ...prev, [type]: false }));
   };
 
+  const handleCloseCalendar = () => {
+    setIsCalendarOpen({ from: false, to: false });
+  };
+
   const handleDoneClick = () => {
     onDateRangeChange(dateRange);
   };
 
   return (
-    <div className="p-4 bg-white text-black">
+    <div className="p-4 bg-white text-black w-[300px]">
       <div className="flex items-center mb-2">
         <input
           type="radio"
@@ -105,12 +110,14 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
             <Calendar
               selectedDate={dateRange.from || new Date()}
               onDateChange={(date) => handleDateChange(date, "from")}
+              onClose={handleCloseCalendar}
             />
           )}
           {isCalendarOpen.to && (
             <Calendar
               selectedDate={dateRange.to || new Date()}
               onDateChange={(date) => handleDateChange(date, "to")}
+              onClose={handleCloseCalendar}
             />
           )}
         </div>
@@ -135,26 +142,23 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
 
 interface UseCaseFilterProps {
   onUseCaseChange: (selectedUseCases: number[]) => void;
-  useCases: { id: number; label: string }[];
+  useCases: { id: number; label: string; count: number }[];
 }
 
 export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange, useCases }) => {
   const [selectedUseCases, setSelectedUseCases] = useState<number[]>([]);
 
   const handleCheckboxChange = (id: number) => {
-    setSelectedUseCases((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((useCaseId) => useCaseId !== id)
-        : [...prevSelected, id],
-    );
-  };
+    const newSelectedUseCases = selectedUseCases.includes(id)
+      ? selectedUseCases.filter((useCaseId) => useCaseId !== id)
+      : [...selectedUseCases, id];
 
-  const handleDoneClick = () => {
-    onUseCaseChange(selectedUseCases);
+    setSelectedUseCases(newSelectedUseCases);
+    onUseCaseChange(newSelectedUseCases);
   };
 
   return (
-    <div className="p-4 bg-white text-black">
+    <div className="p-4 bg-white text-black font-bold w-[300px]">
       {useCases.map((useCase) => (
         <div key={useCase.id} className="flex items-center mb-2">
           <input
@@ -164,21 +168,10 @@ export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange, u
             onChange={() => handleCheckboxChange(useCase.id)}
           />
           <label htmlFor={`useCase-${useCase.id}`} className="ml-2">
-            {useCase.label} ({Math.floor(Math.random() * 50) + 1})
+            {useCase.label} ({useCase.count})
           </label>
         </div>
       ))}
-      <div className="flex space-x-2 mt-2 justify-end ">
-        <button
-          className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2"
-          onClick={() => setSelectedUseCases([])}
-        >
-          Clear
-        </button>
-        <button className="bg-[#442873] text-white px-4 py-1 rounded" onClick={handleDoneClick}>
-          Done
-        </button>
-      </div>
     </div>
   );
 };
