@@ -10,17 +10,20 @@ interface SearchFilterProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   onFilterClick: () => void;
+  onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
+  onUseCaseChange: (selectedUseCases: number[]) => void; // Add this line
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({
   searchTerm,
   setSearchTerm,
   onFilterClick,
+  onDateRangeChange,
+  onUseCaseChange,
 }) => {
   const [parentVisible, setParentVisible] = useState(false);
   const [dateVisible, setDateVisible] = useState(false);
   const [useCaseVisible, setUseCaseVisible] = useState(false);
-  const [tagVisible, setTagVisible] = useState(false);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -29,7 +32,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   const filterContent = (
     <div className="text-black space-y-1">
       <Tippy
-        content={<DateFilter />}
+        content={<DateFilter onDateRangeChange={onDateRangeChange} />}
         interactive={true}
         visible={dateVisible}
         onClickOutside={() => setDateVisible(false)}
@@ -49,7 +52,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         </div>
       </Tippy>
       <Tippy
-        content={<UseCaseFilter />}
+        content={<UseCaseFilter onUseCaseChange={onUseCaseChange} />} // Pass the prop here
         interactive={true}
         visible={useCaseVisible}
         onClickOutside={() => setUseCaseVisible(false)}

@@ -3,44 +3,35 @@ import { useNavigate } from "react-router-dom";
 import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";
 import Markdown from "react-markdown";
 import Button from "../../../components/reusable/button";
+import { useAppSelector } from "src/hooks/redux";
 
 const ReportSummaryPopup = ({
   handleViewFullReportCallback,
   setIsOpenDialog,
-  event,
 }: {
   handleViewFullReportCallback: () => void;
   setIsOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  event: any;
 }) => {
   const navigate = useNavigate();
+  const currentReport = useAppSelector((state) => state.generatedReports.currentReport);
+
+  if (!currentReport) {
+    return <div>No report selected</div>;
+  }
 
   const handleViewFullReport = () => {
-    //console.log("handleViewFullReport called");
     setIsOpenDialog(false);
-
-    // Directly use event.data without parsing
-    const fullReportData = event.data;
-
-    {
-      /*console.log("Navigating with state:", 
-    {
-      title: event.title,
-      data: fullReportData,
-    });*/
-    }
-
     navigate("/full-report", {
       state: {
-        title: event.title,
-        data: fullReportData,
-        requirement_gathering_id: event.requirement_gathering_id,
+        title: currentReport.title,
+        data: currentReport.data,
+        requirement_gathering_id: currentReport.requirement_gathering_id,
       },
     });
   };
 
   const useCaseName = UseCaseOptions.find(
-    (useCase) => useCase.useCaseId === Number(event.user_case_id),
+    (useCase) => useCase.useCaseId === Number(currentReport.user_case_id),
   )?.label;
 
   return (
@@ -52,20 +43,20 @@ const ReportSummaryPopup = ({
 
       <div className="flex flex-row justify-between w-full mt-[20px]">
         <div>
-          <p className="font-bold text-[18px] text-primary-900 text-left">{event.title}</p>
+          <p className="font-bold text-[18px] text-primary-900 text-left">{currentReport.title}</p>
           <p>
             <span className="text-gray-500">Use Case : </span>{" "}
             <span className="text-[#373D3F]">{useCaseName}</span>
           </p>
         </div>
         <div>
-          <p>{event.date_created}</p>
+          <p>{currentReport.date ? new Date(currentReport.date).toLocaleDateString() : null}</p>
         </div>
       </div>
 
       <div className="mt-[20px]">
-        <p className="text-sm line-clamp-4">
-          <Markdown>{event.report}</Markdown>
+        <p className="text-m ">
+          <Markdown>{currentReport.summary}</Markdown>
         </p>
       </div>
 

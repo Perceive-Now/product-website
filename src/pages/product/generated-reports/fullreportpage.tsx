@@ -41,25 +41,26 @@ const preprocessMarkdown = (markdown: string) => {
 const FullReportPage: React.FC = () => {
   const location = useLocation();
   const { title, requirement_gathering_id } = location.state || {};
-  const reports = useAppSelector((state) => state.generatedReports.reports);
+  const currentReport = useAppSelector((state) => state.generatedReports.currentReport);
   const [reportData, setReportData] = useState<ReportData | string | null>(null);
   const [useCase, setUseCase] = useState<{ label: string; value: string } | null>(null);
 
-  useEffect(() => {
-    const report = reports.find((r) => r.requirement_gathering_id === requirement_gathering_id);
-    if (report) {
-      console.log("Report found:", report);
+  const useCaseName = UseCaseOptions.find(
+    (useCase) => useCase.useCaseId === Number(currentReport?.user_case_id),
+  )?.label;
 
+  console.log("usecaseID2", useCaseName);
+
+  useEffect(() => {
+    if (currentReport) {
       const userCaseId =
-        typeof report.user_case_id === "string"
-          ? parseInt(report.user_case_id, 10)
-          : report.user_case_id;
-      if (typeof report.data === "string") {
-        console.log("Report data is a string:", report.data);
-        setReportData(report.data);
+        typeof currentReport.user_case_id === "string"
+          ? parseInt(currentReport?.user_case_id, 10)
+          : currentReport.user_case_id;
+      if (typeof currentReport.data === "string") {
+        setReportData(currentReport.data);
       } else {
-        console.log("Report data is an object:", report.data);
-        const dataWithUserCaseId = { ...report.data, user_case_id: userCaseId };
+        const dataWithUserCaseId = { ...currentReport.data, user_case_id: userCaseId };
         setReportData(dataWithUserCaseId);
 
         const matchedUseCase = UseCaseOptions.find(
@@ -69,7 +70,7 @@ const FullReportPage: React.FC = () => {
         setUseCase(matchedUseCase || null);
       }
     }
-  }, [requirement_gathering_id, reports]);
+  }, [currentReport]);
 
   const renderGraph = (key: string, graphData: Chart) => {
     if (graphData.type === "bar") {
@@ -148,7 +149,6 @@ const FullReportPage: React.FC = () => {
     }
 
     if (typeof reportData === "string") {
-      console.log("Rendering markdown content:", reportData);
       return (
         <div className="markdown-content">
           <Markdown>{preprocessMarkdown(reportData)}</Markdown>
@@ -195,10 +195,10 @@ const FullReportPage: React.FC = () => {
             })}
           </p>
         </div>
-        {useCase && (
+        {useCaseName && (
           <div className="flex flex-row justify-between w-full gap-y-1">
             <p className="text-[14px] text-primary-700">
-              Use Case: <strong>{useCase.label} report</strong>
+              Use Case: <strong>{useCaseName} report</strong>
             </p>
           </div>
         )}

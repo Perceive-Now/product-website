@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import Calendar from "../../../components/reusable/calendar/Calendar";
 import CalendarIcon from "../../../components/icons/common/calendar-icon";
+import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";
 
-export const DateFilter: React.FC = () => {
+interface DateFilterProps {
+  onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
+}
+
+export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => {
   const [classification, setClassification] = useState<"recent" | "specific" | "none">("none");
-
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isCalendarOpen, setIsCalendarOpen] = useState<{ from: boolean; to: boolean }>({
     from: false,
@@ -22,6 +26,10 @@ export const DateFilter: React.FC = () => {
   const handleDateChange = (date: Date, type: "from" | "to") => {
     setDateRange((prev) => ({ ...prev, [type]: date }));
     setIsCalendarOpen((prev) => ({ ...prev, [type]: false }));
+  };
+
+  const handleDoneClick = () => {
+    onDateRangeChange(dateRange);
   };
 
   return (
@@ -118,12 +126,59 @@ export const DateFilter: React.FC = () => {
         >
           Clear
         </button>
-        <button className="bg-[#442873] text-white px-4 py-1 rounded">Done</button>
+        <button className="bg-[#442873] text-white px-4 py-1 rounded" onClick={handleDoneClick}>
+          Done
+        </button>
       </div>
     </div>
   );
 };
 
-export const UseCaseFilter: React.FC = () => {
-  return <div>Use cases content here</div>;
+interface UseCaseFilterProps {
+  onUseCaseChange: (selectedUseCases: number[]) => void;
+}
+
+export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange }) => {
+  const [selectedUseCases, setSelectedUseCases] = useState<number[]>([]);
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedUseCases((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((useCaseId) => useCaseId !== id)
+        : [...prevSelected, id],
+    );
+  };
+
+  const handleDoneClick = () => {
+    onUseCaseChange(selectedUseCases);
+  };
+
+  return (
+    <div className="p-4 bg-white text-black">
+      {UseCaseOptions.map((useCase) => (
+        <div key={useCase.id} className="flex items-center mb-2">
+          <input
+            type="checkbox"
+            id={`useCase-${useCase.id}`}
+            checked={selectedUseCases.includes(useCase.id)}
+            onChange={() => handleCheckboxChange(useCase.id)}
+          />
+          <label htmlFor={`useCase-${useCase.id}`} className="ml-2">
+            {useCase.label} ({Math.floor(Math.random() * 50) + 1}) {/* Sample number for demo */}
+          </label>
+        </div>
+      ))}
+      <div className="flex space-x-2 mt-2 justify-end ">
+        <button
+          className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2"
+          onClick={() => setSelectedUseCases([])}
+        >
+          Clear
+        </button>
+        <button className="bg-[#442873] text-white px-4 py-1 rounded" onClick={handleDoneClick}>
+          Done
+        </button>
+      </div>
+    </div>
+  );
 };

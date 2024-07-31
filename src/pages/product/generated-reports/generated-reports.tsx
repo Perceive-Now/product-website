@@ -8,8 +8,8 @@ import "tippy.js/themes/light.css";
 import VerticalEllipsis from "../../../components/icons/common/vertical-ellipsis";
 import DropdownDownloadIcon from "./dropdown-download-icon";
 import DropdownDeleteIcon from "./dropdown-delete-icon";
-import DropdownShareIcon from "./dropdown-share-icon";
 import ReportSummaryPopup from "./report-summary-popup";
+import DownloadModal from "./download-modal"; // Import the new DownloadModal component
 import Modal from "../../../components/reusable/modal";
 import AgGrid from "../../../components/reusable/ag-grid/ag-grid";
 import Title from "src/components/reusable/title/title";
@@ -17,6 +17,11 @@ import {
   getReportsByUserId,
   IReport,
   resetGetReportsByUserIdState,
+  setCurrentReport,
+  deleteReportById,
+  setSearchTerm,
+  setDateRange,
+  setUseCaseFilter, // Ensure setUseCaseFilter is imported
 } from "../../../stores/genrated-reports";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
@@ -31,16 +36,25 @@ interface IRow {
 }
 
 const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRendererProps }) => {
-  const handleDelete = () => {
-    console.log("delete", cellRendereProps.data.reportId);
-  };
+  const dispatch = useAppDispatch();
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<any>(null);
 
-  const handleShare = () => {
-    console.log("share", cellRendereProps.data.reportId);
+  const handleDelete = () => {
+    const reportId = cellRendereProps.data.report_id;
+    dispatch(deleteReportById({ reportId }))
+      .unwrap()
+      .then(() => {
+        toast.success("Report deleted successfully");
+      })
+      .catch((error) => {
+        toast.error(error.message || "Failed to delete report");
+      });
   };
 
   const handleDownload = () => {
-    console.log("download", cellRendereProps.data.reportId);
+    setSelectedReport(cellRendereProps.data);
+    setIsDownloadModalOpen(true);
   };
 
   return (
@@ -49,14 +63,19 @@ const DropDownContent = ({ cellRendereProps }: { cellRendereProps: CustomCellRen
         <p> Delete </p>
         <DropdownDeleteIcon />
       </button>
-      <button onClick={handleShare} className="flex flex-row gap-x-2 justify-between w-full">
-        <p> Share </p>
-        <DropdownShareIcon />
-      </button>
       <button onClick={handleDownload} className="flex flex-row gap-x-2 justify-between w-full">
         <p> Download </p>
         <DropdownDownloadIcon />
       </button>
+      {selectedReport && (
+        <DownloadModal
+          isOpen={isDownloadModalOpen}
+          handleClose={() => setIsDownloadModalOpen(false)}
+          reportId={selectedReport.report_id}
+          requirementGatheringId={selectedReport.requirement_gathering_id}
+          userCaseId={selectedReport.user_case_id}
+        />
+      )}
     </div>
   );
 };
@@ -91,13 +110,20 @@ const colDefs: ColDef<IReport & { edit: string }>[] = [
     minWidth: 500,
     flex: 1,
   },
-  { field: "date_created", width: 300 },
+  {
+    field: "date_created",
+    headerName: "Date Created",
+    valueFormatter: ({ value }) => (value ? new Date(value).toLocaleDateString() : ""),
+    width: 300,
+  },
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
 export default function GeneratedReports() {
   const dispatch = useAppDispatch();
-  const { reports, getReportsByUserIdState } = useAppSelector((state) => state.generatedReports);
+  const { reports, getReportsByUserIdState, filters } = useAppSelector(
+    (state) => state.generatedReports,
+  );
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -117,19 +143,44 @@ export default function GeneratedReports() {
 
   useEffect(() => {
     dispatch(getReportsByUserId({ userId: jsCookie.get("user_id") ?? "0" }));
-  }, []);
+  }, [dispatch]);
 
   const handleRowClick = (event: any) => {
     setIsOpenDialog(true);
     setCurrentEvent(event.data);
+    dispatch(setCurrentReport(event.data));
+    console.log("event", currentEvent);
   };
 
-  const transformedReports = reports
+  const handleDateRangeChange = (range: { from: Date | null; to: Date | null }) => {
+    dispatch(setDateRange(range));
+  };
+
+  const handleUseCaseChange = (selectedUseCases: number[]) => {
+    dispatch(setUseCaseFilter(selectedUseCases));
+  };
+
+  const filteredReports = reports
+    .filter((report) => {
+      const reportDate = new Date(report.date || report.date_created);
+      const { from, to } = filters.dateRange;
+      if (from && to) {
+        return reportDate >= from && reportDate <= to;
+      }
+      return true;
+    })
+    .filter((report) => {
+      if (filters.useCases.length === 0) {
+        return true;
+      }
+      return filters.useCases.includes(report.user_case_id);
+    })
     .filter((report) => report.title.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((report) => {
       return {
         ...report,
         edit: "Edit",
+        date_created: report.date ? new Date(report.date) : report.date_created, // Ensure the date is a Date object
       };
     });
 
@@ -141,7 +192,6 @@ export default function GeneratedReports() {
         <ReportSummaryPopup
           handleViewFullReportCallback={() => console.log("what")}
           setIsOpenDialog={setIsOpenDialog}
-          event={currentEvent}
         />
       </Modal>
       <div className="w-full h-[400px] max-h-[450px] ">
@@ -153,9 +203,11 @@ export default function GeneratedReports() {
           onFilterClick={() => {
             /*should put a logic here*/
           }}
+          onDateRangeChange={handleDateRangeChange}
+          onUseCaseChange={handleUseCaseChange} // Pass the prop here
         />
         <AgGrid<IReport & { edit: string }>
-          rowData={transformedReports}
+          rowData={filteredReports}
           colDefs={colDefs}
           onRowClicked={handleRowClick}
           isLoading={isLoading}
