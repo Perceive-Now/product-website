@@ -21,12 +21,13 @@ import {
   deleteReportById,
   setSearchTerm,
   setDateRange,
-  setUseCaseFilter, // Ensure setUseCaseFilter is imported
+  setUseCaseFilter,
 } from "../../../stores/genrated-reports";
 import jsCookie from "js-cookie";
 import toast from "react-hot-toast";
 import GoBack from "./go-back-report-listing/go-back-report-listing";
 import SearchFilter from "./searchFilter";
+import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";
 
 interface IRow {
   reportId: string;
@@ -119,6 +120,11 @@ const colDefs: ColDef<IReport & { edit: string }>[] = [
   { field: "edit", cellRenderer: EditCellRenderer, width: 100 },
 ];
 
+// Define the type predicate function
+function isValidUseCase(option: any): option is { id: number; label: string } {
+  return option !== undefined && typeof option.id === "number" && typeof option.label === "string";
+}
+
 export default function GeneratedReports() {
   const dispatch = useAppDispatch();
   const { reports, getReportsByUserIdState, filters } = useAppSelector(
@@ -160,6 +166,16 @@ export default function GeneratedReports() {
     dispatch(setUseCaseFilter(selectedUseCases));
   };
 
+  // Extract unique use cases from the reports
+  const uniqueUseCases = reports
+    .map((report) => Number(report.user_case_id)) // Convert user_case_id to number
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map((useCaseId) => {
+      const option = UseCaseOptions.find((option) => option.useCaseId === useCaseId); // Use useCaseId here
+      return option ? { id: option.useCaseId, label: option.label } : undefined;
+    })
+    .filter(isValidUseCase); // Use the type predicate here
+
   const filteredReports = reports
     .filter((report) => {
       const reportDate = new Date(report.date || report.date_created);
@@ -173,7 +189,7 @@ export default function GeneratedReports() {
       if (filters.useCases.length === 0) {
         return true;
       }
-      return filters.useCases.includes(report.user_case_id);
+      return filters.useCases.includes(Number(report.user_case_id)); // Convert user_case_id to number
     })
     .filter((report) => report.title.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((report) => {
@@ -204,7 +220,8 @@ export default function GeneratedReports() {
             /*should put a logic here*/
           }}
           onDateRangeChange={handleDateRangeChange}
-          onUseCaseChange={handleUseCaseChange} // Pass the prop here
+          onUseCaseChange={handleUseCaseChange}
+          useCases={uniqueUseCases} // Pass the unique use cases here
         />
         <AgGrid<IReport & { edit: string }>
           rowData={filteredReports}

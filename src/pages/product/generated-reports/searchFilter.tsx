@@ -11,7 +11,8 @@ interface SearchFilterProps {
   setSearchTerm: (term: string) => void;
   onFilterClick: () => void;
   onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
-  onUseCaseChange: (selectedUseCases: number[]) => void; // Add this line
+  onUseCaseChange: (selectedUseCases: number[]) => void;
+  useCases: { id: number; label: string }[];
 }
 
 const SearchFilter: React.FC<SearchFilterProps> = ({
@@ -20,6 +21,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
   onFilterClick,
   onDateRangeChange,
   onUseCaseChange,
+  useCases,
 }) => {
   const [parentVisible, setParentVisible] = useState(false);
   const [dateVisible, setDateVisible] = useState(false);
@@ -41,7 +43,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         theme="light"
       >
         <div
-          className="flex flex-row  justify-between w-full cursor-pointer"
+          className="flex flex-row justify-between w-full cursor-pointer"
           onClick={() => {
             setDateVisible(true);
             setParentVisible(true);
@@ -52,12 +54,13 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         </div>
       </Tippy>
       <Tippy
-        content={<UseCaseFilter onUseCaseChange={onUseCaseChange} />} // Pass the prop here
+        content={<UseCaseFilter onUseCaseChange={onUseCaseChange} useCases={useCases} />}
         interactive={true}
         visible={useCaseVisible}
         onClickOutside={() => setUseCaseVisible(false)}
         onHide={() => setParentVisible(true)}
         placement="right-start"
+        theme="light"
       >
         <div
           className="flex flex-row gap-x-14 justify-between w-full cursor-pointer"

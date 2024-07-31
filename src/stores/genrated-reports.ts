@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { AppConfig } from "../config/app.config";
 
@@ -17,7 +17,7 @@ interface IReportSliceState {
   filters: {
     searchTerm: string;
     dateRange: { from: Date | null; to: Date | null };
-    useCases: number[]; // Add useCases property here
+    useCases: number[];
   };
 }
 
@@ -45,7 +45,7 @@ const initialState: IReportSliceState = {
   filters: {
     searchTerm: "",
     dateRange: { from: null, to: null },
-    useCases: [], // Initialize useCases property
+    useCases: [], // Initialize use cases filter
   },
 };
 
@@ -132,7 +132,7 @@ export const GeneratedReportsSlice = createSlice({
     setDateRange: (state, action: PayloadAction<{ from: Date | null; to: Date | null }>) => {
       state.filters.dateRange = action.payload;
     },
-    setUseCaseFilter: (state, action: PayloadAction<number[]>) => { // Add setUseCaseFilter action
+    setUseCaseFilter: (state, action: PayloadAction<number[]>) => {
       state.filters.useCases = action.payload;
     },
   },

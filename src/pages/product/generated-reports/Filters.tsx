@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Calendar from "../../../components/reusable/calendar/Calendar";
 import CalendarIcon from "../../../components/icons/common/calendar-icon";
-import { UseCaseOptions } from "../../../components/@report/use-case/__use-cases";
 
 interface DateFilterProps {
   onDateRangeChange: (range: { from: Date | null; to: Date | null }) => void;
@@ -69,7 +68,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
                 <input
                   type="text"
                   id="fromDate"
-                  placeholder="DD-MM-YYYY      "
+                  placeholder="DD-MM-YYYY"
                   value={dateRange.from ? dateRange.from.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: true, to: false })}
@@ -88,7 +87,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
                 <input
                   type="text"
                   id="toDate"
-                  placeholder="DD-MM-YYYY      "
+                  placeholder="DD-MM-YYYY"
                   value={dateRange.to ? dateRange.to.toISOString().split("T")[0] : ""}
                   readOnly
                   onClick={() => setIsCalendarOpen({ from: false, to: true })}
@@ -136,9 +135,10 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
 
 interface UseCaseFilterProps {
   onUseCaseChange: (selectedUseCases: number[]) => void;
+  useCases: { id: number; label: string }[];
 }
 
-export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange }) => {
+export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange, useCases }) => {
   const [selectedUseCases, setSelectedUseCases] = useState<number[]>([]);
 
   const handleCheckboxChange = (id: number) => {
@@ -155,7 +155,7 @@ export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange })
 
   return (
     <div className="p-4 bg-white text-black">
-      {UseCaseOptions.map((useCase) => (
+      {useCases.map((useCase) => (
         <div key={useCase.id} className="flex items-center mb-2">
           <input
             type="checkbox"
@@ -164,7 +164,7 @@ export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange })
             onChange={() => handleCheckboxChange(useCase.id)}
           />
           <label htmlFor={`useCase-${useCase.id}`} className="ml-2">
-            {useCase.label} ({Math.floor(Math.random() * 50) + 1}) {/* Sample number for demo */}
+            {useCase.label} ({Math.floor(Math.random() * 50) + 1})
           </label>
         </div>
       ))}
