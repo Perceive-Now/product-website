@@ -37,7 +37,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({ onDateRangeChange }) => 
   };
 
   return (
-    <div className="p-4 bg-white text-black">
+    <div className="p-4 bg-white text-black w-[300px]">
       <div className="flex items-center mb-2">
         <input
           type="radio"
@@ -149,15 +149,16 @@ export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange, u
   const [selectedUseCases, setSelectedUseCases] = useState<number[]>([]);
 
   const handleCheckboxChange = (id: number) => {
-    const newSelected = selectedUseCases.includes(id)
+    const newSelectedUseCases = selectedUseCases.includes(id)
       ? selectedUseCases.filter((useCaseId) => useCaseId !== id)
       : [...selectedUseCases, id];
-    setSelectedUseCases(newSelected);
-    onUseCaseChange(newSelected);
+
+    setSelectedUseCases(newSelectedUseCases);
+    onUseCaseChange(newSelectedUseCases);
   };
 
   return (
-    <div className="p-4 bg-white text-black">
+    <div className="p-4 bg-white text-black font-bold w-[300px]">
       {useCases.map((useCase) => (
         <div key={useCase.id} className="flex items-center mb-2">
           <input
@@ -171,15 +172,6 @@ export const UseCaseFilter: React.FC<UseCaseFilterProps> = ({ onUseCaseChange, u
           </label>
         </div>
       ))}
-      <div className="flex space-x-2 mt-2 justify-end ">
-        <button
-          className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2"
-          onClick={() => setSelectedUseCases([])}
-        >
-          Clear
-        </button>
-        <button className="bg-[#442873] text-white px-4 py-1 rounded">Done</button>
-      </div>
     </div>
   );
 };

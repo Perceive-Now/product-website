@@ -24,7 +24,7 @@ interface IPaymentIntent {
   payment_intent_id: string;
   clientSecret: string;
 }
-
+const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 const API_URL = AppConfig.API_URL;
 const Auth_CODE = AppConfig.Auth_CODE;
 
@@ -54,15 +54,13 @@ export default function IPReview() {
   const handlePayment = useCallback(async () => {
     setPaymentLoading(true);
     try {
-      const response = await axiosInstance.post<IPaymentIntent>(
+      const paymentResponse = await axiosInstance.post<IPaymentIntent>(
         `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
         {
           item_ids: ItemId !== undefined ? ItemId : item_id,
         },
       );
-      //
-      setPaymentLoading(false);
-      const clientSecret = response.data.clientSecret;
+      const clientSecret = paymentResponse.data.clientSecret;
       dispatch(
         setSession({
           session_data: {
@@ -72,14 +70,27 @@ export default function IPReview() {
         }),
       );
       sessionStorage.setItem("clientSecret", clientSecret);
+
+      await axiosInstance.post(
+        `${BASE_PN_REPORT_URL}/report_generation/`,
+        {
+          requirement_gathering_id: requirementGatheringId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      setPaymentLoading(false);
       navigate("/payment");
     } catch (error) {
       setPaymentLoading(false);
-      toast.error("Failed to create payment intent");
+      toast.error("Failed to create payment intent or generate report");
     }
-  }, [ItemId, dispatch, item_id, navigate, sessionDetail]);
+  }, [ItemId, dispatch, item_id, navigate, requirementGatheringId, sessionDetail]);
 
-  //
   const onContinue = useCallback(async () => {
     if (sessionDetail?.skipped_question && sessionDetail?.skipped_question?.length > 0) {
       toast.error("Please provide all question answer");
@@ -87,7 +98,7 @@ export default function IPReview() {
       handlePayment();
     }
   }, [handlePayment, sessionDetail?.skipped_question]);
-  //
+
   useEffect(() => {
     if (currentPageId === 2) {
       setLoading(true);
@@ -102,17 +113,16 @@ export default function IPReview() {
         });
     }
   }, [currentPageId, requirementGatheringId, user_id]);
-  //
+
   const mergedData = userChats?.map((chat) => {
     const question = questionList.find((q) => q.questionId == chat.question_id);
     return {
       ...chat,
       question: question?.question,
-      example_answer: question?.answer, // Assuming 'question' is the property name for the question text
-      // You can include other properties from 'questionList' as needed
+      example_answer: question?.answer,
     };
   });
-  //
+
   const onEdit = useCallback(
     (chat: any) => {
       dispatch(setCurrentQuestionId(Number(chat.question_id)));

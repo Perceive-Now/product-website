@@ -53,8 +53,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
           <ArrowIcon />
         </div>
       </Tippy>
-
-      {/*
       <Tippy
         content={<UseCaseFilter onUseCaseChange={onUseCaseChange} useCases={useCases} />}
         interactive={true}
@@ -75,7 +73,6 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
           <ArrowIcon />
         </div>
       </Tippy>
-      */}
     </div>
   );
 
@@ -91,7 +88,7 @@ const SearchFilter: React.FC<SearchFilterProps> = ({
         arrow={false}
         allowHTML={true}
         hideOnClick={false}
-        placement="bottom-start"
+        placement="right-start"
       >
         <div
           className="mr-2 flex items-center cursor-pointer"

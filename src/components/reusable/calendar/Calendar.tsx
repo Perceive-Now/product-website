@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   format,
   addMonths,
@@ -7,10 +7,8 @@ import {
   endOfMonth,
   startOfWeek,
   endOfWeek,
-  eachDayOfInterval,
   isSameMonth,
   isSameDay,
-  parse,
   addDays,
 } from "date-fns";
 import LeftIcon from "./left-icon";
@@ -21,10 +19,16 @@ import "./Calendar.css";
 interface CalendarProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
+  onClose: () => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
-  const [currentMonth, setCurrentMonth] = useState(selectedDate);
+const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange, onClose }) => {
+  const [currentMonth, setCurrentMonth] = useState(startOfMonth(selectedDate));
+
+  useEffect(() => {
+    //console.log("Selected Date:", selectedDate);
+    //console.log("Current Month:", currentMonth);
+  }, [selectedDate, currentMonth]);
 
   const handlePreviousMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -35,7 +39,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
   };
 
   const handleDateClick = (day: Date) => {
-    onDateChange(day);
+    const localDay = new Date(day.getFullYear(), day.getMonth(), day.getDate());
+    onDateChange(localDay);
   };
 
   const renderHeader = () => {
@@ -126,8 +131,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateChange }) => {
       {renderHeader()}
       {renderDays()}
       {renderCells()}
-      <div className="flex space-x-2 mt-2 justify-end ">
-        <button className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2">
+      <div className="flex space-x-2 mt-2 justify-end">
+        <button
+          className="bg-white text-[#442873] px-4 py-1 rounded font-mulish font-semibold border-[#442873] border-2"
+          onClick={onClose}
+        >
           Cancel
         </button>
         <button className="bg-[#442873] text-white px-4 py-1 rounded">Confirm</button>
