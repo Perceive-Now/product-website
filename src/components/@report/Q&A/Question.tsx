@@ -49,7 +49,8 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
-  const [, setPrevCase] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [prevCase, setPrevCase] = useState("");
   // const [userChats, setUserChats] = useState<IAnswer[]>();
 
   // const user_id = jsCookie.get("user_id") ?? "";

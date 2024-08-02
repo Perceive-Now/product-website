@@ -40,6 +40,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 // Dummy function to illustrate error logging
 function logErrorToMyService(error: Error, componentStack: string) {
+  // eslint-disable-next-line no-console
   console.error("Logging error to service:", error, componentStack);
 }
 
