@@ -1,3 +1,4 @@
+// import EditIcon from "../../../icons/miscs/Edit";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 interface Props {
@@ -5,7 +6,11 @@ interface Props {
   answer: string;
   onEdit: (...values: any) => void;
 }
-const ReviewQuestionAnswer = ({ question, answer, onEdit }: Props) => {
+const ReviewQuestionAnswer = ({
+  question,
+  answer,
+}: // onEdit
+Props) => {
   const formatedAnswer = answer.replace(/\n/g, "<br>");
 
   return (

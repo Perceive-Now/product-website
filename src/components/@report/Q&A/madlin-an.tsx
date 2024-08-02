@@ -164,7 +164,7 @@ const DiagnosticPlatform = ({
               suppressContentEditableWarning
               ref={contentRef}
               onInput={handleContentChange}
-              placeholder="Please provide your answer here."
+              // placeholder="Please provide your answer here."
               className={classNames(
                 error ? "border-red-500" : "border-appGray-400 mt-2.5",
                 "space-y-[2px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none content-editable",
