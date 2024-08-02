@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";

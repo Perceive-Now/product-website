@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "../../reusable/button";
 import ReportSlider from "./report-silder";
 import Modal from "../../reusable/modal";

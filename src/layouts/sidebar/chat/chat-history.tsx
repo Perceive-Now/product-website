@@ -91,6 +91,7 @@ const KnowNowHistory = ({ History }: Props) => {
   );
 
   //Share
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onShare = useCallback(
     (conversation_id: string) => {
       console.log(conversation_id);

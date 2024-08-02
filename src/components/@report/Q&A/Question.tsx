@@ -49,7 +49,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
-  const [prevCase, setPrevCase] = useState("");
+  const [, setPrevCase] = useState("");
   // const [userChats, setUserChats] = useState<IAnswer[]>();
 
   // const user_id = jsCookie.get("user_id") ?? "";

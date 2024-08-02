@@ -1,4 +1,4 @@
-import React, { FunctionComponent, PropsWithChildren } from "react";
+import { FunctionComponent, PropsWithChildren } from "react";
 
 interface Props {
   className?: string;

@@ -1,11 +1,15 @@
-import EditIcon from "../../../icons/miscs/Edit";
+// import EditIcon from "../../../icons/miscs/Edit";
 
 interface Props {
   question: string;
   answer: string;
   onEdit: (...values: any) => void;
 }
-const ReviewQuestionAnswer = ({ question, answer, onEdit }: Props) => {
+const ReviewQuestionAnswer = ({
+  question,
+  answer,
+}: // onEdit
+Props) => {
   const formatedAnswer = answer.replace(/\n/g, "<br>");
 
   return (
