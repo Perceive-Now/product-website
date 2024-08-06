@@ -46,6 +46,9 @@ jobs:
         with:
           name: node-app
 
+      - name: Create extraction directory
+        run: mkdir -p /home/site/wwwroot
+
       - name: Unzip artifact for deployment
         run: unzip release.zip -d /home/site/wwwroot
 
