@@ -46,18 +46,13 @@ jobs:
         with:
           name: node-app
 
-      - name: Unzip artifact for deployment
-        run: |
-          mkdir -p /home/site/wwwroot
-          unzip release.zip -d /home/site/wwwroot
-
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'perceivenowfrontend'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E50DA9E8C52349B881A9C6AE712F61EF }}
-          package: /home/site/wwwroot
+          package: release.zip
 
       - name: Set up PM2 and Serve Application
         run: |
