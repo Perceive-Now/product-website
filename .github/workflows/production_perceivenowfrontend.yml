@@ -55,7 +55,7 @@ jobs:
           package: build
 
       - name: Install PM2 globally
-        run: npm install pm2 -g
+        run: npm install pm2 react-scripts -g
 
       - name: Serve the application with PM2
         run: |
