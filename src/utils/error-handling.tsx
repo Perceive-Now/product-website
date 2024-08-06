@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 
 // Define the types for the props and state
@@ -24,7 +25,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
     // Example of logging error to a service
-    logErrorToMyService(error, info.componentStack);
+    logErrorToMyService(error, info.componentStack || "");
   }
 
   render() {
@@ -39,6 +40,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 // Dummy function to illustrate error logging
 function logErrorToMyService(error: Error, componentStack: string) {
+  // eslint-disable-next-line no-console
   console.error("Logging error to service:", error, componentStack);
 }
 
