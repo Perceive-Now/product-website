@@ -44,7 +44,7 @@ jobs:
           name: build-artifact
 
       - name: Unzip artifact for deployment
-        run: unzip build.zip -d build
+        run: unzip build.zip -d ./build
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
@@ -52,7 +52,8 @@ jobs:
           app-name: 'perceivenowfrontend'
           slot-name: 'production'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: build
+          package: ./build
+
 
       - name: Install PM2 globally
         run: npm install pm2 -g
