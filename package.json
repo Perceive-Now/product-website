@@ -5,6 +5,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start:prod": "pm2 serve build --spa --no-daemon",
+    "test": "react-scripts test",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "lint:check": "eslint \"./src/**/*.{js,jsx,ts,tsx}\"",
@@ -13,7 +15,8 @@
     "format:write": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
     "f": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
     "prepare": "husky install"
-  },
+  }
+
   "dependencies": {
     "@headlessui/react": "^1.7.19",
     "@hookform/resolvers": "^2.9.7",
