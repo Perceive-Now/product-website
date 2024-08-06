@@ -44,7 +44,7 @@ jobs:
           name: build-artifact
 
       - name: Unzip artifact for deployment
-        run: unzip build.zip -d build
+        run: unzip build.zip -d /home/site/wwwroot
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
@@ -55,12 +55,11 @@ jobs:
           package: build
 
       - name: Install PM2 globally
-        run: npm install pm2 react-scripts -g
+        run: npm install pm2 -g
 
       - name: Serve the application with PM2
         run: |
-          yarn start
-
+          pm2 serve /home/site/wwwroot/build --spa --no-daemon
 
 
 
