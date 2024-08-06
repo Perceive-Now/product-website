@@ -44,7 +44,7 @@ jobs:
           name: build-artifact
 
       - name: Unzip artifact for deployment
-        run: unzip build.zip -d /home/site/wwwroot
+        run: unzip build.zip -d build
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
@@ -59,7 +59,5 @@ jobs:
 
       - name: Serve the application with PM2
         run: |
-          pm2 serve /home/site/wwwroot/build --spa --no-daemon
-
-
+          pm2-runtime serve /home/site/wwwroot/build --spa --no-daemon
 
