@@ -54,9 +54,10 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E50DA9E8C52349B881A9C6AE712F61EF }}
           package: release.zip
 
-      - name: Set up PM2
+      - name: Set up PM2 and Serve Application
         run: |
           npm install pm2 -g
-          pm2 serve /home/site/wwwroot --spa --no-daemon
+          pm2-runtime serve /home/site/wwwroot --spa --no-daemon
+
 
 
