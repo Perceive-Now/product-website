@@ -24,6 +24,16 @@ jobs:
       - name: Build the React app
         env:
           REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
+          REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}
+          REACT_APP_WEBSITE_URL: ${{ secrets.REACT_APP_WEBSITE_URL }}
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          REACT_APP_AUTH_CODE: ${{ secrets.REACT_APP_AUTH_CODE }}
+          REACT_APP_STRIPE_PUBLISHABLE_KEY: ${{ secrets.REACT_APP_STRIPE_PUBLISHABLE_KEY }}
+          REACT_APP_KNOW_NOW_IP_API: ${{ secrets.REACT_APP_KNOW_NOW_IP_API }}
+          REACT_APP_KNOW_NOW_MARKET_API: ${{ secrets.REACT_APP_KNOW_NOW_MARKET_API }}
+          REACT_APP_APP_URL: ${{ secrets.REACT_APP_APP_URL }}
+          REACT_APP_REPORT_API_URL: ${{ secrets.REACT_APP_REPORT_API_URL }}
+
         run: npm run build
 
       - name: Archive build files
