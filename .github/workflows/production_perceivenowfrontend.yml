@@ -22,12 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Debug secrets (safely)
-        run: |
-          echo "REACT_APP_GOOGLE_CLIENT_ID is set: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID != '' }}"
-          echo "REACT_APP_API_URL is set: ${{ secrets.REACT_APP_API_URL != '' }}"
-          echo "REACT_APP_AUTH_CODE is set: ${{ secrets.REACT_APP_AUTH_CODE != '' }}"
-
       - name: Build the React app
         env:
           REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
