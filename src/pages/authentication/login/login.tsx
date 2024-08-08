@@ -58,13 +58,16 @@ export default function LoginPage() {
     password: yup.string().required("Password is required"),
   });
 
-  const { watch, register, formState, handleSubmit } = useForm({
+  const {
+    watch,
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
     defaultValues: formInitialValue,
     resolver: yupResolver(formResolver),
-    mode: "onBlur",
+    mode: "onChange",
   });
-
-  const { errors } = formState;
 
   const handleLogin = async (values: ILoginFormValues) => {
     setIsSubmitting(true);
@@ -126,7 +129,7 @@ export default function LoginPage() {
                 {...register("username")}
                 type="text"
                 className={classNames(
-                  "appearance-none block w-full px-2 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  "appearance-none block w-full px-2 py-[10px] bg-gray-100 border rounded-md placeholder:text-gray-400 focus:ring-0.5 focus:outline-none",
                   error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.username
                     ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
@@ -136,8 +139,10 @@ export default function LoginPage() {
               />
             </div>
 
-            {errors.username?.message && (
-              <div className="mt-1 text-xs text-danger-500">{errors.username?.message}</div>
+            {errors.username && (
+              <div className="mt-0.5 text-xs font-semibold text-danger-500">
+                {errors.username?.message}
+              </div>
             )}
           </fieldset>
           <fieldset className="mt-2">
@@ -147,7 +152,7 @@ export default function LoginPage() {
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
-                  "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                  "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border rounded-md placeholder:text-gray-400 focus:ring-0.5 focus:outline-none",
                   error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
                   errors.password
                     ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
@@ -166,8 +171,10 @@ export default function LoginPage() {
               )}
             </div>
 
-            {errors.password?.message && (
-              <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
+            {errors.password && (
+              <div className="mt-0.5 text-xs font-semibold text-danger-500">
+                {errors.password?.message}
+              </div>
             )}
           </fieldset>
           <div className="text-sm text-primary-500 font-bold mt-0.5">
