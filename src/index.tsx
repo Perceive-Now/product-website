@@ -49,12 +49,7 @@ root.render(
     <Toaster position="top-right" />
     <BrowserRouter>
       <Provider store={store}>
-        <GoogleOAuthProvider
-          clientId={
-            googleAPIKey ||
-            "1011308471396-ce6bq71h3sklek5lj7isgsuqmlg84ovq.apps.googleusercontent.com"
-          }
-        >
+        <GoogleOAuthProvider clientId={googleAPIKey || ""}>
           <QueryClientProvider client={queryclient}>
             <App />
           </QueryClientProvider>
