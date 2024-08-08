@@ -67,7 +67,7 @@ const EditQuery = ({ onCancel, query, updateQuery, editIndex, setEdit }: Props) 
           setNumberOfRows(lines);
         }}
         className={classNames(
-          "appearance-none text-sm text-secondary-800 w-full border border-appGray-200 rounded-md placeholder:text-gray-400 placeholder:text-sm pn_scroller focus:border-appGray-200 focus-visible:border-appGray-200 focus:outline-none focus:ring-0 pr-6 ",
+          "appearance-none text-sm text-secondary-800 w-full border border-appGray-200 rounded-md placeholder:text-gray-400 placeholder:text-sm pn_scroller focus:border-appGray-200 focus-visible:border-appGray-200 focus:outline-none focus:ring-0 pr-6 pb-2 pl-1 pt-0.5",
         )}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {

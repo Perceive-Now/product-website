@@ -37,7 +37,7 @@ export default function Input({
             // name={name}
             {...register}
             className={classNames(
-              "w-full rounded-lg placeholder:text-sm",
+              "w-full rounded-lg placeholder:text-sm px-2 py-[8px]",
               error
                 ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                 : "input-field",
@@ -51,7 +51,7 @@ export default function Input({
             type={type}
             {...register}
             className={classNames(
-              "rounded-lg w-full placeholder:text-sm",
+              "rounded-lg w-full placeholder:text-sm px-2 py-[8px] focus:outline-none border",
               error
                 ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                 : "input-field",
@@ -69,7 +69,7 @@ export default function Input({
         )}
       </div>
 
-      {error && <div className="mt-1 text-xs text-danger-500">{error.message}</div>}
+      {error && <div className="mt-0.5 text-xs font-semibold text-danger-500">{error.message}</div>}
     </div>
   );
 }
