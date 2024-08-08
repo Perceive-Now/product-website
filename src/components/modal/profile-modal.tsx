@@ -42,8 +42,6 @@ interface Props {
 const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) => {
   const dispatch = useAppDispatch();
 
-  console.log(userDetail);
-
   const [country, setCountry] = useState<IOption>({
     label: userDetail?.country || "",
     value: userDetail?.country || "",
