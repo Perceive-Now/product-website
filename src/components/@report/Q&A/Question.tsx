@@ -114,6 +114,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
                   text: `question:${filterQuestion.question} answer:${value.answer}`,
                 },
               );
+
         // const check = await axios.post(
         //   "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
         //   {
@@ -127,6 +128,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         const indexOfBadMarker = responseText.indexOf(badMarker);
 
         const newQuestion = responseText.substring(indexOfBadMarker + badMarker.length).trim();
+        const updateQuestion = newQuestion.replace(/[[\]]/g, "").trim();
 
         setLoading(false);
         scrollToTop();
@@ -137,7 +139,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
           dispatch(
             updateQuestionList({
               questionId: currentQuestionId,
-              question: newQuestion,
+              question: updateQuestion,
             }),
           );
           dispatch(setGenerateAnswerSuccess(false));

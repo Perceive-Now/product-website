@@ -62,7 +62,7 @@ import ShareKnowNowPage from "./pages/product/share";
 // Demo
 import GenerateMarketReport from "./components/@report-generate/market-report-generate";
 import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
-import MadLibEditor from "./test";
+// import MadLibEditor from "./test";
 
 /**
  *
@@ -141,7 +141,7 @@ function App() {
 
             {/* Miscs pages */}
             <Route path="/feedback" element={<FeedbackPage />} />
-            <Route path="/help" element={<MadLibEditor />} />
+            <Route path="/help" element={<HelpPage />} />
           </Route>
         </Route>
 
