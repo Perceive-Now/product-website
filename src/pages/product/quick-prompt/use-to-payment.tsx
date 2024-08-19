@@ -27,7 +27,7 @@ const useToPayment = () => {
 
   // const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   // const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
 
   const handlePayment = useCallback(async () => {
