@@ -243,7 +243,7 @@ function KnowNowIP() {
   }, [chats]);
 
   return (
-    <div className="px-3 pb-0 xl:w-[960px] mx-auto">
+    <div className="h-[calc(100vh-160px)] px-3 pb-0 xl:w-[960px] mx-auto">
       <div className="w-full h-full relative">
         <div
           ref={chatRef}

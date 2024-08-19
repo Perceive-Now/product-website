@@ -269,7 +269,7 @@ function MarketIntelligenceKnowNow() {
 
   // h-[calc(100vh-260px)]
   return (
-    <div className="px-3 pt-0 pb-0 w-[960px] mx-auto">
+    <div className="h-[calc(100vh-160px)] px-3 pt-0 pb-0 w-[960px] mx-auto">
       <div className="w-full relative h-full">
         <div
           ref={chatRef}
