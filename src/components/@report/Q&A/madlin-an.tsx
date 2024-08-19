@@ -28,6 +28,7 @@ interface Props {
   setUpdatedAnswer: (answer: string) => void;
   setResetForm: (reset: boolean) => void;
   resetForm: boolean;
+  updatedAnswerRef: React.MutableRefObject<string>;
 }
 
 /**
@@ -40,9 +41,10 @@ const DiagnosticPlatform = ({
   onContinue,
   isLoading,
   answer,
-  // setUpdatedAnswer,
+  setUpdatedAnswer,
   resetForm,
   setResetForm,
+  updatedAnswerRef,
 }: Props) => {
   const [hasInput, setHasInput] = useState(false);
   const [userInputs, setUserInputs] = useState<UserInputs>({});
@@ -58,7 +60,7 @@ const DiagnosticPlatform = ({
     }
   }, [resetInputs]);
 
-  //
+  //For updating madlib inputs
   const handleInputChange = (placeholder: string, value: string) => {
     const updatedInputs = { ...userInputs, [placeholder]: value };
     setUserInputs(updatedInputs);
@@ -68,21 +70,28 @@ const DiagnosticPlatform = ({
     // setError(errorMessage);
   };
 
-  //
-
+  // For updating the editable content
   const handleContentChange = useCallback(() => {
     if (contentRef.current) {
       const updatedText = contentRef.current.innerHTML.trim();
       if (updatedText.length <= 0) {
-        // setUpdatedAnswer("");
+        updatedAnswerRef.current = "";
         setHasInput(false);
+        setUpdatedAnswer("");
         setError("Please provide an answer");
       } else {
+        // updatedAnswerRef.current = updatedText;
         setHasInput(true);
         setError(null);
       }
     }
-  }, []);
+  }, [setUpdatedAnswer, updatedAnswerRef]);
+
+  // useEffect(() => {
+  //   if (updatedAnswerRef.current.length <= 0) {
+  //     updatedAnswerRef.current = ""
+  //   }
+  // }, [updatedAnswerRef])
 
   //
   const handleContinue = useCallback(
@@ -114,6 +123,7 @@ const DiagnosticPlatform = ({
     [onContinue, resetForm, setResetForm],
   );
 
+  // update editable content inside it
   const createEditableContentHTML = (text: string) => {
     if (text.length > 0) {
       const content = text || " ";
@@ -161,10 +171,9 @@ const DiagnosticPlatform = ({
             )}
             <div
               contentEditable
-              suppressContentEditableWarning
               ref={contentRef}
+              suppressContentEditableWarning
               onInput={handleContentChange}
-              // placeholder="Please provide your answer here."
               className={classNames(
                 error ? "border-red-500" : "border-appGray-400 mt-2.5",
                 "space-y-[2px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none content-editable",
@@ -179,7 +188,13 @@ const DiagnosticPlatform = ({
         {hasSkippedQuestion ? <div>Please answer all the skipped questions.</div> : <></>}
         <div className="flex gap-2 items-center">
           {showSkip && !hasSkippedQuestion && (
-            <Button htmlType={"button"} type="secondary" rounded={"medium"} handleClick={onSkip}>
+            <Button
+              htmlType={"button"}
+              type="secondary"
+              rounded={"medium"}
+              handleClick={onSkip}
+              disabled={isLoading}
+            >
               Skip for now
             </Button>
           )}
