@@ -273,7 +273,7 @@ function MarketIntelligenceKnowNow() {
       <div className="w-full relative h-full">
         <div
           ref={chatRef}
-          className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+          className="h-[calc(100vh-170px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
           {chats && chats.length <= 0 && id ? (
             <div className="flex justify-center items-center h-full">

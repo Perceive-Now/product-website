@@ -10,7 +10,7 @@ import Button from "../../components/reusable/button";
 const StayTunedPage = () => {
   return (
     <div
-      className=" bg-white h-[584px] w-[932px] mx-auto rounded-lg"
+      className=" bg-white h-[calc(100vh-80px)] w-[932px] mx-auto rounded-lg"
       style={{ boxShadow: "0px 0px 12px 0px rgba(36, 39, 43, 0.08)" }}
     >
       <div className="py-5 flex flex-col justify-center items-center bg-white h-full w-full">
@@ -25,11 +25,11 @@ const StayTunedPage = () => {
           questions or need further help in the meantime.
         </div>
         <div className="flex justify-center gap-2">
-          <Link to="/my-reports" aria-disabled="true">
+          {/* <Link to="/my-reports" aria-disabled="true">
             <Button type="secondary" size="small" disabled>
               See all your reports
             </Button>
-          </Link>
+          </Link> */}
           <Link to="/new-report">
             <Button type="primary" size="small" classname="border border-primary-900">
               Start new report

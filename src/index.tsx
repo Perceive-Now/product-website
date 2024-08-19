@@ -46,7 +46,7 @@ const googleAPIKey = AppConfig.GOOGLE_API_KEY;
  */
 root.render(
   <StrictMode>
-    <Toaster position="top-right" />
+    <Toaster position="bottom-right" />
     <BrowserRouter>
       <Provider store={store}>
         <GoogleOAuthProvider clientId={googleAPIKey || ""}>

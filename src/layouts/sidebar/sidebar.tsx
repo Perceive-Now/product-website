@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { logoutUser } from "../../stores/auth";
 //
 
-import { ChevronDown, ChevronUp, LogoutIcon, SettingsIcon } from "../../components/icons";
+import { ChevronDown, ChevronUp, LogoutIcon } from "../../components/icons";
 import UserIcon from "../../components/reusable/userIcon";
 import SideBarToggleIcon from "../../components/icons/side-bar/toggle";
 
@@ -32,11 +32,11 @@ interface INavLinkItemProps extends ISidebarListItem {
 }
 
 const SidebarBottom = [
-  {
-    title: "Settings",
-    href: "/setting",
-    icon: SettingsIcon,
-  },
+  // {
+  //   title: "Settings",
+  //   href: "/setting",
+  //   icon: SettingsIcon,
+  // },
   {
     title: "Logout",
     icon: LogoutIcon,
@@ -235,7 +235,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
           <div className="space-y-1 px-2.5">
             {SidebarBottom.map((s, idx) => (
               <div key={idx * 29}>
-                {s.href ? (
+                {/* Need to add after stripe integration */}
+                {/* {s.href ? (
                   <Link
                     to={s.href}
                     className={classNames(
@@ -250,21 +251,22 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                     {open && <>{s.title}</>}
                   </Link>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={handleLogout}
-                    className={classNames(
-                      "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
-                    )}
-                  >
-                    <ToolTip title={s.title} placement="right">
-                      <div>
-                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
-                      </div>
-                    </ToolTip>
-                    {open && <>{s.title}</>}
-                  </button>
-                )}
+                 
+                )} */}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className={classNames(
+                    "py-1 rounded pl-1 flex items-center gap-1 text-sm text-secondary-800",
+                  )}
+                >
+                  <ToolTip title={s.title} placement="right">
+                    <div>
+                      <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                    </div>
+                  </ToolTip>
+                  {open && <>{s.title}</>}
+                </button>
               </div>
             ))}
           </div>

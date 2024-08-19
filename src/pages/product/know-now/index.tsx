@@ -68,7 +68,7 @@ const KnowNowPage = () => {
   }, [dispatch, mode, navigate, userId]);
 
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center pt-10 gap-8">
+    <div className="h-[calc(100vh-160px)] w-full flex flex-col justify-center items-center pt-10 gap-8">
       <KnowNowdefault />
       <div className="flex flex-col items-center gap-4">
         <div>
