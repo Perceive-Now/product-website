@@ -115,18 +115,17 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               },
             );
 
-        // const check =
-        //   question.questionId === 1 || question.questionId === 2
-        //     ? ("" as any)
-        //     : await axios.post(
-        //         "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
-        //         {
-        //           text: `question:${filterQuestion.question} answer:${value.answer}`,
-        //         },
-        //       );
+        const check =
+          question.questionId === 1 || question.questionId === 2
+            ? ("" as any)
+            : await axios.post(
+                "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
+                {
+                  text: `question:${filterQuestion.question} answer:${value.answer}`,
+                },
+              );
 
-        const responseText = "";
-        //  check?.data?.response?.Response || "";
+        const responseText = check?.data?.response?.Response || "";
         const badMarker = "@@bad@@";
         const badResponse = responseText.includes(badMarker);
         const indexOfBadMarker = responseText.indexOf(badMarker);
