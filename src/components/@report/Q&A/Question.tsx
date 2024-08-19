@@ -51,7 +51,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   // const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [resetForm, setResetForm] = useState(false);
-  const [prevCase, setPrevCase] = useState("");
+  // const [prevCase, setPrevCase] = useState("");
   // const [userChats, setUserChats] = useState<IAnswer[]>();
 
   const filterQuestion = NewQAList.filter((q) => q.questionId === question.questionId)[0] || null;
@@ -68,7 +68,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
   const onContinue = useCallback(
     async (value: { answer: string }) => {
       setLoading(true);
-      setPrevCase(question.usecase);
+      // setPrevCase(question.usecase);
 
       // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
       // console.log(filterUsecases)
@@ -84,7 +84,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       // ------------------- previous report endponint  ----------------------
 
       try {
-        const res = isResponseGood
+        isResponseGood
           ? await axios.post("https://templateuserrequirements.azurewebsites.net/create-items/", {
               questionId: String(question.questionId),
               question: String(question.question),

@@ -261,7 +261,6 @@ export const QuestionAnswerSlice = createSlice({
     },
     // -----------------------------------------------------------------------
     updateResponse: (state, action: PayloadAction<boolean>) => {
-      console.log(action.payload);
       state.isResponseGood = action.payload;
     },
     // -----------------------------------------------------------------------

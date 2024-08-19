@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -91,7 +92,7 @@ const GenerateMarketReport = () => {
           text: section,
         });
         setComplete(true);
-        console.log(res);
+        // console.log(res);
         toast.success(`Report for section ${section[sectionIndex]} is complete`);
         setReportData((prevData) => ({
           ...prevData,
@@ -102,7 +103,7 @@ const GenerateMarketReport = () => {
         // Call onLiveChat for the next section
         onLiveChat(file_name, case_id, sectionIndex + 1);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setIsGenerating(false);
       }
     },
@@ -123,10 +124,10 @@ const GenerateMarketReport = () => {
         onLiveChat(filename, "1", 0); // Start processing sections from index 0
       }
       setIsLoading(false);
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
     }
   }, [marketAnalysisQA, onLiveChat]);
 

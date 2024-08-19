@@ -39,6 +39,7 @@ const KnowNowHistory = ({ History }: Props) => {
   const dispatch = useAppDispatch();
 
   const [path, setPath] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sharePath, setSharePath] = useState("");
   const [modal, setModal] = useState(false);
 
@@ -91,14 +92,14 @@ const KnowNowHistory = ({ History }: Props) => {
   );
 
   //Share
-  const onShare = useCallback(
-    (conversation_id: string) => {
-      console.log(conversation_id);
-      setModal(true);
-      setSharePath(`/share${path}/${conversation_id}`);
-    },
-    [path],
-  );
+  // const onShare = useCallback(
+  //   (conversation_id: string) => {
+  //     console.log(conversation_id);
+  //     setModal(true);
+  //     setSharePath(`/share${path}/${conversation_id}`);
+  //   },
+  //   [path],
+  // );
 
   //
   const menuItems = [

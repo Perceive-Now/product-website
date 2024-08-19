@@ -53,7 +53,7 @@ export default function QuickPromptForm() {
         }),
       );
     }
-  }, [quickPromptsUploadState, dispatch]);
+  }, [quickPromptsUploadState, dispatch, handlePayment]);
 
   const requiredQuickPrompts = quickPromptContent[0];
 
