@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 
-import axiosInstance from "src/utils/axios";
+// import axiosInstance from "src/utils/axios";
 
 import ReviewQuestionAnswer from "./review-answer-question";
 
@@ -14,19 +14,19 @@ import { IAnswer, getUserChats } from "../../../../utils/api/chat";
 
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 
-import { setSession } from "../../../../stores/session";
+// import { setSession } from "../../../../stores/session";
 
 import { QAPages, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
-import { AppConfig } from "src/config/app.config";
+// import { AppConfig } from "src/config/app.config";
 import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 
-interface IPaymentIntent {
-  payment_intent_id: string;
-  clientSecret: string;
-}
+// interface IPaymentIntent {
+//   payment_intent_id: string;
+//   clientSecret: string;
+// }
 
-const API_URL = AppConfig.API_URL;
-const Auth_CODE = AppConfig.Auth_CODE;
+// const API_URL = AppConfig.API_URL;
+// const Auth_CODE = AppConfig.Auth_CODE;
 
 /**
  *
@@ -40,44 +40,46 @@ export default function IPReview() {
 
   const [userChats, setUserChats] = useState<IAnswer[]>();
   const [loading, setLoading] = useState(false);
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  // const [paymentLoading, setPaymentLoading] = useState(false);
 
-  const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
+  // const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
 
-  const storedPlanIds = sessionStorage.getItem("planIds");
+  // const storedPlanIds = sessionStorage.getItem("planIds");
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const item_id = storedPlanIds ? JSON.parse(storedPlanIds) : [];
+  // const item_id = storedPlanIds ? JSON.parse(storedPlanIds) : [];
 
   const user_id = jsCookie.get("user_id") ?? "";
   const requirementGatheringId = jsCookie.get("requirement_gathering_id") ?? "";
 
   const handlePayment = useCallback(async () => {
-    setPaymentLoading(true);
-    try {
-      const response = await axiosInstance.post<IPaymentIntent>(
-        `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
-        {
-          item_ids: ItemId !== undefined ? ItemId : item_id,
-        },
-      );
-      //
-      setPaymentLoading(false);
-      const clientSecret = response.data.clientSecret;
-      dispatch(
-        setSession({
-          session_data: {
-            ...sessionDetail,
-            client_secret: clientSecret,
-          },
-        }),
-      );
-      sessionStorage.setItem("clientSecret", clientSecret);
-      navigate("/payment");
-    } catch (error) {
-      setPaymentLoading(false);
-      toast.error("Failed to create payment intent");
-    }
-  }, [ItemId, dispatch, item_id, navigate, sessionDetail]);
+    navigate("/stay-tuned");
+
+    // setPaymentLoading(true);
+    // try {
+    //   const response = await axiosInstance.post<IPaymentIntent>(
+    //     `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
+    //     {
+    //       item_ids: ItemId !== undefined ? ItemId : item_id,
+    //     },
+    //   );
+    //   //
+    //   setPaymentLoading(false);
+    //   const clientSecret = response.data.clientSecret;
+    //   dispatch(
+    //     setSession({
+    //       session_data: {
+    //         ...sessionDetail,
+    //         client_secret: clientSecret,
+    //       },
+    //     }),
+    //   );
+    //   sessionStorage.setItem("clientSecret", clientSecret);
+    //   navigate("/payment");
+    // } catch (error) {
+    //   setPaymentLoading(false);
+    //   toast.error("Failed to create payment intent");
+    // }
+  }, [navigate]);
 
   //
   const onContinue = useCallback(async () => {
@@ -158,7 +160,7 @@ export default function IPReview() {
         </div>
         <div className="flex justify-center items-center border-t pt-1 mt-1">
           <Button
-            loading={paymentLoading}
+            // loading={paymentLoading}
             htmlType={"button"}
             rounded={"large"}
             handleClick={onContinue}
