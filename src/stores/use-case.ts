@@ -56,6 +56,25 @@ export const uploadUseCases = createAsyncThunk<
   }
 });
 
+export const getCurrentRequirementGatheringId = createAsyncThunk(
+  "getCurrentRequirementGatheringId",
+  async () => {
+    const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+    if (requirementGatheringId) {
+      return {
+        success: true,
+        message: "requirement Id found",
+        data: requirementGatheringId,
+      };
+    } else {
+      return {
+        success: false,
+        message: "requirement Id not found",
+      };
+    }
+  },
+);
+
 export const UseCaseSlice = createSlice({
   name: "usecases",
   initialState,
@@ -128,6 +147,10 @@ export const UseCaseSlice = createSlice({
         isUseCaseUploadSuccess: false,
         message: action.error.message ?? "Server error",
       };
+    });
+    builder.addCase(getCurrentRequirementGatheringId.fulfilled, (state, action) => {
+      const id = action.payload.data;
+      state.requirementGatheringId = Number(id);
     });
   },
 });

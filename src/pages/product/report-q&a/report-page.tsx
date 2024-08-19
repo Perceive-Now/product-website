@@ -29,9 +29,10 @@ import { LiquidSphereLoaderIcon } from "src/components/icons";
 //
 import { NewQAList } from "./_new-question";
 import ToolTip from "src/components/reusable/tool-tip";
+import { getCurrentRequirementGatheringId } from "src/stores/use-case";
 
 /**
- *
+ * Madlib and detailed QA page
  */
 const ReportDetailedQAPage = () => {
   const dispatch = useAppDispatch();
@@ -40,30 +41,36 @@ const ReportDetailedQAPage = () => {
   const [useCases, setUseCases] = useState<string[]>([]);
 
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
-
   const { questionsList, currentQuestionId, skippedQuestionList, currentPageId } = useAppSelector(
     (state) => state.QA,
   );
 
-  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
-
+  //
   useEffect(() => {
-    if (requirementGatheringId === 0) {
-      navigate("/new-report");
-    }
-  }, [navigate, requirementGatheringId]);
+    dispatch(getCurrentRequirementGatheringId());
+  }, [dispatch]);
+
+  // const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+
+  // useEffect(() => {
+  //   if (requirementGatheringId === 0) {
+  //     navigate("/new-report");
+  //   }
+  // }, [navigate, requirementGatheringId]);
 
   // Percentage calculation
   const totalQuestions = questionsList.length + skippedQuestionList.length;
   const answeredQuestion = questionsList.filter((q) => q.answer !== "").length;
   const percentage = Math.round((answeredQuestion / totalQuestions) * 100);
 
+  //
   useEffect(() => {
     if (sessionDetail?.use_cases) {
       setUseCases(sessionDetail?.use_cases);
     }
   }, [sessionDetail]);
 
+  //
   const questionWithUsecase = useMemo(() => {
     if (useCases && useCases.length > 0 && questionsList.length === 0) {
       return NewQAList.filter(
@@ -74,13 +81,14 @@ const ReportDetailedQAPage = () => {
         useCaseId: q.useCaseId,
         usecase: q.usecase,
         answer: "",
-        exampleAnswer: q.answer, // Assigning the answer to exampleAnswer
+        exampleAnswer: q.answer,
       }));
     } else {
       return questionsList;
     }
   }, [questionsList, useCases]);
 
+  //
   useEffect(() => {
     if (questionWithUsecase && questionWithUsecase?.length > 0) {
       dispatch(questionWithUseCases(questionWithUsecase));
@@ -103,6 +111,7 @@ const ReportDetailedQAPage = () => {
       },
     [currentQuestionId, questionWithUsecase],
   );
+
   //
   const QAPagesList = [
     {

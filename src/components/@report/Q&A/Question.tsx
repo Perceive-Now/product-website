@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 import axios from "axios";
@@ -11,6 +11,7 @@ import QuestionAnswerForm from "./question-form";
 import {
   QAPages,
   addToSkippedQuestionList,
+  getMadlibAnswers,
   incrementStep,
   setCurrentPageId,
   setCurrentQuestionId,
@@ -46,34 +47,42 @@ interface Props {
  *
  */
 const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
-  const dispatch = useAppDispatch();
-
-  // const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [resetForm, setResetForm] = useState(false);
-  // const [prevCase, setPrevCase] = useState("");
-  // const [userChats, setUserChats] = useState<IAnswer[]>();
-
-  const filterQuestion = NewQAList.filter((q) => q.questionId === question.questionId)[0] || null;
-  const chatRef = useRef<HTMLInputElement>(null);
   const userId = jsCookie.get("user_id");
 
+  const dispatch = useAppDispatch();
+
   //
-  const { currentQuestionId, skippedQuestionList, isResponseGood } = useAppSelector(
+  const [loading, setLoading] = useState(false);
+  const [resetForm, setResetForm] = useState(false);
+
+  //
+  const chatRef = useRef<HTMLInputElement>(null);
+
+  const filterQuestion = NewQAList.filter((q) => q.questionId === question.questionId)[0] || null;
+
+  useEffect(() => {
+    dispatch(getMadlibAnswers());
+  }, [dispatch]);
+
+  //
+  const { currentQuestionId, skippedQuestionList, isResponseGood, madlibAnswers } = useAppSelector(
     (state) => state.QA,
   );
   const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+
+  const hasMatchingItems =
+    madlibAnswers?.some((m) => Number(m.questionId) === Number(question.questionId)) ?? false;
 
   //
   const onContinue = useCallback(
     async (value: { answer: string }) => {
       setLoading(true);
-      // setPrevCase(question.usecase);
 
+      //*****------------------ previous report endpoint  -----------------------******
+      // setPrevCase(question.usecase);
       // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
       // console.log(filterUsecases)
 
-      // ------------------ previous report endponint  -----------------------
       // const res = await axios.post(
       //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
       //     value.answer,
@@ -81,10 +90,11 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       //     requirementGatheringId,
       //   )}&QuestionID=${question.questionId}`,
       // );
-      // ------------------- previous report endponint  ----------------------
+      // ------------------- previous report endpoint  ----------------------
+      // ******************************************************************************
 
       try {
-        isResponseGood
+        !hasMatchingItems && isResponseGood
           ? await axios.post("https://templateuserrequirements.azurewebsites.net/create-items/", {
               questionId: String(question.questionId),
               question: String(question.question),
@@ -114,13 +124,6 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
                   text: `question:${filterQuestion.question} answer:${value.answer}`,
                 },
               );
-
-        // const check = await axios.post(
-        //   "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
-        //   {
-        //     text: `question:${filterQuestion.question} answer:${value.answer}`,
-        //   },
-        // );
 
         const responseText = check?.data?.response?.Response || "";
         const badMarker = "@@bad@@";
@@ -160,16 +163,6 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               (questionId) => currentQuestionId === questionId.questionId,
             ) + 1;
 
-          // const nextUsecase = questionWithUsecase[nextQuestionIndex].usecase;
-          // const check = filterUsecases.some((q) => q === nextUsecase);
-
-          // console.log(check);
-          // console.log(nextUsecase)
-          // if (check) {
-          //   navigate('/interaction-method')
-          // } else {
-          // }
-
           if (nextQuestionIndex === questionWithUsecase.length) {
             dispatch(setCurrentPageId(QAPages.Review));
             dispatch(incrementStep());
@@ -181,13 +174,14 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       } catch (e: any) {
         scrollToTop();
         setLoading(false);
-        toast.error("Server error");
+        toast.error(e.response.data.detail || "Server error");
       }
     },
     [
       currentQuestionId,
       dispatch,
       filterQuestion.question,
+      hasMatchingItems,
       isResponseGood,
       question.question,
       question.questionId,

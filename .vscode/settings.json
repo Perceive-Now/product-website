@@ -2,5 +2,10 @@
   "appService.zipIgnorePattern": [
     "node_modules{,/**}",
     ".vscode{,/**}"
+  ],
+  "cSpell.words": [
+    "madlib",
+    "usecase",
+    "usecases"
   ]
 }
