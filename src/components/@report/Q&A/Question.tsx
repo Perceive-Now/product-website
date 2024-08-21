@@ -78,6 +78,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     async (value: { answer: string }) => {
       setLoading(true);
 
+      // ******************************************************************************
       //*****------------------ previous report endpoint  -----------------------******
       // setPrevCase(question.usecase);
       // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
