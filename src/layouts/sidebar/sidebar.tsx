@@ -58,15 +58,12 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const userDetail = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
-    if (pathname.includes("/know-now")) {
+    if (pathname.includes("/know-now") || pathname.includes("/start-conversation")) {
       setIsChat(true);
     } else {
       setIsChat(false);
     }
   }, [pathname]);
-
-  // const match = props.to ? pathname.includes(props.key) : false;
-  // const titles = pathname?.split("/").slice(1);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
@@ -80,14 +77,6 @@ export const AppSidebar: FunctionComponent<Props> = () => {
       setExpandedGroups([...expandedGroups, group]);
     }
   };
-
-  // const updateActiveSubGroup = (group: string) => {
-  //   if (expandedSubGroups.includes(group)) {
-  //     setExpandedSubGrups(expandedSubGroups.filter((g) => g !== group));
-  //   } else {
-  //     setExpandedSubGrups([...expandedSubGroups, group]);
-  //   }
-  // };
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -235,6 +224,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
           <div className="space-y-1 px-2.5">
             {SidebarBottom.map((s, idx) => (
               <div key={idx * 29}>
+                {/* ************************************************** */}
                 {/* Need to add after stripe integration */}
                 {/* {s.href ? (
                   <Link
@@ -253,6 +243,7 @@ export const AppSidebar: FunctionComponent<Props> = () => {
                 ) : (
                  
                 )} */}
+                {/* ************************************************** */}
                 <button
                   type="button"
                   onClick={handleLogout}

@@ -53,8 +53,6 @@ export default function QuestionAnswerForm({
   const [checkAnswer, setCheckAnswer] = useState("");
   const updatedAnswerRef = useRef<any>(updatedAnswer);
 
-  console.log("🚀 ~ checkAnswer:", checkAnswer);
-
   useEffect(() => {
     if (resetForm) {
       setUpdatedAnswer("");
@@ -69,7 +67,7 @@ export default function QuestionAnswerForm({
   }, [checkAnswer.length]);
 
   const useExample = useCallback(() => {
-    setUpdatedAnswer("exampleAnswer");
+    setUpdatedAnswer(exampleAnswer);
     setCheckAnswer(exampleAnswer);
     updatedAnswerRef.current = exampleAnswer;
   }, [exampleAnswer]);
