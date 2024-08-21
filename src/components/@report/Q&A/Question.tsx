@@ -89,7 +89,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       // console.log(filterUsecases)
 
       try {
-        // ---------------- previous report endponint  ---------------------------
+        // ---------------- previous report endpoint  ---------------------------
         // const res = await axios.post(
         //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
         //     value.answer,
@@ -97,7 +97,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         //     requirementGatheringId,
         //   )}&QuestionID=${question.questionId}`,
         // );
-        // ---------------- previous report endponint  ----------------------------
+        // ---------------- previous report endpoint  ----------------------------
 
         const res = await axios.post(
           "https://templateuserrequirements.azurewebsites.net/create-items/",
@@ -157,8 +157,8 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               (questionId) => currentQuestionId === questionId.questionId,
             ) + 1;
 
-          // const nextUsecase = questionWithUsecase[nextQuestionIndex].usecase;
-          // const check = filterUsecases.some((q) => q === nextUsecase);
+          // const nextUsecase = questionWithUsecase[nextQuestionIndex].useCase;
+          // const check = filterUsecase.some((q) => q === nextUsecase);
 
           // console.log(check);
           // console.log(nextUsecase)

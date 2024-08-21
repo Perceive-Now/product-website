@@ -206,7 +206,6 @@ export default function SignupPage() {
             </Link>
           </p>
           <hr className="mt-4 mb-4 border-gray-300" />
-
           <GoogleAuth
             type="signup"
             isAgree={isAgree}

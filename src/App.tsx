@@ -56,7 +56,7 @@ import ReportSectionStateManagementService from "./layouts/report-section-state-
 
 //
 import { EReportSectionPageIDs } from "./stores/draft";
-import KnowNowPage from "./pages/product/know-now";
+// import KnowNowPage from "./pages/product/know-now";
 import ShareKnowNowPage from "./pages/product/share";
 
 // Demo
@@ -124,7 +124,8 @@ function App() {
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
 
             {/* Know-now */}
-            <Route path="/start-conversation" element={<KnowNowPage />} />
+            {/* <Route path="/start-conversation" element={<KnowNowPage />} /> */}
+            <Route path="/start-conversation" element={<MarketIntelligenceKnowNow />} />
 
             <Route path="/know-now/ip-analysis/:id" element={<KnowNowIP />} />
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />

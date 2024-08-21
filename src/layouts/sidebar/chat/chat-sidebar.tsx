@@ -36,7 +36,7 @@ const ChatSidebar = () => {
 
   return (
     <div className="px-1 space-y-2">
-      <Link to={"/start-conversation"}>
+      <Link to={"/know-now/market-intelligence"}>
         <Button htmlType="button" classname="text-sm" size="small" rounded="small">
           Start new conversation
         </Button>
