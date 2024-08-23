@@ -27,7 +27,7 @@ export const UseCaseOptions = [
     label: "Patent validity/invalidity",
     value: "ip-validity-analysis",
     desc: "Assess the enforceability of a patent’s claims against existing prior art, essential for defending against infringement allegations or challenging a competitor’s patent. Critical insights help fortify your legal and competitive position",
-    useCaseId: 2,
+    useCaseId: 3,
     reportType: "ip",
     commonQuestionIds: [1, 2],
     reportPlan: "pro",
@@ -49,23 +49,25 @@ export const UseCaseOptions = [
     label: "Patent Licensing targets",
     value: "ip-licensing-opportunity",
     desc: "Maximize your intellectual property revenue with strategic insights into potential licensing opportunities. This report guides you through selecting and targeting the most lucrative IP licensing deals.",
-    useCaseId: 3,
+    useCaseId: 2,
     reportType: "ip",
     commonQuestionIds: [],
     reportPlan: "premium",
   },
 
   //--------------------- Need to add--------------------
-  // {
-  //   label: "Freedom to Operate",
-  //   value: "freedom-to-operate",
-  //   desc: "Minimize legal risks associated with intellectual property infringement with our Freedom to Operate report. It’s crucial for businesses seeking to innovate freely without legal encumbrances.",
-  // useCaseId: 0,
-  // reportType: "ip",
-  // commonQuestionIds: [],
-  // reportPlan: "premium"
+  {
+    sn: 11,
+    id: 15,
+    label: "Freedom to Operate",
+    value: "freedom-to-operate",
+    desc: "Minimize legal risks associated with intellectual property infringement with our Freedom to Operate report. It’s crucial for businesses seeking to innovate freely without legal encumbrances.",
+    useCaseId: 12,
+    reportType: "ip",
+    commonQuestionIds: [],
+    reportPlan: "premium"
 
-  // },
+  },
 
   // {
   //   label: "Patent infringement",
