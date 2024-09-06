@@ -97,7 +97,7 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
           //   dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
           // />
           <div
-            className={`text-secondary-800 ${showMore ? "" : "line-clamp-3"}`}
+            className={`text-secondary-800 text-justify ${showMore ? "" : "line-clamp-3"}`}
             dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
           />
         )}
