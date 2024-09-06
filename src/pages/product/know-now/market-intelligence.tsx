@@ -33,7 +33,7 @@ import { generateKnowId } from "src/utils/helpers";
 
 //
 import { LoadingIcon } from "src/components/icons";
-
+import KnowNowRightSideBar from "./side-bar";
 // const socket = io('https://percievenowchat2.azurewebsites.net/ws/chat'); // Replace with your WebSocket server URL
 
 /**
@@ -268,50 +268,108 @@ function MarketIntelligenceKnowNow() {
   }, [chats]);
 
   // h-[calc(100vh-260px)]
+  // return (
+  //   <div className="h-[calc(100vh-160px)] px-3 pt-0 pb-0 w-[960px] mx-auto">
+  //     <div className="w-full relative h-full">
+  //       <div
+  //         ref={chatRef}
+  //         className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+  //       >
+  //         {chats && chats.length <= 0 && id ? (
+  //           <div className="flex justify-center items-center h-full">
+  //             <LoadingIcon className="h-5 w-5 text-primary-900" />
+  //           </div>
+  //         ) : (
+  //           <>
+  //             {id === undefined ? (
+  //               <KnowNowdefault />
+  //             ) : (
+  //               <div className="space-y-6 w-full">
+  //                 {((chats && chats) || []).map((chat, idx) => (
+  //                   <div key={idx * 5} className="space-y-3">
+  //                     <ChatQuery
+  //                       query={chat.query}
+  //                       updateQuery={onSendQuery}
+  //                       editIndex={idx}
+  //                       setQuery={setQuery}
+  //                       isloadingCompleted={chatIndex === idx && isLoading}
+  //                     />
+  //                     <QueryAnswer
+  //                       answer={chat.answer}
+  //                       isLoading={isLoading && loadingIndex === idx}
+  //                       error={chat.error}
+  //                       updateQuery={onSendQuery}
+  //                       editIndex={idx}
+  //                       query={chat.query}
+  //                       message_id={chat.message_id}
+  //                       loadingCompleted={chatIndex === idx && isLoading}
+  //                     />
+  //                   </div>
+  //                 ))}
+  //               </div>
+  //             )}
+  //           </>
+  //         )}
+  //       </div>
+  //       <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
+  //     </div>
+  //   </div>
+  // );
   return (
-    <div className="h-[calc(100vh-160px)] px-3 pt-0 pb-0 w-[960px] mx-auto">
-      <div className="w-full relative h-full">
-        <div
-          ref={chatRef}
-          className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
-        >
-          {chats && chats.length <= 0 && id ? (
-            <div className="flex justify-center items-center h-full">
-              <LoadingIcon className="h-5 w-5 text-primary-900" />
-            </div>
-          ) : (
-            <>
-              {id === undefined ? (
-                <KnowNowdefault />
-              ) : (
-                <div className="space-y-6 w-full">
-                  {((chats && chats) || []).map((chat, idx) => (
-                    <div key={idx * 5} className="space-y-3">
-                      <ChatQuery
-                        query={chat.query}
-                        updateQuery={onSendQuery}
-                        editIndex={idx}
-                        setQuery={setQuery}
-                        isloadingCompleted={chatIndex === idx && isLoading}
-                      />
-                      <QueryAnswer
-                        answer={chat.answer}
-                        isLoading={isLoading && loadingIndex === idx}
-                        error={chat.error}
-                        updateQuery={onSendQuery}
-                        editIndex={idx}
-                        query={chat.query}
-                        message_id={chat.message_id}
-                        loadingCompleted={chatIndex === idx && isLoading}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
+    <div className="h-[calc(100vh-160px)] px-3 pt-0 pb-0 w-full mx-auto flex">
+      <div className="flex-1 h-full">
+        <div className="relative h-full">
+          <div
+            ref={chatRef}
+            className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+          >
+            {chats && chats.length <= 0 && id ? (
+              <div className="flex justify-center items-center h-full">
+                <LoadingIcon className="h-5 w-5 text-primary-900" />
+              </div>
+            ) : (
+              <>
+                {id === undefined ? (
+                  <KnowNowdefault />
+                ) : (
+                  <div className="space-y-6 w-full">
+                    {((chats && chats) || []).map((chat, idx) => (
+                      <div key={idx * 5} className="space-y-3">
+                        <ChatQuery
+                          query={chat.query}
+                          updateQuery={onSendQuery}
+                          editIndex={idx}
+                          setQuery={setQuery}
+                          isloadingCompleted={chatIndex === idx && isLoading}
+                        />
+                        <QueryAnswer
+                          answer={chat.answer}
+                          isLoading={isLoading && loadingIndex === idx}
+                          error={chat.error}
+                          updateQuery={onSendQuery}
+                          editIndex={idx}
+                          query={chat.query}
+                          message_id={chat.message_id}
+                          loadingCompleted={chatIndex === idx && isLoading}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+          <AddQuery
+            isLoading={isLoading}
+            setQuery={setQuery}
+            sendQuery={onSendQuery}
+            query={query}
+          />
         </div>
-        <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
+      </div>
+      <div className="w-[300px]">
+        {" "}
+        <KnowNowRightSideBar />
       </div>
     </div>
   );

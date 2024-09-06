@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import classNames from "classnames";
 import jsCookie from "js-cookie";
 import axios from "axios";
-
+import { ShareIcon } from "src/components/icons";
+import PinIcon from "src/components/icons/common/pin-icon";
+import ArrowDown from "src/components/icons/miscs/ArrowDown";
+import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
 //
 
 //
@@ -42,7 +45,9 @@ const KnowNowHistory = ({ History }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sharePath, setSharePath] = useState("");
   const [modal, setModal] = useState(false);
-
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(5);
+  const [deleteId, setDeleteId] = useState("");
   const userId = jsCookie.get("user_id");
 
   //
@@ -92,43 +97,55 @@ const KnowNowHistory = ({ History }: Props) => {
   );
 
   //Share
-  // const onShare = useCallback(
-  //   (conversation_id: string) => {
-  //     console.log(conversation_id);
-  //     setModal(true);
-  //     setSharePath(`/share${path}/${conversation_id}`);
-  //   },
-  //   [path],
-  // );
+  const onShare = useCallback(
+    (conversation_id: string) => {
+      console.log(conversation_id);
+      setModal(true);
+      setSharePath(`/share${path}/${conversation_id}`);
+    },
+    [path],
+  );
 
   //
   const menuItems = [
+    {
+      label: "Pin",
+      icon: <PinIcon className="h-2 w-2" />,
+      action: () => {
+        console.log("Pin");
+      },
+    },
     // {
-    //   label: "Pin",
-    //   icon: <PinIcon className="h-2 w-2" />,
-    //   action: () => {
-    //     console.log("Pin");
-    //   },
+    //   label: "Delete",
+    //   icon: <TrashIcon className="h-2 w-2" />,
+    //   action: onDelete,
     // },
     {
       label: "Delete",
       icon: <TrashIcon className="h-2 w-2" />,
-      action: onDelete,
+      action: (id: string) => {
+        setDeleteModal(true);
+        setDeleteId(id);
+      },
     },
-    // {
-    //   label: "Share",
-    //   icon: <ShareIcon className="h-2 w-2" />,
-    //   action: onShare,
-    // },
+    {
+      label: "Share",
+      icon: <ShareIcon className="h-2 w-2" />,
+      action: onShare,
+    },
   ];
 
-  const indexedHistory = History.map((element, index) => ({ index, element }));
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 5);
+  };
 
+  const indexedHistory = History.map((element, index) => ({ index, element }));
   return (
     <>
       <div className="h-[calc(100vh-400px)] overflow-y-auto pn_scroller">
         {indexedHistory
           .sort((a, b) => a.index - b.index)
+          .slice(0, visibleCount)
           .map((h, idx) => (
             <div
               key={idx * 100}
@@ -150,8 +167,20 @@ const KnowNowHistory = ({ History }: Props) => {
               />
             </div>
           ))}
+        {indexedHistory.length > visibleCount && (
+          <button onClick={handleShowMore} className="text-sm flex items-center mt-2 ml-1">
+            <ArrowDown className="mr-2" />
+            Show More
+          </button>
+        )}
       </div>
       <ShareModal open={modal} path={sharePath} handleClose={() => setModal(false)} />
+      <DeleteConfirmationModal
+        open={deleteModal}
+        handleDelete={onDelete}
+        handleClose={() => setDeleteModal(false)}
+        conversation_id={deleteId}
+      />
     </>
   );
 };

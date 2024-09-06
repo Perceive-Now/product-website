@@ -12,7 +12,8 @@ import { useAppDispatch } from "../../hooks/redux";
 import { setUpdateQuery } from "../../stores/know-now";
 import sanitizeHtml from "sanitize-html";
 import ToolTip from "../reusable/tool-tip";
-
+import ArrowDown from "../icons/miscs/ArrowDown";
+import Modal from "../reusable/modal";
 // interface IChat {
 //   query: string;
 //   answer: string;
@@ -33,6 +34,7 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
 
   const userDetail = useAppSelector((state) => state.auth.user);
   const [edit, setEdit] = useState(false);
+  const [showMore, setShowMore] = useState(false);
 
   const onEdit = useCallback(() => {
     setEdit(true);
@@ -43,6 +45,10 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
     setEdit(false);
     dispatch(setUpdateQuery({ editIndex: null, query: "" }));
   }, [dispatch]);
+
+  const onHide = useCallback(() => {
+    setShowMore((prev) => !prev);
+  }, []);
 
   const formattedQuery = query.replace(/\n/g, "<br>");
 
@@ -86,21 +92,34 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
             onCancel={onCancel}
           />
         ) : (
+          // <div
+          //   className="text-secondary-800"
+          //   dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
+          // />
           <div
-            className="text-secondary-800"
+            className={`text-secondary-800 ${showMore ? "" : "line-clamp-3"}`}
             dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
           />
         )}
       </div>
-      <ToolTip title="Edit">
+      <div className="flex flex-col items-end gap-2">
         <IconButton
           rounded
           color="gray"
-          icon={<EditIcon className="text-secondary-800" />}
-          onClick={onEdit}
+          icon={<ArrowDown />}
+          onClick={onHide}
           disabled={isloadingCompleted}
         />
-      </ToolTip>
+        <ToolTip title="Edit">
+          <IconButton
+            rounded
+            color="gray"
+            icon={<EditIcon className="text-secondary-800" />}
+            onClick={onEdit}
+            disabled={isloadingCompleted}
+          />
+        </ToolTip>
+      </div>
     </div>
   );
 };
