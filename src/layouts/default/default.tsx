@@ -16,7 +16,7 @@ export default function DefaultLayout() {
       <div className={classNames("w-full min-h-[calc(100vh-30px)] mt-0.5")}>
         <div className="flex h-full">
           <AppSidebar />
-          <div className="h-full w-full duration-500 px-4">
+          <div className="h-full w-full duration-500 px-4 mt-2">
             {/* {location.pathname !== "/q&a" && <AppHeader />} */}
             <div className="relative py-1 h-full w-full pl-1 container ">
               <Outlet />

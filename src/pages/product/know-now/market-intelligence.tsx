@@ -367,7 +367,7 @@ function MarketIntelligenceKnowNow() {
           />
         </div>
       </div>
-      <div className="w-[300px]">
+      <div>
         {" "}
         <KnowNowRightSideBar />
       </div>
