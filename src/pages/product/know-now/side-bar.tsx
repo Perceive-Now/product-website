@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import SideBarToggleIcon from "src/components/icons/side-bar/toggle";
 import ToolTip from "src/components/reusable/tool-tip";
+import { useAppSelector } from "src/hooks/redux";
 import classNames from "classnames";
 import { useState } from "react";
 const KnowNowRightSideBar = () => {
+  const { keywords } = useAppSelector((state) => state.KnownowMarket);
   const [open, setOpen] = useState(true);
 
   return (
@@ -32,7 +34,7 @@ const KnowNowRightSideBar = () => {
           <p className="text-sm mb-2.5">
             Based on the current conversation we found following data:
           </p>
-          <div className="flex justify-end items-center">
+          {/* <div className="flex justify-end items-center">
             <span className="text-sm">Refresh</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,24 +48,30 @@ const KnowNowRightSideBar = () => {
                 fill="#442873"
               />
             </svg>
-          </div>
-          <div className="border border-primary-50 rounded mt-1">
-            <div className="py-[12px] bg-primary-900 text-white text-center rounded-t text-sm font-medium">
-              Keywords from conversation
+          </div> */}
+
+          {keywords.length > 0 ? (
+            <div className="border border-primary-50 rounded mt-1">
+              <div className="py-[12px] bg-primary-900 text-white text-center rounded-t text-sm font-medium">
+                Keywords from conversation
+              </div>
+              <div className="bg-appGray-100 flex justify-center flex-wrap px-1 pt-1 pb-2 gap-1 font-medium text-sm">
+                {keywords.map((keyword, index) => (
+                  <div
+                    key={index}
+                    className="p-1 rounded-lg border border-primary-50 cursor-pointer hover:bg-white"
+                  >
+                    {keyword}
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-appGray-100 flex justify-center flex-wrap px-1 pt-1 pb-2 gap-1 font-medium text-sm">
-              <div className="p-1 rounded-lg border border-primary-50 cursor-pointer hover:bg-white">
-                sensor tech
-              </div>
-              <div className="p-1 rounded-lg border border-primary-50 cursor-pointer hover:bg-white">
-                pressure
-              </div>
-              <div className="p-1 rounded-lg border border-primary-50 cursor-pointer hover:bg-white">
-                wearable sensor
-              </div>
+          ) : (
+            <div className="mt-5 mb-10 flex justify-center">
+             No Data Found         
             </div>
-          </div>
-          <div className="border border-primary-50 rounded mt-3">
+          )}
+          {/* <div className="border border-primary-50 rounded mt-3">
             <div className="py-[12px] bg-primary-900 text-white text-center rounded-t text-sm font-medium">
               Stats based on keywords
             </div>
@@ -81,7 +89,7 @@ const KnowNowRightSideBar = () => {
                 $26 Millions invested
               </div>
             </div>
-          </div>
+          </div> */}
           <p className="text-sm mt-2.5 mb-1">You can also generate a full report.</p>
           <Link
             to="/new-report"

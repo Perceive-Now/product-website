@@ -35,7 +35,7 @@ const ShareKnowNowPage = () => {
     dispatch(
       getMarketChatById({
         user_id: userId || "",
-        thread_id: id || "",
+        thread_id: Number(id) || 0,
       }),
     )
       .unwrap()

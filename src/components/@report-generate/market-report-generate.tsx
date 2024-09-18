@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 import { questionList } from "src/pages/product/report-q&a/_question";
-import { generateKnowId } from "src/utils/helpers";
+import { generateKnowIdstring } from "src/utils/helpers";
+
 import Button from "../reusable/button";
 
 const MarketAnalysisSections = [
@@ -112,7 +113,7 @@ const GenerateMarketReport = () => {
 
   const onGenerateReport = useCallback(async () => {
     setIsLoading(true);
-    const filename = generateKnowId();
+    const filename = generateKnowIdstring();
     setFileName(filename);
     try {
       const res = await axios.post("https://report.api.perceivenow.ai/create_file_usecase", {

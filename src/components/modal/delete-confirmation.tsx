@@ -5,8 +5,8 @@ import Button from "../reusable/button";
 interface DeleteModalProps {
   open: boolean;
   handleClose: () => void;
-  handleDelete: (id: string) => void;
-  conversation_id: string;
+  handleDelete: (id: number) => void;
+  conversation_id: number;
 }
 
 export default function DeleteConfirmationModal({

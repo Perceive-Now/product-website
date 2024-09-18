@@ -11,7 +11,7 @@ interface IMoreOption {
 
 interface IOptions {
   label: string;
-  action: (id: string) => void;
+  action: (id: number) => void;
   icon?: any;
   moreOption?: IMoreOption;
 }
@@ -24,7 +24,7 @@ interface Props {
   alignment?: "left" | "right";
   tooltip?: string;
   width?: "sm" | "md" | "xs";
-  conversation_id: string;
+  conversation_id: number;
 }
 
 export default function Dropdown({

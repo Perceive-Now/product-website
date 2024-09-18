@@ -44,7 +44,7 @@ const KnowNowPage = () => {
   }, []);
 
   const onContinue = useCallback(() => {
-    dispatch(generateNewId({ id: "" }));
+    dispatch(generateNewId({ id: 0 }));
 
     dispatch(resetKnowNowMarket());
     dispatch(resetKnowNowIP());

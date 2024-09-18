@@ -40,6 +40,9 @@ import { useLocation, useParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import { saveMarketChat } from "src/stores/knownow-market";
 
+import remarkGfm from "remark-gfm";
+import Markdown from "react-markdown";
+
 interface Props {
   answer: string;
   isLoading: boolean;
@@ -47,7 +50,7 @@ interface Props {
   updateQuery: (query: string, editInex: number | null) => void;
   editIndex: any;
   query: string;
-  message_id: string;
+  message_id: number;
   loadingCompleted?: boolean;
 }
 
@@ -231,18 +234,19 @@ const QueryAnswer = ({
             like: value,
           });
         }
-        if (location.pathname.includes("/know-now/market-intelligence") && id) {
+        if (location.pathname.includes("/know-now/market-intelligence") && Number(id)) {
           dispatch(
             saveMarketChat({
-              thread_id: id || "",
+              thread_id: Number(id) || 0,
               user_id: userId || "",
-              conversation_data: {
-                conversation_id: "",
-                query: query,
-                ai_content: answer,
-                likes: value ? 1 : 0,
-              },
-            }),
+              // conversation_data: {
+                // conversation_id: 0,
+                question: query,
+                // ai_content: answer,
+                like_ai: value ? 1 : 0,
+              // },
+            }),  
+
           );
         }
         toast.success("Thanks for your feedback");
@@ -258,19 +262,19 @@ const QueryAnswer = ({
   );
 
   //
-  useEffect(() => {
-    if (answer) {
-      parse(answer, {
-        replace: (domNode) => {
-          // Ensure that domNode is an Element and has the properties we need
-          if ((domNode as Element).name === "img" && (domNode as Element).attribs.src) {
-            return <DraggableImage src={(domNode as Element).attribs.src} />;
-          }
-        },
-      });
-      // setParsedContent(parsed as React.ReactNode[]);
-    }
-  }, [answer]);
+  // useEffect(() => {
+  //   if (answer) {
+  //     parse(answer, {
+  //       replace: (domNode) => {
+  //         // Ensure that domNode is an Element and has the properties we need
+  //         if ((domNode as Element).name === "img" && (domNode as Element).attribs.src) {
+  //           return <DraggableImage src={(domNode as Element).attribs.src} />;
+  //         }
+  //       },
+  //     });
+  //     // setParsedContent(parsed as React.ReactNode[]);
+  //   }
+  // }, [answer]);
 
   return (
     <div className="flex items-start gap-3">
@@ -291,12 +295,19 @@ const QueryAnswer = ({
               ) : (
                 <DndProvider backend={HTML5Backend}>
                   <div className="relative">
-                    <div
+                    {/* <div
                       ref={copyRef}
                       style={{ textAlign: "justify" }}
                       className="text-secondary-800 relative bottom-0 duration-500 delay-500 whitespace-pre-wrap stream-answer"
                       dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
-                    />
+                    /> */}
+                      <Markdown
+                    className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
+                    remarkPlugins={[remarkGfm]}
+                    // className="markdown"
+                    >
+                      {answer}
+                    </Markdown> 
                   </div>
                 </DndProvider>
               )}

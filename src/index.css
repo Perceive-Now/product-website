@@ -308,3 +308,106 @@ textarea {
 input {
   field-sizing: content;
 }
+
+.markdownWrapper > * {
+  all: revert;
+}
+
+.markdownWrapper .h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdownWrapper h2 {
+  font-size: 1.5em;
+  margin: 0.75em 0;
+}
+
+.markdownWrapper h3 {
+  font-size: 1.17em;
+  margin: 0.83em 0;
+}
+
+.markdownWrapper em {
+  font-style: italic;
+}
+
+.markdownWrapper strong {
+  font-weight: bold;
+}
+
+.markdownWrapper del {
+  text-decoration: line-through;
+}
+
+.markdownWrapper ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.markdownWrapper ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.markdownWrapper li {
+  margin: 0.5em 0;
+}
+
+.markdownWrapper a {
+  color: blue;
+  text-decoration: none;
+}
+
+.markdownWrapper a:hover {
+  text-decoration: underline;
+}
+
+.markdownWrapper img {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdownWrapper code {
+  font-family: monospace;
+  background-color: #f4f4f4;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.markdownWrapper pre {
+  font-family: monospace;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.markdownWrapper blockquote {
+  border-left: 4px solid #ccc;
+  margin: 1em 0;
+  padding-left: 10px;
+  color: #555;
+}
+
+.markdownWrapper hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+}
+
+.markdownWrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.markdownWrapper th, .markdownWrapper td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.markdownWrapper th {
+  background-color: #f2f2f2;
+}

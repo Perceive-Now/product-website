@@ -80,7 +80,7 @@ function KnowNowIP() {
       dispatch(
         getIPChatById({
           user_id: userId || "",
-          conversation_id: id,
+          conversation_id: Number(id),
         }),
       )
         .unwrap()
@@ -107,15 +107,16 @@ function KnowNowIP() {
       setIsloading(true);
 
       //
-      const conversationId = id !== undefined ? id : generateKnowId();
+      const conversationId = id !== undefined ? Number(id) : generateKnowId();
 
       //
       if (id === undefined) {
         dispatch(generateNewId({ id: conversationId }));
         dispatch(
           setChatIPIds({
-            title: conversationId,
-            chat_id: conversationId,
+            title: '',
+            thread_id: conversationId,
+            favorite: false
           }),
         );
         navigate(`/know-now/ip-analysis/${conversationId}`);
@@ -129,7 +130,7 @@ function KnowNowIP() {
             user_id: userId || "",
             role: "human",
             service_name: "ip",
-            title: conversationId,
+            title: "",
             content: query || updateQuery,
           },
         ]),
@@ -175,7 +176,7 @@ function KnowNowIP() {
               user_id: userId || "",
               role: "ai",
               service_name: "ip",
-              title: conversationId,
+              title: "",
               content: answer,
             },
           ]),

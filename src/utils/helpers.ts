@@ -106,6 +106,14 @@ export function convertToBase64String(profile_photo?: string): string | undefine
 }
 
 export function generateKnowId() {
+  const maxDigits = 8
+  const maxValue = 10 ** maxDigits - 1;
+  const uniqueInt = Math.floor(Math.random() * (maxValue + 1));
+
+  return uniqueInt;
+}
+
+export function generateKnowIdstring() {
   const newUuid = uuidv4();
   return newUuid;
 }

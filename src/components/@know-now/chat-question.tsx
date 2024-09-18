@@ -13,6 +13,7 @@ import { setUpdateQuery } from "../../stores/know-now";
 import sanitizeHtml from "sanitize-html";
 import ToolTip from "../reusable/tool-tip";
 import ArrowDown from "../icons/miscs/ArrowDown";
+import ArrowUp from "../icons/miscs/ArrowUp";
 import Modal from "../reusable/modal";
 // interface IChat {
 //   query: string;
@@ -73,6 +74,11 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
     },
   });
 
+  function isMore(query:string) {
+    const words = query.trim().split(/\s+/);
+    return words.length > 50;
+  }
+
   return (
     <div className="flex justify-between w-full gap-2.5">
       <div className="flex gap-3 w-full">
@@ -103,13 +109,15 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
         )}
       </div>
       <div className="flex flex-col items-end gap-2">
+        {isMore(query) && (
         <IconButton
           rounded
           color="gray"
-          icon={<ArrowDown />}
+          icon={showMore?<ArrowUp />: <ArrowDown/>}
           onClick={onHide}
           disabled={isloadingCompleted}
         />
+      )}
         <ToolTip title="Edit">
           <IconButton
             rounded
