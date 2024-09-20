@@ -16,7 +16,7 @@ interface IChat {
   response_time?: string;
   error?: string;
   liked?: boolean;
-  created_at?: any; 
+  created_at?: any;
 }
 
 interface IGetMarket {
@@ -35,13 +35,10 @@ interface IKnowNow {
 interface IMarketChatSave {
   user_id: string;
   thread_id: number;
-  // conversation_data: {
-  //   conversation_id: number;
-    question: string;
-    // ai_content: string;
-    like_ai: 0 | 1;
-  };
-
+  question: string;
+  like_ai: 0 | 1;
+  dislike_reason?: string;
+}
 
 const initialState: IKnowNow = {
   chats: [],
@@ -92,7 +89,7 @@ export const getMarketChatById = createAsyncThunk(
             query: d.question,
             answer: d.ai_response,
             liked: d.like_ai,
-            created_at: d.created_at
+            created_at: d.created_at,
           })) || [],
       };
     } catch (error) {
@@ -136,16 +133,11 @@ export const getMarketThread = createAsyncThunk(
   },
 );
 
-
-
- export const updateMarketThread = createAsyncThunk(
+export const updateMarketThread = createAsyncThunk(
   "updateMarketThread",
   async (payload: any): Promise<{ success: boolean; message: string }> => {
     try {
-      await axios.put(
-        `${AppConfig.KNOW_NOW_MARKET_API}/update_favorite`,
-        payload
-      );
+      await axios.put(`${AppConfig.KNOW_NOW_MARKET_API}/update_favorite`, payload);
       return {
         success: true,
         message: "Successfully updated",
@@ -257,7 +249,7 @@ export const KnownowMarketSlice = createSlice({
       const conversationId = action.payload;
       state.chatMarketIds = state.chatMarketIds.filter((c) => c.thread_id !== conversationId);
     },
-   //--------------------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------------------
     setPinMarketConversation: (state, action: PayloadAction<number>) => {
       const conversationId = action.payload;
       const index = state.chatMarketIds.findIndex((c) => c.thread_id === conversationId);
@@ -268,18 +260,20 @@ export const KnownowMarketSlice = createSlice({
         state.chatMarketIds[index].favorite = false;
       }
     },
-   // -------------------------------------------------------------------------------------------------------
-   setTitleMarketConversation: (state, action: PayloadAction<{ renameThreadId: number, newTitle: string }>) => {
-    const { renameThreadId, newTitle } = action.payload;
-    const index = state.chatMarketIds.findIndex((c) => c.thread_id === renameThreadId);
-  
-    if (index !== -1) {
-      state.chatMarketIds[index].title = newTitle;
-    }
-  },
-  
+    // -------------------------------------------------------------------------------------------------------
+    setTitleMarketConversation: (
+      state,
+      action: PayloadAction<{ renameThreadId: number; newTitle: string }>,
+    ) => {
+      const { renameThreadId, newTitle } = action.payload;
+      const index = state.chatMarketIds.findIndex((c) => c.thread_id === renameThreadId);
 
-  //----------------------------------------------------------------------------------------------------------
+      if (index !== -1) {
+        state.chatMarketIds[index].title = newTitle;
+      }
+    },
+
+    //----------------------------------------------------------------------------------------------------------
     saveKeywordsChat: (state, action: PayloadAction<any[]>) => {
       state.keywords = action.payload;
     },

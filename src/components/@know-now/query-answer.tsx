@@ -44,6 +44,9 @@ import remarkGfm from "remark-gfm";
 import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
 
+import FeedbackModal from "./feedback";
+import DislikeDialog from "./dislikeDialog";
+
 interface Props {
   answer: string;
   isLoading: boolean;
@@ -109,6 +112,8 @@ const QueryAnswer = ({
   const [refresh, setRefresh] = useState(false);
 
   const [response, setResponse] = useState<IFeedback | null>(null);
+  const [dislikePopup, setDislikePopup] = useState(false);
+  const [isAdditionalFeedbackOpen, setAdditionalFeedbackOpen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -227,7 +232,7 @@ const QueryAnswer = ({
 
   //
   const handleLikeRes = useCallback(
-    async (value: boolean) => {
+    async (value: boolean, feedback = "") => {
       try {
         if (location.pathname.includes("/know-now/ip-analysis")) {
           await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
@@ -240,17 +245,15 @@ const QueryAnswer = ({
             saveMarketChat({
               thread_id: Number(id) || 0,
               user_id: userId || "",
-              // conversation_data: {
-                // conversation_id: 0,
-                question: query,
-                // ai_content: answer,
-                like_ai: value ? 1 : 0,
-              // },
-            }),  
-
+              question: query,
+              like_ai: value ? 1 : 0,
+              dislike_reason: feedback,
+            }),
           );
         }
-        toast.success("Thanks for your feedback");
+        {
+          feedback && toast.success("Thanks for your feedback");
+        }
         dispatch(udateChatResponse({ message_id: message_id, liked: value }));
       } catch (error) {
         toast.error("Server Error");
@@ -340,6 +343,7 @@ const QueryAnswer = ({
                   color="default"
                   onClick={() => {
                     handleLikeRes(false);
+                    setDislikePopup(true);
                     setResponse("bad");
                   }}
                 >
@@ -372,6 +376,22 @@ const QueryAnswer = ({
             </div>
           </div>
         )}
+        <DislikeDialog
+          isOpen={dislikePopup}
+          onClose={() => setDislikePopup(false)}
+          onSubmit={handleLikeRes}
+          onOpenFeedbackModal={() => {
+            setAdditionalFeedbackOpen(true);
+          }}
+        />
+        <FeedbackModal
+          isOpen={isAdditionalFeedbackOpen}
+          onClose={() => setAdditionalFeedbackOpen(false)}
+          onSubmit={handleLikeRes}
+          onCloseDialog={() => {
+            setDislikePopup(false);
+          }}
+        />
       </div>
     </div>
   );
