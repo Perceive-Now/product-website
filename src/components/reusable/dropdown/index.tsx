@@ -67,7 +67,7 @@ export default function Dropdown({
                 <div
                   className={classNames(
                     active ? "bg-gray-100" : "",
-                    "flex cursor-pointer items-center gap-x-0.5 pl-1 py-[4px] ",
+                    "flex cursor-pointer items-center gap-x-0.5 p-1 py-[4px] ",
                   )}
                   onClick={() => option.action(conversation_id)}
                 >

@@ -250,10 +250,17 @@ const KnowNowHistory = ({ History }: Props) => {
             <div
               key={idx * 100}
               className={classNames(
-                "flex items-center px-0.5 w-full",
+                "flex items-center justify-between px-0.5 w-full gap-1",
                 Number(id) === h.element.thread_id ? "bg-appGray-200 rounded-md " : "",
               )}
             >
+               <div className="flex-0 ml-auto">
+              {h.element.favorite && (
+                <span className="cursor-pointer">
+                  <PinIcon />
+                </span>
+              )}
+              </div>
               {/* <Link to={`${path}/${h.element.thread_id}?status=true`} className="grow-0">
               <div className="text-sm py-1 line-clamp-1">
                 <p className="line-clamp-1 text-black">{h.element.title}</p>
@@ -275,12 +282,7 @@ const KnowNowHistory = ({ History }: Props) => {
                 alignment="right"
                 conversation_id={h.element.thread_id}
               />
-              <div className="flex-grow" />
-              {h.element.favorite && (
-                <span className="ml-2">
-                  <PinIcon />
-                </span>
-              )}
+             
             </div>
           ))}
 
