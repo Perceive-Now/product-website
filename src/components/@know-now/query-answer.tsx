@@ -42,6 +42,7 @@ import { saveMarketChat } from "src/stores/knownow-market";
 
 import remarkGfm from "remark-gfm";
 import Markdown from "react-markdown";
+import rehypeExternalLinks from "rehype-external-links";
 
 interface Props {
   answer: string;
@@ -301,13 +302,15 @@ const QueryAnswer = ({
                       className="text-secondary-800 relative bottom-0 duration-500 delay-500 whitespace-pre-wrap stream-answer"
                       dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
                     /> */}
-                      <Markdown
-                    className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
-                    remarkPlugins={[remarkGfm]}
-                    // className="markdown"
+                    <Markdown
+                      className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[
+                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
+                      ]}
                     >
                       {answer}
-                    </Markdown> 
+                    </Markdown>
                   </div>
                 </DndProvider>
               )}
