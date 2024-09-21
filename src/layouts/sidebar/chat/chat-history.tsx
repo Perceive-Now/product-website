@@ -244,23 +244,22 @@ const KnowNowHistory = ({ History }: Props) => {
   );
   return (
     <>
-      <div className="h-[calc(100vh-400px)] overflow-y-auto overflow-x-hidden pn_scroller">
+      <div className="h-[calc(100vh-400px)] overflow-y-auto overflow-x-hidden pn_scroller flex flex-col gap-[2px]">
         {indexedHistory.length > 0 &&
           indexedHistory.slice(0, visibleCount).map((h, idx) => (
             <div
               key={idx * 100}
               className={classNames(
-                "flex items-center justify-between px-0.5 w-full gap-1",
-                Number(id) === h.element.thread_id ? "bg-appGray-200 rounded-md " : "",
+                "flex items-center justify-between px-0.5 w-full gap-1 hover:bg-appGray-200 rounded-md",
+                Number(id) === h.element.thread_id ? "bg-appGray-200 " : "",
               )}
             >
-               <div className="flex-0 ml-auto">
               {h.element.favorite && (
-                <span className="cursor-pointer">
+                <span className="cursor-pointer flex-0">
                   <PinIcon />
                 </span>
               )}
-              </div>
+              
               {/* <Link to={`${path}/${h.element.thread_id}?status=true`} className="grow-0">
               <div className="text-sm py-1 line-clamp-1">
                 <p className="line-clamp-1 text-black">{h.element.title}</p>
@@ -271,7 +270,7 @@ const KnowNowHistory = ({ History }: Props) => {
                   {renameThreadId === h.element.thread_id ? (
                     <EditTitle currentTitle={h.element.title} onSubmit={handleTitleSubmit} />
                   ) : (
-                    <p className="line-clamp-1 text-black">{h.element.title}</p>
+                    <p className="line-clamp-1 text-black break-all">{h.element.title}</p>
                   )}
                 </div>
               </Link>
