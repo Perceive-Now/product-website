@@ -93,7 +93,7 @@ const KnowNowRightSideBar = () => {
           
         </div>
         <div className="px-2.5 pt-2.5 mt-auto -mb-[70px]">
-          <p className="text-sm mb-1">You can also generate a full report.</p>
+          <p className="text-sm mb-1">You can also generate a full report. </p>
           <Link
             to="/new-report"
             className="text-white text-base bg-primary-900 inline-block px-2 py-1 rounded-lg relative"
