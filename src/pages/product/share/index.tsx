@@ -84,6 +84,7 @@ const ShareKnowNowPage = () => {
             </div>
           ) : (
             <>
+
               {id === undefined ? null : (
                 <div className="space-y-6 w-full mt-lg">
                   {((chats && chats) || []).map((chat, idx) => (

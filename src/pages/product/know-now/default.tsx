@@ -77,4 +77,5 @@ const KnowNowdefault: React.FC<Props> = ({ setQuery, question }) => {
   );
 };
 
+
 export default KnowNowdefault;

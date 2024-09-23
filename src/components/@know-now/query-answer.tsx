@@ -20,7 +20,6 @@ import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import RefreshIcon from "../icons/common/refresh";
 import CopyIcon from "../icons/common/copy";
 import { CheckIcon, ErrorIcon } from "../icons";
-
 //
 import PN from "../../assets/images/pn.svg";
 

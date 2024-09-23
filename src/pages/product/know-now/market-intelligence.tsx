@@ -405,6 +405,7 @@ function MarketIntelligenceKnowNow() {
                 )}
               </>
             )}
+            
             {showArrow && (
               <button
                 onClick={scrollToBottom}

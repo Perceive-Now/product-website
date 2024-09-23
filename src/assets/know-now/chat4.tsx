@@ -1,5 +1,4 @@
 import { SVGProps } from "react";
-
 export default function Chat4(props: SVGProps<SVGSVGElement>) {
   const isDark = props?.type === "dark";
   return (

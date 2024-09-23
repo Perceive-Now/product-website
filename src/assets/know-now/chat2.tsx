@@ -2,7 +2,6 @@ import { SVGProps } from "react";
 
 export default function Chat2(props: SVGProps<SVGSVGElement>) {
   const isDark = props?.type === "dark";
-
   return (
     <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect
