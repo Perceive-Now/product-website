@@ -408,7 +408,7 @@ function MarketIntelligenceKnowNow() {
             {showArrow && (
               <button
                 onClick={scrollToBottom}
-                className="absolute bottom-2 right-1/2 bg-white p-1 rounded-full shadow-lg"
+                className="absolute bottom-2 right-1/2 bg-white rounded-full shadow-sm w-4 h-4 border border-[#ddd] inline-flex justify-center items-center"
               >
                 <ArrowDown stroke="#8A2BE2" />
               </button>

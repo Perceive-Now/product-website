@@ -11,12 +11,12 @@ const KnowNowRightSideBar = () => {
   return (
     <div
       className={classNames(
-        "shrink-0 ml-2",
+        "shrink-0 ml-2 h-full flex flex-col",
         open ? "w-[300px] mr-0" : "w-[60px] duration-300 overflow-hidden",
       )}
     >
       {/* <div className="w-[300px] shrink-0 ml-2"> */}
-      <div className="bg-appGray-200 py-1 px-1 rounded-t">
+      <div className="bg-appGray-200 py-1 px-1 rounded-t flex-0">
         <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
           <button
             type="button"
@@ -28,7 +28,7 @@ const KnowNowRightSideBar = () => {
         </ToolTip>
       </div>
       <div
-        className={classNames(open ? "border-l min-w-[300px]" : "border-l min-w-[300px] opacity-0")}
+        className={classNames( "flex-auto flex flex-col", open ? "border-l min-w-[300px]" : "border-l min-w-[300px] opacity-0")}
       >
         <div className="p-2.5">
           <p className="text-sm mb-2.5">
@@ -90,7 +90,10 @@ const KnowNowRightSideBar = () => {
               </div>
             </div>
           </div> */}
-          <p className="text-sm mt-2.5 mb-1">You can also generate a full report.</p>
+          
+        </div>
+        <div className="px-2.5 pt-2.5 mt-auto -mb-[70px]">
+          <p className="text-sm mb-1">You can also generate a full report. </p>
           <Link
             to="/new-report"
             className="text-white text-base bg-primary-900 inline-block px-2 py-1 rounded-lg relative"

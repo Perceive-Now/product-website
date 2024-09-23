@@ -45,7 +45,7 @@ import Button from "../reusable/button";
 
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
       <div className="bg-white rounded-lg p-4 shadow-lg max-w-lg w-full relative">
         <button
           className="absolute top-2 right-2"
