@@ -5,13 +5,15 @@ interface DislikeDialogProps {
   onClose: () => void;
   onSubmit: (value:boolean,reason: string) => void;
   onOpenFeedbackModal: () => void;
+  id:string
 }
 
 const DislikeDialog: React.FC<DislikeDialogProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  onOpenFeedbackModal
+  onOpenFeedbackModal,
+  id
 }) => {
   if (!isOpen) return null;
 
@@ -28,7 +30,7 @@ const DislikeDialog: React.FC<DislikeDialogProps> = ({
   };
 
   return (
-    <div className="relative bg-custom-violet border-2 rounded-lg p-1 pl-2 pb-2 max-w-full mt-3">
+    <div id={id} className="relative bg-custom-violet border-2 rounded-lg p-1 pl-2 pb-2 max-w-full mt-3">
       <h1 className="text-md font-semibold mb-1 text-black">Tell us more:</h1>
       <button className="absolute top-2 right-2" onClick={onClose}>
         <CrossIcon width="20" />

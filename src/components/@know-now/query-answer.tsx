@@ -48,7 +48,6 @@ import FeedbackModal from "./feedback";
 import DislikeDialog from "./dislikeDialog";
 
 interface Props {
-  answer: string;
   isLoading: boolean;
   error?: string;
   updateQuery: (query: string, editInex: number | null) => void;
@@ -56,6 +55,9 @@ interface Props {
   query: string;
   message_id: number;
   loadingCompleted?: boolean;
+  answer: string;
+  scrollToItem : (index: string ) => void;
+  ido: string
 }
 
 const ItemTypes = {
@@ -100,6 +102,8 @@ const QueryAnswer = ({
   query,
   loadingCompleted,
   message_id,
+  ido,
+  scrollToItem
 }: Props) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -344,6 +348,9 @@ const QueryAnswer = ({
                   onClick={() => {
                     handleLikeRes(false);
                     setDislikePopup(true);
+                    setTimeout(() => {
+                      scrollToItem(ido);
+                    }, 10);
                     setResponse("bad");
                   }}
                 >
@@ -377,6 +384,7 @@ const QueryAnswer = ({
           </div>
         )}
         <DislikeDialog
+          id={ido}
           isOpen={dislikePopup}
           onClose={() => setDislikePopup(false)}
           onSubmit={handleLikeRes}

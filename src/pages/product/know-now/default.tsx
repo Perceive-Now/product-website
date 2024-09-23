@@ -1,28 +1,50 @@
-import Chat1 from "../../../assets/know-now/chat1.svg";
-import Chat2 from "../../../assets/know-now/chat2.svg";
-import Chat3 from "../../../assets/know-now/chat3.svg";
-import Chat4 from "../../../assets/know-now/chat4.svg";
+import React, { useState, useEffect } from "react";
+import Chat1 from "../../../assets/know-now/chat1";
+import Chat2 from "../../../assets/know-now/chat2";
+import Chat3 from "../../../assets/know-now/chat3";
+import Chat4 from "../../../assets/know-now/chat4";
+
+interface Props {
+  setQuery: (query: string) => void;
+  question?: string;
+}
 
 const knowNowChat = [
   {
-    icon: Chat1,
+    lightIcon: <Chat1 />,
+    darkIcon: <Chat1 type="dark" />,
     desc: "See who else is innovating and assess your competitive landscape.",
   },
   {
-    icon: Chat2,
+    lightIcon: <Chat2 />,
+    darkIcon: <Chat2 type="dark" />,
     desc: "Identify potential IP roadblocks before you invest time and resources.",
   },
   {
-    icon: Chat3,
+    lightIcon: <Chat3 />,
+    darkIcon: <Chat3 type="dark" />,
     desc: "Uncover the latest patents and see what's trending in your field.",
   },
   {
-    icon: Chat4,
+    lightIcon: <Chat4 />,
+    darkIcon: <Chat4 type="dark" />,
     desc: "Research similar patents and validate your market potential.",
   },
 ];
 
-const KnowNowdefault = () => {
+const KnowNowdefault: React.FC<Props> = ({ setQuery, question }) => {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const index = knowNowChat.findIndex((item) => item.desc === question);
+    setSelectedIndex(index !== -1 ? index : null);
+  }, [question]);
+
+  const handleClick = (index: number, desc: string) => {
+    setSelectedIndex(index);
+    setQuery(desc);
+  };
+
   return (
     <div className="w-full h-full flex justify-center items-center">
       <div className="w-full xl:w-[700px] mx-auto ">
@@ -35,10 +57,18 @@ const KnowNowdefault = () => {
           {knowNowChat.map((l, idx) => (
             <div
               key={idx * 23}
-              className="border-2 rounded-full rounded-br-none border-primary-900 flex items-center justify-center px-2 py-2 gap-2 relative"
+              onClick={() => handleClick(idx, l.desc)}
+              className={`border-2 rounded-full rounded-br-none flex items-center justify-center px-2 py-2 gap-2 relative cursor-pointer border-primary-900
+                ${selectedIndex === idx ? " bg-primary-900" : " bg-white"}`}
             >
-              <img src={l.icon} alt={l.desc} className="w-[32px] h-[32px]" />
-              <div className="text-sm text-secondary-800">{l.desc}</div>
+              <div className="w-[32px] h-[32px]">
+                {selectedIndex === idx ? l.darkIcon : l.lightIcon}
+              </div>
+              <div
+                className={`text-sm ${selectedIndex === idx ? "text-white" : "text-secondary-800"}`}
+              >
+                {l.desc}
+              </div>
             </div>
           ))}
         </div>

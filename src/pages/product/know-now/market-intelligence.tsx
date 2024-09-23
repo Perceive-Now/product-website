@@ -48,7 +48,7 @@ function MarketIntelligenceKnowNow() {
   const location = useLocation();
 
   const { id } = useParams();
-
+  const { question } = location.state || { question: "" };
   //
   const [searchParams] = useSearchParams();
   const queryStatus = searchParams.get("status");
@@ -67,6 +67,12 @@ function MarketIntelligenceKnowNow() {
 
   const [showArrow, setShowArrow] = useState(true);
 
+  //
+  useEffect(() => {
+    if (question) {
+      setQuery(question);
+    }
+  }, [question]);
   //
   useEffect(() => {
     if (queryStatus) {
@@ -319,6 +325,15 @@ function MarketIntelligenceKnowNow() {
     }
   };
 
+
+  const scrollToItem = (ido: string) => {
+    const element = document.getElementById(ido);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+  
+
   useEffect(() => {
     const handleScroll = () => {
       if (!chatRef.current) return;
@@ -338,55 +353,6 @@ function MarketIntelligenceKnowNow() {
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
-
-  // h-[calc(100vh-260px)]
-  // return (
-  //   <div className="h-[calc(100vh-160px)] px-3 pt-0 pb-0 w-[960px] mx-auto">
-  //     <div className="w-full relative h-full">
-  //       <div
-  //         ref={chatRef}
-  //         className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
-  //       >
-  //         {chats && chats.length <= 0 && id ? (
-  //           <div className="flex justify-center items-center h-full">
-  //             <LoadingIcon className="h-5 w-5 text-primary-900" />
-  //           </div>
-  //         ) : (
-  //           <>
-  //             {id === undefined ? (
-  //               <KnowNowdefault />
-  //             ) : (
-  //               <div className="space-y-6 w-full">
-  //                 {((chats && chats) || []).map((chat, idx) => (
-  //                   <div key={idx * 5} className="space-y-3">
-  //                     <ChatQuery
-  //                       query={chat.query}
-  //                       updateQuery={onSendQuery}
-  //                       editIndex={idx}
-  //                       setQuery={setQuery}
-  //                       isloadingCompleted={chatIndex === idx && isLoading}
-  //                     />
-  //                     <QueryAnswer
-  //                       answer={chat.answer}
-  //                       isLoading={isLoading && loadingIndex === idx}
-  //                       error={chat.error}
-  //                       updateQuery={onSendQuery}
-  //                       editIndex={idx}
-  //                       query={chat.query}
-  //                       message_id={chat.message_id}
-  //                       loadingCompleted={chatIndex === idx && isLoading}
-  //                     />
-  //                   </div>
-  //                 ))}
-  //               </div>
-  //             )}
-  //           </>
-  //         )}
-  //       </div>
-  //       <AddQuery isLoading={isLoading} setQuery={setQuery} sendQuery={onSendQuery} query={query} />
-  //     </div>
-  //   </div>
-  // );
 
   const sortedChats = (chats || []).slice().sort((a, b) => {
     const dateA: any = new Date(a.created_at).getTime();
@@ -409,7 +375,7 @@ function MarketIntelligenceKnowNow() {
             ) : (
               <>
                 {id === undefined ? (
-                  <KnowNowdefault />
+                  <KnowNowdefault setQuery={setQuery} question={query} />
                 ) : (
                   <div className="space-y-6 w-full">
                     {((sortedChats && sortedChats) || []).map((chat, idx) => (
@@ -422,10 +388,12 @@ function MarketIntelligenceKnowNow() {
                           isloadingCompleted={chatIndex === idx && isLoading}
                         />
                         <QueryAnswer
+                          ido={`chat-[${idx}]`}                        
                           answer={chat.answer}
                           isLoading={isLoading && loadingIndex === idx}
                           error={chat.error}
                           updateQuery={onSendQuery}
+                          scrollToItem={scrollToItem}
                           editIndex={idx}
                           query={chat.query}
                           message_id={chat.message_id}

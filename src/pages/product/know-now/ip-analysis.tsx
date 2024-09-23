@@ -257,7 +257,7 @@ function KnowNowIP() {
           ) : (
             <>
               {id === undefined ? (
-                <KnowNowdefault />
+                <KnowNowdefault setQuery={setQuery}/>
               ) : (
                 <div className="space-y-6 w-full">
                   {((chats && chats) || []).map((chat, idx) => (
@@ -270,7 +270,9 @@ function KnowNowIP() {
                         isloadingCompleted={chatIndex === idx && isLoading}
                       />
                       <QueryAnswer
+                        ido={`chat-[${idx}]`}                        
                         answer={chat.answer}
+                        scrollToItem={()=>{console.log("");}}
                         isLoading={isLoading && loadingIndex === idx}
                         error={chat.error}
                         updateQuery={onSendQuery}

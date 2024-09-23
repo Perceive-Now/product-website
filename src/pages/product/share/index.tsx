@@ -84,9 +84,7 @@ const ShareKnowNowPage = () => {
             </div>
           ) : (
             <>
-              {id === undefined ? (
-                <KnowNowdefault />
-              ) : (
+              {id === undefined ? null : (
                 <div className="space-y-6 w-full mt-lg">
                   {((chats && chats) || []).map((chat, idx) => (
                     <div key={idx * 5} className="space-y-3">
