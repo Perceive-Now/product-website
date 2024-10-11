@@ -197,7 +197,7 @@ function MarketIntelligenceKnowNow() {
               }),
             );
           }
-        }, 100);
+        });
 
         // Stream
         while (!done) {
@@ -206,7 +206,24 @@ function MarketIntelligenceKnowNow() {
           if (value) {
             setLoadingIndex(null);
             const chunk = decoder.decode(value);
+            const words = chunk.split(" ");
+            const currentIndex = 0;
 
+            // const streamWords = async () => {
+            //   while (currentIndex < words.length) {
+            //     const word1 = words[currentIndex];
+            //     const word2 = currentIndex + 1 < words.length ? words[currentIndex + 1] : "";
+            //     answer += word1 + " " + word2 + " "; 
+            //     console.log("each answer",answer)
+            //     chunks.push(word1);
+            //     if (word2) chunks.push(word2); 
+            //     debouncedUpdate(answer);
+          
+            //     currentIndex += 2; 
+            //     await new Promise((resolve) => setTimeout(resolve, 1));
+            //   }
+            // };
+          
             if (!citationsFound) {
               const titleMatch = chunk.match(/title:\[(.*?)\]/);
               if (titleMatch) {
@@ -226,15 +243,21 @@ function MarketIntelligenceKnowNow() {
                 citationsFound = true;
               }
             } else {
-              answer += chunk;
-              chunks.push(chunk);
+              // answer += chunk;
+              // chunks.push(chunk);
+              for (let i = 0; i < chunk.length; i += 10) {
+                const segment = chunk.slice(i, i + 10); 
+                answer += segment;
+                debouncedUpdate(answer);
+                await new Promise((resolve) => setTimeout(resolve, 1)); 
+              }
             }
 
-            if (citationsFound) {
-              const combinedAnswer =
-                answer + chunks.join("") ;
-              debouncedUpdate(combinedAnswer);
-            }
+            // if (citationsFound) {
+            //   const combinedAnswer =
+            //     answer + chunks.join("") ;
+            //   debouncedUpdate(combinedAnswer);
+            // }
           }
 
           // answer += chunk;
