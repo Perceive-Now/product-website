@@ -11,7 +11,7 @@ interface IMoreOption {
 
 interface IOptions {
   label: string;
-  action: (id: string) => void;
+  action: (id: number) => void;
   icon?: any;
   moreOption?: IMoreOption;
 }
@@ -24,7 +24,7 @@ interface Props {
   alignment?: "left" | "right";
   tooltip?: string;
   width?: "sm" | "md" | "xs";
-  conversation_id: string;
+  conversation_id: number;
 }
 
 export default function Dropdown({
@@ -67,7 +67,7 @@ export default function Dropdown({
                 <div
                   className={classNames(
                     active ? "bg-gray-100" : "",
-                    "flex cursor-pointer items-center gap-x-0.5 pl-1 py-[4px] ",
+                    "flex cursor-pointer items-center gap-x-0.5 p-1 py-[4px] ",
                   )}
                   onClick={() => option.action(conversation_id)}
                 >

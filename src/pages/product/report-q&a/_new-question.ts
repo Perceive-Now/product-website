@@ -769,7 +769,7 @@ export const NewQAList = [
     answer: `Core Technologies: Our product leverages [technology 1, technology 2] to achieve [specific outcomes]. These innovations differentiate us from competitors by [unique features or approaches], such as [specific technological advancements or efficiencies]. For instance, our use of [specific technology] has resulted in a [A%] improvement in performance compared to the industry average.`,
   },
   {
-    questionId: 86,
+    questionId: 88,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -777,7 +777,7 @@ export const NewQAList = [
     answer: `Development Process: The development process involved [research phases, prototype development, testing stages], resulting in key milestones such as [initial prototype completion in month/year], beta testing with [X] users, and market launch in [month/year]. These milestones reflect our progress in [specific areas] and have contributed to achieving [B%] market penetration within [C] months of launch.`,
   },
   {
-    questionId: 86,
+    questionId: 89,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -786,7 +786,7 @@ export const NewQAList = [
 `,
   },
   {
-    questionId: 86,
+    questionId: 90,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -794,7 +794,7 @@ export const NewQAList = [
     answer: `Internal Patent Portfolio: Our portfolio includes [number] patents covering [specific technologies or methods]. Our IP strategy focuses on [protecting core technologies, preventing infringement], which supports our product by providing [specific strategic benefits]. Our patents have contributed to a [E%] increase in market share and a [F%] reduction in legal disputes over the past [G] years.`,
   },
   {
-    questionId: 86,
+    questionId: 91,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -802,7 +802,7 @@ export const NewQAList = [
     answer: `Technical Differentiation: Our product's technical specifications include [detailed technical features], which distinguish it from existing patents by [unique aspects]. The novelty lies in [specific innovative approaches or integrations], resulting in [H%] better efficiency and [I%] cost savings compared to existing solutions.`,
   },
   {
-    questionId: 86,
+    questionId: 92,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -810,7 +810,7 @@ export const NewQAList = [
     answer: `Infringement Risks: Potential risks include [specific patents] that cover [similar aspects]. These risks relate to our key features such as [feature 1, feature 2], which may overlap with the claims of [Patent Number 1]. The overlap risk is estimated at [J%], based on a detailed comparison of claims and features.`,
   },
   {
-    questionId: 86,
+    questionId: 93,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -818,7 +818,7 @@ export const NewQAList = [
     answer: `Design Around Options: We have explored alternatives such as [design modifications, using different technologies] to mitigate risks. For example, instead of [specific method], we use [alternative method], which reduces infringement risk by [K%] and maintains [L%] of the original functionality.`,
   },
   {
-    questionId: 86,
+    questionId: 94,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:
@@ -826,7 +826,7 @@ export const NewQAList = [
     answer: `Market Fit: Our product fits into the market by [solving specific problems, meeting specific needs]. The competitive landscape includes [main competitors], and we anticipate challenges such as [market acceptance, competitive actions]. Our market analysis shows a [M%] market growth rate, with our product expected to capture [N%] of the market share within [O] years.`,
   },
   {
-    questionId: 86,
+    questionId: 95,
     usecase: "freedom-to-operate",
     useCaseId: 1,
     question:

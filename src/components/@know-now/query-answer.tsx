@@ -20,7 +20,6 @@ import ThumbsUpIcon from "../icons/common/ThumbsUp";
 import RefreshIcon from "../icons/common/refresh";
 import CopyIcon from "../icons/common/copy";
 import { CheckIcon, ErrorIcon } from "../icons";
-
 //
 import PN from "../../assets/images/pn.svg";
 
@@ -40,15 +39,24 @@ import { useLocation, useParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import { saveMarketChat } from "src/stores/knownow-market";
 
+import remarkGfm from "remark-gfm";
+import Markdown from "react-markdown";
+import rehypeExternalLinks from "rehype-external-links";
+
+import FeedbackModal from "./feedback";
+import DislikeDialog from "./dislikeDialog";
+
 interface Props {
-  answer: string;
   isLoading: boolean;
   error?: string;
   updateQuery: (query: string, editInex: number | null) => void;
   editIndex: any;
   query: string;
-  message_id: string;
+  message_id: number;
   loadingCompleted?: boolean;
+  answer: string;
+  scrollToItem : (index: string ) => void;
+  ido: string
 }
 
 const ItemTypes = {
@@ -93,6 +101,8 @@ const QueryAnswer = ({
   query,
   loadingCompleted,
   message_id,
+  ido,
+  scrollToItem
 }: Props) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -105,6 +115,8 @@ const QueryAnswer = ({
   const [refresh, setRefresh] = useState(false);
 
   const [response, setResponse] = useState<IFeedback | null>(null);
+  const [dislikePopup, setDislikePopup] = useState(false);
+  const [isAdditionalFeedbackOpen, setAdditionalFeedbackOpen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -223,7 +235,7 @@ const QueryAnswer = ({
 
   //
   const handleLikeRes = useCallback(
-    async (value: boolean) => {
+    async (value: boolean, feedback = "") => {
       try {
         if (location.pathname.includes("/know-now/ip-analysis")) {
           await axios.post(`${AppConfig.KNOW_NOW_IP_API}/message/like`, {
@@ -231,21 +243,20 @@ const QueryAnswer = ({
             like: value,
           });
         }
-        if (location.pathname.includes("/know-now/market-intelligence") && id) {
+        if (location.pathname.includes("/know-now/market-intelligence") && Number(id)) {
           dispatch(
             saveMarketChat({
-              thread_id: id || "",
+              thread_id: Number(id) || 0,
               user_id: userId || "",
-              conversation_data: {
-                conversation_id: "",
-                query: query,
-                ai_content: answer,
-                likes: value ? 1 : 0,
-              },
+              question: query,
+              like_ai: value ? 1 : 0,
+              dislike_reason: feedback,
             }),
           );
         }
-        toast.success("Thanks for your feedback");
+        {
+          feedback && toast.success("Thanks for your feedback");
+        }
         dispatch(udateChatResponse({ message_id: message_id, liked: value }));
       } catch (error) {
         toast.error("Server Error");
@@ -258,19 +269,19 @@ const QueryAnswer = ({
   );
 
   //
-  useEffect(() => {
-    if (answer) {
-      parse(answer, {
-        replace: (domNode) => {
-          // Ensure that domNode is an Element and has the properties we need
-          if ((domNode as Element).name === "img" && (domNode as Element).attribs.src) {
-            return <DraggableImage src={(domNode as Element).attribs.src} />;
-          }
-        },
-      });
-      // setParsedContent(parsed as React.ReactNode[]);
-    }
-  }, [answer]);
+  // useEffect(() => {
+  //   if (answer) {
+  //     parse(answer, {
+  //       replace: (domNode) => {
+  //         // Ensure that domNode is an Element and has the properties we need
+  //         if ((domNode as Element).name === "img" && (domNode as Element).attribs.src) {
+  //           return <DraggableImage src={(domNode as Element).attribs.src} />;
+  //         }
+  //       },
+  //     });
+  //     // setParsedContent(parsed as React.ReactNode[]);
+  //   }
+  // }, [answer]);
 
   return (
     <div className="flex items-start gap-3">
@@ -291,12 +302,21 @@ const QueryAnswer = ({
               ) : (
                 <DndProvider backend={HTML5Backend}>
                   <div className="relative">
-                    <div
+                    {/* <div
                       ref={copyRef}
                       style={{ textAlign: "justify" }}
                       className="text-secondary-800 relative bottom-0 duration-500 delay-500 whitespace-pre-wrap stream-answer"
                       dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
-                    />
+                    /> */}
+                    <Markdown
+                      className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[
+                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
+                      ]}
+                    >
+                      {answer}
+                    </Markdown>
                   </div>
                 </DndProvider>
               )}
@@ -326,6 +346,10 @@ const QueryAnswer = ({
                   color="default"
                   onClick={() => {
                     handleLikeRes(false);
+                    setDislikePopup(true);
+                    setTimeout(() => {
+                      scrollToItem(ido);
+                    }, 10);
                     setResponse("bad");
                   }}
                 >
@@ -358,6 +382,23 @@ const QueryAnswer = ({
             </div>
           </div>
         )}
+        <DislikeDialog
+          id={ido}
+          isOpen={dislikePopup}
+          onClose={() => setDislikePopup(false)}
+          onSubmit={handleLikeRes}
+          onOpenFeedbackModal={() => {
+            setAdditionalFeedbackOpen(true);
+          }}
+        />
+        <FeedbackModal
+          isOpen={isAdditionalFeedbackOpen}
+          onClose={() => setAdditionalFeedbackOpen(false)}
+          onSubmit={handleLikeRes}
+          onCloseDialog={() => {
+            setDislikePopup(false);
+          }}
+        />
       </div>
     </div>
   );

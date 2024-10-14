@@ -31,7 +31,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className={classNames(
-          "appearance-none w-full h-full border-none rounded-md bg-appGray-100 placeholder:text-appGray-600 pn_scroller focus:border-none focus-visible:border-none focus:outline-none focus:ring-0 pr-6 pl-1 pb-2 pt-0.5 max-h-[200px] ",
+          "appearance-none w-full h-full border-none rounded-md bg-appGray-100 placeholder:text-appGray-600 pn_scroller focus:border-none focus-visible:border-none focus:outline-none focus:ring-0 pr-6 max-h-[100px]",
         )}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
@@ -51,7 +51,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
           onClick={() => sendQuery(query, null)}
           disabled={isLoading || !query.trim()}
         >
-          {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2" />}
+          {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2 text-[#87888C]" />}
         </button>
       </div>
     </div>

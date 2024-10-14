@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import axios from "axios";
 
@@ -40,7 +40,11 @@ import { setUpdateQuery } from "src/stores/know-now";
  */
 function KnowNowIP() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
+  const { question } = location.state || { question: "" };
+
   const [searchParams] = useSearchParams();
 
   const queryStatus = searchParams.get("status");
@@ -61,6 +65,13 @@ function KnowNowIP() {
   const [query, setQuery] = useState("");
   const [chatIndex, setChatIndex] = useState<number | null>(null);
 
+  //
+  useEffect(() => {
+    if (question) {
+      setQuery(question);
+    }
+  }, [question]);
+  //
   useEffect(() => {
     if (queryStatus) {
       setIsSaved(true);
@@ -80,7 +91,7 @@ function KnowNowIP() {
       dispatch(
         getIPChatById({
           user_id: userId || "",
-          conversation_id: id,
+          conversation_id: Number(id),
         }),
       )
         .unwrap()
@@ -107,15 +118,16 @@ function KnowNowIP() {
       setIsloading(true);
 
       //
-      const conversationId = id !== undefined ? id : generateKnowId();
+      const conversationId = id !== undefined ? Number(id) : generateKnowId();
 
       //
       if (id === undefined) {
         dispatch(generateNewId({ id: conversationId }));
         dispatch(
           setChatIPIds({
-            title: conversationId,
-            chat_id: conversationId,
+            title: '',
+            thread_id: conversationId,
+            favorite: false
           }),
         );
         navigate(`/know-now/ip-analysis/${conversationId}`);
@@ -129,7 +141,7 @@ function KnowNowIP() {
             user_id: userId || "",
             role: "human",
             service_name: "ip",
-            title: conversationId,
+            title: "",
             content: query || updateQuery,
           },
         ]),
@@ -175,7 +187,7 @@ function KnowNowIP() {
               user_id: userId || "",
               role: "ai",
               service_name: "ip",
-              title: conversationId,
+              title: "",
               content: answer,
             },
           ]),
@@ -237,17 +249,18 @@ function KnowNowIP() {
     }
   };
 
+  
   //
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
 
   return (
-    <div className="px-3 pb-0 xl:w-[960px] mx-auto">
+    <div className="h-[calc(100vh-160px)] px-3 pb-0 xl:w-[960px] mx-auto">
       <div className="w-full h-full relative">
         <div
           ref={chatRef}
-          className="h-[calc(100vh-170px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+          className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
         >
           {(chats && chats.length <= 0 && id) || isSaved ? (
             <div className="flex justify-center items-center h-full">
@@ -256,7 +269,7 @@ function KnowNowIP() {
           ) : (
             <>
               {id === undefined ? (
-                <KnowNowdefault />
+                  <KnowNowdefault setQuery={setQuery} question={query} />
               ) : (
                 <div className="space-y-6 w-full">
                   {((chats && chats) || []).map((chat, idx) => (
@@ -269,7 +282,9 @@ function KnowNowIP() {
                         isloadingCompleted={chatIndex === idx && isLoading}
                       />
                       <QueryAnswer
+                        ido={`chat-[${idx}]`}                        
                         answer={chat.answer}
+                        scrollToItem={()=>{console.log("");}}
                         isLoading={isLoading && loadingIndex === idx}
                         error={chat.error}
                         updateQuery={onSendQuery}

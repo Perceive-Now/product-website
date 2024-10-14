@@ -48,14 +48,14 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
   });
 
   const formInitialValue: IProfile = {
-    username: userDetail?.username || "",
-    first_name: userDetail?.first_name || "",
-    last_name: userDetail?.last_name || "",
-    phone_number: userDetail?.phone_number || "",
-    country: userDetail?.country || "",
-    topics_of_interest: userDetail?.topics_of_interest || "",
-    company_name: userDetail?.company_name || "N/A",
-    job_position: userDetail?.job_position || "",
+    username: userDetail.username || "",
+    first_name: userDetail.first_name || "",
+    last_name: userDetail.last_name || "",
+    phone_number: userDetail.phone_number || "",
+    country: userDetail.country || "",
+    topics_of_interest: userDetail.topics_of_interest || "",
+    company_name: userDetail.company_name || "N/A",
+    job_position: userDetail.job_position || "",
   };
 
   const formResolver = yup.object().shape({
@@ -157,7 +157,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
                 <Input
                   register={register("username")}
                   type="text"
-                  error={errors?.username}
+                  error={errors.username}
                   placeholder="Username"
                 />
               </div>

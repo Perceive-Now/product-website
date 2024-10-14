@@ -1,3 +1,5 @@
+import React from "react";
+
 const DotLoader = () => {
   return (
     <div className="loader-container">

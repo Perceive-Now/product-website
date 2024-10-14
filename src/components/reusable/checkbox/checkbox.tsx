@@ -1,3 +1,4 @@
+import React from "react";
 import CheckBoxOnIcon from "../../icons/miscs/checkbox-on";
 import CheckBoxOffIcon from "../../icons/miscs/checkbox-off";
 import PopOverHover from "../tooltip";

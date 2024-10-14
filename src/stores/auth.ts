@@ -52,7 +52,6 @@ const initialState: AuthState = {
 
 //
 const API_URL = AppConfig.API_URL;
-
 const authCode = AppConfig.Auth_CODE;
 
 export const signUpUser = createAsyncThunk(

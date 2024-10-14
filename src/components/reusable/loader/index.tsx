@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./loader.css"; // Import CSS file for styling
 
 interface Props {

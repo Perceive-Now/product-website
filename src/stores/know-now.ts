@@ -5,7 +5,7 @@ interface IEdit {
   query?: string;
 }
 interface IChat {
-  message_id: string;
+  message_id: number;
   query: string;
   answer: string;
   response_time?: string;
@@ -15,7 +15,7 @@ interface IChat {
 interface IInitialState {
   chats: IChat[];
   edit: IEdit;
-  knownow_id?: string;
+  knownow_id?: number;
 }
 
 const initialState: IInitialState = {
@@ -41,12 +41,12 @@ export const KnownowSlice = createSlice({
         query,
       };
     },
-    generateNewId: (state, action: PayloadAction<{ id: string }>) => {
+    generateNewId: (state, action: PayloadAction<{ id: number }>) => {
       state.knownow_id = action.payload.id;
     },
     // -------------------------------------------------------------------------------------------------------
 
-    udateChatResponse: (state, action: PayloadAction<{ message_id: string; liked: boolean }>) => {
+    udateChatResponse: (state, action: PayloadAction<{ message_id: number; liked: boolean }>) => {
       const { message_id, liked } = action.payload;
       state.chats = state.chats.map((c) => (c.message_id === message_id ? { ...c, liked } : c));
     },

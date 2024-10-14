@@ -33,7 +33,8 @@ const stepsList = [
 
 export default function Landing() {
   return (
-    <div className="h-[80vh] flex justify-center items-center">
+    <>
+    <div className="h-[80vh] flex justify-center items-center mx-auto">
       <div className="flex flex-row w-fit space-x-1 h-[500px] items-end">
         <div className="w-full max-w-[340px]  2xl:max-w-[500px] ">
           <div className="space-y-2">
@@ -53,57 +54,62 @@ export default function Landing() {
           </div>
         </div>
 
-        <div className="text-white space-y-1 ">
-          <StepWrapper className="ml-[0px]">
-            <ContentWrapper className="justify-start">
-              <NumberCircle number={1} className="text-primary-900 ml-[30px] mr-1" />
-              <TextBlock
-                className="max-w-[270px]"
-                title={stepsList[0].title}
-                description={stepsList[0].description}
-              />
-            </ContentWrapper>
-            <BGVector0 className="z-0 row-start-1 col-start-1" />
-          </StepWrapper>
-
-          <StepWrapper className="ml-[30px] xl:ml-[90px]">
-            <ContentWrapper className="justify-end">
-              <TextBlock
-                className="max-w-[225px]"
-                title={stepsList[1].title}
-                description={stepsList[1].description}
-              />
-              <NumberCircle number={2} className="text-orange-500 mr-[30px] ml-1" />
-            </ContentWrapper>
-            <BGVector1 className="z-0 row-start-1 col-start-1" />
-          </StepWrapper>
-
-          <StepWrapper className="ml-[60px] xl:ml-[150px]">
-            <ContentWrapper className="justify-start">
-              <NumberCircle number={3} className="text-primary-900 ml-[30px] mr-1" />
-              <TextBlock
-                className="max-w-[240px]"
-                title={stepsList[2].title}
-                description={stepsList[2].description}
-              />
-            </ContentWrapper>
-            <BGVector2 className="z-0 row-start-1 col-start-1" />
-          </StepWrapper>
-
-          <StepWrapper className="ml-[90px] xl:ml-[210px]">
-            <ContentWrapper className="justify-end">
-              <TextBlock
-                className="max-w-[230px]"
-                title={stepsList[3].title}
-                description={stepsList[3].description}
-              />
-              <NumberCircle number={4} className="text-orange-500 mr-[30px] ml-1" />
-            </ContentWrapper>
-            <BGVector3 className="z-0 row-start-1 col-start-1" />
-          </StepWrapper>
-        </div>
+        
       </div>
+
+      
     </div>
+
+<div className="text-white space-y-1 ml-auto">
+<StepWrapper className="ml-[0px]">
+  <ContentWrapper className="justify-start">
+    <NumberCircle number={1} className="text-primary-900 ml-[30px] mr-1" />
+    <TextBlock
+      className="max-w-[270px]"
+      title={stepsList[0].title}
+      description={stepsList[0].description}
+    />
+  </ContentWrapper>
+  <BGVector0 className="z-0 row-start-1 col-start-1" />
+</StepWrapper>
+
+<StepWrapper className="ml-[30px] xl:ml-[90px]">
+  <ContentWrapper className="justify-end">
+    <TextBlock
+      className="max-w-[225px]"
+      title={stepsList[1].title}
+      description={stepsList[1].description}
+    />
+    <NumberCircle number={2} className="text-orange-500 mr-[30px] ml-1" />
+  </ContentWrapper>
+  <BGVector1 className="z-0 row-start-1 col-start-1" />
+</StepWrapper>
+
+<StepWrapper className="ml-[60px] xl:ml-[150px]">
+  <ContentWrapper className="justify-start">
+    <NumberCircle number={3} className="text-primary-900 ml-[30px] mr-1" />
+    <TextBlock
+      className="max-w-[240px]"
+      title={stepsList[2].title}
+      description={stepsList[2].description}
+    />
+  </ContentWrapper>
+  <BGVector2 className="z-0 row-start-1 col-start-1" />
+</StepWrapper>
+
+<StepWrapper className="ml-[90px] xl:ml-[210px]">
+  <ContentWrapper className="justify-end">
+    <TextBlock
+      className="max-w-[230px]"
+      title={stepsList[3].title}
+      description={stepsList[3].description}
+    />
+    <NumberCircle number={4} className="text-orange-500 mr-[30px] ml-1" />
+  </ContentWrapper>
+  <BGVector3 className="z-0 row-start-1 col-start-1" />
+</StepWrapper>
+</div>
+</>
   );
 }
 
@@ -122,7 +128,7 @@ const ContentWrapper = ({
 }) => (
   <div
     className={classNames(
-      "z-10 flex flex-row items-center row-start-1 col-start-1 w-[455px]",
+      "z-10 flex flex-row items-center row-start-1 col-start-1 max-w-[455px]",
       className,
     )}
   >

@@ -12,13 +12,13 @@ import classNames from "classnames";
  */
 export default function DefaultLayout() {
   return (
-    <div className="bg-white-gradient">
-      <div className={classNames("w-full min-h-[calc(100vh-30px)] mt-0.5")}>
-        <div className="flex h-full">
+    <div className="bg-white-gradient flex flex-col justify-start items-start h-full">
+      <div className={classNames("w-full h-full mt-0.5 flex")}>
+        <div className="flex flex-auto">
           <AppSidebar />
-          <div className="h-full w-full duration-500 px-4">
+          <div className="h-full w-full duration-500 px-4 pt-2 flex-auto">
             {/* {location.pathname !== "/q&a" && <AppHeader />} */}
-            <div className="relative py-1 h-full w-full pl-1 container ">
+            <div className="relative py-1 h-full w-full pl-1 flex justify-center items-center">
               <Outlet />
             </div>
           </div>

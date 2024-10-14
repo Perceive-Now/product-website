@@ -38,6 +38,9 @@ import { WelcomePage } from "./components/@signup-complete";
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 
+//VC Report
+import VCProduct from "./pages/product/vc-product";
+
 // analytics
 import IPFullReport from "./pages/product/analytics/Full-report";
 
@@ -56,12 +59,13 @@ import ReportSectionStateManagementService from "./layouts/report-section-state-
 
 //
 import { EReportSectionPageIDs } from "./stores/draft";
-// import KnowNowPage from "./pages/product/know-now";
+import KnowNowPage from "./pages/product/know-now";
 import ShareKnowNowPage from "./pages/product/share";
 
 // Demo
 import GenerateMarketReport from "./components/@report-generate/market-report-generate";
 import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
+// import MadLibEditor from "./test";
 
 /**
  *
@@ -124,8 +128,7 @@ function App() {
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
 
             {/* Know-now */}
-            {/* <Route path="/start-conversation" element={<KnowNowPage />} /> */}
-            <Route path="/start-conversation" element={<MarketIntelligenceKnowNow />} />
+            <Route path="/start-conversation" element={<KnowNowPage />} />
 
             <Route path="/know-now/ip-analysis/:id" element={<KnowNowIP />} />
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
@@ -135,6 +138,9 @@ function App() {
               element={<MarketIntelligenceKnowNow />}
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
+ 
+            {/* VC-report */}
+            <Route path="/vc-product" element={<VCProduct />} />
 
             {/*Graph */}
             <Route path="/analytics" element={<IPFullReport />} />

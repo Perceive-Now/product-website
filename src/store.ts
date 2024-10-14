@@ -14,7 +14,7 @@ import QuestionAnswerSlice from "./stores/Q&A";
 //
 import KnownowIPSlice from "./stores/knownow-ip";
 import KnownowMarketSlice from "./stores/knownow-market";
-
+import VSProductSlice  from "./stores/vs-product";
 //
 export const store = configureStore({
   reducer: {
@@ -25,6 +25,7 @@ export const store = configureStore({
     KnowNow: Knownow,
     KnowNowIP: KnownowIPSlice,
     KnownowMarket: KnownowMarketSlice,
+    VSProduct: VSProductSlice,
     uploadAttachments: UploadAttachmentsSlice,
     uploadQuickPrompt: uploadQuickPrompt,
     draft: draftSlice,

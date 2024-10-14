@@ -38,13 +38,14 @@ const KnowNowPage = () => {
 
   const navigate = useNavigate();
   const [mode, setMode] = useState("");
+  const [query, setQuery] = useState<string>("");
 
   const handleChnage = useCallback((mode: any) => {
     setMode(mode);
   }, []);
 
   const onContinue = useCallback(() => {
-    dispatch(generateNewId({ id: "" }));
+    dispatch(generateNewId({ id: 0 }));
 
     dispatch(resetKnowNowMarket());
     dispatch(resetKnowNowIP());
@@ -59,17 +60,21 @@ const KnowNowPage = () => {
             // toast.error("Unable to get Conversations")
           }
         });
-      navigate("/know-now/ip-analysis");
+      // navigate("/know-now/ip-analysis");
+      navigate("/know-now/ip-analysis", { state: { question: query } });
     }
     if (mode === "ma") {
       dispatch(getMarketThread(userId || ""));
-      navigate("/know-now/market-intelligence");
+      // navigate("/know-now/market-intelligence");
+      navigate("/know-now/market-intelligence", { state: { question: query } });
+
     }
-  }, [dispatch, mode, navigate, userId]);
+  }, [dispatch, mode, navigate, userId, query]);
+
 
   return (
-    <div className="h-[calc(100vh-160px)] w-full flex flex-col justify-center items-center pt-10 gap-8">
-      <KnowNowdefault />
+    <div className="h-[calc(100vh-100px)] w-full flex flex-col justify-center items-center pt-10 gap-8">
+      <KnowNowdefault setQuery={setQuery}/>
       <div className="flex flex-col items-center gap-4">
         <div>
           <p className="pb-1 font-semibold">Please select one option to continue</p>
