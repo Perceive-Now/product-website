@@ -170,7 +170,6 @@ function MarketIntelligenceKnowNow() {
           },
           body: JSON.stringify(queries),
         });
-
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let done = false;
@@ -178,6 +177,7 @@ function MarketIntelligenceKnowNow() {
         let keywords: string[] = [];
         let title: string[] = [];
         const chunks = [];
+        let citationsFound = false;
 
         // Debounce function to limit UI updates
         const debouncedUpdate = debounce((newAnswer, resolve) => {
@@ -197,28 +197,7 @@ function MarketIntelligenceKnowNow() {
               }),
             );
           }
-          resolve();
-        }, 100);
-
-        const handleChunks = async (response: any) => {
-          const chunkSize = 100;
-          let currentIndex = 0;
-
-          while (currentIndex < response.length) {
-            const nextChunk = response.substring(currentIndex, currentIndex + chunkSize);
-            answer += nextChunk;
-
-            const combinedAnswer = answer + ` <span class="stream-loader"></span>`;
-
-            // debouncedUpdate(combinedAnswer);
-
-            await new Promise((resolve) => {
-              debouncedUpdate(combinedAnswer, resolve);
-            });
-
-            currentIndex += chunkSize;
-          }
-        };
+        });
 
         // Stream
         while (!done) {
@@ -227,27 +206,71 @@ function MarketIntelligenceKnowNow() {
           if (value) {
             setLoadingIndex(null);
             const chunk = decoder.decode(value);
-            const parsedChunk = JSON.parse(chunk);
+            const words = chunk.split(" ");
+            const currentIndex = 0;
 
-            // Extract keywords and titles
-            if (parsedChunk.keywords) keywords = parsedChunk.keywords;
-            if (parsedChunk.title) title = parsedChunk.title;
+            // const streamWords = async () => {
+            //   while (currentIndex < words.length) {
+            //     const word1 = words[currentIndex];
+            //     const word2 = currentIndex + 1 < words.length ? words[currentIndex + 1] : "";
+            //     answer += word1 + " " + word2 + " "; 
+            //     console.log("each answer",answer)
+            //     chunks.push(word1);
+            //     if (word2) chunks.push(word2); 
+            //     debouncedUpdate(answer);
+          
+            //     currentIndex += 2; 
+            //     await new Promise((resolve) => setTimeout(resolve, 1));
+            //   }
+            // };
+          
+            if (!citationsFound) {
+              const titleMatch = chunk.match(/title:\[(.*?)\]/);
+              if (titleMatch) {
+                title = titleMatch[1].split(",").map((title) => title.trim().replace(/'/g, ""));
+                console.log("titleeeee", title);
+              }
 
-            // answer += chunk;
-            // chunks.push(chunk);
+              const keywordMatch = chunk.match(/keywords:\[(.*?)\]/);
+              if (keywordMatch) {
+                keywords = keywordMatch[1]
+                  .split(",")
+                  .map((keyword) => keyword.trim().replace(/'/g, ""));
+              }
 
-            // const combinedAnswer = chunks.join("") + ` <span class="stream-loader"></span>`;
-            // debouncedUpdate(combinedAnswer);
-
-            if (parsedChunk.response) {
-              await handleChunks(parsedChunk.response);
+              const citationMatch = chunk.match(/Citations:\[(.*?)\]/);
+              if (citationMatch) {
+                citationsFound = true;
+              }
+            } else {
+              // answer += chunk;
+              // chunks.push(chunk);
+              for (let i = 0; i < chunk.length; i += 10) {
+                const segment = chunk.slice(i, i + 10); 
+                answer += segment;
+                //debouncedUpdate(answer);
+                await new Promise((resolve) => setTimeout(resolve, 1)); 
+              }
             }
+
+            // if (citationsFound) {
+            //   const combinedAnswer =
+            //     answer + chunks.join("") ;
+            //   debouncedUpdate(combinedAnswer);
+            // }
           }
+
+          // answer += chunk;
+          // chunks.push(chunk);
+
+          // const combinedAnswer = chunks.join("") ;
+          // // + ` <span class="stream-loader"></span>`;
+          // debouncedUpdate(combinedAnswer);
         }
-        // debouncedUpdate(answer);
-        await new Promise((resolve) => {
-          debouncedUpdate(answer, resolve);
-        });
+
+        // }
+        //debouncedUpdate(answer);
+       
 
         dispatch(saveKeywordsChat(keywords));
         await dispatch(
