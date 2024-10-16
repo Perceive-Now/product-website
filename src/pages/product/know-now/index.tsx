@@ -60,7 +60,8 @@ const KnowNowPage = () => {
             // toast.error("Unable to get Conversations")
           }
         });
-      navigate("/know-now/ip-analysis");
+      // navigate("/know-now/ip-analysis");
+      navigate("/know-now/ip-analysis", { state: { question: query } });
     }
     if (mode === "ma") {
       dispatch(getMarketThread(userId || ""));
@@ -70,7 +71,7 @@ const KnowNowPage = () => {
     }
   }, [dispatch, mode, navigate, userId, query]);
 
-  
+
   return (
     <div className="h-[calc(100vh-100px)] w-full flex flex-col justify-center items-center pt-10 gap-8">
       <KnowNowdefault setQuery={setQuery}/>

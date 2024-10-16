@@ -38,6 +38,9 @@ import { WelcomePage } from "./components/@signup-complete";
 import KnowNowIP from "./pages/product/know-now/ip-analysis";
 import MarketIntelligenceKnowNow from "./pages/product/know-now/market-intelligence";
 
+//VC Report
+import VCProduct from "./pages/product/vc-product";
+
 // analytics
 import IPFullReport from "./pages/product/analytics/Full-report";
 
@@ -135,6 +138,9 @@ function App() {
               element={<MarketIntelligenceKnowNow />}
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
+ 
+            {/* VC-report */}
+            <Route path="/vc-product" element={<VCProduct />} />
 
             {/*Graph */}
             <Route path="/analytics" element={<IPFullReport />} />
