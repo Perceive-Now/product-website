@@ -28,3 +28,7 @@ yarn-error.log*
 
 # Intellij IDEA
 .idea/
+
+.gitignore
+
+.husky/
