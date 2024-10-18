@@ -382,6 +382,9 @@ input {
   border-radius: 4px;
   overflow-x: auto;
 }
+.markdownWrapper p{
+  margin-top:0;
+}
 
 .markdownWrapper blockquote {
   border-left: 4px solid #ccc;
