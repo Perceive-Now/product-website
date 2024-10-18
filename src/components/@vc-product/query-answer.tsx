@@ -48,16 +48,17 @@ interface Props {
   isLoading: boolean;
   //   error?: string;
   //   updateQuery: (query: string, editInex: number | null) => void;
-  handleClick: (id: number, value: string) => void;
   //   editIndex: any;
   query: string;
   message_id: number;
   //   loadingCompleted?: boolean;
+  options?: string[];
   answer: string;
   //   scrollToItem : (index: string ) => void;
   ido: string;
   hasbutton: boolean;
   hasselected: string;
+  onSendQuery: (query: string, answer: string, file?: File,button?:boolean) => void;
 }
 
 const ItemTypes = {
@@ -100,14 +101,17 @@ const QueryAnswer = ({
   //   updateQuery,
   //   editIndex,
   query,
+  options,
   //   loadingCompleted,
   message_id,
+  onSendQuery,
   hasselected,
   ido,
   hasbutton,
-  handleClick,
 }: //   scrollToItem
 Props) => {
+  // console.log("options", options, answer);
+
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
   const location = useLocation();
@@ -123,13 +127,8 @@ Props) => {
   const [dislikePopup, setDislikePopup] = useState(false);
   const [isAdditionalFeedbackOpen, setAdditionalFeedbackOpen] = useState(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 2000);
-  }, [isCopied]);
+  if (answer === "" && (options === undefined || options?.length === 0 )) return <></>;
 
-  // //
   // const copyText = useCallback(() => {
   //   setIsCopied(true);
   // }, []);
@@ -223,63 +222,62 @@ Props) => {
 
   return (
     <>
-      {answer && answer !== "template" && (
-        <div className="flex flex-wrap items-center justify-end gap-2 mt-2">
-          {answer === "Loading..." ? (
+      {/* {answer!== "" && options!== undefined && ( */}
+      <div className="flex flex-wrap items-center justify-end gap-2 mt-2">
+        {/* {answer === "Loading..." ? (
             <DotLoader />
-          ) : (
-            <>
-              {hasbutton ? (
-                // <button onClick={()=>{handleClick(message_id)}} className={` ${hasselected ? 'bg-foundationOrange-100 border-secondary-500':''} rounded-md p-1 border hover:border-secondary-500 hover:bg-foundationOrange-100 `}>
-                //   {answer}
-                // </button>
-                (() => {
-                  let stages: any = [];
-                  try {
-                    stages = answer
-                      .replace(/[\[\]"']/g, "")
-                      .split(",")
-                      .map((stage) => stage.trim())
-                      .filter((stage) => stage);
-                  } catch (e) {
-                    console.error("Failed to parse stages:", e);
-                  }
+          ) : ( */}
+        <>
+          {options && options.length > 0 ? (
+            (() => {
+              let stages: any = [];
+              try {
+                stages = options
+                  // .replace(/[\[\]"']/g, "")
+                  // .split(",")
+                  .map((stage) => stage.trim())
+                  .filter((stage) => stage);
+              } catch (e) {
+                console.error("Failed to parse stages:", e);
+              }
 
-                  return stages.map((stage: any, index: any) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        handleClick(message_id, stage);
-                      }}
-                      className={`${
-                        hasselected === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
-                      } text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
-                    >
-                      {stage}
-                    </button>
-                  ));
-                })()
-              ) : (
-                <div
-                  className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-foundationOrange-100`}
+              return stages.map((stage: any, index: any) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    onSendQuery(query, stage,undefined,true);
+                  }}
+                  disabled={answer ? true : false}
+                  className={`${
+                    answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
+                  } text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
                 >
-                  <div
-                    className={`text-secondary-800 text-justify `}
-                    dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
-                  />
-                </div>
-              )}
-            </>
+                  {stage}
+                </button>
+              ));
+            })()
+          ) : (
+            <div
+              className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-foundationOrange-100`}
+            >
+              {/* <div
+                className={`text-secondary-800 text-justify `}
+                dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
+              /> */}
+              {answer}
+            </div>
           )}
-          <div className="pt-3 shrink-0">
-            <UserIcon
-              first_name={userDetail?.first_name || ""}
-              last_name={userDetail?.last_name || ""}
-              profile_photo={userDetail?.profile_photo}
-            />
-          </div>
+        </>
+        {/* )} */}
+        <div className="pt-3 shrink-0">
+          <UserIcon
+            first_name={userDetail?.first_name || ""}
+            last_name={userDetail?.last_name || ""}
+            profile_photo={userDetail?.profile_photo}
+          />
         </div>
-      )}
+      </div>
+      {/* )} */}
     </>
   );
 };

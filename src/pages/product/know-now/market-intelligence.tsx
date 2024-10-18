@@ -180,7 +180,7 @@ function MarketIntelligenceKnowNow() {
         let citationsFound = false;
 
         // Debounce function to limit UI updates
-        const debouncedUpdate = debounce((newAnswer, resolve) => {
+        const debouncedUpdate = debounce((newAnswer) => {
           if (editIndex !== null) {
             dispatch(
               editQueryAndUpdateAnswer({
@@ -206,27 +206,12 @@ function MarketIntelligenceKnowNow() {
           if (value) {
             setLoadingIndex(null);
             const chunk = decoder.decode(value);
-            const words = chunk.split(" ");
-            const currentIndex = 0;
-
-            // const streamWords = async () => {
-            //   while (currentIndex < words.length) {
-            //     const word1 = words[currentIndex];
-            //     const word2 = currentIndex + 1 < words.length ? words[currentIndex + 1] : "";
-            //     answer += word1 + " " + word2 + " "; 
-            //     console.log("each answer",answer)
-            //     chunks.push(word1);
-            //     if (word2) chunks.push(word2); 
-            //     debouncedUpdate(answer);
+            console.log("chunk",chunk);
           
-            //     currentIndex += 2; 
-            //     await new Promise((resolve) => setTimeout(resolve, 1));
-            //   }
-            // };
-          
-            if (!citationsFound) {
+            // if (!citationsFound) {
               const titleMatch = chunk.match(/title:\[(.*?)\]/);
               if (titleMatch) {
+                citationsFound = true;
                 title = titleMatch[1].split(",").map((title) => title.trim().replace(/'/g, ""));
                 console.log("titleeeee", title);
               }
@@ -238,20 +223,22 @@ function MarketIntelligenceKnowNow() {
                   .map((keyword) => keyword.trim().replace(/'/g, ""));
               }
 
-              const citationMatch = chunk.match(/Citations:\[(.*?)\]/);
-              if (citationMatch) {
-                citationsFound = true;
-              }
-            } else {
+            //   const citationMatch = chunk.match(/Citations:\[(.*?)\]/);
+            //   if (citationMatch) {
+            //     citationsFound = true;
+            //   }
+            // } else {
               // answer += chunk;
               // chunks.push(chunk);
+              if(!citationsFound){
               for (let i = 0; i < chunk.length; i += 10) {
                 const segment = chunk.slice(i, i + 10); 
                 answer += segment;
-                //debouncedUpdate(answer);
+                debouncedUpdate(answer);
                 await new Promise((resolve) => setTimeout(resolve, 1)); 
               }
             }
+            // }
 
             // if (citationsFound) {
             //   const combinedAnswer =

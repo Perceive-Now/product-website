@@ -48,7 +48,7 @@ const KnowNowdefault: React.FC<Props> = ({ setQuery, question }) => {
   return (
     <div className="w-full h-full flex justify-center items-center">
       <div className="w-full xl:w-[700px] mx-auto ">
-        <div className="font-helvetica primary-gradient-text text-[54px] font-[800] leading-[64px] flex">
+        <div className="font-helvetica text-primary-900 text-[54px] font-[800] leading-[64px] flex">
           Hi!
           <br />
           Ready to get started?

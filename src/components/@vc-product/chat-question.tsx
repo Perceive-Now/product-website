@@ -78,19 +78,21 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
     return words.length > 50;
   }
 
+  if (!query) return <></>;
+
   return (
     <div className="flex items-center justify-start gap-2">
-        <div className="pt-3 shrink-0 ">
-          <img className="h-3 w-3 " src={PN} alt={"Pn"} />
-        </div>
+      <div className="pt-3 shrink-0 ">
+        <img className="h-3 w-3 " src={PN} alt={"Pn"} />
+      </div>
+      <div
+        className={`mt-2 rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100`}
+      >
         <div
-          className={`mt-2 rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100`}
-        >
-          <div
-            className={`text-secondary-800 text-justify ${showMore ? "" : "line-clamp-3"}`}
-            dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
-          />
-        </div>
+          className={`text-secondary-800 text-justify ${showMore ? "" : ""}`}
+          dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
+        />
+      </div>
     </div>
   );
 };

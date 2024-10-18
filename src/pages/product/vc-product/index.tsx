@@ -1,22 +1,37 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import AddQuery from "src/components/@vc-product/add-query";
-import SideScreen from "./sideScreen";
+import InitialScreening from "./InitialScreening";
+import DataSources from "./DataSources";
 import ReportDefault from "./default";
+import jsCookie from "js-cookie";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { LoadingIcon } from "src/components/icons";
 import ChatQuery from "src/components/@vc-product/chat-question";
 import QueryAnswer from "src/components/@vc-product/query-answer";
 import Modal from "src/components/reusable/modal";
 import { Switch } from "@headlessui/react";
+import debounce from "lodash.debounce";
+import { AppConfig } from "src/config/app.config";
+import DotLoader from "src/components/reusable/dot-loader";
+import { generateKnowId } from "src/utils/helpers";
+import ExtractInfo from "src/components/@vc-product/extractInfo";
+import { sendQuery, extractFileData } from "src/stores/vs-product";
+
 import {
-  setVSChats, 
+  setVSChats,
   updateChatAnswer,
+  updateChatQuery,
   updateButtonSelection,
+  updateButtonResponse,
   resetChats,
+  setCurrentStep,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
+  const userId = jsCookie.get("user_id");
+  const { Step } = useAppSelector((state) => state.VSProduct);
+
   const [query, setQuery] = useState("");
   const [answer, setanswer] = useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
@@ -26,7 +41,7 @@ const VCReport = () => {
 
   const template = ``;
   const { chats } = useAppSelector((state) => state.VSProduct);
-
+  console.log("chattsss", chats);
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
@@ -51,144 +66,279 @@ const VCReport = () => {
     },
   ];
 
-  const handleClick = (id: number, value: string) => {
-    const ido = id + 1;
-    dispatch(updateButtonSelection({ id: id, hasselected: value }));
+  // const onSendQuery = useCallback(
+  //   async (query: string, answer: string, file?: File) => {
+  //     setIsloading(true);
+  //     const newQueryIndex = generateKnowId();
 
-    if (value === "Start another report") {
-      dispatch(resetChats());
-      setSideScreen(false);
-      return;
-    }
-    if (id === 6) setSideScreen(true);
+  //     if (query && !file) {
+  //       const queries = {
+  //         id: newQueryIndex,
+  //         query: query,
+  //         answer: "",
+  //       };
+  //       const ai_query = {
+  //         user_input: query,
+  //         user_id:userId
+  //       };
 
-    const queries: any = {
-      4: {
-        query: "What's the company stage?",
-        answer:
-          "[Idea Stage, Seed Stage, Pre-Seed Stage, Early Stage, Growth Stage, Scaling Stage]",
-      },
-      5: {
-        query: "Please select what describes best your idea stage?",
-        answer: "[Concept development, Initial brainstorming, Problem-solving assignment]",
-      },
-      6: {
-        query:
-          "Ready to choose your diligence level? I offer two options - quick insight or a deep dive. You can expand any section for more detail if needed.",
-        answer: "[Level 1, Level 2]",
-      },
-      7: {
-        query: "Do you want to make any changes?",
-        answer: "No, please continue.",
-      },
-      8: {
-        query:
-          "I didn’t see much detail about [Startup Name]’s market size. Could you provide some insights?",
-        answer: "",
-      },
-      9: {
-        query: "What makes [Startup Name] stand out from its competitors?",
-        answer: "",
-      },
-      10: {
-        query:
-          "Based on what we’ve gathered so far, here are some sample data sources I’ll tap into for the report. Feel free to add any additional sources you'd like.",
-        answer: "",
-      },
-      11: {
-        query: "If everything looks good, please confirm to generate report.",
-        answer: "confirm.",
-      },
-      12: {
-        query:
-          "Your final report for [Startup Name] will be ready in 48 to 72 hours. We will notify you as soon as it is available.",
-        answer: "[Start another report, Learn more]",
-      },
-    };
+  //       dispatch(setVSChats(queries));
+  //       setQuery("");
 
-    const currentQuery = queries[ido];
+  //       try {
+  //         const response: any = await fetch(
+  //           `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
+  //           {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //             body: JSON.stringify(ai_query),
+  //           },
+  //         );
+  // const reader = response.body.getReader();
+  // const decoder = new TextDecoder();
 
-    if (currentQuery) {
-      const hasButton = !(ido === 8 || ido === 9 || ido === 10);
-      dispatch(
-        setVSChats({
-          id: ido,
-          query: currentQuery.query,
-          answer: currentQuery.answer,
-          hasbutton: hasButton,
-        }),
-      );
-      setQuery(currentQuery.query);
-    }
-    setanswer("");
-  };
+  //         // const debouncedUpdate = debounce((newAnswer) => {
+  //         //   console.log("ajooo",chats.length);
+  //         //   dispatch(
+  //         //     updateChatAnswer({
+  //         //       index: chats.length,
+  //         //       answer: newAnswer,
+  //         //     }),
+  //         //   );
+  //         // });
+
+  // const { value } = await reader.read();
+  // if (value) {
+  //   const chunk = decoder.decode(value);
+
+  //   const answer = JSON.parse(chunk);
+  //   const newanswer = JSON.parse(answer);
+
+  //           console.log("Response:", newanswer.response);
+  //           dispatch(
+  //             updateChatAnswer({
+  //               index: newQueryIndex,
+  //               answer: newanswer.response,
+  //             }),
+  //           );
+
+  //           const stepValue = parseInt(newanswer.Step);
+  //           if (!isNaN(stepValue) && Number.isInteger(stepValue) && stepValue >= 0) {
+  //             dispatch(setCurrentStep(stepValue));
+  //           }
+  //           // debouncedUpdate(newanswer.response);
+  //         }
+  //         setIsloading(false);
+  //       } catch (error) {
+  //         console.error("Failed to send query", error);
+  //         setIsloading(false);
+  //         return;
+  //       }
+  //     } else if (file) {
+  //       const formData = new FormData();
+  //       formData.append("file", file);
+
+  //       const extractIndex = generateKnowId();
+
+  //       const firstquery = {
+  //         id: newQueryIndex,
+  //         query:
+  //           "Hi there! Let's get started with the diligence process.\nCould you please upload the pitch desk?",
+  //         answer: file.name,
+  //       };
+
+  //       dispatch(setVSChats(firstquery));
+
+  //       const secondquery = {
+  //         id: extractIndex,
+  //         query: "Great! Let me deep dive into the file.",
+  //         answer: "",
+  //       };
+
+  //       dispatch(setVSChats(secondquery));
+
+  //       const createPitchDeckSummary = (slides: { slide: number; text: string[] }[]): string => {
+  //         const summary = slides
+  //           .flatMap(slide => slide.text.map(text => text.replace(/\n/g, ' ')))
+  //           .join(" ");
+
+  //         return `Here is my pitch deck: ${summary}`;
+  //       };
+
+  //       try {
+  //         const response: any = await fetch(
+  //           "https://templateuserrequirements.azurewebsites.net/extract-ppt-data",
+  //           {
+  //             method: "POST",
+  //             headers: {
+  //               Accept: "application/json",
+  //             },
+  //             body: formData,
+  //           },
+  //         );
+  //         const reader = response.body.getReader();
+  //         const decoder = new TextDecoder();
+
+  //         // const debouncedUpdate = debounce((newAnswer) => {
+  //         //   dispatch(
+  //         //     updateChatAnswer({
+  //         //       index: newQueryIndex,
+  //         //       answer: newAnswer,
+  //         //     }),
+  //         //   );
+  //         // }, 100);
+
+  //         const { value } = await reader.read();
+  //         if (value) {
+  //           const chunk = decoder.decode(value);
+  //           const answer = JSON.parse(chunk);
+  //           console.log("ooo", typeof answer);
+  //           if (answer.message === "Text extracted successfully") {
+
+  //             const summary = createPitchDeckSummary(answer.slides_data)
+  //             if(summary){
+  //               const response: any = await fetch(
+  //                 `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
+  //                 {
+  //                   method: "POST",
+  //                   headers: {
+  //                     "Content-Type": "application/json",
+  //                   },
+  //                   body: JSON.stringify({user_id:userId,user_input:summary}),
+  //                 },
+  //               );
+  //               const reader = response.body.getReader();
+  //               const decoder = new TextDecoder();
+  //               if (value) {
+  //                 const chunk = decoder.decode(value);
+  //                 const answer = JSON.parse(chunk);
+  //                 if(answer.response){
+  //                dispatch(
+  //               updateChatAnswer({
+  //                 index: extractIndex,
+  //                 answer: "",
+  //                 extract: answer.response,
+  //               }),
+  //             );
+  //                 }
+  //               }
+  //             }
+
+  //             // debouncedUpdate(answer.response);
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.error("Failed to send query", error);
+  //         setIsloading(false);
+  //         return;
+  //       }
+  //     }
+
+  //   },
+  //   [dispatch],
+  // );
 
   const onSendQuery = useCallback(
-    async (query: string, answer: string, file?: File) => {
-      console.log("ajaja", query, answer);
+    async (query: string, answer: string, file?: File, button?: boolean) => {
+      console.log("anserrrrr", answer);
       setIsloading(true);
-      if (query) {
-        if (
-          query ===
-          "I didn’t see much detail about [Startup Name]’s market size. Could you provide some insights?"
-        ) {
-          dispatch(updateChatAnswer({ id: 8, answer }));
-          handleClick(8, "");
-        } else if (query === "What makes [Startup Name] stand out from its competitors?") {
-          dispatch(updateChatAnswer({ id: 9, answer }));
-          handleClick(9, "");
-        } else {
-          dispatch(updateChatAnswer({ id: 10, answer }));
-          handleClick(10, "");
+      const newQueryIndex = generateKnowId();
+
+      try {
+        if (answer) {
+          const ai_query = { user_input: answer, user_id: userId || "" };
+          const queries = { id: newQueryIndex, query: "", answer: answer };
+
+          if (button) {
+            const { response, Step } = await dispatch(sendQuery(ai_query)).unwrap();
+            if (Step !== 3)
+              await dispatch(updateButtonResponse({ answer: answer, query: response }));
+          } else {
+            dispatch(setVSChats(queries));
+            // setQuery("");
+            // await dispatch(updateChatAnswer({answer:answer}))
+            setanswer("");
+
+            // Dispatch the thunk for sending the query
+            const { response, Step } = await dispatch(sendQuery(ai_query)).unwrap();
+            //  if (!response.includes("@"))      {
+            await dispatch(updateChatQuery({ query: response }));
+
+            // }
+            //           else{
+            //             await dispatch(updateChatAnswer({answer:response}))
+            // //both cond are same
+            //           }
+            console.log("oooo", response);
+          }
+        } else if (file) {
+          const extractIndex = generateKnowId();
+
+          // const firstQuery = {
+          //   id: newQueryIndex,
+          //   query:
+          //     "Hi there! Let's get started with the diligence process.\nCould you please upload the pitch desk?",
+          //   answer: file.name,
+          // };
+          const firstQuery = {
+            id: newQueryIndex,
+            query: "Great! Let me deep dive into the file.",
+            answer: file.name,
+          };
+
+          dispatch(setVSChats(firstQuery));
+          setCurrentStep(1);
+
+          // const secondQuery = {
+          //   id: extractIndex,
+          //   query: "Great! Let me deep dive into the file.",
+          //   answer: "",
+          // };
+          // dispatch(setVSChats(secondQuery));
+          const fileResponse = await dispatch(extractFileData(file)).unwrap();
+          console.log("file ress", fileResponse);
+          if (fileResponse) {
+            const res = await dispatch(
+              sendQuery({ user_input: fileResponse, user_id: userId || "" }),
+            ).unwrap();
+            if (res) {
+              dispatch(
+                setVSChats({
+                  id: newQueryIndex + 1,
+                  query: "",
+                  answer: "",
+                  options: ["Confirm"],
+                  hasbutton: true,
+                }),
+              );
+            }
+          }
         }
-        setanswer("");
-      } else if (file) {
-        const initialQuery =
-          "Hi there! Let's get started with the diligence process.\nCould you please upload the pitch desk?";
-        const answer = file.name;
-        const chatId = Date.now();
-
-        dispatch(setVSChats({ id: 1, query: initialQuery, answer: "Loading..." }));
-
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        dispatch(updateChatAnswer({ id: 1, answer }));
+      } catch (error) {
+        console.error("Failed to send query", error);
+      } finally {
         setIsloading(false);
-
-        const followUpQuery = "Great! Let me deep dive into the file.";
-        const followUpAnswer = "template";
-        const followUpChatId = Date.now() + 1;
-        const thirdquestion = "Does everything looks good?";
-
-        setIsloading(true);
-        dispatch(setVSChats({ id: 2, query: followUpQuery, answer: "" }));
-
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        dispatch(updateChatAnswer({ id: 2, answer: followUpAnswer }));
-
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        dispatch(setVSChats({ id: 3, query: thirdquestion, answer: "[Yes]", hasbutton: true }));
-
-        setIsloading(false);
-
-        // setQuery("");
       }
     },
-    [dispatch],
+    [dispatch, userId],
   );
 
   return (
     <>
       <div className="px-3 w-full mx-auto h-full">
         <div className="flex h-full gap-x-5">
-          {/* <div className="w-[10px] mt-2">
-            <StepBar />
-          </div> */}
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto">
+            <div className="relative flex-none">
+              <div className="fixed left-10 top-2 w-[10px]">
+                <StepBar />
+              </div>
+            </div>
+
             {chats && chats.length <= 0 ? (
               <div className="flex flex-row justify-between flex-auto">
-                <ReportDefault setQuery={setQuery} query={query} />
+                <ReportDefault />
               </div>
             ) : (
               <div className="flex flex-row flex-auto justify-center">
@@ -199,196 +349,51 @@ const VCReport = () => {
                   <div className="">
                     {chats.map((chat, idx) => (
                       <>
-                        <ChatQuery query={chat.query} />
                         <QueryAnswer
                           ido={`chat-[${idx}]`}
                           query={chat.query}
-                          answer={chat.answer}
+                          answer={chat.answer || ""}
                           isLoading={isLoading}
-                          message_id={chat.id}
+                          message_id={chat.id || 0}
+                          options={chat.options}
                           hasselected={chat.hasselected || ""}
                           hasbutton={chat.hasbutton || false}
-                          handleClick={handleClick}
+                          onSendQuery={onSendQuery}
                         />
-                        {chat.answer === "template" && (
-                          <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
-                            <div className="font-semibold text-md text-end">
-                              <Switch
-                                checked={true}
-                                onChange={() => {
-                                  setModalOpen(true);
-                                }}
-                                className={`border border-appGray-500 relative inline-flex items-center h-2 rounded-full w-4 mr-1`}
-                              >
-                                <span
-                                  className={`translate-x-0 inline-block w-[12px] h-[12px] transform bg-appGray-500 rounded-full`}
-                                />
-                              </Switch>
-                              Edit Extract
-                            </div>
-                            <div className="font-bold text-sm">Startup Overview:</div>
-                            <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-                              <li>
-                                <span className="font-bold">Mission Statement:</span> [AI extraxted
-                                mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Vision:</span> [AI extraxted mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Problem:</span> [AI extraxted mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Solution:</span> [AI extraxted mission]
-                              </li>
-                            </ul>
-                            <div className="font-bold mt-2 text-sm">Market Insights:</div>
-                            <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-                              <li>
-                                <span className="font-bold">Target Audience:</span> [AI extraxted
-                                mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Market size and opportunity:</span> [AI
-                                extraxted mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Competetive Landscape:</span> [AI
-                                extraxted mission]
-                              </li>
-                            </ul>
-                            <div className="font-bold mt-2 text-sm">Buissness Model:</div>
-                            <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-                              <li>
-                                <span className="font-bold">Target Audience:</span> [AI extraxted
-                                mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Market size and opportunity:</span> [AI
-                                extraxted mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Competetive Landscape:</span> [AI
-                                extraxted mission]
-                              </li>
-                            </ul>
-                            <div className="font-bold mt-2 text-sm">Financial Overview:</div>
-                            <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-                              <li>
-                                <span className="font-bold">Target Audience:</span> [AI extraxted
-                                mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Market size and opportunity:</span> [AI
-                                extraxted mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Competetive Landscape:</span> [AI
-                                extraxted mission]
-                              </li>
-                            </ul>
-                            <div className="font-bold mt-2 text-sm">Team:</div>
-                            <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-                              <li>
-                                <span className="font-bold">Target Audience:</span> [AI extraxted
-                                mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Market size and opportunity:</span> [AI
-                                extraxted mission]
-                              </li>
-                              <li>
-                                <span className="font-bold">Competetive Landscape:</span> [AI
-                                extraxted mission]
-                              </li>
-                            </ul>
-                          </div>
-                        )}
+                        <ChatQuery query={chat.query} />
+
+                        {chat.extract && 
+                        <ExtractInfo 
+                        info={chat.extract} />}
                       </>
                     ))}
+                    {isLoading && (
+                      <div className="flex items-center justify-center p-5 h-full">
+                        <DotLoader />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             )}
 
-        <div className="flex items-center justify-center mt-auto">
-          <AddQuery setanswer={setanswer} query={query} answer={answer} sendQuery={onSendQuery} />
-        </div>
-
+            <div className="flex items-center justify-center mt-auto">
+              <AddQuery
+                setanswer={setanswer}
+                setQuery={setQuery}
+                query={query}
+                answer={answer}
+                sendQuery={onSendQuery}
+              />
+            </div>
           </div>
 
-          {sidescreen && (
-            <SideScreen />          
-          )}
+          {Step === 4 && <InitialScreening />}
+          {Step === 5 && <DataSources />}
+
+          {/* <InitialScreening /> */}
+          {/* <DataSources/> */}
         </div>
-        
-
-       
-        <Modal open={modalOpen} handleOnClose={handleModalClose}>
-  <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg">
-    <div className="font-bold text-md text-end">
-      <Switch
-        checked={true}
-        onChange={() => {
-          setModalOpen(false);
-        }}
-        className={`bg-blue-600 relative inline-flex items-center h-2 rounded-full w-4 mr-1`}
-      >
-        <span
-          className={`translate-x-2 inline-block w-2 h-2 transform bg-white rounded-full`}
-        />
-      </Switch>
-      Edit Extract
-    </div>
-
-    <div className="font-bold mt-2 text-start">Startup Overview:</div>
-    <ul className="list-disc list-inside w-full">
-      {['Mission Statement', 'Vision', 'Problem'].map((item, index) => (
-        <li key={index} className="flex justify-between items-center mt-1">
-          <span className="font-bold text-start">{item}:</span>
-          <input
-            type="text"
-            defaultValue={`[AI extracted ${item.toLowerCase().replace(" ", "_")}]`}
-            className="w-[70%] ml-2 p-1 bg-foundationOrange-100 border border-gray-300 rounded"
-          />
-        </li>
-      ))}
-    </ul>
-
-    <div className="font-bold mt-4 text-start">Market Insights:</div>
-    <ul className="list-disc list-inside w-full">
-      {['Target Audience', 'Market size and opportunity', 'Competitive Landscape'].map((item, index) => (
-        <li key={index} className="flex justify-between items-center mt-1">
-          <span className="font-bold text-start">{item}:</span>
-          <input
-            type="text"
-            defaultValue={`[AI extracted ${item.toLowerCase().replace(/ /g, "_")}]`}
-            className="w-[70%] ml-2 p-1 bg-foundationOrange-100 border border-gray-300 rounded"
-          />
-        </li>
-      ))}
-    </ul>
-
-    <div className="font-bold mt-4 text-start">Business Model:</div>
-    <ul className="list-disc list-inside w-full">
-      {['Business Strategy', 'Revenue Streams', 'Cost Structure'].map((item, index) => (
-        <li key={index} className="flex justify-between items-center mt-1">
-          <span className="font-bold text-start">{item}:</span>
-          <input
-            type="text"
-            defaultValue={`[AI extracted ${item.toLowerCase().replace(" ", "_")}]`}
-            className="w-[70%] ml-2 p-1 bg-foundationOrange-100 border border-gray-300 rounded"
-          />
-        </li>
-      ))}
-    </ul>
-
-    <button className="mt-4 bg-secondary-500 text-white p-2 rounded-full pr-5 pl-5">
-      Submit
-    </button>
-  </div>
-</Modal>
-
       </div>
     </>
   );

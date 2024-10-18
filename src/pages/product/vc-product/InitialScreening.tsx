@@ -48,12 +48,12 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
   );
 };
 
-const SideScreen: React.FC = () => {
+const InitialScreening: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"report" | "scoring">("report");
   const [open, setOpen] = useState(true);
 
-  const [reportItems, setReportItems] = useState<string[]>(["a", "b", "c", "d"]);
-  const [scoringItems, setScoringItems] = useState<string[]>(["1", "2", "3", "4"]);
+  const [reportItems, setReportItems] = useState<string[]>(["Market Opportunity", "Competitive Differentiation", "Product Viability", "Founding Team Overview","Go-to-Market Strategy","Customer Validation","Revenue Model Analysis","Operational Efficiency"]);
+  const [scoringItems, setScoringItems] = useState<string[]>(["Market Size & Growth", "Competitive Advantage", "Product Edge", "Team Excellence","Strategic Execution","Customer Momentum","Revenue Scalability","Operational Discipline"]);
 
   const [newItem, setNewItem] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -95,10 +95,10 @@ const SideScreen: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={`w-full mb-[70px] overflow-y-auto ${
+      <div className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${
           open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"} `}>
       <div
-        className={`border border-gray-300 p-4 ${
+        className={`p-4 ${
           open ? "w-full h-full" : "w-full h-auto"
         } bg-opacity-50 rounded-lg`}
       >
@@ -190,4 +190,4 @@ const SideScreen: React.FC = () => {
   );
 };
 
-export default SideScreen;
+export default InitialScreening;

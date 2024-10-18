@@ -112,6 +112,7 @@ export const getMarketThread = createAsyncThunk(
       const { data } = await axios.get(
         `${AppConfig.KNOW_NOW_MARKET_API}/get_threads_with_favorites/${payload}`,
       );
+      console.log("fav ,,,",data);
       return {
         success: true,
         message: "Successfully fetched Market chat",

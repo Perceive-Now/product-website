@@ -34,6 +34,7 @@ const ChatSidebar = () => {
     // setChats([]);
   }, [chatIPIds, chatMarketIds, location]);
 
+  console.log("chats knownow",chats);
   return (
     <div className="px-1 space-y-2">
       <Link to={"/start-conversation"}>

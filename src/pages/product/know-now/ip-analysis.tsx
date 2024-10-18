@@ -269,7 +269,7 @@ function KnowNowIP() {
           ) : (
             <>
               {id === undefined ? (
-                <KnowNowdefault setQuery={setQuery}/>
+                  <KnowNowdefault setQuery={setQuery} question={query} />
               ) : (
                 <div className="space-y-6 w-full">
                   {((chats && chats) || []).map((chat, idx) => (

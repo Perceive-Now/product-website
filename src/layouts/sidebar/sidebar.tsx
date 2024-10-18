@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, useCallback, useEffect, Fragment } from "react";
+import { useState, useRef, FunctionComponent, useCallback, useEffect, Fragment } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 //
@@ -21,8 +21,9 @@ import SideBarToggleIcon from "../../components/icons/side-bar/toggle";
 import { setSession } from "../../stores/session";
 import ToolTip from "src/components/reusable/tool-tip";
 import ChatSidebar from "./chat/chat-sidebar";
-import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from 'react-joyride';
-
+import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-joyride";
+import { setCurrentStep } from "src/stores/vs-product";
+import { setStartTour } from "src/stores/dashboard";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
@@ -47,26 +48,43 @@ const SidebarBottom = [
 const tourSteps = [
   {
     target: ".sidebar-knownow",
-    placement: 'right' as const,
     content:
       "Here’s Know Now! It’s where you explore IP Insights and Market Research. Let’s take a quick look.",
   },
-  
+  {
+    target: ".sidebar-industries",
+    content:
+      "Next is Industry Reports! You’ll find industry-specific insights like Venture Capital, Healthcare, and more. Let’s explore each one.",
+  },
+
   {
     target: ".sidebar-ip",
-    content:
-      "With IP Insights, you can explore patents or search prior art. Want to dive in now or move on?",
+
+    content: (
+      <div>
+        With IP Insights, you can explore patents or search prior art. Want to dive in now or move
+        on?{" "}
+        <a href="/know-now/ip-analysis/" style={{ textDecoration: "none" }}>
+          <button
+            style={{
+              padding: "10px",
+              background: "#008CBA",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              marginTop: "10px",
+            }}
+          >
+            Explore IP Insights
+          </button>
+        </a>
+      </div>
+    ),
   },
   {
     target: ".sidebar-mi",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-  },
-  
-  {
-    target: ".sidebar-industries",
-    content:
-      "Next is Industry Reports! You’ll find industry-specific insights like Venture Capital, Healthcare, and more. Let’s explore each one.",
   },
 
   {
@@ -109,6 +127,7 @@ const tourSteps = [
 export const AppSidebar: FunctionComponent<Props> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const joyrideRef = useRef(null);
 
   const [open, setOpen] = useState(true);
   const [isChat, setIsChat] = useState(false);
@@ -116,16 +135,17 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   const [activeSubItem, setActiveSubItem] = useState(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [secondStepCount, setSecondStepCount] = useState(0);
-  const [runTour, setRunTour] = useState(false);
+  // const [runTour, setRunTour] = useState(false);
   const [steps, setSteps] = useState(tourSteps);
 
   const { pathname } = useLocation();
 
   const userDetail = useAppSelector((state) => state.auth.user);
+  const runTour = useAppSelector((state) => state.dashboard.startTour);
 
-  const startTour = () => {
-    setRunTour(true);
-  };
+  // const startTour = () => {
+  //   setRunTour(true);
+  // };
 
   const handleItemClick = (key: any) => {
     setActiveItem(key);
@@ -175,60 +195,34 @@ export const AppSidebar: FunctionComponent<Props> = () => {
     navigate("/login");
     setIsLoggingOut(false);
   };
+const handleJoyrideCallback = (data: any) => {
+    const { index, status, lifecycle } = data;
 
-  // const handleJoyrideCallback = (data: CallBackProps): void => {
-  //   const { action, index, origin, status, type } = data;
-  //   console.log("action",action);
-  //   console.log("index",index)
-  //   console.log("origin",origin)
-  //   console.log("type",type)
-  //   if (type === 'step:after' && index === 1 ) {
-  //     console.log("ajajja");
-  //     setActiveItem("knownow");
-  //     setOpen(true);
-  //     setTimeout(() => {
-  //       // Your logic here after the delay
-  //       console.log("Processing after delay");
-  //       setCurrentStepIndex(2)
-  //     }, 2000);
-  //   }
-
-  //   // if (action === ACTIONS.CLOSE && origin === ORIGIN.KEYBOARD) {
-  //   //   // Handle keyboard close action if needed
-  //   // }
-
-  //   // if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
-  //   //   // Update state to advance the tour
-  //   //   setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1));
-  //   // } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-  //   //   // Stop the tour
-  //   //   setRun(false);
-  //   // }
-
-  //   // console.groupCollapsed(type);
-  //   // console.log(data); //eslint-disable-line no-console
-  //   // console.groupEnd();
-  // };
-
-  const handleJoyrideCallback = (data: any) => {
-    const { status, index } = data;
-    console.log("indexxss",index,status)
     if (status === "finished" || status === "skipped") {
-      setRunTour(false);
+      // setRunTour(false);
+      // dispatch(setStartTour(false));
+      return;
     }
-    if (index === 0)  {
-      console.log("Second step clicked!");
-      setActiveItem("knownow");
-      setOpen(true);
 
-    }
-    if (index === 3)  {
-      console.log("Second step clicked!");
-      setActiveItem("industries");
-      setOpen(true);
+    if (lifecycle === "complete") {
+      // Move to the next step directly
+      setCurrentStepIndex(index + 1);
 
+      // Custom actions for specific steps
+      switch (index) {
+        case 1:
+          setActiveItem("knownow");
+          setOpen(true);
+          break;
+        case 3:
+          setActiveItem("industries");
+          setOpen(true);
+          break;
+        // Add more cases for any additional steps with custom actions
+        default:
+          break;
+      }
     }
-    
   };
 
   return (
@@ -240,7 +234,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
         run={runTour}
         continuous
         scrollToFirstStep
-        showSkipButton
+        // showSkipButton
+        hideBackButton
         styles={{
           options: {
             zIndex: 2000000,
@@ -249,14 +244,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             backgroundColor: 'rgba(79, 46, 8, 0.5)',
           },
         }}
-        // callback={(data) => {
-        //   const { status } = data;
-        //   if (status === 'finished' || status === 'skipped') {
-        //     setRunTour(false);
-        //   }
-        // }}
-        // stepIndex={currentStepIndex} 
         callback={handleJoyrideCallback}
+        stepIndex={currentStepIndex}
       />
       <div className="bg-appGray-100 pt-1 w-[66px] items-center duration-300 shadow fixed flex flex-col justify-between rounded h-[calc(100vh-80px)]">
         <div>
@@ -271,7 +260,6 @@ export const AppSidebar: FunctionComponent<Props> = () => {
               </button>
             </ToolTip>
           </div>
-          <button onClick={startTour} className='ml-3'>Start</button>
 
           <div className="mt-2">
             {sidebarItems.map((item) => (
