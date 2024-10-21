@@ -24,6 +24,7 @@ import ChatSidebar from "./chat/chat-sidebar";
 import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-joyride";
 import { setCurrentStep } from "src/stores/vs-product";
 import { setStartTour } from "src/stores/dashboard";
+import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
@@ -50,11 +51,13 @@ const tourSteps = [
     target: ".sidebar-knownow",
     content:
       "Here’s Know Now! It’s where you explore IP Insights and Market Research. Let’s take a quick look.",
+      placement: 'right',
   },
   {
     target: ".sidebar-industries",
     content:
       "Next is Industry Reports! You’ll find industry-specific insights like Venture Capital, Healthcare, and more. Let’s explore each one.",
+      placement: 'right',
   },
 
   {
@@ -80,47 +83,56 @@ const tourSteps = [
         </a>
       </div>
     ),
+    placement: 'right',
   },
   {
     target: ".sidebar-mi",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
 
   {
     target: ".sidebar-vc",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
   {
     target: ".sidebar-firm",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
   {
     target: ".sidebar-healthcare",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
   {
     target: ".sidebar-ma",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
   {
     target: ".sidebar-web3",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
   {
     target: ".sidebar-ipattorny",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
   {
     target: ".sidebar-tto",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: 'right',
   },
 ];
 
@@ -239,16 +251,19 @@ const handleJoyrideCallback = (data: any) => {
         styles={{
           options: {
             zIndex: 2000000,
+            primaryColor: '#FFA300',
+            backgroundColor: '#FFA300',
+            textColor: '#373D3F', 
           },
           overlay: {
-            backgroundColor: 'rgba(79, 46, 8, 0.5)',
+            backgroundColor: 'rgba(79, 46, 8, 0)',
           },
         }}
         callback={handleJoyrideCallback}
         stepIndex={currentStepIndex}
       />
       <div className="bg-appGray-100 pt-1 w-[66px] items-center duration-300 shadow fixed flex flex-col justify-between rounded h-[calc(100vh-80px)]">
-        <div>
+        <div className="w-full">
           <div className="flex items-center gap-1 justify-start flex-col">
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
@@ -256,16 +271,16 @@ const handleJoyrideCallback = (data: any) => {
                 className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
                 onClick={() => setOpen(!open)}
               >
-                <SideBarToggleIcon className={classNames(open ? "rotate-180" : "")} />
+                <RoundedArrowIcon className={classNames(open ? "" : "rotate-180")} />
               </button>
             </ToolTip>
           </div>
 
-          <div className="mt-2">
+          <div className="mt-1">
             {sidebarItems.map((item) => (
               <button
                 key={item.key}
-                className={classNames(`${item.classname} py-2 px-4 w-full text-center relative`, {
+                className={classNames(`${item.classname} py-1 my-1 inline-flex justify-center w-full text-center relative`, {
                   "bg-white": activeItem === item.key,
                   "text-primary-900": activeItem !== item.key,
                   // "hover:bg-primary-900": activeItem !== item.key,

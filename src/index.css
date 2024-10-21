@@ -411,3 +411,43 @@ input {
 .markdownWrapper th {
   background-color: #f2f2f2;
 }
+.react-joyride__tooltip div{
+  text-align: left !important;
+}
+.react-joyride__tooltip button[title="Next"]{
+  position: absolute;
+  top:110%;
+  right:0;
+  background: #fff !important;
+  border:1px solid #E8EAF2 !important;
+  color:#373D3F !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  font-size: 14px !important;
+  width: 63px;
+  height: 33px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.__floater__body > .react-joyride__tooltip{
+  border-radius: 25px !important;
+  padding-bottom:0 !important;
+  font-size:14px !important;
+  font-weight: 600 !important;
+}
+.__floater__arrow span{
+  background-image:url('../src/assets/images/tootlipArrow.png');
+  background-position:bottom left 7px;
+  width: 28px;
+  height: 28px;
+  background-size: 28px auto;
+  background-repeat: no-repeat;
+}
+.__floater__arrow svg{
+  opacity:0;
+}
+.__floater__body div[style="padding: 20px 10px;"]{
+  padding-bottom:0 !important;
+  padding-top: 0 !important;
+}
