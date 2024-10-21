@@ -364,6 +364,7 @@ function MarketIntelligenceKnowNow() {
     scrollToBottom();
   }, [chats]);
 
+  console.log("chatss",chats);
   const sortedChats = (chats || []).slice().sort((a, b) => {
     const dateA: any = new Date(a.created_at).getTime();
     const dateB = new Date(b.created_at).getTime();

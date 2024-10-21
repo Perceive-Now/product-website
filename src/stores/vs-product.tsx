@@ -15,6 +15,7 @@ interface VSProduct {
   chats: VSChat[];
   marketChatLoading: boolean;
   Step: number;
+  SidescreenOptions?:string[];
 }
 
 const initialState: VSProduct = {
@@ -26,7 +27,17 @@ const initialState: VSProduct = {
 // Thunks for API calls
 export const sendQuery = createAsyncThunk(
   "sendQuery",
-  async ({ user_input, user_id }: { user_input: string; user_id: string }) => {
+  async ({
+    user_input,
+    user_id,
+    button,
+  }: {
+    user_input: string;
+    user_id: string;
+    button?: boolean;
+  }) => {
+    // if(button)  state.chats[state.chats.length - 1].answer = answer;
+
     const response: any = await fetch(
       `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
       {
@@ -37,25 +48,21 @@ export const sendQuery = createAsyncThunk(
         body: JSON.stringify({ user_input, user_id }),
       },
     );
-
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
 
     const { value } = await reader.read();
     if (value) {
       const chunk = decoder.decode(value);
-
+      console.log("chunk", chunk);
+      console.log("type of chunk",typeof chunk);
       const answer = JSON.parse(chunk);
+      console.log("answer",typeof answer,answer)
       const newanswer = JSON.parse(answer);
-      console.log("answerrrrr", answer);
+      console.log("answerrrrr", typeof newanswer,newanswer);
+
+     
       return newanswer;
-
-      // const options: string[] = newanswer.match(/@@(.*?)@@/g)?.map((opt: string) => opt.replace(/@@/g, '').trim()) || [];
-
-      // // Extract the dynamic query line by removing the options
-      // const query: string = newanswer.replace(/@@.*?@@/g, '').trim() || "Please provide your input.";
-
-      // return { options, query };
     }
 
     return;
@@ -95,15 +102,18 @@ export const VSProductSlice = createSlice({
       const { answer } = action.payload;
       state.chats[state.chats.length - 1].query = answer;
     },
-    updateButtonResponse: (state, action: PayloadAction<{ answer: string , query:string}>) => {
-      const { answer,query } = action.payload;
-      state.chats[state.chats.length - 1].answer = answer;
+    updateButtonResponse: (state, action: PayloadAction<{ answer: string; query: string }>) => {
+      const { answer, query } = action.payload;
+      // state.chats[state.chats.length - 1].answer = answer;
       state.chats[state.chats.length - 1].query = query;
-
     },
     updateChatQuery: (state, action: PayloadAction<{ query: string }>) => {
       const { query } = action.payload;
       state.chats[state.chats.length - 1].query = query;
+    },
+    setprevres: (state, action: PayloadAction<{ answer: string }>) => {
+      const { answer } = action.payload;
+      state.chats[state.chats.length - 1].answer = answer;
     },
     updateButtonSelection: (state, action: PayloadAction<{ id: number; hasselected: string }>) => {
       const { id, hasselected } = action.payload;
@@ -121,31 +131,41 @@ export const VSProductSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(sendQuery.fulfilled, (state, action: PayloadAction<any>) => {
-      const { response, Step } = action.payload;
-
+      const { response, Step, Status } = action.payload;
+   console.log("particular ans",response);
       if (Step !== undefined) {
-        if(Step === 1){
-          // console.log("state.chats.length - 1",state.chats.length - 1);
-          // console.log("state.chsts",state.chats);
-          // state.chats[state.chats.length - 1].query = response;
-          return;
-
-        }
         if (Step === 2) {
+          console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
-        }
-          else if (response.includes("@")) {
+        } 
+        else if (Step === 4 && Status === "Diligence Level Selected") {
+          const options: string[] =
+            response
+              .match(/\/\/(.*?)\/\//g)
+              ?.map((opt: string) => opt.replace(/\/\/|\/\//g, "").trim()) || [];
+          state.SidescreenOptions = options;
+          console.log("options sidescreen",options);
+          const query: string = response.split(".")[0].trim() || "Please provide your input.";
+          state.chats[state.chats.length - 1].query = query;
+        } 
+        else if (response.includes("@")) {
+          console.log("button option bock");
           const options: string[] =
             response.match(/@@(.*?)@@/g)?.map((opt: string) => opt.replace(/@@/g, "").trim()) || [];
 
-          const query: string = response.split(".")[0].trim() || "Please provide your input.";
+          // const query: string = response.split(".")[0].trim() || "Please provide your input.";
+          const query = response.includes(':') 
+          ? response.split(':')[0].trim() 
+          : response.split('.')[0].trim() || "Please provide your input.";
+
           console.log("step 3", query, options);
           state.chats[state.chats.length - 1].query = query;
-          state.chats.push({ query: "", options: options });
+          state.chats.push({ query: "", options: options, answer: "" });
         }
-        //  else {
-        //   state.chats.push({ query: response, answer: "" });
-        // }
+         else {
+          // state.chats.push({ query: response, answer: "" });
+          state.chats[state.chats.length - 1].query = response;
+        }
         state.Step = Step;
       }
     });
@@ -171,5 +191,6 @@ export const {
   updateButtonSelection,
   updateButtonResponse,
   resetChats,
+  setprevres,
   setCurrentStep,
 } = VSProductSlice.actions;

@@ -24,6 +24,7 @@ import {
   updateButtonSelection,
   updateButtonResponse,
   resetChats,
+  setprevres,
   setCurrentStep,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
@@ -245,16 +246,28 @@ const VCReport = () => {
       console.log("anserrrrr", answer);
       setIsloading(true);
       const newQueryIndex = generateKnowId();
+      const generateRandomString = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const length = Math.floor(Math.random() * 2) + 4; // Random length of 4 or 5
+        for (let i = 0; i < length; i++) {
+          result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+      }; 
 
       try {
         if (answer) {
-          const ai_query = { user_input: answer, user_id: userId || "" };
+        
+
+          const ai_query = { user_input: answer, user_id: generateRandomString() ,button:button};
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
+            dispatch(setprevres({answer:answer}));
             const { response, Step } = await dispatch(sendQuery(ai_query)).unwrap();
-            if (Step !== 3)
-              await dispatch(updateButtonResponse({ answer: answer, query: response }));
+            // if (Step !== 3)
+              // await dispatch(updateButtonResponse({ answer: answer, query: response }));
           } else {
             dispatch(setVSChats(queries));
             // setQuery("");
@@ -262,9 +275,9 @@ const VCReport = () => {
             setanswer("");
 
             // Dispatch the thunk for sending the query
-            const { response, Step } = await dispatch(sendQuery(ai_query)).unwrap();
+            const { response } = await dispatch(sendQuery(ai_query)).unwrap();
             //  if (!response.includes("@"))      {
-            await dispatch(updateChatQuery({ query: response }));
+            // await dispatch(updateChatQuery({ query: response }));
 
             // }
             //           else{
@@ -331,7 +344,7 @@ const VCReport = () => {
         <div className="flex h-full gap-x-5">
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto">
             <div className="relative flex-none">
-              <div className="fixed left-10 top-2 w-[10px]">
+              <div className="absolute left-[-50px] top-2 w-[10px]">
                 <StepBar />
               </div>
             </div>
@@ -389,7 +402,7 @@ const VCReport = () => {
           </div>
 
           {Step === 4 && <InitialScreening />}
-          {Step === 5 && <DataSources />}
+          {/* {Step === 5 && <DataSources />} */}
 
           {/* <InitialScreening /> */}
           {/* <DataSources/> */}

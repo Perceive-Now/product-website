@@ -12,26 +12,26 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({});
 
-  console.log("infoo",info);
+  // console.log("infoo",info);
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  // const parseInfo = (infoString: string) => {
-  //   const infoLines = infoString.split("\n").filter((line) => line.trim() !== "");
-  //   const infoObject: Record<string, string> = {};
+  const parseInfo = (infoString: string) => {
+    const infoLines = infoString.split("\n").filter((line) => line.trim() !== "");
+    const infoObject: Record<string, string> = {};
 
-  //   infoLines.forEach((line) => {
-  //     const trimmedLine = line.replace(/^- /, "");
-  //     const [key, value] = trimmedLine.split(":").map((part) => part.trim());
-  //     if (key && value) {
-  //       infoObject[key.replace(/[\[\]]/g, "")] = value.replace(/[\[\]]/g, "").trim();
-  //     }
-  //   });
+    infoLines.forEach((line) => {
+      const trimmedLine = line.replace(/^- /, "");
+      const [key, value] = trimmedLine.split(":").map((part) => part.trim());
+      if (key && value) {
+        infoObject[key.replace(/[\[\]]/g, "")] = value.replace(/[\[\]]/g, "").trim();
+      }
+    });
 
-  //   return infoObject;
-  // };
+    return infoObject;
+  };
 
-  // const infoData = parseInfo(info);
+  const infoData = parseInfo(info);
 
   const handleChange = (key: string, value: string) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -233,7 +233,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
             </button>
           </div>
         </Modal> */}
-      {/* <Modal open={modalOpen} handleOnClose={handleModalClose}>
+      <Modal open={modalOpen} handleOnClose={handleModalClose}>
         <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg">
           <div className="font-bold text-md text-end">
             <Switch
@@ -370,7 +370,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
             Submit
           </button>
         </div>
-      </Modal> */}
+      </Modal>
 
 
      

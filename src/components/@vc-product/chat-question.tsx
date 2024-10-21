@@ -14,6 +14,9 @@ import ToolTip from "../reusable/tool-tip";
 import ArrowDown from "../icons/miscs/ArrowDown";
 import ArrowUp from "../icons/miscs/ArrowUp";
 import Modal from "../reusable/modal";
+import remarkGfm from "remark-gfm";
+import Markdown from "react-markdown";
+import rehypeExternalLinks from "rehype-external-links";
 // interface IChat {
 //   query: string;
 //   answer: string;
@@ -88,10 +91,20 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
       <div
         className={`mt-2 rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100`}
       >
-        <div
+        {/* <div
           className={`text-secondary-800 text-justify ${showMore ? "" : ""}`}
           dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
-        />
+        /> */}
+          <Markdown
+                      className="markdownWrapper text-secondary-800 text-justify text-align"
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[
+                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
+                      ]}
+                    >
+                      {query}
+                    </Markdown>
+
       </div>
     </div>
   );
