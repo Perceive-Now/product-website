@@ -319,14 +319,14 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info , onSendQuery,
           </div>
         </Modal> */}
       <Modal open={modalOpen} handleOnClose={handleModalClose}>
-        <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg h-[800px] overflow-y-auto pn_scroller">
+        <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg h-[90vh] overflow-y-auto pn_scroller">
           <div className="font-bold text-md text-end">
             <Switch
               checked={true}
               onChange={() => {
                 setModalOpen(false);
               }}
-              className={`bg-blue-600 relative inline-flex items-center h-2 rounded-full w-4 mr-1`}
+              className={`bg-primary-900 relative inline-flex items-center h-2 rounded-full w-4 mr-1 mb-2`}
             >
               <span
                 className={`translate-x-2 inline-block w-2 h-2 transform bg-white rounded-full`}
@@ -336,14 +336,14 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info , onSendQuery,
           </div>
 
                     {Object.entries(formData).map(([key, value]) => (
-  <div key={key} className="flex items-center mb-2">
-    <label className="font-bold text-sm mr-2">{key}:</label>
+  <div key={key} className="flex items-center mb-1">
+    <label className="font-bold text-sm mr-2 text-nowrap">{key}:</label>
     <input
       type="text"
       value={value}
       onChange={(e) => handleChange(key, e.target.value)}
-      className="border rounded p-1 w-full text-sm"
-      style={{ height: '10px' }}
+      className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+      
     />
   </div>
 ))}
