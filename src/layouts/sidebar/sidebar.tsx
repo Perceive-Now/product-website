@@ -28,8 +28,7 @@ import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
-  onSidebarToggle: () => void;
-}
+  onSidebarToggle: (isOpen: boolean) => void; }
 interface INavLinkItemProps extends ISidebarListItem {
   value: string;
   open: boolean;
@@ -143,7 +142,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   const dispatch = useAppDispatch();
   const joyrideRef = useRef(null);
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [activeItem, setActiveItem] = useState("");
   const [activeSubItem, setActiveSubItem] = useState(null);
@@ -169,13 +168,14 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
 
   const handleItemClick = (key: any) => {
     setActiveItem(key);
+    setOpen(true);
   };
   const handleSubItemClick = (key: any) => {
     setActiveSubItem(key);
   };
 
   useEffect(() => {
-    onSidebarToggle();
+    onSidebarToggle(open);
   }, [open]);
 
   useEffect(() => {
@@ -284,7 +284,7 @@ const handleJoyrideCallback = (data: any) => {
                 className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
                 onClick={() => setOpen(!open)}
               >
-                <RoundedArrowIcon className={classNames(open ? "" : "rotate-180")} />
+                <RoundedArrowIcon className={classNames(open ? "rotate-180" : "")} />
               </button>
             </ToolTip>
           </div>

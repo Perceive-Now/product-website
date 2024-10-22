@@ -19,35 +19,28 @@ import { sendQuery, extractFileData } from "src/stores/vs-product";
 
 import {
   setVSChats,
-  updateChatAnswer,
-  updateChatQuery,
-  updateButtonSelection,
-  updateButtonResponse,
-  resetChats,
   setprevres,
   setCurrentStep,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
-  const userId = "testyooo1234";
+  const userId = "testing12";
 
-  const { Step } = useAppSelector((state) => state.VSProduct);
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
   console.log("SidescreenOptions screen index",SidescreenOptions);
 
   const [query, setQuery] = useState("");
   const [answer, setanswer] = useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
-  const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsloading] = useState(false);
-  const [sidescreen, setSideScreen] = useState(false);
 
-  const template = ``;
   const { chats } = useAppSelector((state) => state.VSProduct);
   console.log("chattsss", chats);
-  // useEffect(() => {
-  // }, [chats]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats]);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -58,190 +51,6 @@ const VCReport = () => {
     }
   };
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-  const sortedChats = [
-    {
-      query:
-        "Hi there! Let's get started with the diligence process.\nCould you please upload the pitch desk?",
-      answer: "xyz.ptx",
-    },
-  ];
-
-  // const onSendQuery = useCallback(
-  //   async (query: string, answer: string, file?: File) => {
-  //     setIsloading(true);
-  //     const newQueryIndex = generateKnowId();
-
-  //     if (query && !file) {
-  //       const queries = {
-  //         id: newQueryIndex,
-  //         query: query,
-  //         answer: "",
-  //       };
-  //       const ai_query = {
-  //         user_input: query,
-  //         user_id:userId
-  //       };
-
-  //       dispatch(setVSChats(queries));
-  //       setQuery("");
-
-  //       try {
-  //         const response: any = await fetch(
-  //           `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               "Content-Type": "application/json",
-  //             },
-  //             body: JSON.stringify(ai_query),
-  //           },
-  //         );
-  // const reader = response.body.getReader();
-  // const decoder = new TextDecoder();
-
-  //         // const debouncedUpdate = debounce((newAnswer) => {
-  //         //   console.log("ajooo",chats.length);
-  //         //   dispatch(
-  //         //     updateChatAnswer({
-  //         //       index: chats.length,
-  //         //       answer: newAnswer,
-  //         //     }),
-  //         //   );
-  //         // });
-
-  // const { value } = await reader.read();
-  // if (value) {
-  //   const chunk = decoder.decode(value);
-
-  //   const answer = JSON.parse(chunk);
-  //   const newanswer = JSON.parse(answer);
-
-  //           console.log("Response:", newanswer.response);
-  //           dispatch(
-  //             updateChatAnswer({
-  //               index: newQueryIndex,
-  //               answer: newanswer.response,
-  //             }),
-  //           );
-
-  //           const stepValue = parseInt(newanswer.Step);
-  //           if (!isNaN(stepValue) && Number.isInteger(stepValue) && stepValue >= 0) {
-  //             dispatch(setCurrentStep(stepValue));
-  //           }
-  //           // debouncedUpdate(newanswer.response);
-  //         }
-  //         setIsloading(false);
-  //       } catch (error) {
-  //         console.error("Failed to send query", error);
-  //         setIsloading(false);
-  //         return;
-  //       }
-  //     } else if (file) {
-  //       const formData = new FormData();
-  //       formData.append("file", file);
-
-  //       const extractIndex = generateKnowId();
-
-  //       const firstquery = {
-  //         id: newQueryIndex,
-  //         query:
-  //           "Hi there! Let's get started with the diligence process.\nCould you please upload the pitch desk?",
-  //         answer: file.name,
-  //       };
-
-  //       dispatch(setVSChats(firstquery));
-
-  //       const secondquery = {
-  //         id: extractIndex,
-  //         query: "Great! Let me deep dive into the file.",
-  //         answer: "",
-  //       };
-
-  //       dispatch(setVSChats(secondquery));
-
-  //       const createPitchDeckSummary = (slides: { slide: number; text: string[] }[]): string => {
-  //         const summary = slides
-  //           .flatMap(slide => slide.text.map(text => text.replace(/\n/g, ' ')))
-  //           .join(" ");
-
-  //         return `Here is my pitch deck: ${summary}`;
-  //       };
-
-  //       try {
-  //         const response: any = await fetch(
-  //           "https://templateuserrequirements.azurewebsites.net/extract-ppt-data",
-  //           {
-  //             method: "POST",
-  //             headers: {
-  //               Accept: "application/json",
-  //             },
-  //             body: formData,
-  //           },
-  //         );
-  //         const reader = response.body.getReader();
-  //         const decoder = new TextDecoder();
-
-  //         // const debouncedUpdate = debounce((newAnswer) => {
-  //         //   dispatch(
-  //         //     updateChatAnswer({
-  //         //       index: newQueryIndex,
-  //         //       answer: newAnswer,
-  //         //     }),
-  //         //   );
-  //         // }, 100);
-
-  //         const { value } = await reader.read();
-  //         if (value) {
-  //           const chunk = decoder.decode(value);
-  //           const answer = JSON.parse(chunk);
-  //           console.log("ooo", typeof answer);
-  //           if (answer.message === "Text extracted successfully") {
-
-  //             const summary = createPitchDeckSummary(answer.slides_data)
-  //             if(summary){
-  //               const response: any = await fetch(
-  //                 `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
-  //                 {
-  //                   method: "POST",
-  //                   headers: {
-  //                     "Content-Type": "application/json",
-  //                   },
-  //                   body: JSON.stringify({user_id:userId,user_input:summary}),
-  //                 },
-  //               );
-  //               const reader = response.body.getReader();
-  //               const decoder = new TextDecoder();
-  //               if (value) {
-  //                 const chunk = decoder.decode(value);
-  //                 const answer = JSON.parse(chunk);
-  //                 if(answer.response){
-  //                dispatch(
-  //               updateChatAnswer({
-  //                 index: extractIndex,
-  //                 answer: "",
-  //                 extract: answer.response,
-  //               }),
-  //             );
-  //                 }
-  //               }
-  //             }
-
-  //             // debouncedUpdate(answer.response);
-  //           }
-  //         }
-  //       } catch (error) {
-  //         console.error("Failed to send query", error);
-  //         setIsloading(false);
-  //         return;
-  //       }
-  //     }
-
-  //   },
-  //   [dispatch],
-  // );
 
   const onSendQuery = useCallback(
     async (query: string, answer: string, file?: File, button?: boolean) => {
@@ -258,36 +67,15 @@ const VCReport = () => {
 
           if (button) {
             dispatch(setprevres({answer:answer}));
-            const { response, Step } = await dispatch(sendQuery(ai_query)).unwrap();
-            // if (Step !== 3)
-              // await dispatch(updateButtonResponse({ answer: answer, query: response }));
+            await dispatch(sendQuery(ai_query)).unwrap();
           } else {
             dispatch(setVSChats(queries));
-            // setQuery("");
-            // await dispatch(updateChatAnswer({answer:answer}))
             setanswer("");
 
-            // Dispatch the thunk for sending the query
             const { response } = await dispatch(sendQuery(ai_query)).unwrap();
-            //  if (!response.includes("@"))      {
-            // await dispatch(updateChatQuery({ query: response }));
-
-            // }
-            //           else{
-            //             await dispatch(updateChatAnswer({answer:response}))
-            // //both cond are same
-            //           }
             console.log("oooo", response);
           }
         } else if (file) {
-          const extractIndex = generateKnowId();
-
-          // const firstQuery = {
-          //   id: newQueryIndex,
-          //   query:
-          //     "Hi there! Let's get started with the diligence process.\nCould you please upload the pitch desk?",
-          //   answer: file.name,
-          // };
           const firstQuery = {
             id: newQueryIndex,
             query: "Great! Let me deep dive into the file.",
@@ -303,6 +91,7 @@ const VCReport = () => {
           //   answer: "",
           // };
           // dispatch(setVSChats(secondQuery));
+
           const fileResponse = await dispatch(extractFileData(file)).unwrap();
           console.log("file ress", fileResponse);
           if (fileResponse) {
@@ -315,7 +104,7 @@ const VCReport = () => {
                   id: newQueryIndex + 1,
                   query: "",
                   answer: "",
-                  options: ["Yes"],
+                  options: ["Confirm"],
                   hasbutton: true,
                 }),
               );
@@ -370,8 +159,14 @@ const VCReport = () => {
 
                         {chat.extract && 
                         <ExtractInfo 
+                        onSendQuery={onSendQuery}
                         info={chat.extract} />
                          }
+
+                          {/* <ExtractInfo 
+                        info={"yoo"}
+                        onSendQuery={onSendQuery}
+                        /> */}
                       </>
                     ))}
                     {isLoading && (
@@ -396,6 +191,7 @@ const VCReport = () => {
           </div>
 
           {SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />}
+          {/* <InitialScreening /> */}
           {/* {Step === 5 && <DataSources />} */}
 
           {/* <InitialScreening /> */}
