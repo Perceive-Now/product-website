@@ -61,7 +61,7 @@ const StepBar: React.FC = () => {
 
           {index < totalSteps - 1 && <div className="w-[1px] h-[18px] border border-gray-200"></div>}
           {hoveredStep === index && (
-            <div className="absolute left-[110%] top-[0] text-nowrap text-center w-auto max-w-xs text-sm px-[20px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none">
+            <div className="absolute right-[110%] top-[0] text-nowrap text-center w-auto max-w-xs text-sm px-[20px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none">
               {stepDescriptions[index]}
             </div>
           )}
