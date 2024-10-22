@@ -22,6 +22,28 @@ const initialState: VSProduct = {
   chats: [],
   marketChatLoading: true,
   Step: 0,
+  SidescreenOptions:[]
+};
+
+const formatJsonResponse = (inputString: string): any => {
+  try {
+    const data = JSON.parse(inputString);
+    return data;
+  } catch {
+
+    const stepMatch = inputString.match(/"Step":\s*(\d+)/);
+    const statusMatch = inputString.match(/"Status":\s*"([^"]+)"/);
+    const responseMatch = inputString.match(/"response":\s*"([^"]+)"/);
+
+    const step = stepMatch ? stepMatch[1] : "N/A";
+    const status = statusMatch ? statusMatch[1] : "N/A";
+    const response = responseMatch ? responseMatch[1] : "N/A";
+    return {
+      Step: step,
+      Status: status,
+      response: response
+    };
+  }
 };
 
 // Thunks for API calls
@@ -30,13 +52,10 @@ export const sendQuery = createAsyncThunk(
   async ({
     user_input,
     user_id,
-    button,
   }: {
     user_input: string;
     user_id: string;
-    button?: boolean;
-  }) => {
-    // if(button)  state.chats[state.chats.length - 1].answer = answer;
+  }) : Promise<any> => {
 
     const response: any = await fetch(
       `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
@@ -58,11 +77,29 @@ export const sendQuery = createAsyncThunk(
       console.log("type of chunk",typeof chunk);
       const answer = JSON.parse(chunk);
       console.log("answer",typeof answer,answer)
-      const newanswer = JSON.parse(answer);
-      console.log("answerrrrr", typeof newanswer,newanswer);
+      // const newanswer = JSON.parse(answer);
 
+
+      const newanswer = formatJsonResponse(answer);
+      // console.log("answerrrrr", typeof newanswer,newanswer);
      
       return newanswer;
+
+      // const stepMatch = answer.match(/"Step":\s*(\d+)/);
+      // const statusMatch = answer.match(/"Status":\s*"([^"]+)"/);
+      // const responseMatch = answer.match(/"response":\s*"([^"]+)"/);
+  
+      // const step = stepMatch ? stepMatch[1] : "N/A";
+      // const status = statusMatch ? statusMatch[1] : "N/A";
+      // const response = responseMatch ? responseMatch[1] : "N/A";
+      // const formattedResponse = response.replace(/\n/g, '<br />');
+      //  console.log("yooo",step,status,response);
+      // return {
+      //   Step: step,
+      //   Status: status,
+      //   response: formattedResponse
+      // };
+
     }
 
     return;
@@ -138,15 +175,17 @@ export const VSProductSlice = createSlice({
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
         } 
-        else if (Step === 4 && Status === "Diligence Level Selected") {
+        else if (response.includes("//")) {
           const options: string[] =
             response
               .match(/\/\/(.*?)\/\//g)
               ?.map((opt: string) => opt.replace(/\/\/|\/\//g, "").trim()) || [];
           state.SidescreenOptions = options;
           console.log("options sidescreen",options);
-          const query: string = response.split(".")[0].trim() || "Please provide your input.";
-          state.chats[state.chats.length - 1].query = query;
+          const query = response.includes(':') 
+          ? response.split(':')[0].trim() 
+          : response.split('.')[0].trim() || "Please provide your input.";
+          // state.chats[state.chats.length - 1].query = query;
         } 
         else if (response.includes("@")) {
           console.log("button option bock");

@@ -4,10 +4,10 @@ import { useLocation } from "react-router-dom";
 import PN from "../../../assets/images/pn.svg";
 import { setStartTour } from "src/stores/dashboard";
 import { useAppDispatch } from "../../../hooks/redux";
-interface Props {
-  // setQuery: (query: string) => void;
-  // query?: string;
-}
+// interface Props {
+//   setQuery: (query: string) => void;
+//   query?: string;
+// }
 
 const ReportDefault: React.FC = () => {
   const location = useLocation();

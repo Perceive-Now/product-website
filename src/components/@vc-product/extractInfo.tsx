@@ -10,32 +10,115 @@ interface ExtractInfoProps {
 
 const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  // const [formData, setFormData] = useState<Record<string, string>>({});
+//   info= `**Company Name:** [EcoTech Innovations]
+// **Tagline:** [Empowering homes with clean energy]
+// **Mission:** [To make clean energy accessible, affordable, and efficient for everyone.]
+// **Founded:** [2021]
+// **Location:** [San Francisco, CA]
 
-  // console.log("infoo",info);
+// **Current Issue:** [Over 70% of homes still rely on non-renewable energy, leading to inefficiencies and high carbon footprints.]
+// **Pain Point:** [Homeowners face rising energy costs, while environmental regulations demand more sustainable solutions.]
+// **Customer Impact:** [High costs, environmental concerns, lack of easy solutions for energy management.]
+
+// **Product:** [Solar-powered smart home energy systems.]
+// **Key Features:**
+// - [AI-driven energy optimization.]
+// - [Seamless integration with existing home systems.]
+// - [Scalable for commercial use.]
+// **Unique Value Proposition:** [EcoTech reduces energy bills by up to 30%, while enabling homes to lower their carbon emissions.]
+
+// **Market Size:** [$300 billion global smart home market, with a $50 billion subset for clean energy solutions.]
+// **Growth Rate:** [8.9% CAGR in the smart home energy management sector.]
+// **Target Audience:** [Homeowners and commercial properties looking to reduce energy costs and carbon footprints.]
+
+// **Revenue Streams:**
+// - [Direct Sales: Solar-powered systems sold to homeowners and businesses.]
+// - [Subscription: Monthly energy management services via AI-driven software.]
+// - [Partnerships: Partnering with utility companies to provide grid support.]
+
+// **Milestones:**
+// - [1,500 units sold in the first 12 months.]
+// - [Partnership with 3 utility providers.]
+// - [$1.2M in annual recurring revenue (ARR) from subscriptions.]
+// **Customer Feedback:** [Average customer savings of 25% on energy bills.]
+
+// **Go-to-Market Strategy Channels:**
+// - [Direct-to-consumer via digital marketing.]
+// - [Partnerships with home builders and utility companies.]
+// - [B2B for commercial installations.]
+// **Customer Acquisition Cost (CAC):** [$120.]
+// **Lifetime Value (LTV):** [$900.]
+
+// **Competitors:**
+// - [Tesla Powerwall]
+// - [Sunrun]
+// - [Vivint Solar]
+// **Differentiation:** [AI-driven optimization and seamless integration with existing home systems give EcoTech a unique edge over competitors.]
+
+// **Revenue:** [$2.5M (2023 projected).]
+// **Burn Rate:** [$50k per month.]
+// **Funding:** [Currently raising $5M for scaling manufacturing and marketing.]
+// **Use of Funds:** [60% manufacturing, 30% marketing, 10% operational costs.]
+
+// **CEO:** [Jane Doe (10+ years in clean tech, ex-SolarCity).]
+// **CTO:** [John Smith (AI expert, PhD in Machine Learning).]
+// **COO:** [Emily Johnson (Operations lead, previously at Tesla).]
+
+// **Patents:** [2 patents filed for AI optimization algorithms and energy storage technology.]
+// **Competitive Edge:** [Proprietary software for real-time energy management.]
+
+// **Near-term Goals:** [Expand into Europe and Asia-Pacific within 18 months.]
+// **Long-term Vision:** [Become a global leader in sustainable energy solutions for smart homes.]`
+  console.log("infooooooooooooo",info);
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const parseInfo = (infoString: string) => {
-    const infoLines = infoString.split("\n").filter((line) => line.trim() !== "");
-    const infoObject: Record<string, string> = {};
+  // const parseInfo = (infoString: string) => {
+  //   const infoLines = infoString.split("\n").filter((line) => line.trim() !== "");
+  //   const infoObject: Record<string, string> = {};
 
-    infoLines.forEach((line) => {
-      const trimmedLine = line.replace(/^- /, "");
-      const [key, value] = trimmedLine.split(":").map((part) => part.trim());
+  //   infoLines.forEach((line) => {
+  //     const trimmedLine = line.replace(/^- /, "");
+  //     const [key, value] = trimmedLine.split(":").map((part) => part.trim());
+  //     if (key && value) {
+  //       infoObject[key.replace(/[\[\]]/g, "")] = value.replace(/[\[\]]/g, "").trim();
+  //     }
+  //   });
+
+  //   return infoObject;
+  // };
+
+
+  const parseInfo = (info: string): Record<string, string> => {
+    const lines = info.split('\n').filter(line => line);
+    const parsedData: Record<string, string> = {};
+    lines.forEach(line => {
+      const [key, value] = line.split(':').map(part => part.trim());
       if (key && value) {
-        infoObject[key.replace(/[\[\]]/g, "")] = value.replace(/[\[\]]/g, "").trim();
+        const cleanKey = key.replace(/\*\*/g, '').trim();
+        const cleanValue = value.replace(/\*\*/g, '').trim();
+        parsedData[cleanKey] = cleanValue.replace(/\[|\]/g, ''); // Remove brackets
       }
     });
-
-    return infoObject;
+    return parsedData;
   };
+
+  const [formData, setFormData] = useState<Record<string, string>>(parseInfo(info));
+
+  const handleChange = (key: string, value: string) => {
+    setFormData({
+      ...formData,
+      [key]: value
+    });
+  };
+
 
   const infoData = parseInfo(info);
 
-  const handleChange = (key: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  // const handleChange = (key: string, value: string) => {
+  //   setFormData((prev) => ({ ...prev, [key]: value }));
+  // };
 
   const handleSubmit = () => {
     console.log("ajjj")
@@ -73,6 +156,8 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
   //     );
   //   });
   // };
+
+  
 
   return (
     <>
@@ -249,7 +334,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
             </Switch>
             Edit Extract
           </div>
-
+{/* 
           <div className="font-bold text-sm">Startup Overview:</div>
           <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
             {[
@@ -364,7 +449,30 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
                 />
               </li>
             ))}
-          </ul>
+          </ul> */}
+
+
+                  {/* <Markdown
+                      className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[
+                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
+                      ]}
+                    >
+                      {info}
+                    </Markdown> */}
+                     {Object.entries(formData).map(([key, value]) => (
+        <div key={key} className="mb-2">
+          <label className="block font-bold">{key}</label>
+          <input
+            type="text"
+            value={value}
+            defaultValue={value} 
+            onChange={(e) => handleChange(key, e.target.value)}
+            className="border rounded p-2 w-full"
+          />
+        </div>
+      ))}
 
           <button className="mt-4 bg-secondary-500 text-white p-2 rounded-full pr-5 pl-5">
             Submit

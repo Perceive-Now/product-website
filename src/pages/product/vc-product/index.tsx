@@ -30,8 +30,11 @@ import {
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
-  const userId = jsCookie.get("user_id");
+  const userId = "testyooo1234";
+
   const { Step } = useAppSelector((state) => state.VSProduct);
+  const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
+  console.log("SidescreenOptions screen index",SidescreenOptions);
 
   const [query, setQuery] = useState("");
   const [answer, setanswer] = useState<string>("");
@@ -43,9 +46,8 @@ const VCReport = () => {
   const template = ``;
   const { chats } = useAppSelector((state) => state.VSProduct);
   console.log("chattsss", chats);
-  useEffect(() => {
-    scrollToBottom();
-  }, [chats]);
+  // useEffect(() => {
+  // }, [chats]);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -246,21 +248,12 @@ const VCReport = () => {
       console.log("anserrrrr", answer);
       setIsloading(true);
       const newQueryIndex = generateKnowId();
-      const generateRandomString = () => {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        const length = Math.floor(Math.random() * 2) + 4; // Random length of 4 or 5
-        for (let i = 0; i < length; i++) {
-          result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
-      }; 
 
       try {
         if (answer) {
         
 
-          const ai_query = { user_input: answer, user_id: generateRandomString() ,button:button};
+          const ai_query = { user_input: answer, user_id: userId || "" ,button:button};
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
@@ -322,7 +315,7 @@ const VCReport = () => {
                   id: newQueryIndex + 1,
                   query: "",
                   answer: "",
-                  options: ["Confirm"],
+                  options: ["Yes"],
                   hasbutton: true,
                 }),
               );
@@ -377,7 +370,8 @@ const VCReport = () => {
 
                         {chat.extract && 
                         <ExtractInfo 
-                        info={chat.extract} />}
+                        info={chat.extract} />
+                         }
                       </>
                     ))}
                     {isLoading && (
@@ -401,7 +395,7 @@ const VCReport = () => {
             </div>
           </div>
 
-          {Step === 4 && <InitialScreening />}
+          {SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />}
           {/* {Step === 5 && <DataSources />} */}
 
           {/* <InitialScreening /> */}
