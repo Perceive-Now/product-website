@@ -82,11 +82,14 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info , onSendQuery,
       if (key && value) {
         const cleanKey = key.replace(/\*\*/g, '').trim();
         const cleanValue = value.replace(/\*\*/g, '').trim();
-        parsedData[cleanKey] = cleanValue.replace(/\[|\]/g, ''); // Remove brackets
+        if(cleanValue) parsedData[cleanKey] = cleanValue.replace(/\[|\]/g, ''); // Remove brackets
       }
     });
     return parsedData;
   };
+
+
+
 
   const [formData, setFormData] = useState<Record<string, string>>(parseInfo(info));
   const [changedData,setChangedData] = useState({});

@@ -4,7 +4,7 @@ import type { ReactElement } from "react";
 
 import NewChatIcon from "../../components/icons/side-bar/new-chat";
 import NewReportIcon from "../../components/icons/side-bar/new-report";
-// import ReportsListIcon from "src/components/icons/side-bar/reports-list";
+import ReportsListIcon from "src/components/icons/side-bar/reports-list";
 // import IndustriesIcon from "src/components/icons/side-bar/industries-icon";
 
 import healthcareIcon from "src/assets/sidebar/Industries/healthcare";
@@ -70,6 +70,14 @@ const sidebarItems: ISidebarListItem[] = [
       { title: "Technology Tranfer Office", key: "tto", to: "#", icon: TTO,classname:'sidebar-tto' },
     ],
   },
+  {
+    title: "New Report",
+    key: "new-report",
+    icon: NewReportIcon,
+    subList: [
+      { title: "New Report", key: "venture-capital",to: "/new-report",icon: ReportsListIcon , classname:'sidebar-vc'},
+    ]
+  }
 ];
 
 export interface ISidebarItem {
