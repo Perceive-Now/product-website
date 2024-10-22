@@ -39,7 +39,7 @@ const StepBar: React.FC = () => {
       {Array.from({ length: totalSteps }, (_, index) => (
         <div key={index} className="flex flex-col items-center relative">
           <div
-            className={`w-4 h-4 border rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 ${
+            className={`w-4 h-4 border rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 group ${
               index < currentStep
                 ? "bg-primary-900 border-primary-900"
                 : index === currentStep
@@ -55,13 +55,13 @@ const StepBar: React.FC = () => {
                 <IconCheck />
               </span>
             ) : (
-              <span className={`text-primary-900 text-base font-semibold ${currentStep === index ? '' : 'hover:text-white'}`}>{index + 1}</span>
+              <span className={`text-primary-900 text-base font-semibold ${currentStep === index ? '' : 'group-hover:text-white'}`}>{index + 1}</span>
             )}
           </div>
 
           {index < totalSteps - 1 && <div className="w-[1px] h-[18px] border border-gray-200"></div>}
           {hoveredStep === index && (
-            <div className="absolute right-[150%] top-[-8px] text-nowrap text-center w-auto max-w-xs text-sm px-[20px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10">
+            <div className="absolute left-[110%] top-[0] text-nowrap text-center w-auto max-w-xs text-sm px-[20px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none">
               {stepDescriptions[index]}
             </div>
           )}
