@@ -244,7 +244,7 @@ const KnowNowHistory = ({ History }: Props) => {
   );
   return (
     <>
-      <div className="h-[calc(100vh-400px)] overflow-y-auto overflow-x-hidden pn_scroller flex flex-col gap-[2px] relative">
+      <div className="h-[calc(100vh-400px)] overflow-y-auto overflow-x-hidden pn_scroller flex flex-col gap-[2px]">
         {indexedHistory.length > 0 &&
           indexedHistory.slice(0, visibleCount).map((h, idx) => (
             <div

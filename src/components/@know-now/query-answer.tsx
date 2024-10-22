@@ -55,8 +55,8 @@ interface Props {
   message_id: number;
   loadingCompleted?: boolean;
   answer: string;
-  scrollToItem : (index: string ) => void;
-  ido: string
+  scrollToItem: (index: string) => void;
+  ido: string;
 }
 
 const ItemTypes = {
@@ -102,12 +102,11 @@ const QueryAnswer = ({
   loadingCompleted,
   message_id,
   ido,
-  scrollToItem
+  scrollToItem,
 }: Props) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const { id } = useParams();
-
   const userId = jsCookie.get("user_id");
 
   const copyRef = useRef<any>(null);

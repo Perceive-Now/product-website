@@ -51,7 +51,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
           onClick={() => sendQuery(query, null)}
           disabled={isLoading || !query.trim()}
         >
-          {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2" />}
+          {isLoading ? <LoaderIcon /> : <SentIcon className="h-2 w-2 text-[#87888C]" />}
         </button>
       </div>
     </div>

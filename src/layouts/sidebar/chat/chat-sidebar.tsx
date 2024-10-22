@@ -34,10 +34,11 @@ const ChatSidebar = () => {
     // setChats([]);
   }, [chatIPIds, chatMarketIds, location]);
 
+  console.log("chats knownow",chats);
   return (
     <div className="px-1 space-y-2">
       <Link to={"/start-conversation"}>
-        <Button htmlType="button" classname="text-sm" size="small" rounded="small">
+        <Button htmlType="button" classname="text-xs" size="xs" rounded="small">
           Start new conversation
         </Button>
       </Link>

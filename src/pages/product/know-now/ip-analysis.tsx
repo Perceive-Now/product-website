@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import axios from "axios";
 
@@ -40,7 +40,11 @@ import { setUpdateQuery } from "src/stores/know-now";
  */
 function KnowNowIP() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
+  const { question } = location.state || { question: "" };
+
   const [searchParams] = useSearchParams();
 
   const queryStatus = searchParams.get("status");
@@ -61,6 +65,13 @@ function KnowNowIP() {
   const [query, setQuery] = useState("");
   const [chatIndex, setChatIndex] = useState<number | null>(null);
 
+  //
+  useEffect(() => {
+    if (question) {
+      setQuery(question);
+    }
+  }, [question]);
+  //
   useEffect(() => {
     if (queryStatus) {
       setIsSaved(true);
@@ -258,7 +269,7 @@ function KnowNowIP() {
           ) : (
             <>
               {id === undefined ? (
-                <KnowNowdefault setQuery={setQuery}/>
+                  <KnowNowdefault setQuery={setQuery} question={query} />
               ) : (
                 <div className="space-y-6 w-full">
                   {((chats && chats) || []).map((chat, idx) => (

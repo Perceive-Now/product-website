@@ -48,7 +48,7 @@ const QueryAnswer = ({ answer }: Props) => {
 
   return (
     <div className="flex items-start gap-3">
-      <div className="p-1 shrink-0 rounded-full bg-appGray-100">
+      <div className="p-1 shrink-0">
         <img className="h-full w-full" src={PN} alt="Pn" />
       </div>
       <div className="w-full">

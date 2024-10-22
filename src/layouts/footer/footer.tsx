@@ -33,7 +33,7 @@ export default function AppFooter() {
   return (
     <div
       className={classNames(
-        "px-4 flex flex-col sm:flex-row justify-between items-center w-full relative bottom-1",
+        "px-4 flex flex-col sm:flex-row justify-between items-center w-full bg-white-gradient z-10 py-1",
       )}
     >
       <div className="flex flex-col md:flex-row gap-x-4 font-normal text-sm">

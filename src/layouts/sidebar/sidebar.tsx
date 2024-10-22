@@ -1,4 +1,4 @@
-import { useState, FunctionComponent, useCallback, useEffect, Fragment } from "react";
+import { useState, useRef, FunctionComponent, useCallback, useEffect, Fragment } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 //
@@ -21,11 +21,14 @@ import SideBarToggleIcon from "../../components/icons/side-bar/toggle";
 import { setSession } from "../../stores/session";
 import ToolTip from "src/components/reusable/tool-tip";
 import ChatSidebar from "./chat/chat-sidebar";
-
+import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-joyride";
+import { setCurrentStep } from "src/stores/vs-product";
+import { setStartTour } from "src/stores/dashboard";
+import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
-}
+  onSidebarToggle: (isOpen: boolean) => void; }
 interface INavLinkItemProps extends ISidebarListItem {
   value: string;
   open: boolean;
@@ -43,19 +46,127 @@ const SidebarBottom = [
   },
 ];
 
-/**
- *
- */
-export const AppSidebar: FunctionComponent<Props> = () => {
+const tourSteps = [
+  {
+    target: ".sidebar-knownow",
+    content:
+      "Here’s Know Now! It’s where you explore IP Insights and Market Research. Let’s take a quick look.",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-industries",
+    content:
+      "Next is Industry Reports! You’ll find industry-specific insights like Venture Capital, Healthcare, and more. Let’s explore each one.",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+
+  {
+    target: ".sidebar-ip",
+
+    content: (
+      <div>
+        With IP Insights, you can explore patents or search prior art. Want to dive in now or move
+        on?{" "}
+        <a href="/know-now/ip-analysis/" className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
+            Explore IP Insights
+        </a>
+      </div>
+    ),
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-mi",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+
+  {
+    target: ".sidebar-vc",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-firm",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-healthcare",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-ma",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-web3",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-ipattorny",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+  {
+    target: ".sidebar-tto",
+    content:
+      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+  },
+];
+
+export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
+  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const joyrideRef = useRef(null);
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
+  const [activeItem, setActiveItem] = useState("");
+  const [activeSubItem, setActiveSubItem] = useState(null);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [secondStepCount, setSecondStepCount] = useState(0);
+  // const [runTour, setRunTour] = useState(false);
+  const [steps, setSteps] = useState(tourSteps);
 
   const { pathname } = useLocation();
 
   const userDetail = useAppSelector((state) => state.auth.user);
+  const runTour = useAppSelector((state) => state.dashboard.startTour);
+
+  // const startTour = () => {
+  //   setRunTour(true);
+  // };
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleSidebarToggle = (isOpen: boolean) => {
+    setSidebarOpen(isOpen);
+  };
+
+  const handleItemClick = (key: any) => {
+    setActiveItem(key);
+    setOpen(true);
+  };
+  const handleSubItemClick = (key: any) => {
+    setActiveSubItem(key);
+  };
+
+  useEffect(() => {
+    onSidebarToggle(open);
+  }, [open]);
 
   useEffect(() => {
     if (pathname.includes("/know-now")) {
@@ -98,9 +209,183 @@ export const AppSidebar: FunctionComponent<Props> = () => {
     navigate("/login");
     setIsLoggingOut(false);
   };
+const handleJoyrideCallback = (data: any) => {
+    const { index, status, lifecycle } = data;
+
+    if (status === "finished" || status === "skipped") {
+      // setRunTour(false);
+      // dispatch(setStartTour(false));
+      return;
+    }
+
+    if (lifecycle === "complete") {
+      // Move to the next step directly
+      setCurrentStepIndex(index + 1);
+
+      // Custom actions for specific steps
+      switch (index) {
+        case 1:
+          setActiveItem("knownow");
+          setOpen(true);
+          break;
+        case 3:
+          setActiveItem("industries");
+          setOpen(true);
+          break;
+        // Add more cases for any additional steps with custom actions
+        default:
+          break;
+      }
+    }
+  };
 
   return (
-    <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>
+    <>
+    <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
+      
+      
+      <div className="bg-appGray-100 w-[66px] items-center duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10">
+      <Joyride
+        steps={steps}
+        run={runTour}
+        continuous
+        scrollToFirstStep
+        // showSkipButton
+        hideBackButton
+        styles={{
+          options: {
+            zIndex: 2000000,
+            primaryColor: '#FFA300',
+            backgroundColor: '#FFA300',
+            textColor: '#373D3F', 
+          },
+          overlay: {
+            backgroundColor: 'rgba(79, 46, 8, 0)',
+          },
+        }}
+        callback={handleJoyrideCallback}
+        stepIndex={currentStepIndex}
+      />
+        <div className="w-full flex-auto">
+          <div className="flex items-center gap-1 justify-start flex-col">
+            <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+              <button
+                type="button"
+                className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+                onClick={() => setOpen(!open)}
+              >
+                <RoundedArrowIcon className={classNames(open ? "rotate-180" : "")} />
+              </button>
+            </ToolTip>
+          </div>
+
+          <div className="mt-1">
+            {sidebarItems.map((item) => (
+              <button
+                key={item.key}
+                className={classNames(`${item.classname} py-1 my-1 inline-flex justify-center w-full text-center relative`, {
+                  "bg-white": activeItem === item.key,
+                  "text-primary-900": activeItem !== item.key,
+                  // "hover:bg-primary-900": activeItem !== item.key,
+                  // "hover:text-white":activeItem !== item.key
+                })}
+                onClick={() => {
+                  handleItemClick(item.key);
+                }}
+              >
+                <item.icon />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <Link to="/profile" className="inline-flex items-center w-full flex-0 mt-auto mb-2 justify-center">
+          <div className="shrink-0 bg-white rounded-full">
+            <UserIcon
+              first_name={userDetail?.first_name || ""}
+              last_name={userDetail?.last_name || ""}
+              profile_photo={userDetail?.profile_photo}
+            />
+          </div>
+          
+        </Link>
+
+        <div className="space-y-1">
+            {SidebarBottom.map((s, idx) => (
+              <div key={idx * 29}>
+                {s.href ? (
+                  <Link
+                    to={s.href}
+                    className={classNames(
+                      "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
+                   
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className={classNames(
+                      "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
+                    
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        
+      </div>
+
+      {/* White Sidebar for Sublist */}
+      {open && activeItem && (
+        <div className="z-10 bg-white absolute left-full  h-full w-[200px] flex flex-col p-2">
+          <h2 className="text-xl font-bold mb-2 ml-1">
+            {sidebarItems.find((item) => item.key === activeItem)?.title}
+          </h2>
+          {sidebarItems
+            .find((item) => item.key === activeItem)
+            ?.subList?.map((subItem) => (
+              <div
+                key={subItem.key}
+                // href={subItem.to}
+                className={classNames(
+                  `${subItem.classname} sidebar-1 flex cursor-pointer items-center font-bold p-1 text-gray-700`,
+                  {
+                    "border-2 border-secondary-500 rounded-lg p-2": activeSubItem === subItem.key,
+                  },
+                )}
+                onClick={() => {
+                  navigate(subItem.to || "/");
+                }}
+              >
+                <subItem.icon />
+                <span className="ml-2">{subItem.title}</span>
+              </div>
+            ))}
+            <div className="mt-3">
+            {isChat && activeItem === "knownow" && <ChatSidebar />}
+            </div>
+        </div>
+      )}
+       
+      
+    </div>
+    {/** 
+      {isChat && (
+      <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>
       <div
         className={classNames(
           "bg-appGray-100 pt-1",
@@ -230,7 +515,8 @@ export const AppSidebar: FunctionComponent<Props> = () => {
             )}
           </div>
         </div>
-        {/* sidebar bottom */}
+
+        {/* sidebar bottom 
         <div className="pb-3 text-gray-900 space-y-2 ">
           <div className="space-y-1 px-2.5">
             {SidebarBottom.map((s, idx) => (
@@ -286,7 +572,10 @@ export const AppSidebar: FunctionComponent<Props> = () => {
         </div>
       </div>
     </div>
-  );
+      )}
+      */}
+    </>
+  )
 };
 
 function NavLinkItem(props: INavLinkItemProps) {
