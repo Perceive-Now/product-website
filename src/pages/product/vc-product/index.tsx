@@ -25,8 +25,8 @@ import {
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
-  const userId = "testing1234";
-
+  // const userId = "testing1234";
+  const userId = jsCookie.get("user_id");
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
   console.log("SidescreenOptions screen index",SidescreenOptions);
 
