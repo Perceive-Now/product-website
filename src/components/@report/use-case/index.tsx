@@ -215,7 +215,7 @@ const UseCaseSelect = () => {
   );
 
   return (
-    <div className="h-[calc(100vh-170px)]">
+    <div className="h-[calc(100vh-170px)] max-w-[880px] w-full">
       <p className="text-heroDark-900 text-2xl  font-bold pb-1">
         Please select use cases for your report
       </p>

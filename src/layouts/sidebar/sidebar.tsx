@@ -303,7 +303,7 @@ const handleJoyrideCallback = (data: any) => {
                   handleItemClick(item.key);
                 }}
               >
-                <item.icon className="mr-2" />
+                <item.icon />
               </button>
             ))}
           </div>
