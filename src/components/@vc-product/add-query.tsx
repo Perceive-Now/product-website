@@ -69,7 +69,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer,setQuery }: Props) => {
 
       <div className="bg-appGray-100 rounded-b-lg p-2 flex items-center">
         <button className="inline-flex gitems-center" onClick={handleAttachClick}>
-          <IconFile /> <span className="mr-2 ml-1 relative after:w-[12px] after:h-[12px] after:bg-secondary-400 after:rounded-full after:absolute after:top-0 after:-right-2 after:shadow-[0_0_0_6px] after:shadow-[#FFE9C2]">Attach</span>
+          <IconFile /> <span className="mr-2 ml-1 relative">Attach</span>
         </button>
         <input type="file" ref={fileInputRef} onChange={handleFileChange} className="file-input hidden" />
         {attachedFile && (

@@ -335,7 +335,7 @@ const VCReport = () => {
     <>
       <div className="px-3 w-full mx-auto h-full">
         <div className="flex h-full gap-x-5">
-          <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto">
+          <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[90vh]">
             <div className="relative flex-none">
               <div className="absolute left-[-50px] top-2 w-[10px]">
                 <StepBar />
