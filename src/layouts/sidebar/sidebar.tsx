@@ -28,6 +28,7 @@ import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
+  onSidebarToggle: () => void;
 }
 interface INavLinkItemProps extends ISidebarListItem {
   value: string;
@@ -51,13 +52,13 @@ const tourSteps = [
     target: ".sidebar-knownow",
     content:
       "Here’s Know Now! It’s where you explore IP Insights and Market Research. Let’s take a quick look.",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-industries",
     content:
       "Next is Industry Reports! You’ll find industry-specific insights like Venture Capital, Healthcare, and more. Let’s explore each one.",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 
   {
@@ -83,60 +84,61 @@ const tourSteps = [
         </a>
       </div>
     ),
-    placement: 'right',
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-mi",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 
   {
     target: ".sidebar-vc",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-firm",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-healthcare",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-ma",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-web3",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-ipattorny",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-tto",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: 'right',
+      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 ];
 
-export const AppSidebar: FunctionComponent<Props> = () => {
+export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
+  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const joyrideRef = useRef(null);
@@ -159,12 +161,22 @@ export const AppSidebar: FunctionComponent<Props> = () => {
   //   setRunTour(true);
   // };
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleSidebarToggle = (isOpen: boolean) => {
+    setSidebarOpen(isOpen);
+  };
+
   const handleItemClick = (key: any) => {
     setActiveItem(key);
   };
   const handleSubItemClick = (key: any) => {
     setActiveSubItem(key);
   };
+
+  useEffect(() => {
+    onSidebarToggle();
+  }, [open]);
 
   useEffect(() => {
     if (pathname.includes("/know-now")) {
@@ -239,8 +251,10 @@ const handleJoyrideCallback = (data: any) => {
 
   return (
     <>
-    <div className="flex mt-1 mr-[40px] relative">
-      {/* Violet Sidebar */}
+    <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
+      
+      
+      <div className="bg-appGray-100 w-[66px] items-center duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10">
       <Joyride
         steps={steps}
         run={runTour}
@@ -262,8 +276,7 @@ const handleJoyrideCallback = (data: any) => {
         callback={handleJoyrideCallback}
         stepIndex={currentStepIndex}
       />
-      <div className="bg-appGray-100 pt-1 w-[66px] items-center duration-300 shadow fixed flex flex-col justify-between rounded h-[calc(100vh-80px)]">
-        <div className="w-full">
+        <div className="w-full flex-auto">
           <div className="flex items-center gap-1 justify-start flex-col">
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
@@ -295,12 +308,23 @@ const handleJoyrideCallback = (data: any) => {
             ))}
           </div>
         </div>
+
+        <Link to="/profile" className="inline-flex items-center w-full flex-0 mt-auto mb-2 justify-center">
+          <div className="shrink-0 bg-white rounded-full">
+            <UserIcon
+              first_name={userDetail?.first_name || ""}
+              last_name={userDetail?.last_name || ""}
+              profile_photo={userDetail?.profile_photo}
+            />
+          </div>
+          
+        </Link>
         
       </div>
 
       {/* White Sidebar for Sublist */}
       {open && activeItem && (
-        <div className="z-10 bg-appGray-100 relative left-[66px]  h-full w-64 flex flex-col p-2">
+        <div className="z-10 bg-white absolute left-full  h-full w-[200px] flex flex-col p-2">
           <h2 className="text-xl font-bold mb-2 ml-1">
             {sidebarItems.find((item) => item.key === activeItem)?.title}
           </h2>
@@ -329,6 +353,7 @@ const handleJoyrideCallback = (data: any) => {
        
       
     </div>
+    {/** 
       {isChat && (
       <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>
       <div
@@ -460,7 +485,8 @@ const handleJoyrideCallback = (data: any) => {
             )}
           </div>
         </div>
-        {/* sidebar bottom */}
+
+        {/* sidebar bottom 
         <div className="pb-3 text-gray-900 space-y-2 ">
           <div className="space-y-1 px-2.5">
             {SidebarBottom.map((s, idx) => (
@@ -517,7 +543,7 @@ const handleJoyrideCallback = (data: any) => {
       </div>
     </div>
       )}
-
+      */}
     </>
   )
 };

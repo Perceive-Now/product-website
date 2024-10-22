@@ -372,7 +372,7 @@ function MarketIntelligenceKnowNow() {
   });
 
   return (
-    <div className="h-[calc(100vh-160px)] px-3 pt-0 pb-0 w-full mx-auto flex">
+    <div className="h-full px-3 pt-0 pb-0 w-full mx-auto flex">
       <div className="flex-1 h-full">
         <div className="relative h-full">
           <div
