@@ -67,19 +67,9 @@ const tourSteps = [
       <div>
         With IP Insights, you can explore patents or search prior art. Want to dive in now or move
         on?{" "}
-        <a href="/know-now/ip-analysis/" style={{ textDecoration: "none" }}>
-          <button
-            style={{
-              padding: "10px",
-              background: "#008CBA",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              marginTop: "10px",
-            }}
-          >
+        <a href="/know-now/ip-analysis/" className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
             Explore IP Insights
-          </button>
         </a>
       </div>
     ),
