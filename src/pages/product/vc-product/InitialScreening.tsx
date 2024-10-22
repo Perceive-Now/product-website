@@ -144,7 +144,7 @@ const InitialScreening: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller ${
+        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller h-[90vh] ${
           open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
         } `}
       >
