@@ -385,6 +385,9 @@ const handleJoyrideCallback = (data: any) => {
                 <span className="ml-2">{subItem.title}</span>
               </div>
             ))}
+            <div className="mt-3">
+            {isChat && activeItem === "knownow" && <ChatSidebar />}
+            </div>
         </div>
       )}
        
