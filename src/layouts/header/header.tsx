@@ -15,7 +15,7 @@ export default function AppHeader({ isSidebarOpen }: AppHeaderProps) {
     <div className="fixed left-0 top-0 z-10">
       <div className="flex justify-between items-center py-2 px-2 container">
         <Link to="/">
-          <img src={isSidebarOpen ? PerceiveIcon : PerceiveLogo} alt="PerceiveNow logo" className="h-[32px]" />
+          <img src={isSidebarOpen ? PerceiveLogo  : PerceiveIcon} alt="PerceiveNow logo" className="h-[32px]" />
         </Link>
       </div>
     </div>

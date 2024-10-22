@@ -14,15 +14,15 @@ import AppHeader from "../header";
 export default function DefaultLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleSidebarToggle = () => {
-    setIsSidebarOpen((prev) => !prev);
+  const handleSidebarToggle = (isOpen:boolean) => {
+    setIsSidebarOpen(isOpen);
   };
 
   return (
     <div className="bg-white-gradient h-screen flex flex-col">
       <AppHeader isSidebarOpen={isSidebarOpen}  />
       <AppSidebar onSidebarToggle={handleSidebarToggle} />
-      <div className={`mb-auto ${ isSidebarOpen ? 'ml-[56px]' : 'ml-[256px]' }`}>      
+      <div className={`mb-auto ${ isSidebarOpen ? 'ml-[256px]' : 'ml-[56px]' }`}>      
         <div className="flex flex-auto h-full">
           <div className="h-full w-full duration-500 px-4 pt-2 flex-auto">
             {/* {location.pathname !== "/q&a" && <AppHeader />} */}

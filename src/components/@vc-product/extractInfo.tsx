@@ -4,11 +4,16 @@ import Modal from "src/components/reusable/modal";
 import remarkGfm from "remark-gfm";
 import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
+import { useAppDispatch } from "src/hooks/redux";
+import { setVSChats } from "src/stores/vs-product";
 interface ExtractInfoProps {
   info: string;
+  onSendQuery: (query: string, answer: string, file?: File,button?:boolean) => void;
 }
 
-const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
+const ExtractInfo: React.FC<ExtractInfoProps> = ({ info , onSendQuery,
+}) => {
+  const dispatch = useAppDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   // const [formData, setFormData] = useState<Record<string, string>>({});
 //   info= `**Company Name:** [EcoTech Innovations]
@@ -16,58 +21,32 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
 // **Mission:** [To make clean energy accessible, affordable, and efficient for everyone.]
 // **Founded:** [2021]
 // **Location:** [San Francisco, CA]
-
 // **Current Issue:** [Over 70% of homes still rely on non-renewable energy, leading to inefficiencies and high carbon footprints.]
 // **Pain Point:** [Homeowners face rising energy costs, while environmental regulations demand more sustainable solutions.]
 // **Customer Impact:** [High costs, environmental concerns, lack of easy solutions for energy management.]
-
 // **Product:** [Solar-powered smart home energy systems.]
-// **Key Features:**
-// - [AI-driven energy optimization.]
-// - [Seamless integration with existing home systems.]
-// - [Scalable for commercial use.]
+// **Key Features:** [AI-driven energy optimization., Seamless integration with existing home systems., Scalable for commercial use.]
 // **Unique Value Proposition:** [EcoTech reduces energy bills by up to 30%, while enabling homes to lower their carbon emissions.]
-
 // **Market Size:** [$300 billion global smart home market, with a $50 billion subset for clean energy solutions.]
 // **Growth Rate:** [8.9% CAGR in the smart home energy management sector.]
 // **Target Audience:** [Homeowners and commercial properties looking to reduce energy costs and carbon footprints.]
-
-// **Revenue Streams:**
-// - [Direct Sales: Solar-powered systems sold to homeowners and businesses.]
-// - [Subscription: Monthly energy management services via AI-driven software.]
-// - [Partnerships: Partnering with utility companies to provide grid support.]
-
-// **Milestones:**
-// - [1,500 units sold in the first 12 months.]
-// - [Partnership with 3 utility providers.]
-// - [$1.2M in annual recurring revenue (ARR) from subscriptions.]
+// **Revenue Streams:** [Direct Sales: Solar-powered systems sold to homeowners and businesses., Subscription: Monthly energy management services via AI-driven software., Partnerships: Partnering with utility companies to provide grid support.]
+// **Milestones:** [1,500 units sold in the first 12 months., Partnership with 3 utility providers., $1.2M in annual recurring revenue (ARR) from subscriptions.]
 // **Customer Feedback:** [Average customer savings of 25% on energy bills.]
-
-// **Go-to-Market Strategy Channels:**
-// - [Direct-to-consumer via digital marketing.]
-// - [Partnerships with home builders and utility companies.]
-// - [B2B for commercial installations.]
+// **Channels:** [Direct-to-consumer via digital marketing., Partnerships with home builders and utility companies., B2B for commercial installations.]
 // **Customer Acquisition Cost (CAC):** [$120.]
 // **Lifetime Value (LTV):** [$900.]
-
-// **Competitors:**
-// - [Tesla Powerwall]
-// - [Sunrun]
-// - [Vivint Solar]
+// **Competitors:** [Tesla Powerwall, Sunrun, Vivint Solar]
 // **Differentiation:** [AI-driven optimization and seamless integration with existing home systems give EcoTech a unique edge over competitors.]
-
 // **Revenue:** [$2.5M (2023 projected).]
 // **Burn Rate:** [$50k per month.]
 // **Funding:** [Currently raising $5M for scaling manufacturing and marketing.]
 // **Use of Funds:** [60% manufacturing, 30% marketing, 10% operational costs.]
-
 // **CEO:** [Jane Doe (10+ years in clean tech, ex-SolarCity).]
 // **CTO:** [John Smith (AI expert, PhD in Machine Learning).]
 // **COO:** [Emily Johnson (Operations lead, previously at Tesla).]
-
 // **Patents:** [2 patents filed for AI optimization algorithms and energy storage technology.]
 // **Competitive Edge:** [Proprietary software for real-time energy management.]
-
 // **Near-term Goals:** [Expand into Europe and Asia-Pacific within 18 months.]
 // **Long-term Vision:** [Become a global leader in sustainable energy solutions for smart homes.]`
   console.log("infooooooooooooo",info);
@@ -90,6 +69,11 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
   // };
 
 
+  
+    const formatInfoString = (input: string): string => {
+      return input.split('\n').map(line => line.trim()).filter(line => line).join('\n\n');
+    };
+
   const parseInfo = (info: string): Record<string, string> => {
     const lines = info.split('\n').filter(line => line);
     const parsedData: Record<string, string> = {};
@@ -105,27 +89,43 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
   };
 
   const [formData, setFormData] = useState<Record<string, string>>(parseInfo(info));
-
+  const [changedData,setChangedData] = useState({});
   const handleChange = (key: string, value: string) => {
     setFormData({
       ...formData,
       [key]: value
     });
+    setChangedData({
+      ...changedData,
+      [key]: value
+    });
   };
+
 
 
   const infoData = parseInfo(info);
 
-  // const handleChange = (key: string, value: string) => {
-  //   setFormData((prev) => ({ ...prev, [key]: value }));
-  // };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const updatedSummary = Object.entries(changedData)
+      .map(([key, value]) => `${key} is now updated to ${value}`)
+      .join(', ');
+  
+    console.log("updatedSummary",updatedSummary);
+    if(updatedSummary){
+    onSendQuery("", updatedSummary,undefined,false);
+    // dispatch(
+    //   setVSChats({
+    //     query: "",
+    //     answer: "",
+    //     options: ["Yes"],
+    //     hasbutton: true,
+    //   }),
+    // );
+    handleModalClose();
+  };
+}
 
-  const handleSubmit = () => {
-    console.log("ajjj")
-    // TODO: Submit form data
-    console.log("Form data", formData);
-    // setModalOpen(false);
-  }
 
   // const formatInfo = () => {
   //   return info.split("\n").map((line, index) => {
@@ -184,7 +184,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
                         [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
                       ]}
                     >
-                      {info}
+                      {formatInfoString(info)}
                     </Markdown>
 
 
@@ -319,7 +319,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
           </div>
         </Modal> */}
       <Modal open={modalOpen} handleOnClose={handleModalClose}>
-        <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg">
+        <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg h-[800px] overflow-y-auto pn_scroller">
           <div className="font-bold text-md text-end">
             <Switch
               checked={true}
@@ -334,147 +334,22 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info }) => {
             </Switch>
             Edit Extract
           </div>
-{/* 
-          <div className="font-bold text-sm">Startup Overview:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            {[
-              "Company Name",
-              "Tagline",
-              "Mission",
-              "Founded",
-              "Location",
-              "The Problem",
-              "The Solution",
-            ].map((field) => (
-              <li key={field}>
-                <span className="font-bold">{field}:</span>
-                <input
-                  type="text"
-                  value={infoData[field]}
-                  // onChange={(e) => setInfoData({ ...infoData, [field]: e.target.value })}
-                  className="ml-2 border border-gray-300 rounded p-1"
-                />
-              </li>
-            ))}
-          </ul>
 
-          <div className="font-bold mt-2 text-sm">Market Insights:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            {["Target Audience", "Market Size", "Growth Rate", "Competitors"].map((field) => (
-              <li key={field}>
-                <span className="font-bold">{field}:</span>
-                <input
-                  type="text"
-                  value={infoData[field]}
-                  // onChange={(e) => setInfoData({ ...infoData, [field]: e.target.value })}
-                  className="ml-2 border border-gray-300 rounded p-1"
-                />
-              </li>
-            ))}
-          </ul>
-
-          <div className="font-bold mt-2 text-sm">Business Model:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            {["Revenue Streams", "Burn Rate", "Competitors"].map((field) => (
-              <li key={field}>
-                <span className="font-bold">{field}:</span>
-                <input
-                  type="text"
-                  value={infoData[field]}
-                  // onChange={(e) => setInfoData({ ...infoData, [field]: e.target.value })}
-                  className="ml-2 border border-gray-300 rounded p-1"
-                />
-              </li>
-            ))}
-          </ul>
-
-          <div className="font-bold mt-2 text-sm">Traction & Milestones:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            {["Traction Milestones", "Customer Feedback", "CAC", "LTV"].map((field) => (
-              <li key={field}>
-                <span className="font-bold">{field}:</span>
-                <input
-                  type="text"
-                  value={infoData[field]}
-                  // onChange={(e) => setInfoData({ ...infoData, [field]: e.target.value })}
-                  className="ml-2 border border-gray-300 rounded p-1"
-                />
-              </li>
-            ))}
-          </ul>
-
-          <div className="font-bold mt-2 text-sm">Financial Overview:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            {["Funding Ask", "Revenue", "Use of Funds"].map((field) => (
-              <li key={field}>
-                <span className="font-bold">{field}:</span>
-                <input
-                  type="text"
-                  value={infoData[field]}
-                  // onChange={(e) => setInfoData({ ...infoData, [field]: e.target.value })}
-                  className="ml-2 border border-gray-300 rounded p-1"
-                />
-              </li>
-            ))}
-          </ul>
-
-          <div className="font-bold mt-2 text-sm">Team:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            <li>
-              <span className="font-bold">Founders & Key Team Members:</span>
-              <input
-                type="text"
-                value={infoData["Team"]}
-                // onChange={(e) => setInfoData({ ...infoData, "Team": e.target.value })}
-                className="ml-2 border border-gray-300 rounded p-1"
-              />
-            </li>
-          </ul>
-
-          <div className="font-bold mt-2 text-sm">Pitch Summary:</div>
-          <ul className="list-disc list-inside text-sm flex flex-col gap-[4px]">
-            {[
-              "Long-term Vision",
-              "Go-to-Market Strategy",
-              "Intellectual Property",
-              "Market Expansion",
-            ].map((field) => (
-              <li key={field}>
-                <span className="font-bold">{field}:</span>
-                <input
-                  type="text"
-                  value={infoData[field]}
-                  // onChange={(e) => setInfoData({ ...infoData, [field]: e.target.value })}
-                  className="ml-2 border border-gray-300 rounded p-1"
-                />
-              </li>
-            ))}
-          </ul> */}
+                    {Object.entries(formData).map(([key, value]) => (
+  <div key={key} className="flex items-center mb-2">
+    <label className="font-bold text-sm mr-2">{key}:</label>
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => handleChange(key, e.target.value)}
+      className="border rounded p-1 w-full text-sm"
+      style={{ height: '10px' }}
+    />
+  </div>
+))}
 
 
-                  {/* <Markdown
-                      className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[
-                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
-                      ]}
-                    >
-                      {info}
-                    </Markdown> */}
-                     {Object.entries(formData).map(([key, value]) => (
-        <div key={key} className="mb-2">
-          <label className="block font-bold">{key}</label>
-          <input
-            type="text"
-            value={value}
-            defaultValue={value} 
-            onChange={(e) => handleChange(key, e.target.value)}
-            className="border rounded p-2 w-full"
-          />
-        </div>
-      ))}
-
-          <button className="mt-4 bg-secondary-500 text-white p-2 rounded-full pr-5 pl-5">
+          <button onClick={handleSubmit} className="mt-4 bg-secondary-500 text-white p-2 rounded-full pr-5 pl-5">
             Submit
           </button>
         </div>

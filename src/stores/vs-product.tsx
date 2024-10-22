@@ -85,21 +85,6 @@ export const sendQuery = createAsyncThunk(
      
       return newanswer;
 
-      // const stepMatch = answer.match(/"Step":\s*(\d+)/);
-      // const statusMatch = answer.match(/"Status":\s*"([^"]+)"/);
-      // const responseMatch = answer.match(/"response":\s*"([^"]+)"/);
-  
-      // const step = stepMatch ? stepMatch[1] : "N/A";
-      // const status = statusMatch ? statusMatch[1] : "N/A";
-      // const response = responseMatch ? responseMatch[1] : "N/A";
-      // const formattedResponse = response.replace(/\n/g, '<br />');
-      //  console.log("yooo",step,status,response);
-      // return {
-      //   Step: step,
-      //   Status: status,
-      //   response: formattedResponse
-      // };
-
     }
 
     return;
@@ -170,8 +155,9 @@ export const VSProductSlice = createSlice({
     builder.addCase(sendQuery.fulfilled, (state, action: PayloadAction<any>) => {
       const { response, Step, Status } = action.payload;
    console.log("particular ans",response);
+   console.log("steps",Step)
       if (Step !== undefined) {
-        if (Step === 2) {
+        if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
         } 
@@ -185,7 +171,7 @@ export const VSProductSlice = createSlice({
           const query = response.includes(':') 
           ? response.split(':')[0].trim() 
           : response.split('.')[0].trim() || "Please provide your input.";
-          // state.chats[state.chats.length - 1].query = query;
+          state.chats[state.chats.length - 1].query = query;
         } 
         else if (response.includes("@")) {
           console.log("button option bock");
@@ -208,16 +194,7 @@ export const VSProductSlice = createSlice({
         state.Step = Step;
       }
     });
-    // .addCase(extractFileData.fulfilled, (state, action: PayloadAction<any>) => {
-    //   // Handle successful file extraction
-    //   const { message, slides_data } = action.payload;
-    //   if (message === "Text extracted successfully") {
-    //     const summary = createPitchDeckSummary(slides_data);
-    //     if (summary) {
-    //       state.chats[state.chats.length - 1].answer = summary;
-    //     }
-    //   }
-    // });
+ 
   },
 });
 

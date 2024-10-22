@@ -34,18 +34,25 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
   });
 
   return (
-    <div ref={(node) => ref(drop(node))} className="flex items-center">
-      <DragIcon />
-      <div className="flex w-full justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2">
-        <span>
-          <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
-          {item}
-        </span>
-        <button className="text-red-500" onClick={() => handleDelete(item)}>
-          <TrashIcon />
-        </button>
-      </div>
+    <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
+  <DragIcon />
+  <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
+    <div className="flex items-center mb-1">
+      <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
+      {item}
+      <button className="text-red-500 ml-2" onClick={() => handleDelete(item)}>
+        <TrashIcon />
+      </button>
     </div>
+    {/* <div className="flex justify-between m-0">
+      <span><div className="bg-appGray-100 p-1 rounded-md">summary</div></span>
+      <span className="ml-4 text-gray-700 text-justify">
+      This is a static summary text that provides additional details.
+      </span>
+    </div> */}
+  </div>
+</div>
+
   );
 };
 
@@ -55,34 +62,35 @@ const InitialScreening: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"report" | "scoring">("report");
   const [open, setOpen] = useState(true);
 
-  // const [reportItems, setReportItems] = useState<string[]>([
-  //   "Business Model Robustness",
-  //   "Financial Forensics",
-  //   "Scalability and Expansion Potential",
-  //   "Risk and Contingency Planning",
-  //   "Technology & Infrastructure Maturity",
-  //   "Customer Lifetime Value Analysis",
-  //   "Operational Scalability & Efficiency",
-  //   "Market Position & Strategic Advantage",
-  //   "M&A Potential and Exit Strategy",
-  //   "Exit Comparables and Valuation",
-  //   "Product Innovation Pipeline",
-  //   "Revenue Growth Trajectory",
-  //   "Customer Acquisition Strategy",
-  //   "Market Penetration Strategy",
-  //   "Competitive Threat Assessment",
-  //   "Go-to-Market Execution Quality",
-  //   "Talent Acquisition and Retention",
-  //   "Strategic Vision and Leadership",
-  //   "Intellectual Property Strategy",
-  //   "Partnership Synergy Potential",
-  //   "Data and Analytics Maturity",
-  //   "Market Adaptability and Resilience",
-  //   "Brand Strength and Market Perception",
-  //   "Sales Cycle Efficiency",
-  //   "International Expansion Readiness",
-  // ]);
-  const [reportItems, setReportItems] = useState<string[]>(SidescreenOptions || []);
+  const [reportItems, setReportItems] = useState<string[]>([
+    "Business Model Robustness",
+    "Financial Forensics",
+    "Scalability and Expansion Potential",
+    "Risk and Contingency Planning",
+    "Technology & Infrastructure Maturity",
+    "Customer Lifetime Value Analysis",
+    "Operational Scalability & Efficiency",
+    "Market Position & Strategic Advantage",
+    "M&A Potential and Exit Strategy",
+    "Exit Comparables and Valuation",
+    "Product Innovation Pipeline",
+    "Revenue Growth Trajectory",
+    "Customer Acquisition Strategy",
+    "Market Penetration Strategy",
+    "Competitive Threat Assessment",
+    "Go-to-Market Execution Quality",
+    "Talent Acquisition and Retention",
+    "Strategic Vision and Leadership",
+    "Intellectual Property Strategy",
+    "Partnership Synergy Potential",
+    "Data and Analytics Maturity",
+    "Market Adaptability and Resilience",
+    "Brand Strength and Market Perception",
+    "Sales Cycle Efficiency",
+    "International Expansion Readiness",
+  ]);
+  
+  // const [reportItems, setReportItems] = useState<string[]>(SidescreenOptions || []);
 
   const [scoringItems, setScoringItems] = useState<string[]>([
     "Market Size & Growth",
@@ -136,7 +144,7 @@ const InitialScreening: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${
+        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller ${
           open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
         } `}
       >
@@ -151,7 +159,7 @@ const InitialScreening: React.FC = () => {
                 <>
                   <h4 className="mb-4">Arrange/add sections as your need</h4>
                   <div className="text-xs">
-                    <button
+                    {/* <button
                       className={`p-1 rounded-lg ${activeTab === "report" ? "bg-appGray-200" : ""}`}
                       onClick={() => setActiveTab("report")}
                     >
@@ -164,7 +172,7 @@ const InitialScreening: React.FC = () => {
                       onClick={() => setActiveTab("scoring")}
                     >
                       Scoring Parameters
-                    </button>
+                    </button> */}
                   </div>
                 </>
               )}
