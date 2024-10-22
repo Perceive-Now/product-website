@@ -34,8 +34,9 @@ const Setting = () => {
 
   return (
     <>
+    <div>
       <h6 className="text-2xl font-bold text-primary-900">My Account &gt; Settings</h6>
-      <div className="flex flex-col w-[900px] items-center justify-center mt-4">
+        <div className="flex flex-col w-[900px] items-center justify-center mt-4">
         <ProfileComponent showEdit={false} title={"Billing history"}>
           <div className="p-[20px] space-y-[8px]">
             {billings && billings?.length > 0 ? (
@@ -59,6 +60,7 @@ const Setting = () => {
             )}
           </div>
         </ProfileComponent>
+        </div>
       </div>
     </>
   );

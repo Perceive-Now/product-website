@@ -319,6 +319,43 @@ const handleJoyrideCallback = (data: any) => {
           </div>
           
         </Link>
+
+        <div className="space-y-1">
+            {SidebarBottom.map((s, idx) => (
+              <div key={idx * 29}>
+                {s.href ? (
+                  <Link
+                    to={s.href}
+                    className={classNames(
+                      "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
+                   
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className={classNames(
+                      "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                    )}
+                  >
+                    <ToolTip title={s.title} placement="right">
+                      <div>
+                        <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                      </div>
+                    </ToolTip>
+                    
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
         
       </div>
 
