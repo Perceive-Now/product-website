@@ -182,16 +182,20 @@ export const VSProductSlice = createSlice({
         //     ["Product Scalability", "Scalable Solutions for Homes and Businesses", "The company's solar-powered systems are designed for seamless scalability, catering to both the residential and commercial market segments."] 
         //   ]@?`;
         //   console.log("response1",response1);
-        //   const matches = response1.match(/@?\[(.*?)\]@?/);
-        //   let reportContent = [];
-        //   console.log("matched",matches);
-        //   if (matches && matches[1]) {
-        //       // Convert the matched string to a valid JavaScript array
-        //       const arrayString = matches[1].trim();
-        //       reportContent = JSON.parse(`[${arrayString}]`);
-        //   }
-      
-        //   console.log("ooooo",reportContent);
+        //   // const matches = response1.match(/@?\[(.*?)\]@?/);
+        //   // let reportContent = [];
+        //   // console.log("matched",matches);
+        //   // if (matches && matches[1]) {
+        //   //     // Convert the matched string to a valid JavaScript array
+        //   //     const arrayString = matches[1].trim();
+        //   //     reportContent = JSON.parse(`[${arrayString}]`);
+        //   // }
+
+        //   // const splitResponse = response.split('@?')[1];
+          
+
+
+         
 
         // }
         if (Step == 2) {
@@ -201,24 +205,32 @@ export const VSProductSlice = createSlice({
           if (DataSources) state.DataSources = DataSources;
           state.chats[state.chats.length - 1].query = response;
         } else if(Step == 7){
-          let query = "";
-          const options: string[][] = []; // Declare an array of arrays to hold options
-          const parts = response.split(/(?<=\}),/); // Split by commas after closing braces
-    
-          parts.forEach((part: string) => {
-            if (!part.startsWith('[')) {
-              query += part; // Add to query
-            } else {
-              const parsedOptions = JSON.parse(part);
-              if (Array.isArray(parsedOptions)) {
-                options.push(parsedOptions); // Store the parsed options as an array
+
+          const convertResponseToReportData = (response:string) => {
+            // Check if the response contains the delimiter "@?"
+            if (response.includes('@?')) {
+              const splitResponse = response.split('@?')[1]; // Get the part after "@?"
+        
+              // Ensure the split result is valid before parsing
+              if (splitResponse) {
+                try {
+                  // Parse the split response as JSON and return
+                  return JSON.parse(splitResponse.trim());
+                } catch (error) {
+                  console.error("Error parsing response:", error);
+                  return [];
+                }
               }
             }
-          });
-           console.log("ooooooooooooo",options,query);
-          // Update the last chat entry with the constructed query
-          state.chats[state.chats.length - 1].query = query.trim();
-          state.ReportTemplate = options; 
+            // Return an empty array if the delimiter is missing
+            return [];
+          };
+
+          const Template = convertResponseToReportData(response);
+          state.ReportTemplate = Template;
+          console.log("ooooo", Template);
+       
+          state.chats[state.chats.length - 1].query = 'Here’s the final report template for EcoTech Innovations based on all the details we’ve discussed. Please review and make any adjustments';
         }else if (response.includes("//")) {
           const options: string[] =
             response

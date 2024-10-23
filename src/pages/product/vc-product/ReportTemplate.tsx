@@ -57,22 +57,22 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ keyName, summary, index, 
   );
 };
 
-const ReportTemplate: React.FC = () => {
-  const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
-
+const TemplateReport: React.FC = () => {
+  const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
+   console.log("reportsss",ReportTemplate);
   const [open, setOpen] = useState(true);
   const [newItem, setNewItem] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
 
-  const reportData = [
-    ["Market Opportunity", "Global Smart Home Energy Market", "EcoTech Innovations aims to tap into the $300 billion smart home market with a focus on clean energy, offering a solution to a growing customer base concerned with energy costs and sustainability."],
-    ["Competitive Differentiation", "Unique AI-Driven Energy Optimization", "With competitors like Tesla Powerwall, Sunrun, and Vivint Solar, EcoTech sets itself apart through proprietary AI optimization and seamless integration with existing home systems."],
-  ];
+//   const reportData = [
+//     ["Market Opportunity", "Global Smart Home Energy Market", "EcoTech Innovations aims to tap into the $300 billion smart home market with a focus on clean energy, offering a solution to a growing customer base concerned with energy costs and sustainability."],
+//     ["Competitive Differentiation", "Unique AI-Driven Energy Optimization", "With competitors like Tesla Powerwall, Sunrun, and Vivint Solar, EcoTech sets itself apart through proprietary AI optimization and seamless integration with existing home systems."],
+//   ];
 
-  const [reportItems, setReportItems] = useState(reportData);
+  const [reportItems, setReportItems] = useState(ReportTemplate);
 
   const handleDelete = (itemKey: string) => {
-    setReportItems(reportItems.filter((item) => item[0] !== itemKey));
+    setReportItems(reportItems.filter((item:any) => item[0] !== itemKey));
   };
 
   const handleAdd = () => {
@@ -106,7 +106,7 @@ const ReportTemplate: React.FC = () => {
           </div>
           {open && (
             <div className="h-52 overflow-y-auto p-2">
-              {reportItems.map((item, index) => (
+              {reportItems.map((item:any, index:any) => (
                 <DraggableItem
                   key={item[0]}
                   keyName={item[0]} // Display first element as key
@@ -151,4 +151,4 @@ const ReportTemplate: React.FC = () => {
   );
 };
 
-export default ReportTemplate;
+export default TemplateReport;

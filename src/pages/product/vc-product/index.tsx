@@ -4,7 +4,7 @@ import InitialScreening from "./InitialScreening";
 import ReportDefault from "./default";
 import jsCookie from "js-cookie";
 import SourcesData from "./DataSources";
-import ReportTemplate from "./ReportTemplate";
+import TemplateReport from "./ReportTemplate";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { LoadingIcon } from "src/components/icons";
 import ChatQuery from "src/components/@vc-product/chat-question";
@@ -28,6 +28,8 @@ const VCReport = () => {
   const userId = jsCookie.get("user_id");
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
   const { DataSources } = useAppSelector((state) => state.VSProduct);
+  const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
+
   console.log("SidescreenOptions screen index", SidescreenOptions);
 
   const [query, setQuery] = useState("");
@@ -192,7 +194,7 @@ const VCReport = () => {
             Object.keys(DataSources).length == 0 && <InitialScreening />}
 
           {DataSources && Object.keys(DataSources).length > 0 && Step !== 7 && <SourcesData />}
-          {Step == 7 && <ReportTemplate/>}
+          {ReportTemplate && ReportTemplate.length > 0 &&  <TemplateReport/>}
         </div>
       </div>
     </>
