@@ -1,9 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import AddQuery from "src/components/@vc-product/add-query";
 import InitialScreening from "./InitialScreening";
-import DataSources from "./DataSources";
 import ReportDefault from "./default";
 import jsCookie from "js-cookie";
+import SourcesData from "./DataSources";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { LoadingIcon } from "src/components/icons";
 import ChatQuery from "src/components/@vc-product/chat-question";
@@ -25,9 +25,10 @@ import {
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
-  const userId = "testing12";
+  const userId = "testi1234";
 
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
+  const { DataSources } = useAppSelector((state) => state.VSProduct);
   console.log("SidescreenOptions screen index",SidescreenOptions);
 
   const [query, setQuery] = useState("");
@@ -190,12 +191,10 @@ const VCReport = () => {
             </div>
           </div>
 
-          {SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />}
+          {SidescreenOptions && SidescreenOptions.length > 0 && Object.keys(DataSources).length == 0 &&  <InitialScreening />}
           {/* <InitialScreening /> */}
-          {/* {Step === 5 && <DataSources />} */}
 
-          {/* <InitialScreening /> */}
-          {/* <DataSources/> */}
+           {  DataSources && Object.keys(DataSources).length > 0  && <SourcesData />}
         </div>
       </div>
     </>

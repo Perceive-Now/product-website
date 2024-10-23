@@ -15,14 +15,16 @@ interface VSProduct {
   chats: VSChat[];
   marketChatLoading: boolean;
   Step: number;
-  SidescreenOptions?:string[];
+  SidescreenOptions?: string[];
+  DataSources: any;
 }
 
 const initialState: VSProduct = {
   chats: [],
   marketChatLoading: true,
   Step: 0,
-  SidescreenOptions:[]
+  SidescreenOptions: [],
+  DataSources: {},
 };
 
 const formatJsonResponse = (inputString: string): any => {
@@ -30,7 +32,6 @@ const formatJsonResponse = (inputString: string): any => {
     const data = JSON.parse(inputString);
     return data;
   } catch {
-
     const stepMatch = inputString.match(/"Step":\s*(\d+)/);
     const statusMatch = inputString.match(/"Status":\s*"([^"]+)"/);
     const responseMatch = inputString.match(/"response":\s*"([^"]+)"/);
@@ -41,7 +42,7 @@ const formatJsonResponse = (inputString: string): any => {
     return {
       Step: step,
       Status: status,
-      response: response
+      response: response,
     };
   }
 };
@@ -49,14 +50,7 @@ const formatJsonResponse = (inputString: string): any => {
 // Thunks for API calls
 export const sendQuery = createAsyncThunk(
   "sendQuery",
-  async ({
-    user_input,
-    user_id,
-  }: {
-    user_input: string;
-    user_id: string;
-  }) : Promise<any> => {
-
+  async ({ user_input, user_id }: { user_input: string; user_id: string }): Promise<any> => {
     const response: any = await fetch(
       `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
       {
@@ -64,7 +58,7 @@ export const sendQuery = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input, user_id }),
+        body: JSON.stringify({ user_input: user_input === "Confirm" ? "ok" : user_input, user_id }),
       },
     );
     const reader = response.body.getReader();
@@ -74,17 +68,27 @@ export const sendQuery = createAsyncThunk(
     if (value) {
       const chunk = decoder.decode(value);
       console.log("chunk", chunk);
-      console.log("type of chunk",typeof chunk);
+      console.log("type of chunk", typeof chunk);
       const answer = JSON.parse(chunk);
-      console.log("answer",typeof answer,answer)
+
+      console.log("answer", typeof answer, answer);
       // const newanswer = JSON.parse(answer);
 
-
       const newanswer = formatJsonResponse(answer);
-      // console.log("answerrrrr", typeof newanswer,newanswer);
-     
-      return newanswer;
 
+      if (newanswer.Step == 6) {
+        const jsonParts = answer.split("}{");
+        const secondJsonString = jsonParts[1].startsWith("{") ? jsonParts[1] : `{${jsonParts[1]}`;
+        if (secondJsonString) {
+          const dataObject = JSON.parse(secondJsonString);
+          newanswer.DataSources = dataObject;
+          console.log("dataObject", dataObject);
+        } else return;
+      }
+
+      console.log("answerrrrr", typeof newanswer, newanswer);
+
+      return newanswer;
     }
 
     return;
@@ -153,48 +157,58 @@ export const VSProductSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(sendQuery.fulfilled, (state, action: PayloadAction<any>) => {
-      const { response, Step, Status } = action.payload;
-   console.log("particular ans",response);
-   console.log("steps",Step)
+      const { response, Step, Status, DataSources } = action.payload;
+      console.log("particular ans", response);
+      console.log("steps", Step);
       if (Step !== undefined) {
         if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
-        } 
-        else if (response.includes("//")) {
+        } else if (Step == 6) {
+          if (DataSources) state.DataSources = DataSources;
+          state.chats[state.chats.length - 1].query = response;
+        } else if (response.includes("//")) {
           const options: string[] =
             response
               .match(/\/\/(.*?)\/\//g)
               ?.map((opt: string) => opt.replace(/\/\/|\/\//g, "").trim()) || [];
           state.SidescreenOptions = options;
-          console.log("options sidescreen",options);
-          const query = response.includes(':') 
-          ? response.split(':')[0].trim() 
-          : response.split('.')[0].trim() || "Please provide your input.";
+          console.log("options sidescreen", options);
+          const query = response.includes(":")
+            ? response.split(":")[0].trim()
+            : response.split(".")[0].trim() || "Please provide your input.";
           state.chats[state.chats.length - 1].query = query;
-        } 
-        else if (response.includes("@")) {
+        } else if (response.includes("@")) {
           console.log("button option bock");
           const options: string[] =
             response.match(/@@(.*?)@@/g)?.map((opt: string) => opt.replace(/@@/g, "").trim()) || [];
 
-          // const query: string = response.split(".")[0].trim() || "Please provide your input.";
-          const query = response.includes(':') 
-          ? response.split(':')[0].trim() 
-          : response.split('.')[0].trim() || "Please provide your input.";
+          // const query = response.includes(':')
+          // ? response.split(':')[0].trim()
+          // : response.split('.')[0].trim() || "Please provide your input.";
+
+          let query;
+
+          if (response.includes("?")) {
+            query = response.split("?")[0].trim() + "?";
+          } else if (response.includes(":")) {
+            query = response.split(":")[0].trim() + ":";
+          } else if (response.includes(".")) {
+            query = response.split(".")[0].trim() + ".";
+          } else {
+            query = "Please provide your input.";
+          }
 
           console.log("step 3", query, options);
           state.chats[state.chats.length - 1].query = query;
           state.chats.push({ query: "", options: options, answer: "" });
-        }
-         else {
+        } else {
           // state.chats.push({ query: response, answer: "" });
           state.chats[state.chats.length - 1].query = response;
         }
         state.Step = Step;
       }
     });
- 
   },
 });
 
