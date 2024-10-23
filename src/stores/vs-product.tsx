@@ -16,7 +16,8 @@ interface VSProduct {
   marketChatLoading: boolean;
   Step: number;
   SidescreenOptions?: string[];
-  DataSources: any;
+  DataSources?: any;
+  ReportTemplate?:any
 }
 
 const initialState: VSProduct = {
@@ -25,6 +26,7 @@ const initialState: VSProduct = {
   Step: 0,
   SidescreenOptions: [],
   DataSources: {},
+  ReportTemplate: {}
 };
 
 const formatJsonResponse = (inputString: string): any => {
@@ -58,7 +60,7 @@ export const sendQuery = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input: user_input === "Confirm" ? "ok" : user_input, user_id }),
+        body: JSON.stringify({ user_input: user_input === "Confirm" ? "ok" : user_input, user_id,thread_id:"" }),
       },
     );
     const reader = response.body.getReader();
@@ -161,13 +163,63 @@ export const VSProductSlice = createSlice({
       console.log("particular ans", response);
       console.log("steps", Step);
       if (Step !== undefined) {
+        if(Step == 1){
+          const response1 = `Here’s the final report template for EcoTech Innovations based on all the details we’ve discussed. Please review and make any adjustments @?[ 
+            ["Market Opportunity", "Global Smart Home Energy Market", "EcoTech Innovations aims to tap into the $300 billion smart home market with a focus on clean energy, offering a solution to a growing customer base concerned with energy costs and sustainability. Projected growth of 8.9% CAGR presents a significant opportunity for the company."],  
+            ["Competitive Differentiation", "Unique AI-Driven Energy Optimization", "With competitors like Tesla Powerwall, Sunrun, and Vivint Solar, EcoTech sets itself apart through proprietary AI optimization and seamless integration with existing home systems, reducing energy bills by up to 30%."],  
+            ["Product Viability", "Innovative Smart Home Energy Systems", "EcoTech Innovations has developed solar-powered smart home energy systems with AI-driven energy optimization, demonstrating high potential in a market seeking sustainable and efficient energy solutions."],  
+            ["Founding Team Overview", "Experienced Leadership", "Led by Jane Doe with over 10 years in clean tech and John Smith's expertise in AI, the team combines industry knowledge with technical prowess to drive EcoTech towards its vision."],  
+            ["Go-to-Market Strategy", "Multi-Channel Market Penetration", "EcoTech employs a diversified go-to-market strategy, leveraging direct-to-consumer digital marketing, partnerships with home builders, and B2B channels for commercial installations, optimizing customer acquisition costs."],  
+            ["Customer Validation", "Positive Market Reception", "Having sold 1,500 units in the first year and secured partnerships with 3 utility providers, EcoTech demonstrates strong market validation and customer savings of 25% on energy bills."],  
+            ["Revenue Model Analysis", "Diverse Revenue Streams", "EcoTech's revenue streams include direct sales of solar-powered systems and a monthly subscription for AI-driven energy management services, indicating a scalable revenue model."],  
+            ["Operational Efficiency", "Strategic Resource Allocation", "With a burn rate of $50k per month and a forthcoming raise of $5M, EcoTech plans to allocate funds primarily towards manufacturing and marketing to optimize operational efficiency."],  
+            ["Partnerships and Alliances", "Strategic Utility Partnerships", "EcoTech's collaboration with utility companies not only broadens its market reach but also contributes to a more resilient energy grid."],  
+            ["Technology and IP Overview", "Proprietary AI Technology", "EcoTech's filed patents for AI optimization algorithms and energy storage technology solidify its competitive edge and commitment to innovation."],  
+            ["Regulatory and Compliance Review", "Compliance with Energy Regulations", "EcoTech is positioned to meet growing environmental regulations with its sustainable energy solutions, aligning with global carbon reduction goals."],  
+            ["Time to Market", "Rapid Market Entry", "The startup's ability to quickly penetrate the market with its smart home energy systems underscores its agile go-to-market execution."],  
+            ["Market Momentum", "Rising Demand for Clean Energy", "EcoTech is capitalizing on the increasing momentum in the clean energy sector, indicating a promising trajectory for growth and market adoption."],  
+            ["Cost of Acquisition", "Efficient Customer Acquisition", "With a CAC of $120 and an LTV of $900, EcoTech maintains a healthy balance between acquisition costs and customer value, supporting sustainable growth."],  
+            ["Product Scalability", "Scalable Solutions for Homes and Businesses", "The company's solar-powered systems are designed for seamless scalability, catering to both the residential and commercial market segments."] 
+          ]@?`;
+          
+          const matches = response1.match(/@?\[(.*?)\]@?/);
+          let reportContent = [];
+      
+          if (matches && matches[1]) {
+              // Convert the matched string to a valid JavaScript array
+              const arrayString = matches[1].trim();
+              reportContent = JSON.parse(`[${arrayString}]`);
+          }
+      
+          console.log("ooooo",reportContent);
+
+        }
         if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
         } else if (Step == 6) {
           if (DataSources) state.DataSources = DataSources;
           state.chats[state.chats.length - 1].query = response;
-        } else if (response.includes("//")) {
+        } else if(Step == 7){
+          let query = "";
+          const options: string[][] = []; // Declare an array of arrays to hold options
+          const parts = response.split(/(?<=\}),/); // Split by commas after closing braces
+    
+          parts.forEach((part: string) => {
+            if (!part.startsWith('[')) {
+              query += part; // Add to query
+            } else {
+              const parsedOptions = JSON.parse(part);
+              if (Array.isArray(parsedOptions)) {
+                options.push(parsedOptions); // Store the parsed options as an array
+              }
+            }
+          });
+           console.log("ooooooooooooo",options,query);
+          // Update the last chat entry with the constructed query
+          state.chats[state.chats.length - 1].query = query.trim();
+          state.ReportTemplate = options; 
+        }else if (response.includes("//")) {
           const options: string[] =
             response
               .match(/\/\/(.*?)\/\//g)
