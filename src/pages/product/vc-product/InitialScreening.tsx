@@ -6,6 +6,8 @@ import TrashIcon from "src/components/icons/common/trash";
 import AddIcon from "src/components/icons/common/add-icon";
 import DragIcon from "src/components/icons/miscs/DragIcon";
 import { useAppSelector } from "src/hooks/redux";
+import Select from "react-select";
+
 const ItemType = {
   ITEM: "item",
 };
@@ -35,24 +37,23 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
 
   return (
     <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
-  <DragIcon />
-  <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
-    <div className="flex items-center mb-1">
-      <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
-      {item}
-      <button className="text-red-500 ml-2" onClick={() => handleDelete(item)}>
-        <TrashIcon />
-      </button>
-    </div>
-    {/* <div className="flex justify-between m-0">
+      <DragIcon />
+      <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-1">
+        <div className="flex items-center">
+          <span className="bg-appGray-200 p-1 rounded-md mr-1 text-sm flex-[0_0_32px]">h1</span>
+          <span className="flex-auto">{item}</span>
+          <button className="text-red-500 ml-2 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
+            <TrashIcon />
+          </button>
+        </div>
+        {/* <div className="flex justify-between m-0">
       <span><div className="bg-appGray-100 p-1 rounded-md">summary</div></span>
       <span className="ml-4 text-gray-700 text-justify">
       This is a static summary text that provides additional details.
       </span>
     </div> */}
-  </div>
-</div>
-
+      </div>
+    </div>
   );
 };
 
@@ -61,36 +62,62 @@ const InitialScreening: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<"report" | "scoring">("report");
   const [open, setOpen] = useState(true);
+  const [selectedOption, setSelectedOption] = useState({ value: "h1", label: "h1" });
 
-  const [reportItems, setReportItems] = useState<string[]>([
-    "Business Model Robustness",
-    "Financial Forensics",
-    "Scalability and Expansion Potential",
-    "Risk and Contingency Planning",
-    "Technology & Infrastructure Maturity",
-    "Customer Lifetime Value Analysis",
-    "Operational Scalability & Efficiency",
-    "Market Position & Strategic Advantage",
-    "M&A Potential and Exit Strategy",
-    "Exit Comparables and Valuation",
-    "Product Innovation Pipeline",
-    "Revenue Growth Trajectory",
-    "Customer Acquisition Strategy",
-    "Market Penetration Strategy",
-    "Competitive Threat Assessment",
-    "Go-to-Market Execution Quality",
-    "Talent Acquisition and Retention",
-    "Strategic Vision and Leadership",
-    "Intellectual Property Strategy",
-    "Partnership Synergy Potential",
-    "Data and Analytics Maturity",
-    "Market Adaptability and Resilience",
-    "Brand Strength and Market Perception",
-    "Sales Cycle Efficiency",
-    "International Expansion Readiness",
-  ]);
-  
-  // const [reportItems, setReportItems] = useState<string[]>(SidescreenOptions || []);
+  const customStyles = {
+    control: (provided:any) => ({
+      ...provided,
+      backgroundColor: '#F5F7FF',
+      border: 'none', 
+      boxShadow: 'none',
+    }),
+    menu: (provided:any) => ({
+      ...provided,
+      marginTop: 0, 
+    }),
+    option: (provided:any, { isSelected, isFocused }:any) => ({
+      ...provided,
+      backgroundColor: isFocused ? 'lightgray' : 'white',
+      color: isSelected ? 'black' : 'black',
+    }),
+  };
+
+  const options = [
+    { value: "h1", label: "h1" },
+    { value: "h2", label: "h2" },
+    { value: "h3", label: "h3" },
+    { value: "h4", label: "h4" },
+  ];
+
+  // const [reportItems, setReportItems] = useState<string[]>([
+  //   "Business Model Robustness",
+  //   "Financial Forensics",
+  //   "Scalability and Expansion Potential",
+  //   "Risk and Contingency Planning",
+  //   "Technology & Infrastructure Maturity",
+  //   "Customer Lifetime Value Analysis",
+  //   "Operational Scalability & Efficiency",
+  //   "Market Position & Strategic Advantage",
+  //   "M&A Potential and Exit Strategy",
+  //   "Exit Comparables and Valuation",
+  //   "Product Innovation Pipeline",
+  //   "Revenue Growth Trajectory",
+  //   "Customer Acquisition Strategy",
+  //   "Market Penetration Strategy",
+  //   "Competitive Threat Assessment",
+  //   "Go-to-Market Execution Quality",
+  //   "Talent Acquisition and Retention",
+  //   "Strategic Vision and Leadership",
+  //   "Intellectual Property Strategy",
+  //   "Partnership Synergy Potential",
+  //   "Data and Analytics Maturity",
+  //   "Market Adaptability and Resilience",
+  //   "Brand Strength and Market Perception",
+  //   "Sales Cycle Efficiency",
+  //   "International Expansion Readiness",
+  // ]);
+
+  const [reportItems, setReportItems] = useState<string[]>(SidescreenOptions || []);
 
   const [scoringItems, setScoringItems] = useState<string[]>([
     "Market Size & Growth",
@@ -144,7 +171,7 @@ const InitialScreening: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller h-[90vh] ${
+        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-hidden h-[90vh] ${
           open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
         } `}
       >
@@ -180,7 +207,7 @@ const InitialScreening: React.FC = () => {
           </div>
           {open && (
             <>
-              <div className="h-52 overflow-y-auto p-2">
+              <div className="h-[90%] pn_scroller overflow-y-auto p-2">
                 {activeTab === "report"
                   ? itemsToDisplay.map((item, index) => (
                       <DraggableItem
@@ -205,27 +232,38 @@ const InitialScreening: React.FC = () => {
                         </button>
                       </div>
                     ))}
-                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2 ml-4">
-                  {isInputVisible ? (
-                    <input
-                      type="text"
-                      className="border border-gray-300 p-1 rounded-lg flex-grow"
-                      placeholder="Add new item"
-                      value={newItem}
-                      onChange={(e) => setNewItem(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                    />
-                  ) : (
-                    <span className="flex-grow"> </span>
+                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-4">
+                  {isInputVisible && (
+                    <>
+                      <Select
+                        value={selectedOption}
+                        onChange={(option: any) => setSelectedOption(option)}
+                        options={options}
+                        styles={customStyles} 
+                        className="basic-single mr-1 text-sm flex-[0_0_82px]"
+                        classNamePrefix="select"
+                        placeholder="Select an option"
+                      />
+                      <div className="w-full overflow-hidden flex-auto">
+                      <input
+                        type="text"
+                        className="border border-gray-300 p-1 rounded-lg flex-auto placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm w-full"
+                        placeholder="Add new item"
+                        value={newItem}
+                        onChange={(e) => setNewItem(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                      />
+                      </div>
+                    </>
                   )}
                   <button
-                    className="flex items-center justify-start text-primary-900 ml-2"
+                    className={`flex items-center justify-start text-primary-900 ${isInputVisible ? 'hidden' : ''}`}
                     onClick={() => setIsInputVisible(!isInputVisible)}
                   >
                     {!isInputVisible && (
                       <>
                         <AddIcon color="#442873" size={25} />
-                        <span className="ml-2">Add</span>
+                        <span className="">Add</span>
                       </>
                     )}
                   </button>

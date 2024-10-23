@@ -1,9 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import AddQuery from "src/components/@vc-product/add-query";
 import InitialScreening from "./InitialScreening";
-import DataSources from "./DataSources";
 import ReportDefault from "./default";
 import jsCookie from "js-cookie";
+import SourcesData from "./DataSources";
+import ReportTemplate from "./ReportTemplate";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { LoadingIcon } from "src/components/icons";
 import ChatQuery from "src/components/@vc-product/chat-question";
@@ -17,18 +18,17 @@ import { generateKnowId } from "src/utils/helpers";
 import ExtractInfo from "src/components/@vc-product/extractInfo";
 import { sendQuery, extractFileData } from "src/stores/vs-product";
 
-import {
-  setVSChats,
-  setprevres,
-  setCurrentStep,
-} from "src/stores/vs-product";
+import { setVSChats, setprevres, setCurrentStep } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
-  // const userId = "testing1234";
+  // const userId = "tes1234567";
+  const { Step } = useAppSelector((state) => state.VSProduct);
+
   const userId = jsCookie.get("user_id");
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
-  console.log("SidescreenOptions screen index",SidescreenOptions);
+  const { DataSources } = useAppSelector((state) => state.VSProduct);
+  console.log("SidescreenOptions screen index", SidescreenOptions);
 
   const [query, setQuery] = useState("");
   const [answer, setanswer] = useState<string>("");
@@ -50,7 +50,6 @@ const VCReport = () => {
       });
     }
   };
-
 
   const onSendQuery = useCallback(
     async (query: string, answer: string, file?: File, button?: boolean) => {
@@ -157,13 +156,11 @@ const VCReport = () => {
                         />
                         <ChatQuery query={chat.query} />
 
-                        {chat.extract && 
-                        <ExtractInfo 
-                        onSendQuery={onSendQuery}
-                        info={chat.extract} />
-                         }
+                        {chat.extract && (
+                          <ExtractInfo onSendQuery={onSendQuery} info={chat.extract} />
+                        )}
 
-                          {/* <ExtractInfo 
+                        {/* <ExtractInfo 
                         info={"yoo"}
                         onSendQuery={onSendQuery}
                         /> */}
@@ -190,12 +187,12 @@ const VCReport = () => {
             </div>
           </div>
 
-          {SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />}
-          {/* <InitialScreening /> */}
-          {/* {Step === 5 && <DataSources />} */}
+          {SidescreenOptions &&
+            SidescreenOptions.length > 0 &&
+            Object.keys(DataSources).length == 0 && <InitialScreening />}
 
-          {/* <InitialScreening /> */}
-          {/* <DataSources/> */}
+          {DataSources && Object.keys(DataSources).length > 0 && Step !== 7 && <SourcesData />}
+          {Step == 7 && <ReportTemplate/>}
         </div>
       </div>
     </>

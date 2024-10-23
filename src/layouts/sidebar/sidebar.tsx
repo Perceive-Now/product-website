@@ -362,7 +362,7 @@ const handleJoyrideCallback = (data: any) => {
                 key={subItem.key}
                 // href={subItem.to}
                 className={classNames(
-                  `${subItem.classname} sidebar-1 flex cursor-pointer items-center font-bold p-1 text-gray-700`,
+                  `${subItem.classname} sidebar-1 flex cursor-pointer items-center font-semibold text-sm p-1 text-gray-700`,
                   {
                     "border-2 border-secondary-500 rounded-lg p-2": activeSubItem === subItem.key,
                   },
@@ -371,8 +371,8 @@ const handleJoyrideCallback = (data: any) => {
                   navigate(subItem.to || "/");
                 }}
               >
-                <subItem.icon />
-                <span className="ml-2">{subItem.title}</span>
+                <div className="w-[32px] flex-[0_0_32px]"><subItem.icon className="w-[32px]" /></div>
+                <span className="ml-1">{subItem.title}</span>
               </div>
             ))}
             <div className="mt-3">
