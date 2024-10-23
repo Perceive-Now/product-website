@@ -65,7 +65,7 @@ const SourcesData: React.FC = () => {
                   {dataSourceKeys.map((tab) => (
                     <button
                       key={tab}
-                      className={`p-1 rounded-lg ${activeTab === tab ? "bg-appGray-200" : ""}`}
+                      className={`p-1 text-sm rounded-lg ${activeTab === tab ? "bg-appGray-200" : ""}`}
                       onClick={() => setActiveTab(tab)}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -78,14 +78,14 @@ const SourcesData: React.FC = () => {
         </div>
         {open && (
           <>
-            <div className="h-52 overflow-y-auto p-2">
+            <div className="max-h-[50vh] pn_scroller overflow-y-auto p-2">
               {itemsToDisplay.map((item) => (
                 <div
                   key={item}
-                  className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-2"
+                  className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-2 gap-1 justify-between"
                 >
-                  <span className="flex-grow">{item}</span>
-                  <button className="text-red-500" onClick={() => handleDelete(item)}>
+                  <span className="flex-auto break-all leading-tight text-sm">{item}</span>
+                  <button className="text-red-500 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
                     <TrashIcon />
                   </button>
                 </div>
