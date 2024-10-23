@@ -38,11 +38,11 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
   return (
     <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
       <DragIcon />
-      <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
-        <div className="flex items-center mb-1">
-          <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
-          {item}
-          <button className="text-red-500 ml-2" onClick={() => handleDelete(item)}>
+      <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-1">
+        <div className="flex items-center">
+          <span className="bg-appGray-200 p-1 rounded-md mr-1 text-sm flex-[0_0_32px]">h1</span>
+          <span className="flex-auto">{item}</span>
+          <button className="text-red-500 ml-2 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
             <TrashIcon />
           </button>
         </div>
@@ -171,7 +171,7 @@ const InitialScreening: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller h-[90vh] ${
+        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-hidden h-[90vh] ${
           open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
         } `}
       >
@@ -207,7 +207,7 @@ const InitialScreening: React.FC = () => {
           </div>
           {open && (
             <>
-              <div className="h-52 overflow-y-auto p-2">
+              <div className="h-[90%] pn_scroller overflow-y-auto p-2">
                 {activeTab === "report"
                   ? itemsToDisplay.map((item, index) => (
                       <DraggableItem
@@ -232,38 +232,38 @@ const InitialScreening: React.FC = () => {
                         </button>
                       </div>
                     ))}
-                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2 ml-4">
-                  {isInputVisible ? (
+                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-4">
+                  {isInputVisible && (
                     <>
                       <Select
                         value={selectedOption}
                         onChange={(option: any) => setSelectedOption(option)}
                         options={options}
                         styles={customStyles} 
-                        className="basic-single mr-1"
+                        className="basic-single mr-1 text-sm flex-[0_0_82px]"
                         classNamePrefix="select"
                         placeholder="Select an option"
                       />
+                      <div className="w-full overflow-hidden flex-auto">
                       <input
                         type="text"
-                        className="border border-gray-300 p-1 rounded-lg flex-grow"
+                        className="border border-gray-300 p-1 rounded-lg flex-auto placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm w-full"
                         placeholder="Add new item"
                         value={newItem}
                         onChange={(e) => setNewItem(e.target.value)}
                         onKeyDown={handleKeyDown}
                       />
+                      </div>
                     </>
-                  ) : (
-                    <span className="flex-grow"> </span>
                   )}
                   <button
-                    className="flex items-center justify-start text-primary-900 ml-2"
+                    className={`flex items-center justify-start text-primary-900 ${isInputVisible ? 'hidden' : ''}`}
                     onClick={() => setIsInputVisible(!isInputVisible)}
                   >
                     {!isInputVisible && (
                       <>
                         <AddIcon color="#442873" size={25} />
-                        <span className="ml-2">Add</span>
+                        <span className="">Add</span>
                       </>
                     )}
                   </button>
