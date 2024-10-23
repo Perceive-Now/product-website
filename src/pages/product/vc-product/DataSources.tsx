@@ -82,7 +82,7 @@ const SourcesData: React.FC = () => {
               {itemsToDisplay.map((item) => (
                 <div
                   key={item}
-                  className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-2 gap-1 justify-between"
+                  className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 gap-1 justify-between"
                 >
                   <span className="flex-auto break-all leading-tight text-sm">{item}</span>
                   <button className="text-red-500 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
@@ -90,27 +90,25 @@ const SourcesData: React.FC = () => {
                   </button>
                 </div>
               ))}
-              <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2 ml-4">
-                {isInputVisible ? (
+              <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
+                {isInputVisible && (
                   <input
                     type="text"
-                    className="border border-gray-300 p-1 rounded-lg flex-grow"
+                    className="border border-gray-300 p-1 rounded-lg flex-grow w-full text-sm placeholder:text-appGray-600 focus:outline-none focus:ring-0"
                     placeholder="Add new item"
                     value={newItem}
                     onChange={(e) => setNewItem(e.target.value)}
                     onKeyDown={handleKeyDown}
                   />
-                ) : (
-                  <span className="flex-grow"> </span>
                 )}
                 <button
-                  className="flex items-center justify-start text-primary-900 ml-2"
+                  className={`flex items-center justify-start text-primary-900 ${isInputVisible ? 'hidden' : ''}`}
                   onClick={() => setIsInputVisible(!isInputVisible)}
                 >
                   {!isInputVisible && (
                     <>
                       <AddIcon color="#442873" size={25} />
-                      <span className="ml-2">Add</span>
+                      <span className="">Add</span> 
                     </>
                   )}
                 </button>
