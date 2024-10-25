@@ -84,12 +84,12 @@ function MarketIntelligenceKnowNow() {
   useEffect(() => {
     if (
       (id && isSaved) ||
-      location.pathname === "/know-now/market-intelligence" ||
-      location.pathname === "/know-now/ip-analysis"
+      location.pathname === "/know-now/market-intelligence/" ||
+      location.pathname === "/know-now/ip-analysis/"
     ) {
       dispatch(getMarketThread(userId || ""));
     }
-    //
+    
     if (id && isSaved) {
       dispatch(
         getMarketChatById({

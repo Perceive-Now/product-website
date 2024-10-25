@@ -9,6 +9,7 @@ const initialState: ISearchState = {
   search: undefined,
   keywords: undefined,
   startTour: false,
+  finishTour: false
 };
 
 /**
@@ -31,11 +32,14 @@ export const DashboardSlice = createSlice({
     setStartTour: (state, action: PayloadAction<boolean>) => {
       state.startTour = action.payload; 
     },
+    setFinishTour: (state, action: PayloadAction<boolean>) => {
+      state.finishTour = action.payload; 
+    },
   },
 });
 
 //
-export const { setDashboardSearch, clearDashboardSearch, setDashboardKeywords, setStartTour } =
+export const { setDashboardSearch, clearDashboardSearch, setDashboardKeywords, setStartTour , setFinishTour} =
   DashboardSlice.actions;
 export default DashboardSlice.reducer;
 
@@ -44,4 +48,5 @@ interface ISearchState {
   search: IKeywordOption[] | undefined;
   keywords: string[] | undefined;
   startTour: boolean
+  finishTour: boolean
 }

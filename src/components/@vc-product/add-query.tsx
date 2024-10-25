@@ -8,13 +8,12 @@ import IconFile from "../icons/side-bar/icon-file";
 interface Props {
   sendQuery: (query: string, answer: string, file?: File, button?:boolean) => void;
   setanswer: (query: string) => void;
-  setQuery: (query: string) => void;
   //   isLoading: boolean;
   query: string;
   answer: string;
 }
 
-const AddQuery = ({ query, answer, sendQuery, setanswer,setQuery }: Props) => {
+const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
   const textareaRef = useRef<any>(null);
   const fileInputRef = useRef<any>(null);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);

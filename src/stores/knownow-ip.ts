@@ -233,6 +233,7 @@ export const KnownowIPSlice = createSlice({
     // -------------------------------------------------------------------------------------------------------
 
     resetChats: (state) => {
+      console.log("ooo");
       state.chats = [];
     },
 

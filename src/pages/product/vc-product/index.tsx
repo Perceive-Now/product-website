@@ -14,15 +14,17 @@ import { Switch } from "@headlessui/react";
 import debounce from "lodash.debounce";
 import { AppConfig } from "src/config/app.config";
 import DotLoader from "src/components/reusable/dot-loader";
-import { generateKnowId } from "src/utils/helpers";
+import { generateKnowId , generateKnowIdstring } from "src/utils/helpers";
 import ExtractInfo from "src/components/@vc-product/extractInfo";
 import { sendQuery, extractFileData } from "src/stores/vs-product";
 
-import { setVSChats, setprevres, setCurrentStep } from "src/stores/vs-product";
+import { setVSChats, setprevres, setCurrentStep ,resetChats} from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
   // const userId = "tes1234567";
+  let thread_id = generateKnowIdstring();
+  // const thread_id = "c8d3d805-de26-4545-af52-c43fc68f057e";
   const { Step } = useAppSelector((state) => state.VSProduct);
 
   const userId = jsCookie.get("user_id");
@@ -30,7 +32,7 @@ const VCReport = () => {
   const { DataSources } = useAppSelector((state) => state.VSProduct);
   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
 
-  console.log("SidescreenOptions screen index", SidescreenOptions);
+  // console.log("SidescreenOptions screen index", SidescreenOptions);
 
   const [query, setQuery] = useState("");
   const [answer, setanswer] = useState<string>("");
@@ -38,7 +40,7 @@ const VCReport = () => {
   const [isLoading, setIsloading] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
-  console.log("chattsss", chats);
+  // console.log("chattsss", chats);
 
   useEffect(() => {
     scrollToBottom();
@@ -61,9 +63,14 @@ const VCReport = () => {
 
       try {
         if (answer) {
-        
+          console.log("answer")
+         if(answer === "Start another report"){
+          dispatch(resetChats());
+          thread_id = generateKnowIdstring();
+          return;
+         }
 
-          const ai_query = { user_input: answer, user_id: userId || "" ,button:button};
+          const ai_query = { user_input: answer, user_id: userId || "" ,thread_id: thread_id,button:button};
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
@@ -97,7 +104,7 @@ const VCReport = () => {
           console.log("file ress", fileResponse);
           if (fileResponse) {
             const res = await dispatch(
-              sendQuery({ user_input: fileResponse, user_id: userId || "" }),
+              sendQuery({ user_input: fileResponse, user_id: userId || "",thread_id: thread_id }),
             ).unwrap();
             if (res) {
               dispatch(
@@ -181,7 +188,6 @@ const VCReport = () => {
             <div className="flex items-center justify-center mt-auto">
               <AddQuery
                 setanswer={setanswer}
-                setQuery={setQuery}
                 query={query}
                 answer={answer}
                 sendQuery={onSendQuery}
@@ -189,12 +195,11 @@ const VCReport = () => {
             </div>
           </div>
 
-          {SidescreenOptions &&
-            SidescreenOptions.length > 0 &&
-            Object.keys(DataSources).length == 0 && <InitialScreening />}
-
-          {DataSources && Object.keys(DataSources).length > 0 && Step !== 7 && <SourcesData />}
-          {ReportTemplate && ReportTemplate.length > 0 &&  <TemplateReport/>}
+          {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0  && <InitialScreening />}
+          {Step == 6 &&  DataSources && Object.keys(DataSources).length > 0  && <SourcesData />}
+          {Step == 7 && ReportTemplate && ReportTemplate.length > 0 &&  <TemplateReport/>}
+          {/* <TemplateReport/> */}
+          {/* <InitialScreening /> */}
         </div>
       </div>
     </>
@@ -202,3 +207,4 @@ const VCReport = () => {
 };
 
 export default VCReport;
+// 

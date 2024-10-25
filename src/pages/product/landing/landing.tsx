@@ -8,6 +8,9 @@ import { BGVector0, BGVector1, BGVector2, BGVector3 } from "../../../components/
 import Title from "src/components/reusable/title/title";
 import ReportDefault from "../vc-product/default";
 import AddQuery from "src/components/@vc-product/add-query";
+import PN from "../../../assets/images/pn.svg";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setStartTour, setFinishTour } from "src/stores/dashboard";
 const stepsList = [
   {
     id: 1,
@@ -34,7 +37,18 @@ const stepsList = [
 ];
 
 export default function Landing() {
-  const [query, setQuery] = useState("");
+  const runTour = useAppSelector((state) => state.dashboard.startTour);
+  const finishTour = useAppSelector((state) => state.dashboard.finishTour);
+  const dispatch = useAppDispatch();
+
+  const defaultPrompt = finishTour
+    ? `And that’s it! You’re ready to explore. 
+       If you need help, I’m always here!`
+    : `
+    Hey! 👋 Let’s get you familiar with Perceive Now. We'll walk 
+     through two main sections: Know Now and Industry Reports. 
+     Ready?
+  `.trim();
 
   return (
     // <div className="h-[80vh] flex justify-center items-center">
@@ -109,12 +123,55 @@ export default function Landing() {
     //   </div>
     // </div>
     <div className="h-[calc(100vh-160px)] px-3 w-full mx-auto flex flex-col">
-    <div className="flex">
-    
-    <ReportDefault />
+      {!runTour && (
+      <div className="flex">
+        {/* <ReportDefault /> */}
 
+        <div className="flex-1 flex items-center justify-center mt-5">
+          <div className="flex flex-col items-center p-4">
+            <div className="mb-3">
+              <div className="h-8 w-8 rounded-full bg-appGray-100 flex items-center justify-center">
+                <img className="h-5 w-5" src={PN} alt="Pn" />
+              </div>
+            </div>
+            <div
+              className={`rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100 min-w-[550px]`}
+            >
+              <div className={`text-base leading-tight`}>
+                {defaultPrompt.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line.trim()}
+                    {index < defaultPrompt.split("\n").length - 1 && <br />}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+            {!finishTour && (
+            <div className="flex justify-end w-full mt-4">
+              <button
+                onClick={() => {
+                  dispatch(setStartTour(true));
+                }}
+                className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
+              hover:bg-primary-900 hover:text-white transition-colors duration-200"
+              >
+                Sure
+              </button>
+              <button
+                onClick={() => {
+                  dispatch(setFinishTour(true));
+                }}
+                className="px-4 py-2 border border-appGray-200 rounded-xl 
+              hover:bg-primary-900 hover:text-white transition-colors duration-200"
+              >
+                Skip the tour
+              </button>
+            </div>
+            )}
+          </div>
+        </div>
 
-      {/* <div className="flex-grow">
+        {/* <div className="flex-grow">
         {chats && chats.length <= 0 ? (
           <div className="flex flex-row justify-between flex-grow mb-[300px]">
             <ReportDefault setQuery={setQuery} query={query} />
@@ -146,15 +203,12 @@ export default function Landing() {
           // </div>
         )}
       </div> */}
-
+      </div>
+      )}
+      <div className="flex items-center justify-center mt-auto w-[800px] ml-[300px]">
+      <AddQuery query="" answer="" sendQuery={()=>{console.log("")}} setanswer={()=>{console.log("")}} />
+      </div>
     </div>
-    {/* <div className="flex items-center justify-center mt-4">
-      <AddQuery setanswer={setanswer} query={query} answer={answer} sendQuery={onSendQuery} />
-    </div> */}
-
-  
-
-  </div>
   );
 }
 

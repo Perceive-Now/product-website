@@ -3,8 +3,10 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import LayoutIcon from "src/components/icons/miscs/layout";
 import TrashIcon from "src/components/icons/common/trash";
+import TrashIconTwo from "src/assets/images/TrashTwo.svg";
 import AddIcon from "src/components/icons/common/add-icon";
 import DragIcon from "src/components/icons/miscs/DragIcon";
+import DragIconTwo from "src/assets/images/DragIconTwo.svg";
 import { useAppSelector } from "src/hooks/redux";
 import Select from "react-select";
 
@@ -37,13 +39,13 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
 
   return (
     <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
-      <DragIcon />
+      <img src={DragIconTwo} alt="Drag" className="pb-3" />
       <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-1">
         <div className="flex items-center">
           <span className="bg-appGray-200 p-1 rounded-md mr-1 text-sm flex-[0_0_32px]">h1</span>
           <span className="flex-auto">{item}</span>
           <button className="text-red-500 ml-2 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
-            <TrashIcon />
+            <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
           </button>
         </div>
         {/* <div className="flex justify-between m-0">
@@ -65,17 +67,17 @@ const InitialScreening: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState({ value: "h1", label: "h1" });
 
   const customStyles = {
-    control: (provided:any) => ({
+    control: (provided: any) => ({
       ...provided,
       backgroundColor: '#F5F7FF',
-      border: 'none', 
+      border: 'none',
       boxShadow: 'none',
     }),
-    menu: (provided:any) => ({
+    menu: (provided: any) => ({
       ...provided,
-      marginTop: 0, 
+      marginTop: 0,
     }),
-    option: (provided:any, { isSelected, isFocused }:any) => ({
+    option: (provided: any, { isSelected, isFocused }: any) => ({
       ...provided,
       backgroundColor: isFocused ? 'lightgray' : 'white',
       color: isSelected ? 'black' : 'black',
@@ -171,17 +173,16 @@ const InitialScreening: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={` border border-gray-300 rounded-lg w-full mb-[70px] overflow-hidden h-[90vh] ${
-          open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
-        } `}
+        className={` border border-gray-300 rounded-lg w-full mb-[60px] overflow-hidden h-[90vh] ${open ? "flex-[0_0_460px] max-w-[460px]" : "max-w-[215px] max-h-[50px]"
+          } `}
       >
-        <div className={`p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
+        <div className={`px-1 py-1 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
           <div className="flex">
             <div onClick={() => setOpen(!open)} className="cursor-pointer">
               <LayoutIcon />
             </div>
             <div className="ml-2">
-              <h2 className="text-lg font-semibold">Initial Screening</h2>
+              <h2 className="text-sm md:text-lg font-semibold">Initial Screening</h2>
               {open && (
                 <>
                   <h4 className="mb-4">Arrange/add sections as your need</h4>
@@ -207,52 +208,52 @@ const InitialScreening: React.FC = () => {
           </div>
           {open && (
             <>
-              <div className="h-[90%] pn_scroller overflow-y-auto p-2">
+              <div className="h-[90%] pn_scroller overflow-y-auto p-1">
                 {activeTab === "report"
                   ? itemsToDisplay.map((item, index) => (
-                      <DraggableItem
-                        key={item}
-                        item={item}
-                        index={index}
-                        handleDelete={handleDelete}
-                        moveItem={moveItem}
-                      />
-                    ))
+                    <DraggableItem
+                      key={item}
+                      item={item}
+                      index={index}
+                      handleDelete={handleDelete}
+                      moveItem={moveItem}
+                    />
+                  ))
                   : scoringItems.map((item) => (
-                      <div
-                        key={item}
-                        className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2"
-                      >
-                        <span>
-                          <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
-                          {item}
-                        </span>
-                        <button className="text-red-500" onClick={() => handleDelete(item)}>
-                          <TrashIcon />
-                        </button>
-                      </div>
-                    ))}
-                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-4">
+                    <div
+                      key={item}
+                      className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2"
+                    >
+                      <span>
+                        <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
+                        {item}
+                      </span>
+                      <button className="text-red-500" onClick={() => handleDelete(item)}>
+                        <TrashIcon />
+                      </button>
+                    </div>
+                  ))}
+                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
                   {isInputVisible && (
                     <>
                       <Select
                         value={selectedOption}
                         onChange={(option: any) => setSelectedOption(option)}
                         options={options}
-                        styles={customStyles} 
+                        styles={customStyles}
                         className="basic-single mr-1 text-sm flex-[0_0_82px]"
                         classNamePrefix="select"
                         placeholder="Select an option"
                       />
                       <div className="w-full overflow-hidden flex-auto">
-                      <input
-                        type="text"
-                        className="border border-gray-300 p-1 rounded-lg flex-auto placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm w-full"
-                        placeholder="Add new item"
-                        value={newItem}
-                        onChange={(e) => setNewItem(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                      />
+                        <input
+                          type="text"
+                          className="border border-gray-300 p-1 rounded-xs flex-auto placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm w-full"
+                          placeholder="Add New"
+                          value={newItem}
+                          onChange={(e) => setNewItem(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                        />
                       </div>
                     </>
                   )}

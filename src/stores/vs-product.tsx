@@ -32,8 +32,10 @@ const initialState: VSProduct = {
 const formatJsonResponse = (inputString: string): any => {
   try {
     const data = JSON.parse(inputString);
+    console.log("data 1",data);
     return data;
-  } catch {
+  } catch (err){
+    console.log("errrrr",err);
     const stepMatch = inputString.match(/"Step":\s*(\d+)/);
     const statusMatch = inputString.match(/"Status":\s*"([^"]+)"/);
     const responseMatch = inputString.match(/"response":\s*"([^"]+)"/);
@@ -41,6 +43,12 @@ const formatJsonResponse = (inputString: string): any => {
     const step = stepMatch ? stepMatch[1] : "N/A";
     const status = statusMatch ? statusMatch[1] : "N/A";
     const response = responseMatch ? responseMatch[1] : "N/A";
+    console.log("data 2",{
+      Step: step,
+      Status: status,
+      response: response,
+    });
+
     return {
       Step: step,
       Status: status,
@@ -52,7 +60,7 @@ const formatJsonResponse = (inputString: string): any => {
 // Thunks for API calls
 export const sendQuery = createAsyncThunk(
   "sendQuery",
-  async ({ user_input, user_id }: { user_input: string; user_id: string }): Promise<any> => {
+  async ({ user_input, user_id,thread_id }: { user_input: string; user_id: string;thread_id:string }): Promise<any> => {
     const response: any = await fetch(
       `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
       {
@@ -60,7 +68,7 @@ export const sendQuery = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input: user_input === "Confirm" ? "ok" : user_input, user_id,thread_id:"" }),
+        body: JSON.stringify({ user_input: user_input === "Confirm" ? "ok" : user_input, user_id,thread_id }),
       },
     );
     const reader = response.body.getReader();
@@ -77,7 +85,7 @@ export const sendQuery = createAsyncThunk(
       // const newanswer = JSON.parse(answer);
 
       const newanswer = formatJsonResponse(answer);
-
+      console.log("newwwwwwwwwww",newanswer)
       if (newanswer.Step == 6) {
         const jsonParts = answer.split("}{");
         const secondJsonString = jsonParts[1].startsWith("{") ? jsonParts[1] : `{${jsonParts[1]}`;
@@ -87,6 +95,8 @@ export const sendQuery = createAsyncThunk(
           console.log("dataObject", dataObject);
         } else return;
       }
+
+      
 
       console.log("answerrrrr", typeof newanswer, newanswer);
 
@@ -151,7 +161,9 @@ export const VSProductSlice = createSlice({
       }
     },
     resetChats: (state) => {
+      console.log("resettt");
       state.chats = [];
+      state.Step=0;
     },
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.Step = action.payload;
@@ -164,23 +176,7 @@ export const VSProductSlice = createSlice({
       console.log("steps", Step);
       if (Step !== undefined) {
         // if(Step == 1){
-        //   const response1 = `Here’s the final report template for EcoTech Innovations based on all the details we’ve discussed. Please review and make any adjustments @?[ 
-        //     ["Market Opportunity", "Global Smart Home Energy Market", "EcoTech Innovations aims to tap into the $300 billion smart home market with a focus on clean energy, offering a solution to a growing customer base concerned with energy costs and sustainability. Projected growth of 8.9% CAGR presents a significant opportunity for the company."],  
-        //     ["Competitive Differentiation", "Unique AI-Driven Energy Optimization", "With competitors like Tesla Powerwall, Sunrun, and Vivint Solar, EcoTech sets itself apart through proprietary AI optimization and seamless integration with existing home systems, reducing energy bills by up to 30%."],  
-        //     ["Product Viability", "Innovative Smart Home Energy Systems", "EcoTech Innovations has developed solar-powered smart home energy systems with AI-driven energy optimization, demonstrating high potential in a market seeking sustainable and efficient energy solutions."],  
-        //     ["Founding Team Overview", "Experienced Leadership", "Led by Jane Doe with over 10 years in clean tech and John Smith's expertise in AI, the team combines industry knowledge with technical prowess to drive EcoTech towards its vision."],  
-        //     ["Go-to-Market Strategy", "Multi-Channel Market Penetration", "EcoTech employs a diversified go-to-market strategy, leveraging direct-to-consumer digital marketing, partnerships with home builders, and B2B channels for commercial installations, optimizing customer acquisition costs."],  
-        //     ["Customer Validation", "Positive Market Reception", "Having sold 1,500 units in the first year and secured partnerships with 3 utility providers, EcoTech demonstrates strong market validation and customer savings of 25% on energy bills."],  
-        //     ["Revenue Model Analysis", "Diverse Revenue Streams", "EcoTech's revenue streams include direct sales of solar-powered systems and a monthly subscription for AI-driven energy management services, indicating a scalable revenue model."],  
-        //     ["Operational Efficiency", "Strategic Resource Allocation", "With a burn rate of $50k per month and a forthcoming raise of $5M, EcoTech plans to allocate funds primarily towards manufacturing and marketing to optimize operational efficiency."],  
-        //     ["Partnerships and Alliances", "Strategic Utility Partnerships", "EcoTech's collaboration with utility companies not only broadens its market reach but also contributes to a more resilient energy grid."],  
-        //     ["Technology and IP Overview", "Proprietary AI Technology", "EcoTech's filed patents for AI optimization algorithms and energy storage technology solidify its competitive edge and commitment to innovation."],  
-        //     ["Regulatory and Compliance Review", "Compliance with Energy Regulations", "EcoTech is positioned to meet growing environmental regulations with its sustainable energy solutions, aligning with global carbon reduction goals."],  
-        //     ["Time to Market", "Rapid Market Entry", "The startup's ability to quickly penetrate the market with its smart home energy systems underscores its agile go-to-market execution."],  
-        //     ["Market Momentum", "Rising Demand for Clean Energy", "EcoTech is capitalizing on the increasing momentum in the clean energy sector, indicating a promising trajectory for growth and market adoption."],  
-        //     ["Cost of Acquisition", "Efficient Customer Acquisition", "With a CAC of $120 and an LTV of $900, EcoTech maintains a healthy balance between acquisition costs and customer value, supporting sustainable growth."],  
-        //     ["Product Scalability", "Scalable Solutions for Homes and Businesses", "The company's solar-powered systems are designed for seamless scalability, catering to both the residential and commercial market segments."] 
-        //   ]@?`;
+        //   const response1 = `@?[  ["Market Opportunity", "Vast Market with High Growth Potential", "EcoTech Innovations is poised to tap into a $300 billion global smart home market, focusing on the $50 billion clean energy solutions segment, with an 8.9% CAGR in the smart home energy management sector."], ["Competitive Differentiation", "Innovative Edge Over Competitors", "EcoTech Innovations stands out with its AI-driven optimization and seamless integration with existing home systems, which positions it uniquely against competitors like Tesla Powerwall, Sunrun, and Vivint Solar."], ["Product Viability', 'Scalable and AI-Driven Energy Solutions', 'The company offers solar-powered smart home energy systems with AI-driven energy optimization, which are scalable for commercial use and have already seen 1,500 units sold in the first 12 months."] ]@?`;
         //   console.log("response1",response1);
         //   // const matches = response1.match(/@?\[(.*?)\]@?/);
         //   // let reportContent = [];
@@ -191,9 +187,46 @@ export const VSProductSlice = createSlice({
         //   //     reportContent = JSON.parse(`[${arrayString}]`);
         //   // }
 
-        //   // const splitResponse = response.split('@?')[1];
           
+        //   const convertResponseToReportData = (response:string) => {
+        //     // Check if the response contains the delimiter "@?"
+        //     if (response.includes('@?')) {
+        //       const splitResponse = response.split('@?')[1]; // Get the part after "@?"
+        //    console.log("s[lair ress",typeof splitResponse,splitResponse)
+        //       // Ensure the split result is valid before parsing
+        //       if (splitResponse) {
+        //         try {
+        //           const yo = `[  ['Market Opportunity', 'Vast Market with High Growth Potential', 'EcoTech Innovations is poised to tap into a $300 billion global smart home market, focusing on the $50 billion clean energy solutions segment, with an 8.9% CAGR in the smart home energy management sector.'], ['Revenue Model Analysis', 'Diverse Revenue Streams and Strong Projections', 'The company's revenue streams include direct sales and a subscription model for AI-driven energy management services, with a $1.2M in ARR from subscriptions and a projected revenue of $2.5M for 2023.'],  ]`
+                 
+        //           const jsonReadyString = yo
+        //           .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2') 
+        //           .replace(/'(?=\s*,)/g, '"') 
+        //           .replace(/(?<=,)\s*'/g, '"')
+        //           // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2') 
+        //           .replace(/'(?![\w\s])/g, '"')
+        //           .replace(/(?<=\[)'/g, '"'); 
+        //           // .replace(/'(?=\s*[\w])/g, '"')
+                 
 
+
+        //           // const jsonReadyString = yo.replace(/(?<!\w)'(?!\w)/g, '"'); 
+
+        //           console.log("ollall",jsonReadyString);
+        //           // Parse the split response as JSON and return
+        //           return JSON.parse(jsonReadyString);
+        //         } catch (error) {
+        //           console.error("Error parsing response:", error);
+        //           return [];
+        //         }
+        //       }
+        //     }
+        //     // Return an empty array if the delimiter is missing
+        //     return [];
+        //   };
+
+        //   const Template = convertResponseToReportData(response1);
+        //   state.ReportTemplate = Template;
+        //   console.log("ooooo", Template);
 
          
 
@@ -205,27 +238,37 @@ export const VSProductSlice = createSlice({
           if (DataSources) state.DataSources = DataSources;
           state.chats[state.chats.length - 1].query = response;
         } else if(Step == 7){
-
           const convertResponseToReportData = (response:string) => {
-            // Check if the response contains the delimiter "@?"
             if (response.includes('@?')) {
-              const splitResponse = response.split('@?')[1]; // Get the part after "@?"
-        
-              // Ensure the split result is valid before parsing
+              const splitResponse = response.split('@?')[1];
+              console.log("split res",splitResponse);
               if (splitResponse) {
                 try {
-                  // Parse the split response as JSON and return
-                  return JSON.parse(splitResponse.trim());
+                  // const jsonReadyString = splitResponse
+                  // .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2') 
+                  // .replace(/'(?=\s*,)/g, '"') 
+                  // .replace(/(?<=,)\s*'/g, '"')
+                  // // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2') 
+                  // .replace(/'(?![\w\s])/g, '"')
+                  // .replace(/(?<=\[)'/g, '"'); 
+                  // // .replace(/'(?=\s*[\w])/g, '"')
+                 
+                  const jsonReadyString = splitResponse 
+                  .replace(/\\/g, "");
+
+                 console.log("jsonReadyString",response);
+                  return JSON.parse(jsonReadyString.trim());
                 } catch (error) {
                   console.error("Error parsing response:", error);
                   return [];
                 }
               }
             }
-            // Return an empty array if the delimiter is missing
             return [];
           };
 
+
+          
           const Template = convertResponseToReportData(response);
           state.ReportTemplate = Template;
           console.log("ooooo", Template);
@@ -266,7 +309,10 @@ export const VSProductSlice = createSlice({
           console.log("step 3", query, options);
           state.chats[state.chats.length - 1].query = query;
           state.chats.push({ query: "", options: options, answer: "" });
-        } else {
+        } else if(Step == 8){
+          state.chats[state.chats.length - 1].query = response;
+          state.chats.push({ query: "", options: ["Start another report","Learn about market data"], answer: "" ,hasbutton:true});
+        }else {
           // state.chats.push({ query: response, answer: "" });
           state.chats[state.chats.length - 1].query = response;
         }

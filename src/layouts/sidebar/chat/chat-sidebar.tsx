@@ -21,7 +21,7 @@ const ChatSidebar = () => {
   //
   const { chatIPIds, isFetching } = useAppSelector((state) => state.KnowNowIP);
   const { chatMarketIds, marketChatLoading } = useAppSelector((state) => state.KnownowMarket);
-
+  console.log("chatMarketIds",chatMarketIds);
   //
   useEffect(() => {
     if (location.pathname.includes("/know-now/market-intelligence")) {

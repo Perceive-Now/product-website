@@ -23,7 +23,7 @@ import ToolTip from "src/components/reusable/tool-tip";
 import ChatSidebar from "./chat/chat-sidebar";
 import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-joyride";
 import { setCurrentStep } from "src/stores/vs-product";
-import { setStartTour } from "src/stores/dashboard";
+import { setStartTour , setFinishTour} from "src/stores/dashboard";
 import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
 interface Props {
   show?: boolean;
@@ -77,27 +77,55 @@ const tourSteps = [
   },
   {
     target: ".sidebar-mi",
-    content:
-      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+      content: (
+        <div>
+         Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?{" "}
+          <a href="/know-now/market-intelligence/" className="px-1 py-1 border border-appGray-200 rounded-lg 
+    absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
+              Explore Market Research
+          </a>
+        </div>
+      ),
       placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 
   {
     target: ".sidebar-vc",
-    content:
-      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+    content: (
+      <div>
+       In Venture Capital, find startups and investment opportunities. Want to check it out?{" "}
+        <a href="/vc-product" className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
+            Show me Venture Capital.
+        </a>
+      </div>
+    ),
       placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-firm",
-    content:
-      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+    content: (
+      <div>
+       Here, you get insights into markets and competitors. Ready to explore?{" "}
+        <a href="/know-now/market-intelligence/" className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
+            Explore Research Firms.
+        </a>
+      </div>
+    ),
       placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-healthcare",
-    content:
-      "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
+    content: (
+      <div>
+       Lets checkout Healthcare trends and innovations! Ready?{" "}
+        <a href="/vc-product" className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
+            Show me Healthcare.
+        </a>
+      </div>
+    ),
       placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
@@ -209,20 +237,20 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
     navigate("/login");
     setIsLoggingOut(false);
   };
+
 const handleJoyrideCallback = (data: any) => {
     const { index, status, lifecycle } = data;
 
     if (status === "finished" || status === "skipped") {
-      // setRunTour(false);
-      // dispatch(setStartTour(false));
+      dispatch(setStartTour(false));
+      dispatch(setFinishTour(true));
+      setOpen(false);
       return;
     }
 
     if (lifecycle === "complete") {
-      // Move to the next step directly
       setCurrentStepIndex(index + 1);
 
-      // Custom actions for specific steps
       switch (index) {
         case 1:
           setActiveItem("knownow");
@@ -232,7 +260,6 @@ const handleJoyrideCallback = (data: any) => {
           setActiveItem("industries");
           setOpen(true);
           break;
-        // Add more cases for any additional steps with custom actions
         default:
           break;
       }

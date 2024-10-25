@@ -1,17 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PN from "../../../assets/images/pn.svg";
 import { setStartTour } from "src/stores/dashboard";
-import { useAppDispatch } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 // interface Props {
 //   setQuery: (query: string) => void;
 //   query?: string;
 // }
 
 const ReportDefault: React.FC = () => {
+  const runTour = useAppSelector((state) => state.dashboard.startTour);
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { pathname } = location;
 
@@ -37,6 +39,8 @@ const ReportDefault: React.FC = () => {
   //   setQuery(defaultPrompt);
   // };
 
+  if (runTour) return <></>;
+
   return (
     <div className="flex-1 flex items-center justify-center">
       <div className="flex flex-col items-center p-4">
@@ -61,13 +65,16 @@ const ReportDefault: React.FC = () => {
         {pathname === "/" && (
           <div className="flex justify-end w-full mt-4">
             <button
-              onClick={()=>{dispatch(setStartTour(true));}}
+              onClick={() => {
+                dispatch(setStartTour(true));
+              }}
               className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
               hover:bg-primary-900 hover:text-white transition-colors duration-200"
             >
               Sure
             </button>
             <button
+              onClick={() => navigate("/vc-product")}
               className="px-4 py-2 border border-appGray-200 rounded-xl 
               hover:bg-primary-900 hover:text-white transition-colors duration-200"
             >

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import LayoutIcon from "src/components/icons/miscs/layout";
-import TrashIcon from "src/components/icons/common/trash";
 import AddIcon from "src/components/icons/common/add-icon";
 import { useAppSelector } from "src/hooks/redux";
-
+import TrashIconTwo from "src/assets/images/TrashTwo.svg";
 const SourcesData: React.FC = () => {
   const { DataSources } = useAppSelector((state) => state.VSProduct);
   console.log("Data Sources  -----",DataSources);
@@ -86,11 +85,11 @@ const SourcesData: React.FC = () => {
                 >
                   <span className="flex-auto break-all leading-tight text-sm">{item}</span>
                   <button className="text-red-500 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
-                    <TrashIcon />
+                  <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
                   </button>
                 </div>
               ))}
-              <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
+              {/* <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
                 {isInputVisible && (
                   <input
                     type="text"
@@ -112,7 +111,7 @@ const SourcesData: React.FC = () => {
                     </>
                   )}
                 </button>
-              </div>
+              </div> */}
             </div>
           </>
         )}
