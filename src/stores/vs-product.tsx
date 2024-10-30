@@ -231,7 +231,13 @@ export const VSProductSlice = createSlice({
          
 
         // }
-        if (Step == 2) {
+        if(Step == 1 ){
+          state.chats[state.chats.length - 1].query = 'Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?';
+          // state.chats.unshift({ query: "I am teacher", answer: ""});
+          state.chats.push({ query: "", options: ["Pre Revenue","Post Revenue"], answer: "" ,hasbutton:true});
+
+        }
+        else if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
         } else if (Step == 6) {

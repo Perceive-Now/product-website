@@ -14,19 +14,26 @@ import { Switch } from "@headlessui/react";
 import debounce from "lodash.debounce";
 import { AppConfig } from "src/config/app.config";
 import DotLoader from "src/components/reusable/dot-loader";
-import { generateKnowId , generateKnowIdstring } from "src/utils/helpers";
+import { generateKnowId, generateKnowIdstring } from "src/utils/helpers";
 import ExtractInfo from "src/components/@vc-product/extractInfo";
 import { sendQuery, extractFileData } from "src/stores/vs-product";
 
-import { setVSChats, setprevres, setCurrentStep ,resetChats} from "src/stores/vs-product";
+import {
+  setVSChats,
+  setprevres,
+  setCurrentStep,
+  resetChats,
+  updateChatQuery,
+} from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
   const dispatch = useAppDispatch();
   // const userId = "tes1234567";
   let thread_id = generateKnowIdstring();
+  let companyName = "";
   // const thread_id = "c8d3d805-de26-4545-af52-c43fc68f057e";
   const { Step } = useAppSelector((state) => state.VSProduct);
-
+  const firstRun = useRef(true);
   const userId = jsCookie.get("user_id");
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
   const { DataSources } = useAppSelector((state) => state.VSProduct);
@@ -63,19 +70,85 @@ const VCReport = () => {
 
       try {
         if (answer) {
-          console.log("answer")
-         if(answer === "Start another report"){
-          dispatch(resetChats());
-          thread_id = generateKnowIdstring();
-          return;
-         }
+          console.log("answer");
+          if (answer === "Start another report") {
+            dispatch(resetChats());
+            thread_id = generateKnowIdstring();
+            return;
+          }
 
-          const ai_query = { user_input: answer, user_id: userId || "" ,thread_id: thread_id,button:button};
+          if (firstRun.current) {
+            companyName = answer;
+            dispatch(
+              setVSChats({
+                query: `Let’s create something amazing! 🚀  
+I’m here to turn the startup’s info into a powerful, data-driven report just for you.
+
+Hi there! Let’s start with the basics. What’s the name of the startup, and what stage is it in (e.g., Seed, Series A)?
+
+            `,
+                answer: "",
+              }),
+            );
+            firstRun.current = false;
+          }
+
+          const ai_query = {
+            user_input: answer,
+            user_id: userId || "",
+            thread_id: thread_id,
+            button: button,
+          };
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
-            dispatch(setprevres({answer:answer}));
-            await dispatch(sendQuery(ai_query)).unwrap();
+            dispatch(setprevres({ answer: answer }));
+            if (answer === "Post Revenue" || answer === "Pre Revenue") {
+              dispatch(
+                updateChatQuery({
+                  query: `Thank you! Since ${companyName} is in the **${answer}** stage, could you specify the current development phase from the options below?`,
+                }),
+              );
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
+                  hasbutton: true,
+                }),
+              );
+            } else if (
+              answer === "Ideation Stage" ||
+              answer === "Pre-Seed Stage" ||
+              answer === "Seed Stage"
+            ) {
+              dispatch(
+                updateChatQuery({
+                  query:
+                    `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                }),
+              );
+            }else if (
+              answer === "Looks good"
+            ) {
+              dispatch(
+                updateChatQuery({
+                  query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                  You can expand any section for more details if needed.`,
+                }),
+              );
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Quick Insights", "Deep Dive"],
+                  hasbutton: true,
+                }),
+              );
+            } else await dispatch(sendQuery(ai_query)).unwrap();
+
+            // dispatch(setprevres({answer:answer}));
+            // await dispatch(sendQuery(ai_query)).unwrap();
           } else {
             dispatch(setVSChats(queries));
             setanswer("");
@@ -104,15 +177,21 @@ const VCReport = () => {
           console.log("file ress", fileResponse);
           if (fileResponse) {
             const res = await dispatch(
-              sendQuery({ user_input: fileResponse, user_id: userId || "",thread_id: thread_id }),
+              sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             ).unwrap();
             if (res) {
               dispatch(
                 setVSChats({
-                  id: newQueryIndex + 1,
+                  query:
+                    `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
+                  answer: "",
+                }),
+              );
+              dispatch(
+                setVSChats({
                   query: "",
                   answer: "",
-                  options: ["Confirm"],
+                  options: ["Looks good"],
                   hasbutton: true,
                 }),
               );
@@ -195,9 +274,9 @@ const VCReport = () => {
             </div>
           </div>
 
-          {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0  && <InitialScreening />}
-          {Step == 6 &&  DataSources && Object.keys(DataSources).length > 0  && <SourcesData />}
-          {Step == 7 && ReportTemplate && ReportTemplate.length > 0 &&  <TemplateReport/>}
+          {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />}
+          {Step == 6 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
+          {Step == 7 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />}
           {/* <TemplateReport/> */}
           {/* <InitialScreening /> */}
         </div>
@@ -207,4 +286,4 @@ const VCReport = () => {
 };
 
 export default VCReport;
-// 
+//

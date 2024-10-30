@@ -23,11 +23,11 @@ const ReportDefault: React.FC = () => {
        through two main sections: Know Now and Industry Reports. 
        Ready?`
       : `
-      Let's create something amazing!🚀
-      I'm here to turn the startup's info into a powerful, data-driven report
+      Let’s create something amazing! 🚀 
+      I’m here to turn the startup’s info into a powerful, data-driven report just for you. 
 
-      Upload the pitch deck, and I'll take it from there!
-    `.trim();
+      Hi there! Let’s start with the basics. What’s the name of the startup, and what stage is it in (e.g., Seed, Series A)?
+          `.trim();
 
   // useEffect(() => {
   //   if (query === defaultPrompt) setIsClicked(true);
