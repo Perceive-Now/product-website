@@ -1,6 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createPitchDeckSummary } from "src/utils/api/product";
-
+import { RootState } from "src/store";
 interface VSChat {
   id?: number;
   query: string;
@@ -13,20 +12,24 @@ interface VSChat {
 
 interface VSProduct {
   chats: VSChat[];
+  CompanyName:string;
   marketChatLoading: boolean;
   Step: number;
   SidescreenOptions?: string[];
   DataSources?: any;
-  ReportTemplate?:any
+  ReportTemplate?:any;
+  pitchdeck_data:any;
 }
 
 const initialState: VSProduct = {
+  CompanyName:"",
   chats: [],
   marketChatLoading: true,
   Step: 0,
   SidescreenOptions: [],
   DataSources: {},
-  ReportTemplate: {}
+  ReportTemplate: {},
+  pitchdeck_data:{}
 };
 
 const formatJsonResponse = (inputString: string): any => {
@@ -60,7 +63,10 @@ const formatJsonResponse = (inputString: string): any => {
 // Thunks for API calls
 export const sendQuery = createAsyncThunk(
   "sendQuery",
-  async ({ user_input, user_id,thread_id }: { user_input: string; user_id: string;thread_id:string }): Promise<any> => {
+  async ({ user_input, user_id,thread_id }: { user_input: string; user_id: string;thread_id:string }, { getState }): Promise<any> => {
+    const state = getState() as RootState;
+    const pitchdeckData = state.VSProduct.pitchdeck_data;
+   console.log("ooooooooooooooooooooooo",pitchdeckData);
     const response: any = await fetch(
       `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
       {
@@ -68,8 +74,7 @@ export const sendQuery = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input, user_id,thread_id:"" }),
-        // ,pitchdeck_data:{"data":user_input}
+        body: JSON.stringify({ user_input, user_id,thread_id,pitchdeck_data: pitchdeckData }),
       },
     );
     const reader = response.body.getReader();
@@ -124,13 +129,7 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
   if (data.message === "Text extracted successfully") {
     console.log("extracted successfully",data.slides_data);
 
-    // const summary = createPitchDeckSummary(data.slides_data);
-    // return data.slides_data;
-    const cleanedData = data.slides_data
-    .replace(/[{}"']/g, '') 
-    .trim();
-
-  return cleanedData;
+  return data.slides_data;
   }
 });
 
@@ -172,6 +171,10 @@ export const VSProductSlice = createSlice({
       console.log("resettt");
       state.chats = [];
       state.Step=0;
+    },
+    setCompanyName:  (state, action: PayloadAction<string>) => {
+      console.log("comppppp",action.payload);
+      state.CompanyName = action.payload;
     },
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.Step = action.payload;
@@ -346,6 +349,9 @@ export const VSProductSlice = createSlice({
         state.Step = Step;
       }
     });
+    builder.addCase(extractFileData.fulfilled, (state, action) => {
+      state.pitchdeck_data = {"Company/Startup Name": state.CompanyName,"pitchdeck_summary":action.payload,"search_queries":{ }};
+    });
   },
 });
 
@@ -360,4 +366,5 @@ export const {
   resetChats,
   setprevres,
   setCurrentStep,
+  setCompanyName
 } = VSProductSlice.actions;

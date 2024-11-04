@@ -24,6 +24,7 @@ import {
   setCurrentStep,
   resetChats,
   updateChatQuery,
+  setCompanyName
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
@@ -80,6 +81,7 @@ const VCReport = () => {
           if (firstRun.current) {
 
             companyName = answer;
+            dispatch(setCompanyName(companyName));
             setanswer("");
 
             //First Converstaion //
@@ -203,11 +205,15 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             // const res = await dispatch(
             //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             // ).unwrap();
+            const cleanedSummary = fileResponse
+            .replace(/[{}"']/g, '') 
+            .trim();
+
             dispatch(
               setVSChats({
                 query: "",
                 answer: "",
-                extract:fileResponse
+                extract:cleanedSummary
               }),
             );
 
@@ -239,7 +245,6 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
     },
     [dispatch, userId],
   );
- console.log("loading...........",isLoading)
   return (
     <>
       <div className="px-3 w-full mx-auto h-full">
