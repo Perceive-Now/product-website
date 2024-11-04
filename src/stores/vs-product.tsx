@@ -68,7 +68,8 @@ export const sendQuery = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input: user_input === "Confirm" ? "ok" : user_input, user_id,thread_id }),
+        body: JSON.stringify({ user_input, user_id,thread_id:"" }),
+        // ,pitchdeck_data:{"data":user_input}
       },
     );
     const reader = response.body.getReader();
@@ -121,8 +122,15 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
   );
   const data = await response.json();
   if (data.message === "Text extracted successfully") {
-    const summary = createPitchDeckSummary(data.slides_data);
-    return summary;
+    console.log("extracted successfully",data.slides_data);
+
+    // const summary = createPitchDeckSummary(data.slides_data);
+    // return data.slides_data;
+    const cleanedData = data.slides_data
+    .replace(/[{}"']/g, '') 
+    .trim();
+
+  return cleanedData;
   }
 });
 
@@ -228,16 +236,29 @@ export const VSProductSlice = createSlice({
         //   state.ReportTemplate = Template;
         //   console.log("ooooo", Template);
 
+      
+      
+          // if (matches && matches[1]) {
+          //     // Convert the matched string to a valid JavaScript array
+          //     const arrayString = matches[1].trim();
+          //     reportContent = JSON.parse(`[${arrayString}]`);
+          // }
          
+          // if (matches && matches[1]) {
+          //     // Convert the matched string to a valid JavaScript array
+          //     const arrayString = matches[1].trim();
+          //     reportContent = JSON.parse(`[${arrayString}]`);
+          // }
+
+        // }s
+        // if(Step == 1 ){
+        //   state.chats[state.chats.length - 1].query = 'Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?';
+        //   // state.chats.unshift({ query: "I am teacher", answer: ""});
+        //   state.chats.push({ query: "", options: ["Pre Revenue","Post Revenue"], answer: "" ,hasbutton:true});
 
         // }
-        if(Step == 1 ){
-          state.chats[state.chats.length - 1].query = 'Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?';
-          // state.chats.unshift({ query: "I am teacher", answer: ""});
-          state.chats.push({ query: "", options: ["Pre Revenue","Post Revenue"], answer: "" ,hasbutton:true});
-
-        }
-        else if (Step == 2) {
+        // else 
+        if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
         } else if (Step == 6) {

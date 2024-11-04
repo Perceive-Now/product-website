@@ -78,7 +78,11 @@ const VCReport = () => {
           }
 
           if (firstRun.current) {
+
             companyName = answer;
+            setanswer("");
+
+            //First Converstaion //
             dispatch(
               setVSChats({
                 query: `Let’s create something amazing! 🚀  
@@ -90,7 +94,29 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 answer: "",
               }),
             );
+
+           //** Second Converstaion **//
+            dispatch(
+              setVSChats({
+                query:
+                  "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
+                answer: companyName,
+              }),
+            );
+
+            dispatch(
+              setVSChats({
+                query: "",
+                answer: "",
+                options: ["Pre Revenue", "Post Revenue"],
+                hasbutton: true,
+              }),
+            );
+
+            //**   **//
+
             firstRun.current = false;
+            return;
           }
 
           const ai_query = {
@@ -104,6 +130,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           if (button) {
             dispatch(setprevres({ answer: answer }));
             if (answer === "Post Revenue" || answer === "Pre Revenue") {
+              //** Third Converstaion **//
               dispatch(
                 updateChatQuery({
                   query: `Thank you! Since ${companyName} is in the **${answer}** stage, could you specify the current development phase from the options below?`,
@@ -117,20 +144,23 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+
+              //**   **//
             } else if (
               answer === "Ideation Stage" ||
               answer === "Pre-Seed Stage" ||
               answer === "Seed Stage"
             ) {
+              //** Fourth Converstaion **//
               dispatch(
                 updateChatQuery({
-                  query:
-                    `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                  query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
                 }),
               );
-            }else if (
-              answer === "Looks good"
-            ) {
+              //**     **//
+            } else if (answer === "Looks good") {
+
+             //** Fifth Converstaion **//
               dispatch(
                 updateChatQuery({
                   query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
@@ -145,6 +175,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            //**     **//
             } else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
@@ -166,24 +197,24 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           dispatch(setVSChats(firstQuery));
           setCurrentStep(1);
 
-          // const secondQuery = {
-          //   id: extractIndex,
-          //   query: "Great! Let me deep dive into the file.",
-          //   answer: "",
-          // };
-          // dispatch(setVSChats(secondQuery));
-
           const fileResponse = await dispatch(extractFileData(file)).unwrap();
           console.log("file ress", fileResponse);
           if (fileResponse) {
-            const res = await dispatch(
-              sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
-            ).unwrap();
-            if (res) {
+            // const res = await dispatch(
+            //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
+            // ).unwrap();
+            dispatch(
+              setVSChats({
+                query: "",
+                answer: "",
+                extract:fileResponse
+              }),
+            );
+
+            if (fileResponse) {
               dispatch(
                 setVSChats({
-                  query:
-                    `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
+                  query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
                   answer: "",
                 }),
               );
@@ -201,12 +232,14 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
       } catch (error) {
         console.error("Failed to send query", error);
       } finally {
-        setIsloading(false);
+        // setIsloading(false);
+        setTimeout(() => setIsloading(false), 500);
+
       }
     },
     [dispatch, userId],
   );
-
+ console.log("loading...........",isLoading)
   return (
     <>
       <div className="px-3 w-full mx-auto h-full">
