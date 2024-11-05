@@ -5,13 +5,14 @@ import remarkGfm from "remark-gfm";
 import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
 import { useAppDispatch } from "src/hooks/redux";
-import { setVSChats } from "src/stores/vs-product";
+import { setVSChats, updatePitchdeckData } from "src/stores/vs-product";
 interface ExtractInfoProps {
   info: string;
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
 }
 
 const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
+  console.log("infooo",info)
   const dispatch = useAppDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   // const [formData, setFormData] = useState<Record<string, string>>({});
@@ -102,27 +103,36 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
     });
   };
 
-  const infoData = parseInfo(info);
+
+  const convertToInfoString = (data: Record<string, string>): string => {
+    return Object.entries(data)
+      .map(([key, value]) => `**${key}:** [${value}]`)
+      .join("\n");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const updatedSummary = Object.entries(changedData)
-      .map(([key, value]) => `${key} is now updated to ${value}`)
-      .join(", ");
+    // const updatedSummary = Object.entries(changedData)
+    //   .map(([key, value]) => `${key} is now updated to ${value}`)
+    //   .join(", ");
 
-    console.log("updatedSummary", updatedSummary);
-    if (updatedSummary) {
-      onSendQuery("", updatedSummary, undefined, false);
-      // dispatch(
-      //   setVSChats({
-      //     query: "",
-      //     answer: "",
-      //     options: ["Yes"],
-      //     hasbutton: true,
-      //   }),
-      // );
-      handleModalClose();
-    }
+    // console.log("updatedSummary", updatedSummary);
+    // if (updatedSummary) {
+    //   onSendQuery("", updatedSummary, undefined, false);
+    //   // dispatch(
+    //   //   setVSChats({
+    //   //     query: "",
+    //   //     answer: "",
+    //   //     options: ["Yes"],
+    //   //     hasbutton: true,
+    //   //   }),
+    //   // );
+    //   handleModalClose();
+    // }
+    console.log("sub,itting",convertToInfoString(formData))
+    const updateExtract =  convertToInfoString(formData);
+    dispatch(updatePitchdeckData({pitchdeckSummary:updateExtract}));
+    handleModalClose();
   };
 
   // const formatInfo = () => {

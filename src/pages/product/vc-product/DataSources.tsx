@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import LayoutIcon from "src/components/icons/miscs/layout";
 import AddIcon from "src/components/icons/common/add-icon";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppSelector , useAppDispatch} from "src/hooks/redux";
 import TrashIconTwo from "src/assets/images/TrashTwo.svg";
+import { updatePitchdeckData } from "src/stores/vs-product";
 const SourcesData: React.FC = () => {
   const { DataSources } = useAppSelector((state) => state.VSProduct);
+  const dispatch = useAppDispatch();
+
   console.log("Data Sources  -----",DataSources);
   const dataSourceKeys = Object.keys(DataSources);
 
@@ -16,6 +19,7 @@ const SourcesData: React.FC = () => {
 
   useEffect(() => {
     setItems(DataSources);
+    dispatch(updatePitchdeckData({ searchQueries: {...DataSources} }));
   }, [DataSources]);
 
   const itemsToDisplay = items[activeTab] || [];

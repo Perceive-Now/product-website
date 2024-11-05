@@ -12,33 +12,49 @@ interface VSChat {
 
 interface VSProduct {
   chats: VSChat[];
-  CompanyName:string;
+  CompanyName: string;
   marketChatLoading: boolean;
   Step: number;
   SidescreenOptions?: string[];
   DataSources?: any;
-  ReportTemplate?:any;
-  pitchdeck_data:any;
+  ReportTemplate?: any;
+  pitchdeck_data: any;
 }
 
 const initialState: VSProduct = {
-  CompanyName:"",
+  CompanyName: "",
   chats: [],
   marketChatLoading: true,
   Step: 0,
-  SidescreenOptions: [],
+  SidescreenOptions: [
+    "Market Opportunity",
+    "Competitive Differentiation",
+    "Product Viability",
+    "Founding Team Overview",
+    "Go-to-Market Strategy",
+    "Customer Validation",
+    "Revenue Model Analysis",
+    "Operational Efficiency",
+    "Partnerships and Alliances",
+    "Technology and IP Overview",
+    "Regulatory and Compliance Review",
+    "Time to Market",
+    "Market Momentum",
+    "Cost of Acquisition",
+    "Product Scalability",
+  ],
   DataSources: {},
   ReportTemplate: {},
-  pitchdeck_data:{}
+  pitchdeck_data: {},
 };
 
 const formatJsonResponse = (inputString: string): any => {
   try {
     const data = JSON.parse(inputString);
-    console.log("data 1",data);
+    console.log("data 1", data);
     return data;
-  } catch (err){
-    console.log("errrrr",err);
+  } catch (err) {
+    console.log("errrrr", err);
     const stepMatch = inputString.match(/"Step":\s*(\d+)/);
     const statusMatch = inputString.match(/"Status":\s*"([^"]+)"/);
     const responseMatch = inputString.match(/"response":\s*"([^"]+)"/);
@@ -46,7 +62,7 @@ const formatJsonResponse = (inputString: string): any => {
     const step = stepMatch ? stepMatch[1] : "N/A";
     const status = statusMatch ? statusMatch[1] : "N/A";
     const response = responseMatch ? responseMatch[1] : "N/A";
-    console.log("data 2",{
+    console.log("data 2", {
       Step: step,
       Status: status,
       response: response,
@@ -63,10 +79,12 @@ const formatJsonResponse = (inputString: string): any => {
 // Thunks for API calls
 export const sendQuery = createAsyncThunk(
   "sendQuery",
-  async ({ user_input, user_id,thread_id }: { user_input: string; user_id: string;thread_id:string }, { getState }): Promise<any> => {
+  async (
+    { user_input, user_id, thread_id }: { user_input: string; user_id: string; thread_id: string },
+    { getState },
+  ): Promise<any> => {
     const state = getState() as RootState;
     const pitchdeckData = state.VSProduct.pitchdeck_data;
-   console.log("ooooooooooooooooooooooo",pitchdeckData);
     const response: any = await fetch(
       `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
       {
@@ -74,7 +92,7 @@ export const sendQuery = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input, user_id,thread_id,pitchdeck_data: pitchdeckData }),
+        body: JSON.stringify({ user_input, user_id, thread_id, pitchdeck_data: pitchdeckData }),
       },
     );
     const reader = response.body.getReader();
@@ -85,14 +103,18 @@ export const sendQuery = createAsyncThunk(
       const chunk = decoder.decode(value);
       console.log("chunk", chunk);
       console.log("type of chunk", typeof chunk);
-      const answer = JSON.parse(chunk);
-
+    
+      let answer = JSON.parse(chunk);
+      answer =  answer.replace(/```/g, '');
+      answer = answer.replace(/}\s*{/g, '}{');
       console.log("answer", typeof answer, answer);
       // const newanswer = JSON.parse(answer);
 
+      // const cleanedString = answer.replace(/```json\s*|\s*```/g, '');
       const newanswer = formatJsonResponse(answer);
-      console.log("newwwwwwwwwww",newanswer)
-      if (newanswer.Step == 6) {
+
+      console.log("newwwwwwwwwww", newanswer);
+      if (newanswer.Step == 5) {
         const jsonParts = answer.split("}{");
         const secondJsonString = jsonParts[1].startsWith("{") ? jsonParts[1] : `{${jsonParts[1]}`;
         if (secondJsonString) {
@@ -101,8 +123,6 @@ export const sendQuery = createAsyncThunk(
           console.log("dataObject", dataObject);
         } else return;
       }
-
-      
 
       console.log("answerrrrr", typeof newanswer, newanswer);
 
@@ -127,9 +147,10 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
   );
   const data = await response.json();
   if (data.message === "Text extracted successfully") {
-    console.log("extracted successfully",data.slides_data);
+    console.log("extracted successfully", data.slides_data);
 
-  return data.slides_data;
+    // console.log("ppppppppppppp",JSON.parse(data.slides_))
+    return data.slides_data;
   }
 });
 
@@ -170,14 +191,38 @@ export const VSProductSlice = createSlice({
     resetChats: (state) => {
       console.log("resettt");
       state.chats = [];
-      state.Step=0;
+      state.Step = 0;
     },
-    setCompanyName:  (state, action: PayloadAction<string>) => {
-      console.log("comppppp",action.payload);
+    setCompanyName: (state, action: PayloadAction<string>) => {
+      console.log("comppppp", action.payload);
       state.CompanyName = action.payload;
     },
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.Step = action.payload;
+    },
+    updatePitchdeckData: (
+      state,
+      action: PayloadAction<{
+        diligenceLevelCovered?: string[];
+        pitchdeckSummary?: any;
+        searchQueries?: any;
+      }>,
+    ) => {
+      const { diligenceLevelCovered, pitchdeckSummary, searchQueries } = action.payload;
+
+      if (diligenceLevelCovered) {
+        state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
+      }
+      if (pitchdeckSummary) {
+        console.log(" state.chats", state.chats);
+        const extractChat = state.chats.find((chat) => chat.extract && chat.extract !== "");
+        if (extractChat) extractChat.extract = pitchdeckSummary;
+
+        state.pitchdeck_data.pitchdeck_summary = `\n {${pitchdeckSummary} \n}`;
+      }
+      if (searchQueries) {
+        state.pitchdeck_data.search_queries = searchQueries;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -198,7 +243,6 @@ export const VSProductSlice = createSlice({
         //   //     reportContent = JSON.parse(`[${arrayString}]`);
         //   // }
 
-          
         //   const convertResponseToReportData = (response:string) => {
         //     // Check if the response contains the delimiter "@?"
         //     if (response.includes('@?')) {
@@ -208,19 +252,17 @@ export const VSProductSlice = createSlice({
         //       if (splitResponse) {
         //         try {
         //           const yo = `[  ['Market Opportunity', 'Vast Market with High Growth Potential', 'EcoTech Innovations is poised to tap into a $300 billion global smart home market, focusing on the $50 billion clean energy solutions segment, with an 8.9% CAGR in the smart home energy management sector.'], ['Revenue Model Analysis', 'Diverse Revenue Streams and Strong Projections', 'The company's revenue streams include direct sales and a subscription model for AI-driven energy management services, with a $1.2M in ARR from subscriptions and a projected revenue of $2.5M for 2023.'],  ]`
-                 
+
         //           const jsonReadyString = yo
-        //           .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2') 
-        //           .replace(/'(?=\s*,)/g, '"') 
+        //           .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2')
+        //           .replace(/'(?=\s*,)/g, '"')
         //           .replace(/(?<=,)\s*'/g, '"')
-        //           // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2') 
+        //           // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2')
         //           .replace(/'(?![\w\s])/g, '"')
-        //           .replace(/(?<=\[)'/g, '"'); 
+        //           .replace(/(?<=\[)'/g, '"');
         //           // .replace(/'(?=\s*[\w])/g, '"')
-                 
 
-
-        //           // const jsonReadyString = yo.replace(/(?<!\w)'(?!\w)/g, '"'); 
+        //           // const jsonReadyString = yo.replace(/(?<!\w)'(?!\w)/g, '"');
 
         //           console.log("ollall",jsonReadyString);
         //           // Parse the split response as JSON and return
@@ -239,19 +281,17 @@ export const VSProductSlice = createSlice({
         //   state.ReportTemplate = Template;
         //   console.log("ooooo", Template);
 
-      
-      
-          // if (matches && matches[1]) {
-          //     // Convert the matched string to a valid JavaScript array
-          //     const arrayString = matches[1].trim();
-          //     reportContent = JSON.parse(`[${arrayString}]`);
-          // }
-         
-          // if (matches && matches[1]) {
-          //     // Convert the matched string to a valid JavaScript array
-          //     const arrayString = matches[1].trim();
-          //     reportContent = JSON.parse(`[${arrayString}]`);
-          // }
+        // if (matches && matches[1]) {
+        //     // Convert the matched string to a valid JavaScript array
+        //     const arrayString = matches[1].trim();
+        //     reportContent = JSON.parse(`[${arrayString}]`);
+        // }
+
+        // if (matches && matches[1]) {
+        //     // Convert the matched string to a valid JavaScript array
+        //     const arrayString = matches[1].trim();
+        //     reportContent = JSON.parse(`[${arrayString}]`);
+        // }
 
         // }s
         // if(Step == 1 ){
@@ -260,33 +300,32 @@ export const VSProductSlice = createSlice({
         //   state.chats.push({ query: "", options: ["Pre Revenue","Post Revenue"], answer: "" ,hasbutton:true});
 
         // }
-        // else 
+        // else
         if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
-        } else if (Step == 6) {
+        } else if (Step == 5) {
           if (DataSources) state.DataSources = DataSources;
           state.chats[state.chats.length - 1].query = response;
-        } else if(Step == 7){
-          const convertResponseToReportData = (response:string) => {
-            if (response.includes('@?')) {
-              const splitResponse = response.split('@?')[1];
-              console.log("split res",splitResponse);
+        } else if (Step == 6) {
+          const convertResponseToReportData = (response: string) => {
+            if (response.includes("@?")) {
+              const splitResponse = response.split("@?")[1];
+              console.log("split res", splitResponse);
               if (splitResponse) {
                 try {
                   // const jsonReadyString = splitResponse
-                  // .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2') 
-                  // .replace(/'(?=\s*,)/g, '"') 
+                  // .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2')
+                  // .replace(/'(?=\s*,)/g, '"')
                   // .replace(/(?<=,)\s*'/g, '"')
-                  // // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2') 
+                  // // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2')
                   // .replace(/'(?![\w\s])/g, '"')
-                  // .replace(/(?<=\[)'/g, '"'); 
+                  // .replace(/(?<=\[)'/g, '"');
                   // // .replace(/'(?=\s*[\w])/g, '"')
-                 
-                  const jsonReadyString = splitResponse 
-                  .replace(/\\/g, "");
 
-                 console.log("jsonReadyString",response);
+                  const jsonReadyString = splitResponse.replace(/\\/g, "");
+
+                  console.log("jsonReadyString", response);
                   return JSON.parse(jsonReadyString.trim());
                 } catch (error) {
                   console.error("Error parsing response:", error);
@@ -297,14 +336,13 @@ export const VSProductSlice = createSlice({
             return [];
           };
 
-
-          
           const Template = convertResponseToReportData(response);
           state.ReportTemplate = Template;
           console.log("ooooo", Template);
-       
-          state.chats[state.chats.length - 1].query = 'Here’s the final report template for EcoTech Innovations based on all the details we’ve discussed. Please review and make any adjustments';
-        }else if (response.includes("//")) {
+
+          state.chats[state.chats.length - 1].query =
+            "Here’s the final report template for EcoTech Innovations based on all the details we’ve discussed. Please review and make any adjustments";
+        } else if (response.includes("//")) {
           const options: string[] =
             response
               .match(/\/\/(.*?)\/\//g)
@@ -339,10 +377,15 @@ export const VSProductSlice = createSlice({
           console.log("step 3", query, options);
           state.chats[state.chats.length - 1].query = query;
           state.chats.push({ query: "", options: options, answer: "" });
-        } else if(Step == 8){
+        } else if (Step == 8) {
           state.chats[state.chats.length - 1].query = response;
-          state.chats.push({ query: "", options: ["Start another report","Learn about market data"], answer: "" ,hasbutton:true});
-        }else {
+          state.chats.push({
+            query: "",
+            options: ["Start another report", "Learn about market data"],
+            answer: "",
+            hasbutton: true,
+          });
+        } else {
           // state.chats.push({ query: response, answer: "" });
           state.chats[state.chats.length - 1].query = response;
         }
@@ -350,7 +393,12 @@ export const VSProductSlice = createSlice({
       }
     });
     builder.addCase(extractFileData.fulfilled, (state, action) => {
-      state.pitchdeck_data = {"Company/Startup Name": state.CompanyName,"pitchdeck_summary":action.payload,"search_queries":{ }};
+      state.pitchdeck_data = {
+        "Company/Startup Name": state.CompanyName,
+        pitchdeck_summary: action.payload,
+        "diligence level_covered": state.SidescreenOptions,
+        search_queries: {},
+      };
     });
   },
 });
@@ -366,5 +414,6 @@ export const {
   resetChats,
   setprevres,
   setCurrentStep,
-  setCompanyName
+  setCompanyName,
+  updatePitchdeckData,
 } = VSProductSlice.actions;

@@ -7,9 +7,9 @@ import TrashIconTwo from "src/assets/images/TrashTwo.svg";
 import AddIcon from "src/components/icons/common/add-icon";
 import DragIcon from "src/components/icons/miscs/DragIcon";
 import DragIconTwo from "src/assets/images/DragIconTwo.svg";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppSelector, useAppDispatch } from "src/hooks/redux";
 import Select from "react-select";
-
+import { updatePitchdeckData } from "src/stores/vs-product";
 const ItemType = {
   ITEM: "item",
 };
@@ -61,6 +61,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
 
 const InitialScreening: React.FC = () => {
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
+  const dispatch = useAppDispatch();
 
   const [activeTab, setActiveTab] = useState<"report" | "scoring">("report");
   const [open, setOpen] = useState(true);
@@ -92,31 +93,21 @@ const InitialScreening: React.FC = () => {
   ];
 
   // const [reportItems, setReportItems] = useState<string[]>([
-  //   "Business Model Robustness",
-  //   "Financial Forensics",
-  //   "Scalability and Expansion Potential",
-  //   "Risk and Contingency Planning",
-  //   "Technology & Infrastructure Maturity",
-  //   "Customer Lifetime Value Analysis",
-  //   "Operational Scalability & Efficiency",
-  //   "Market Position & Strategic Advantage",
-  //   "M&A Potential and Exit Strategy",
-  //   "Exit Comparables and Valuation",
-  //   "Product Innovation Pipeline",
-  //   "Revenue Growth Trajectory",
-  //   "Customer Acquisition Strategy",
-  //   "Market Penetration Strategy",
-  //   "Competitive Threat Assessment",
-  //   "Go-to-Market Execution Quality",
-  //   "Talent Acquisition and Retention",
-  //   "Strategic Vision and Leadership",
-  //   "Intellectual Property Strategy",
-  //   "Partnership Synergy Potential",
-  //   "Data and Analytics Maturity",
-  //   "Market Adaptability and Resilience",
-  //   "Brand Strength and Market Perception",
-  //   "Sales Cycle Efficiency",
-  //   "International Expansion Readiness",
+  //   "Market Opportunity",
+  //   "Competitive Differentiation",
+  //   "Product Viability",
+  //   "Founding Team Overview",
+  //   "Go-to-Market Strategy",
+  //   "Customer Validation",
+  //   "Revenue Model Analysis",
+  //   "Operational Efficiency",
+  //   "Partnerships and Alliances",
+  //   "Technology and IP Overview",
+  //   "Regulatory and Compliance Review",
+  //   "Time to Market",
+  //   "Market Momentum",
+  //   "Cost of Acquisition",
+  //   "Product Scalability"
   // ]);
 
   const [reportItems, setReportItems] = useState<string[]>(SidescreenOptions || []);
@@ -139,7 +130,10 @@ const InitialScreening: React.FC = () => {
 
   const handleDelete = (item: string) => {
     if (activeTab === "report") {
-      setReportItems(reportItems.filter((i) => i !== item));
+      const updatedReportItems = reportItems.filter((i) => i !== item);
+      setReportItems(updatedReportItems);
+
+      dispatch(updatePitchdeckData({ diligenceLevelCovered: [...updatedReportItems] }));
     } else {
       setScoringItems(scoringItems.filter((i) => i !== item));
     }
@@ -148,7 +142,10 @@ const InitialScreening: React.FC = () => {
   const handleAdd = () => {
     if (newItem.trim()) {
       if (activeTab === "report") {
-        setReportItems([...reportItems, newItem.trim()]);
+        const updatedReportItems = [...reportItems, newItem.trim()];
+        setReportItems(updatedReportItems);
+
+        dispatch(updatePitchdeckData({ diligenceLevelCovered: [...updatedReportItems] }));
       } else {
         setScoringItems([...scoringItems, newItem.trim()]);
       }

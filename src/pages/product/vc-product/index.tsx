@@ -122,7 +122,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           }
 
           const ai_query = {
-            user_input: answer,
+            user_input: button && answer == "Continue" ? "how many question we want to answer": answer,
             user_id: userId || "",
             thread_id: thread_id,
             button: button,
@@ -154,6 +154,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               answer === "Seed Stage"
             ) {
               //** Fourth Converstaion **//
+              
               dispatch(
                 updateChatQuery({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
@@ -178,7 +179,25 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 }),
               );
             //**     **//
-            } else await dispatch(sendQuery(ai_query)).unwrap();
+            }else if( answer === "Quick Insights" ||
+              answer === "Deep Dive"){
+                dispatch(setCurrentStep(3));
+                dispatch(
+                  updateChatQuery({
+                    query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                  }),
+                );
+
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Continue"],
+                    hasbutton: true,
+                  }),
+                );
+
+            }else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
             // await dispatch(sendQuery(ai_query)).unwrap();
@@ -197,7 +216,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           };
 
           dispatch(setVSChats(firstQuery));
-          setCurrentStep(1);
+          dispatch(setCurrentStep(1));
 
           const fileResponse = await dispatch(extractFileData(file)).unwrap();
           console.log("file ress", fileResponse);
@@ -216,6 +235,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 extract:cleanedSummary
               }),
             );
+            dispatch(setCurrentStep(2));
 
             if (fileResponse) {
               dispatch(
@@ -312,11 +332,11 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             </div>
           </div>
 
-          {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />}
-          {Step == 6 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
-          {Step == 7 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />}
-          {/* <TemplateReport/> */}
-          {/* <InitialScreening /> */}
+          {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
+          {Step == 5 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
+          {Step == 6 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />}
+          {Step === 3 && <InitialScreening />}
+
         </div>
       </div>
     </>

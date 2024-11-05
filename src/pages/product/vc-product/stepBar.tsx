@@ -6,17 +6,15 @@ const StepBar: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
 
-  const totalSteps = 8;
+  const totalSteps = 6;
 
   const stepDescriptions = [
+    "Startup Name and Stage",
     "Pitch Deck Upload",
-    "AI-Driven Summary and Validation",
-    "Company Stage",
-    "Diligence Level Selection",
+    "AI-Driven Summary and Diligence Level Selection",
     "Insufficiency-Based Questions",
     "Data Source Suggestions",
-    "Final Template Validation",
-    "Final Report Generation",
+    "Final Template Validation & Report Generation",
   ];
 
 
@@ -30,7 +28,7 @@ const StepBar: React.FC = () => {
     }
   };
 
-  if (currentStep <= 0) {
+  if (currentStep < 0) {
     return null;
   }
 
