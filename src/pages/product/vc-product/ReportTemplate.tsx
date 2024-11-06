@@ -14,20 +14,30 @@ const ItemType = {
   ITEM: "item",
 };
 
+interface ReportItem {
+  title: string;
+  summary: string;
+  subsections?: Record<string, ReportItem>;
+}
+
 interface DraggableItemProps {
   keyName: string;
   summary: string;
   index: number;
+  tag: string;
   handleDelete: (item: string) => void;
   moveItem: (fromIndex: number, toIndex: number) => void;
+  indentLevel?: number;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
   keyName,
   summary,
   index,
+  tag,
   handleDelete,
   moveItem,
+  indentLevel = 0,
 }) => {
   const [, ref] = useDrag({
     type: ItemType.ITEM,
@@ -48,9 +58,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   const [showArrow, setShowArrow] = useState(false);
   const summaryRef = useRef<HTMLSpanElement>(null);
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const toggleExpand = () => setIsExpanded(!isExpanded);
 
   useEffect(() => {
     if (summaryRef.current) {
@@ -61,14 +69,18 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   }, [summary]);
 
   return (
-    <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
+    <div
+      ref={(node) => ref(drop(node))}
+      className="flex items-center mb-2"
+      style={{ marginLeft: indentLevel * 33 }}
+    >
       <img src={DragIconTwo} className="pb-10 cursor-grab" alt="Drag" />
       <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
         <div className="flex items-center mb-1">
-          <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
+          <span className="bg-appGray-200 p-1 rounded-md mr-1">{tag}</span>
           {keyName}
           <div className="flex-grow" />
-          <button className="text-red-500" onClick={() => handleDelete(keyName)}>
+          <button className="text-red-500" onClick={() => handleDelete(tag)}>
             <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
           </button>
         </div>
@@ -96,62 +108,169 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
 };
 
 const TemplateReport: React.FC = () => {
+  // const ReportTemplate: Record<string, ReportItem> = {
+  //   "1": {
+  //     title: "Executive Summary",
+  //     summary:
+  //       "An overview of EcoTech Innovations, highlighting the company's mission, product offerings, unique value proposition, and potential impact on the market.",
+  //     subsections: {},
+  //   },
+  //   "2": {
+  //     title: "Company Overview",
+  //     summary:
+  //       "In-depth details about EcoTech Innovations, including its history, leadership team, and strategic vision for the future.",
+  //     subsections: {
+  //       "2.1": {
+  //         title: "Founding Team and Management",
+  //         summary:
+  //           "Profiles of the CEO, CTO, and COO, detailing their expertise and previous experience in the clean tech industry.",
+  //       },
+  //       "2.2": {
+  //         title: "Mission and Vision",
+  //         summary:
+  //           "A look at EcoTech's mission to make clean energy accessible and its long-term vision to become a global leader.",
+  //       },
+  //     },
+  //   },
+  //   "3": {
+  //     title: "Market Analysis",
+  //     summary:
+  //       "An examination of the smart home energy market, including size, growth rate, and EcoTech's target audience.",
+  //     subsections: {
+  //       "3.1": {
+  //         title: "Current Market Landscape",
+  //         summary:
+  //           "Evaluation of the existing market dynamics, customer needs, and how EcoTech fits into the current industry environment.",
+  //       },
+  //       "3.2": {
+  //         title: "Competitive Analysis",
+  //         summary:
+  //           "An analysis of EcoTech's direct competitors, such as Tesla Powerwall and Sunrun, and its competitive edge.",
+  //       },
+  //     },
+  //   },
+  //   "4": {
+  //     title: "Product Offering",
+  //     summary:
+  //       "Detailed information about EcoTech's product, key features, and the technology behind it.",
+  //     subsections: {
+  //       "4.1": {
+  //         title: "Product Features",
+  //         summary:
+  //           "A closer look at the solar-powered smart home energy systems and the AI-driven energy optimization.",
+  //       },
+  //       "4.2": {
+  //         title: "Technology and IP",
+  //         summary:
+  //           "Discussion of patents filed and proprietary software that provides EcoTech with a competitive advantage.",
+  //       },
+  //     },
+  //   },
+  //   "5": {
+  //     title: "Customer and Market Validation",
+  //     summary: "Data and feedback demonstrating EcoTech's product viability and customer impact.",
+  //     subsections: {
+  //       "5.1": {
+  //         title: "Customer Feedback",
+  //         summary:
+  //           "Analysis of customer testimonials and the average savings on energy bills reported by users.",
+  //       },
+  //       "5.2": {
+  //         title: "Market Traction",
+  //         summary:
+  //           "A review of milestones achieved, such as units sold and partnerships with utility providers.",
+  //       },
+  //     },
+  //   },
+  //   "6": {
+  //     title: "Business Model",
+  //     summary:
+  //       "Outline of EcoTech's revenue streams, pricing strategy, customer acquisition costs, and lifetime value.",
+  //     subsections: {
+  //       "6.1": {
+  //         title: "Revenue Streams",
+  //         summary:
+  //           "Breakdown of different revenue channels including direct sales, subscription services, and partnerships.",
+  //       },
+  //       "6.2": {
+  //         title: "Financial Projections",
+  //         summary:
+  //           "Projected revenue for 2023 and details on the company's burn rate and funding goals.",
+  //       },
+  //     },
+  //   },
+  //   "7": {
+  //     title: "Go-to-Market Strategy",
+  //     summary:
+  //       "A strategic plan outlining how EcoTech intends to enter the market and acquire customers.",
+  //     subsections: {
+  //       "7.1": {
+  //         title: "Marketing and Sales",
+  //         summary:
+  //           "Tactics for direct-to-consumer marketing, partnerships, and B2B commercial installation sales.",
+  //       },
+  //       "7.2": {
+  //         title: "Partnerships and Alliances",
+  //         summary:
+  //           "Details on existing partnerships and future strategic alliances that will help scale the business.",
+  //       },
+  //     },
+  //   },
+  //   "8": {
+  //     title: "Operational Plan",
+  //     summary: "Insight into EcoTech's manufacturing, operational costs, and efficiency measures.",
+  //     subsections: {
+  //       "8.1": {
+  //         title: "Manufacturing and Scalability",
+  //         summary:
+  //           "Information on how EcoTech plans to scale manufacturing and the use of funds for this purpose.",
+  //       },
+  //       "8.2": {
+  //         title: "Operational Efficiency",
+  //         summary:
+  //           "A look into the operational strategies employed to optimize efficiency and reduce costs.",
+  //       },
+  //     },
+  //   },
+  // };
   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
-  console.log("reportsss", ReportTemplate);
+  const [reportItems, setReportItems] = useState(ReportTemplate);
   const [open, setOpen] = useState(true);
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemSummary, setNewItemSummary] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [selectedOption, setSelectedOption] = useState({ value: "h1", label: "h1" });
-
-  const customStyles = {
-    control: (provided: any) => ({
-      ...provided,
-      backgroundColor: "#F5F7FF",
-      border: "none",
-      boxShadow: "none",
-    }),
-    menu: (provided: any) => ({
-      ...provided,
-      marginTop: 0,
-    }),
-    option: (provided: any, { isSelected, isFocused }: any) => ({
-      ...provided,
-      backgroundColor: isFocused ? "lightgray" : "white",
-      color: isSelected ? "black" : "black",
-    }),
-  };
-
-  const options = [
-    { value: "h1", label: "h1" },
-    { value: "h2", label: "h2" },
-    { value: "h3", label: "h3" },
-    { value: "h4", label: "h4" },
-  ];
-
-  // const reportData = [
-  //   [
-  //     "Market Opportunity",
-  //     "Global Smart Home Energy Market",
-  //     "EcoTech Innovations aims to tap into the $300 billion smart home market with a focus on clean energy, offering a solution to a growing customer base concerned with energy costs and sustainability.",
-  //   ],
-  //   [
-  //     "Competitive Differentiation",
-  //     "Unique AI-Driven Energy Optimization",
-  //     "With competitors lhrough proprietation with existing home systems.",
-  //   ],
-  // ];
-
-  const [reportItems, setReportItems] = useState(ReportTemplate);
 
   const handleDelete = (itemKey: string) => {
-    setReportItems(reportItems.filter((item: any) => item[0] !== itemKey));
+    const deleteItem = (items: Record<string, ReportItem>, keyToDelete: string) => {
+      if (items[keyToDelete]) {
+        const updatedItems = { ...items };
+        delete updatedItems[keyToDelete];
+        return updatedItems;
+      }
+
+      const updatedItems = { ...items };
+      for (const key in updatedItems) {
+        const item = updatedItems[key];
+        if (item.subsections) {
+          const newSubsections = deleteItem(item.subsections, keyToDelete);
+          if (newSubsections !== item.subsections) {
+            updatedItems[key] = { ...item, subsections: newSubsections };
+            return updatedItems;
+          }
+        }
+      }
+      return items;
+    };
+
+    setReportItems((prevItems:any) => deleteItem(prevItems, itemKey));
   };
 
   const handleAdd = () => {
     if (newItemTitle.trim() && newItemSummary.trim()) {
-      const newReportItem = [newItemTitle.trim(), "", newItemSummary.trim()];
-      setReportItems([...reportItems, newReportItem]);
+      setReportItems((prevItems:any) => ({
+        ...prevItems,
+        [newItemTitle]: { title: newItemTitle, summary: newItemSummary, subsections: {} },
+      }));
       setNewItemTitle("");
       setNewItemSummary("");
       setIsInputVisible(false);
@@ -159,10 +278,27 @@ const TemplateReport: React.FC = () => {
   };
 
   const moveItem = (fromIndex: number, toIndex: number) => {
-    const updatedItems = Array.from(reportItems);
+    const updatedItems = Object.entries(reportItems);
     const [movedItem] = updatedItems.splice(fromIndex, 1);
     updatedItems.splice(toIndex, 0, movedItem);
-    setReportItems(updatedItems);
+    setReportItems(Object.fromEntries(updatedItems));
+  };
+
+  const renderItems = (items: Record<string, ReportItem>, indentLevel = 0) => {
+    return Object.entries(items).map(([key, item], index) => (
+      <React.Fragment key={key}>
+        <DraggableItem
+          keyName={item.title}
+          summary={item.summary}
+          index={index}
+          tag={key} // Use the key as the tag
+          handleDelete={handleDelete}
+          moveItem={moveItem}
+          indentLevel={indentLevel}
+        />
+        {item.subsections && renderItems(item.subsections, indentLevel + 1)}
+      </React.Fragment>
+    ));
   };
 
   return (
@@ -188,30 +324,12 @@ const TemplateReport: React.FC = () => {
           </div>
           {open && (
             <div className="h-52 overflow-y-auto">
-              {reportItems.map((item: any, index: any) => (
-                <DraggableItem
-                  key={item[0]}
-                  keyName={item[0]}
-                  summary={item[2]}
-                  index={index}
-                  handleDelete={handleDelete}
-                  moveItem={moveItem}
-                />
-              ))}
-              <div className="flex flex-col ml-3">
+              {renderItems(reportItems)}
+              {/* <div className="flex flex-col ml-3">
                 {isInputVisible ? (
                   <>
                     <div className="flex flex-col py-1 border border-gray-300 rounded-lg mb-2 p-1">
                       <div className="flex justify-between items-center mb-2">
-                        <Select
-                          value={selectedOption}
-                          onChange={(option: any) => setSelectedOption(option)}
-                          options={options}
-                          styles={customStyles}
-                          className="basic-single mr-1 text-sm flex-[0_0_82px] font-semibold"
-                          classNamePrefix="select"
-                          placeholder="Select an option"
-                        />
                         <input
                           type="text"
                           className="border border-gray-300 bg-transparent p-1 rounded-xs flex-auto placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm w-full"
@@ -225,34 +343,18 @@ const TemplateReport: React.FC = () => {
                         placeholder="Summary"
                         value={newItemSummary}
                         onChange={(e) => setNewItemSummary(e.target.value)}
-                        rows={3}
                       />
-                      <div className="flex justify-end mt-2">
-                        <button className="flex items-center text-primary-900" onClick={handleAdd}>
-                          <AddIcon color="#442873" size={25} />
-                          <span className="text-semibold">Add</span>
-                        </button>
-                      </div>
                     </div>
+                    <button onClick={handleAdd} className="self-end mt-2 text-primary-900 text-sm">
+                      <AddIcon /> Add Section
+                    </button>
                   </>
                 ) : (
-                  <span className="flex-grow"></span>
+                  <button onClick={() => setIsInputVisible(true)} className="text-primary-900 mt-4">
+                    <AddIcon /> Add New Section
+                  </button>
                 )}
-
-                <button
-                  className={`flex items-center border border-gray-300 rounded-lg p-1 justify-start text-primary-900 ${
-                    isInputVisible ? "hidden" : ""
-                  }`}
-                  onClick={() => setIsInputVisible(true)}
-                >
-                  {!isInputVisible && (
-                    <>
-                      <AddIcon color="#442873" size={25} />
-                      <span className="ml-2">Add</span>
-                    </>
-                  )}
-                </button>
-              </div>
+              </div> */}
             </div>
           )}
         </div>
@@ -262,237 +364,3 @@ const TemplateReport: React.FC = () => {
 };
 
 export default TemplateReport;
-
-// import React, { useState } from "react";
-// import { DndProvider, useDrag, useDrop } from "react-dnd";
-// import { HTML5Backend } from "react-dnd-html5-backend";
-// import LayoutIcon from "src/components/icons/miscs/layout";
-// import TrashIcon from "src/components/icons/common/trash";
-// import AddIcon from "src/components/icons/common/add-icon";
-// import DragIcon from "src/components/icons/miscs/DragIcon";
-// import { useAppSelector } from "src/hooks/redux";
-// import Select from "react-select";
-
-// const ItemType = {
-//   ITEM: "item",
-// };
-
-// interface DraggableItemProps {
-//   keyName: string;
-//   headerType: string;
-//   summary: string;
-//   index: number;
-//   handleDelete: (item: string) => void;
-//   moveItem: (fromIndex: number, toIndex: number) => void;
-// }
-
-// const DraggableItem: React.FC<DraggableItemProps> = ({
-//   keyName,
-//   headerType,
-//   summary,
-//   index,
-//   handleDelete,
-//   moveItem,
-// }) => {
-//   const [, ref] = useDrag({
-//     type: ItemType.ITEM,
-//     item: { index },
-//   });
-
-//   const [, drop] = useDrop({
-//     accept: ItemType.ITEM,
-//     hover(draggedItem: { index: number }) {
-//       if (draggedItem.index !== index) {
-//         moveItem(draggedItem.index, index);
-//         draggedItem.index = index;
-//       }
-//     },
-//   });
-
-//   // Dynamic header rendering based on the headerType
-//   const DynamicHeaderTag = `${headerType}` as keyof JSX.IntrinsicElements;
-
-//   return (
-//     <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
-//       <DragIcon />
-//       <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
-//         <div className="flex items-center mb-1">
-//           <span className="bg-appGray-200 p-1 rounded-md mr-1">{headerType}</span>
-//           <DynamicHeaderTag>{keyName}</DynamicHeaderTag>
-//           <button className="text-red-500 ml-2" onClick={() => handleDelete(keyName)}>
-//             <TrashIcon />
-//           </button>
-//         </div>
-//         <div className="flex justify-between m-0">
-//           <span>
-//             <div className="bg-appGray-100 p-1 rounded-md">Summary</div>
-//           </span>
-//           <span className="ml-4 text-gray-700 text-justify">{summary}</span>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const TemplateReport: React.FC = () => {
-//   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
-//   const [open, setOpen] = useState(true);
-//   const [newItem, setNewItem] = useState(""); // State for the title input
-//   const [newSummary, setNewSummary] = useState(""); // State for the summary input
-//   const [isInputVisible, setIsInputVisible] = useState(false);
-//   const [selectedOption, setSelectedOption] = useState({ value: "h1", label: "h1" });
-
-//   const customStyles = {
-//     control: (provided: any) => ({
-//       ...provided,
-//       backgroundColor: "#F5F7FF",
-//       border: "none",
-//       boxShadow: "none",
-//     }),
-//     menu: (provided: any) => ({
-//       ...provided,
-//       marginTop: 0,
-//     }),
-//     option: (provided: any, { isSelected, isFocused }: any) => ({
-//       ...provided,
-//       backgroundColor: isFocused ? "lightgray" : "white",
-//       color: isSelected ? "black" : "black",
-//     }),
-//   };
-
-//   const options = [
-//     { value: "h1", label: "h1" },
-//     { value: "h2", label: "h2" },
-//     { value: "h3", label: "h3" },
-//     { value: "h4", label: "h4" },
-//   ];
-
-//   const reportData = [
-//     ["h1", "Market Opportunity", "Global Smart Home Energy Market"],
-//     ["h2", "Competitive Differentiation", "Unique AI-Driven Energy Optimization"],
-//   ];
-
-//   const [reportItems, setReportItems] = useState(reportData);
-
-//   const handleDelete = (itemKey: string) => {
-//     setReportItems(reportItems.filter((item: any) => item[1] !== itemKey));
-//   };
-
-//   const handleAdd = () => {
-//     if (newItem.trim() && newSummary.trim()) {
-//       const newReportItem = [
-//         selectedOption.value, // Header type like h1, h2
-//         newItem.trim(), // Title input
-//         newSummary.trim(), // Summary input
-//       ];
-//       setReportItems([...reportItems, newReportItem]);
-//       setNewItem("");
-//       setNewSummary("");
-//       setIsInputVisible(false);
-//     }
-//   };
-
-//   const moveItem = (fromIndex: number, toIndex: number) => {
-//     const updatedItems = Array.from(reportItems);
-//     const [movedItem] = updatedItems.splice(fromIndex, 1);
-//     updatedItems.splice(toIndex, 0, movedItem);
-//     setReportItems(updatedItems);
-//   };
-
-//   return (
-//     <DndProvider backend={HTML5Backend}>
-//       <div
-//         className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller h-[90vh] ${
-//           open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
-//         }`}
-//       >
-//         <div className={`p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
-//           <div className="flex">
-//             <div onClick={() => setOpen(!open)} className="cursor-pointer">
-//               <LayoutIcon />
-//             </div>
-//             <div className="ml-2">
-//               <h2 className="text-lg font-semibold">Report Template</h2>
-//               {open && <h4 className="mb-4">Arrange/add sections as needed</h4>}
-//             </div>
-//           </div>
-//           {open && (
-//             <div className="h-52 overflow-y-auto p-2">
-//               {reportItems.map((item: any, index: any) => (
-//                 <DraggableItem
-//                   key={item[1]} // Use item[1] (title) as key
-//                   keyName={item[1]} // Title or key name
-//                   headerType={item[0]} // Header tag (h1, h2, etc.)
-//                   summary={item[2]} // Summary text
-//                   index={index}
-//                   handleDelete={handleDelete}
-//                   moveItem={moveItem}
-//                 />
-//               ))}
-
-//               <div className="flex flex-col ml-4">
-//                 {isInputVisible ? (
-//                   <>
-//                     <div className="flex flex-col py-1 border border-gray-300 rounded-lg mb-2 p-1">
-//                       <div className="flex justify-between items-center mb-2">
-//                         <Select
-//                           value={selectedOption}
-//                           onChange={(option: any) => setSelectedOption(option)}
-//                           options={options}
-//                           styles={customStyles}
-//                           className="basic-single mr-1 text-sm flex-[0_0_82px] font-semibold"
-//                           classNamePrefix="select"
-//                           placeholder="Select an option"
-//                         />
-//                         <input
-//                           type="text"
-//                           className="border border-gray-300 bg-transparent p-1 rounded-xs flex-auto placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm w-full"
-//                           placeholder="Add New Title"
-//                           value={newItem}
-//                           onChange={(e) => setNewItem(e.target.value)}
-//                           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-//                         />
-//                       </div>
-
-//                       <textarea
-//                         className="border border-gray-300 bg-transparent p-1 rounded-xs w-full placeholder:text-appGray-600 focus:outline-none focus:ring-0 text-sm"
-//                         placeholder="Add Summary"
-//                         value={newSummary}
-//                         onChange={(e) => setNewSummary(e.target.value)}
-//                         rows={3}
-//                       />
-//                       <div className="flex justify-end mt-2">
-//                         <button className="flex items-center text-primary-900" onClick={handleAdd}>
-//                           <AddIcon color="#442873" size={25} />
-//                           <span className="text-semibold">Add</span>
-//                         </button>
-//                       </div>
-//                     </div>
-//                   </>
-//                 ) : (
-//                   <span className="flex-grow"></span>
-//                 )}
-
-//                 <button
-//                   className={`flex items-center justify-start text-primary-900 ${
-//                     isInputVisible ? "hidden" : ""
-//                   }`}
-//                   onClick={() => setIsInputVisible(!isInputVisible)}
-//                 >
-//                   {!isInputVisible && (
-//                     <>
-//                       <AddIcon color="#442873" size={25} />
-//                       <span className="ml-2">Add</span>
-//                     </>
-//                   )}
-//                 </button>
-//               </div>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </DndProvider>
-//   );
-// };
-
-// export default TemplateReport;

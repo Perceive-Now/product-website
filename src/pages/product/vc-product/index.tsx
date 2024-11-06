@@ -24,7 +24,7 @@ import {
   setCurrentStep,
   resetChats,
   updateChatQuery,
-  setCompanyName
+  setCompanyName,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
@@ -79,7 +79,6 @@ const VCReport = () => {
           }
 
           if (firstRun.current) {
-
             companyName = answer;
             dispatch(setCompanyName(companyName));
             setanswer("");
@@ -97,7 +96,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               }),
             );
 
-           //** Second Converstaion **//
+            //** Second Converstaion **//
             dispatch(
               setVSChats({
                 query:
@@ -122,7 +121,8 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           }
 
           const ai_query = {
-            user_input: button && answer == "Continue" ? "how many question we want to answer": answer,
+            user_input:
+              button && answer == "Continue" ? "how many question we want to answer" : answer,
             user_id: userId || "",
             thread_id: thread_id,
             button: button,
@@ -154,7 +154,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               answer === "Seed Stage"
             ) {
               //** Fourth Converstaion **//
-              
+
               dispatch(
                 updateChatQuery({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
@@ -162,8 +162,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               );
               //**     **//
             } else if (answer === "Looks good") {
-
-             //** Fifth Converstaion **//
+              //** Fifth Converstaion **//
               dispatch(
                 updateChatQuery({
                   query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
@@ -178,26 +177,24 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
-            //**     **//
-            }else if( answer === "Quick Insights" ||
-              answer === "Deep Dive"){
-                dispatch(setCurrentStep(3));
-                dispatch(
-                  updateChatQuery({
-                    query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
-                  }),
-                );
+              //**     **//
+            } else if (answer === "Quick Insights" || answer === "Deep Dive") {
+              dispatch(setCurrentStep(3));
+              dispatch(
+                updateChatQuery({
+                  query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                }),
+              );
 
-                dispatch(
-                  setVSChats({
-                    query: "",
-                    answer: "",
-                    options: ["Continue"],
-                    hasbutton: true,
-                  }),
-                );
-
-            }else await dispatch(sendQuery(ai_query)).unwrap();
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Continue"],
+                  hasbutton: true,
+                }),
+              );
+            } else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
             // await dispatch(sendQuery(ai_query)).unwrap();
@@ -224,15 +221,13 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             // const res = await dispatch(
             //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             // ).unwrap();
-            const cleanedSummary = fileResponse
-            .replace(/[{}"']/g, '') 
-            .trim();
+            const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
 
             dispatch(
               setVSChats({
                 query: "",
                 answer: "",
-                extract:cleanedSummary
+                extract: cleanedSummary,
               }),
             );
             dispatch(setCurrentStep(2));
@@ -260,7 +255,6 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
       } finally {
         // setIsloading(false);
         setTimeout(() => setIsloading(false), 500);
-
       }
     },
     [dispatch, userId],
@@ -334,9 +328,10 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
 
           {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
           {Step == 5 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
-          {Step == 6 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />}
-          {Step === 3 && <InitialScreening />}
-
+          {/* {Step == 6 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />} */}
+          {Step == 3 && <InitialScreening />}
+          {Step == 6 && <TemplateReport />}
+          
         </div>
       </div>
     </>

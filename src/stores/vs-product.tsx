@@ -103,14 +103,13 @@ export const sendQuery = createAsyncThunk(
       const chunk = decoder.decode(value);
       console.log("chunk", chunk);
       console.log("type of chunk", typeof chunk);
-    
+
       let answer = JSON.parse(chunk);
-      answer =  answer.replace(/```/g, '');
-      answer = answer.replace(/}\s*{/g, '}{');
+      answer = answer.replace(/```/g, "");
+      answer = answer.replace(/}\s*{/g, "}{");
       console.log("answer", typeof answer, answer);
       // const newanswer = JSON.parse(answer);
 
-      // const cleanedString = answer.replace(/```json\s*|\s*```/g, '');
       const newanswer = formatJsonResponse(answer);
 
       console.log("newwwwwwwwwww", newanswer);
@@ -308,40 +307,44 @@ export const VSProductSlice = createSlice({
           if (DataSources) state.DataSources = DataSources;
           state.chats[state.chats.length - 1].query = response;
         } else if (Step == 6) {
-          const convertResponseToReportData = (response: string) => {
-            if (response.includes("@?")) {
-              const splitResponse = response.split("@?")[1];
-              console.log("split res", splitResponse);
-              if (splitResponse) {
-                try {
-                  // const jsonReadyString = splitResponse
-                  // .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2')
-                  // .replace(/'(?=\s*,)/g, '"')
-                  // .replace(/(?<=,)\s*'/g, '"')
-                  // // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2')
-                  // .replace(/'(?![\w\s])/g, '"')
-                  // .replace(/(?<=\[)'/g, '"');
-                  // // .replace(/'(?=\s*[\w])/g, '"')
+          console.log("step 6 response", response);
+          // const convertResponseToReportData = (response: string) => {
+          //   if (response.includes("@?")) {
+          //     const splitResponse = response.split("@?")[1];
+          //     console.log("split res", splitResponse);
+          //     if (splitResponse) {
+          //       try {
+          //         // const jsonReadyString = splitResponse
+          //         // .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2')
+          //         // .replace(/'(?=\s*,)/g, '"')
+          //         // .replace(/(?<=,)\s*'/g, '"')
+          //         // // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2')
+          //         // .replace(/'(?![\w\s])/g, '"')
+          //         // .replace(/(?<=\[)'/g, '"');
+          //         // // .replace(/'(?=\s*[\w])/g, '"')
 
-                  const jsonReadyString = splitResponse.replace(/\\/g, "");
+          //         const jsonReadyString = splitResponse.replace(/\\/g, "");
 
-                  console.log("jsonReadyString", response);
-                  return JSON.parse(jsonReadyString.trim());
-                } catch (error) {
-                  console.error("Error parsing response:", error);
-                  return [];
-                }
-              }
-            }
-            return [];
-          };
+          //         console.log("jsonReadyString", response);
+          //         return JSON.parse(jsonReadyString.trim());
+          //       } catch (error) {
+          //         console.error("Error parsing response:", error);
+          //         return [];
+          //       }
+          //     }
+          //   }
+          //   return [];
+          // };
 
-          const Template = convertResponseToReportData(response);
-          state.ReportTemplate = Template;
-          console.log("ooooo", Template);
+          // const Template = convertResponseToReportData(response);
+          // if(!Template)  state.chats[state.chats.length - 1].query = response
 
-          state.chats[state.chats.length - 1].query =
-            "Here’s the final report template for EcoTech Innovations based on all the details we’ve discussed. Please review and make any adjustments";
+          state.ReportTemplate = response;
+          // console.log("ooooo", Template);
+
+          state.chats[
+            state.chats.length - 1
+          ].query = `Here’s the final report template for ${state.CompanyName} based on all the details we’ve discussed. Please review and make any adjustments`;
         } else if (response.includes("//")) {
           const options: string[] =
             response
