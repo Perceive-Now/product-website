@@ -48,7 +48,8 @@ const VCReport = () => {
   const [isLoading, setIsloading] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
-  // console.log("chattsss", chats);
+  const chatOptions = chats[chats.length-1]?.options;
+  console.log("chattsss", chats,chatOptions);
 
   useEffect(() => {
     scrollToBottom();
@@ -194,16 +195,107 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
-            } else await dispatch(sendQuery(ai_query)).unwrap();
+
+            }
+            // else if(answer === "Confirm"){
+            //   dispatch(
+            //     updateChatQuery({
+            //       query: `Your final report for ${companyName} will be ready in 48 to 72 hours We will notify you as soon as it is available.`,
+            //     }),
+            //   );
+
+            //   dispatch(
+            //     setVSChats({
+            //       query: "",
+            //       options: ["Start another report", "Learn about market data"],
+            //       answer: "",
+            //       hasbutton: true,
+            //     }),
+            //   );
+
+            // } 
+            else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
             // await dispatch(sendQuery(ai_query)).unwrap();
           } else {
+
+            console.log("yoooo",chats.length)
             dispatch(setVSChats(queries));
+            if (chatOptions?.includes("Post Revenue")) {
+              //** Third Converstaion **//
+              dispatch(
+                updateChatQuery({
+                  query: `Thank you! Since ${companyName} is in the **${answer}** stage, could you specify the current development phase from the options below?`,
+                }),
+              );
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
+                  hasbutton: true,
+                }),
+              );
+
+              //**   **//
+            }else if (chatOptions?.includes("Seed Stage")) {
+              //** Fourth Converstaion **//
+
+              dispatch(
+                updateChatQuery({
+                  query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                }),
+              );
+              //**     **//
+            } else if (chatOptions?.includes("Looks good")) {
+              //** Fifth Converstaion **//
+              dispatch(
+                updateChatQuery({
+                  query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                  You can expand any section for more details if needed.`,
+                }),
+              );
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Quick Insights", "Deep Dive"],
+                  hasbutton: true,
+                }),
+              );
+              //**     **//
+            } else if (chatOptions?.includes("Deep Dive")) {
+              dispatch(setCurrentStep(3));
+              dispatch(
+                updateChatQuery({
+                  query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                }),
+              );
+
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Continue"],
+                  hasbutton: true,
+                }),
+              );
+
+            }else{
+
+              const { response } = await dispatch(sendQuery(ai_query)).unwrap();
+              console.log("oooo", response);
+            }
+            
+
+
+            // dispatch(setVSChats(queries));
+            // setanswer("");
             setanswer("");
 
-            const { response } = await dispatch(sendQuery(ai_query)).unwrap();
-            console.log("oooo", response);
+            // const { response } = await dispatch(sendQuery(ai_query)).unwrap();
+            // console.log("oooo", response);
           }
         } else if (file) {
           const firstQuery = {
@@ -257,7 +349,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
         setTimeout(() => setIsloading(false), 500);
       }
     },
-    [dispatch, userId],
+    [dispatch, userId,chats],
   );
   return (
     <>
@@ -288,6 +380,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                           query={chat.query}
                           answer={chat.answer || ""}
                           isLoading={isLoading}
+                          setanswer={setanswer}
                           message_id={chat.id || 0}
                           options={chat.options}
                           hasselected={chat.hasselected || ""}
@@ -300,10 +393,6 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                           <ExtractInfo onSendQuery={onSendQuery} info={chat.extract} />
                         )}
 
-                        {/* <ExtractInfo 
-                        info={"yoo"}
-                        onSendQuery={onSendQuery}
-                        /> */}
                       </>
                     ))}
                     {isLoading && (

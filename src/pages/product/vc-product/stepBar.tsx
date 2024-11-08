@@ -22,12 +22,6 @@ const StepBar: React.FC = () => {
     setCurrentStep(Step);
   }, [Step]);
 
-  const handleNextStep = () => {
-    if (currentStep < totalSteps - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
   if (currentStep < 0) {
     return null;
   }
@@ -44,7 +38,6 @@ const StepBar: React.FC = () => {
                 ? "border-primary-900"
                 : "border-transparent hover:bg-[#FFA300]"
             }`}
-            onClick={() => setCurrentStep(index)}
             onMouseEnter={() => setHoveredStep(index)}
             onMouseLeave={() => setHoveredStep(null)}
           >
@@ -59,7 +52,7 @@ const StepBar: React.FC = () => {
 
           {index < totalSteps - 1 && <div className="w-[1px] h-[18px] border border-gray-200"></div>}
           {hoveredStep === index && (
-            <div className="absolute right-[110%] top-[0] text-nowrap text-center w-auto max-w-xs text-sm px-[20px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none">
+            <div className="absolute right-[110%] top-[0] text-nowrap text-center w-auto max-w-xs text-[12px] px-[15px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none">
               {stepDescriptions[index]}
             </div>
           )}

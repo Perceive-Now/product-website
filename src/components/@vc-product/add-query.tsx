@@ -25,20 +25,26 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const validTypes = ["application/pdf", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+      const validTypes = [
+        // "application/pdf", 
+        "application/vnd.ms-powerpoint", 
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation", 
+        // "application/msword", 
+        // "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ];
       const maxSize = 1 * 1024 * 1024;
 
       if (!validTypes.includes(file.type)) {
-        setError("Invalid file type. Please upload a PDF, PPT, or DOC file.");
+        setError("Invalid file type. Please upload a PPT");
         setAttachedFile(null);
         return;
       }
 
-      if (file.size > maxSize) {
-        setError("File size exceeds 1MB. Please upload a smaller file.");
-        setAttachedFile(null);
-        return;
-      }
+      // if (file.size > maxSize) {
+      //   setError("File size exceeds 1MB. Please upload a smaller file.");
+      //   setAttachedFile(null);
+      //   return;
+      // }
 
       setError(null);
       setAttachedFile(file);
@@ -52,6 +58,14 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
     }
   }, [query]);
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !event.shiftKey && answer.trim() !== "") {
+      sendQuery(query, answer, attachedFile || undefined);
+      setAttachedFile(null);
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className="w-full flex flex-col rounded-lg shadow-inputBox overflow-hidden bg-white relative mb-[70px]">
       <div className="flex items-center p-1">
@@ -59,6 +73,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
           ref={textareaRef}
           onChange={(e) => setanswer(e.target.value)}
           value={answer}
+          onKeyDown={handleKeyDown}
           className={classNames(
             "appearance-none leading-tight w-full h-full p-2 border-none rounded-md bg-white placeholder:text-appGray-600 focus:border-none focus-visible:border-none focus:outline-none focus:ring-0",
           )}
