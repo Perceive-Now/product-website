@@ -56,7 +56,10 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [query]);
+    textareaRef.current.focus();
+    textareaRef.current.setSelectionRange(answer.length, answer.length);
+
+  }, [query,answer]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" && !event.shiftKey && answer.trim() !== "") {

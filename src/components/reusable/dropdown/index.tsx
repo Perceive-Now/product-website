@@ -36,6 +36,7 @@ export default function Dropdown({
   conversation_id,
 }: Props) {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownDirection, setDropdownDirection] = useState<'up' | 'down'>('down');
 
@@ -59,10 +60,23 @@ export default function Dropdown({
         setDropdownDirection('down');
       }
     }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node) && !buttonRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+
   }, [isOpen]); // Recalculate when dropdown opens and useEffect runs only when the height is recalculated
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left" ref={dropdownRef}>
       <Menu.Button ref={buttonRef} onClick={toggleDropdown}>
         <IconButton
           type="button"

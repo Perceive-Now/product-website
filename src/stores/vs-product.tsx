@@ -205,10 +205,10 @@ export const VSProductSlice = createSlice({
         diligenceLevelCovered?: string[];
         pitchdeckSummary?: any;
         searchQueries?: any;
+        reportGenerations? :any;
       }>,
     ) => {
-      const { diligenceLevelCovered, pitchdeckSummary, searchQueries } = action.payload;
-
+      const { diligenceLevelCovered, pitchdeckSummary, searchQueries ,reportGenerations} = action.payload;
       if (diligenceLevelCovered) {
         state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
       }
@@ -222,6 +222,9 @@ export const VSProductSlice = createSlice({
       if (searchQueries) {
         state.pitchdeck_data.search_queries = searchQueries;
       }
+      if(reportGenerations){
+        state.pitchdeck_data.report_generations = JSON.stringify(reportGenerations);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -230,76 +233,6 @@ export const VSProductSlice = createSlice({
       console.log("particular ans", response);
       console.log("steps", Step);
       if (Step !== undefined) {
-        // if(Step == 1){
-        //   const response1 = `@?[  ["Market Opportunity", "Vast Market with High Growth Potential", "EcoTech Innovations is poised to tap into a $300 billion global smart home market, focusing on the $50 billion clean energy solutions segment, with an 8.9% CAGR in the smart home energy management sector."], ["Competitive Differentiation", "Innovative Edge Over Competitors", "EcoTech Innovations stands out with its AI-driven optimization and seamless integration with existing home systems, which positions it uniquely against competitors like Tesla Powerwall, Sunrun, and Vivint Solar."], ["Product Viability', 'Scalable and AI-Driven Energy Solutions', 'The company offers solar-powered smart home energy systems with AI-driven energy optimization, which are scalable for commercial use and have already seen 1,500 units sold in the first 12 months."] ]@?`;
-        //   console.log("response1",response1);
-        //   // const matches = response1.match(/@?\[(.*?)\]@?/);
-        //   // let reportContent = [];
-        //   // console.log("matched",matches);
-        //   // if (matches && matches[1]) {
-        //   //     // Convert the matched string to a valid JavaScript array
-        //   //     const arrayString = matches[1].trim();
-        //   //     reportContent = JSON.parse(`[${arrayString}]`);
-        //   // }
-
-        //   const convertResponseToReportData = (response:string) => {
-        //     // Check if the response contains the delimiter "@?"
-        //     if (response.includes('@?')) {
-        //       const splitResponse = response.split('@?')[1]; // Get the part after "@?"
-        //    console.log("s[lair ress",typeof splitResponse,splitResponse)
-        //       // Ensure the split result is valid before parsing
-        //       if (splitResponse) {
-        //         try {
-        //           const yo = `[  ['Market Opportunity', 'Vast Market with High Growth Potential', 'EcoTech Innovations is poised to tap into a $300 billion global smart home market, focusing on the $50 billion clean energy solutions segment, with an 8.9% CAGR in the smart home energy management sector.'], ['Revenue Model Analysis', 'Diverse Revenue Streams and Strong Projections', 'The company's revenue streams include direct sales and a subscription model for AI-driven energy management services, with a $1.2M in ARR from subscriptions and a projected revenue of $2.5M for 2023.'],  ]`
-
-        //           const jsonReadyString = yo
-        //           .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2')
-        //           .replace(/'(?=\s*,)/g, '"')
-        //           .replace(/(?<=,)\s*'/g, '"')
-        //           // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2')
-        //           .replace(/'(?![\w\s])/g, '"')
-        //           .replace(/(?<=\[)'/g, '"');
-        //           // .replace(/'(?=\s*[\w])/g, '"')
-
-        //           // const jsonReadyString = yo.replace(/(?<!\w)'(?!\w)/g, '"');
-
-        //           console.log("ollall",jsonReadyString);
-        //           // Parse the split response as JSON and return
-        //           return JSON.parse(jsonReadyString);
-        //         } catch (error) {
-        //           console.error("Error parsing response:", error);
-        //           return [];
-        //         }
-        //       }
-        //     }
-        //     // Return an empty array if the delimiter is missing
-        //     return [];
-        //   };
-
-        //   const Template = convertResponseToReportData(response1);
-        //   state.ReportTemplate = Template;
-        //   console.log("ooooo", Template);
-
-        // if (matches && matches[1]) {
-        //     // Convert the matched string to a valid JavaScript array
-        //     const arrayString = matches[1].trim();
-        //     reportContent = JSON.parse(`[${arrayString}]`);
-        // }
-
-        // if (matches && matches[1]) {
-        //     // Convert the matched string to a valid JavaScript array
-        //     const arrayString = matches[1].trim();
-        //     reportContent = JSON.parse(`[${arrayString}]`);
-        // }
-
-        // }s
-        // if(Step == 1 ){
-        //   state.chats[state.chats.length - 1].query = 'Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?';
-        //   // state.chats.unshift({ query: "I am teacher", answer: ""});
-        //   state.chats.push({ query: "", options: ["Pre Revenue","Post Revenue"], answer: "" ,hasbutton:true});
-
-        // }
-        // else
         if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
@@ -308,43 +241,12 @@ export const VSProductSlice = createSlice({
           state.chats[state.chats.length - 1].query = response;
         } else if (Step == 6) {
           console.log("step 6 response", response);
-          // const convertResponseToReportData = (response: string) => {
-          //   if (response.includes("@?")) {
-          //     const splitResponse = response.split("@?")[1];
-          //     console.log("split res", splitResponse);
-          //     if (splitResponse) {
-          //       try {
-          //         // const jsonReadyString = splitResponse
-          //         // .replace(/(\[|\s),\s*'|'(\s|\]|\})/g, '$1"$2')
-          //         // .replace(/'(?=\s*,)/g, '"')
-          //         // .replace(/(?<=,)\s*'/g, '"')
-          //         // // .replace(/(^|\s)'|'(\s|$)/g, '$1"$2')
-          //         // .replace(/'(?![\w\s])/g, '"')
-          //         // .replace(/(?<=\[)'/g, '"');
-          //         // // .replace(/'(?=\s*[\w])/g, '"')
-
-          //         const jsonReadyString = splitResponse.replace(/\\/g, "");
-
-          //         console.log("jsonReadyString", response);
-          //         return JSON.parse(jsonReadyString.trim());
-          //       } catch (error) {
-          //         console.error("Error parsing response:", error);
-          //         return [];
-          //       }
-          //     }
-          //   }
-          //   return [];
-          // };
-
-          // const Template = convertResponseToReportData(response);
-          // if(!Template)  state.chats[state.chats.length - 1].query = response
-
           state.ReportTemplate = response;
-          // console.log("ooooo", Template);
-
           state.chats[
             state.chats.length - 1
           ].query = `Here’s the final report template for ${state.CompanyName} based on all the details we’ve discussed. Please review and make any adjustments`;
+          state.chats.push({ query: "If everything looks good. Please confirm to generate report.",  answer: "" });
+          state.chats.push({ query: "",  answer: "" ,options:["Confirm"]});
         } else if (response.includes("//")) {
           const options: string[] =
             response

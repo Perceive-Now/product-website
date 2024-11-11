@@ -79,19 +79,40 @@ export const getMarketChatById = createAsyncThunk(
       const { data } = await axios.get(
         `${AppConfig.KNOW_NOW_MARKET_API}/get_conversations?user_id=${payload.user_id}&thread_id=${payload.thread_id}`,
       );
-      const chats = data;
+      // const chats = data;
+      // return {
+      //   success: true,
+      //   message: "Successfully fetched market chat",
+      //   data:
+      //     chats.map((d: any) => ({
+      //       // message_id: d.conversation_id,
+      //       query: d.question,
+      //       answer: d.ai_response,
+      //       liked: d.like_ai,
+      //       created_at: d.created_at,
+      //     })) || [],
+      // };
+
+      
+      const chats = data.map((d: any) => ({
+        query: d.question,
+        answer: d.ai_response,
+        liked: d.like_ai,
+        created_at: d.created_at,
+      }));
+
+      const sortedChats = chats.slice().sort((a:any, b:any) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
+        return dateA - dateB;
+      });
+
       return {
         success: true,
         message: "Successfully fetched market chat",
-        data:
-          chats.map((d: any) => ({
-            // message_id: d.conversation_id,
-            query: d.question,
-            answer: d.ai_response,
-            liked: d.like_ai,
-            created_at: d.created_at,
-          })) || [],
+        data: sortedChats,
       };
+      
     } catch (error) {
       return {
         success: false,

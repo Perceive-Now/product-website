@@ -12,15 +12,15 @@ const SourcesData: React.FC = () => {
   const dataSourceKeys = Object.keys(DataSources);
 
   const [activeTab, setActiveTab] = useState<string>(dataSourceKeys[0] || "");
-  const [items, setItems] = useState<{ [key: string]: string[] }>({});
+  const [items, setItems] = useState<{ [key: string]: string[] }>(DataSources);
   const [newItem, setNewItem] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    setItems(DataSources);
-    dispatch(updatePitchdeckData({ searchQueries: {...DataSources} }));
-  }, [DataSources]);
+    // setItems(DataSources);
+    dispatch(updatePitchdeckData({ searchQueries: {...items} }));
+  }, [items]);
 
   const itemsToDisplay = items[activeTab] || [];
 

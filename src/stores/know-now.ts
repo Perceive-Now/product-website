@@ -35,11 +35,13 @@ export const KnownowSlice = createSlice({
   reducers: {
     setUpdateQuery: (state, action: PayloadAction<IEdit>) => {
       const { editIndex, query } = action.payload;
-      return {
-        ...state,
-        editIndex,
-        query,
-      };
+      // return {
+      //   ...state,
+      //   editIndex,
+      //   query,
+      // };
+      state.edit = { editIndex, query };
+
     },
     generateNewId: (state, action: PayloadAction<{ id: number }>) => {
       state.knownow_id = action.payload.id;

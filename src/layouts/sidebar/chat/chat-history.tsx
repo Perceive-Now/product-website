@@ -239,9 +239,9 @@ const KnowNowHistory = ({ History }: Props) => {
 
 
   // const indexedHistory = History.map((element, index) => ({ index, element }));
-  const indexedHistory = History.map((element, index) => ({ index, element })).sort(
-    (a: any, b: any) => b.element.favorite - a.element.favorite,
-  );
+  const indexedHistory = History.filter(element => element.title !== "")
+  .map((element, index) => ({ index, element }))
+  .sort((a:any, b:any) => b.element.favorite - a.element.favorite);
   return (
     <>
       <div className="h-[calc(100vh-400px)] overflow-y-auto overflow-x-hidden pn_scroller flex flex-col gap-[2px]">

@@ -264,7 +264,7 @@ function MarketIntelligenceKnowNow() {
           updateMarketThread({
             thread_id: conversationId,
             user_id: userId,
-            title: title[0],
+            title: title[0] || 'Untitled',
             favorite: false,
           }),
         );
@@ -365,11 +365,11 @@ function MarketIntelligenceKnowNow() {
   }, [chats]);
 
   console.log("chatss",chats);
-  const sortedChats = (chats || []).slice().sort((a, b) => {
-    const dateA: any = new Date(a.created_at).getTime();
-    const dateB = new Date(b.created_at).getTime();
-    return dateA - dateB;
-  });
+  // const sortedChats = (chats || []).slice().sort((a, b) => {
+  //   const dateA: any = new Date(a.created_at).getTime();
+  //   const dateB = new Date(b.created_at).getTime();
+  //   return dateA - dateB;
+  // });
 
   return (
     <div className="h-full px-3 pt-0 pb-0 w-full mx-auto flex">
@@ -379,7 +379,7 @@ function MarketIntelligenceKnowNow() {
             ref={chatRef}
             className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
           >
-            {sortedChats && sortedChats.length <= 0 && id ? (
+            {chats && chats.length <= 0 && id ? (
               <div className="flex justify-center items-center h-full">
                 <LoadingIcon className="h-5 w-5 text-primary-900" />
               </div>
@@ -389,7 +389,7 @@ function MarketIntelligenceKnowNow() {
                   <KnowNowdefault setQuery={setQuery} question={query} />
                 ) : (
                   <div className="space-y-6 w-full">
-                    {((sortedChats && sortedChats) || []).map((chat, idx) => (
+                    {((chats && chats) || []).map((chat, idx) => (
                       <div key={idx * 5} className="space-y-3">
                         <ChatQuery
                           query={chat.query}

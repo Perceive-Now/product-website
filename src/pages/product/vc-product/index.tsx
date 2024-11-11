@@ -219,14 +219,14 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             // dispatch(setprevres({answer:answer}));
             // await dispatch(sendQuery(ai_query)).unwrap();
           } else {
-
+            setanswer("");
             console.log("yoooo",chats.length)
             dispatch(setVSChats(queries));
             if (chatOptions?.includes("Post Revenue")) {
               //** Third Converstaion **//
               dispatch(
                 updateChatQuery({
-                  query: `Thank you! Since ${companyName} is in the **${answer}** stage, could you specify the current development phase from the options below?`,
+                  query: `Thank you! Since ${companyName} is in the **${queries.answer}** stage, could you specify the current development phase from the options below?`,
                 }),
               );
               dispatch(
@@ -269,7 +269,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
-                  query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                  query: `The ${queries.answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
                 }),
               );
 
@@ -292,7 +292,6 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
 
             // dispatch(setVSChats(queries));
             // setanswer("");
-            setanswer("");
 
             // const { response } = await dispatch(sendQuery(ai_query)).unwrap();
             // console.log("oooo", response);

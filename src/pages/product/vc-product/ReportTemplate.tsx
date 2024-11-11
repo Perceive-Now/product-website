@@ -5,7 +5,8 @@ import LayoutIcon from "src/components/icons/miscs/layout";
 import TrashIconTwo from "src/assets/images/TrashTwo.svg";
 import AddIcon from "src/components/icons/common/add-icon";
 import DragIconTwo from "src/assets/images/DragIconTwo.svg";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppSelector, useAppDispatch } from "src/hooks/redux";
+import { updatePitchdeckData } from "src/stores/vs-product";
 import Select from "react-select";
 import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
@@ -234,11 +235,17 @@ const TemplateReport: React.FC = () => {
   //   },
   // };
   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
+  const dispatch = useAppDispatch();
   const [reportItems, setReportItems] = useState(ReportTemplate);
   const [open, setOpen] = useState(true);
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemSummary, setNewItemSummary] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch(updatePitchdeckData({ reportGenerations: {...reportItems} }));
+    console.log("reporrtt",reportItems)
+  }, [reportItems]);
 
   const handleDelete = (itemKey: string) => {
     const deleteItem = (items: Record<string, ReportItem>, keyToDelete: string) => {
