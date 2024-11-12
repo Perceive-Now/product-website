@@ -123,7 +123,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
 
           const ai_query = {
             user_input:
-              button && answer == "Continue" ? "how many question we want to answer" : answer,
+            answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
             user_id: userId || "",
             thread_id: thread_id,
             button: button,

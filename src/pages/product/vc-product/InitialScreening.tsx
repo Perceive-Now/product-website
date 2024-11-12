@@ -42,7 +42,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
       <img src={DragIconTwo} alt="Drag" className="pb-3" />
       <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-1">
         <div className="flex items-center">
-          <span className="bg-appGray-200 p-1 rounded-md mr-1 text-sm flex-[0_0_32px]">h1</span>
+          {/* <span className="bg-appGray-200 p-1 rounded-md mr-1 text-sm flex-[0_0_32px]">h1</span> */}
           <span className="flex-auto">{item}</span>
           <button className="text-red-500 ml-2 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
             <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
@@ -222,7 +222,7 @@ const InitialScreening: React.FC = () => {
                       className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-2"
                     >
                       <span>
-                        <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span>
+                        {/* <span className="bg-appGray-200 p-1 rounded-md mr-1">h1</span> */}
                         {item}
                       </span>
                       <button className="text-red-500" onClick={() => handleDelete(item)}>
