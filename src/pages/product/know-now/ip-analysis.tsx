@@ -7,6 +7,7 @@ import axios from "axios";
 import AddQuery from "../../../components/@know-now/add-query";
 import ChatQuery from "../../../components/@know-now/chat-question";
 import QueryAnswer from "../../../components/@know-now/query-answer";
+import debounce from "lodash.debounce";
 
 //
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -82,31 +83,33 @@ function KnowNowIP() {
   useEffect(() => {
     if (
       (id && isSaved) ||
-      location.pathname === "/know-now/market-intelligence" ||
-      location.pathname === "/know-now/ip-analysis"
+      location.pathname === "/know-now/market-intelligence/" ||
+      location.pathname === "/know-now/ip-analysis/"
     ) {
       dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]));
+      navigate(`/know-now/ip-analysis`);
     }
-    if (id && isSaved) {
-      dispatch(
-        getIPChatById({
-          user_id: userId || "",
-          conversation_id: Number(id),
-        }),
-      )
-        .unwrap()
-        .then((res) => {
-          if (!res.success) {
-            toast.error("Unable to fetch Conversations");
-            navigate("/start-conversation");
-          }
-        })
-        .catch(() => {
-          toast.error("Something went wrong");
-          navigate("/start-conversation");
-        });
-      setIsSaved(false);
-    }
+
+    // if (id && isSaved) {
+    //   dispatch(
+    //     getIPChatById({
+    //       user_id: userId || "",
+    //       conversation_id: Number(id),
+    //     }),
+    //   )
+    //     .unwrap()
+    //     .then((res) => {
+    //       if (!res.success) {
+    //         toast.error("Unable to fetch Conversations");
+    //         navigate("/start-conversation");
+    //       }
+    //     })
+    //     .catch(() => {
+    //       toast.error("Something went wrong");
+    //       navigate("/start-conversation");
+    //     });
+    //   setIsSaved(false);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id, isSaved, userId]);
 
@@ -148,11 +151,17 @@ function KnowNowIP() {
       );
 
       //
+      // const queries = {
+      //   query: query || updateQuery,
+      //   user_id: userId,
+      //   conversation_id: conversationId,
+      // };
+
       const queries = {
-        query: query || updateQuery,
         user_id: userId,
-        conversation_id: conversationId,
-      };
+        thread_id: `${conversationId}`,
+        user_query: query || updateQuery
+      }
 
       //
       if (editIndex !== null) {
@@ -167,7 +176,7 @@ function KnowNowIP() {
       setQuery("");
       try {
         const res = await axios.post(
-          `${AppConfig.KNOW_NOW_IP_API}/message/conversation/query`,
+          `https://pn-backend-ccd0ardeguh8fwbk.eastus-01.azurewebsites.net/ask-chatbot/`,
           queries,
           {
             headers: {
@@ -178,30 +187,12 @@ function KnowNowIP() {
           },
         );
 
-        //
-        const answer = res.data;
-        await dispatch(
-          saveIPChat([
-            {
-              conversation_id: conversationId,
-              user_id: userId || "",
-              role: "ai",
-              service_name: "ip",
-              title: "",
-              content: answer,
-            },
-          ]),
-        )
-          .unwrap()
-          .then((res) => {
-            if (res.success) {
-              // toast.success("Saved Successfully")
-            } else {
-              toast.error("Unable to save conversation ");
-            }
-          });
+        const answer = res.data.answer;
+        if(answer) setIsloading(false);
+        else navigate(`/know-now/ip-analysis`);
 
-        if (editIndex !== null) {
+        const debouncedUpdate = debounce((answer) => {
+          if (editIndex !== null) {
           dispatch(
             editQueryAndUpdateAnswer({
               index: editIndex,
@@ -212,10 +203,58 @@ function KnowNowIP() {
         } else {
           dispatch(updateChatAnswer({ index: chats.length, answer }));
         }
+        });
+         
+      let currentText = "";
+      for (let i = 0; i < answer.length; i += 12) {
+      currentText += answer.slice(i, i + 12);
+      debouncedUpdate(currentText);
+
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+       
+
+        
+      //save convo
+        // await dispatch(
+        //   saveIPChat([
+        //     {
+        //       conversation_id: conversationId,
+        //       user_id: userId || "",
+        //       role: "ai",
+        //       service_name: "ip",
+        //       title: "",
+        //       content: answer,
+        //     },
+        //   ]),
+        // )
+        //   .unwrap()
+        //   .then((res) => {
+        //     if (res.success) {
+        //       // toast.success("Saved Successfully")
+        //     } else {
+        //       toast.error("Unable to save conversation ");
+        //     }
+        //   });
+
+        //update answer
+        // if (editIndex !== null) {
+        //   dispatch(
+        //     editQueryAndUpdateAnswer({
+        //       index: editIndex,
+        //       newQuery: updateQuery,
+        //       newAnswer: answer,
+        //     }),
+        //   );
+        // } else {
+        //   dispatch(updateChatAnswer({ index: chats.length, answer }));
+        // }
+
         setIsloading(false);
         setChatIndex(null);
-        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
-        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
+        // navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
+        // navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
       } catch (error: any) {
         const errorMsg = error.response?.statusText;
         setIsloading(false);
