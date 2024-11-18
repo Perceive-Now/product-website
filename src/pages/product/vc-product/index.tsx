@@ -31,7 +31,7 @@ const VCReport = () => {
   const dispatch = useAppDispatch();
   // const userId = "tes1234567";
   let thread_id = generateKnowIdstring();
-  let companyName = "";
+  // let companyName = "";
   // const thread_id = "c8d3d805-de26-4545-af52-c43fc68f057e";
   const { Step } = useAppSelector((state) => state.VSProduct);
   const firstRun = useRef(true);
@@ -48,6 +48,8 @@ const VCReport = () => {
   const [isLoading, setIsloading] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
+  let { companyName } = useAppSelector((state) => state.VSProduct);
+
   const chatOptions = chats[chats.length-1]?.options;
   console.log("chattsss", chats,chatOptions);
 
@@ -224,6 +226,12 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             dispatch(setVSChats(queries));
             if (chatOptions?.includes("Post Revenue")) {
               //** Third Converstaion **//
+
+              const optionsMap:any = {
+                "Pre Revenue": ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
+                "Post Revenue": ["Pre-Seed Stage", "Seed Stage"]
+              };
+
               dispatch(
                 updateChatQuery({
                   query: `Thank you! Since ${companyName} is in the **${queries.answer}** stage, could you specify the current development phase from the options below?`,
@@ -233,7 +241,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 setVSChats({
                   query: "",
                   answer: "",
-                  options: ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
+                  options: optionsMap[answer],
                   hasbutton: true,
                 }),
               );

@@ -12,7 +12,7 @@ interface VSChat {
 
 interface VSProduct {
   chats: VSChat[];
-  CompanyName: string;
+  companyName: string;
   marketChatLoading: boolean;
   Step: number;
   SidescreenOptions?: string[];
@@ -22,7 +22,7 @@ interface VSProduct {
 }
 
 const initialState: VSProduct = {
-  CompanyName: "",
+  companyName: "",
   chats: [],
   marketChatLoading: true,
   Step: 0,
@@ -194,7 +194,7 @@ export const VSProductSlice = createSlice({
     },
     setCompanyName: (state, action: PayloadAction<string>) => {
       console.log("comppppp", action.payload);
-      state.CompanyName = action.payload;
+      state.companyName = action.payload;
     },
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.Step = action.payload;
@@ -244,7 +244,7 @@ export const VSProductSlice = createSlice({
           state.ReportTemplate = response;
           state.chats[
             state.chats.length - 1
-          ].query = `Here’s the final report template for ${state.CompanyName} based on all the details we’ve discussed. Please review and make any adjustments`;
+          ].query = `Here’s the final report template for ${state.companyName} based on all the details we’ve discussed. Please review and make any adjustments`;
           state.chats.push({ query: "If everything looks good. Please confirm to generate report.",  answer: "" });
           state.chats.push({ query: "",  answer: "" ,options:["Confirm"]});
         } else if (response.includes("//")) {
@@ -299,7 +299,7 @@ export const VSProductSlice = createSlice({
     });
     builder.addCase(extractFileData.fulfilled, (state, action) => {
       state.pitchdeck_data = {
-        "Company/Startup Name": state.CompanyName,
+        "Company/Startup Name": state.companyName,
         pitchdeck_summary: action.payload,
         "diligence level_covered": state.SidescreenOptions,
         search_queries: {},

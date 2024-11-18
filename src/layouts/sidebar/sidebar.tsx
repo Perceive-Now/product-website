@@ -158,15 +158,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const joyrideRef = useRef(null);
 
   const [open, setOpen] = useState(false);
   const [isChat, setIsChat] = useState(false);
   const [activeItem, setActiveItem] = useState("");
   const [activeSubItem, setActiveSubItem] = useState(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [secondStepCount, setSecondStepCount] = useState(0);
-  // const [runTour, setRunTour] = useState(false);
   const [steps, setSteps] = useState(tourSteps);
 
   const { pathname } = useLocation();
@@ -343,6 +340,7 @@ const handleJoyrideCallback = (data: any) => {
                 {s.href ? (
                   <Link
                     to={s.href}
+                    onClick={() => setOpen(false)}
                     className={classNames(
                       "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
                     )}
