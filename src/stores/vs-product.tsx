@@ -7,7 +7,7 @@ interface VSChat {
   extract?: string;
   options?: string[];
   hasbutton?: boolean;
-  hasselected?: string;
+  hasselected?: boolean;
 }
 
 interface VSProduct {
@@ -180,12 +180,9 @@ export const VSProductSlice = createSlice({
       const { answer } = action.payload;
       state.chats[state.chats.length - 1].answer = answer;
     },
-    updateButtonSelection: (state, action: PayloadAction<{ id: number; hasselected: string }>) => {
-      const { id, hasselected } = action.payload;
-      const chat = state.chats.find((chat) => chat.id === id);
-      if (chat) {
-        chat.hasselected = hasselected;
-      }
+    updateButtonSelection: (state, action: PayloadAction<{  hasselected: boolean }>) => {
+      const { hasselected } = action.payload;
+      if(state.chats.length > 0) state.chats[state.chats.length - 1].hasselected = hasselected;
     },
     resetChats: (state) => {
       console.log("resettt");

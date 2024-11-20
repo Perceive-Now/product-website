@@ -25,6 +25,7 @@ import {
   resetChats,
   updateChatQuery,
   setCompanyName,
+  updateButtonSelection
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
@@ -43,13 +44,13 @@ const VCReport = () => {
   // console.log("SidescreenOptions screen index", SidescreenOptions);
 
   const [query, setQuery] = useState("");
+  const [companyStage, setcompanyStage] = useState("");
   const [answer, setanswer] = useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsloading] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
   let { companyName } = useAppSelector((state) => state.VSProduct);
-
   const chatOptions = chats[chats.length-1]?.options;
   console.log("chattsss", chats,chatOptions);
 
@@ -73,7 +74,7 @@ const VCReport = () => {
       const newQueryIndex = generateKnowId();
 
       try {
-        if (answer) {
+        if (answer && !file) {
           console.log("answer");
           if (answer === "Start another report") {
             dispatch(resetChats());
@@ -124,8 +125,8 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           }
 
           const ai_query = {
-            user_input:
-            answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
+            user_input: answer,
+            // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
             user_id: userId || "",
             thread_id: thread_id,
             button: button,
@@ -223,41 +224,112 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           } else {
             setanswer("");
             console.log("yoooo",chats.length)
+            dispatch(updateButtonSelection({hasselected:true}));
             dispatch(setVSChats(queries));
             if (chatOptions?.includes("Post Revenue")) {
               //** Third Converstaion **//
 
               const optionsMap:any = {
-                "Pre Revenue": ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
-                "Post Revenue": ["Pre-Seed Stage", "Seed Stage"]
+                "pre revenue": ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
+                "post revenue": ["Pre-Seed Stage", "Seed Stage"]
               };
-
+              
+              if (['pre revenue', 'post revenue'].includes(queries.answer.trim().toLowerCase())) {
+              setcompanyStage(queries.answer);
+              console.log("comapny stage1",companyStage);
               dispatch(
                 updateChatQuery({
-                  query: `Thank you! Since ${companyName} is in the **${queries.answer}** stage, could you specify the current development phase from the options below?`,
+                  query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below?`,
                 }),
               );
               dispatch(
                 setVSChats({
                   query: "",
                   answer: "",
-                  options: optionsMap[answer],
+                  options: optionsMap[answer.trim().toLowerCase()],
                   hasbutton: true,
                 }),
               );
+
+            }else{
+
+              dispatch(
+                setVSChats({
+                  query:
+                    "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                  answer: "",
+                }),
+              );
+
+              dispatch(
+                setVSChats({
+                  query:
+                    "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
+                  answer: "",
+                }),
+              );
+  
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Pre Revenue", "Post Revenue"],
+                  hasbutton: true,
+                }),
+              );
+
+            }
 
               //**   **//
             }else if (chatOptions?.includes("Seed Stage")) {
               //** Fourth Converstaion **//
 
+              if (['pre-seed stage', 'seed stage', 'ideation stage'].includes(queries.answer.trim().toLowerCase())) {
               dispatch(
                 updateChatQuery({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
                 }),
               );
+              }else{
+
+              const optionsMap:any = {
+                "pre revenue": ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
+                "post revenue": ["Pre-Seed Stage", "Seed Stage"]
+              };
+              
+
+                dispatch(
+                  setVSChats({
+                    query:
+                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    answer: "",
+                  }),
+                );
+
+                dispatch(
+                  setVSChats({
+                    query: `Thank you! Since ${companyName} is in the **${companyStage.trim()}** stage, could you specify the current development phase from the options below?`,
+                  }),
+                );
+
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: optionsMap[companyStage.trim().toLowerCase()],
+                    hasbutton: true,
+                  }),
+                );
+
+
+              }
+
               //**     **//
             } else if (chatOptions?.includes("Looks good")) {
               //** Fifth Converstaion **//
+              if (['proceed', 'looks good'].includes(queries.answer.trim().toLowerCase())) {
+
+
               dispatch(
                 updateChatQuery({
                   query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
@@ -272,9 +344,36 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            }else{
+
+              dispatch(
+                setVSChats({
+                  query:
+                    "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                  answer: "",
+                }),
+              );
+
+              dispatch(
+                setVSChats({
+                  query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
+                  answer: "",
+                }),
+              );
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Looks good"],
+                  hasbutton: true,
+                }),
+              );
+            }
               //**     **//
             } else if (chatOptions?.includes("Deep Dive")) {
-              dispatch(setCurrentStep(3));
+
+              if (['deep dive', 'quick insights'].includes(queries.answer.trim().toLowerCase())) {
+                dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
                   query: `The ${queries.answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
@@ -289,7 +388,52 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            }else{
 
+                dispatch(
+                  setVSChats({
+                    query:
+                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    answer: "",
+                  }),
+                );
+
+                dispatch(
+                  setVSChats({
+                    query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                    You can expand any section for more details if needed.`,
+                  }),
+                );
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Quick Insights", "Deep Dive"],
+                    hasbutton: true,
+                  }),
+                );
+              }
+
+            }else if(chatOptions?.includes("Continue")){
+              if (['continue', 'proceed'].includes(queries.answer.trim().toLowerCase())) {
+                ai_query.user_input = "how many question we want to answer";
+                await dispatch(sendQuery(ai_query)).unwrap();
+              }else{
+                dispatch(
+                  updateChatQuery({
+                    query: `Please continue to proceed`,
+                  }),
+                );
+  
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Continue"],
+                    hasbutton: true,
+                  }),
+                );
+              }
             }else{
 
               const { response } = await dispatch(sendQuery(ai_query)).unwrap();
@@ -305,6 +449,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             // console.log("oooo", response);
           }
         } else if (file) {
+          setanswer("");
           const firstQuery = {
             id: newQueryIndex,
             query: "Great! Let me deep dive into the file.",
@@ -390,7 +535,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                           setanswer={setanswer}
                           message_id={chat.id || 0}
                           options={chat.options}
-                          hasselected={chat.hasselected || ""}
+                          hasselected={chat.hasselected || false}
                           hasbutton={chat.hasbutton || false}
                           onSendQuery={onSendQuery}
                         />

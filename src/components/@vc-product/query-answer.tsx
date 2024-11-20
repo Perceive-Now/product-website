@@ -17,7 +17,7 @@ interface Props {
   answer: string;
   ido: string;
   hasbutton: boolean;
-  hasselected: string;
+  hasselected: boolean;
   onSendQuery: (query: string, answer: string, file?: File,button?:boolean) => void;
 }
 
@@ -32,7 +32,7 @@ const QueryAnswer = ({
   options,
   setanswer,
   onSendQuery,
-  
+  hasselected
 }:
 Props) => {
 
@@ -74,7 +74,7 @@ Props) => {
                     setanswer(stage);
                     dispatch(setprevres({ answer: stage }));
                   }}
-                  // disabled={answer ? true : false}
+                  disabled={hasselected}
                   className={`${
                     answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
                   } text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
