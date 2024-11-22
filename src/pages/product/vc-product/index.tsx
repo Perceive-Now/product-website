@@ -46,6 +46,7 @@ const VCReport = () => {
   const [query, setQuery] = useState("");
   const [companyStage, setcompanyStage] = useState("");
   const [answer, setanswer] = useState<string>("");
+  const [isfile, setFile ] =useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsloading] = useState(false);
 
@@ -76,6 +77,7 @@ const VCReport = () => {
       try {
         if (answer && !file) {
           console.log("answer");
+
           if (answer === "Start another report") {
             dispatch(resetChats());
             thread_id = generateKnowIdstring();
@@ -226,6 +228,15 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             console.log("yoooo",chats.length)
             dispatch(updateButtonSelection({hasselected:true}));
             dispatch(setVSChats(queries));
+            if(isfile === "false"){
+              dispatch(
+                setVSChats({
+                  query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                }),
+              );
+              return
+            }
+            
             if (chatOptions?.includes("Post Revenue")) {
               //** Third Converstaion **//
 
@@ -290,6 +301,8 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
                 }),
               );
+              setFile("false");
+
               }else{
 
               const optionsMap:any = {
@@ -450,6 +463,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           }
         } else if (file) {
           setanswer("");
+          setFile("true");
           const firstQuery = {
             id: newQueryIndex,
             query: "Great! Let me deep dive into the file.",
