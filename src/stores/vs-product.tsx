@@ -233,7 +233,19 @@ export const VSProductSlice = createSlice({
         if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
-        } else if (Step == 5) {
+        } else if(Step == 4){
+          const option = [];
+          const prevanswer = state.chats[state.chats.length - 1].answer || ""
+          if (
+            prevanswer.trim().toLowerCase() == "continue" || 
+            prevanswer.trim().toLowerCase() == "proceed"
+          ) {
+            option.push("Continue to answer questions");
+          }          
+          option.push("Skip and proceed to step 5");
+          state.chats[state.chats.length - 1].query = response;
+          state.chats.push({ query: "",  answer: "" ,options:option});
+        }else if (Step == 5) {
           if (DataSources) state.DataSources = DataSources;
           state.chats[state.chats.length - 1].query = response;
         } else if (Step == 6) {

@@ -26,16 +26,16 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
     const file = event.target.files?.[0];
     if (file) {
       const validTypes = [
-        // "application/pdf", 
+        "application/pdf", 
         "application/vnd.ms-powerpoint", 
         "application/vnd.openxmlformats-officedocument.presentationml.presentation", 
-        // "application/msword", 
-        // "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        "application/msword", 
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ];
       const maxSize = 1 * 1024 * 1024;
 
       if (!validTypes.includes(file.type)) {
-        setError("Invalid file type. Please upload a PPT");
+        setError("Invalid file type. Please upload a PDF, PPT, or Word document.");
         setAttachedFile(null);
         return;
       }
@@ -74,7 +74,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
       <div className="flex items-center p-1">
         <textarea
           ref={textareaRef}
-          onChange={(e) => setanswer(e.target.value)}
+          onChange={(e) => {setanswer(e.target.value),console.log(e.target.value)}}
           value={answer}
           onKeyDown={handleKeyDown}
           className={classNames(

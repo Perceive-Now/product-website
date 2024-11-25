@@ -73,8 +73,10 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
       .split("\n")
       .map((line) => line.trim())
       .filter((line) => line)
-      .join("\n\n");
-  };
+      .join("\n\n")
+      .replace(/\],?/g, "")
+      .replace(/\[|\]/g, '') 
+          };
 
   const parseInfo = (info: string): Record<string, string> => {
     const lines = info.split("\n").filter((line) => line);
