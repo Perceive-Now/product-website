@@ -176,8 +176,8 @@ function KnowNowIP() {
       setQuery("");
       try {
         const res = await axios.post(
-          `https://pn-backend-ccd0ardeguh8fwbk.eastus-01.azurewebsites.net/ask-chatbot/`,
-          queries,
+          `https://pn-backend-ccd0ardeguh8fwbk.eastus-01.azurewebsites.net/ask-chatbot/?user_id=${queries.user_id}&thread_id=${queries.thread_id}&user_query=${queries.user_query}`,
+          // queries,
           {
             headers: {
               "Content-Type": "application/json",
