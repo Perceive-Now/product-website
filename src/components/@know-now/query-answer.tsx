@@ -283,7 +283,7 @@ const QueryAnswer = ({
   // }, [answer]);
 
   return (
-    <div className="flex items-start gap-3">
+    <div className="flex flex-col md:flex-row items-start md:gap-3">
       <div className="p-1 shrink-0">
         <img className="h-full w-full" src={PN} alt={"Pn"} />
       </div>

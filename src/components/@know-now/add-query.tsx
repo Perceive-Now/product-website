@@ -24,7 +24,7 @@ const AddQuery = ({ isLoading, query, sendQuery, setQuery }: Props) => {
   }, [query]);
 
   return (
-    <div className="absolute w-full -bottom-10 mt-2 flex border border-primary-50 rounded-lg items-center overflow-hidden pl-1 py-1 bg-appGray-100">
+    <div className="absolute w-full -bottom-11 md:-bottom-10 mt-2 flex border border-primary-50 rounded-lg items-center overflow-hidden pl-1 py-1 bg-appGray-100">
       <textarea
         rows={1}
         ref={textareaRef}

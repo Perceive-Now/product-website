@@ -43,7 +43,7 @@ const ReportDefault: React.FC = () => {
 
   return (
     <div className="flex-1 flex items-center justify-center">
-      <div className="flex flex-col items-center p-4">
+      <div className="flex flex-col items-center p-1 sm:p-4">
         <div className="mb-3">
           <div className="h-8 w-8 rounded-full bg-appGray-100 flex items-center justify-center">
             <img className="h-5 w-5" src={PN} alt="Pn" />
@@ -51,9 +51,9 @@ const ReportDefault: React.FC = () => {
         </div>
         <div
           // onClick={handleClick}
-          className={`rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100`}
+          className={`rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100 w-full sm:w-fit`}
         >
-          <div className={`text-base leading-tight`}>
+          <div className={`text-[15px] sm:text-base leading-[1.5] sm:leading-tight`}>
             {defaultPrompt.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {line.trim()}

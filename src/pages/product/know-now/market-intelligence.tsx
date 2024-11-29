@@ -372,12 +372,12 @@ function MarketIntelligenceKnowNow() {
   // });
 
   return (
-    <div className="h-full px-3 pt-0 pb-0 w-full mx-auto flex">
+    <div className="h-full md:px-3 pt-0 pb-0 w-full mx-auto flex flex-col md:flex-row">
       <div className="flex-1 h-full">
         <div className="relative h-full">
           <div
             ref={chatRef}
-            className="h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
+            className="md:h-[calc(100vh-260px)] overflow-y-auto pn_scroller pb-2 pr-2 w-full"
           >
             {chats && chats.length <= 0 && id ? (
               <div className="flex justify-center items-center h-full">
@@ -434,8 +434,7 @@ function MarketIntelligenceKnowNow() {
           />
         </div>
       </div>
-      <div>
-        {" "}
+      <div className="mt-15 md:mt-0">
         <KnowNowRightSideBar />
       </div>
     </div>

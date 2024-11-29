@@ -46,14 +46,14 @@ const KnowNowdefault: React.FC<Props> = ({ setQuery, question }) => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="w-full xl:w-[700px] mx-auto ">
-        <div className="font-helvetica text-primary-900 text-[54px] font-[800] leading-[64px] flex">
+    <div className="w-full md:h-full flex justify-center items-center">
+      <div className="w-full xl:w-[700px] mx-auto">
+        <div className="font-helvetica text-primary-900 text-[35px] leading-[40px] md:text-[54px] font-[800] md:leading-[64px] flex">
           Hi!
           <br />
           Ready to get started?
         </div>
-        <div className="grid grid-cols-2 gap-2 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4">
           {knowNowChat.map((l, idx) => (
             <div
               key={idx * 23}
@@ -61,11 +61,11 @@ const KnowNowdefault: React.FC<Props> = ({ setQuery, question }) => {
               className={`border-2 rounded-full rounded-br-none flex items-center justify-center px-2 py-2 gap-2 relative cursor-pointer border-primary-900
                 ${selectedIndex === idx ? " bg-primary-900" : " bg-white"}`}
             >
-              <div className="w-[32px] h-[32px]">
+              <div className="w-[24px] h-[24px] md:w-[32px] md:h-[32px]">
                 {selectedIndex === idx ? l.darkIcon : l.lightIcon}
               </div>
               <div
-                className={`text-sm ${selectedIndex === idx ? "text-white" : "text-secondary-800"}`}
+                className={`text-[13px] sm:text-sm ${selectedIndex === idx ? "text-white" : "text-secondary-800"}`}
               >
                 {l.desc}
               </div>

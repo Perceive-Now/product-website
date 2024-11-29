@@ -376,7 +376,7 @@ const handleJoyrideCallback = (data: any) => {
 
       {/* White Sidebar for Sublist */}
       {open && activeItem && (
-        <div className="z-10 bg-white absolute left-full  h-full w-[200px] flex flex-col p-2">
+        <div className="z-10 bg-white absolute left-full h-full w-[200px] flex flex-col p-2">
           <h2 className="text-xl font-bold mb-2 ml-1">
             {sidebarItems.find((item) => item.key === activeItem)?.title}
           </h2>

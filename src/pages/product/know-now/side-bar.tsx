@@ -3,16 +3,36 @@ import SideBarToggleIcon from "src/components/icons/side-bar/toggle";
 import ToolTip from "src/components/reusable/tool-tip";
 import { useAppSelector } from "src/hooks/redux";
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const KnowNowRightSideBar = () => {
   const { keywords } = useAppSelector((state) => state.KnownowMarket);
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    // Function to check and set sidebar state based on screen size
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 700;
+      if (isMobile) {
+        setOpen(false);
+      } else {
+        setOpen(true); 
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
 
   return (
     <div
       className={classNames(
         "shrink-0 ml-2 h-full flex flex-col",
-        open ? "w-[300px] mr-0" : "w-[60px] duration-300 overflow-hidden",
+        open ? "max-w-full md:w-[300px] mr-0" : "w-[60px] duration-300 overflow-hidden",
       )}
     >
       {/* <div className="w-[300px] shrink-0 ml-2"> */}
