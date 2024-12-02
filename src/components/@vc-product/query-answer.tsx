@@ -77,7 +77,7 @@ Props) => {
                   disabled={hasselected}
                   className={`${
                     answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
-                  } text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
+                  } cursor-pointer text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
                 >
                   {stage}
                 </button>
@@ -85,7 +85,7 @@ Props) => {
             })()
           ) : (
             <div
-              className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-foundationOrange-100`}
+              className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
             >
               {/* <div
                 className={`text-secondary-800 text-justify `}

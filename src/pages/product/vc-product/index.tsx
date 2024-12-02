@@ -188,7 +188,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
-                  query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                  query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
                 }),
               );
 
@@ -389,7 +389,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
-                  query: `The ${queries.answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                  query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
                 }),
               );
 
@@ -427,7 +427,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 );
               }
 
-            }else if(chatOptions?.includes("Continue")){
+            }else if(chatOptions?.includes("Continue") && Step == 3){
               if (['continue', 'proceed'].includes(queries.answer.trim().toLowerCase())) {
                 ai_query.user_input = "how many question we want to answer";
                 await dispatch(sendQuery(ai_query)).unwrap();

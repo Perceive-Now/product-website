@@ -87,13 +87,17 @@ const SourcesData: React.FC = () => {
                   key={item}
                   className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 gap-1 justify-between"
                 >
-                  <span className="flex-auto break-all leading-tight text-sm">{item}</span>
+                  {/* <span className="flex-auto break-all leading-tight text-sm">{item}</span> */}
+                  <a href={item} className="flex-auto break-all leading-tight text-sm text-blue-700" target="_blank" rel="noopener noreferrer">
+                    {item}
+                  </a>
+
                   <button className="text-red-500 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
                   <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
                   </button>
                 </div>
               ))}
-              {/* <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
+              <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
                 {isInputVisible && (
                   <input
                     type="text"
@@ -115,7 +119,7 @@ const SourcesData: React.FC = () => {
                     </>
                   )}
                 </button>
-              </div> */}
+              </div>
             </div>
           </>
         )}

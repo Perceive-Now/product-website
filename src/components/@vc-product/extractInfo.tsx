@@ -12,7 +12,7 @@ interface ExtractInfoProps {
 }
 
 const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
-  console.log("infooo",info)
+  // console.log("infooo",info)
   const dispatch = useAppDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   // const [formData, setFormData] = useState<Record<string, string>>({});

@@ -276,7 +276,7 @@ const TemplateReport: React.FC = () => {
     if (newItemTitle.trim() && newItemSummary.trim()) {
       setReportItems((prevItems:any) => ({
         ...prevItems,
-        [newItemTitle]: { title: newItemTitle, summary: newItemSummary, subsections: {} },
+        [Object.keys(reportItems).length+1]: { title: newItemTitle, summary: newItemSummary, subsections: {} },
       }));
       setNewItemTitle("");
       setNewItemSummary("");
@@ -298,7 +298,7 @@ const TemplateReport: React.FC = () => {
           keyName={item.title}
           summary={item.summary}
           index={index}
-          tag={key} // Use the key as the tag
+          tag={key} 
           handleDelete={handleDelete}
           moveItem={moveItem}
           indentLevel={indentLevel}
@@ -332,10 +332,10 @@ const TemplateReport: React.FC = () => {
           {open && (
             <div className="h-52 overflow-y-auto">
               {renderItems(reportItems)}
-              {/* <div className="flex flex-col ml-3">
+              <div className="flex flex-col">
                 {isInputVisible ? (
                   <>
-                    <div className="flex flex-col py-1 border border-gray-300 rounded-lg mb-2 p-1">
+                    <div className="flex flex-col py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
                       <div className="flex justify-between items-center mb-2">
                         <input
                           type="text"
@@ -351,17 +351,27 @@ const TemplateReport: React.FC = () => {
                         value={newItemSummary}
                         onChange={(e) => setNewItemSummary(e.target.value)}
                       />
-                    </div>
-                    <button onClick={handleAdd} className="self-end mt-2 text-primary-900 text-sm">
+                       <button onClick={handleAdd} className="self-end mt-2 text-primary-900 text-md">
                       <AddIcon /> Add Section
                     </button>
+                    </div>
+                   
                   </>
                 ) : (
-                  <button onClick={() => setIsInputVisible(true)} className="text-primary-900 mt-4">
-                    <AddIcon /> Add New Section
-                  </button>
+                  <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
+                  <button
+                  className={`flex items-center justify-start text-primary-900 ${isInputVisible ? 'hidden' : ''}`}
+                  onClick={() => setIsInputVisible(true)}                >
+                  {!isInputVisible && (
+                    <>
+                      <AddIcon color="#442873" size={25} />
+                      <span className="">Add</span>
+                    </>
+                  )}
+                </button>
+                </div>
                 )}
-              </div> */}
+              </div>
             </div>
           )}
         </div>
