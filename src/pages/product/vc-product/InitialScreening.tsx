@@ -165,6 +165,7 @@ const InitialScreening: React.FC = () => {
     const [movedItem] = updatedItems.splice(fromIndex, 1);
     updatedItems.splice(toIndex, 0, movedItem);
     setReportItems(updatedItems);
+    dispatch(updatePitchdeckData({ diligenceLevelCovered: updatedItems }));
   };
 
   return (
