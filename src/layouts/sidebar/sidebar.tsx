@@ -182,8 +182,14 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   };
 
   const handleItemClick = (key: any) => {
+    if(key === "industries"){
+      navigate("/vc-product");
+      setOpen(false);
+    }
+    else{
     setActiveItem(key);
     setOpen(true);
+    }
   };
   const handleSubItemClick = (key: any) => {
     setActiveSubItem(key);

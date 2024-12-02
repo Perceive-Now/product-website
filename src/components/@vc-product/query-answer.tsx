@@ -38,7 +38,8 @@ Props) => {
 
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
- 
+  const { Step } = useAppSelector((state) => state.VSProduct);
+
 
   const userId = jsCookie.get("user_id");
 
@@ -71,8 +72,16 @@ Props) => {
                   key={index}
                   onClick={() => {
                     // onSendQuery(query, stage,undefined,true);
-                    setanswer(stage);
-                    dispatch(setprevres({ answer: stage }));
+                    // setanswer(stage);
+                    // dispatch(setprevres({ answer: stage }));
+
+                    // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
+                    if(options.length === 1)
+                      onSendQuery(query, stage,undefined,true);
+                    else{
+                      setanswer(stage);
+                      dispatch(setprevres({ answer: stage }));
+                    }
                   }}
                   disabled={hasselected}
                   className={`${
