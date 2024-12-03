@@ -78,20 +78,20 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
       <img src={DragIconTwo} className="pb-10 cursor-grab" alt="Drag" />
       <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
         <div className="flex items-center mb-1">
-          <span className="bg-appGray-200 p-1 rounded-md mr-1">{tag}</span>
-          {keyName}
+          <span className="bg-appGray-200 p-1 rounded-md mr-1 text-xs md:text-base">{tag}</span>
+          <span className="text-md lg:text-base">{keyName}</span>
           <div className="flex-grow" />
           <button className="text-red-500" onClick={() => handleDelete(tag)}>
             <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
           </button>
         </div>
-        <div className="flex justify-between m-0">
+        <div className="flex flex-col md:flex-row justify-between m-0">
           <span>
-            <div className="bg-appGray-100 p-1 rounded-md">Summary</div>
+            <div className="bg-appGray-100 p-1 text-sm lg:text-base rounded-md w-fit">Summary</div>
           </span>
           <span
             ref={summaryRef}
-            className={`ml-4 text-gray-700 text-justify tracking-tighter text-sm ${
+            className={`mt-1 md:mt-0 md:ml-4 text-gray-700 text-justify tracking-tighter text-sm ${
               isExpanded ? "" : "line-clamp-2"
             }`}
           >
@@ -312,7 +312,7 @@ const TemplateReport: React.FC = () => {
     <DndProvider backend={HTML5Backend}>
       <div
         className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller h-[90vh] ${
-          open ? "flex-[0_0_460px] max-w-[460px]" : "max-w-[215px] max-h-[50px]"
+          open ? "flex-[0_0_460px] max-w-full lg:max-w-[460px]" : "max-w-full sm:max-w-[300px] max-h-[50px]"
         }`}
       >
         <div
@@ -325,7 +325,7 @@ const TemplateReport: React.FC = () => {
               <LayoutIcon />
             </div>
             <div className="ml-2">
-              <h2 className="text-lg font-semibold">Report Template</h2>
+              <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
               {open && <h4 className="mb-4">Arrange/add sections as needed</h4>}
             </div>
           </div>

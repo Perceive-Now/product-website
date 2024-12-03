@@ -54,7 +54,14 @@ export default function Dropdown({
       const spaceBelow = window.innerHeight - bottom; // Space below the button
 
       // Decide whether to open up or down based on available space
-      if (spaceBelow < spaceAbove) {
+      // if (spaceBelow < spaceAbove) {
+      //   setDropdownDirection('up');
+      // } else {
+      //   setDropdownDirection('down');
+      // }
+
+      // show dropdown down till middle of the screen
+      if (spaceBelow < spaceAbove / 2) {
         setDropdownDirection('up');
       } else {
         setDropdownDirection('down');

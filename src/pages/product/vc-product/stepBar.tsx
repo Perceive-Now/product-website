@@ -31,7 +31,7 @@ const StepBar: React.FC = () => {
       {Array.from({ length: totalSteps }, (_, index) => (
         <div key={index} className="flex flex-col items-center relative">
           <div
-            className={`w-4 h-4 border rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 group ${
+            className={`w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] md:w-[30px] md:h-[30px] lg:w-4 lg:h-4 border rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 group ${
               index < currentStep
                 ? "bg-primary-900 border-primary-900"
                 : index === currentStep
@@ -42,7 +42,7 @@ const StepBar: React.FC = () => {
             onMouseLeave={() => setHoveredStep(null)}
           >
             {index < currentStep ? (
-              <span className="text-white text-xl">
+              <span className="text-white lg:text-xl">
                 <IconCheck />
               </span>
             ) : (
@@ -53,7 +53,7 @@ const StepBar: React.FC = () => {
           {index < totalSteps - 1 && <div className="w-[1px] h-[18px] border border-gray-200"></div>}
           {hoveredStep === index && (
               <div
-                className="absolute left-[110%] 2xl:left-auto 2xl:right-[110%] top-0 text-nowrap text-center w-auto max-w-xs text-[12px] px-[15px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none"
+                className="absolute left-[110%] 4xl:left-auto 4xl:right-[110%] top-0 text-nowrap text-center w-auto max-w-xs text-[12px] px-[15px] py-1 bg-[#FFA300] text-white rounded-lg shadow-hoverbox z-10 leading-none"
               >
                 {stepDescriptions[index]}
               </div>

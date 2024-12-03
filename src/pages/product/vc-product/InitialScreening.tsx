@@ -170,7 +170,7 @@ const InitialScreening: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={` border border-gray-300 rounded-lg w-full mb-[60px] overflow-hidden h-[90vh] ${open ? "flex-[0_0_460px] max-w-[460px]" : "max-w-[215px] max-h-[50px]"
+        className={` border border-gray-300 rounded-lg w-full mb-[60px] overflow-hidden h-[90vh] ${open ? "flex-[0_0_460px] max-w-full lg:max-w-[460px]" : "max-w-[215px] max-h-[50px]"
           } `}
       >
         <div className={`px-1 py-1 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>

@@ -519,11 +519,11 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
   );
   return (
     <>
-      <div className="px-3 w-full mx-auto h-full">
-        <div className="flex h-full gap-x-5">
-          <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[90vh]">
+      <div className="px-0 md:px-3 w-full mx-auto h-full">
+        <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
+          <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">
             <div className="relative flex-none">
-              <div className="absolute left-[-50px] top-2 w-[10px]">
+              <div className="absolute left-[-25px] md:left-[-40px] lg:left-[-45px] top-2 w-[10px]">
                 <StepBar />
               </div>
             </div>

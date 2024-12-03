@@ -51,10 +51,10 @@ const SourcesData: React.FC = () => {
   return (
     <div
       className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${
-        open ? "flex-[0_0_460px] max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
+        open ? "flex-[0_0_460px] max-w-full lg:max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
       }`}
     >
-      <div className={`p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
+      <div className={`p-2 lg:p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
         <div className="flex">
           <div onClick={() => setOpen(!open)} className="cursor-pointer">
             <LayoutIcon />
