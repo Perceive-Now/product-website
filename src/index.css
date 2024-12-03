@@ -411,6 +411,9 @@ input {
 .markdownWrapper th {
   background-color: #f2f2f2;
 }
+.markdownWrapper * {
+  @apply select-text;
+}
 .react-joyride__tooltip div{
   text-align: left !important;
 }

@@ -136,6 +136,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
+            dispatch(updateButtonSelection({hasselected:true}));
             dispatch(setprevres({ answer: answer }));
             if (answer === "Post Revenue" || answer === "Pre Revenue") {
               //** Third Converstaion **//
@@ -188,7 +189,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
-                  query: `The ${answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                  query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
                 }),
               );
 
@@ -201,24 +202,11 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 }),
               );
 
+            }else if(Step == 3 && answer == "Continue"){
+              ai_query.user_input = "how many question we want to answer";
+              await dispatch(sendQuery(ai_query)).unwrap();
             }
-            // else if(answer === "Confirm"){
-            //   dispatch(
-            //     updateChatQuery({
-            //       query: `Your final report for ${companyName} will be ready in 48 to 72 hours We will notify you as soon as it is available.`,
-            //     }),
-            //   );
-
-            //   dispatch(
-            //     setVSChats({
-            //       query: "",
-            //       options: ["Start another report", "Learn about market data"],
-            //       answer: "",
-            //       hasbutton: true,
-            //     }),
-            //   );
-
-            // } 
+           
             else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
@@ -389,7 +377,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
-                  query: `The ${queries.answer} diligence level has been selected for ${companyName}. This comprehensive analysis will cover the following areas:`,
+                  query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
                 }),
               );
 
@@ -427,7 +415,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 );
               }
 
-            }else if(chatOptions?.includes("Continue")){
+            }else if(chatOptions?.includes("Continue") && Step == 3){
               if (['continue', 'proceed'].includes(queries.answer.trim().toLowerCase())) {
                 ai_query.user_input = "how many question we want to answer";
                 await dispatch(sendQuery(ai_query)).unwrap();

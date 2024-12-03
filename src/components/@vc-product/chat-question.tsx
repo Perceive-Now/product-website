@@ -89,7 +89,7 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
         <img className="h-3 w-3 " src={PN} alt={"Pn"} />
       </div>
       <div
-        className={`mt-2 rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100`}
+        className={`mt-2 rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative  bg-appGray-100`}
       >
         {/* <div
           className={`text-secondary-800 text-justify ${showMore ? "" : ""}`}

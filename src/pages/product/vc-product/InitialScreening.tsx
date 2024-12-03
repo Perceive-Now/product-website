@@ -165,6 +165,7 @@ const InitialScreening: React.FC = () => {
     const [movedItem] = updatedItems.splice(fromIndex, 1);
     updatedItems.splice(toIndex, 0, movedItem);
     setReportItems(updatedItems);
+    dispatch(updatePitchdeckData({ diligenceLevelCovered: updatedItems }));
   };
 
   return (
@@ -233,7 +234,7 @@ const InitialScreening: React.FC = () => {
                 <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
                   {isInputVisible && (
                     <>
-                      <Select
+                      {/* <Select
                         value={selectedOption}
                         onChange={(option: any) => setSelectedOption(option)}
                         options={options}
@@ -241,7 +242,7 @@ const InitialScreening: React.FC = () => {
                         className="basic-single mr-1 text-sm flex-[0_0_82px]"
                         classNamePrefix="select"
                         placeholder="Select an option"
-                      />
+                      /> */}
                       <div className="w-full overflow-hidden flex-auto">
                         <input
                           type="text"

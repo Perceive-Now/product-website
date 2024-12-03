@@ -38,7 +38,8 @@ Props) => {
 
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
- 
+  const { Step } = useAppSelector((state) => state.VSProduct);
+
 
   const userId = jsCookie.get("user_id");
 
@@ -71,13 +72,21 @@ Props) => {
                   key={index}
                   onClick={() => {
                     // onSendQuery(query, stage,undefined,true);
-                    setanswer(stage);
-                    dispatch(setprevres({ answer: stage }));
+                    // setanswer(stage);
+                    // dispatch(setprevres({ answer: stage }));
+
+                    // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
+                    if(options.length === 1)
+                      onSendQuery(query, stage,undefined,true);
+                    else{
+                      setanswer(stage);
+                      dispatch(setprevres({ answer: stage }));
+                    }
                   }}
                   disabled={hasselected}
                   className={`${
                     answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
-                  } text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
+                  } cursor-pointer text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
                 >
                   {stage}
                 </button>
@@ -85,7 +94,7 @@ Props) => {
             })()
           ) : (
             <div
-              className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-foundationOrange-100`}
+              className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
             >
               {/* <div
                 className={`text-secondary-800 text-justify `}
