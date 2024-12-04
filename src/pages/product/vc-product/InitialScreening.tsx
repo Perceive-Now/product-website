@@ -22,9 +22,12 @@ interface DraggableItemProps {
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete, moveItem }) => {
-  const [, ref] = useDrag({
+  const [{ isDragging }, ref] = useDrag({
     type: ItemType.ITEM,
     item: { index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
 
   const [, drop] = useDrop({
@@ -38,26 +41,25 @@ const DraggableItem: React.FC<DraggableItemProps> = ({ item, index, handleDelete
   });
 
   return (
-    <div ref={(node) => ref(drop(node))} className="flex items-center mb-2">
-      <img src={DragIconTwo} alt="Drag" className="pb-3" />
+    <div
+      ref={(node) => ref(drop(node))}
+      className={`flex items-center mb-2 transition-transform duration-200 ease-in-out ${
+        isDragging ? "scale-105 bg-gray-100 shadow-lg" : "bg-transparent"
+      }`}
+    >
+      <img src={DragIconTwo} alt="Drag" className="" />
       <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-1">
         <div className="flex items-center">
-          {/* <span className="bg-appGray-200 p-1 rounded-md mr-1 text-sm flex-[0_0_32px]">h1</span> */}
           <span className="flex-auto">{item}</span>
           <button className="text-red-500 ml-2 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
             <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
           </button>
         </div>
-        {/* <div className="flex justify-between m-0">
-      <span><div className="bg-appGray-100 p-1 rounded-md">summary</div></span>
-      <span className="ml-4 text-gray-700 text-justify">
-      This is a static summary text that provides additional details.
-      </span>
-    </div> */}
       </div>
     </div>
   );
 };
+
 
 const InitialScreening: React.FC = () => {
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
@@ -205,17 +207,18 @@ const InitialScreening: React.FC = () => {
             </div>
           </div>
           {open && (
-            <>
-              <div className="h-[90%] pn_scroller overflow-y-auto p-1">
+            <div className="flex flex-col h-[90%]">
+              <div className="h-[70%] lg:h-auto pn_scroller overflow-y-auto p-1">
                 {activeTab === "report"
                   ? itemsToDisplay.map((item, index) => (
+                  <div key={item} className="cursor-grab">
                     <DraggableItem
-                      key={item}
                       item={item}
                       index={index}
                       handleDelete={handleDelete}
                       moveItem={moveItem}
-                    />
+                      />
+                    </div>
                   ))
                   : scoringItems.map((item) => (
                     <div
@@ -231,7 +234,8 @@ const InitialScreening: React.FC = () => {
                       </button>
                     </div>
                   ))}
-                <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
+              </div>
+              <div className="flex justify-between items-center my-2 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
                   {isInputVisible && (
                     <>
                       {/* <Select
@@ -267,8 +271,7 @@ const InitialScreening: React.FC = () => {
                     )}
                   </button>
                 </div>
-              </div>
-            </>
+            </div>
           )}
         </div>
       </div>

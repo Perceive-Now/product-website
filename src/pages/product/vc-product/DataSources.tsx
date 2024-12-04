@@ -49,82 +49,95 @@ const SourcesData: React.FC = () => {
   };
 
   return (
-    <div
-      className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${
-        open ? "flex-[0_0_460px] max-w-full lg:max-w-[460px]" : "flex-[0_0_215px] max-w-[215px]"
-      }`}
-    >
-      <div className={`p-2 lg:p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
-        <div className="flex">
-          <div onClick={() => setOpen(!open)} className="cursor-pointer">
-            <LayoutIcon />
-          </div>
-          <div className="ml-2">
-            <h2 className="text-lg font-semibold">Data Sources</h2>
-            {open && (
-              <>
-                <h4 className="mb-4">Arrange/add sections as your need</h4>
-                <div className="text-xs">
-                  {dataSourceKeys.map((tab) => (
-                    <button
-                      key={tab}
-                      className={`p-1 text-sm rounded-lg ${activeTab === tab ? "bg-appGray-200" : ""}`}
-                      onClick={() => setActiveTab(tab)}
-                    >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+<div
+  className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${
+    open
+      ? "flex-[0_0_100%] sm:flex-[0_0_75%] lg:flex-[0_0_460px] max-w-full lg:max-w-[460px]"
+      : "flex-[0_0_100%] sm:flex-[0_0_215px] max-w-full sm:max-w-[215px]"
+  }`}
+>
+  <div className={`p-2 lg:p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
+    <div className="flex items-center">
+      <div onClick={() => setOpen(!open)} className="cursor-pointer">
+        <LayoutIcon />
+      </div>
+      <div className="ml-2">
+        <h2 className="text-lg font-semibold">Data Sources</h2>
         {open && (
           <>
-            <div className="max-h-[50vh] pn_scroller overflow-y-auto p-2">
-              {itemsToDisplay.map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 gap-1 justify-between"
-                >
-                  {/* <span className="flex-auto break-all leading-tight text-sm">{item}</span> */}
-                  <a href={item} className="flex-auto break-all leading-tight text-sm text-blue-700" target="_blank" rel="noopener noreferrer">
-                    {item}
-                  </a>
-
-                  <button className="text-red-500 flex-[0_0_20px]" onClick={() => handleDelete(item)}>
-                  <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
-                  </button>
-                </div>
-              ))}
-              <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
-                {isInputVisible && (
-                  <input
-                    type="text"
-                    className="border border-gray-300 p-1 rounded-lg flex-grow w-full text-sm placeholder:text-appGray-600 focus:outline-none focus:ring-0"
-                    placeholder="Add new item"
-                    value={newItem}
-                    onChange={(e) => setNewItem(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                  />
-                )}
+            <h4 className="mb-4 text-sm sm:text-base">Arrange/add sections as your need</h4>
+            <div className="text-xs sm:text-sm">
+              {dataSourceKeys.map((tab) => (
                 <button
-                  className={`flex items-center justify-start text-primary-900 ${isInputVisible ? 'hidden' : ''}`}
-                  onClick={() => setIsInputVisible(!isInputVisible)}
+                  key={tab}
+                  className={`p-1 text-xs sm:text-sm rounded-lg ${
+                    activeTab === tab ? "bg-appGray-200" : ""
+                  }`}
+                  onClick={() => setActiveTab(tab)}
                 >
-                  {!isInputVisible && (
-                    <>
-                      <AddIcon color="#442873" size={25} />
-                      <span className="">Add</span> 
-                    </>
-                  )}
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
-              </div>
+              ))}
             </div>
           </>
         )}
       </div>
     </div>
+    {open && (
+      <div className="flex flex-col gap-y-2 h-[90%] lg:max-h-[70vh] lg:h-auto pb-2">
+        <div className="h-[50vh] md:h-[70vh] pn_scroller overflow-y-auto p-2">
+          {itemsToDisplay.map((item) => (
+            <div
+              key={item}
+              className="flex items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 gap-1 justify-between"
+            >
+              <a
+                href={item}
+                className="flex-auto break-all leading-tight text-xs sm:text-sm text-blue-700"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {item}
+              </a>
+              <button
+                className="text-red-500 flex-[0_0_20px]"
+                onClick={() => handleDelete(item)}
+              >
+                <img src={TrashIconTwo} alt="Delete" className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1">
+          {isInputVisible && (
+            <input
+              type="text"
+              className="border border-gray-300 p-1 rounded-lg flex-grow w-full text-xs sm:text-sm placeholder:text-appGray-600 focus:outline-none focus:ring-0"
+              placeholder="Add new item"
+              value={newItem}
+              onChange={(e) => setNewItem(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          )}
+          <button
+            className={`flex items-center justify-start text-primary-900 ${
+              isInputVisible ? "hidden" : ""
+            }`}
+            onClick={() => setIsInputVisible(!isInputVisible)}
+          >
+            {!isInputVisible && (
+              <>
+                <AddIcon color="#442873" size={25} />
+                <span className="text-xs sm:text-sm">Add</span>
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
   );
 };
 

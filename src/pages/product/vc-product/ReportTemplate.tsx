@@ -40,9 +40,12 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   moveItem,
   indentLevel = 0,
 }) => {
-  const [, ref] = useDrag({
+  const [{ isDragging }, ref] = useDrag({
     type: ItemType.ITEM,
     item: { index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
 
   const [, drop] = useDrop({
@@ -71,40 +74,45 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
 
   return (
     <div
-      ref={(node) => ref(drop(node))}
-      className="flex items-center mb-2"
-      style={{ marginLeft: indentLevel * 33 }}
-    >
-      <img src={DragIconTwo} className="pb-10 cursor-grab" alt="Drag" />
-      <div className="flex flex-col w-full py-1 border border-gray-300 rounded-lg p-2">
-        <div className="flex items-center mb-1">
-          <span className="bg-appGray-200 p-1 rounded-md mr-1 text-xs md:text-base">{tag}</span>
-          <span className="text-md lg:text-base">{keyName}</span>
-          <div className="flex-grow" />
-          <button className="text-red-500" onClick={() => handleDelete(tag)}>
-            <img src={TrashIconTwo} alt="Delete" className="w-2 h-2" />
+    ref={(node) => ref(drop(node))}
+    className={`flex max-w-full items-start mb-2 transition-transform duration-200 ease-in-out cursor-grab ${
+      isDragging ? "scale-105 bg-gray-100 shadow-lg" : "bg-transparent"
+    }`}
+    style={{ marginLeft: indentLevel * 33 }}
+  >
+    <img src={DragIconTwo} className="pb-10" alt="Drag" />
+    <div className="flex flex-col w-full py-2 border border-gray-300 rounded-lg p-2">
+      <div className="flex items-center justify-between mb-1">
+        <span className="bg-appGray-200 p-1 rounded-md mr-1 text-xs sm:text-sm md:text-base">
+          {tag}
+        </span>
+        <span className="text-sm sm:text-base lg:text-lg">{keyName}</span>
+        <div className="flex-grow" />
+        <button className="text-red-500" onClick={() => handleDelete(tag)}>
+          <img src={TrashIconTwo} alt="Delete" className="w-3 h-3 sm:w-3 sm:h-3" />
+        </button>
+      </div>
+  
+      <div className="flex flex-col md:flex-row justify-between m-0">
+        <span className="text-xs sm:text-sm md:text-base">
+          <div className="bg-appGray-100 p-1 rounded-md w-fit">Summary</div>
+        </span>
+        <span
+          ref={summaryRef}
+          className={`mt-1 sm:mt-0 sm:ml-4 text-gray-700 text-justify tracking-tighter text-sm ${
+            isExpanded ? "" : "line-clamp-2"
+          }`}
+        >
+          {summary}
+        </span>
+        {showArrow && (
+          <button onClick={toggleExpand} className="text-primary-900 ml-2 h-3">
+            {isExpanded ? <ArrowUp /> : <ArrowDown />}
           </button>
-        </div>
-        <div className="flex flex-col md:flex-row justify-between m-0">
-          <span>
-            <div className="bg-appGray-100 p-1 text-sm lg:text-base rounded-md w-fit">Summary</div>
-          </span>
-          <span
-            ref={summaryRef}
-            className={`mt-1 md:mt-0 md:ml-4 text-gray-700 text-justify tracking-tighter text-sm ${
-              isExpanded ? "" : "line-clamp-2"
-            }`}
-          >
-            {summary}
-          </span>
-          {showArrow && (
-            <button onClick={toggleExpand} className="text-primary-900 ml-2 h-3">
-              {isExpanded ? <ArrowUp /> : <ArrowDown />}
-            </button>
-          )}
-        </div>
+        )}
       </div>
     </div>
+  </div>
   );
 };
 
@@ -311,8 +319,8 @@ const TemplateReport: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto pn_scroller h-[90vh] ${
-          open ? "flex-[0_0_460px] max-w-full lg:max-w-[460px]" : "max-w-full sm:max-w-[300px] max-h-[50px]"
+        className={`border border-gray-300 rounded-lg w-full mb-[70px] p-2 h-[90vh] ${
+          open ? "flex-[0_0_500px] max-w-full lg:max-w-[460px]" : "max-w-full sm:max-w-[300px] h-fit"
         }`}
       >
         <div
@@ -320,7 +328,7 @@ const TemplateReport: React.FC = () => {
             open ? "w-full h-full" : "w-full h-auto"
           } bg-opacity-50 rounded-lg`}
         >
-          <div className="flex">
+          <div className="flex flex-col gap-y-2">
             <div onClick={() => setOpen(!open)} className="cursor-pointer">
               <LayoutIcon />
             </div>
@@ -330,8 +338,10 @@ const TemplateReport: React.FC = () => {
             </div>
           </div>
           {open && (
-            <div className="h-52 overflow-y-auto">
+            <div className="h-[90%] flex flex-col gap-y-2 overflow-y-hidden">
+              <div className="h-[75%] sm:h-[80%] pn_scroller overflow-y-auto overflow-x-hidden p-1">
               {renderItems(reportItems)}
+              </div>
               <div className="flex flex-col">
                 {isInputVisible ? (
                   <>
