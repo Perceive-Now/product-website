@@ -90,18 +90,17 @@ const VCReport = () => {
             setanswer("");
 
             //First Converstaion //
+            setTimeout(() => {
             dispatch(
               setVSChats({
                 query: `Let’s create something amazing! 🚀  
-I’m here to turn the startup’s info into a powerful, data-driven report just for you.
-
-Hi there! Let’s start with the basics. What’s the name of the startup, and what stage is it in (e.g., Seed, Series A)?
-
-            `,
+I’m here to turn the startup’s info into a powerful, data-driven report just for you.`,
                 answer: "",
               }),
             );
+          }, 500);
 
+          setTimeout(() => {
             //** Second Converstaion **//
             dispatch(
               setVSChats({
@@ -110,7 +109,9 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 answer: companyName,
               }),
             );
+          }, 2500);
 
+          setTimeout(() => {
             dispatch(
               setVSChats({
                 query: "",
@@ -119,6 +120,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                 hasbutton: true,
               }),
             );
+          }, 3500);
 
             //**   **//
 
@@ -140,11 +142,15 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             dispatch(setprevres({ answer: answer }));
             if (answer === "Post Revenue" || answer === "Pre Revenue") {
               //** Third Converstaion **//
+              setTimeout(() => {
               dispatch(
                 updateChatQuery({
                   query: `Thank you! Since ${companyName} is in the **${answer}** stage, could you specify the current development phase from the options below?`,
                 }),
               );
+            }, 5000);
+
+            setTimeout(() => {
               dispatch(
                 setVSChats({
                   query: "",
@@ -153,6 +159,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            }, 3000);
 
               //**   **//
             } else if (
@@ -161,7 +168,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               answer === "Seed Stage"
             ) {
               //** Fourth Converstaion **//
-
+              
               dispatch(
                 updateChatQuery({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
@@ -170,12 +177,15 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               //**     **//
             } else if (answer === "Looks good") {
               //** Fifth Converstaion **//
+              setTimeout(() => {
               dispatch(
                 updateChatQuery({
                   query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
                   You can expand any section for more details if needed.`,
                 }),
               );
+            }, 1500);
+            setTimeout(() => {
               dispatch(
                 setVSChats({
                   query: "",
@@ -184,6 +194,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            }, 2500);
               //**     **//
             } else if (answer === "Quick Insights" || answer === "Deep Dive") {
               dispatch(setCurrentStep(3));
@@ -236,11 +247,14 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               if (['pre revenue', 'post revenue'].includes(queries.answer.trim().toLowerCase())) {
               setcompanyStage(queries.answer);
               console.log("comapny stage1",companyStage);
+              setTimeout(() => {
               dispatch(
                 updateChatQuery({
                   query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below?`,
                 }),
               );
+            }, 1500);
+            setTimeout(() => {
               dispatch(
                 setVSChats({
                   query: "",
@@ -249,6 +263,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            }, 2500);
 
             }else{
 
@@ -284,11 +299,13 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
               //** Fourth Converstaion **//
 
               if (['pre-seed stage', 'seed stage', 'ideation stage'].includes(queries.answer.trim().toLowerCase())) {
+              setTimeout(() => {
               dispatch(
                 updateChatQuery({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
                 }),
               );
+            }, 1500);
               setFile("false");
 
               }else{
@@ -374,13 +391,15 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
             } else if (chatOptions?.includes("Deep Dive")) {
 
               if (['deep dive', 'quick insights'].includes(queries.answer.trim().toLowerCase())) {
+                setTimeout(() => {
                 dispatch(setCurrentStep(3));
               dispatch(
                 updateChatQuery({
                   query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
                 }),
               );
-
+            }, 1500);
+            setTimeout(() => {
               dispatch(
                 setVSChats({
                   query: "",
@@ -389,6 +408,7 @@ Hi there! Let’s start with the basics. What’s the name of the startup, and w
                   hasbutton: true,
                 }),
               );
+            }, 2500);
             }else{
 
                 dispatch(

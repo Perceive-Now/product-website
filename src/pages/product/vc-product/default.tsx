@@ -24,9 +24,7 @@ const ReportDefault: React.FC = () => {
        Ready?`
       : `
       Let’s create something amazing! 🚀 
-      I’m here to turn the startup’s info into a powerful, data-driven report just for you. 
-
-      Hi there! Let’s start with the basics. What’s the name of the startup, and what stage is it in (e.g., Seed, Series A)?
+      I’m here to turn the startup’s info into a powerful, data-driven report just for you.
           `.trim();
 
   // useEffect(() => {

@@ -329,12 +329,16 @@ const TemplateReport: React.FC = () => {
           } bg-opacity-50 rounded-lg`}
         >
           <div className="flex flex-col gap-y-2">
+ 
+            <div className="ml-2 flex items-start gap-x-2">
             <div onClick={() => setOpen(!open)} className="cursor-pointer">
               <LayoutIcon />
             </div>
-            <div className="ml-2">
+            <div>
+
               <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
               {open && <h4 className="mb-4">Arrange/add sections as needed</h4>}
+            </div>
             </div>
           </div>
           {open && (
