@@ -6,13 +6,12 @@ const StepBar: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
 
-  const totalSteps = 6;
+  const totalSteps = 5;
 
   const stepDescriptions = [
     "Startup Name and Stage",
     "Pitch Deck Upload",
     "AI-Driven Summary and Diligence Level Selection",
-    "Insufficiency-Based Questions",
     "Data Source Suggestions",
     "Final Template Validation & Report Generation",
   ];

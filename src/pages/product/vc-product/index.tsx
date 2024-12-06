@@ -592,10 +592,10 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
           </div>
 
           {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
-          {Step == 5 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
+          {Step == 4 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
           {/* {Step == 6 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />} */}
           {Step == 3 && <InitialScreening />}
-          {Step == 6 && <TemplateReport />}
+          {Step == 5 && <TemplateReport />}
           
         </div>
       </div>
