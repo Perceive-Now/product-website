@@ -214,7 +214,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               );
 
             }else if(Step == 3 && answer == "Continue"){
-              ai_query.user_input = "how many question we want to answer";
+              ai_query.user_input = "skip";
               await dispatch(sendQuery(ai_query)).unwrap();
             }
            
@@ -488,12 +488,14 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             // ).unwrap();
             const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
-
+            const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
+            const extractObject = JSON.parse(cleanValue);
             dispatch(
               setVSChats({
                 query: "",
                 answer: "",
                 extract: cleanedSummary,
+                extractObject 
               }),
             );
             dispatch(setCurrentStep(2));
@@ -564,7 +566,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                         <ChatQuery query={chat.query} />
 
                         {chat.extract && (
-                          <ExtractInfo onSendQuery={onSendQuery} info={chat.extract} />
+                          <ExtractInfo onSendQuery={onSendQuery} info={chat.extract} obj={chat.extractObject}/>
                         )}
 
                       </>

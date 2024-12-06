@@ -8,65 +8,19 @@ import { useAppDispatch } from "src/hooks/redux";
 import { setVSChats, updatePitchdeckData } from "src/stores/vs-product";
 interface ExtractInfoProps {
   info: string;
+  obj?: any;
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
 }
 
-const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
-  // console.log("infooo",info)
+const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, obj, onSendQuery }) => {
+  console.log("infooo", info);
+  console.log("obj-----", obj);
   const dispatch = useAppDispatch();
   const [modalOpen, setModalOpen] = useState(false);
-  // const [formData, setFormData] = useState<Record<string, string>>({});
-  //   info= `**Company Name:** [EcoTech Innovations]
-  // **Tagline:** [Empowering homes with clean energy]
-  // **Mission:** [To make clean energy accessible, affordable, and efficient for everyone.]
-  // **Founded:** [2021]
-  // **Location:** [San Francisco, CA]
-  // **Current Issue:** [Over 70% of homes still rely on non-renewable energy, leading to inefficiencies and high carbon footprints.]
-  // **Pain Point:** [Homeowners face rising energy costs, while environmental regulations demand more sustainable solutions.]
-  // **Customer Impact:** [High costs, environmental concerns, lack of easy solutions for energy management.]
-  // **Product:** [Solar-powered smart home energy systems.]
-  // **Key Features:** [AI-driven energy optimization., Seamless integration with existing home systems., Scalable for commercial use.]
-  // **Unique Value Proposition:** [EcoTech reduces energy bills by up to 30%, while enabling homes to lower their carbon emissions.]
-  // **Market Size:** [$300 billion global smart home market, with a $50 billion subset for clean energy solutions.]
-  // **Growth Rate:** [8.9% CAGR in the smart home energy management sector.]
-  // **Target Audience:** [Homeowners and commercial properties looking to reduce energy costs and carbon footprints.]
-  // **Revenue Streams:** [Direct Sales: Solar-powered systems sold to homeowners and businesses., Subscription: Monthly energy management services via AI-driven software., Partnerships: Partnering with utility companies to provide grid support.]
-  // **Milestones:** [1,500 units sold in the first 12 months., Partnership with 3 utility providers., $1.2M in annual recurring revenue (ARR) from subscriptions.]
-  // **Customer Feedback:** [Average customer savings of 25% on energy bills.]
-  // **Channels:** [Direct-to-consumer via digital marketing., Partnerships with home builders and utility companies., B2B for commercial installations.]
-  // **Customer Acquisition Cost (CAC):** [$120.]
-  // **Lifetime Value (LTV):** [$900.]
-  // **Competitors:** [Tesla Powerwall, Sunrun, Vivint Solar]
-  // **Differentiation:** [AI-driven optimization and seamless integration with existing home systems give EcoTech a unique edge over competitors.]
-  // **Revenue:** [$2.5M (2023 projected).]
-  // **Burn Rate:** [$50k per month.]
-  // **Funding:** [Currently raising $5M for scaling manufacturing and marketing.]
-  // **Use of Funds:** [60% manufacturing, 30% marketing, 10% operational costs.]
-  // **CEO:** [Jane Doe (10+ years in clean tech, ex-SolarCity).]
-  // **CTO:** [John Smith (AI expert, PhD in Machine Learning).]
-  // **COO:** [Emily Johnson (Operations lead, previously at Tesla).]
-  // **Patents:** [2 patents filed for AI optimization algorithms and energy storage technology.]
-  // **Competitive Edge:** [Proprietary software for real-time energy management.]
-  // **Near-term Goals:** [Expand into Europe and Asia-Pacific within 18 months.]
-  // **Long-term Vision:** [Become a global leader in sustainable energy solutions for smart homes.]`
-  // console.log("infooooooooooooo", info);
+
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  // const parseInfo = (infoString: string) => {
-  //   const infoLines = infoString.split("\n").filter((line) => line.trim() !== "");
-  //   const infoObject: Record<string, string> = {};
-
-  //   infoLines.forEach((line) => {
-  //     const trimmedLine = line.replace(/^- /, "");
-  //     const [key, value] = trimmedLine.split(":").map((part) => part.trim());
-  //     if (key && value) {
-  //       infoObject[key.replace(/[\[\]]/g, "")] = value.replace(/[\[\]]/g, "").trim();
-  //     }
-  //   });
-
-  //   return infoObject;
-  // };
 
   const formatInfoString = (input: string): string => {
     return input
@@ -92,19 +46,37 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
     return parsedData;
   };
 
-  const [formData, setFormData] = useState<Record<string, string>>(parseInfo(info));
-  const [changedData, setChangedData] = useState({});
-  const handleChange = (key: string, value: string) => {
-    setFormData({
-      ...formData,
-      [key]: value,
-    });
-    setChangedData({
-      ...changedData,
-      [key]: value,
-    });
-  };
+  const [formData, setFormData] = useState<Record<string, any>>(obj);
 
+  const [changedData, setChangedData] = useState({});
+  // const handleChange = (key: string, value: string) => {
+  //   console.log("keyyyyy",key);
+  //   setFormData({
+  //     ...formData,
+  //     [key]: value,
+  //   });
+  //   setChangedData({
+  //     ...changedData,
+  //     [key]: value,
+  //   });
+  // };
+
+  const handleChange = (key: string, value: string, index?: number) => {
+    console.log("keyyyyy", key, index);
+
+    if (Array.isArray(formData[key]) && index !== undefined) {
+      const updatedArray: any = [...formData[key]];
+      updatedArray[index] = value;
+      setFormData({
+        ...formData,
+        [key]: updatedArray,
+      });
+      setChangedData({
+        ...changedData,
+        [key]: updatedArray,
+      });
+    }
+  };
 
   const convertToInfoString = (data: Record<string, string>): string => {
     return Object.entries(data)
@@ -114,58 +86,12 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // const updatedSummary = Object.entries(changedData)
-    //   .map(([key, value]) => `${key} is now updated to ${value}`)
-    //   .join(", ");
 
-    // console.log("updatedSummary", updatedSummary);
-    // if (updatedSummary) {
-    //   onSendQuery("", updatedSummary, undefined, false);
-    //   // dispatch(
-    //   //   setVSChats({
-    //   //     query: "",
-    //   //     answer: "",
-    //   //     options: ["Yes"],
-    //   //     hasbutton: true,
-    //   //   }),
-    //   // );
-    //   handleModalClose();
-    // }
-    console.log("sub,itting",convertToInfoString(formData))
-    const updateExtract =  convertToInfoString(formData);
-    dispatch(updatePitchdeckData({pitchdeckSummary:updateExtract}));
+    console.log("sub,itting", JSON.stringify(formData));
+    const updateExtract = JSON.stringify(formData);
+    dispatch(updatePitchdeckData({ pitchdeckSummary: updateExtract }));
     handleModalClose();
   };
-
-  // const formatInfo = () => {
-  //   return info.split("\n").map((line, index) => {
-  //     const regex = /\[(.*?)\]/g;
-  //     const parts = line.split(regex);
-
-  //     return (
-  //       <div key={index}>
-  //         {parts.map((part, idx) => {
-  //           if (idx % 2 === 0) {
-  //             return part;
-  //           } else {
-  //             const key = part.trim();
-  //             const defaultValue = formData[key] || key;
-
-  //             return (
-  //               <input
-  //                 key={idx}
-  //                 type="text"
-  //                 value={defaultValue}
-  //                 onChange={(e) => handleChange(key, e.target.value)}
-  //                 className="border p-1 rounded-md bg-transparent border-neutral-500 mb-1"
-  //               />
-  //             );
-  //           }
-  //         })}
-  //       </div>
-  //     );
-  //   });
-  // };
 
   return (
     <>
@@ -185,13 +111,39 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
           Edit Extract
         </div>
 
-        <Markdown
+        {/* <Markdown
           className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[[rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]]}
         >
           {formatInfoString(info)}
-        </Markdown>
+        </Markdown> */}
+
+        {Object.entries(formData).map(([key, value]) => {
+          if (Array.isArray(value) && !value.every((item) => typeof item === "string")) {
+            return null;
+          }
+
+          return (
+            <div key={key}>
+              {Array.isArray(value) && value.length > 1 ? (
+                <>
+                  <div className="font-bold">{key}:</div>
+                  <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+                    {value.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p>
+                  <span className="font-bold">{key}:</span> {value}
+                </p>
+              )}
+              <br />
+            </div>
+          );
+        })}
       </div>
 
       <Modal open={modalOpen} handleOnClose={handleModalClose}>
@@ -211,7 +163,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
             Edit Extract
           </div>
 
-          {Object.entries(formData).map(([key, value]) => (
+          {/* {Object.entries(formData).map(([key, value]) => (
             <div key={key} className="flex items-center mb-1">
               <label className="font-bold text-sm mr-2 text-nowrap">{key}:</label>
               <input
@@ -221,7 +173,49 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, onSendQuery }) => {
                 className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
               />
             </div>
-          ))}
+          ))} */}
+
+          {Object.entries(formData).map(([key, value]) => {
+            if (
+              Array.isArray(value) &&
+              value.length > 1 &&
+              !value.every((item) => typeof item === "string")
+            ) {
+              return null;
+            }
+
+            return (
+              <>
+                {Array.isArray(value) && value.length > 1 ? (
+                  <div key={key} className="items-center mb-1">
+                    <div className="font-bold text-sm text-start mt-1">{key}:</div>
+                    <ul style={{ listStyleType: "disc", paddingLeft: "20px" }} className="mb-2">
+                      {value.map((item, index) => (
+                        <li key={index} className="mt-1">
+                          <input
+                            type="text"
+                            value={item}
+                            onChange={(e) => handleChange(key, e.target.value, index)}
+                            className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <div key={key} className="flex items-center mb-1">
+                    <label className="font-bold text-sm mr-2 text-nowrap">{key}:</label>
+                    <input
+                      type="text"
+                      value={value}
+                      onChange={(e) => handleChange(key, e.target.value, 0)}
+                      className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                    />
+                  </div>
+                )}
+              </>
+            );
+          })}
 
           <button
             onClick={handleSubmit}

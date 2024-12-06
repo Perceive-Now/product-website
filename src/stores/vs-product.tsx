@@ -5,6 +5,7 @@ interface VSChat {
   query: string;
   answer?: string;
   extract?: string;
+  extractObject?:any;
   options?: string[];
   hasbutton?: boolean;
   hasselected?: boolean;
