@@ -414,6 +414,10 @@ input {
 .markdownWrapper * {
   @apply select-text;
 }
+.react-joyride__tooltip {
+  position: relative;
+  bottom: 25px !important;
+}
 .react-joyride__tooltip div{
   text-align: left !important;
 }
@@ -452,7 +456,7 @@ input {
   background-repeat: no-repeat;
 
   position: relative !important;
-  top: 30px !important;
+  top: 5px !important;
   transform: scale(0.9);
 }
 .__floater__arrow svg{
