@@ -49,6 +49,7 @@ const VCReport = () => {
   const [isfile, setFile ] =useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsloading] = useState(false);
+  const [delayLoading, setDelayLoading] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
   let { companyName } = useAppSelector((state) => state.VSProduct);
@@ -91,6 +92,7 @@ const VCReport = () => {
 
             //First Converstaion //
             setTimeout(() => {
+              setDelayLoading(true);
             dispatch(
               setVSChats({
                 query: `Let’s create something amazing! 🚀  
@@ -109,6 +111,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 answer: companyName,
               }),
             );
+            
           }, 2500);
 
           setTimeout(() => {
@@ -120,6 +123,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 hasbutton: true,
               }),
             );
+            setDelayLoading(false);
           }, 3500);
 
             //**   **//
@@ -177,6 +181,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               //**     **//
             } else if (answer === "Looks good") {
               //** Fifth Converstaion **//
+              setIsloading(false);
+              setDelayLoading(true);
               setTimeout(() => {
               dispatch(
                 updateChatQuery({
@@ -194,6 +200,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
+              setDelayLoading(false);
             }, 2500);
               //**     **//
             } else if (answer === "Quick Insights" || answer === "Deep Dive") {
@@ -247,10 +254,12 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               if (['pre revenue', 'post revenue'].includes(queries.answer.trim().toLowerCase())) {
               setcompanyStage(queries.answer);
               console.log("comapny stage1",companyStage);
+              setIsloading(false);
+              setDelayLoading(true);
               setTimeout(() => {
               dispatch(
                 updateChatQuery({
-                  query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below?`,
+                  query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below? lol`,
                 }),
               );
             }, 1500);
@@ -263,6 +272,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
+              setDelayLoading(false);
             }, 2500);
 
             }else{
@@ -299,12 +309,15 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               //** Fourth Converstaion **//
 
               if (['pre-seed stage', 'seed stage', 'ideation stage'].includes(queries.answer.trim().toLowerCase())) {
-              setTimeout(() => {
+                setIsloading(false);
+              setDelayLoading(true);
+                setTimeout(() => {
               dispatch(
                 updateChatQuery({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
                 }),
               );
+              setDelayLoading(false);
             }, 1500);
               setFile("false");
 
@@ -391,6 +404,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             } else if (chatOptions?.includes("Deep Dive")) {
 
               if (['deep dive', 'quick insights'].includes(queries.answer.trim().toLowerCase())) {
+                setIsloading(false);
+                setDelayLoading(true);
                 setTimeout(() => {
                 dispatch(setCurrentStep(3));
               dispatch(
@@ -408,6 +423,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
+              setDelayLoading(false);
             }, 2500);
             }else{
 
@@ -477,9 +493,10 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             query: "Great! Let me deep dive into the file.",
             answer: file.name,
           };
-
+          setTimeout(() => {
           dispatch(setVSChats(firstQuery));
           dispatch(setCurrentStep(1));
+          }, 1000);
 
           const fileResponse = await dispatch(extractFileData(file)).unwrap();
           console.log("file ress", fileResponse);
@@ -571,6 +588,11 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
                       </>
                     ))}
+                    {delayLoading && (
+                      <div className="flex items-center justify-center p-5 h-full">
+                        <DotLoader />
+                      </div>
+                    )}
                     {isLoading && (
                       <div className="flex items-center justify-center p-5 h-full">
                         <DotLoader />

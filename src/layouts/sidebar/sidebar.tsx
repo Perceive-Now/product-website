@@ -64,7 +64,7 @@ const tourSteps = [
     target: ".sidebar-ip",
 
     content: (
-      <div>
+      <div className="py-1">
         With IP Insights, you can explore patents or search prior art. Want to dive in now or move
         on?{" "}
         <a href="/know-now/ip-analysis/" className="px-1 py-1 border border-appGray-200 rounded-lg 
@@ -92,7 +92,7 @@ const tourSteps = [
   {
     target: ".sidebar-vc",
     content: (
-      <div>
+      <div className="py-1">
        In Venture Capital, find startups and investment opportunities. Want to check it out?{" "}
         <a href="/vc-product" className="px-1 py-1 border border-appGray-200 rounded-lg 
   absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
@@ -105,7 +105,7 @@ const tourSteps = [
   {
     target: ".sidebar-firm",
     content: (
-      <div>
+      <div className="py-1">
        Here, you get insights into markets and competitors. Ready to explore?{" "}
         <a href="/know-now/market-intelligence/" className="px-1 py-1 border border-appGray-200 rounded-lg 
   absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
@@ -118,7 +118,7 @@ const tourSteps = [
   {
     target: ".sidebar-healthcare",
     content: (
-      <div>
+      <div className="py-1">
        Lets checkout Healthcare trends and innovations! Ready?{" "}
         <a href="/vc-product" className="px-1 py-1 border border-appGray-200 rounded-lg 
   absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
@@ -283,19 +283,35 @@ const handleJoyrideCallback = (data: any) => {
         scrollToFirstStep
         // showSkipButton
         hideBackButton
+        hideCloseButton
         styles={{
           options: {
             zIndex: 2000000,
             primaryColor: '#FFA300',
             backgroundColor: '#FFA300',
-            textColor: '#373D3F', 
+            textColor: '#373D3F',
           },
           overlay: {
             backgroundColor: 'rgba(79, 46, 8, 0)',
           },
-        }}
+          spotlight: {
+            backgroundColor: 'transparent',
+            borderWidth: 3.5,
+            borderColor: '#996200',
+            borderRadius: 10,
+          },
+        }}        
         callback={handleJoyrideCallback}
         stepIndex={currentStepIndex}
+        spotlightPadding={0}
+        // tooltipComponent={(props) => (
+        //   <div className="relative bg-[#FFA300] text-[#373D3F] p-1 rounded-lg shadow-lg">
+        //     Hello world
+
+        //     {/* arrow here */}
+           
+        //   </div>
+        // )}
       />
         <div className="w-full flex-auto">
           <div className="flex items-center gap-1 justify-start flex-col">
@@ -314,7 +330,7 @@ const handleJoyrideCallback = (data: any) => {
             {sidebarItems.map((item) => (
               <button
                 key={item.key}
-                className={classNames(`${item.classname} py-1 my-1 inline-flex justify-center w-full text-center relative`, {
+                className={classNames(`${item.classname} py-1 2xl:py-2 my-1 inline-flex justify-center w-full text-center relative`, {
                   "bg-white": activeItem === item.key,
                   "text-primary-900": activeItem !== item.key,
                   // "hover:bg-primary-900": activeItem !== item.key,

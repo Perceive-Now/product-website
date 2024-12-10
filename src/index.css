@@ -440,16 +440,20 @@ input {
   padding-bottom:0 !important;
   font-size:14px !important;
   font-weight: 600 !important;
-  position: relative;
+  position: relative !important;
   z-index: 1;
 }
 .__floater__arrow span{
   background-image:url('../src/assets/images/tootlipArrow.png');
-  background-position:bottom left;
+  background-position: bottom left;
   width: 48px;
   height: 48px;
   background-size: 48px auto;
   background-repeat: no-repeat;
+
+  position: relative !important;
+  top: 30px !important;
+  transform: scale(0.9);
 }
 .__floater__arrow svg{
   opacity:0;
