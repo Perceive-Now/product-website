@@ -27,6 +27,11 @@ import LoginPage from "./pages/authentication/login";
 import UserProfile from "./pages/my-account/profile";
 import MyReport from "./pages/my-account/my-reports";
 import Setting from "./pages/my-account/setting";
+import Basics from "./pages/my-account/basics";
+import Preferences from "./pages/my-account/preferences";
+import MyUsers from "./pages/my-account/my-users";
+import AddUser from "./pages/my-account/my-users/add-user";
+import EditUser from "./pages/my-account/my-users/edit-user";
 
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
@@ -101,9 +106,13 @@ function App() {
             <Route path="/stay-tuned" element={<StayTunedPage />} />
 
             {/* Account */}
-            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/profile" element={<Basics />} />
             <Route path="/my-reports" element={<MyReport />} />
             <Route path="/setting" element={<Setting />} />
+            <Route path="/preferences" element={<Preferences />} />
+            <Route path="/my-users" element={<MyUsers />} />
+            <Route path="/edit-user/:id" element={<EditUser />} />
+            <Route path="/add-user" element={<AddUser />} />
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>

@@ -60,10 +60,10 @@ export default function Landing() {
     //         <Title text="in 4 Easy Steps!" />
     //       </div>
 
-    //       <Link to="/new-report">
-    //         <Button type="primary" classname="mt-[20px] w-[300px]">
-    //           Continue
-    //         </Button>
+    // <Link to="/new-report">
+    // <Button type="primary" classname="mt-[20px] w-[300px]">
+    //   Continue
+    // </Button>
     //       </Link>
 
     //       <div className="mt-4 lg:mt-8 xl:mt-12">
@@ -122,93 +122,169 @@ export default function Landing() {
     //     </div>
     //   </div>
     // </div>
-    <div className="h-[calc(100vh-160px)] px-3 w-full mx-auto flex flex-col">
-      {!runTour && (
-      <div className="flex">
-        {/* <ReportDefault /> */}
 
-        <div className="flex-1 flex items-center justify-center mt-5">
-          <div className="flex flex-col items-center p-4">
-            <div className="mb-3">
-              <div className="h-8 w-8 rounded-full bg-appGray-100 flex items-center justify-center">
-                <img className="h-5 w-5" src={PN} alt="Pn" />
+    // //tour guide
+    // <div className="h-[calc(100vh-160px)] px-3 w-full mx-auto flex flex-col">
+    //   {!runTour && (
+    //   <div className="flex">
+    //     {/* <ReportDefault /> */}
+
+    //     <div className="flex-1 flex items-center justify-center mt-5">
+    //       <div className="flex flex-col items-center p-4">
+    //         <div className="mb-3">
+    //           <div className="h-8 w-8 rounded-full bg-appGray-100 flex items-center justify-center">
+    //             <img className="h-5 w-5" src={PN} alt="Pn" />
+    //           </div>
+    //         </div>
+    //         <div
+    //           className={`rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100 min-w-[550px]`}
+    //         >
+    //           <div className={`text-base leading-tight`}>
+    //             {defaultPrompt.split("\n").map((line, index) => (
+    //               <React.Fragment key={index}>
+    //                 {line.trim()}
+    //                 {index < defaultPrompt.split("\n").length - 1 && <br />}
+    //               </React.Fragment>
+    //             ))}
+    //           </div>
+    //         </div>
+    //         {!finishTour && (
+    //         <div className="flex justify-end w-full mt-4">
+    //           <button
+    //             onClick={() => {
+    //               dispatch(setStartTour(true));
+    //             }}
+    //             className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl
+    //           hover:bg-primary-900 hover:text-white transition-colors duration-200"
+    //           >
+    //             Sure
+    //           </button>
+    //           <button
+    //             onClick={() => {
+    //               dispatch(setFinishTour(true));
+    //             }}
+    //             className="px-4 py-2 border border-appGray-200 rounded-xl
+    //           hover:bg-primary-900 hover:text-white transition-colors duration-200"
+    //           >
+    //             Skip the tour
+    //           </button>
+    //         </div>
+    //         )}
+    //       </div>
+    //     </div>
+
+    //     {/* <div className="flex-grow">
+    //     {chats && chats.length <= 0 ? (
+    //       <div className="flex flex-row justify-between flex-grow mb-[300px]">
+    //         <ReportDefault setQuery={setQuery} query={query} />
+    //       </div>
+    //     ) : (
+    //       // <div className="flex justify-center items-center h-[650px] mb-5">
+    //       //   <div
+    //       //     ref={chatRef}
+    //       //     className="bg-white rounded-lg p-3 w-[73%] h-[650px] overflow-y-auto pn_scroller shadow-lg"
+    //       //   >
+    //       //     <div className="">
+    //       //       {chats.map((chat, idx) => (
+    //       //         <>
+    //       //           <ChatQuery query={chat.query} />
+    //       //           <QueryAnswer
+    //       //             ido={`chat-[${idx}]`}
+    //       //             query={chat.query}
+    //       //             answer={chat.answer}
+    //       //             isLoading={isLoading}
+    //       //             message_id={chat.id}
+    //       //             hasselected={chat.hasselected || ""}
+    //       //             hasbutton={chat.hasbutton || false}
+    //       //             handleClick={handleClick}
+    //       //           />
+    //       //         </>
+    //       //       ))}
+    //       //     </div>
+    //       //   </div>
+    //       // </div>
+    //     )}
+    //   </div> */}
+    //   </div>
+    //   )}
+    //   {/* <div className="flex items-center justify-center mt-auto w-[800px] ml-[300px]">
+    //   <AddQuery query="" answer="" sendQuery={()=>{console.log("")}} setanswer={()=>{console.log("")}} />
+    //   </div> */}
+    // </div>
+    <>
+      <div className="w-full">
+        <nav className="w-full text-white px-6 py-4">
+          <div className="flex justify-between items-center">
+            <Link to="/" className="text-[18px] font-semibold text-black">
+              Home
+            </Link>
+            <div className="flex gap-4 items-center">
+              <Link to="/" className="text-black text-nowrap text-base">
+                Current Agent
+              </Link>
+              <div className="flex bg-[#E8EAF2] p-[2px] border-none rounded-[4px] items-center">
+                <select
+                  id="format"
+                  name="format"
+                  value="Technology & R&D"
+                  // onChange={handleChange}
+                  required
+                  className="appearance-none w-full border-none pl-2 pr-1 py-1 text-black focus:outline-none rounded-lg bg-transparent"
+                >
+                  <option value="" className="text-base">Technology & R&D</option>
+                </select>
+
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-chevron-down mr-2"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="#6B7280"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
               </div>
             </div>
-            <div
-              className={`rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100 min-w-[550px]`}
-            >
-              <div className={`text-base leading-tight`}>
-                {defaultPrompt.split("\n").map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line.trim()}
-                    {index < defaultPrompt.split("\n").length - 1 && <br />}
-                  </React.Fragment>
-                ))}
+          </div>
+        </nav>
+
+        <div className="h-[calc(100vh-160px)] px-3 w-full mx-auto flex flex-col justify-center items-center">
+          <div className="flex items-center justify-between w-full max-w-xl px-6 py-4">
+            <div className="flex flex-col ml-6 w-full">
+              <div className="h-16 w-16 rounded-full flex mb-2">
+                <img className="h-10 w-10" src={PN} alt="Pn" />
+              </div>
+              <h1 className="text-2xl font-semibold mb-3 font-nunito">
+                Discover Insights and Create Impact.
+              </h1>
+              <p className="text-base mb-4 font-nunito font-normal">
+                Generate tailored reports or get instant answers with Know Now—your partner for
+                smarter IP and market research.
+              </p>
+
+              <div className="flex gap-2">
+                <Link to="/start-conversation">
+                  <div className="border text-[#442873] border-[#442873] hover:bg-[#442873] hover:text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
+                    KnowNow
+                  </div>
+                </Link>
+                <Link to="/vc-product">
+                  <div className="border border-[#442873] text-[#442873] hover:text-white hover:bg-[#442873] rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
+                    Report
+                  </div>
+                </Link>
               </div>
             </div>
-            {!finishTour && (
-            <div className="flex justify-end w-full mt-4">
-              <button
-                onClick={() => {
-                  dispatch(setStartTour(true));
-                }}
-                className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
-              hover:bg-primary-900 hover:text-white transition-colors duration-200"
-              >
-                Sure
-              </button>
-              <button
-                onClick={() => {
-                  dispatch(setFinishTour(true));
-                }}
-                className="px-4 py-2 border border-appGray-200 rounded-xl 
-              hover:bg-primary-900 hover:text-white transition-colors duration-200"
-              >
-                Skip the tour
-              </button>
-            </div>
-            )}
           </div>
         </div>
-
-        {/* <div className="flex-grow">
-        {chats && chats.length <= 0 ? (
-          <div className="flex flex-row justify-between flex-grow mb-[300px]">
-            <ReportDefault setQuery={setQuery} query={query} />
-          </div>
-        ) : (
-          // <div className="flex justify-center items-center h-[650px] mb-5">
-          //   <div
-          //     ref={chatRef}
-          //     className="bg-white rounded-lg p-3 w-[73%] h-[650px] overflow-y-auto pn_scroller shadow-lg"
-          //   >
-          //     <div className="">
-          //       {chats.map((chat, idx) => (
-          //         <>
-          //           <ChatQuery query={chat.query} />
-          //           <QueryAnswer
-          //             ido={`chat-[${idx}]`}
-          //             query={chat.query}
-          //             answer={chat.answer}
-          //             isLoading={isLoading}
-          //             message_id={chat.id}
-          //             hasselected={chat.hasselected || ""}
-          //             hasbutton={chat.hasbutton || false}
-          //             handleClick={handleClick}
-          //           />
-          //         </>
-          //       ))}
-          //     </div>
-          //   </div>
-          // </div>
-        )}
-      </div> */}
       </div>
-      )}
-      <div className="flex items-center justify-center mt-auto w-[800px] ml-[300px]">
-      <AddQuery query="" answer="" sendQuery={()=>{console.log("")}} setanswer={()=>{console.log("")}} />
-      </div>
-    </div>
+    </>
   );
 }
 

@@ -1,29 +1,31 @@
-import { useMemo, useState } from "react";
+import { useMemo ,useState} from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef } from "@tanstack/react-table";
 
 //
 import EditIcon from "../../../components/icons/miscs/Edit";
-import { Link } from "react-router-dom";
-import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+
 //
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
+import { Link } from "react-router-dom";
+import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import Button from "src/components/reusable/button";
 /**
  *
  */
-const Reports = () => {
- const [reports, setreports] = useState([{id:1,report_name:"xyz",date_created:"Nov 21, 2024"},{id:2,report_name:"pqr",date_created:"Nov 21, 2024"},{id:3,report_name:"abc",date_created:"Nov 21, 2024"}]);
- const [searchQuery, setSearchQuery] = useState("");
+const Users = () => {
+  const [users, setusers] = useState([{id:1,user_name:"robert",role:"admin",reports_count:6},{id:2,user_name:"john cena",role:"admin",reports_count:6},{id:3,user_name:"roman",role:"admin",reports_count:6}]);
+  const [searchQuery, setSearchQuery] = useState("");
+ 
+ 
+  const filteredUser = users.filter(user =>
+   user.user_name.toLowerCase().includes(searchQuery.toLowerCase())
+ );
 
-
- const filteredReports = reports.filter(report =>
-  report.report_name.toLowerCase().includes(searchQuery.toLowerCase())
-);
-
-interface IOptions {
+  interface IOptions {
     label: string;
     icon: JSX.Element;
     action: () => void;
@@ -65,16 +67,22 @@ const menuItems =  [
       //   ),
       // },
       {
-        header: "Report",
-        accessorKey: "report_name",
+        header: "User",
+        accessorKey: "user_name",
         minSize: 400,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.user_name}</p>,
       },
       {
-        header: "Date created",
-        accessorKey: "date_created",
-        // minSize: 200,
-        cell: (item) => <span>{item.row.original.date_created}</span>,
+        header: "Role",
+        accessorKey: "role",
+        minSize: 200,
+        cell: (item) => <span>{item.row.original.role}</span>,
+      },
+      {
+        header: "Reports",
+        accessorKey: "reports_count",
+        minSize: 200,
+        cell: (item) => <span>{item.row.original.reports_count}</span>,
       },
       {
         header: " ",
@@ -99,7 +107,7 @@ const menuItems =  [
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
         <div className="">
-          <h6 className="text-lg font-semibold ml-0">Settings &gt; Reports</h6>
+          <h6 className="text-lg font-semibold ml-0">Settings &gt; User management</h6>
           <div className="flex justify-start items-center pt-3">
             <Link to="/profile">
               <p className="mr-4 text-secondary-800 flex items-center">
@@ -110,22 +118,30 @@ const menuItems =  [
           </div>
         </div>
         <div className="flex items-center gap-1 w-full">
-          <p className="font-bold text-base">All Reports<span className="ml-3">{reports.length}</span></p>
+          <p className="font-bold text-base">All Users<span className="ml-3">{users.length}</span></p>
           {/* <div className="h-2 w-2 rounded-full p-[12px] border-2 border-primary-900 text-secondary-500 flex justify-center items-center font-bold">
             0
           </div> */}
-          <div className="w-[300px] ml-auto">
+          <div className="w-[300px] ml-[60%]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-          </div>
+                </div>
+
+                <div className="ml-auto">
+                <Link to="/add-user">
+            <Button type="primary"  >
+             +  Add User
+            </Button>
+            </Link>
+                </div>
 
         </div>
       {/* <div className="flex items-center justify-end gap-1 mt-2">
         <IconButton color={"primary"} rounded icon={<ShareIcon className="text-white"/>} />
         <IconButton color={"primary"} rounded icon={<TrashIcon className="text-white" />} />
       </div> */}
-      <ReactTable columnsData={columns} rowsData={filteredReports} size="medium" noTopBorder />
+      <ReactTable columnsData={columns} rowsData={filteredUser} size="medium" noTopBorder />
     </div>
   );
 };
 
-export default Reports;
+export default Users;

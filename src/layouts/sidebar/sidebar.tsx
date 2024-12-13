@@ -34,14 +34,42 @@ interface INavLinkItemProps extends ISidebarListItem {
   open: boolean;
 }
 
+// const SidebarBottom = [
+//   {
+//     title: "Settings",
+//     href: "/setting",
+//     icon: SettingsIcon,
+//   },
+//   {
+//     title: "Logout",
+//     icon: LogoutIcon,
+//   },
+// ];
+
 const SidebarBottom = [
   {
-    title: "Settings",
-    href: "/setting",
+    title: "Basics",
+    href: "/profile",
     icon: SettingsIcon,
   },
   {
-    title: "Logout",
+    title: "Preferences",
+    href: "/preferences",
+    icon: LogoutIcon,
+  },
+  {
+    title: "Reports",
+    href: "/my-reports",
+    icon: LogoutIcon,
+  },
+  {
+    title: "User management",
+    href: "/my-users",
+    icon: LogoutIcon,
+  },
+  {
+    title: "Billing",
+    href: "/setting",
     icon: LogoutIcon,
   },
 ];
@@ -272,7 +300,8 @@ const handleJoyrideCallback = (data: any) => {
 
   return (
     <>
-    <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
+    {/* old one */}
+    {/* <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
       
       
       <div className="bg-appGray-100 w-[66px] items-center duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10">
@@ -304,14 +333,6 @@ const handleJoyrideCallback = (data: any) => {
         callback={handleJoyrideCallback}
         stepIndex={currentStepIndex}
         spotlightPadding={0}
-        // tooltipComponent={(props) => (
-        //   <div className="relative bg-[#FFA300] text-[#373D3F] p-1 rounded-lg shadow-lg">
-        //     Hello world
-
-        //     {/* arrow here */}
-           
-        //   </div>
-        // )}
       />
         <div className="w-full flex-auto">
           <div className="flex items-center gap-1 justify-start flex-col">
@@ -397,8 +418,9 @@ const handleJoyrideCallback = (data: any) => {
         
       </div>
 
-      {/* White Sidebar for Sublist */}
       {open && activeItem && (
+              // White Sidebar for Sublist
+
         <div className="z-10 bg-white absolute left-full h-full w-[200px] flex flex-col p-2">
           <h2 className="text-xl font-bold mb-2 ml-1">
             {sidebarItems.find((item) => item.key === activeItem)?.title}
@@ -430,7 +452,148 @@ const handleJoyrideCallback = (data: any) => {
       )}
        
       
-    </div>
+    </div> */}
+
+{/* new one */}
+<div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
+       
+
+        <div
+          className={`bg-appGray-100 ${
+            open ? "w-[200px]" : "w-[56px]"
+          } items-center duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10`}
+        >
+          <Joyride
+            steps={steps}
+            run={runTour}
+            continuous
+            scrollToFirstStep
+            // showSkipButton
+            hideBackButton
+            styles={{
+              options: {
+                zIndex: 2000000,
+                primaryColor: "#FFA300",
+                backgroundColor: "#FFA300",
+                textColor: "#373D3F",
+              },
+              overlay: {
+                backgroundColor: "rgba(79, 46, 8, 0)",
+              },
+            }}
+            callback={handleJoyrideCallback}
+            stepIndex={currentStepIndex}
+          />
+
+          <div className="space-y-2 mb-auto">
+            <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+              <button
+                type="button"
+                className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+                onClick={() => setOpen(!open)}
+              >
+                <RoundedArrowIcon className={classNames(open ? "" : "rotate-180")} />
+              </button>
+            </ToolTip>
+
+            {sidebarItems.map((item) => (
+              <Link
+                to={item.to || "/"}
+                key={item.key}
+                className={classNames(
+                  "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                )}
+              >
+                <item.icon />
+                {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
+              </Link>
+            ))}
+          </div>
+
+          <div className="space-y-1">
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className={classNames(
+                "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+              )}
+            >
+              <UserIcon
+                first_name={userDetail?.first_name || ""}
+                last_name={userDetail?.last_name || ""}
+                profile_photo={userDetail?.profile_photo}
+              />
+              {open && <span className="text-base">Settings</span>}
+            </Link>
+
+            {open &&
+              SidebarBottom.map((s, idx) => (
+                <div key={idx * 29}>
+                  {s.href ? (
+                    <Link
+                      to={s.href}
+                      className={classNames(
+                        "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                      )}
+                    >
+                      <ToolTip title={s.title} placement="right">
+                        <div className="text-base">{s.title}</div>
+                      </ToolTip>
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className={classNames(
+                        "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                      )}
+                    >
+                      <ToolTip title={s.title} placement="right">
+                        <div>
+                          <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                        </div>
+                      </ToolTip>
+                    </button>
+                  )}
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* White Sidebar for Sublist */}
+        {/* {open && activeItem && (
+          <div className="z-10 bg-white absolute left-full h-full w-[200px] flex flex-col p-2">
+            <h2 className="text-xl font-bold mb-2 ml-1">
+              {sidebarItems.find((item) => item.key === activeItem)?.title}
+            </h2>
+            {sidebarItems
+              .find((item) => item.key === activeItem)
+              ?.subList?.map((subItem) => (
+                <div
+                  key={subItem.key}
+                  // href={subItem.to}
+                  className={classNames(
+                    `${subItem.classname} sidebar-1 flex cursor-pointer items-center font-semibold text-sm p-1 text-gray-700`,
+                    {
+                      "border-2 border-secondary-500 rounded-lg p-2": activeSubItem === subItem.key,
+                    },
+                  )}
+                  onClick={() => {
+                    navigate(subItem.to || "/");
+                  }}
+                >
+                  <div className="w-[32px] flex-[0_0_32px]">
+                    <subItem.icon className="w-[32px]" />
+                  </div>
+                  <span className="ml-1">{subItem.title}</span>
+                </div>
+              ))}
+            <div className="mt-3">{isChat && activeItem === "knownow" && <ChatSidebar />}</div>
+          </div>
+        )} */}
+      </div>
+
+  {/* history market */}
     {/** 
       {isChat && (
       <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>

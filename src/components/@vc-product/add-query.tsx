@@ -19,10 +19,12 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const handleAttachClick = () => {
+    console.log("clicked attacj",attachedFile)
     fileInputRef.current?.click();
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("file---------------")
     const file = event.target.files?.[0];
     if (file) {
       const validTypes = [
@@ -48,6 +50,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
 
       setError(null);
       setAttachedFile(file);
+      event.target.value = "";
     }
   };
 
@@ -88,11 +91,13 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
         <button className="inline-flex gitems-center" onClick={handleAttachClick}>
           <IconFile /> <span className="mr-2 ml-1 relative">Attach</span>
         </button>
+
+
         <input type="file" ref={fileInputRef} onChange={handleFileChange} className="file-input hidden" />
         {attachedFile && (
           <div className="flex items-center ml-2">
             <span className="mr-2">{attachedFile.name}</span>
-            <button onClick={() => { setAttachedFile(null); }}>
+            <button onClick={() => { setAttachedFile(null) , fileInputRef.current.value = "" }}>
               <CrossIcon className="h-3 w-3 text-red-500" />
             </button>
           </div>
