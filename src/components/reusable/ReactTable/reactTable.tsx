@@ -18,7 +18,7 @@ import TableSortIcon from "../../icons/table-sort";
  **/
 export default function ReactTable(props: IReactTable) {
   const [rowSelection, setRowSelection] = useState({});
-
+  console.log("table data",props.rowsData)
   //
   const size = props.size ?? "medium";
   const errorMessage = props.errorMesssage ?? "No data Available";
@@ -41,14 +41,14 @@ export default function ReactTable(props: IReactTable) {
   return (
     <div className="mt-1 w-full overflow-x-auto">
       <table className="w-full rounded-lg overflow-hidden">
-        <thead className="bg-primary-900 rounded-t-lg">
+        <thead className="bg-appGray-100 rounded-t-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  className="py-1 px-1 text-left text-white font-semibold text-base"
+                  className="py-1 px-1 text-left text-secondary-800 font-semibold text-base"
                   {...{
                     style: {
                       minWidth: header.column.columnDef.minSize,
@@ -66,7 +66,7 @@ export default function ReactTable(props: IReactTable) {
                         className="ml-"
                         onClick={header.column.getToggleSortingHandler()}
                       >
-                        <TableSortIcon className="text-white" />
+                        <TableSortIcon className="text-secondary-800" />
                       </button>
                     )}
                   </div>

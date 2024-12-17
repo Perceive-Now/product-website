@@ -82,6 +82,8 @@ const VCReport = () => {
           if (answer === "Start another report") {
             dispatch(resetChats());
             thread_id = generateKnowIdstring();
+            firstRun.current = true;
+            setFile("false");
             return;
           }
 
@@ -223,7 +225,21 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             }else if(Step == 3 && answer == "Continue"){
               ai_query.user_input = "skip";
               await dispatch(sendQuery(ai_query)).unwrap();
-            }
+            }else if(Step == 5 && answer == "Confirm"){
+              dispatch(
+                updateChatQuery({
+                  query: `Your final report will be generated within 24hr - 48hr. We will update you through email with link to download the reports.`,
+                }),
+              );
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Start another report"],
+                  hasbutton: true,
+                }),
+              );
+          }
            
             else await dispatch(sendQuery(ai_query)).unwrap();
 
@@ -285,13 +301,13 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 }),
               );
 
-              dispatch(
-                setVSChats({
-                  query:
-                    "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
-                  answer: "",
-                }),
-              );
+              // dispatch(
+              //   setVSChats({
+              //     query:
+              //       "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
+              //     answer: "",
+              //   }),
+              // );
   
               dispatch(
                 setVSChats({
@@ -337,11 +353,11 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   }),
                 );
 
-                dispatch(
-                  setVSChats({
-                    query: `Thank you! Since ${companyName} is in the **${companyStage.trim()}** stage, could you specify the current development phase from the options below?`,
-                  }),
-                );
+                // dispatch(
+                //   setVSChats({
+                //     query: `Thank you! Since ${companyName} is in the **${companyStage.trim()}** stage, could you specify the current development phase from the options below?`,
+                //   }),
+                // );
 
                 dispatch(
                   setVSChats({
@@ -385,12 +401,12 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 }),
               );
 
-              dispatch(
-                setVSChats({
-                  query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
-                  answer: "",
-                }),
-              );
+              // dispatch(
+              //   setVSChats({
+              //     query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
+              //     answer: "",
+              //   }),
+              // );
               dispatch(
                 setVSChats({
                   query: "",
@@ -435,12 +451,12 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   }),
                 );
 
-                dispatch(
-                  setVSChats({
-                    query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
-                    You can expand any section for more details if needed.`,
-                  }),
-                );
+                // dispatch(
+                //   setVSChats({
+                //     query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                //     You can expand any section for more details if needed.`,
+                //   }),
+                // );
                 dispatch(
                   setVSChats({
                     query: "",
@@ -504,6 +520,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             // const res = await dispatch(
             //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             // ).unwrap();
+            try{
             const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
             const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
             const extractObject = JSON.parse(cleanValue);
@@ -516,8 +533,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               }),
             );
             dispatch(setCurrentStep(2));
-
-            if (fileResponse) {
+  
               dispatch(
                 setVSChats({
                   query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
@@ -532,7 +548,23 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
+            }catch(error){
+              dispatch(
+                setVSChats({
+                  query: "Error generating extract summary. Please upload file again",
+                  answer: "",
+                }),
+              );
+              setFile("false");
             }
+          }else{
+            dispatch(
+              setVSChats({
+                query: "Error generating extract summary. Please upload file again",
+                answer: "",
+              }),
+            );
+            setFile("false");
           }
         }
       } catch (error) {
