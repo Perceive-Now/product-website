@@ -1,10 +1,17 @@
 import React from "react";
 import perceiveNowImage from "../../../../assets/images/logo.svg";
-import { organizationSettingSVG } from "../_assets";
+import {
+  organizationSettingSVG,
+  profileSetupSVG,
+  planSelectionSVG,
+  paymentSVG,
+  teamManagementSVG,
+  reviewConfirmationSVG,
+} from "../_assets"; // Add SVG imports for all steps
 
 interface Steps {
   label: string;
-  logo?: React.ReactNode;
+  logo: string; // Add a logo property
 }
 
 interface SideBarProps {
@@ -12,21 +19,25 @@ interface SideBarProps {
   completedSteps: number[];
 }
 
+// Sidebar steps with specific logos
 const sidebarSteps: Steps[] = [
-  { label: "Organization Settings" },
-  { label: "Profile Setup" },
-  { label: "Plan Selection" },
-  { label: "Payment" },
-  { label: "Team Management" },
-  { label: "Review & Confirmation" },
+  { label: "Organization Settings", logo: organizationSettingSVG },
+  { label: "Profile Setup", logo: profileSetupSVG },
+  { label: "Plan Selection", logo: planSelectionSVG },
+  { label: "Payment", logo: paymentSVG },
+  { label: "Team Management", logo: teamManagementSVG },
+  { label: "Review & Confirmation", logo: reviewConfirmationSVG },
 ];
 
 const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps }) => {
   return (
     <div className="max-w-[300px] bg-[#F5F7FF] min-h-screen p-3 flex flex-col gap-y-2 items-start">
+      {/* Logo at the top */}
       <div className="pt-7">
         <img src={perceiveNowImage} alt="Perceive Now" className="w-20 mx-auto" />
       </div>
+
+      {/* Steps */}
       <div className="mt-2">
         <div className="flex flex-col items-start">
           {sidebarSteps.map((step, index) => (
@@ -42,7 +53,11 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps }) => {
                 }`}
               >
                 {completedSteps.includes(index) ? (
-                  <img src={organizationSettingSVG} alt="Organization Settings" />
+                  <img
+                    src={step.logo} // Use the manual logo for each step
+                    alt={step.label}
+                    className="w-[0.8rem] h-[0.8rem]"
+                  />
                 ) : (
                   <div
                     className={`w-[0.5rem] h-[0.5rem] rounded-full ${
@@ -52,9 +67,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps }) => {
                 )}
               </div>
               {/* Step Label */}
-              <span
-                className={`text-sm text-[#373D3F]`}
-              >
+              <span className={`text-base text-[#373D3F]`}>
                 {step.label}
               </span>
             </div>

@@ -83,6 +83,7 @@ import GenerateMarketReport from "./components/@report-generate/market-report-ge
 import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
 import OrganizationSettings from "./pages/authentication/signup/organization-settings";
 import ProfileSetup from "./pages/authentication/signup/profile-setup";
+import UserPlan from "./pages/authentication/signup/user-plan";
 // import MadLibEditor from "./test";
 
 /**
@@ -168,6 +169,7 @@ function App() {
         <Route path="/verify-email" element={<VerificationConfirm />} />
         <Route path="/signup/organization-setting" element={<OrganizationSettings />} />
         <Route path="/signup/profile" element={<ProfileSetup />} />
+        <Route path="/signup/plan" element={<UserPlan />} />
 
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
