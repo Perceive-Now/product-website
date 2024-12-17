@@ -11,26 +11,53 @@ import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
+import Button from "src/components/reusable/button";
+import TrashIcon from "src/components/icons/common/trash";
+import { ShareIcon } from "src/components/icons";
+import DownloadIcon from "src/components/icons/common/download-icon";
 /**
  *
  */
 const Reports = () => {
- const [reports, setreports] = useState([{id:1,report_name:"xyz",date_created:"Nov 21, 2024"},{id:2,report_name:"pqr",date_created:"Nov 21, 2024"},{id:3,report_name:"abc",date_created:"Nov 21, 2024"}]);
- const [searchQuery, setSearchQuery] = useState("");
+  const [reports, setreports] = useState([
+    {
+      id: 1,
+      report_name: "xyz",
+      type: ".docx",
+      size: "2mb",
+      permission: "You and 3 others",
+      date_modified: "Nov 21, 2024",
+    },
+    {
+      id: 2,
+      report_name: "pqr",
+      type: ".docx",
+      size: "2mb",
+      permission: "You and 3 others",
+      date_created: "Nov 21, 2024",
+    },
+    {
+      id: 3,
+      report_name: "abc",
+      type: ".docx",
+      size: "2mb",
+      permission: "You and 3 others",
+      date_modified: "Nov 21, 2024",
+    },
+  ]);
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const filteredReports = reports.filter((report) =>
+    report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
- const filteredReports = reports.filter(report =>
-  report.report_name.toLowerCase().includes(searchQuery.toLowerCase())
-);
-
-interface IOptions {
+  interface IOptions {
     label: string;
     icon: JSX.Element;
     action: () => void;
   }
-  
 
-const menuItems =  [
+  const menuItems = [
     {
       label: "Pin",
       icon: <EditIcon className="h-2 w-2" />,
@@ -47,7 +74,7 @@ const menuItems =  [
       action: () => console.log("yo"),
     },
   ];
-  
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       // {
@@ -67,14 +94,32 @@ const menuItems =  [
       {
         header: "Report",
         accessorKey: "report_name",
-        minSize: 400,
+        // minSize: 400,
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
       },
       {
-        header: "Date created",
-        accessorKey: "date_created",
+        header: "Type",
+        accessorKey: "type",
         // minSize: 200,
-        cell: (item) => <span>{item.row.original.date_created}</span>,
+        cell: (item) => <span>{item.row.original.type}</span>,
+      },
+      {
+        header: "Size",
+        accessorKey: "size",
+        // minSize: 200,
+        cell: (item) => <span>{item.row.original.size}</span>,
+      },
+      {
+        header: "Permission",
+        accessorKey: "permission",
+        // minSize: 200,
+        cell: (item) => <span>{item.row.original.permission}</span>,
+      },
+      {
+        header: "Date Modified",
+        accessorKey: "date_modified",
+        // minSize: 200,
+        cell: (item) => <span>{item.row.original.date_modified}</span>,
       },
       {
         header: " ",
@@ -89,7 +134,7 @@ const menuItems =  [
           // width="xs"
           // alignment="right"
           // conversation_id={item.row.original.id}
-        />
+          />
         ),
       },
     ],
@@ -98,27 +143,61 @@ const menuItems =  [
 
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
-        <div className="">
-          <h6 className="text-lg font-semibold ml-0">Settings &gt; Reports</h6>
-          <div className="flex justify-start items-center pt-3">
-            <Link to="/profile">
-              <p className="mr-4 text-secondary-800 flex items-center">
-                <ArrowLeftIcon className="mr-1" />
-                Back
-              </p>
-            </Link>
-          </div>
+      <div className="">
+        <h6 className="text-lg font-semibold ml-0">Settings &gt; Report management</h6>
+        <div className="flex justify-start items-center pt-3">
+          <Link to="/profile">
+            <p className="mr-4 text-secondary-800 flex items-center">
+              <ArrowLeftIcon className="mr-1" />
+              Back
+            </p>
+          </Link>
         </div>
-        <div className="flex items-center gap-1 w-full">
-          <p className="font-bold text-base">All Reports<span className="ml-3">{reports.length}</span></p>
-          {/* <div className="h-2 w-2 rounded-full p-[12px] border-2 border-primary-900 text-secondary-500 flex justify-center items-center font-bold">
+      </div>
+      <div className="flex items-center gap-1 w-full">
+        <p className="font-bold text-base">
+          All Reports<span className="ml-3">{reports.length}</span>
+        </p>
+        {/* <div className="h-2 w-2 rounded-full p-[12px] border-2 border-primary-900 text-secondary-500 flex justify-center items-center font-bold">
             0
           </div> */}
-          <div className="w-[300px] ml-auto">
-          <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-          </div>
-
+        <div className="ml-auto">
+          <Link to="/quick-reports">
+            <Button type="primary">+ Quick Report</Button>
+          </Link>
         </div>
+      </div>
+      <div className="flex items-center gap-1 w-full">
+        <div className="w-[300px]">
+          <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        </div>
+        <div className="ml-auto flex gap-3">
+          <Link to="/add-user">
+            <Button type="gray">
+              <div className="flex items-center gap-1">
+                <ShareIcon />
+                Share
+              </div>
+            </Button>
+          </Link>
+          <Link to="/add-user">
+            <Button type="gray">
+              <div className="flex items-center gap-1">
+                <DownloadIcon />
+                Download
+              </div>
+            </Button>
+          </Link>
+          <Link to="/add-user">
+            <Button type="gray" classname="flex items-center gap-1">
+              <div className="flex items-center gap-2">
+                <TrashIcon />
+                Delete
+              </div>
+            </Button>
+          </Link>
+        </div>
+      </div>
       {/* <div className="flex items-center justify-end gap-1 mt-2">
         <IconButton color={"primary"} rounded icon={<ShareIcon className="text-white"/>} />
         <IconButton color={"primary"} rounded icon={<TrashIcon className="text-white" />} />

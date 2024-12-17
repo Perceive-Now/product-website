@@ -32,6 +32,7 @@ import Preferences from "./pages/my-account/preferences";
 import MyUsers from "./pages/my-account/my-users";
 import AddUser from "./pages/my-account/my-users/add-user";
 import EditUser from "./pages/my-account/my-users/edit-user";
+import QuickReports from "./pages/my-account/my-reports/quick-report";
 
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
@@ -108,6 +109,7 @@ function App() {
             {/* Account */}
             <Route path="/profile" element={<Basics />} />
             <Route path="/my-reports" element={<MyReport />} />
+            <Route path="/quick-reports" element={<QuickReports />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/my-users" element={<MyUsers />} />
