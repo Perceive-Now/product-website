@@ -21,6 +21,9 @@ import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import GoogleAuth from "../../../components/@auth/google";
 import { AppConfig } from "src/config/app.config";
 
+// images
+import perceiveNowImage from "../../../assets/images/pn.svg";
+
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
 /**
@@ -118,12 +121,25 @@ export default function SignupPage() {
   // }
 
   return (
-    <div className="flex h-full 2xl:h-[calc(100vh-200px)] justify-center items-center px-2">
+    <div className="flex h-screen lg:min-h-screen justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
       <form onSubmit={handleSubmit(handleLogin)} className="">
-        <div className="w-full md:w-[400px]">
-          <h1 className="text-4xl font-extrabold text-center">Sign Up</h1>
+        <div className="w-full p-1 md:p-0 md:w-[400px]">
+          <img src={perceiveNowImage} alt="Welcome to Perceive Now" className="w-[3rem] h-[3rem] mb-1" />
+          <h1 className="text-2xl font-semibold text-[#373D3F] text-left">Enter your email to sign up.</h1>
+          <p className="text-left text-[#373D3F] mt-2 mb-1">
+            <span>Already have an account?</span>
+            <Link
+              to={"/login"}
+              className={classNames("ml-1 font-bold text-primary-500", {
+                "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
+              })}
+              aria-disabled={isSubmitting}
+            >
+              Sign In
+            </Link>
+          </p>
           <div>
-            <fieldset className="mt-3">
+            <fieldset>
               <div className="mt-0.5 rounded-md shadow-sm">
                 <input
                   id="email"
@@ -135,7 +151,7 @@ export default function SignupPage() {
                       ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                       : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                   )}
-                  placeholder="drake@example.com"
+                  placeholder="Email*"
                 />
               </div>
 
@@ -144,7 +160,7 @@ export default function SignupPage() {
               )}
             </fieldset>
 
-            <fieldset className="mt-2">
+            {/* <fieldset className="mt-2">
               <div className="mt-0.5 rounded-md shadow-sm relative">
                 <input
                   id="password"
@@ -172,43 +188,36 @@ export default function SignupPage() {
               {errors.password?.message && (
                 <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
               )}
-            </fieldset>
+            </fieldset> */}
           </div>
-
-          <div className="flex justify-center w-full mt-3">
+          <div className="my-2">
+              <label className="text-[15px] text-[#373D3F] font-medium">
+              By continuing, I agree to Perceive Now&apos;s  <a target="_blank" className="text-inherit underline" rel="noreferrer noopener" href={`${WEBSITE_URL}/privacy-policy`}>Privacy Policy</a> and <a target="_blank" className="text-inherit underline" rel="noreferrer noopener" href={`${WEBSITE_URL}/terms`}>Terms of Use</a>
+            </label>
+          </div>
+          <div className="flex justify-end w-full mt-2">
             <Button
-              classname="w-full"
+              classname="w-[160px]"
+              rounded="full"
               htmlType="submit"
-              disabled={!emailValue || !passwordValue || !isAgree || isGoogleSubmitting}
+              disabled={!emailValue}
               loading={isSubmitting}
-              type="auth"
+              type="primary"
             >
-              Sign Up
+              <span className="font-[400]">Continue</span>
             </Button>
           </div>
-          <p className="text-center mt-2.5">
-            <span>Already have an account?</span>
-            <Link
-              to={"/login"}
-              className={classNames("ml-2 font-bold text-primary-500", {
-                "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
-              })}
-              aria-disabled={isSubmitting}
-            >
-              Sign In
-            </Link>
-          </p>
-          <hr className="mt-4 mb-4 border-gray-300" />
+          {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
 
-          <GoogleAuth
+          {/* <GoogleAuth
             type="signup"
             isAgree={isAgree}
             title="Sign up with Google"
             isSubmitting={isGoogleSubmitting}
             setIsSubmitting={setIsGoogleSubmitting}
-          />
+          /> */}
         </div>
-        <label className="mt-2.5 flex items-center justify-center gap-1">
+        {/* <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput
             onChange={() => setIsAgree(!isAgree)}
             style={{
@@ -225,7 +234,7 @@ export default function SignupPage() {
               Privacy Policy.
             </a>
           </p>
-        </label>
+        </label> */}
       </form>
     </div>
   );

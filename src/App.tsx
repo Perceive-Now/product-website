@@ -81,6 +81,8 @@ import ShareKnowNowPage from "./pages/product/share";
 // Demo
 import GenerateMarketReport from "./components/@report-generate/market-report-generate";
 import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
+import OrganizationSettings from "./pages/authentication/signup/organization-settings";
+import ProfileSetup from "./pages/authentication/signup/profile-setup";
 // import MadLibEditor from "./test";
 
 /**
@@ -164,6 +166,8 @@ function App() {
     <>
       <Routes>
         <Route path="/verify-email" element={<VerificationConfirm />} />
+        <Route path="/signup/organization-setting" element={<OrganizationSettings />} />
+        <Route path="/signup/profile" element={<ProfileSetup />} />
 
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
