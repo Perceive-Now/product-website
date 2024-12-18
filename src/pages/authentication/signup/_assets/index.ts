@@ -7,6 +7,8 @@ import paymentSVG from "./payment.svg";
 import teamManagementSVG from "./team-management.svg";
 import reviewConfirmationSVG from "./review-and-confirmation.svg";
 
+import inputArrow from "./input-arrow-down.svg";
+
 export {
   organizationSettingSVG,
   profileAvatarSVG,
@@ -16,4 +18,6 @@ export {
   paymentSVG,
   teamManagementSVG,
   reviewConfirmationSVG,
+  //
+  inputArrow,
 };
