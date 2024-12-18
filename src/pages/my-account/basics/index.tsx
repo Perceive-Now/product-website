@@ -22,7 +22,6 @@ type IModal = "profile" | "password";
 const Basics = () => {
   const dispatch = useAppDispatch();
   const UserDetail = useAppSelector((state) => state.auth.user);
-
   const [modal, setModal] = useState<IModal | null>(null);
   const [modalType, setModalType] = useState<any>();
   const [photo, setPhoto] = useState<any>();
@@ -32,7 +31,7 @@ const Basics = () => {
     email: UserDetail?.email || '',
     org: UserDetail?.company_name || '',
     role: UserDetail?.job_position || '',  
-    profilePhoto: UserDetail?.profile_photo || null,
+    profilePhoto: UserDetail?.profile_photo || null ,
   });
 
 
@@ -75,10 +74,19 @@ const Basics = () => {
         await updateUserProfile(values).then((res) => {
           if (res.status === 200) {
             toast.success('Profile updated successfully');
-            dispatch({
-              type: 'SET_USER',
-              payload: { ...values, profile_photo: formData.profilePhoto },
-            });
+            dispatch(
+              setUser({
+                first_name: values.first_name,
+                last_name: values.last_name,
+                profile_photo: values.profile_photo,
+                company_name: values?.company_name,
+                job_position: values?.job_position,
+                email: values.email,
+                id: values.id || ("" as any),
+                full_name: values.full_name || "",
+                registration_completed: true,
+              }),
+            );
           }
         });
       } catch (error:any) {
@@ -96,8 +104,13 @@ const Basics = () => {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPhoto(reader.result);
-        updateProfile(reader.result);
+        const result = reader.result as string; 
+        // setPhoto(reader.result);
+        setFormData(prevData => ({
+          ...prevData,
+          profilePhoto: result,
+        }));
+        // updateProfile(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -184,9 +197,9 @@ const Basics = () => {
     </div>
     <div className="w-[45%] ml-[30%]">
       <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
-        {photo ? (
+        {formData?.profilePhoto ? (
           <img
-            src={photo}
+            src={formData.profilePhoto}
             alt="profile_picture"
             className="h-full w-full rounded-full object-cover"
           />
@@ -223,11 +236,12 @@ const Basics = () => {
             type="email"
             id="email"
             name="email"
+            disabled={true}
             value={formData.email}
             onChange={handleChange}
             placeholder="Email"
             required
-            className="mt-1 p-[14px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent"
+            className="mt-1 p-[14px] w-full border rounded-lg"
           />
         </div>
 
@@ -239,15 +253,33 @@ const Basics = () => {
             type="text"
             id="org"
             name="org"
+            disabled={true}
             value={formData.org}
             onChange={handleChange}
             placeholder="Organization"
             required
-            className="mt-1 p-[14px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent"
+            className="mt-1 p-[14px] w-full rounded-lg"
           />
         </div>
 
         <div className="mb-2">
+          <label htmlFor="role" className="block text-md text-secondary-800">
+            Role
+          </label>
+          <input
+            type="text"
+            id="role"
+            name="role"
+            disabled={true}
+            value={formData.role}
+            onChange={handleChange}
+            placeholder="Organization"
+            required
+            className="mt-1 p-[14px] w-full rounded-lg"
+          />
+        </div>
+
+        {/* <div className="mb-2">
           <label htmlFor="role" className="block text-md text-secondary-800">
             Role
           </label>
@@ -256,8 +288,9 @@ const Basics = () => {
             name="role"
             value={formData.role}
             onChange={handleChange}
+            disabled={true}
             required
-            className="mt-1 p-[14px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+            className="mt-1 p-[14px] w-full  bg-[#EFEFEF4D]  rounded-lg"
           >
             <option value="">Select Role</option>
             <option value="founder">Founder</option>
@@ -266,13 +299,15 @@ const Basics = () => {
             <option value="user">User</option>
             <option value="manager">Manager</option>
           </select>
-        </div>
-        <div className="text-end m-0 text underline" onClick={() => setModal("password")}>Change password</div>
+        </div> */}
+
+        <div className="text-end m-0 text underline cursor-pointer" onClick={() => setModal("password")}>Change password</div>
         <div className="flex justify-between mt-2">
           <button
             type="submit"
-            className="px-5 py-[10px] bg-appGray-500 text-white rounded-full hover:bg-gray-500 focus:outline-none"
-          >
+            disabled={Object.values(formData).includes("")} 
+            className={`px-5 py-[10px] ${Object.values(formData).includes("") ? "bg-appGray-500 cursor-not-allowed" : "bg-primary-800"} text-white rounded-full focus:outline-none`}
+            >
             Save
           </button>
         </div>

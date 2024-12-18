@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as yup from "yup";
-
+import {LoadingIcon} from "../icons";
 //
 import Modal from "../reusable/modal";
 import Input from "../reusable/input";
@@ -77,6 +77,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
         new_password: value.new_password,
         current_password: value.current_password,
       };
+      console.log("values-----",values);
       try {
         const response = await axiosInstance.post(
           `/api/reset_password?code=${Auth_CODE}&clientId=default`,
@@ -94,6 +95,8 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
   const currentPassword = watch("current_password");
   const NewPassword = watch("new_password");
   const ConfirmPassword = watch("confirm_password");
+  console.log("ppppp", currentPassword, NewPassword, ConfirmPassword)
+  const isFormInValid = currentPassword === "" || NewPassword === "" || ConfirmPassword === "";
 
   return (
     <Modal open={open} handleOnClose={onClose}>
@@ -124,7 +127,7 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
               visible={current}
             />
           </fieldset>
-          <fieldset className="relative">
+          <fieldset>
             <Input
               register={register("new_password")}
               type={newPassword ? "text" : "password"}
@@ -146,9 +149,20 @@ const ChangePasswordModal = ({ open, onClose }: Props) => {
               visible={confirmPassword}
             />
           </fieldset>
-          <Button classname="w-full" loading={isSubmitting} htmlType="submit" size="small">
+          {/* <Button classname="w-full" loading={isSubmitting} htmlType="submit" size="small">
             Change Password
-          </Button>
+          </Button> */}
+         <div className="flex justify-between mt-2">
+            <button
+              type="submit"
+              disabled={isFormInValid || isSubmitting}
+              className={`px-5 py-[10px] ${
+                isFormInValid ? "bg-appGray-500 cursor-not-allowed" : "bg-primary-800"
+              } text-white rounded-full focus:outline-none`}
+            >
+              { isSubmitting ?<LoadingIcon width={16} height={16} className="" /> : 'Save'}
+            </button>
+          </div>
         </form>
       </div>
     </Modal>

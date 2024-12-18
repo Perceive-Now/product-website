@@ -25,14 +25,10 @@ const Preferences = () => {
   const dispatch = useAppDispatch();
   const UserDetail = useAppSelector((state) => state.auth.user);
 
-  const [modal, setModal] = useState<IModal | null>(null);
-  const [modalType, setModalType] = useState<any>();
-  const [photo, setPhoto] = useState<any>();
-
   const [formData, setFormData] = useState({
-    industry: UserDetail?.full_name || '',
-    agent: UserDetail?.email || '',
-    format: UserDetail?.company_name || '',
+    industry:  '',
+    agent: '',
+    format:'',
   });
 
 
@@ -179,8 +175,9 @@ const Preferences = () => {
         <div className="flex justify-between mt-3">
           <button
             type="submit"
-            className="px-5 py-[10px] bg-appGray-500 text-white rounded-full hover:bg-gray-500 focus:outline-none"
-          >
+            disabled={Object.values(formData).includes("")} 
+            className={`px-5 py-[10px] ${Object.values(formData).includes("") ? "bg-appGray-500 cursor-not-allowed" : "bg-primary-800"} text-white rounded-full focus:outline-none`}
+            >
             Save
           </button>
         </div>

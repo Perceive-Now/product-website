@@ -1,35 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classNames from "classnames";
-
-import {
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import type { ColumnDef } from "@tanstack/react-table";
+import { useReactTable, flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel } from "@tanstack/react-table";
 import { InfoIcon } from "../../icons";
 import TableSortIcon from "../../icons/table-sort";
+import type { ColumnDef } from "@tanstack/react-table";
 
-/*
- *
- **/
 export default function ReactTable(props: IReactTable) {
-  const [rowSelection, setRowSelection] = useState({});
-  console.log("table data",props.rowsData)
-  //
-  const size = props.size ?? "medium";
-  const errorMessage = props.errorMesssage ?? "No data Available";
-  const isStripeed = props.striped ?? true;
+  const { rowSelection, onRowSelectionChange, size = "medium", errorMessage = "No data Available", striped = true, columnsData, rowsData, noTopBorder } = props;
 
-  //
   const table = useReactTable({
-    data: props.rowsData ?? [],
-    columns: props.columnsData ?? [],
+    data: rowsData ?? [],
+    columns: columnsData ?? [],
     state: { rowSelection },
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: onRowSelectionChange, 
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
@@ -37,7 +20,6 @@ export default function ReactTable(props: IReactTable) {
     debugTable: process.env.NODE_ENV === "development",
   });
 
-  //
   return (
     <div className="mt-1 w-full overflow-x-auto">
       <table className="w-full rounded-lg overflow-hidden">
@@ -63,7 +45,7 @@ export default function ReactTable(props: IReactTable) {
                     {header.column.getCanSort() && (
                       <button
                         type="button"
-                        className="ml-"
+                        className="ml-1"
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         <TableSortIcon className="text-secondary-800" />
@@ -85,7 +67,7 @@ export default function ReactTable(props: IReactTable) {
                   "py-2": size === "medium",
                   "py-4": size === "large",
                 })}
-                colSpan={props.columnsData?.length}
+                colSpan={columnsData?.length}
               >
                 <span className="flex flex-col justify-center items-center mt-4">
                   <InfoIcon width={48} height={48} className="mb-2" />
@@ -98,8 +80,8 @@ export default function ReactTable(props: IReactTable) {
               <tr
                 key={row.id}
                 className={classNames("text-gray-800 hover:bg-gray-200", {
-                  "bg-gray-100": isStripeed && index % 2 === 1,
-                  "border-t-[1px] border-t-gray-300": !props.noTopBorder,
+                  "bg-gray-100": striped && index % 2 === 1,
+                  "border-t-[1px] border-t-gray-300": !noTopBorder,
                 })}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -123,14 +105,13 @@ export default function ReactTable(props: IReactTable) {
   );
 }
 
-//
 interface IReactTable {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columnsData?: ColumnDef<any>[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rowsData?: any;
   size?: "small" | "medium" | "large";
   striped?: boolean;
   noTopBorder?: boolean;
-  errorMesssage?: string;
+  errorMessage?: string;
+  rowSelection?: any;
+  onRowSelectionChange?: (selection: any) => void;  
 }
