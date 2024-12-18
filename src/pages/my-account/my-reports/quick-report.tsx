@@ -13,6 +13,9 @@ import Button from "src/components/reusable/button";
 import TrashIcon from "src/components/icons/common/trash";
 import { UploadIcon } from "src/components/icons";
 import TakeoffScreen from "./takeoffScreen";
+import jsCookie from "js-cookie";
+import { generateKnowIdstring } from "src/utils/helpers";
+
 /**
  *
  */
@@ -37,6 +40,7 @@ const urlContent = [
 
 const QuickReports = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const userId = jsCookie.get("user_id");
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [pastedURLs, setPastedURLs] = useState<string[]>([]);
@@ -69,14 +73,37 @@ const QuickReports = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setStep(3);
-    const formData: any = {};
-    formData.files = uploadedFiles;
-    formData.websites = pastedURLs;
-    formData.report_name = reportName;
 
-    console.log("formaData------", formData);
+    const formData = new FormData();
+
+    uploadedFiles.forEach((file: File) => {
+      formData.append("files", file); 
+    });
+
+    pastedURLs.forEach((url: string) => {
+      formData.append("websites", url); 
+    });
+
+    const threadId = generateKnowIdstring();
+
+    try {
+      const response: any = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&thread_id=${threadId}&report_name=${reportName}&report_completed_url=test&report_complete_status=false`,
+        {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        },
+      );
+
+      console.log("response", response);
+    } catch (e) {
+      console.log("err", e);
+    }
+
+    console.log("formData------", formData);
   };
 
   const handleUrlChange = (e: any) => {
@@ -117,155 +144,158 @@ const QuickReports = () => {
 
       <div className="">
         {step === 1 ? (
-            <>
-           <div className="flex space-x-4">
-            {/* First Part: File Upload and Paste URL */}
-            <div className="w-1/2 space-y-4">
-              {/* File Upload Box */}
-              <div
-                className={`border border-appGray-600 rounded-lg h-48 flex justify-center items-center p-10 ${
-                  dragging ? "bg-gray-200" : ""
-                }`}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setDragging(true);
-                }}
-                onDragLeave={() => setDragging(false)}
-                onDrop={handleDrop}
-              >
-                <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
-                  <UploadIcon />
-                  <p className="text-center text-base font-bold font-nunito mt-3">
-                    Drag and Drop files to upload
-                  </p>
-                  <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                  <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
-                    Browse
-                  </p>
+          <>
+            <div className="flex space-x-4">
+              {/* First Part: File Upload and Paste URL */}
+              <div className="w-1/2 space-y-4">
+                {/* File Upload Box */}
+                <div
+                  className={`border border-appGray-600 rounded-lg h-48 flex justify-center items-center p-10 ${
+                    dragging ? "bg-gray-200" : ""
+                  }`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setDragging(true);
+                  }}
+                  onDragLeave={() => setDragging(false)}
+                  onDrop={handleDrop}
+                >
+                  <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
+                    <UploadIcon />
+                    <p className="text-center text-base font-bold font-nunito mt-3">
+                      Drag and Drop files to upload
+                    </p>
+                    <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                    <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
+                      Browse
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {/* Hidden File Input */}
-              <input
-                type="file"
-                multiple
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-              />
+                {/* Hidden File Input */}
+                <input
+                  type="file"
+                  multiple
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
 
-              {/* Paste URL Section */}
-              <div>
-                <h6 className="font-semibold text-base mb-2">Type or Paste Your URL</h6>
-                <div className="flex">
-                  <input
-                    type="text"
-                    placeholder="Paste URL here"
-                    value={urlInput}
-                    onChange={handleUrlChange}
-                    className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                {/* Paste URL Section */}
+                <div>
+                  <h6 className="font-semibold text-base mb-2">Type or Paste Your URL</h6>
+                  <div className="flex">
+                    <input
+                      type="text"
+                      placeholder="Paste URL here"
+                      value={urlInput}
+                      onChange={handleUrlChange}
+                      className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
                     />
-                  <button
-                    className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
-                    onClick={handlePasteURL}
-                  >
-                    Paste
-                  </button>
-                </div>
-              </div>
-
-              {/* Supported Files and URLs */}
-              <div className="mt-4 flex justify-between">
-                <div>
-                  <p className="text-lg font-semibold font-nunito">Supported file types (up to 40mb)</p>
-                  <ul className="list-disc pl-[20px]">
-                    {listContent.map((content) => (
-                      <li key={content} className="text-xs">
-                        {content}
-                      </li>
-                    ))}
-                  </ul>
+                    <button
+                      className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
+                      onClick={handlePasteURL}
+                    >
+                      Paste
+                    </button>
+                  </div>
                 </div>
 
-                <div>
-                  <p className="text-lg font-semibold font-nunito">Recommended URL</p>
-                  <ul className="list-disc pl-[20px]">
-                    {urlContent.map((content) => (
-                      <li key={content} className="text-xs">
-                        {content}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-            </div>
-
-            {/* Second Part: Added Websites and Urls Listing */}
-            <div className="w-1/2 px-15">
-              {/* Added Websites */}
-              <div className="border border-appGray-600 rounded-lg h-full flex flex-col space-y-4 p-2">
-                <div className="rounded-lg p-2">
-                  <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
-
-                  {pastedURLs.length > 0 ? (
-                    <>
-                      {pastedURLs.map((url, index) => (
-                        <div key={index}>
-                          {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
-                          <div className="flex justify-between items-center">
-                            <p className="text-sm font-nunito">{url}</p>
-                            <TrashIcon
-                              className="cursor-pointer"
-                              onClick={() => handleDelete(index, "url")}
-                            />
-                          </div>
-                        </div>
+                {/* Supported Files and URLs */}
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <p className="text-lg font-semibold font-nunito">
+                      Supported file types (up to 40mb)
+                    </p>
+                    <ul className="list-disc pl-[20px]">
+                      {listContent.map((content) => (
+                        <li key={content} className="text-xs">
+                          {content}
+                        </li>
                       ))}
-                    </>
-                  ) : (
-                    <p className="text-xs text-gray-500 font-nunito text-center p-3">No websites added yet.</p>
-                  )}
-                </div>
+                    </ul>
+                  </div>
 
-                {/* Added Reports Listing */}
-                <div className="rounded-lg p-2">
-                  <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
-                  {uploadedFiles.length > 0 ? (
-                    <>
-                      {uploadedFiles.map((file, index) => (
-                        <div key={index}>
-                          {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
-                          <div className="flex justify-between items-center">
-                            <p className="text-sm font-nunito">{file.name}</p>
-                            <TrashIcon
-                              className="cursor-pointer"
-                              onClick={() => handleDelete(index, "file")}
-                            />
-                          </div>
-                        </div>
+                  <div>
+                    <p className="text-lg font-semibold font-nunito">Recommended URL</p>
+                    <ul className="list-disc pl-[20px]">
+                      {urlContent.map((content) => (
+                        <li key={content} className="text-xs">
+                          {content}
+                        </li>
                       ))}
-                    </>
-                  ) : (
-                    <p className="text-xs text-gray-500 text-center p-3 font-nunito">No file uploaded yet.</p>
-                  )}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Second Part: Added Websites and Urls Listing */}
+              <div className="w-1/2 px-15">
+                {/* Added Websites */}
+                <div className="border border-appGray-600 rounded-lg h-full flex flex-col space-y-4 p-2">
+                  <div className="rounded-lg p-2">
+                    <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
+
+                    {pastedURLs.length > 0 ? (
+                      <>
+                        {pastedURLs.map((url, index) => (
+                          <div key={index}>
+                            {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-nunito">{url}</p>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                onClick={() => handleDelete(index, "url")}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <p className="text-xs text-gray-500 font-nunito text-center p-3">
+                        No websites added yet.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Added Reports Listing */}
+                  <div className="rounded-lg p-2">
+                    <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
+                    {uploadedFiles.length > 0 ? (
+                      <>
+                        {uploadedFiles.map((file, index) => (
+                          <div key={index}>
+                            {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-nunito">{file.name}</p>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                onClick={() => handleDelete(index, "file")}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <p className="text-xs text-gray-500 text-center p-3 font-nunito">
+                        No file uploaded yet.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-
-           
-          </div>
-           <div className="max-w-[120px] mt-5">
-           <div
-             onClick={() => {
-               setStep(2);
-             }}
-             className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-           >
-             Next
-           </div>
-         </div>
-         </>
+            <div className="max-w-[120px] mt-5">
+              <div
+                onClick={() => {
+                  setStep(2);
+                }}
+                className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+              >
+                Next
+              </div>
+            </div>
+          </>
         ) : step === 2 ? (
           <div className="p-3 w-[50%]">
             <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
@@ -283,14 +313,14 @@ const QuickReports = () => {
               placeholder="Report Name"
               className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
             />
-              <div className="max-w-[125px] mt-5 justify-center items-center">
-                <div
-                  onClick={handleSubmit}
-                  className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-                >
-                  Submit
-                </div>
+            <div className="max-w-[125px] mt-0 justify-center items-center">
+              <div
+                onClick={handleSubmit}
+                className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+              >
+                Submit
               </div>
+            </div>
           </div>
         ) : (
           <TakeoffScreen />

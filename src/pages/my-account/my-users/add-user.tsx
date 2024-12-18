@@ -196,8 +196,9 @@ const AddUser = () => {
         <div className="flex justify-between mt-4">
           <button
             type="submit"
-            className="px-5 py-[10px] bg-appGray-500 text-white rounded-full hover:bg-gray-500 focus:outline-none"
-          >
+            disabled={Object.values(formData).includes("")} 
+            className={`px-5 py-[10px] ${Object.values(formData).includes("") ? "bg-appGray-500 cursor-not-allowed" : "bg-primary-800"} text-white rounded-full focus:outline-none`}
+            >
             Send Invite
           </button>
         </div>

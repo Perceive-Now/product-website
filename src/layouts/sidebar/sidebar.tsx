@@ -511,11 +511,10 @@ const handleJoyrideCallback = (data: any) => {
           </div>
 
           <div className="space-y-1">
-            <Link
-              to="/"
-              onClick={() => setOpen(false)}
+            <div
+              onClick={() => setOpen((prev) => !prev)}
               className={classNames(
-                "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                "py-1 rounded flex items-center gap-1 text-sm text-secondary-800 cursor-pointer",
               )}
             >
               <UserIcon
@@ -524,7 +523,7 @@ const handleJoyrideCallback = (data: any) => {
                 profile_photo={userDetail?.profile_photo}
               />
               {open && <span className="text-base">Settings</span>}
-            </Link>
+            </div>
 
             {open &&
               SidebarBottom.map((s, idx) => (
@@ -536,9 +535,9 @@ const handleJoyrideCallback = (data: any) => {
                         "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
                       )}
                     >
-                      <ToolTip title={s.title} placement="right">
+                      {/* <ToolTip title={s.title} placement="right"> */}
                         <div className="text-base">{s.title}</div>
-                      </ToolTip>
+                      {/* </ToolTip> */}
                     </Link>
                   ) : (
                     <button

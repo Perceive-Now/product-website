@@ -1,7 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef ,createColumnHelper} from "@tanstack/react-table";
+import {VerticalThreeDots} from "src/components/icons";
+import ShareModal from "src/components/reusable/share-modal";
+import Tooltip from "src/components/reusable/popover";
+import jsCookie from "js-cookie";
 
 //
 import EditIcon from "../../../components/icons/miscs/Edit";
@@ -19,37 +23,21 @@ import DownloadIcon from "src/components/icons/common/download-icon";
  *
  */
 const Reports = () => {
-  const [reports, setreports] = useState([
-    {
-      id: 1,
-      report_name: "xyz",
-      type: ".docx",
-      size: "2mb",
-      permission: "You and 3 others",
-      date_modified: "Nov 21, 2024",
-    },
-    {
-      id: 2,
-      report_name: "pqr",
-      type: ".docx",
-      size: "2mb",
-      permission: "You and 3 others",
-      date_created: "Nov 21, 2024",
-    },
-    {
-      id: 3,
-      report_name: "abc",
-      type: ".docx",
-      size: "2mb",
-      permission: "You and 3 others",
-      date_modified: "Nov 21, 2024",
-    },
-  ]);
+    const userId = jsCookie.get("user_id");
+  
+  const [reports, setreports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [modal, setModal] = useState(false);
+  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+  const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
+  console.log("sledct---------",selectedRows);
 
-  const filteredReports = reports.filter((report) =>
-    report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+const filteredReports = reports.length > 0 
+  ? reports.filter((report:any) =>
+      report.report_name.toLowerCase().includes(searchQuery.toLowerCase())
+    ) 
+  : [];
+
 
   interface IOptions {
     label: string;
@@ -75,22 +63,89 @@ const Reports = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchHistoryData = async () => {
+      try {
+        const response = await fetch(`https://templateuserrequirements.azurewebsites.net/history/${userId}`, {
+          method: 'GET',
+          headers: { Accept: "application/json" },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+console.log("data=------------",data);
+        setreports(data.reports);  
+      } catch (err) {
+        console.error(err); 
+      } finally {
+        // setLoading(false); 
+      }
+    };
+
+    fetchHistoryData();
+  }, []);  
+
+  const handleRowSelectionChange = (selection:any) => {
+    setRowSelection(selection);
+  };
+
+  const handleBulkDelete = () => {
+    const updatedReports = filteredReports.filter((_, index) => !selectedRows.includes(index.toString()));
+    setreports(updatedReports);
+    setRowSelection({});
+  };
+
+
+  const onShare = () => {
+    setModal(true);
+  };
+
+  const handleDownload = () => {
+    selectedRows.forEach((selectedIndex:any) => {
+      const selectedReport :any= reports[selectedIndex];
+      
+      if (selectedReport && selectedReport.file_data && selectedReport.file_data.file1) {
+        const fileUrl = selectedReport.file_data.file1;
+  
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.download = fileUrl.split('/').pop(); 
+        link.click();
+      }
+    });
+  };
+  
+
+
+
+  const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      // {
-      //   id: "select-col",
-      //   // minSize: ,
-      //   header: ({ table }) => (
-      //     <div className="pl-1 pt-1">
-      //       <CheckboxInput
-      //         className="border-white"
-      //         checked={table.getIsAllRowsSelected()}
-      //         // indeterminate={table.getIsSomeRowsSelected()}
-      //         onChange={table.getToggleAllRowsSelectedHandler()} //or getToggleAllPageRowsSelectedHandler
-      //       />
-      //     </div>
-      //   ),
-      // },
+      {
+        id: "select-col",
+        header: ({ table }) => (
+          <div className="pl-1 pt-1">
+            <CheckboxInput
+              className="border-white"
+              checked={table.getIsAllRowsSelected()}
+              // indeterminate={table.getIsSomeRowsSelected()}
+              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
+            />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="pl-1 pt-1">
+            <CheckboxInput
+              className="border-white"
+              checked={row.getIsSelected()}
+              onChange={row.getToggleSelectedHandler()}
+            />
+          </div>
+        ),
+      },
       {
         header: "Report",
         accessorKey: "report_name",
@@ -101,45 +156,72 @@ const Reports = () => {
         header: "Type",
         accessorKey: "type",
         // minSize: 200,
-        cell: (item) => <span>{item.row.original.type}</span>,
+        cell: ({ row }) => <span>.{row.original.file_data.file1.slice(-3).toLowerCase()}</span>,
       },
-      {
-        header: "Size",
-        accessorKey: "size",
-        // minSize: 200,
-        cell: (item) => <span>{item.row.original.size}</span>,
-      },
-      {
-        header: "Permission",
-        accessorKey: "permission",
-        // minSize: 200,
-        cell: (item) => <span>{item.row.original.permission}</span>,
-      },
+      // {
+      //   header: "Size",
+      //   accessorKey: "size",
+      //   // minSize: 200,
+      //   cell: (item) => <span>{item.row.original.size}</span>,
+      // },
+      // {
+      //   header: "Permission",
+      //   accessorKey: "permission",
+      //   // minSize: 200,
+      //   cell: (item) => <span>{item.row.original.permission}</span>,
+      // },
       {
         header: "Date Modified",
         accessorKey: "date_modified",
         // minSize: 200,
-        cell: (item) => <span>{item.row.original.date_modified}</span>,
+        cell: (item) => <span>18 Dec 2024</span>,
       },
-      {
-        header: " ",
-        // accessorKey: "lead_investigator_given",
-        minSize: 80,
-        cell: (item) => (
-          // <button type="button">
-          //   <EditIcon />
-          // </button>
-          <TableDropdown
-          // menuItems={menuItems}
-          // width="xs"
-          // alignment="right"
-          // conversation_id={item.row.original.id}
-          />
-        ),
-      },
+      // {
+      //   header: " ",
+      //   // accessorKey: "lead_investigator_given",
+      //   minSize: 80,
+      //   cell: (item) => (
+      //     // <button type="button">
+      //     //   <EditIcon />
+      //     // </button>
+      //     <TableDropdown
+      //     // menuItems={menuItems}
+      //     // width="xs"
+      //     // alignment="right"
+      //     // conversation_id={item.row.original.id}
+      //     />
+      //   ),
+      // },
+      columnHelper.display({
+        id: "actions",
+        cell: () => <RowActions />,
+      }),
     ],
     [],
   );
+
+  const RowActions = () => {
+    return (
+      <Tooltip
+        isCustomPanel={true}
+        trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
+        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+      >
+        <ul id="dropdown">
+          <li className="mb-2 cursor-pointer">
+            <div>View Report</div>
+          </li>
+          <li className="mb-2 cursor-pointer">
+            <div>Downlaod</div>
+          </li>
+          <li className="cursor-pointer">
+            <div>Delete Report</div>
+          </li>
+        </ul>
+      </Tooltip>
+    );
+  };
+
 
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
@@ -154,13 +236,10 @@ const Reports = () => {
           </Link>
         </div>
       </div>
-      <div className="flex items-center gap-1 w-full">
+      <div className="flex items-center gap-1 justify-end ">
         <p className="font-bold text-base">
           All Reports<span className="ml-3">{reports.length}</span>
         </p>
-        {/* <div className="h-2 w-2 rounded-full p-[12px] border-2 border-primary-900 text-secondary-500 flex justify-center items-center font-bold">
-            0
-          </div> */}
         <div className="ml-auto">
           <Link to="/quick-reports">
             <Button type="primary">+ Quick Report</Button>
@@ -171,39 +250,42 @@ const Reports = () => {
         <div className="w-[300px]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
+        {selectedRows.length > 0 && 
         <div className="ml-auto flex gap-3">
-          <Link to="/add-user">
-            <Button type="gray">
+            {/* <Button type="gray" handleClick={onShare}>
               <div className="flex items-center gap-1">
                 <ShareIcon />
                 Share
               </div>
-            </Button>
-          </Link>
-          <Link to="/add-user">
-            <Button type="gray">
+            </Button> */}
+            <Button type="gray" handleClick={handleDownload}>
               <div className="flex items-center gap-1">
                 <DownloadIcon />
                 Download
               </div>
             </Button>
-          </Link>
-          <Link to="/add-user">
-            <Button type="gray" classname="flex items-center gap-1">
+            <Button type="gray" classname="flex items-center gap-1" handleClick={handleBulkDelete}>
               <div className="flex items-center gap-2">
                 <TrashIcon />
                 Delete
               </div>
             </Button>
-          </Link>
         </div>
+       }
       </div>
-      {/* <div className="flex items-center justify-end gap-1 mt-2">
-        <IconButton color={"primary"} rounded icon={<ShareIcon className="text-white"/>} />
-        <IconButton color={"primary"} rounded icon={<TrashIcon className="text-white" />} />
-      </div> */}
-      <ReactTable columnsData={columns} rowsData={filteredReports} size="medium" noTopBorder />
+      <ReactTable 
+      columnsData={columns} 
+      rowsData={filteredReports} 
+      size="medium" 
+      noTopBorder 
+      rowSelection={rowSelection}  // Passing rowSelection to ReactTable
+      onRowSelectionChange={handleRowSelectionChange} 
+     />
+    
+    <ShareModal open={modal} path={'/report'} handleClose={() => setModal(false)} />
+    
     </div>
+    
   );
 };
 

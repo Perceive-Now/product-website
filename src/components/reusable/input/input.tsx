@@ -51,7 +51,7 @@ export default function Input({
             type={type}
             {...register}
             className={classNames(
-              "rounded-lg w-full placeholder:text-sm",
+              "rounded-lg w-full placeholder:text-sm bg-[#FCFCFC] border border-appGray-600  focus:outline-blue-600 p-[10px]",
               error
                 ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                 : "input-field",

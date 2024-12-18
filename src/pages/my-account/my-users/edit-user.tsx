@@ -31,7 +31,7 @@ const EditUser = () => {
   const [formData, setFormData] = useState({
     fullName: "Robert Junior",
     email: "peterdenkewy@companyname.com",
-    role: "admin",
+    role: "",
     report: 4,
     profilePhoto: null,
   });
@@ -183,12 +183,13 @@ const EditUser = () => {
               </select>
             </div>
             <div className="flex justify-between mt-4">
-              <button
-                type="submit"
-                className="px-5 py-[10px] bg-appGray-500 text-white rounded-full hover:bg-gray-500 focus:outline-none"
-              >
-                Save
-              </button>
+            <button
+            type="submit"
+            disabled={formData.role ===""} 
+            className={`px-5 py-[10px] ${formData.role === "" ? "bg-appGray-500 cursor-not-allowed" : "bg-primary-800"} text-white rounded-full focus:outline-none`}
+            >
+            Save
+          </button>
             </div>
           </form>
         </div>
