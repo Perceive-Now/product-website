@@ -285,7 +285,7 @@ const QuickReports = () => {
                 </div>
               </div>
             </div>
-            <div className="max-w-[120px] mt-5">
+            <div className="max-w-[120px] mt-2">
               <div
                 onClick={() => {
                   setStep(2);
@@ -313,7 +313,7 @@ const QuickReports = () => {
               placeholder="Report Name"
               className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
             />
-            <div className="max-w-[125px] mt-0 justify-center items-center">
+            <div className="max-w-[125px] mt-5 justify-center items-center">
               <div
                 onClick={handleSubmit}
                 className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
