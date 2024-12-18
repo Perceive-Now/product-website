@@ -85,6 +85,8 @@ import OrganizationSettings from "./pages/authentication/signup/organization-set
 import ProfileSetup from "./pages/authentication/signup/profile-setup";
 import UserPlan from "./pages/authentication/signup/user-plan";
 import PaymentScreen from "./pages/authentication/signup/payment";
+import TeamMangementScreen from "./pages/authentication/signup/team-mangement";
+import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-confirmation";
 // import MadLibEditor from "./test";
 
 /**
@@ -172,6 +174,8 @@ function App() {
         <Route path="/signup/profile" element={<ProfileSetup />} />
         <Route path="/signup/plan" element={<UserPlan />} />
         <Route path="/signup/payment" element={<PaymentScreen />} />
+        <Route path="/signup/team" element={<TeamMangementScreen />} />
+        <Route path="/signup/review" element={<ReviewConfirmationScreen />} />
 
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
