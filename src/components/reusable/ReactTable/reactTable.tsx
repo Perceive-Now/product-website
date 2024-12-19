@@ -6,13 +6,22 @@ import TableSortIcon from "../../icons/table-sort";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export default function ReactTable(props: IReactTable) {
-  const { rowSelection, onRowSelectionChange, size = "medium", errorMessage = "No data Available", striped = true, columnsData, rowsData, noTopBorder } = props;
+  const {
+    rowSelection = {},
+    onRowSelectionChange,
+    size = "medium",
+    errorMessage = "No data Available",
+    striped = true,
+    columnsData,
+    rowsData,
+    noTopBorder,
+  } = props;
 
   const table = useReactTable({
-    data: rowsData ?? [],
+    data: rowsData ?? [], 
     columns: columnsData ?? [],
     state: { rowSelection },
-    onRowSelectionChange: onRowSelectionChange, 
+    onRowSelectionChange: onRowSelectionChange ?? (() => null),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
@@ -113,5 +122,5 @@ interface IReactTable {
   noTopBorder?: boolean;
   errorMessage?: string;
   rowSelection?: any;
-  onRowSelectionChange?: (selection: any) => void;  
+  onRowSelectionChange?: (selection: any) => void;
 }

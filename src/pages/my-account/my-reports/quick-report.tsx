@@ -1,20 +1,17 @@
 import { useMemo, useState, useRef } from "react";
 
-import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef } from "@tanstack/react-table";
-
 //
 import EditIcon from "../../../components/icons/miscs/Edit";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 //
-import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import TrashIcon from "src/components/icons/common/trash";
 import { UploadIcon } from "src/components/icons";
 import TakeoffScreen from "./takeoffScreen";
 import jsCookie from "js-cookie";
 import { generateKnowIdstring } from "src/utils/helpers";
+import toast from "react-hot-toast";
 
 /**
  *
@@ -74,8 +71,6 @@ const QuickReports = () => {
   };
 
   const handleSubmit = async () => {
-    setStep(3);
-
     const formData = new FormData();
 
     uploadedFiles.forEach((file: File) => {
@@ -97,6 +92,12 @@ const QuickReports = () => {
           body: formData,
         },
       );
+
+      if(response.ok){
+        setStep(3);
+      }else{
+        toast.error("Unable to submit report");
+      }
 
       console.log("response", response);
     } catch (e) {
@@ -142,9 +143,9 @@ const QuickReports = () => {
         )}
       </div>
 
-      <div className="">
+      <div className="overflow-y-auto">
         {step === 1 ? (
-          <>
+          <div className="">
             <div className="flex space-x-4">
               {/* First Part: File Upload and Paste URL */}
               <div className="w-1/2 space-y-4">
@@ -230,7 +231,7 @@ const QuickReports = () => {
               </div>
 
               {/* Second Part: Added Websites and Urls Listing */}
-              <div className="w-1/2 px-15">
+              <div className="w-1/2 px-12">
                 {/* Added Websites */}
                 <div className="border border-appGray-600 rounded-lg h-full flex flex-col space-y-4 p-2">
                   <div className="rounded-lg p-2">
@@ -285,17 +286,17 @@ const QuickReports = () => {
                 </div>
               </div>
             </div>
-            <div className="max-w-[120px] mt-2">
+            <div className="max-w-[120px] mt-5">
               <div
                 onClick={() => {
                   setStep(2);
                 }}
-                className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                className="cursor-pointer  border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
               >
                 Next
               </div>
             </div>
-          </>
+          </div>
         ) : step === 2 ? (
           <div className="p-3 w-[50%]">
             <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
