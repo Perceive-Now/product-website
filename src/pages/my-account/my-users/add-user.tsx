@@ -109,22 +109,22 @@ const AddUser = () => {
 
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
-        <div className="p-5">
+        <div className="p-1">
           <h6 className="text-lg font-semibold ml-0">Settings &gt; User management &gt; User</h6>
-          <div className="flex justify-start items-center p-3">
+          <div className="flex justify-start items-center pt-3 pl-1">
             <Link to="/my-users">
               <p className="mr-4 text-secondary-800 flex items-center">
                 <ArrowLeftIcon className="mr-1" />
                 Back
               </p>
             </Link>
-            <p className="ml-auto text-secondary-800 flex items-center">
+            <p className="ml-auto text-secondary-800 flex items-center cursor-pointer">
               Cancel Invite
               <CrossIcon className="ml-1" />
             </p>{" "}
           </div>
         </div>
-    <div className="w-[45%] ml-[30%]">
+      <div className="w-[660px]  mx-auto">
       <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
         {photo ? (
           <img

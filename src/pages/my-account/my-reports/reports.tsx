@@ -1,14 +1,15 @@
 import { useMemo, useState, useEffect } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef ,createColumnHelper} from "@tanstack/react-table";
-import {VerticalThreeDots} from "src/components/icons";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { VerticalThreeDots } from "src/components/icons";
 import ShareModal from "src/components/reusable/share-modal";
 import Tooltip from "src/components/reusable/popover";
 import jsCookie from "js-cookie";
+import { LoadingIcon, ShareIcon } from "src/components/icons";
+import TrashIcon from "src/components/icons/common/trash";
 
 //
-import EditIcon from "../../../components/icons/miscs/Edit";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 //
@@ -16,110 +17,142 @@ import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
-import TrashIcon from "src/components/icons/common/trash";
-import { ShareIcon } from "src/components/icons";
 import DownloadIcon from "src/components/icons/common/download-icon";
 /**
  *
  */
 const Reports = () => {
-    const userId = jsCookie.get("user_id");
-  
+  const userId = jsCookie.get("user_id");
+
   const [reports, setreports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState(true);
+  const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
-  console.log("sledct---------",selectedRows);
+  console.log("sledct---------", selectedRows);
 
-const filteredReports = reports.length > 0 
-  ? reports.filter((report:any) =>
-      report.report_name.toLowerCase().includes(searchQuery.toLowerCase())
-    ) 
-  : [];
-
-
-  interface IOptions {
-    label: string;
-    icon: JSX.Element;
-    action: () => void;
-  }
-
-  const menuItems = [
-    {
-      label: "Pin",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("yo"),
-    },
-    {
-      label: "Delete",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("yo"),
-    },
-    {
-      label: "Share",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("yo"),
-    },
-  ];
+  const filteredReports =
+    reports.length > 0
+      ? reports.filter((report: any) =>
+          report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+      : [];
 
   useEffect(() => {
     const fetchHistoryData = async () => {
       try {
-        const response = await fetch(`https://templateuserrequirements.azurewebsites.net/history/${userId}`, {
-          method: 'GET',
-          headers: { Accept: "application/json" },
-        });
+        const response = await fetch(
+          `https://templateuserrequirements.azurewebsites.net/history/${userId}`,
+          {
+            method: "GET",
+            headers: { Accept: "application/json" },
+          },
+        );
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
+        if (response.ok) {
+          const data = await response.json();
+          console.log("data=------------", data);
+          setreports(data.reports);
         }
-
-        const data = await response.json();
-console.log("data=------------",data);
-        setreports(data.reports);  
       } catch (err) {
-        console.error(err); 
+        console.error(err);
       } finally {
-        // setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchHistoryData();
-  }, []);  
+  }, []);
 
-  const handleRowSelectionChange = (selection:any) => {
+  const handleRowSelectionChange = (selection: any) => {
     setRowSelection(selection);
   };
 
   const handleBulkDelete = () => {
-    const updatedReports = filteredReports.filter((_, index) => !selectedRows.includes(index.toString()));
+    const updatedReports = filteredReports.filter(
+      (_, index) => !selectedRows.includes(index.toString()),
+    );
     setreports(updatedReports);
     setRowSelection({});
   };
 
+  const handleBulkDownload = () => {
+    selectedRows.forEach((selectedIndex: any, index: number) => {
+      const selectedReport: any = reports[selectedIndex];
 
-  const onShare = () => {
-    setModal(true);
-  };
-
-  const handleDownload = () => {
-    selectedRows.forEach((selectedIndex:any) => {
-      const selectedReport :any= reports[selectedIndex];
-      
       if (selectedReport && selectedReport.file_data && selectedReport.file_data.file1) {
         const fileUrl = selectedReport.file_data.file1;
-  
+
         const link = document.createElement("a");
         link.href = fileUrl;
-        link.download = fileUrl.split('/').pop(); 
-        link.click();
+        link.download = fileUrl.split("/").pop();
+        console.log("downloading file:", link.download);
+
+        setTimeout(() => {
+          link.click();
+        }, index * 100);
       }
     });
   };
-  
 
+  const deleteReportHandler = (index: any) => {
+    setreports((prevReports) => prevReports.filter((_, i) => i !== index));
+  };
 
+  const openFileHandler = (fileUrl: string) => {
+    window.open(fileUrl, "_blank");
+  };
+
+  const RowActions = ({
+    row,
+    deleteReportHandler,
+    openFileHandler,
+  }: {
+    row: any;
+    deleteReportHandler: (reportId: string) => void;
+    openFileHandler: (fileUrl: string) => void;
+  }) => {
+    const handleDelete = () => {
+      deleteReportHandler(row.index);
+    };
+
+    const handleShareReport = () => {
+      setShareLink(row.original.file_data.file1);
+      setModal(true);
+    };
+
+    const handleDownload = () => {
+      openFileHandler(row.original.file_data.file1);
+    };
+
+    return (
+      <Tooltip
+        isCustomPanel={true}
+        trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
+        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+      >
+        <ul id="dropdown">
+          <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+            <div className="flex items-center">
+              <DownloadIcon className="mr-2" /> Download
+            </div>
+          </li>
+          <li className="mb-2 cursor-pointer" onClick={handleDelete}>
+            <div className="flex items-center">
+              <TrashIcon className="mr-2" /> Delete Report
+            </div>
+          </li>
+          <li className="cursor-pointer" onClick={handleShareReport}>
+            <div className="flex items-center">
+              <ShareIcon className="mr-2" /> Share
+            </div>
+          </li>
+        </ul>
+      </Tooltip>
+    );
+  };
 
   const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
@@ -194,40 +227,24 @@ console.log("data=------------",data);
       // },
       columnHelper.display({
         id: "actions",
-        cell: () => <RowActions />,
+        minSize: 100,
+        cell: ({ row }) => (
+          <RowActions
+            row={row}
+            deleteReportHandler={deleteReportHandler}
+            openFileHandler={openFileHandler}
+          />
+        ),
       }),
     ],
     [],
   );
 
-  const RowActions = () => {
-    return (
-      <Tooltip
-        isCustomPanel={true}
-        trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
-        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
-      >
-        <ul id="dropdown">
-          <li className="mb-2 cursor-pointer">
-            <div>View Report</div>
-          </li>
-          <li className="mb-2 cursor-pointer">
-            <div>Downlaod</div>
-          </li>
-          <li className="cursor-pointer">
-            <div>Delete Report</div>
-          </li>
-        </ul>
-      </Tooltip>
-    );
-  };
-
-
   return (
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
-      <div className="">
+    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+      <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; Report management</h6>
-        <div className="flex justify-start items-center pt-3">
+        <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/profile">
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" />
@@ -250,15 +267,15 @@ console.log("data=------------",data);
         <div className="w-[300px]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
-        {selectedRows.length > 0 && 
-        <div className="ml-auto flex gap-3">
+        {selectedRows.length > 0 && (
+          <div className="ml-auto flex gap-3">
             {/* <Button type="gray" handleClick={onShare}>
               <div className="flex items-center gap-1">
                 <ShareIcon />
                 Share
               </div>
             </Button> */}
-            <Button type="gray" handleClick={handleDownload}>
+            <Button type="gray" handleClick={handleBulkDownload}>
               <div className="flex items-center gap-1">
                 <DownloadIcon />
                 Download
@@ -270,22 +287,26 @@ console.log("data=------------",data);
                 Delete
               </div>
             </Button>
-        </div>
-       }
+          </div>
+        )}
       </div>
-      <ReactTable 
-      columnsData={columns} 
-      rowsData={filteredReports} 
-      size="medium" 
-      noTopBorder 
-      rowSelection={rowSelection}  // Passing rowSelection to ReactTable
-      onRowSelectionChange={handleRowSelectionChange} 
-     />
-    
-    <ShareModal open={modal} path={'/report'} handleClose={() => setModal(false)} />
-    
+      {loading ? (
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+          <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
+        </div>
+      ) : (
+        <ReactTable
+          columnsData={columns}
+          rowsData={filteredReports}
+          size="medium"
+          noTopBorder
+          rowSelection={rowSelection} 
+          onRowSelectionChange={handleRowSelectionChange}
+        />
+      )}
+
+      <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />
     </div>
-    
   );
 };
 

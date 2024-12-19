@@ -18,9 +18,9 @@ import Button from "src/components/reusable/button";
  */
 const Users = () => {
   const [users, setusers] = useState([
-    { id: 1, user_name: "robert", role: "admin", reports_count: 6 },
-    { id: 2, user_name: "john cena", role: "admin", reports_count: 6 },
-    { id: 3, user_name: "roman", role: "admin", reports_count: 6 },
+    { id: 1, user_name: "xyz", role: "admin", reports_count: 6 },
+    { id: 2, user_name: "abc", role: "admin", reports_count: 6 },
+    { id: 3, user_name: "pqr", role: "admin", reports_count: 6 },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
@@ -35,7 +35,7 @@ const Users = () => {
     action: () => void;
   }
 
-  const handleRowSelectionChange = (selection:any) => {
+  const handleRowSelectionChange = (selection: any) => {
     setRowSelection(selection);
   };
 
@@ -120,8 +120,8 @@ const Users = () => {
   );
 
   return (
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
-      <div className="">
+    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+      <div className="p-1">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; User management</h6>
         <div className="flex justify-start items-center pt-3">
           <Link to="/profile">
@@ -132,22 +132,28 @@ const Users = () => {
           </Link>
         </div>
       </div>
-      <div className="flex items-center gap-1 w-full">
-        <p className="font-bold text-base">
+      <div className="flex items-center justify-between gap-1 w-full">
+        <div className="font-bold text-base ml-1">
           All Users<span className="ml-3">{users.length}</span>
-        </p>
-        <div className="w-[300px] ml-[60%]">
+        </div>
+        <div className="w-[300px] ml-auto">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
 
-        <div className="ml-auto">
+        <div className="">
           <Link to="/add-user">
             <Button type="primary">+ Add User</Button>
           </Link>
         </div>
       </div>
-      <ReactTable columnsData={columns} rowsData={filteredUser} size="medium" noTopBorder  rowSelection={rowSelection}  // Passing rowSelection to ReactTable
-      onRowSelectionChange={handleRowSelectionChange}  />
+      <ReactTable
+        columnsData={columns}
+        rowsData={filteredUser}
+        size="medium"
+        noTopBorder
+        rowSelection={rowSelection}
+        onRowSelectionChange={handleRowSelectionChange}
+      />
     </div>
   );
 };

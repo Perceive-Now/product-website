@@ -20,7 +20,8 @@ export default function ShareModal({ open, handleClose, path }: ICitationModalPr
   //   ? "https://develop.app.perceivenow.ai"
   //   : window.location.origin;
 
-  const url = `${origin}${path}?userId=${userId}`;
+  // const url = `${origin}${path}?userId=${userId}`;
+  const url = path.startsWith("https://") ? path : `${origin}${path}?userId=${userId}`;
 
   const handleCopyLinkToClipBoard = () => {
     navigator.clipboard.writeText(url).then(

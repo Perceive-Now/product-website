@@ -122,9 +122,9 @@ const Setting = () => {
       </div> */}
 
       <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
-        <div className="p-5">
+        <div className="p-1">
           <h6 className="text-lg font-semibold ml-0">Settings &gt; Billing</h6>
-          <div className="flex justify-start items-center pt-3">
+          <div className="flex justify-start items-center pt-3 pl-1">
             <Link to="/profile">
               <p className="mr-4 text-secondary-800 flex items-center">
                 <ArrowLeftIcon className="mr-1" />
@@ -204,10 +204,10 @@ const Setting = () => {
           </div>
           <div className="mt-10">
             <h6 className="text-start font-semibold text-lg font-nunito">Billing History</h6>
-            {billingssample && billingssample?.length > 0 ? (
+            {billings && billings?.length > 0 ? (
               <>
-                <div className="max-h-[150px] pn_scroller overflow-y-auto">
-                  {billingssample?.map((billing, idx) => (
+                <div className="max-h-[200px] pn_scroller overflow-y-auto">
+                  {billings?.map((billing, idx) => (
                     <div
                       key={idx * 19}
                       className="grid grid-cols-4 text-secondary-800 font-mulish mt-1"
