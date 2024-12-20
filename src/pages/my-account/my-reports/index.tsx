@@ -2,7 +2,7 @@ import React from "react";
 import Reports from "./reports";
 import ReportSidebar from "./report-side";
 
-const MyReport = () => {
+const ReportMangement = () => {
   return (
     <div className="flex gap-x-[20px] w-full mx-auto">
       <Reports />
@@ -12,4 +12,4 @@ const MyReport = () => {
   );
 };
 
-export default MyReport;
+export default ReportMangement;

@@ -25,7 +25,7 @@ import LoginPage from "./pages/authentication/login";
 
 // Account
 import UserProfile from "./pages/my-account/profile";
-import MyReport from "./pages/my-account/my-reports";
+import MyReports from "./pages/my-account/reports";
 import Setting from "./pages/my-account/setting";
 import Basics from "./pages/my-account/basics";
 import Preferences from "./pages/my-account/preferences";
@@ -33,7 +33,8 @@ import MyUsers from "./pages/my-account/my-users";
 import AddUser from "./pages/my-account/my-users/add-user";
 import EditUser from "./pages/my-account/my-users/edit-user";
 import QuickReports from "./pages/my-account/my-reports/quick-report";
-
+import AdminReports from "./pages/my-account/admin-reports";
+import ReportMangement from "./pages/my-account/my-reports";
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
 import Payment from "./components/@report/use-case/payment";
@@ -108,13 +109,15 @@ function App() {
 
             {/* Account */}
             <Route path="/profile" element={<Basics />} />
-            <Route path="/my-reports" element={<MyReport />} />
+            <Route path="/my-reports" element={<ReportMangement />} />
+            <Route path="/reports" element={<MyReports />} />
             <Route path="/quick-reports" element={<QuickReports />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/my-users" element={<MyUsers />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
+            <Route path="/admin-reports" element={<AdminReports />} />
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
