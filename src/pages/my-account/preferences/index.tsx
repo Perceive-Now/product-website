@@ -29,13 +29,23 @@ const Preferences = () => {
   const [alertEnabled, setAlertEnabled] = useState(true);
 
   const agentOptions = [
-    { value: "founder", label: "Technology & R&D" },
-    { value: "admin", label: "Healthcare" },
+    { value: "Startup diligence agent", label: "Startup diligence agent" },
+    { value: "Portfolio support agent", label: "Portfolio support agent" },
+    { value: "Fundraising strategy agent", label: "Fundraising strategy agent" },
+    { value: "Market strategy agent", label: "Market strategy agent" },
+    { value: "Technology & R&D agent", label: "Technology & R&D agent" },
+    { value: "Product & Engineering agent", label: "Product & Engineering agent" },
+    { value: "Marketing & Sales agent", label: "Marketing & Sales agent" },
+    { value: "Finance & Strategy agent", label: "Finance & Strategy agent" },
+    { value: "Legal & Compliance agent", label: "Legal & Compliance agent" },
+    { value: "Report on Anything agent", label: "Report on Anything agent" },
+    { value: "Corporate Venture Capital Agent", label: "Corporate Venture Capital Agent" },
   ];
   const formatOptions = [
-    { value: "pdf", label: "Pdf" },
-    { value: "ppt", label: "PPT" },
-    { value: "word", label: "Word" },
+    { value: "Pdf", label: "Pdf" },
+    { value: "docx", label: "docx" },
+    { value: "xlsx", label: "xlsx" },
+    { value: "csv", label: "csv" },
   ];
 
   const handleAgentChange = (selected: any) => {
@@ -163,8 +173,13 @@ const Preferences = () => {
               className="mt-1 p-[14px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent appearance-none"
             >
               <option value="">Select</option>
-              <option value="founder">Healthcare</option>
-              <option value="admin">R&D</option>
+              <option value="founder">Venture Capital</option>
+              <option value="admin">Market and IP Research Firms</option>
+              <option value="admin">Web3</option>
+              <option value="admin">M&A</option>
+              <option value="admin">IP Attorny</option>
+              <option value="admin">Technology Transfer Office</option>
+              <option value="admin">Healthcare</option>
             </select>
           </div>
 
@@ -230,16 +245,23 @@ const Preferences = () => {
             </Switch>
           </div>
 
-            <button
-              type="submit"
-              disabled={!formData.industry || selectedAgentOptions.length > 0 || setSelectedFormatOptions.length > 0}
-              className={`px-5 py-[10px] ${!formData.industry || selectedAgentOptions.length === 0 || setSelectedFormatOptions.length === 0
-                  ? "bg-appGray-500 cursor-not-allowed"
-                  : "bg-primary-800"
-              } text-white rounded-full focus:outline-none`}
-            >
-              Save
-            </button>
+          <button
+            type="submit"
+            disabled={
+              !formData.industry ||
+              selectedAgentOptions.length > 0 ||
+              setSelectedFormatOptions.length > 0
+            }
+            className={`px-5 py-[10px] ${
+              !formData.industry ||
+              selectedAgentOptions.length === 0 ||
+              setSelectedFormatOptions.length === 0
+                ? "bg-appGray-500 cursor-not-allowed"
+                : "bg-primary-800"
+            } text-white rounded-full focus:outline-none`}
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>

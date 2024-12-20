@@ -21,7 +21,7 @@ import DownloadIcon from "src/components/icons/common/download-icon";
 /**
  *
  */
-const Reports = () => {
+const MyReports = () => {
   const userId = jsCookie.get("user_id");
 
   const [reports, setreports] = useState([]);
@@ -243,7 +243,7 @@ const Reports = () => {
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">Settings &gt; Report management</h6>
+        <h6 className="text-lg font-semibold ml-0">Settings &gt; Reports</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/">
             <p className="mr-4 text-secondary-800 flex items-center">
@@ -253,20 +253,16 @@ const Reports = () => {
           </Link>
         </div>
       </div>
-      <div className="flex items-center gap-1 justify-end ">
-        <p className="font-bold text-base">
+      <div className="flex items-center gap-1 justify-between ">
+        <div className="font-bold text-base">
           All Reports<span className="ml-3">{reports.length}</span>
-        </p>
-        <div className="ml-auto">
-          <Link to="/quick-reports">
-            <Button type="primary">+ Quick Report</Button>
-          </Link>
         </div>
-      </div>
-      <div className="flex items-center gap-1 w-full">
         <div className="w-[300px]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
+      </div>
+      <div className="flex items-center gap-1 w-full">
+        
         {selectedRows.length > 0 && (
           <div className="ml-auto flex gap-3">
             {/* <Button type="gray" handleClick={onShare}>
@@ -310,4 +306,4 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default MyReports;
