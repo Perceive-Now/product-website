@@ -22,6 +22,7 @@ export default function ReactTable(props: IReactTable) {
     columnsData,
     rowsData,
     noTopBorder,
+    getRowProps = () => ({}),
   } = props;
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -105,6 +106,7 @@ export default function ReactTable(props: IReactTable) {
                   "bg-gray-100": striped && index % 2 === 1,
                   "border-t-[1px] border-t-gray-300": !noTopBorder,
                 })}
+                {...getRowProps(row)} 
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
@@ -123,7 +125,7 @@ export default function ReactTable(props: IReactTable) {
           )}
         </tbody>
       </table>
-      {/* {rowsData.length > 10 && (
+      {rowsData.length > 10 && (
         <>
           <div className="h-2" />
           <div className="flex items-center gap-2">
@@ -193,15 +195,15 @@ export default function ReactTable(props: IReactTable) {
             Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
             {table.getRowCount().toLocaleString()} Rows
           </div>
-          <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
         </>
-      )} */}
+      )}
     </div>
   );
 }
 
 interface IReactTable {
   columnsData?: ColumnDef<any>[];
+  getRowProps?: any;
   rowsData?: any;
   size?: "small" | "medium" | "large";
   striped?: boolean;

@@ -43,11 +43,11 @@ const sidebarItems: ISidebarListItem[] = [
     to:"/start-conversation"
   },
   {
-    title: "Report Management",
-    key: "reportManagement",
+    title: "Project Management",
+    key: "projectManagement",
     classname:"mb-1",
     icon: NewReportIcon,
-    to:"/my-reports"
+    to:"/my-projects"
   },
   // {
   //   title: "New Conversation",
