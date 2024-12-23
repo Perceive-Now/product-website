@@ -18,14 +18,14 @@ import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
-import JSZip from "jszip";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 /**
  *
  */
-const Reports = () => {
+const MyProjects = () => {
+  const navigate = useNavigate();
   const userId = jsCookie.get("user_id");
-  const { id } = useParams();
+
   const [reports, setreports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
@@ -33,6 +33,7 @@ const Reports = () => {
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
+  console.log("sledct---------", selectedRows);
 
   const filteredReports =
     reports.length > 0
@@ -54,19 +55,9 @@ const Reports = () => {
 
         if (response.ok) {
           const data = await response.json();
-          const matchedReports = data.reports
-          .filter((report:any) => report.thread_id === id)
-          .map((report:any) => {
-            return Object.entries(report.file_data).map(([key, fileUrl]) => ({
-              thread_id: report.thread_id,
-              report_name: report.report_name,
-              file: fileUrl,
-            }));
-          })
-          .flat(); 
-        console.log("matchedReports",matchedReports)
-        setreports(matchedReports);
-              }
+          console.log("data=------------", data);
+          setreports(data.reports);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -107,31 +98,7 @@ const Reports = () => {
       }
     });
   };
-    
 
-  // const handleBulkDownload = () => {
-  //   const zip = new JSZip();
-  
-  //   selectedRows.forEach((selectedIndex: any, index: number) => {
-  //     const selectedReport: any = reports[selectedIndex];
-  
-  //     if (selectedReport && selectedReport.file_data && selectedReport.file_data.file1) {
-  //       const file = selectedReport.file_data.file1; 
-
-  //       const fileName = file.name || file.split("/").pop();
-  //       zip.file(fileName, file);
-  //     }
-  //   });
-  
-  //   zip.generateAsync({ type: "blob" }).then((content) => {
-  //     const link = document.createElement("a");
-  //     link.href = URL.createObjectURL(content);
-  //     link.download = "reports.zip"; 
-  //     link.click();
-  //   });
-  // };
-  
-  
   const deleteReportHandler = (index: any) => {
     setreports((prevReports) => prevReports.filter((_, i) => i !== index));
   };
@@ -154,12 +121,12 @@ const Reports = () => {
     };
 
     const handleShareReport = () => {
-      setShareLink(row.original.file);
+      setShareLink(row.original.file_data.file1);
       setModal(true);
     };
 
     const handleDownload = () => {
-      openFileHandler(row.original.file);
+      openFileHandler(row.original.file_data.file1);
     };
 
     return (
@@ -205,7 +172,9 @@ const Reports = () => {
           </div>
         ),
         cell: ({ row }) => (
-          <div className="pl-1 pt-1">
+          <div className="pl-1 pt-1"
+          onClick={(e) => e.stopPropagation()} 
+          >
             <CheckboxInput
               className="border-white"
               checked={row.getIsSelected()}
@@ -215,72 +184,38 @@ const Reports = () => {
         ),
       },
       {
-        header: "Report",
+        header: "Project",
         accessorKey: "report_name",
         // minSize: 400,
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
       },
-      {
-        header: "Type",
-        accessorKey: "type",
-        // minSize: 200,
-        cell: ({ row }) => <span>.{row.original.file.slice(-3).toLowerCase()}</span>,
-      },
-      // {
-      //   header: "Size",
-      //   accessorKey: "size",
-      //   // minSize: 200,
-      //   cell: (item) => <span>{item.row.original.size}</span>,
-      // },
-      // {
-      //   header: "Permission",
-      //   accessorKey: "permission",
-      //   // minSize: 200,
-      //   cell: (item) => <span>{item.row.original.permission}</span>,
-      // },
       {
         header: "Date Modified",
         accessorKey: "date_modified",
         // minSize: 200,
         cell: (item) => <span>18 Dec 2024</span>,
       },
-      // {
-      //   header: " ",
-      //   // accessorKey: "lead_investigator_given",
-      //   minSize: 80,
-      //   cell: (item) => (
-      //     // <button type="button">
-      //     //   <EditIcon />
-      //     // </button>
-      //     <TableDropdown
-      //     // menuItems={menuItems}
-      //     // width="xs"
-      //     // alignment="right"
-      //     // conversation_id={item.row.original.id}
-      //     />
-      //   ),
-      // },
-      columnHelper.display({
-        id: "actions",
-        minSize: 100,
-        cell: ({ row }) => (
-          <RowActions
-            row={row}
-            deleteReportHandler={deleteReportHandler}
-            openFileHandler={openFileHandler}
-          />
-        ),
-      }),
     ],
     [],
   );
 
+  const getRowProps = (row: any) => ({
+    onClick: () => {
+      const threadId = row.original.thread_id;
+      navigate(`/my-reports/${threadId}`);
+    },
+    style: {
+      cursor: "pointer",
+    },
+  });
+
+
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">Settings &gt; Report management</h6>
+        <h6 className="text-lg font-semibold ml-0">Project management</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to="/my-projects">
+          <Link to="/">
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" />
               Back
@@ -290,7 +225,7 @@ const Reports = () => {
       </div>
       <div className="flex items-center gap-1 justify-end ">
         <p className="font-bold text-base">
-          All Reports<span className="ml-3">{reports.length}</span>
+          All Projects<span className="ml-3">{reports.length}</span>
         </p>
         <div className="ml-auto">
           <Link to="/quick-reports">
@@ -337,6 +272,7 @@ const Reports = () => {
           noTopBorder
           rowSelection={rowSelection} 
           onRowSelectionChange={handleRowSelectionChange}
+          getRowProps={getRowProps} // Add getRowProps to the Table component
         />
       )}
 
@@ -345,4 +281,4 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default MyProjects;
