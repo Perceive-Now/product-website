@@ -128,7 +128,7 @@ const ReviewConfirmationScreen = () => {
           <Button
             rounded="full"
             classname="w-[120px]"
-            handleClick={() => navigate("/signup/success")}
+            handleClick={() => navigate("/signup/finish")}
           >
             Confirm
           </Button>

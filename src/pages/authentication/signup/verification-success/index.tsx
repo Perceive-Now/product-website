@@ -1,7 +1,10 @@
 import Button from "src/components/reusable/button";
 import perceiveNowImage from "../../../../assets/images/pn.svg";
+import { useNavigate } from "react-router-dom";
 
 const VerificationSuccess = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex justify-center min-h-screen bg-gradient-to-b from-white to-[#F7F5FF] p-2">
       <div className="flex flex-col gap-y-2 max-w-[400px] mt-[30vh] 2xl:mt-[20vh]">
@@ -12,7 +15,7 @@ const VerificationSuccess = () => {
           You'll be guided through a few simple steps to personalize your experience.
         </p>
         <div className="mt-3">
-          <Button type="primary" rounded="full">
+          <Button type="primary" rounded="full" handleClick={() => navigate("/signup/organization-setting")}>
             <span className="font-light text-[15px]">Let&apos;s get started</span>
           </Button>
         </div>
