@@ -35,6 +35,7 @@ import EditUser from "./pages/my-account/my-users/edit-user";
 import QuickReports from "./pages/my-account/my-reports/quick-report";
 import AdminReports from "./pages/my-account/admin-reports";
 import ReportMangement from "./pages/my-account/my-reports";
+import MyProjects from "./pages/my-account/my-projects";
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
 import Payment from "./components/@report/use-case/payment";
@@ -109,7 +110,8 @@ function App() {
 
             {/* Account */}
             <Route path="/profile" element={<Basics />} />
-            <Route path="/my-reports" element={<ReportMangement />} />
+            <Route path="/my-reports/:id" element={<ReportMangement />} />
+            <Route path="/my-projects" element={<MyProjects />} />
             <Route path="/reports" element={<MyReports />} />
             <Route path="/quick-reports" element={<QuickReports />} />
             <Route path="/setting" element={<Setting />} />

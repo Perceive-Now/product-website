@@ -12,6 +12,7 @@ import TakeoffScreen from "./takeoffScreen";
 import jsCookie from "js-cookie";
 import { generateKnowIdstring } from "src/utils/helpers";
 import toast from "react-hot-toast";
+import { LoadingIcon } from "src/components/icons";
 
 /**
  *
@@ -45,6 +46,7 @@ const QuickReports = () => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [step, setStep] = useState(1);
   const [reportName, setReportName] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const handleDrop = (e: any) => {
     e.preventDefault();
@@ -63,14 +65,45 @@ const QuickReports = () => {
 
   const handleFileChange = (e: any) => {
     const files = e.target.files;
-    console.log("files", files);
     if (files) {
       const fileList = Array.from(files);
-      setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const invalidFiles = fileList.filter((file: any) => {
+        const isInvalidType = !allowedTypes.includes(file.type);
+        const isInvalidSize = file.size > 200 * 1024 * 1024;
+        if (isInvalidType || isInvalidSize) {
+          return true;
+        }
+        return false;
+      });
+
+      if (invalidFiles.length > 0) {
+        toast.error("Invalid file uploaded.");
+      } else {
+        setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+      }
     }
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
+    if (uploadedFiles.length === 0) {
+      toast.error("Upload a file to submit");
+      setLoading(false);
+      return;
+    }
+
     const formData = new FormData();
 
     uploadedFiles.forEach((file: File) => {
@@ -102,6 +135,8 @@ const QuickReports = () => {
       console.log("response", response);
     } catch (e) {
       console.log("err", e);
+    } finally {
+      setLoading(false);
     }
 
     console.log("formData------", formData);
@@ -129,11 +164,11 @@ const QuickReports = () => {
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
       <div>
         <h6 className="text-lg font-semibold ml-0">
-          Settings &gt; Report management &gt; Quick report
+        Project management &gt; {step === 1 ? 'New Project' : 'Project Resources'}
         </h6>
         {step === 1 && (
           <div className="flex justify-start items-center pt-3">
-            <Link to="/my-reports">
+            <Link to="/my-projects">
               <p className="mr-4 text-secondary-800 flex items-center">
                 <ArrowLeftIcon className="mr-1" />
                 Back
@@ -206,7 +241,7 @@ const QuickReports = () => {
                 <div className="mt-4 flex justify-between">
                   <div>
                     <p className="text-lg font-semibold font-nunito">
-                      Supported file types (up to 40mb)
+                      Supported file types (up to 200mb)
                     </p>
                     <ul className="list-disc pl-[20px]">
                       {listContent.map((content) => (
@@ -287,18 +322,19 @@ const QuickReports = () => {
               </div>
             </div>
             <div className="max-w-[120px] mt-5">
-              <div
+              <button
                 onClick={handleSubmit}
-                className="cursor-pointer  border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                disabled={loading}
+                className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
               >
-                Submit
-              </div>
+                {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
+              </button>
             </div>
           </div>
         ) : step === 1 ? (
           <div className="p-3 w-[50%]">
             <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
-              Name your report
+              Name your project
             </label>
             <input
               type="text"
@@ -309,13 +345,18 @@ const QuickReports = () => {
                 setReportName(e.target.value);
               }}
               required
-              placeholder="Report Name"
+              placeholder="Project Name"
               className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
             />
             <div className="max-w-[125px] mt-5 justify-center items-center">
               <div
                 onClick={() => {
-                  setStep(2);
+                  if (reportName === "") {
+                    toast.error("Project name cannot be empty!");
+                    return;
+                  } else {
+                    setStep(2);
+                  }
                 }}
                 className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
               >
