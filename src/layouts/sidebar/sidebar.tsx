@@ -23,12 +23,13 @@ import ToolTip from "src/components/reusable/tool-tip";
 import ChatSidebar from "./chat/chat-sidebar";
 import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-joyride";
 import { setCurrentStep } from "src/stores/vs-product";
-import { setStartTour , setFinishTour} from "src/stores/dashboard";
+import { setStartTour, setFinishTour } from "src/stores/dashboard";
 import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
-  onSidebarToggle: (isOpen: boolean) => void; }
+  onSidebarToggle: (isOpen: boolean) => void;
+}
 interface INavLinkItemProps extends ISidebarListItem {
   value: string;
   open: boolean;
@@ -40,10 +41,10 @@ interface INavLinkItemProps extends ISidebarListItem {
 //     href: "/setting",
 //     icon: SettingsIcon,
 //   },
-//   {
-//     title: "Logout",
-//     icon: LogoutIcon,
-//   },
+// {
+//   title: "Logout",
+//   icon: LogoutIcon,
+// },
 // ];
 
 const SidebarBottom = [
@@ -59,7 +60,7 @@ const SidebarBottom = [
   },
   {
     title: "Reports",
-    href: "/my-reports",
+    href: "/reports",
     icon: LogoutIcon,
   },
   {
@@ -72,6 +73,10 @@ const SidebarBottom = [
     href: "/setting",
     icon: LogoutIcon,
   },
+  {
+    title: "Logout",
+    icon: LogoutIcon,
+  },
 ];
 
 const tourSteps = [
@@ -79,13 +84,13 @@ const tourSteps = [
     target: ".sidebar-knownow",
     content:
       "Here’s Know Now! It’s where you explore IP Insights and Market Research. Let’s take a quick look.",
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-industries",
     content:
       "Next is Industry Reports! You’ll find industry-specific insights like Venture Capital, Healthcare, and more. Let’s explore each one.",
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 
   {
@@ -95,9 +100,12 @@ const tourSteps = [
       <div className="py-1">
         With IP Insights, you can explore patents or search prior art. Want to dive in now or move
         on?{" "}
-        <a href="/know-now/ip-analysis/" className="px-1 py-1 border border-appGray-200 rounded-lg 
-  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
-            Explore IP Insights
+        <a
+          href="/know-now/ip-analysis/"
+          className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800"
+        >
+          Explore IP Insights
         </a>
       </div>
     ),
@@ -105,85 +113,97 @@ const tourSteps = [
   },
   {
     target: ".sidebar-mi",
-      content: (
-        <div>
-         Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?{" "}
-          <a href="/know-now/market-intelligence/" className="px-1 py-1 border border-appGray-200 rounded-lg 
-    absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
-              Explore Market Research
-          </a>
-        </div>
-      ),
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    content: (
+      <div>
+        Here, in Market Research, you can track trends and competitors.Shall we explore, or move
+        forward?{" "}
+        <a
+          href="/know-now/market-intelligence/"
+          className="px-1 py-1 border border-appGray-200 rounded-lg 
+    absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800"
+        >
+          Explore Market Research
+        </a>
+      </div>
+    ),
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 
   {
     target: ".sidebar-vc",
     content: (
       <div className="py-1">
-       In Venture Capital, find startups and investment opportunities. Want to check it out?{" "}
-        <a href="/vc-product" className="px-1 py-1 border border-appGray-200 rounded-lg 
-  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
-            Show me Venture Capital.
+        In Venture Capital, find startups and investment opportunities. Want to check it out?{" "}
+        <a
+          href="/vc-product"
+          className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800"
+        >
+          Show me Venture Capital.
         </a>
       </div>
     ),
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-firm",
     content: (
       <div className="py-1">
-       Here, you get insights into markets and competitors. Ready to explore?{" "}
-        <a href="/know-now/market-intelligence/" className="px-1 py-1 border border-appGray-200 rounded-lg 
-  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
-            Explore Research Firms.
+        Here, you get insights into markets and competitors. Ready to explore?{" "}
+        <a
+          href="/know-now/market-intelligence/"
+          className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800"
+        >
+          Explore Research Firms.
         </a>
       </div>
     ),
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-healthcare",
     content: (
       <div className="py-1">
-       Lets checkout Healthcare trends and innovations! Ready?{" "}
-        <a href="/vc-product" className="px-1 py-1 border border-appGray-200 rounded-lg 
-  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800">
-            Show me Healthcare.
+        Lets checkout Healthcare trends and innovations! Ready?{" "}
+        <a
+          href="/vc-product"
+          className="px-1 py-1 border border-appGray-200 rounded-lg 
+  absolute top-[110%] right-[70px] leading-none bg-white text-secondary-800"
+        >
+          Show me Healthcare.
         </a>
       </div>
     ),
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-ma",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-web3",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-ipattorny",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
   {
     target: ".sidebar-tto",
     content:
       "Here, in Market Research, you can track trends and competitors.Shall we explore, or move forward?",
-      placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
+    placement: "right" as "top" | "bottom" | "left" | "right" | "auto" | "center",
   },
 ];
 
 export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
-  
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -210,14 +230,13 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   };
 
   const handleItemClick = (key: any) => {
-    if(key === "industries"){
+    if (key === "industries") {
       setActiveItem(key);
       navigate("/vc-product");
       setOpen(false);
-    }
-    else{
-    setActiveItem(key);
-    setOpen(true);
+    } else {
+      setActiveItem(key);
+      setOpen(true);
     }
   };
   const handleSubItemClick = (key: any) => {
@@ -270,7 +289,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
     setIsLoggingOut(false);
   };
 
-const handleJoyrideCallback = (data: any) => {
+  const handleJoyrideCallback = (data: any) => {
     const { index, status, lifecycle } = data;
 
     if (status === "finished" || status === "skipped") {
@@ -300,8 +319,8 @@ const handleJoyrideCallback = (data: any) => {
 
   return (
     <>
-    {/* old one */}
-    {/* <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
+      {/* old one */}
+      {/* <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
       
       
       <div className="bg-appGray-100 w-[66px] items-center duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10">
@@ -454,14 +473,12 @@ const handleJoyrideCallback = (data: any) => {
       
     </div> */}
 
-{/* new one */}
-<div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
-       
-
+      {/* new one */}
+      <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
         <div
-          className={`bg-appGray-100 ${
-            open ? "w-[200px]" : "w-[56px]"
-          } items-center duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10`}
+          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
+            open ? "pl-3" : "pl-1"
+          } duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10`}
         >
           <Joyride
             steps={steps}
@@ -536,7 +553,7 @@ const handleJoyrideCallback = (data: any) => {
                       )}
                     >
                       {/* <ToolTip title={s.title} placement="right"> */}
-                        <div className="text-base">{s.title}</div>
+                      <div className="text-base">{s.title}</div>
                       {/* </ToolTip> */}
                     </Link>
                   ) : (
@@ -592,8 +609,8 @@ const handleJoyrideCallback = (data: any) => {
         )} */}
       </div>
 
-  {/* history market */}
-    {/** 
+      {/* history market */}
+      {/** 
       {isChat && (
       <div className={classNames("mt-1 ", open ? "mr-[210px] " : "mr-[40px] duration-300")}>
       <div
@@ -785,7 +802,7 @@ const handleJoyrideCallback = (data: any) => {
       )}
       */}
     </>
-  )
+  );
 };
 
 function NavLinkItem(props: INavLinkItemProps) {

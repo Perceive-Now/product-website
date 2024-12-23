@@ -183,20 +183,20 @@ const Basics = () => {
     //   </div>
     // </>
 
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
-    <div className="p-5">
+    <div className="space-y-[20px] w-full z-10">
+    <div className="p-1">
       <h6 className="text-lg font-semibold ml-0">Settings &gt; Basics</h6>
-      <div className="flex justify-start items-center p-3">
+      <div className="flex justify-start items-center pt-3 pl-1">
         <Link to="/profile">
-          <p className="mr-4 text-secondary-800 flex items-center">
+          <p className="text-secondary-800 flex items-center">
             <ArrowLeftIcon className="mr-1" />
             Back
           </p>
         </Link>
       </div>
     </div>
-    <div className="w-[45%] ml-[30%]">
-      <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
+    <div className="w-[660px] mx-auto">
+    <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
         {formData?.profilePhoto ? (
           <img
             src={formData.profilePhoto}
@@ -302,7 +302,7 @@ const Basics = () => {
         </div> */}
 
         <div className="text-end m-0 text underline cursor-pointer" onClick={() => setModal("password")}>Change password</div>
-        <div className="flex justify-between mt-2">
+        <div className="mt-2">
           <button
             type="submit"
             disabled={Object.values(formData).includes("")} 

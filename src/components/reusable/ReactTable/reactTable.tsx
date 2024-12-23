@@ -1,21 +1,43 @@
 import { useState, useEffect } from "react";
 import classNames from "classnames";
-import { useReactTable, flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel } from "@tanstack/react-table";
+import {
+  useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  PaginationState,
+} from "@tanstack/react-table";
 import { InfoIcon } from "../../icons";
 import TableSortIcon from "../../icons/table-sort";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export default function ReactTable(props: IReactTable) {
-  const { rowSelection, onRowSelectionChange, size = "medium", errorMessage = "No data Available", striped = true, columnsData, rowsData, noTopBorder } = props;
+  const {
+    rowSelection = {},
+    onRowSelectionChange,
+    size = "medium",
+    errorMessage = "No data Available",
+    striped = true,
+    columnsData,
+    rowsData,
+    noTopBorder,
+  } = props;
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const table = useReactTable({
     data: rowsData ?? [],
     columns: columnsData ?? [],
-    state: { rowSelection },
-    onRowSelectionChange: onRowSelectionChange, 
+    state: { rowSelection, pagination },
+    onRowSelectionChange: onRowSelectionChange ?? (() => null),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: true,
+    onPaginationChange: setPagination,
+    // manualPagination: false,
     getSortedRowModel: getSortedRowModel(),
     debugTable: process.env.NODE_ENV === "development",
   });
@@ -101,6 +123,79 @@ export default function ReactTable(props: IReactTable) {
           )}
         </tbody>
       </table>
+      {/* {rowsData.length > 10 && (
+        <>
+          <div className="h-2" />
+          <div className="flex items-center gap-2">
+            <button
+              className="border rounded p-1"
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button>
+            <span className="flex items-center gap-1">
+              <div>Page</div>
+              <strong>
+                {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getPageCount().toLocaleString()}
+              </strong>
+            </span>
+            <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            min="1"
+            max={table.getPageCount()}
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={e => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              table.setPageIndex(page)
+            }}
+            className="border p-1 rounded w-16"
+          />
+        </span>
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+            >
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
+            {table.getRowCount().toLocaleString()} Rows
+          </div>
+          <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
+        </>
+      )} */}
     </div>
   );
 }
@@ -113,5 +208,5 @@ interface IReactTable {
   noTopBorder?: boolean;
   errorMessage?: string;
   rowSelection?: any;
-  onRowSelectionChange?: (selection: any) => void;  
+  onRowSelectionChange?: (selection: any) => void;
 }

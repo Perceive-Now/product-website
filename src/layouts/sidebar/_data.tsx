@@ -42,6 +42,13 @@ const sidebarItems: ISidebarListItem[] = [
     icon: KnowNowIcon,
     to:"/start-conversation"
   },
+  {
+    title: "Report Management",
+    key: "reportManagement",
+    classname:"mb-1",
+    icon: NewReportIcon,
+    to:"/my-reports"
+  },
   // {
   //   title: "New Conversation",
   //   key: "new-chat",
