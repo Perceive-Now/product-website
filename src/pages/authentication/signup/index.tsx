@@ -92,19 +92,21 @@ export default function SignupPage() {
       topics_of_interest: "",
     };
 
-    // Signup user
-    const response = await dispatch(signUpUser(params)).unwrap();
+    navigate("/signup/confirm")
 
-    if (response.success) {
-      if (callbackPath) {
-        navigate(callbackPath);
-      } else {
-        toast.success("User is registered");
-        navigate("/user-registration");
-      }
-    } else {
-      toast.error(response.message);
-    }
+    // Signup user
+    // const response = await dispatch(signUpUser(params)).unwrap();
+
+    // if (response.success) {
+    //   if (callbackPath) {
+    //     navigate(callbackPath);
+    //   } else {
+    //     toast.success("User is registered");
+    //     navigate("/user-registration");
+    //   }
+    // } else {
+    //   toast.error(response.message);
+    // }
 
     setIsSubmitting(false);
   };
@@ -124,8 +126,14 @@ export default function SignupPage() {
     <div className="flex h-screen lg:min-h-screen justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
       <form onSubmit={handleSubmit(handleLogin)} className="">
         <div className="w-full p-1 md:p-0 md:w-[400px]">
-          <img src={perceiveNowImage} alt="Welcome to Perceive Now" className="w-[3rem] h-[3rem] mb-1" />
-          <h1 className="text-2xl font-semibold text-[#373D3F] text-left">Enter your email to sign up.</h1>
+          <img
+            src={perceiveNowImage}
+            alt="Welcome to Perceive Now"
+            className="w-[3rem] h-[3rem] mb-1"
+          />
+          <h1 className="text-2xl font-semibold text-[#373D3F] text-left">
+            Enter your email to sign up.
+          </h1>
           <p className="text-left text-[#373D3F] mt-2 mb-1">
             <span>Already have an account?</span>
             <Link
@@ -189,10 +197,47 @@ export default function SignupPage() {
                 <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
               )}
             </fieldset> */}
+            <fieldset className="mt-2">
+              <div className="mt-0.5 rounded-md shadow-sm relative">
+                <input
+                  id="password"
+                  {...register("password")}
+                  type="password"
+                  className={classNames(
+                    "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                    errors.password
+                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                  )}
+                  placeholder="Password"
+                />
+              </div>
+
+              {errors.password?.message && (
+                <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
+              )}
+            </fieldset>
           </div>
           <div className="my-2">
-              <label className="text-[15px] text-[#373D3F] font-medium">
-              By continuing, I agree to Perceive Now&apos;s  <a target="_blank" className="text-inherit underline" rel="noreferrer noopener" href={`${WEBSITE_URL}/privacy-policy`}>Privacy Policy</a> and <a target="_blank" className="text-inherit underline" rel="noreferrer noopener" href={`${WEBSITE_URL}/terms`}>Terms of Use</a>
+            <label className="text-[15px] text-[#373D3F] font-medium">
+              By continuing, I agree to Perceive Now&apos;s{" "}
+              <a
+                target="_blank"
+                className="text-inherit underline"
+                rel="noreferrer noopener"
+                href={`${WEBSITE_URL}/privacy-policy`}
+              >
+                Privacy Policy
+              </a>{" "}
+              and{" "}
+              <a
+                target="_blank"
+                className="text-inherit underline"
+                rel="noreferrer noopener"
+                href={`${WEBSITE_URL}/terms`}
+              >
+                Terms of Use
+              </a>
             </label>
           </div>
           <div className="flex justify-end w-full mt-2">
@@ -200,7 +245,7 @@ export default function SignupPage() {
               classname="w-[160px]"
               rounded="full"
               htmlType="submit"
-              disabled={!emailValue}
+              // disabled={!emailValue}
               loading={isSubmitting}
               type="primary"
             >

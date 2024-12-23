@@ -9,12 +9,14 @@ import Button from "src/components/reusable/button";
 
 // image
 import perceiveNowImage from "src/assets/images/pn.svg";
+import { useNavigate } from "react-router-dom";
 
 interface IConfirmEmail {
   verification_code: string;
 }
 
 const VerificationConfirm = () => {
+  const navigate = useNavigate();
   const formInitialValue: IConfirmEmail = {
     verification_code: "",
   };
@@ -42,7 +44,12 @@ const VerificationConfirm = () => {
             Great! 🎉 We’ve sent you a link to continue
             <br /> signing up.
           </p>
-          <p className="text-[#373D3F] font-semibold mt-[0.5]">📩 Check your inbox!</p>
+          <p
+            className="text-[#373D3F] font-semibold mt-[0.5] cursor-pointer"
+            onClick={() => navigate("/signup/success")}
+          >
+            📩 Check your inbox!
+          </p>
         </div>
         {/* <div className="text-center w-full">
           <p className="text-secondary-800 ">drake@example.com</p>

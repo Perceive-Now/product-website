@@ -79,6 +79,7 @@ import PaymentScreen from "./pages/authentication/signup/payment";
 import TeamMangementScreen from "./pages/authentication/signup/team-mangement";
 import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-confirmation";
 import VerificationSuccess from "./pages/authentication/signup/verification-success";
+import Finish from "./pages/authentication/signup/finish";
 // import MadLibEditor from "./test";
 
 /**
@@ -94,14 +95,15 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerificationConfirm />} />
-          <Route path="/verification-success" element={<VerificationSuccess />} />
+          <Route path="/signup/confirm" element={<VerificationConfirm />} />
+          <Route path="/signup/success" element={<VerificationSuccess />} />
           <Route path="/signup/organization-setting" element={<OrganizationSettings />} />
           <Route path="/signup/profile" element={<ProfileSetup />} />
           <Route path="/signup/plan" element={<UserPlan />} />
           <Route path="/signup/payment" element={<PaymentScreen />} />
           <Route path="/signup/team" element={<TeamMangementScreen />} />
           <Route path="/signup/review" element={<ReviewConfirmationScreen />} />
-          <Route path="/signup/success" element={<VerificationSuccess />} />
+          <Route path="/signup/finish" element={<Finish />} />
         </Route>
 
         {/* Share */}

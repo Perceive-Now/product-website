@@ -206,24 +206,29 @@ const UserPlan = () => {
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">Agents</h2>
               <div className="flex flex-col gap-2">
                 {allOptions.agents.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                  <div key={option}>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].agents.includes(option) && <img src={checkIcon} />}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].agents.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].agents.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].agents.includes(option) && <img src={checkIcon} />}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].agents.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].agents.includes(option) && <img src={checkIcon} />}
-                    </div>
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
