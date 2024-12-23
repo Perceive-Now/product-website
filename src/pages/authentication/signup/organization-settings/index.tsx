@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
+import { useNavigate } from "react-router-dom";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -18,6 +19,7 @@ const schema = yup.object({
 });
 
 const OrganizationSettings = () => {
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -41,13 +43,17 @@ const OrganizationSettings = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       alert("Organization Settings Saved Successfully!");
+
+      navigate("/signup/profile", {
+        replace: true,
+      });
     }, 1000);
   };
 
   return (
     <SignUpLayout
-        currentStep={0}
-        completedSteps={[]} // Pass an empty array since no steps are completed yet
+      currentStep={0}
+      completedSteps={[]} // Pass an empty array since no steps are completed yet
     >
       <div className="pt-5 px-8">
         <h1 className="text-[19px] font-semibold text-[#373D3F]">Organization Settings</h1>

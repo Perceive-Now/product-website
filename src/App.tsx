@@ -77,6 +77,7 @@ import UserPlan from "./pages/authentication/signup/user-plan";
 import PaymentScreen from "./pages/authentication/signup/payment";
 import TeamMangementScreen from "./pages/authentication/signup/team-mangement";
 import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-confirmation";
+import VerificationSuccess from "./pages/authentication/signup/verification-success";
 // import MadLibEditor from "./test";
 
 /**
@@ -86,19 +87,20 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/verify-email" element={<VerificationConfirm />} />
-        <Route path="/signup/organization-setting" element={<OrganizationSettings />} />
-        <Route path="/signup/profile" element={<ProfileSetup />} />
-        <Route path="/signup/plan" element={<UserPlan />} />
-        <Route path="/signup/payment" element={<PaymentScreen />} />
-        <Route path="/signup/team" element={<TeamMangementScreen />} />
-        <Route path="/signup/review" element={<ReviewConfirmationScreen />} />
-
         <Route element={<AuthDefaultLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/verify-email" element={<VerificationConfirm />} />
+          <Route path="/verification-success" element={<VerificationSuccess />} />
+          <Route path="/signup/organization-setting" element={<OrganizationSettings />} />
+          <Route path="/signup/profile" element={<ProfileSetup />} />
+          <Route path="/signup/plan" element={<UserPlan />} />
+          <Route path="/signup/payment" element={<PaymentScreen />} />
+          <Route path="/signup/team" element={<TeamMangementScreen />} />
+          <Route path="/signup/review" element={<ReviewConfirmationScreen />} />
+          <Route path="/signup/success" element={<VerificationSuccess />} />
         </Route>
 
         {/* Share */}
@@ -161,7 +163,7 @@ function App() {
               element={<MarketIntelligenceKnowNow />}
             />
             <Route path="/know-now/market-intelligence" element={<MarketIntelligenceKnowNow />} />
- 
+
             {/* VC-report */}
             <Route path="/vc-product" element={<VCProduct />} />
 

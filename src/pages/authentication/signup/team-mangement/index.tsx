@@ -1,8 +1,10 @@
 import { useState } from "react";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
+import { useNavigate } from "react-router-dom";
 
 const TeamManagementScreen = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Co-founder");
   const [note, setNote] = useState("");
@@ -71,7 +73,7 @@ const TeamManagementScreen = () => {
               disabled={!email.trim()}
               handleClick={handleInvite}
             >
-              Invite
+              Add
             </Button>
           </div>
         </div>
@@ -104,10 +106,19 @@ const TeamManagementScreen = () => {
 
         {/* Navigation Buttons */}
         <div className="flex justify-start space-x-[16px]">
-          <Button rounded="full" type="secondary" classname="w-[120px]">
+          <Button
+            rounded="full"
+            type="secondary"
+            classname="w-[120px]"
+            handleClick={() => navigate("/signup/payment")}
+          >
             Back
           </Button>
-          <Button rounded="full" classname="w-[120px]">
+          <Button
+            rounded="full"
+            classname="w-[120px]"
+            handleClick={() => navigate("/signup/review")}
+          >
             Next
           </Button>
         </div>

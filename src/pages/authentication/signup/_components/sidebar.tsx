@@ -61,7 +61,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps }) => {
                 ) : (
                   <div
                     className={`w-[0.5rem] h-[0.5rem] rounded-full ${
-                      index === currentStep && "bg-[#fff]"
+                      index === currentStep && "bg-[#fff] animate-pulse"
                     }`}
                   />
                 )}

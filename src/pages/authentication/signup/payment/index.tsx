@@ -4,6 +4,8 @@ import { inputArrow } from "../_assets";
 import CreditCardForm from "./_forms/credit-card";
 import BankTransferForm from "./_forms/bank-transfer";
 import WireTransfer from "./_forms/wire-transfer";
+import Button from "src/components/reusable/button";
+import { useNavigate } from "react-router-dom";
 
 type FieldExpanded = {
   paymentMethod: boolean;
@@ -11,6 +13,7 @@ type FieldExpanded = {
 };
 
 const PaymentScreen = () => {
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [expanded, setExpanded] = useState<FieldExpanded>({
     paymentMethod: false,
@@ -129,7 +132,9 @@ const PaymentScreen = () => {
               <div className="flex flex-col gap-y-1 mt-3">
                 <div className="grid grid-cols-2 max-w-[70%]">
                   <p className="text-[16px] text-[#373D3F]">Selected Plans</p>
-                  <div className="bg-[#E8EAF2] p-1 w-fit rounded-md text-[#373D3F]">Professional</div>
+                  <div className="bg-[#E8EAF2] p-1 w-fit rounded-md text-[#373D3F]">
+                    Professional
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 max-w-[70%]">
                   <p className="text-[16px] text-[#373D3F]">Total Cost</p>
@@ -150,12 +155,28 @@ const PaymentScreen = () => {
 
         {/* Buttons */}
         <div className="flex justify-start space-x-[16px]">
-          <button className="w-[88px] h-[40px] border border-[#4F4F4F] rounded-[20px] text-[16px] text-[#4F4F4F] hover:bg-[#F2F2F2]">
-            Back
-          </button>
-          <button className="w-[88px] h-[40px] bg-[#442873] text-white rounded-[20px] text-[16px] hover:bg-[#371e5a]">
-            Next
-          </button>
+          <div className="flex flex-row gap-x-1 mt-3">
+            <div>
+              <Button
+                type="secondary"
+                classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
+                rounded="full"
+                handleClick={() => navigate("/signup/plan")}
+              >
+                <span className="font-normal">Back</span>
+              </Button>
+            </div>
+
+            <div>
+              <Button
+                classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
+                rounded="full"
+                handleClick={() => navigate("/signup/team")}
+              >
+                <span className="font-normal">Next</span>
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </SignUpLayout>
