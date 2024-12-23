@@ -18,7 +18,7 @@ import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
-import JSZip from "jszip";
+// import JSZip from "jszip";
 import { useParams } from "react-router-dom";
 /**
  *
