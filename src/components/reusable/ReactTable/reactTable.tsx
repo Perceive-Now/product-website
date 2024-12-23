@@ -125,7 +125,7 @@ export default function ReactTable(props: IReactTable) {
           )}
         </tbody>
       </table>
-      {rowsData.length > 10 && (
+      {/* {rowsData.length > 10 && (
         <>
           <div className="h-2" />
           <div className="flex items-center gap-2">
@@ -196,7 +196,7 @@ export default function ReactTable(props: IReactTable) {
             {table.getRowCount().toLocaleString()} Rows
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 }
