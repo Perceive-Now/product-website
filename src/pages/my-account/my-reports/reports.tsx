@@ -20,6 +20,7 @@ import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 // import JSZip from "jszip";
 import { useParams } from "react-router-dom";
+import { Tab } from '@headlessui/react';
 /**
  *
  */
@@ -27,6 +28,7 @@ const Reports = () => {
   const userId = jsCookie.get("user_id");
   const { id } = useParams();
   const [reports, setreports] = useState([]);
+  const [resources, setResources] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
@@ -54,7 +56,7 @@ const Reports = () => {
 
         if (response.ok) {
           const data = await response.json();
-          const matchedReports = data.reports
+          const matchedResources = data.reports
           .filter((report:any) => report.thread_id === id)
           .map((report:any) => {
             return Object.entries(report.file_data).map(([key, fileUrl]) => ({
@@ -64,7 +66,10 @@ const Reports = () => {
             }));
           })
           .flat(); 
-        console.log("matchedReports",matchedReports)
+        const matchedReports = data.reports
+        .filter((report:any) => report.thread_id === id);
+
+        setResources(matchedResources);
         setreports(matchedReports);
               }
       } catch (err) {
@@ -224,7 +229,9 @@ const Reports = () => {
         header: "Type",
         accessorKey: "type",
         // minSize: 200,
-        cell: ({ row }) => <span>.{row.original.file.slice(-3).toLowerCase()}</span>,
+        // cell: ({ row }) => <span>.{row.original.file.slice(-3).toLowerCase()}</span>,
+        cell: ({ row }) => <span>.pdf</span>,
+
       },
       // {
       //   header: "Size",
@@ -275,6 +282,59 @@ const Reports = () => {
     [],
   );
 
+  const ResourcesColumns = useMemo<ColumnDef<any>[]>(
+    () => [
+      {
+        id: "select-col",
+        header: ({ table }) => (
+          <div className="pl-1 pt-1">
+            <CheckboxInput
+              className="border-white"
+              checked={table.getIsAllRowsSelected()}
+              // indeterminate={table.getIsSomeRowsSelected()}
+              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
+            />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="pl-1 pt-1">
+            <CheckboxInput
+              className="border-white"
+              checked={row.getIsSelected()}
+              onChange={row.getToggleSelectedHandler()}
+            />
+          </div>
+        ),
+      },
+      {
+        header: "Report",
+        accessorKey: "report_name",
+        // minSize: 400,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.report_completed_url}</p>,
+      },
+     
+      {
+        header: "Date Modified",
+        accessorKey: "date_modified",
+        // minSize: 200,
+        cell: (item) => <span>18 Dec 2024</span>,
+      },
+    
+      columnHelper.display({
+        id: "actions",
+        minSize: 100,
+        cell: ({ row }) => (
+          <RowActions
+            row={row}
+            deleteReportHandler={deleteReportHandler}
+            openFileHandler={openFileHandler}
+          />
+        ),
+      }),
+    ],
+    [],
+  );
+
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
       <div className="p-1 pl-0">
@@ -288,13 +348,38 @@ const Reports = () => {
           </Link>
         </div>
       </div>
+      <Tab.Group>
+      <Tab.List className="flex w-[15%] h-[45px]">
+          <Tab
+            className={({ selected }) =>
+              `w-full text-base py-0 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border border-black ${
+                selected
+                  ? 'text-white bg-primary-900'
+                  : 'text-black'
+              }`
+            }
+          >
+            Reports
+          </Tab>
+          <Tab
+            className={({ selected }) =>
+              `w-full text-base rounded-tr-md rounded-br-md focus:outline-none font-nunito border border-black ${
+                selected
+                ? 'text-white bg-primary-900'
+                : 'text-black'
+              }`
+            }
+          >
+            Resources
+          </Tab>
+        </Tab.List>
       <div className="flex items-center gap-1 justify-end ">
         <p className="font-bold text-base">
           All Reports<span className="ml-3">{reports.length}</span>
         </p>
         <div className="ml-auto">
           <Link to="/quick-reports">
-            <Button type="primary">+ Add Project</Button>
+            <Button type="primary">+ Add Report</Button>
           </Link>
         </div>
       </div>
@@ -330,15 +415,29 @@ const Reports = () => {
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
+        <Tab.Panels>
+          <Tab.Panel>
         <ReactTable
-          columnsData={columns}
+          columnsData={ResourcesColumns}
           rowsData={filteredReports}
           size="medium"
           noTopBorder
           rowSelection={rowSelection} 
           onRowSelectionChange={handleRowSelectionChange}
         />
+        </Tab.Panel>
+        <Tab.Panel>
+        <ReactTable
+          columnsData={columns}
+          rowsData={resources}
+          size="medium"
+          noTopBorder
+          rowSelection={rowSelection} 
+          onRowSelectionChange={handleRowSelectionChange}
+        />        </Tab.Panel>
+        </Tab.Panels>
       )}
+        </Tab.Group>
 
       <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />
     </div>
