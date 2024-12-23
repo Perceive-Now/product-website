@@ -2,6 +2,7 @@ import { useState } from "react";
 import SignUpLayout from "../_components/layout";
 import { inputArrow } from "../_assets"; // Replace with your arrow asset path
 import Button from "src/components/reusable/button";
+import { useNavigate } from "react-router-dom";
 
 type ExpandedSections = {
   organizationSettings: boolean;
@@ -9,6 +10,7 @@ type ExpandedSections = {
 };
 
 const ReviewConfirmationScreen = () => {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState<ExpandedSections>({
     organizationSettings: false,
     teamMembers: false,
@@ -115,10 +117,19 @@ const ReviewConfirmationScreen = () => {
 
         {/* Navigation Buttons */}
         <div className="flex justify-start space-x-[16px] mt-8">
-          <Button rounded="full" type="secondary" classname="w-[120px]">
+          <Button
+            rounded="full"
+            type="secondary"
+            classname="w-[120px]"
+            handleClick={() => navigate("/signup/team")}
+          >
             Back
           </Button>
-          <Button rounded="full" classname="w-[120px]">
+          <Button
+            rounded="full"
+            classname="w-[120px]"
+            handleClick={() => navigate("/signup/success")}
+          >
             Confirm
           </Button>
         </div>
