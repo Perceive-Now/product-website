@@ -170,6 +170,7 @@ const Reports = () => {
     return (
       <Tooltip
         isCustomPanel={true}
+        right="100px"
         trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
       >
@@ -248,7 +249,7 @@ const Reports = () => {
       {
         header: "Date Modified",
         accessorKey: "date_modified",
-        // minSize: 200,
+        minSize: 200,
         cell: (item) => <span>18 Dec 2024</span>,
       },
       // {
@@ -269,7 +270,7 @@ const Reports = () => {
       // },
       columnHelper.display({
         id: "actions",
-        minSize: 100,
+        // minSize: 100,
         cell: ({ row }) => (
           <RowActions
             row={row}
@@ -336,7 +337,7 @@ const Reports = () => {
   );
 
   return (
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+    <div className="space-y-[20px] w-full z-10">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Project management &gt; Project Name</h6>
         <div className="flex justify-start items-center pt-3 pl-1">

@@ -241,7 +241,7 @@ const MyReports = () => {
   );
 
   return (
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+    <div className="space-y-[20px]  w-full z-10">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; Reports</h6>
         <div className="flex justify-start items-center pt-3 pl-1">

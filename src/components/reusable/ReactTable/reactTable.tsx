@@ -44,8 +44,8 @@ export default function ReactTable(props: IReactTable) {
   });
 
   return (
-    <div className="mt-1 w-full overflow-x-auto">
-      <table className="w-full rounded-lg overflow-hidden">
+    <div className="mt-1 w-full">
+      <table className="w-full rounded-lg">
         <thead className="bg-appGray-100 rounded-t-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -125,10 +125,11 @@ export default function ReactTable(props: IReactTable) {
           )}
         </tbody>
       </table>
-      {/* {rowsData.length > 10 && (
+      {rowsData.length > 10 && (
         <>
           <div className="h-2" />
-          <div className="flex items-center gap-2">
+          <div className="flex justify-end items-center gap-2">
+            <div className="flex gap-2 mr-[35%]" >
             <button
               className="border rounded p-1"
               onClick={() => table.firstPage()}
@@ -156,7 +157,7 @@ export default function ReactTable(props: IReactTable) {
               disabled={!table.getCanNextPage()}
             >
               {">>"}
-            </button>
+            </button></div>
             <span className="flex items-center gap-1">
               <div>Page</div>
               <strong>
@@ -164,7 +165,7 @@ export default function ReactTable(props: IReactTable) {
                 {table.getPageCount().toLocaleString()}
               </strong>
             </span>
-            <span className="flex items-center gap-1">
+            {/* <span className="flex items-center gap-1">
           | Go to page:
           <input
             type="number"
@@ -177,12 +178,13 @@ export default function ReactTable(props: IReactTable) {
             }}
             className="border p-1 rounded w-16"
           />
-        </span>
+        </span> */}
             <select
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
               }}
+              className="border border-appGray-600"
             >
               {[10, 20, 30, 40, 50].map((pageSize) => (
                 <option key={pageSize} value={pageSize}>
@@ -191,12 +193,12 @@ export default function ReactTable(props: IReactTable) {
               ))}
             </select>
           </div>
-          <div>
+          {/* <div>
             Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
             {table.getRowCount().toLocaleString()} Rows
-          </div>
+          </div> */}
         </>
-      )} */}
+      )}
     </div>
   );
 }
