@@ -46,7 +46,7 @@ const QuickReports = () => {
   const [pastedURLs, setPastedURLs] = useState<string[]>([]);
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
-  const [step, setStep] = useState(id?2:1);
+  const [step, setStep] = useState(id ? 2 : 1);
   const [reportName, setReportName] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -166,7 +166,7 @@ const QuickReports = () => {
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
       <div>
         <h6 className="text-lg font-semibold ml-0">
-        Project management &gt; {step === 1 ? 'New Project' : 'Project Requirement'}
+          Project management &gt; {step === 1 ? "New Project" : "Project Requirement"}
         </h6>
         {step === 1 && (
           <div className="flex justify-start items-center pt-3">
@@ -186,9 +186,51 @@ const QuickReports = () => {
             <div className="flex space-x-4">
               {/* First Part: File Upload and Paste URL */}
               <div className="w-1/2 space-y-4">
+                <div className="w-full">
+                  <label htmlFor="fullName" className="block text-md  text-secondary-800">
+                    Name your report
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    // value={formData.fullName}
+                    // onChange={handleChange}
+                    required
+                    placeholder="Report Name"
+                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+                  />
+                </div>
+
+                <div className="mb-1">
+                  <label htmlFor="industry" className="block text-md text-secondary-800">
+                    Select use case
+                  </label>
+                  <select
+                    id="industry"
+                    name="industry"
+                    // value={}
+                    // onChange={}
+                    required
+                    className="mt-1 p-[14px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+                  >
+                    <option value="">Select</option>
+                    <option value="founder">Venture Capital</option>
+                    <option value="admin">Market and IP Research Firms</option>
+                    <option value="admin">Web3</option>
+                    <option value="admin">M&A</option>
+                    <option value="admin">IP Attorny</option>
+                    <option value="admin">Technology Transfer Office</option>
+                    <option value="admin">Healthcare</option>
+                  </select>
+                </div>
+
                 {/* File Upload Box */}
+                <h6 className="font-semibold text-base font-nunito">
+                  Add resources to create reports for this project
+                </h6>
                 <div
-                  className={`border border-appGray-600 rounded-lg h-48 flex justify-center items-center p-10 ${
+                  className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
                     dragging ? "bg-gray-200" : ""
                   }`}
                   onDragOver={(e) => {
@@ -221,7 +263,7 @@ const QuickReports = () => {
 
                 {/* Paste URL Section */}
                 <div>
-                  <h6 className="font-semibold text-base mb-2">Type or Paste Your URL</h6>
+                  <h6 className="font-semibold text-base mb-2 font-nunito">Type or Paste Your URL</h6>
                   <div className="flex">
                     <input
                       type="text"
@@ -268,8 +310,42 @@ const QuickReports = () => {
               </div>
 
               {/* Second Part: Added Websites and Urls Listing */}
-              <div className="w-1/2 px-15">
+              <div className="w-1/2 px-3 flex flex-col">
+              <div className="h-[30%]">
+                <h6 className="font-nunito">Questions you want to get answer in report</h6>
+                <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    // value={formData.fullName}
+                    // onChange={handleChange}
+                    required
+                    placeholder="Question 1"
+                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+                  />
+                   <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    // value={formData.fullName}
+                    // onChange={handleChange}
+                    required
+                    placeholder="Question 2"
+                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+                  />
+                   <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    // value={formData.fullName}
+                    // onChange={handleChange}
+                    required
+                    placeholder="Question 3"
+                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+                  />
+                </div>
                 {/* Added Websites */}
+                <div className="h-[70%] pr-[25%]">
                 <div className="border border-appGray-600 rounded-lg h-full flex flex-col p-2">
                   <div className="rounded-lg p-2 flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
@@ -321,6 +397,7 @@ const QuickReports = () => {
                       </p>
                     )}
                   </div>
+                </div>
                 </div>
               </div>
             </div>
