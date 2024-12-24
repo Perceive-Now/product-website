@@ -125,7 +125,7 @@ export default function ReactTable(props: IReactTable) {
           )}
         </tbody>
       </table>
-      {rowsData.length > 10 && (
+      {/* {rowsData.length > 10 && (
         <>
           <div className="h-2" />
           <div className="flex justify-end items-center gap-2">
@@ -165,20 +165,7 @@ export default function ReactTable(props: IReactTable) {
                 {table.getPageCount().toLocaleString()}
               </strong>
             </span>
-            {/* <span className="flex items-center gap-1">
-          | Go to page:
-          <input
-            type="number"
-            min="1"
-            max={table.getPageCount()}
-            defaultValue={table.getState().pagination.pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              table.setPageIndex(page)
-            }}
-            className="border p-1 rounded w-16"
-          />
-        </span> */}
+           
             <select
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
@@ -193,12 +180,9 @@ export default function ReactTable(props: IReactTable) {
               ))}
             </select>
           </div>
-          {/* <div>
-            Showing {table.getRowModel().rows.length.toLocaleString()} of{" "}
-            {table.getRowCount().toLocaleString()} Rows
-          </div> */}
+         
         </>
-      )}
+      )} */}
     </div>
   );
 }
