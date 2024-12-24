@@ -18,7 +18,7 @@ const TakeoffScreen = () => {
         </p>
 
         <div className="flex gap-2">
-          <Link to="/">
+          <Link to="/my-projects">
             <div className="border border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
               Go to home
             </div>

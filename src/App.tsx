@@ -113,7 +113,7 @@ function App() {
             <Route path="/my-reports/:id" element={<ReportMangement />} />
             <Route path="/my-projects" element={<MyProjects />} />
             <Route path="/reports" element={<MyReports />} />
-            <Route path="/quick-reports" element={<QuickReports />} />
+            <Route path="/quick-reports/:id?" element={<QuickReports />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/my-users" element={<MyUsers />} />

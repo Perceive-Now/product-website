@@ -13,6 +13,7 @@ import jsCookie from "js-cookie";
 import { generateKnowIdstring } from "src/utils/helpers";
 import toast from "react-hot-toast";
 import { LoadingIcon } from "src/components/icons";
+import { useParams } from "react-router-dom";
 
 /**
  *
@@ -37,6 +38,7 @@ const urlContent = [
 ];
 
 const QuickReports = () => {
+  const { id } = useParams();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const userId = jsCookie.get("user_id");
 
@@ -44,7 +46,7 @@ const QuickReports = () => {
   const [pastedURLs, setPastedURLs] = useState<string[]>([]);
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(id?2:1);
   const [reportName, setReportName] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -164,7 +166,7 @@ const QuickReports = () => {
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
       <div>
         <h6 className="text-lg font-semibold ml-0">
-        Project management &gt; {step === 1 ? 'New Project' : 'Project Resources'}
+        Project management &gt; {step === 1 ? 'New Project' : 'Project Requirement'}
         </h6>
         {step === 1 && (
           <div className="flex justify-start items-center pt-3">
@@ -266,14 +268,14 @@ const QuickReports = () => {
               </div>
 
               {/* Second Part: Added Websites and Urls Listing */}
-              <div className="w-1/2 px-12">
+              <div className="w-1/2 px-15">
                 {/* Added Websites */}
-                <div className="border border-appGray-600 rounded-lg h-full flex flex-col space-y-4 p-2">
-                  <div className="rounded-lg p-2">
+                <div className="border border-appGray-600 rounded-lg h-full flex flex-col p-2">
+                  <div className="rounded-lg p-2 flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
 
                     {pastedURLs.length > 0 ? (
-                      <>
+                      <div className="h-[250px] pn_scroller overflow-y-auto p-1">
                         {pastedURLs.map((url, index) => (
                           <div key={index}>
                             {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
@@ -286,19 +288,19 @@ const QuickReports = () => {
                             </div>
                           </div>
                         ))}
-                      </>
+                      </div>
                     ) : (
-                      <p className="text-xs text-gray-500 font-nunito text-center p-3">
+                      <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
                         No websites added yet.
                       </p>
                     )}
                   </div>
 
                   {/* Added Reports Listing */}
-                  <div className="rounded-lg p-2">
+                  <div className="rounded-lg p-2 flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
                     {uploadedFiles.length > 0 ? (
-                      <>
+                      <div className="h-[250px] pn_scroller overflow-y-auto pr-1">
                         {uploadedFiles.map((file, index) => (
                           <div key={index}>
                             {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
@@ -306,14 +308,15 @@ const QuickReports = () => {
                               <p className="text-sm font-nunito">{file.name}</p>
                               <TrashIcon
                                 className="cursor-pointer"
+                                width={25}
                                 onClick={() => handleDelete(index, "file")}
                               />
                             </div>
                           </div>
                         ))}
-                      </>
+                      </div>
                     ) : (
-                      <p className="text-xs text-gray-500 text-center p-3 font-nunito">
+                      <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
                         No file uploaded yet.
                       </p>
                     )}
