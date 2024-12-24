@@ -163,7 +163,7 @@ const QuickReports = () => {
   };
 
   return (
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-1">
+    <div className="space-y-[20px] w-full z-10 p-1">
       <div>
         <h6 className="text-lg font-semibold ml-0">
           Project management &gt; {step === 1 ? "New Project" : "Project Requirement"}
