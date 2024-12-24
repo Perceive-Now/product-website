@@ -478,7 +478,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
         <div
           className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
             open ? "pl-3" : "pl-1"
-          } duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10`}
+          } duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10 pb-[20%]`}
         >
           <Joyride
             steps={steps}
