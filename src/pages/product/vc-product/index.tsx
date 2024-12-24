@@ -25,7 +25,7 @@ import {
   resetChats,
   updateChatQuery,
   setCompanyName,
-  updateButtonSelection
+  updateButtonSelection,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 const VCReport = () => {
@@ -46,15 +46,15 @@ const VCReport = () => {
   const [query, setQuery] = useState("");
   const [companyStage, setcompanyStage] = useState("");
   const [answer, setanswer] = useState<string>("");
-  const [isfile, setFile ] =useState<string>("");
+  const [isfile, setFile] = useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsloading] = useState(false);
   const [delayLoading, setDelayLoading] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
   let { companyName } = useAppSelector((state) => state.VSProduct);
-  const chatOptions = chats[chats.length-1]?.options;
-  console.log("chattsss", chats,chatOptions);
+  const chatOptions = chats[chats.length - 1]?.options;
+  console.log("chattsss", chats, chatOptions);
 
   useEffect(() => {
     scrollToBottom();
@@ -95,38 +95,37 @@ const VCReport = () => {
             //First Converstaion //
             setTimeout(() => {
               setDelayLoading(true);
-            dispatch(
-              setVSChats({
-                query: `Let’s create something amazing! 🚀  
+              dispatch(
+                setVSChats({
+                  query: `Let’s create something amazing! 🚀  
 I’m here to turn the startup’s info into a powerful, data-driven report just for you.`,
-                answer: "",
-              }),
-            );
-          }, 500);
+                  answer: "",
+                }),
+              );
+            }, 500);
 
-          setTimeout(() => {
-            //** Second Converstaion **//
-            dispatch(
-              setVSChats({
-                query:
-                  "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
-                answer: companyName,
-              }),
-            );
-            
-          }, 2500);
+            setTimeout(() => {
+              //** Second Converstaion **//
+              dispatch(
+                setVSChats({
+                  query:
+                    "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
+                  answer: companyName,
+                }),
+              );
+            }, 2500);
 
-          setTimeout(() => {
-            dispatch(
-              setVSChats({
-                query: "",
-                answer: "",
-                options: ["Pre Revenue", "Post Revenue"],
-                hasbutton: true,
-              }),
-            );
-            setDelayLoading(false);
-          }, 3500);
+            setTimeout(() => {
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: ["Pre Revenue", "Post Revenue"],
+                  hasbutton: true,
+                }),
+              );
+              setDelayLoading(false);
+            }, 3500);
 
             //**   **//
 
@@ -144,88 +143,36 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
-            dispatch(updateButtonSelection({hasselected:true}));
+            dispatch(updateButtonSelection({ hasselected: true }));
             dispatch(setprevres({ answer: answer }));
-            if (answer === "Post Revenue" || answer === "Pre Revenue") {
-              //** Third Converstaion **//
-              setTimeout(() => {
-              dispatch(
-                updateChatQuery({
-                  query: `Thank you! Since ${companyName} is in the **${answer}** stage, could you specify the current development phase from the options below?`,
-                }),
-              );
-            }, 5000);
-
-            setTimeout(() => {
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
-                  hasbutton: true,
-                }),
-              );
-            }, 3000);
-
-              //**   **//
-            } else if (
-              answer === "Ideation Stage" ||
-              answer === "Pre-Seed Stage" ||
-              answer === "Seed Stage"
-            ) {
-              //** Fourth Converstaion **//
-              
-              dispatch(
-                updateChatQuery({
-                  query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
-                }),
-              );
-              //**     **//
-            } else if (answer === "Looks good") {
+            if (answer === "Looks good") {
               //** Fifth Converstaion **//
               setIsloading(false);
               setDelayLoading(true);
               setTimeout(() => {
-              dispatch(
-                updateChatQuery({
-                  query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                dispatch(
+                  updateChatQuery({
+                    query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
                   You can expand any section for more details if needed.`,
-                }),
-              );
-            }, 1500);
-            setTimeout(() => {
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Quick Insights", "Deep Dive"],
-                  hasbutton: true,
-                }),
-              );
-              setDelayLoading(false);
-            }, 2500);
+                  }),
+                );
+              }, 1500);
+              setTimeout(() => {
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Quick Insights", "Deep Dive"],
+                    hasbutton: true,
+                  }),
+                );
+                setDelayLoading(false);
+              }, 2500);
               //**     **//
-            } else if (answer === "Quick Insights" || answer === "Deep Dive") {
-              dispatch(setCurrentStep(3));
-              dispatch(
-                updateChatQuery({
-                  query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
-                }),
-              );
-
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Continue"],
-                  hasbutton: true,
-                }),
-              );
-
-            }else if(Step == 3 && answer == "Continue"){
+            } else if (Step == 3 && answer == "Continue") {
               ai_query.user_input = "skip";
               await dispatch(sendQuery(ai_query)).unwrap();
-            }else if(Step == 5 && answer == "Confirm"){
+            } else if (Step == 5 && answer == "Confirm") {
               dispatch(
                 updateChatQuery({
                   query: `Your final report will be generated within 24hr - 48hr. We will update you through email with link to download the reports.`,
@@ -239,112 +186,55 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
-          }
-           
-            else await dispatch(sendQuery(ai_query)).unwrap();
+            } else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
             // await dispatch(sendQuery(ai_query)).unwrap();
           } else {
             setanswer("");
-            console.log("yoooo",chats.length)
-            dispatch(updateButtonSelection({hasselected:true}));
+            console.log("yoooo", chats.length);
+            dispatch(updateButtonSelection({ hasselected: true }));
             dispatch(setVSChats(queries));
-            if(isfile === "false"){
+            if (isfile === "false") {
               dispatch(
                 setVSChats({
                   query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
                 }),
               );
-              return
+              return;
             }
-            
+
             if (chatOptions?.includes("Post Revenue")) {
               //** Third Converstaion **//
 
-              const optionsMap:any = {
-                "pre revenue": ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
-                "post revenue": ["Pre-Seed Stage", "Seed Stage"]
+              const optionsMap: any = {
+                "pre revenue": ["Ideation Stage", "Pre-Seed Stage"],
+                "post revenue": ["Seed Stage", "Series A Stage", "Series B+ Stage"],
               };
-              
-              if (['pre revenue', 'post revenue'].includes(queries.answer.trim().toLowerCase())) {
-              setcompanyStage(queries.answer);
-              console.log("comapny stage1",companyStage);
-              setIsloading(false);
-              setDelayLoading(true);
-              setTimeout(() => {
-              dispatch(
-                updateChatQuery({
-                  query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below? lol`,
-                }),
-              );
-            }, 1500);
-            setTimeout(() => {
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: optionsMap[answer.trim().toLowerCase()],
-                  hasbutton: true,
-                }),
-              );
-              setDelayLoading(false);
-            }, 2500);
 
-            }else{
-
-              dispatch(
-                setVSChats({
-                  query:
-                    "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
-                  answer: "",
-                }),
-              );
-
-              // dispatch(
-              //   setVSChats({
-              //     query:
-              //       "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
-              //     answer: "",
-              //   }),
-              // );
-  
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Pre Revenue", "Post Revenue"],
-                  hasbutton: true,
-                }),
-              );
-
-            }
-
-              //**   **//
-            }else if (chatOptions?.includes("Seed Stage")) {
-              //** Fourth Converstaion **//
-
-              if (['pre-seed stage', 'seed stage', 'ideation stage'].includes(queries.answer.trim().toLowerCase())) {
+              if (["pre revenue", "post revenue"].includes(queries.answer.trim().toLowerCase())) {
+                setcompanyStage(queries.answer);
                 setIsloading(false);
-              setDelayLoading(true);
+                setDelayLoading(true);
                 setTimeout(() => {
-              dispatch(
-                updateChatQuery({
-                  query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
-                }),
-              );
-              setDelayLoading(false);
-            }, 1500);
-              setFile("false");
-
-              }else{
-
-              const optionsMap:any = {
-                "pre revenue": ["Ideation Stage", "Pre-Seed Stage", "Seed Stage"],
-                "post revenue": ["Pre-Seed Stage", "Seed Stage"]
-              };
-              
-
+                  dispatch(
+                    updateChatQuery({
+                      query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below? lol`,
+                    }),
+                  );
+                }, 1500);
+                setTimeout(() => {
+                  dispatch(
+                    setVSChats({
+                      query: "",
+                      answer: "",
+                      options: optionsMap[answer.trim().toLowerCase()],
+                      hasbutton: true,
+                    }),
+                  );
+                  setDelayLoading(false);
+                }, 2500);
+              } else {
                 dispatch(
                   setVSChats({
                     query:
@@ -355,9 +245,55 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
                 // dispatch(
                 //   setVSChats({
-                //     query: `Thank you! Since ${companyName} is in the **${companyStage.trim()}** stage, could you specify the current development phase from the options below?`,
+                //     query:
+                //       "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
+                //     answer: "",
                 //   }),
                 // );
+
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Pre Revenue", "Post Revenue"],
+                    hasbutton: true,
+                  }),
+                );
+              }
+
+              //**   **//
+            } else if (chatOptions?.includes("Seed Stage") || chatOptions?.includes("Pre-Seed Stage")) {
+              //** Fourth Converstaion **//
+
+              if (
+                ["pre-seed stage", "seed stage", "ideation stage","series a stage", "series b+ stage"].includes(
+                  queries.answer.trim().toLowerCase(),
+                )
+              ) {
+                setIsloading(false);
+                setDelayLoading(true);
+                setTimeout(() => {
+                  dispatch(
+                    updateChatQuery({
+                      query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                    }),
+                  );
+                  setDelayLoading(false);
+                }, 1500);
+                setFile("false");
+              } else {
+                const optionsMap: any = {
+                  "pre revenue": ["Ideation Stage", "Pre-Seed Stage"],
+                  "post revenue": ["Seed Stage", "Series A Stage", "Series B+ Stage"],
+                };
+
+                dispatch(
+                  setVSChats({
+                    query:
+                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    answer: "",
+                  }),
+                );
 
                 dispatch(
                   setVSChats({
@@ -367,82 +303,27 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                     hasbutton: true,
                   }),
                 );
-
-
               }
 
               //**     **//
             } else if (chatOptions?.includes("Looks good")) {
               //** Fifth Converstaion **//
-              if (['proceed', 'looks good'].includes(queries.answer.trim().toLowerCase())) {
-
-
-              dispatch(
-                updateChatQuery({
-                  query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+              if (["proceed", "looks good"].includes(queries.answer.trim().toLowerCase())) {
+                dispatch(
+                  updateChatQuery({
+                    query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
                   You can expand any section for more details if needed.`,
-                }),
-              );
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Quick Insights", "Deep Dive"],
-                  hasbutton: true,
-                }),
-              );
-            }else{
-
-              dispatch(
-                setVSChats({
-                  query:
-                    "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
-                  answer: "",
-                }),
-              );
-
-              // dispatch(
-              //   setVSChats({
-              //     query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
-              //     answer: "",
-              //   }),
-              // );
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Looks good"],
-                  hasbutton: true,
-                }),
-              );
-            }
-              //**     **//
-            } else if (chatOptions?.includes("Deep Dive")) {
-
-              if (['deep dive', 'quick insights'].includes(queries.answer.trim().toLowerCase())) {
-                setIsloading(false);
-                setDelayLoading(true);
-                setTimeout(() => {
-                dispatch(setCurrentStep(3));
-              dispatch(
-                updateChatQuery({
-                  query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
-                }),
-              );
-            }, 1500);
-            setTimeout(() => {
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Continue"],
-                  hasbutton: true,
-                }),
-              );
-              setDelayLoading(false);
-            }, 2500);
-            }else{
-
+                  }),
+                );
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Quick Insights", "Deep Dive"],
+                    hasbutton: true,
+                  }),
+                );
+              } else {
                 dispatch(
                   setVSChats({
                     query:
@@ -453,7 +334,55 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
                 // dispatch(
                 //   setVSChats({
-                //     query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                //     query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
+                //     answer: "",
+                //   }),
+                // );
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: "",
+                    options: ["Looks good"],
+                    hasbutton: true,
+                  }),
+                );
+              }
+              //**     **//
+            } else if (chatOptions?.includes("Deep Dive")) {
+              if (["deep dive", "quick insights"].includes(queries.answer.trim().toLowerCase())) {
+                setIsloading(false);
+                setDelayLoading(true);
+                setTimeout(() => {
+                  dispatch(setCurrentStep(3));
+                  dispatch(
+                    updateChatQuery({
+                      query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
+                    }),
+                  );
+                }, 1500);
+                setTimeout(() => {
+                  dispatch(
+                    setVSChats({
+                      query: "",
+                      answer: "",
+                      options: ["Continue"],
+                      hasbutton: true,
+                    }),
+                  );
+                  setDelayLoading(false);
+                }, 2500);
+              } else {
+                dispatch(
+                  setVSChats({
+                    query:
+                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    answer: "",
+                  }),
+                );
+
+                // dispatch(
+                //   setVSChats({
+                //     query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive.
                 //     You can expand any section for more details if needed.`,
                 //   }),
                 // );
@@ -466,18 +395,17 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   }),
                 );
               }
-
-            }else if(chatOptions?.includes("Continue") && Step == 3){
-              if (['continue', 'proceed'].includes(queries.answer.trim().toLowerCase())) {
+            } else if (chatOptions?.includes("Continue") && Step == 3) {
+              if (["continue", "proceed"].includes(queries.answer.trim().toLowerCase())) {
                 ai_query.user_input = "how many question we want to answer";
                 await dispatch(sendQuery(ai_query)).unwrap();
-              }else{
+              } else {
                 dispatch(
                   updateChatQuery({
                     query: `Please continue to proceed`,
                   }),
                 );
-  
+
                 dispatch(
                   setVSChats({
                     query: "",
@@ -487,13 +415,10 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   }),
                 );
               }
-            }else{
-
+            } else {
               const { response } = await dispatch(sendQuery(ai_query)).unwrap();
               console.log("oooo", response);
             }
-            
-
 
             // dispatch(setVSChats(queries));
             // setanswer("");
@@ -510,8 +435,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             answer: file.name,
           };
           setTimeout(() => {
-          dispatch(setVSChats(firstQuery));
-          dispatch(setCurrentStep(1));
+            dispatch(setVSChats(firstQuery));
+            dispatch(setCurrentStep(1));
           }, 1000);
 
           const fileResponse = await dispatch(extractFileData(file)).unwrap();
@@ -520,20 +445,20 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             // const res = await dispatch(
             //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             // ).unwrap();
-            try{
-            const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
-            const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
-            const extractObject = JSON.parse(cleanValue);
-            dispatch(
-              setVSChats({
-                query: "",
-                answer: "",
-                extract: cleanedSummary,
-                extractObject 
-              }),
-            );
-            dispatch(setCurrentStep(2));
-  
+            try {
+              const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
+              const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
+              const extractObject = JSON.parse(cleanValue);
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  extract: cleanedSummary,
+                  extractObject,
+                }),
+              );
+              dispatch(setCurrentStep(2));
+
               dispatch(
                 setVSChats({
                   query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
@@ -548,7 +473,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
-            }catch(error){
+            } catch (error) {
               dispatch(
                 setVSChats({
                   query: "Error generating extract summary. Please upload file again",
@@ -557,7 +482,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               );
               setFile("false");
             }
-          }else{
+          } else {
             dispatch(
               setVSChats({
                 query: "Error generating extract summary. Please upload file again",
@@ -574,7 +499,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
         setTimeout(() => setIsloading(false), 500);
       }
     },
-    [dispatch, userId,chats],
+    [dispatch, userId, chats],
   );
   return (
     <>
@@ -615,9 +540,12 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                         <ChatQuery query={chat.query} />
 
                         {chat.extract && (
-                          <ExtractInfo onSendQuery={onSendQuery} info={chat.extract} obj={chat.extractObject}/>
+                          <ExtractInfo
+                            onSendQuery={onSendQuery}
+                            info={chat.extract}
+                            obj={chat.extractObject}
+                          />
                         )}
-
                       </>
                     ))}
                     {delayLoading && (
@@ -650,7 +578,6 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
           {/* {Step == 6 && ReportTemplate && ReportTemplate.length > 0 && <TemplateReport />} */}
           {Step == 3 && <InitialScreening />}
           {Step == 5 && <TemplateReport />}
-          
         </div>
       </div>
     </>
