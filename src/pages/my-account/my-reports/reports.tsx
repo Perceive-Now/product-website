@@ -338,7 +338,7 @@ const Reports = () => {
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">Settings &gt; Report management</h6>
+        <h6 className="text-lg font-semibold ml-0">Project management &gt; Project Name</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/my-projects">
             <p className="mr-4 text-secondary-800 flex items-center">
@@ -352,7 +352,7 @@ const Reports = () => {
       <Tab.List className="flex w-[15%] h-[45px]">
           <Tab
             className={({ selected }) =>
-              `w-full text-base py-0 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border border-black ${
+              `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-t border-b border-appGray-600 ${
                 selected
                   ? 'text-white bg-primary-900'
                   : 'text-black'
@@ -363,23 +363,23 @@ const Reports = () => {
           </Tab>
           <Tab
             className={({ selected }) =>
-              `w-full text-base rounded-tr-md rounded-br-md focus:outline-none font-nunito border border-black ${
+              `w-full text-base px-2 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
                 selected
                 ? 'text-white bg-primary-900'
                 : 'text-black'
               }`
             }
           >
-            Resources
+            Requirements
           </Tab>
         </Tab.List>
       <div className="flex items-center gap-1 justify-end ">
         <p className="font-bold text-base">
-          All Reports<span className="ml-3">{reports.length}</span>
+          Total Reports<span className="ml-3">{reports.length}</span>
         </p>
         <div className="ml-auto">
-          <Link to="/quick-reports">
-            <Button type="primary">+ Add Report</Button>
+          <Link to={`/quick-reports/${id}`}>
+            <Button type="primary">+ Add Resources</Button>
           </Link>
         </div>
       </div>

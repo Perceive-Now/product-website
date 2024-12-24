@@ -225,7 +225,7 @@ const MyProjects = () => {
       </div>
       <div className="flex items-center gap-1 justify-end ">
         <p className="font-bold text-base">
-          All Projects<span className="ml-3">{reports.length}</span>
+          Total Projects<span className="ml-3">{reports.length}</span>
         </p>
         <div className="ml-auto">
           <Link to="/quick-reports">
