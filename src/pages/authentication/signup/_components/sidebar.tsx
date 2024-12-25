@@ -8,6 +8,7 @@ import {
   teamManagementSVG,
   reviewConfirmationSVG,
 } from "../_assets"; // Add SVG imports for all steps
+import { InvitedData } from "./layout";
 
 interface Steps {
   label: string;
@@ -17,6 +18,7 @@ interface Steps {
 interface SideBarProps {
   currentStep: number;
   completedSteps: number[];
+  invitedData?: InvitedData | null;
 }
 
 // Sidebar steps with specific logos
@@ -29,7 +31,15 @@ const sidebarSteps: Steps[] = [
   { label: "Review & Confirmation", logo: reviewConfirmationSVG },
 ];
 
-const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps }) => {
+const invitedSteps: Steps[] = [
+  { label: "Organization Settings", logo: organizationSettingSVG },
+  { label: "Profile Setup", logo: profileSetupSVG },
+  { label: "Review & Confirmation", logo: reviewConfirmationSVG },
+];
+
+const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedData }) => {
+  const steps = invitedData ? invitedSteps : sidebarSteps;
+
   return (
     <div className="max-w-[300px] bg-[#F5F7FF] min-h-screen p-3 flex flex-col gap-y-2 items-start">
       {/* Logo at the top */}
@@ -40,7 +50,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps }) => {
       {/* Steps */}
       <div className="mt-2">
         <div className="flex flex-col items-start">
-          {sidebarSteps.map((step, index) => (
+          {steps.map((step, index) => (
             <div key={step.label} className="flex items-center gap-x-1 my-[4px]">
               {/* Step Indicator */}
               <div

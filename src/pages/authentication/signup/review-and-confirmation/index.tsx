@@ -2,7 +2,7 @@ import { useState } from "react";
 import SignUpLayout from "../_components/layout";
 import { inputArrow } from "../_assets"; // Replace with your arrow asset path
 import Button from "src/components/reusable/button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type ExpandedSections = {
   organizationSettings: boolean;
@@ -11,6 +11,11 @@ type ExpandedSections = {
 
 const ReviewConfirmationScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const invitedData = location.state?.invitedData;
+  const profileData = location.state?.profileData;
+
   const [expanded, setExpanded] = useState<ExpandedSections>({
     organizationSettings: false,
     teamMembers: false,
@@ -24,7 +29,9 @@ const ReviewConfirmationScreen = () => {
   };
 
   return (
-    <SignUpLayout currentStep={5} completedSteps={[0, 1, 2, 3, 4]}>
+    <SignUpLayout
+      invitedData={invitedData}
+    currentStep={5} completedSteps={[0, 1, 2, 3, 4]}>
       <div className="max-w-[800px] p-7 space-y-[40px]">
         {/* Title */}
         <h1 className="text-[20px] font-semibold text-[#373D3F]">Review & Confirmation</h1>
@@ -34,11 +41,21 @@ const ReviewConfirmationScreen = () => {
         <div className="flex items-center justify-between bg-[#F5F7FF66] p-2 rounded-md">
           <div className="flex gap-3 items-center">
             <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg text-sm font-medium">
-              Founder
+              {invitedData?.role || "Member"}
             </span>
-            <p className="text-[16px] font-medium text-[#4F4F4F]">John Doe</p>
+            <p className="text-[16px] font-medium text-[#4F4F4F]">{
+              profileData?.fullName || "John Doe"
+              }</p>
           </div>
-          <button className="text-[#4F4F4F] text-xs">Edit</button>
+          <button className="text-[#4F4F4F] text-xs"
+            onClick={() => {
+              if (invitedData) {
+                navigate("/signup/profile", { state: { invitedData } });
+              } else {
+                navigate("/signup/profile")
+              }
+            }}
+          >Edit</button>
         </div>
 
         {/* Organization Settings - Expandable */}
@@ -66,13 +83,13 @@ const ReviewConfirmationScreen = () => {
                 <div className="grid grid-cols-2 gap-x-1">
                   <p className="text-[#4F4F4F]">Organization Name</p>
                   <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg w-fit">
-                    NextGen Devices
+                    {invitedData?.organization_name || "Perceive Now"}
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-x-1">
                   <p className="text-[#4F4F4F]">Industry</p>
                   <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg w-fit">
-                    Health care
+                    {invitedData?.organization_industry || "Health care"}
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-x-1">
@@ -83,7 +100,16 @@ const ReviewConfirmationScreen = () => {
                 </div>
               </div>
               <div className="text-right">
-                <button className="text-[#4F4F4F] text-xs">Edit</button>
+                <button className="text-[#4F4F4F] text-xs"
+                  onClick={() => {
+                    if (invitedData) {
+                      navigate("/signup/organization-setting", { state: { invitedData } });
+                    } else {
+                      navigate("/signup/organization-setting")
+                    }
+                  }
+                  }
+                >Edit</button>
               </div>
             </div>
           )}
@@ -93,7 +119,9 @@ const ReviewConfirmationScreen = () => {
         <div
           className={`cursor-pointer bg-[#F5F7FF66] rounded-md p-2 ${
             expanded.teamMembers && "bg-[#F5F7FF66]"
-          }`}
+          }
+          ${invitedData && "hidden"}
+          `}
         >
           <div
             className="flex items-center justify-between"
@@ -121,7 +149,13 @@ const ReviewConfirmationScreen = () => {
             rounded="full"
             type="secondary"
             classname="w-[120px]"
-            handleClick={() => navigate("/signup/team")}
+            handleClick={() => {
+              if (invitedData) {
+                navigate("/signup/profile", { state: { invitedData } });
+              } else {
+                navigate("/signup/team")
+              }
+            }}
           >
             Back
           </Button>

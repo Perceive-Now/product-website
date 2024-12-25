@@ -239,7 +239,8 @@ const UserPlan = () => {
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">Templates</h2>
               <div className="flex flex-col gap-2">
                 {allOptions.templates.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
+                  <div key={option}>
+                  <div className="grid grid-cols-5">
                     <div className="col-span-2">
                       <span className="text-sm text-[#373D3F]">{option}</span>
                     </div>
@@ -260,6 +261,8 @@ const UserPlan = () => {
                       )}
                     </div>
                   </div>
+                  <hr className="mt-1" />
+                  </div>
                 ))}
               </div>
             </div>
@@ -271,7 +274,8 @@ const UserPlan = () => {
               </h2>
               <div className="flex flex-col gap-2">
                 {allOptions.dynamicSectionCustomization.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
+                  <div key={option}>
+                  <div className="grid grid-cols-5">
                     <div className="col-span-2">
                       <span className="text-sm text-[#373D3F]">{option}</span>
                     </div>
@@ -294,16 +298,19 @@ const UserPlan = () => {
                       )}
                     </div>
                   </div>
+                  <hr className="mt-1" />
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* // knowNowChat */}
-            <div className="mt-5">
+            <div className="mt-5 hidden">
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">Know Now Chat</h2>
               <div className="flex flex-col gap-2">
                 {allOptions.knowNowChat.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
+                  <div key={option}>
+                  <div className="grid grid-cols-5">
                     <div className="col-span-2">
                       <span className="text-sm text-[#373D3F]">{option}</span>
                     </div>
@@ -326,6 +333,8 @@ const UserPlan = () => {
                       )}
                     </div>
                   </div>
+                  <hr className="mt-1" />
+                  </div>
                 ))}
               </div>
             </div>
@@ -335,7 +344,8 @@ const UserPlan = () => {
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">Quick View Reports</h2>
               <div className="flex flex-col gap-2">
                 {allOptions.quickViewReports.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
+                  <div key={option}>
+                  <div className="grid grid-cols-5">
                     <div className="col-span-2">
                       <span className="text-sm text-[#373D3F]">{option}</span>
                     </div>
@@ -358,6 +368,8 @@ const UserPlan = () => {
                       )}
                     </div>
                   </div>
+                  <hr className="mt-1" />
+                  </div>
                 ))}
               </div>
             </div>
@@ -367,7 +379,8 @@ const UserPlan = () => {
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">Explainability</h2>
               <div className="flex flex-col gap-2">
                 {allOptions.explainability.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
+                  <div key={option}>
+                  <div className="grid grid-cols-5">
                     <div className="col-span-2">
                       <span className="text-sm text-[#373D3F]">{option}</span>
                     </div>
@@ -390,6 +403,8 @@ const UserPlan = () => {
                       )}
                     </div>
                   </div>
+                  <hr className="mt-1" />
+                  </div>
                 ))}
               </div>
             </div>
@@ -399,7 +414,8 @@ const UserPlan = () => {
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">Report Formats</h2>
               <div className="flex flex-col gap-2">
                 {allOptions.reportFormats.map((option) => (
-                  <div key={option} className="grid grid-cols-5">
+                  <div key={option}>
+                  <div className="grid grid-cols-5">
                     <div className="col-span-2">
                       <span className="text-sm text-[#373D3F]">{option}</span>
                     </div>
@@ -421,6 +437,8 @@ const UserPlan = () => {
                         <img src={checkIcon} />
                       )}
                     </div>
+                  </div>
+                  <hr className="mt-1" />
                   </div>
                 ))}
               </div>
