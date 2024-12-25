@@ -18,13 +18,15 @@ import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
+import { useNavigate } from "react-router-dom";
 /**
  *
  */
-const AdminReports = () => {
+const AdmimProjects = () => {
+  const navigate = useNavigate();
   const userId = jsCookie.get("user_id");
 
-  const [reports, setreports] = useState([{id:1,user_name:"Robin",status:"pending",assignee:"John"}]);
+  const [reports, setreports] = useState([{id:1,project_name:"xyz",user_name:"Robin",status:"pending",assignee:"John"},{id:2,project_name:"xyz",user_name:"Robin",status:"pending",assignee:"John"},{id:3,project_name:"xyz",user_name:"Robin",status:"pending",assignee:"John"}]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
@@ -73,7 +75,13 @@ const AdminReports = () => {
         cell: (item) => <p className="line-clamp-1">{item.row.original.id}</p>,
       },
       {
-        header: "User Name",
+        header: "Project Name",
+        accessorKey: "project_name",
+        // minSize: 400,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.project_name}</p>,
+      },
+      {
+        header: "Uploaded By",
         accessorKey: "user_name",
         // minSize: 400,
         cell: (item) => <p className="line-clamp-1">{item.row.original.user_name}</p>,
@@ -117,12 +125,22 @@ const AdminReports = () => {
     [],
   );
 
+  const getRowProps = (row: any) => ({
+    onClick: () => {
+      const threadId = row.original.id;
+      navigate(`/admin-reports/${threadId}`);
+    },
+    style: {
+      cursor: "pointer",
+    },
+  });
+
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; Admin Report management</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to="/profile">
+          <Link to="/">
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" />
               Back
@@ -132,7 +150,7 @@ const AdminReports = () => {
       </div>
       <div className="flex items-center gap-1 justify-between ">
         <div className="font-bold text-base">
-          All Reports<span className="ml-3">{reports.length}</span>
+          Total Projects<span className="ml-3">{reports.length}</span>
         </div>
         <div className="w-[300px]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -146,6 +164,7 @@ const AdminReports = () => {
         <ReactTable
           columnsData={columns}
           rowsData={filteredReports}
+          getRowProps={getRowProps} 
           size="medium"
           noTopBorder
         />
@@ -156,4 +175,4 @@ const AdminReports = () => {
   );
 };
 
-export default AdminReports;
+export default AdmimProjects;

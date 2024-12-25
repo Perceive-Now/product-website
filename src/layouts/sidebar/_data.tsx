@@ -35,16 +35,16 @@ const sidebarItems: ISidebarListItem[] = [
     icon: NewReport,
     to: "/vc-product",
   },
+  // {
+  //   title: "Know Now",
+  //   key: "knownow",
+  //   classname:"mb-1",
+  //   icon: KnowNowIcon,
+  //   to:"/start-conversation"
+  // },
   {
-    title: "Know Now",
-    key: "knownow",
-    classname:"mb-1",
-    icon: KnowNowIcon,
-    to:"/start-conversation"
-  },
-  {
-    title: "Project Management",
-    key: "projectManagement",
+    title: "Report Management",
+    key: "reportManagement",
     classname:"mb-1",
     icon: NewReportIcon,
     to:"/my-projects"
