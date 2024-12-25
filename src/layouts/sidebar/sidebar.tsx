@@ -68,11 +68,11 @@ const SidebarBottom = [
     href: "/my-users",
     icon: LogoutIcon,
   },
-  {
-    title: "Billing",
-    href: "/setting",
-    icon: LogoutIcon,
-  },
+  // {
+  //   title: "Billing",
+  //   href: "/setting",
+  //   icon: LogoutIcon,
+  // },
   {
     title: "Logout",
     icon: LogoutIcon,
