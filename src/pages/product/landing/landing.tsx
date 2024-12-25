@@ -218,7 +218,7 @@ export default function Landing() {
             <Link to="/" className="text-[18px] font-semibold text-black">
               Home
             </Link>
-            <div className="flex gap-4 items-center">
+            {/* <div className="flex gap-4 items-center">
               <Link to="/" className="text-black text-nowrap text-base">
                 Current Agent
               </Link>
@@ -250,7 +250,7 @@ export default function Landing() {
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </div>
-            </div>
+            </div> */}
           </div>
         </nav>
 
@@ -269,11 +269,11 @@ export default function Landing() {
               </p>
 
               <div className="flex gap-2">
-                <Link to="/start-conversation">
+                {/* <Link to="/start-conversation">
                   <div className="border text-[#442873] border-[#442873] hover:bg-[#442873] hover:text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
                     KnowNow
                   </div>
-                </Link>
+                </Link> */}
                 <Link to="/vc-product">
                   <div className="border border-[#442873] text-[#442873] hover:text-white hover:bg-[#442873] rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
                     Report

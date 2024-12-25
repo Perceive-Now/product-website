@@ -33,9 +33,12 @@ import MyUsers from "./pages/my-account/my-users";
 import AddUser from "./pages/my-account/my-users/add-user";
 import EditUser from "./pages/my-account/my-users/edit-user";
 import QuickReports from "./pages/my-account/my-reports/quick-report";
-import AdminReports from "./pages/my-account/admin-reports";
+import AdminProjects from "./pages/my-account/admin-projects";
+import AdminReports from "./pages/my-account/admin-projects/admin-reports";
 import ReportMangement from "./pages/my-account/my-reports";
 import MyProjects from "./pages/my-account/my-projects";
+import AdminUploadReport from "./pages/my-account/admin-projects/upload-projects";
+
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
 import Payment from "./components/@report/use-case/payment";
@@ -119,7 +122,10 @@ function App() {
             <Route path="/my-users" element={<MyUsers />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
-            <Route path="/admin-reports" element={<AdminReports />} />
+
+            <Route path="/admin-projects" element={<AdminProjects />} />
+            <Route path="/admin-reports/:id?" element={<AdminReports />} />
+            <Route path="/upload-report" element={<AdminUploadReport />} />
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>

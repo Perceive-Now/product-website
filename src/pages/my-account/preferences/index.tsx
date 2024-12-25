@@ -141,7 +141,10 @@ const Preferences = () => {
     }),
     dropdownIndicator: (base: any) => ({
       ...base,
-      display: "none",
+      // display: "none",
+      color:'black',
+      width:'33px',
+      height:'33px',
     }),
   };
 
@@ -171,6 +174,12 @@ const Preferences = () => {
               onChange={handleChange}
               required
               className="mt-1 p-[14px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent appearance-none"
+              style={{
+                backgroundImage: `url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" width="20" height="20"%3E%3Cpath d="M5 7l5 5 5-5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /%3E%3C/svg%3E')`,
+                backgroundPosition: 'right 15px center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '16px 16px',
+              }}
             >
               <option value="">Select</option>
               <option value="founder">Venture Capital</option>
