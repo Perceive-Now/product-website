@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 //
@@ -34,6 +34,16 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const callbackPath = searchParams.get("callback_path");
+
+  const invitedData = {
+    invited: searchParams.get("invited"),
+    email: searchParams.get("email"),
+    organization_name: searchParams.get("organization_name"),
+    role: searchParams.get("role"),
+    organization_industry: searchParams.get("organization_industry"),
+  };
+
+  
 
   //
   const dispatch = useAppDispatch();
@@ -121,6 +131,13 @@ export default function SignupPage() {
   //     </div>
   //   )
   // }
+
+  useEffect(() => {
+    if (invitedData.invited && invitedData.email && invitedData.organization_name && invitedData.role) {
+      console.log("invitedData", invitedData);
+      navigate("/signup/success", { state: { invitedData } });
+    }
+  }, [invitedData, navigate]);
 
   return (
     <div className="flex h-screen lg:min-h-screen justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">

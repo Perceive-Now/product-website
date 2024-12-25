@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 import { profileAvatarSVG, profileEditSVG } from "../_assets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type FormValues = {
   fullName: string;
@@ -33,6 +33,10 @@ const schema = yup.object({
 
 const ProfileSetup: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const invitedData = location.state?.invitedData;
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const {
     control,
@@ -43,8 +47,8 @@ const ProfileSetup: React.FC = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       fullName: "",
-      role: "",
-      email: "",
+      role: invitedData?.role || "",
+      email: invitedData?.email || "",
       password: "",
       profileImage: null,
     },
@@ -68,14 +72,32 @@ const ProfileSetup: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log("Form Data:", data);
 
+    if (invitedData) {
+      navigate("/signup/review", {
+        replace: true,
+        state: {
+          invitedData,
+          profileData: data,
+        },
+      }
+      );
+      return;
+    }
+
     alert("Form submitted successfully!");
     navigate("/signup/plan", {
       replace: true,
+      state: {
+        invitedData,
+        profileData: data,
+      },
     });
   };
 
   return (
-    <SignUpLayout currentStep={1} completedSteps={[0]}>
+    <SignUpLayout
+      invitedData={invitedData}
+    currentStep={1} completedSteps={[0]}>
       <div className="pt-5 px-8 h-screen">
         <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
 
@@ -148,6 +170,7 @@ const ProfileSetup: React.FC = () => {
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 focus:ring-primary-500"
                   }`}
+                  disabled={invitedData?.role}
                 >
                   <option value="" disabled>
                     Select role
@@ -180,6 +203,7 @@ const ProfileSetup: React.FC = () => {
                       ? "border-red-500 focus:ring-red-500"
                       : "border-gray-300 focus:ring-primary-500"
                   }`}
+                  disabled={invitedData?.email}
                 />
               )}
             />
@@ -217,7 +241,16 @@ const ProfileSetup: React.FC = () => {
               classname="w-[120px]"
               type="secondary"
               rounded="full"
-              handleClick={() => navigate("/signup/organization-setting")}
+              handleClick={() => {
+                if (invitedData) {
+                  navigate("/signup/organization-setting", {
+                    state: { invitedData },
+                  });
+                  return;
+                } else {
+                  navigate("/signup/organization-setting")
+                }
+              }}
             >
               <span className="font-normal">Back</span>
             </Button>

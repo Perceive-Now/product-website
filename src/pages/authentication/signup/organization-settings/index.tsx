@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -20,18 +20,22 @@ const schema = yup.object({
 
 const OrganizationSettings = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const invitedData = location.state?.invitedData;
+  console.log(invitedData);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting: formSubmitting },
+    formState: { errors, isSubmitting: formSubmitting  },
   } = useForm<OrganizationDetails>({
     resolver: yupResolver(schema),
     mode: "onTouched", // Show errors on blur/touch
     defaultValues: {
-      organizationName: "",
-      industry: "",
+      organizationName: invitedData?.organization_name || "",
+      industry: invitedData?.organization_industry || "",
     },
   });
 
@@ -46,12 +50,16 @@ const OrganizationSettings = () => {
 
       navigate("/signup/profile", {
         replace: true,
+        state: {
+          invitedData
+        }
       });
     }, 1000);
   };
 
   return (
     <SignUpLayout
+    invitedData={invitedData}
       currentStep={0}
       completedSteps={[]} // Pass an empty array since no steps are completed yet
     >
@@ -74,6 +82,7 @@ const OrganizationSettings = () => {
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-primary-500",
               )}
+              disabled={invitedData?.organization_name}
               placeholder="Enter organization name"
             />
             {errors.organizationName && (
@@ -96,6 +105,7 @@ const OrganizationSettings = () => {
                   : "border-gray-300 focus:ring-primary-500",
               )}
               defaultValue="Healthcare"
+              disabled={invitedData?.organization_industry}
             >
               <option value="" disabled>
                 Select an industry
