@@ -38,7 +38,7 @@ const MyProjects = () => {
   const filteredReports =
     reports.length > 0
       ? reports.filter((report: any) =>
-          report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
+          report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
         )
       : [];
 
@@ -46,7 +46,7 @@ const MyProjects = () => {
     const fetchHistoryData = async () => {
       try {
         const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/history/${userId}`,
+          `https://templateuserrequirements.azurewebsites.net/projects/${userId}`,
           {
             method: "GET",
             headers: { Accept: "application/json" },
@@ -56,7 +56,7 @@ const MyProjects = () => {
         if (response.ok) {
           const data = await response.json();
           console.log("data=------------", data);
-          setreports(data.reports);
+          setreports(data);
         }
       } catch (err) {
         console.error(err);
@@ -99,10 +99,24 @@ const MyProjects = () => {
     });
   };
 
-  const deleteReportHandler = (index: any) => {
-    setreports((prevReports) => prevReports.filter((_, i) => i !== index));
+  const deleteReportHandler = async (projectid: string, index: number) => {
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/project/${userId}/${projectid}/`,
+        {
+          method: "DELETE",
+          headers: { Accept: "application/json" },
+        },
+      );
+  
+      if (response.ok) {
+        setreports((prevReports) => prevReports.filter((_, i) => i !== index));
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
-
+  
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
   };
@@ -113,11 +127,17 @@ const MyProjects = () => {
     openFileHandler,
   }: {
     row: any;
-    deleteReportHandler: (reportId: string) => void;
+    deleteReportHandler: (reportId: string ,index: number) => void;
     openFileHandler: (fileUrl: string) => void;
   }) => {
-    const handleDelete = () => {
-      deleteReportHandler(row.index);
+   
+
+    const handleDelete = (event: React.MouseEvent) => {
+      event.preventDefault(); 
+      event.stopPropagation(); 
+
+      const { project_id } = row.original;
+      deleteReportHandler(project_id,row.index); 
     };
 
     const handleShareReport = () => {
@@ -136,21 +156,21 @@ const MyProjects = () => {
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
       >
         <ul id="dropdown">
-          <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+          {/* <li className="mb-2 cursor-pointer" onClick={handleDownload}>
             <div className="flex items-center">
               <DownloadIcon className="mr-2" /> Download
             </div>
-          </li>
-          <li className="mb-2 cursor-pointer" onClick={handleDelete}>
+          </li> */}
+          <li className="cursor-pointer" onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Report
             </div>
           </li>
-          <li className="cursor-pointer" onClick={handleShareReport}>
+          {/* <li className="cursor-pointer" onClick={handleShareReport}>
             <div className="flex items-center">
               <ShareIcon className="mr-2" /> Share
             </div>
-          </li>
+          </li> */}
         </ul>
       </Tooltip>
     );
@@ -187,7 +207,7 @@ const MyProjects = () => {
         header: "Project",
         accessorKey: "report_name",
         // minSize: 400,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.project_name}</p>,
       },
       {
         header: "Date Modified",
@@ -195,14 +215,25 @@ const MyProjects = () => {
         // minSize: 200,
         cell: (item) => <span>18 Dec 2024</span>,
       },
+      columnHelper.display({
+        id: "actions",
+        minSize: 100,
+        cell: ({ row }) => (
+          <RowActions
+            row={row}
+            deleteReportHandler={deleteReportHandler}
+            openFileHandler={openFileHandler}
+          />
+        ),
+      }),
     ],
     [],
   );
 
   const getRowProps = (row: any) => ({
     onClick: () => {
-      const threadId = row.original.thread_id;
-      navigate(`/my-reports/${threadId}`);
+      const project_id = row.original.project_id;
+      navigate(`/my-reports/${project_id}`);
     },
     style: {
       cursor: "pointer",
@@ -213,7 +244,7 @@ const MyProjects = () => {
   return (
     <div className="space-y-[20px]  w-full z-10">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">Project management</h6>
+        <h6 className="text-lg font-semibold ml-0">Report management</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/">
             <p className="mr-4 text-secondary-800 flex items-center">
@@ -261,7 +292,7 @@ const MyProjects = () => {
         )}
       </div>
       {loading ? (
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
