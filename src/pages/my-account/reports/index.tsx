@@ -44,7 +44,7 @@ const MyReports = () => {
     const fetchHistoryData = async () => {
       try {
         const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/history/${userId}`,
+          `https://templateuserrequirements.azurewebsites.net/reports/${userId}`,
           {
             method: "GET",
             headers: { Accept: "application/json" },

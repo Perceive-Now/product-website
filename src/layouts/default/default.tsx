@@ -19,7 +19,7 @@ export default function DefaultLayout() {
   };
 
   return (
-    <div className="bg-white-gradient h-screen flex flex-col">
+    <div className="h-screen flex flex-col">
       <AppHeader isSidebarOpen={isSidebarOpen}  />
       <AppSidebar onSidebarToggle={handleSidebarToggle} />
       <div className={`mb-auto ${ isSidebarOpen ? 'ml-[256px]' : 'ml-[56px]' }`}>      
