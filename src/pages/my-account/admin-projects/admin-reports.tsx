@@ -20,15 +20,18 @@ import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 // import JSZip from "jszip";
 import { useParams } from "react-router-dom";
-import { Tab } from '@headlessui/react';
+import { useNavigate, useLocation } from "react-router-dom";
 /**
  *
  */
 const AdminReports = () => {
   const userId = jsCookie.get("user_id");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const user_id = urlParams.get("user_id");
   const { id } = useParams();
-  const [reports, setreports] = useState([{report_name:"xyz", report_modified:"12 jan 2014"}]);
-  const [resources, setResources] = useState([]);
+  const [reports, setreports] = useState([{ report_name: "xyz", report_modified: "12 jan 2014" }]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
@@ -43,44 +46,31 @@ const AdminReports = () => {
         )
       : [];
 
-//   useEffect(() => {
-//     const fetchHistoryData = async () => {
-//       try {
-//         const response = await fetch(
-//           `https://templateuserrequirements.azurewebsites.net/history/${userId}`,
-//           {
-//             method: "GET",
-//             headers: { Accept: "application/json" },
-//           },
-//         );
+  useEffect(() => {
+    const fetchHistoryData = async () => {
+      try {
+        const response = await fetch(
+          `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
+          {
+            method: "GET",
+            headers: { Accept: "application/json" },
+          },
+        );
 
-//         if (response.ok) {
-//           const data = await response.json();
-//           const matchedResources = data.reports
-//           .filter((report:any) => report.thread_id === id)
-//           .map((report:any) => {
-//             return Object.entries(report.file_data).map(([key, fileUrl]) => ({
-//               thread_id: report.thread_id,
-//               report_name: report.report_name,
-//               file: fileUrl,
-//             }));
-//           })
-//           .flat(); 
-//         const matchedReports = data.reports
-//         .filter((report:any) => report.thread_id === id);
+        if (response.ok) {
+          const data = await response.json();
+          // setreports(data.total_reports);
+          setreports(data.reports);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//         setResources(matchedResources);
-//         setreports(matchedReports);
-//               }
-//       } catch (err) {
-//         console.error(err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchHistoryData();
-//   }, []);
+    fetchHistoryData();
+  }, []);
 
   const handleRowSelectionChange = (selection: any) => {
     setRowSelection(selection);
@@ -112,31 +102,29 @@ const AdminReports = () => {
       }
     });
   };
-    
 
   // const handleBulkDownload = () => {
   //   const zip = new JSZip();
-  
+
   //   selectedRows.forEach((selectedIndex: any, index: number) => {
   //     const selectedReport: any = reports[selectedIndex];
-  
+
   //     if (selectedReport && selectedReport.file_data && selectedReport.file_data.file1) {
-  //       const file = selectedReport.file_data.file1; 
+  //       const file = selectedReport.file_data.file1;
 
   //       const fileName = file.name || file.split("/").pop();
   //       zip.file(fileName, file);
   //     }
   //   });
-  
+
   //   zip.generateAsync({ type: "blob" }).then((content) => {
   //     const link = document.createElement("a");
   //     link.href = URL.createObjectURL(content);
-  //     link.download = "reports.zip"; 
+  //     link.download = "reports.zip";
   //     link.click();
   //   });
   // };
-  
-  
+
   const deleteReportHandler = (index: any) => {
     setreports((prevReports) => prevReports.filter((_, i) => i !== index));
   };
@@ -198,28 +186,28 @@ const AdminReports = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-    //   {
-    //     id: "select-col",
-    //     header: ({ table }) => (
-    //       <div className="pl-1 pt-1">
-    //         <CheckboxInput
-    //           className="border-white"
-    //           checked={table.getIsAllRowsSelected()}
-    //           // indeterminate={table.getIsSomeRowsSelected()}
-    //           onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
-    //         />
-    //       </div>
-    //     ),
-    //     cell: ({ row }) => (
-    //       <div className="pl-1 pt-1">
-    //         <CheckboxInput
-    //           className="border-white"
-    //           checked={row.getIsSelected()}
-    //           onChange={row.getToggleSelectedHandler()}
-    //         />
-    //       </div>
-    //     ),
-    //   },
+      {
+        id: "select-col",
+        header: ({ table }) => (
+          <div className="pl-1 pt-1">
+            <CheckboxInput
+              className="border-white"
+              checked={table.getIsAllRowsSelected()}
+              // indeterminate={table.getIsSomeRowsSelected()}
+              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
+            />
+          </div>
+        ),
+        cell: ({ row }) => (
+          <div className="pl-1 pt-1">
+            <CheckboxInput
+              className="border-white"
+              checked={row.getIsSelected()}
+              onChange={row.getToggleSelectedHandler()}
+            />
+          </div>
+        ),
+      },
       {
         header: "Report",
         accessorKey: "report_name",
@@ -230,16 +218,14 @@ const AdminReports = () => {
         header: "Type",
         accessorKey: "type",
         // minSize: 200,
-        // cell: ({ row }) => <span>.{row.original.file.slice(-3).toLowerCase()}</span>,
-        cell: ({ row }) => <span>.pdf</span>,
-
+        cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
       },
-      // {
-      //   header: "Size",
-      //   accessorKey: "size",
-      //   // minSize: 200,
-      //   cell: (item) => <span>{item.row.original.size}</span>,
-      // },
+      {
+        header: "Size",
+        accessorKey: "size",
+        // minSize: 200,
+        cell: (item) => <span>{item.row.original.report_size}</span>,
+      },
       // {
       //   header: "Permission",
       //   accessorKey: "permission",
@@ -268,17 +254,33 @@ const AdminReports = () => {
       //     />
       //   ),
       // },
-    //   columnHelper.display({
-    //     id: "actions",
-    //     // minSize: 100,
-    //     cell: ({ row }) => (
-    //       <RowActions
-    //         row={row}
-    //         deleteReportHandler={deleteReportHandler}
-    //         openFileHandler={openFileHandler}
-    //       />
-    //     ),
-    //   }),
+      columnHelper.display({
+        id: "actions",
+        // minSize: 100,
+        cell: (item) => (
+          <div
+            className="text-green-600 font-semibold cursor-pointer"
+            onClick={() => {
+              navigate(
+                `/upload-report/${item.row.original.report_id}?project_id=${id}&user_id=${user_id}`,
+              );
+            }}
+          >
+            + Add Report
+          </div>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        // minSize: 100,
+        cell: ({ row }) => (
+          <RowActions
+            row={row}
+            deleteReportHandler={deleteReportHandler}
+            openFileHandler={openFileHandler}
+          />
+        ),
+      }),
     ],
     [],
   );
@@ -286,9 +288,11 @@ const AdminReports = () => {
   return (
     <div className="space-y-[20px] w-full z-10">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">Settings &gt; Admin Report management &gt; Project Name</h6>
+        <h6 className="text-lg font-semibold ml-0">
+          Settings &gt; Admin Report management &gt; Project Name
+        </h6>
         <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to="/admin-projects">
+          <Link to={`/admin-projects/${id}`}>
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" />
               Back
@@ -296,16 +300,16 @@ const AdminReports = () => {
           </Link>
         </div>
       </div>
-     
-      <div className="flex items-center gap-1 justify-end ">
+
+      <div className="flex items-center gap-1 ">
         <p className="font-bold text-base">
           Total Reports<span className="ml-3">{reports.length}</span>
         </p>
-        <div className="ml-auto">
+        {/* <div className="ml-auto">
           <Link to={`/upload-report`}>
             <Button type="primary">+ Add Report</Button>
           </Link>
-        </div>
+        </div> */}
       </div>
       <div className="flex items-center gap-1 w-full">
         <div className="w-[300px]">
@@ -344,9 +348,9 @@ const AdminReports = () => {
           rowsData={filteredReports}
           size="medium"
           noTopBorder
-          rowSelection={rowSelection} 
+          rowSelection={rowSelection}
           onRowSelectionChange={handleRowSelectionChange}
-        />     
+        />
       )}
 
       <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />

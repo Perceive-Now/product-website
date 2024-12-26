@@ -13,7 +13,7 @@ import { generateKnowIdstring } from "src/utils/helpers";
 import toast from "react-hot-toast";
 import { LoadingIcon } from "src/components/icons";
 import { useParams } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 /**
  *
  */
@@ -38,6 +38,12 @@ const urlContent = [
 
 const AdminUploadReport = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();  
+  const urlParams = new URLSearchParams(location.search); 
+  const project_id = urlParams.get('project_id'); 
+  const user_id = urlParams.get('user_id'); 
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const userId = jsCookie.get("user_id");
 
@@ -108,18 +114,15 @@ const AdminUploadReport = () => {
     const formData = new FormData();
 
     uploadedFiles.forEach((file: File) => {
-      formData.append("files", file);
+      formData.append("file", file);
     });
 
-    pastedURLs.forEach((url: string) => {
-      formData.append("websites", url);
-    });
-
+   
     const threadId = generateKnowIdstring();
 
     try {
       const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&thread_id=${threadId}&report_name=${reportName}&report_completed_url=test&report_complete_status=false`,
+        `https://templateuserrequirements.azurewebsites.net/upload-report-file/${user_id}/${project_id}/${id}`,
         {
           method: "POST",
           headers: { Accept: "application/json" },
@@ -128,7 +131,7 @@ const AdminUploadReport = () => {
       );
 
       if (response.ok) {
-        setStep(3);
+        navigate(`/admin`);
       } else {
         toast.error("Unable to submit report");
       }
@@ -187,7 +190,7 @@ const AdminUploadReport = () => {
               <div className="w-1/2 space-y-4">
                
 
-                <div className="mb-1">
+                {/* <div className="mb-1">
                   <label htmlFor="industry" className="block text-md text-secondary-800">
                     Select Report
                   </label>
@@ -223,7 +226,7 @@ const AdminUploadReport = () => {
                     <option value="admin">John Lee</option>
                     <option value="admin">Brett coper</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* File Upload Box */}
                 <h6 className="font-semibold text-base font-nunito">

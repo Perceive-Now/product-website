@@ -163,12 +163,12 @@ const Reports = () => {
     };
 
     const handleShareReport = () => {
-      setShareLink(row.original.file);
+      setShareLink(row.original.report_url);
       setModal(true);
     };
 
     const handleDownload = () => {
-      openFileHandler(row.original.file);
+      openFileHandler(row.original.report_url);
     };
 
     return (

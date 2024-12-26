@@ -38,6 +38,7 @@ import AdminReports from "./pages/my-account/admin-projects/admin-reports";
 import ReportMangement from "./pages/my-account/my-reports";
 import MyProjects from "./pages/my-account/my-projects";
 import AdminUploadReport from "./pages/my-account/admin-projects/upload-projects";
+import AdminDashboard from "./pages/my-account/admin-projects/landing";
 
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
@@ -139,9 +140,10 @@ function App() {
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
 
-            <Route path="/admin-projects" element={<AdminProjects />} />
-            <Route path="/admin-reports/:id?" element={<AdminReports />} />
-            <Route path="/upload-report" element={<AdminUploadReport />} />
+            <Route path="/admin-projects/:id" element={<AdminProjects />} />
+            <Route path="/admin-reports/:id" element={<AdminReports />} />
+            <Route path="/upload-report/:id" element={<AdminUploadReport />} />
+            <Route path="/admin" element={<AdminDashboard />} />
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
