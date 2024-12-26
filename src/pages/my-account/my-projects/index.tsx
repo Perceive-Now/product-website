@@ -156,21 +156,21 @@ const MyProjects = () => {
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
       >
         <ul id="dropdown">
-          <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+          {/* <li className="mb-2 cursor-pointer" onClick={handleDownload}>
             <div className="flex items-center">
               <DownloadIcon className="mr-2" /> Download
             </div>
-          </li>
-          <li className="mb-2 cursor-pointer" onClick={handleDelete}>
+          </li> */}
+          <li className="cursor-pointer" onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Report
             </div>
           </li>
-          <li className="cursor-pointer" onClick={handleShareReport}>
+          {/* <li className="cursor-pointer" onClick={handleShareReport}>
             <div className="flex items-center">
               <ShareIcon className="mr-2" /> Share
             </div>
-          </li>
+          </li> */}
         </ul>
       </Tooltip>
     );
