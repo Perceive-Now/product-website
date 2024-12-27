@@ -458,12 +458,12 @@ const QuickReports = () => {
                 </div>
                 {/* Added Websites */}
                 <div className="h-[70%] pr-[25%]">
-                  <div className="border border-appGray-600 rounded-lg h-full flex flex-col p-2">
+                  <div className="border border-appGray-600 rounded-lg h-full flex flex-col px-2 pt-2 pb-[20px]">
                     <div className="rounded-lg p-2 flex-1">
                       <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
 
                       {pastedURLs.length > 0 ? (
-                        <div className="h-[250px] pn_scroller overflow-y-auto p-1">
+                        <div className="h-[180px] pn_scroller overflow-y-auto p-1">
                           {pastedURLs.map((url, index) => (
                             <div key={index}>
                               {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
@@ -488,7 +488,7 @@ const QuickReports = () => {
                     <div className="rounded-lg p-2 flex-1">
                       <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
                       {uploadedFiles.length > 0 ? (
-                        <div className="h-[250px] pn_scroller overflow-y-auto pr-1">
+                        <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
                           {uploadedFiles.map((file, index) => (
                             <div key={index}>
                               {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
