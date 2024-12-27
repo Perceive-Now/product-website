@@ -6,6 +6,8 @@ import classNames from "classnames";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 import { useLocation, useNavigate } from "react-router-dom";
+import { updateUserProfile } from "src/utils/api/userProfile";
+import toast from "react-hot-toast";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -39,22 +41,41 @@ const OrganizationSettings = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<OrganizationDetails> = (data) => {
+  const onSubmit: SubmitHandler<OrganizationDetails> = async (data) => {
     setIsSubmitting(true);
     console.log("Form Submitted:", data);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const value = {
+        company_name: data.organizationName,
+        about_me: data.industry,
+        registration_completed: true
+      };
+      const result = await updateUserProfile(value);
+      if (result.status === 200) {
+        toast.success("Organization Settings Saved Successfully!");
+        navigate("/signup/profile", {
+          replace: true,
+        })
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
       setIsSubmitting(false);
-      alert("Organization Settings Saved Successfully!");
+    }
 
-      navigate("/signup/profile", {
-        replace: true,
-        state: {
-          invitedData
-        }
-      });
-    }, 1000);
+    // Simulate API call
+    // setTimeout(() => {
+    //   setIsSubmitting(false);
+    //   alert("Organization Settings Saved Successfully!");
+
+    //   navigate("/signup/profile", {
+    //     replace: true,
+    //     state: {
+    //       invitedData
+    //     }
+    //   });
+    // }, 1000);
   };
 
   return (

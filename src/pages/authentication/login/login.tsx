@@ -170,8 +170,8 @@ export default function LoginPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
             )}
           </fieldset>
-          <div className="text-sm text-primary-500 font-bold mt-0.5">
-            <Link to="/forgot-password">Forgot password?</Link>
+          <div className="text-sm font-bold mt-0.5">
+            <Link to="/forgot-password" className="text-[#442873]">Forgot password?</Link>
           </div>
         </div>
 
@@ -181,7 +181,7 @@ export default function LoginPage() {
             htmlType="submit"
             disabled={isSubmitting || isGoogleSubmitting}
             loading={isSubmitting}
-            type="auth"
+            type="primary"
           >
             Sign In
           </Button>
@@ -192,7 +192,7 @@ export default function LoginPage() {
 
           <Link
             to={"/signup"}
-            className={classNames("ml-2 font-bold text-primary-500", {
+            className={classNames("ml-2 font-bold text-[#442873]", {
               "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
             })}
             aria-disabled={isSubmitting}
