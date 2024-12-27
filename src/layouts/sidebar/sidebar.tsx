@@ -320,6 +320,9 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
     }
   };
 
+  const [collapseOpen, setIsCollapseOpen] = useState(false);
+
+
   return (
     <>
       {/* old one */}
@@ -484,7 +487,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
         >
 
           <div className="z-10">
-            <div className="py-2 px-2 container">
+            <div className="py-1 px-1 container">
               <Link to="/">
                 <img src={open ? PerceiveLogo : PerceiveIcon} alt="PerceiveNow logo" className="h-[32px]" />
               </Link>
@@ -514,7 +517,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             stepIndex={currentStepIndex}
           />
 
-          <div className="space-y-0 mb-auto text-nowrap">
+          <div className="space-y-1 mb-auto text-nowrap">
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
                 type="button"
@@ -551,40 +554,76 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 last_name={userDetail?.last_name || ""}
                 profile_photo={userDetail?.profile_photo}
               />
-              {open && <span className="text-base">Settings</span>}
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsCollapseOpen((prev) => !prev);
+                }}
+                className="flex items-center gap-x-[65px]">
+                {open && <> <span className="text-base">Settings</span>
+
+                  <svg
+
+                    className={classNames(
+                      "w-[12px] h-[12px] mt-[3px] transition-transform duration-500",
+                      collapseOpen && "rotate-180"
+                    )}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </>
+                }
+              </div>
+
             </div>
 
-            {open &&
-              SidebarBottom.map((s, idx) => (
-                <div key={idx * 29}>
-                  {s.href ? (
-                    <Link
-                      to={s.href}
-                      className={classNames(
-                        "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
-                      )}
-                    >
-                      {/* <ToolTip title={s.title} placement="right"> */}
-                      <div className="text-base">{s.title}</div>
-                      {/* </ToolTip> */}
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className={classNames(
-                        "py-1 rounded flex items-center gap-1 text-sm text-secondary-800",
-                      )}
-                    >
-                      <ToolTip title={s.title} placement="right">
-                        <div>
-                          <s.icon className="text-primary-900 h-[20px] w-[20px]" />
-                        </div>
-                      </ToolTip>
-                    </button>
-                  )}
-                </div>
-              ))}
+            <div
+              className={`transition-all duration-500 ${collapseOpen && open ? "max-h-screen overflow-hidden" : "max-h-0 overflow-hidden"}`}
+            >
+              {collapseOpen && open &&
+                SidebarBottom.map((s, idx) => (
+                  <div
+                    key={idx * 29}
+                  >
+                    {s.href ? (
+                      <Link
+                        to={s.href}
+                        className={classNames(
+                          "py-1 rounded flex items-center pl-5 gap-1 text-sm text-secondary-800",
+                        )}
+                      >
+                        {/* <ToolTip title={s.title} placement="right"> */}
+                        <div className="text-base">{s.title}</div>
+                        {/* </ToolTip> */}
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className={classNames(
+                          "py-1 rounded flex items-center pl-5 gap-1 text-sm text-secondary-800",
+                        )}
+                      >
+                        <ToolTip title={s.title} placement="right">
+                          <div>
+                            <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                          </div>
+                        </ToolTip>
+                      </button>
+                    )}
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
 
