@@ -8,6 +8,7 @@ import Tooltip from "src/components/reusable/popover";
 import jsCookie from "js-cookie";
 import { LoadingIcon, ShareIcon } from "src/components/icons";
 import TrashIcon from "src/components/icons/common/trash";
+import classNames from "classnames";
 
 //
 import { Link } from "react-router-dom";
@@ -29,6 +30,9 @@ const AdminDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [password, setPassword] = useState(""); // State for password input
+  const [passwordEntered, setPasswordEntered] = useState(false); // State to track if password is entered
+  const [passwordError, setPasswordError] = useState("");
 
   const filteredUser =
     users.length > 0
@@ -37,47 +41,39 @@ const AdminDashboard = () => {
         )
       : [];
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=gautam_Hero`,
-          {
-            method: "GET",
-            headers: { Accept: "application/json" },
-          },
-        );
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=${password}`,
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        },
+      );
 
-        if (response.ok) {
-          const data = await response.json();
-
-          const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
-            id: index + 1,
-            user_id: userId,
-            user_name: userId,
-          }));
-
-          setUsers(transformedUserIds);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+      if (response.ok) {
+        const data = await response.json();
+        const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
+          id: index + 1,
+          user_id: userId,
+          user_name: userId,
+        }));
+        setUsers(transformedUserIds);
+        setPasswordEntered(true); // Mark that password has been entered and API is successful
+      } else {
+        setPasswordError("Incorrect password. Please try again.");
       }
-    };
+    } catch (err) {
+      console.error(err);
+      setPasswordError("An error occurred while fetching users.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUsers();
-  }, []);
-
-  const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      //   {
-      //   header: "S no.",
-      //   accessorKey: "id",
-      //   // minSize: 400,
-      //   cell: (item) => <p className="line-clamp-1">{item.row.original.id}</p>,
-      // },
       {
         header: "Users",
         accessorKey: "user_name",
@@ -121,18 +117,6 @@ const AdminDashboard = () => {
           </div>
         ),
       },
-
-      // columnHelper.display({
-      //   id: "actions",
-      //   minSize: 100,
-      //   cell: ({ row }) => (
-      //     <RowActions
-      //       row={row}
-      //       deleteReportHandler={deleteReportHandler}
-      //       openFileHandler={openFileHandler}
-      //     />
-      //   ),
-      // }),
     ],
     [],
   );
@@ -146,6 +130,60 @@ const AdminDashboard = () => {
       cursor: "pointer",
     },
   });
+
+  const renderPasswordScreen = (
+    <div className="flex h-full 2xl:h-[calc(100vh-200px)] justify-center items-center px-2">
+      <div className="flex flex-col items-center">
+        {/* Change the heading to Admin Dashboard */}
+        <h1 className="text-4xl font-extrabold text-secondary-800 mt-3">Admin Dashboard</h1>
+
+        <div className="mt-3 w-full max-w-sm">
+          {/* Password input */}
+          <div className="mt-0.5 rounded-md shadow-sm relative">
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={classNames(
+                "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                passwordError &&
+                  "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
+                passwordError
+                  ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                  : "border-gray-400  focus:border-primary-500 focus:ring-primary-500",
+              )}
+              placeholder="Enter your password"
+            />
+          </div>
+
+          {/* Error message if password is incorrect */}
+          {passwordError && <div className="mt-1 text-xs text-danger-500">{passwordError}</div>}
+
+          <div className="text-sm text-primary-500 font-bold mt-0.5">
+            {/* You can add a link here, if needed */}
+          </div>
+
+          {/* Submit button */}
+          <div className="flex justify-center w-full mt-3">
+            <Button
+              classname="w-full"
+              htmlType="submit"
+              handleClick={fetchUsers}
+              // disabled={isSubmitting || isGoogleSubmitting}
+              // loading={isSubmitting}
+            >
+              Sign In
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (!passwordEntered) {
+    return renderPasswordScreen;
+  }
 
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
