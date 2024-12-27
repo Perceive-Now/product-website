@@ -5,7 +5,7 @@ import { useState } from "react";
 import AppSidebar from "../sidebar";
 import AppFooter from "../footer";
 import classNames from "classnames";
-import AppHeader from "../header";
+// import AppHeader from "../header";
 // import AppHeader from "../header";
 
 /**
@@ -20,7 +20,6 @@ export default function DefaultLayout() {
 
   return (
     <div className="h-screen flex flex-col">
-      <AppHeader isSidebarOpen={isSidebarOpen}  />
       <AppSidebar onSidebarToggle={handleSidebarToggle} />
       <div className={`mb-auto ${ isSidebarOpen ? 'ml-[256px]' : 'ml-[56px]' }`}>      
         <div className="flex flex-auto h-full">

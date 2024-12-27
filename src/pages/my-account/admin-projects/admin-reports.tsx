@@ -31,11 +31,11 @@ const AdminReports = () => {
   const urlParams = new URLSearchParams(location.search);
   const user_id = urlParams.get("user_id");
   const { id } = useParams();
-  const [reports, setreports] = useState([{ report_name: "xyz", report_modified: "12 jan 2014" }]);
+  const [reports, setreports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
 
@@ -238,49 +238,48 @@ const AdminReports = () => {
         minSize: 200,
         cell: (item) => <span>18 Dec 2024</span>,
       },
-      // {
-      //   header: " ",
-      //   // accessorKey: "lead_investigator_given",
-      //   minSize: 80,
+      // columnHelper.display({
+      //   id: "actions",
+      //   // minSize: 100,
       //   cell: (item) => (
-      //     // <button type="button">
-      //     //   <EditIcon />
-      //     // </button>
-      //     <TableDropdown
-      //     // menuItems={menuItems}
-      //     // width="xs"
-      //     // alignment="right"
-      //     // conversation_id={item.row.original.id}
-      //     />
+      //     <div
+      //       className="text-green-600 font-semibold cursor-pointer"
+      //       onClick={() => {
+      //         navigate(
+      //           `/upload-report/${item.row.original.report_id}?project_id=${id}&user_id=${user_id}`,
+      //         );
+      //       }}
+      //     >
+      //       + Add Report
+      //     </div>
       //   ),
-      // },
+      // }),
       columnHelper.display({
         id: "actions",
-        // minSize: 100,
         cell: (item) => (
           <div
-            className="text-green-600 font-semibold cursor-pointer"
+            className="text-white bg-primary-800 py-1 w-15 text-center rounded-md font-semibold cursor-pointer"
             onClick={() => {
-              navigate(
-                `/upload-report/${item.row.original.report_id}?project_id=${id}&user_id=${user_id}`,
-              );
+              const itemData = item.row.original; 
+              navigate(`/detailed-report?project_id=${id}&user_id=${user_id}`, { state: itemData }); 
             }}
           >
             + Add Report
           </div>
         ),
-      }),
-      columnHelper.display({
-        id: "actions",
-        // minSize: 100,
-        cell: ({ row }) => (
-          <RowActions
-            row={row}
-            deleteReportHandler={deleteReportHandler}
-            openFileHandler={openFileHandler}
-          />
-        ),
-      }),
+      })
+      
+      // columnHelper.display({
+      //   id: "actions",
+      //   // minSize: 100,
+      //   cell: ({ row }) => (
+      //     <RowActions
+      //       row={row}
+      //       deleteReportHandler={deleteReportHandler}
+      //       openFileHandler={openFileHandler}
+      //     />
+      //   ),
+      // }),
     ],
     [],
   );
@@ -292,7 +291,7 @@ const AdminReports = () => {
           Settings &gt; Admin Report management &gt; Project Name
         </h6>
         <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to={`/admin-projects/${id}`}>
+          <Link to={`/admin-projects/${user_id}`}>
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" />
               Back
@@ -339,7 +338,7 @@ const AdminReports = () => {
         )}
       </div>
       {loading ? (
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
