@@ -186,28 +186,28 @@ const AdminReports = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      {
-        id: "select-col",
-        header: ({ table }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={table.getIsAllRowsSelected()}
-              // indeterminate={table.getIsSomeRowsSelected()}
-              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
-            />
-          </div>
-        ),
-        cell: ({ row }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={row.getIsSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          </div>
-        ),
-      },
+      // {
+      //   id: "select-col",
+      //   header: ({ table }) => (
+      //     <div className="pl-1 pt-1">
+      //       <CheckboxInput
+      //         className="border-white"
+      //         checked={table.getIsAllRowsSelected()}
+      //         // indeterminate={table.getIsSomeRowsSelected()}
+      //         onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
+      //       />
+      //     </div>
+      //   ),
+      //   cell: ({ row }) => (
+      //     <div className="pl-1 pt-1">
+      //       <CheckboxInput
+      //         className="border-white"
+      //         checked={row.getIsSelected()}
+      //         onChange={row.getToggleSelectedHandler()}
+      //       />
+      //     </div>
+      //   ),
+      // },
       {
         header: "Report",
         accessorKey: "report_name",
@@ -221,23 +221,35 @@ const AdminReports = () => {
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
       },
       {
+        header: "Status",
+        accessorKey: "status",
+        // minSize: 200,
+        cell: (item) => <span>{item.row.original.report_complete_status ? 'Completed' : 'Pending'}</span>,
+      },
+      {
         header: "Size",
         accessorKey: "size",
-        // minSize: 200,
-        cell: (item) => <span>{item.row.original.report_size}</span>,
+        cell: (item) => {
+          const reportSizeStr = item.row.original.report_size;
+          const bytes = parseInt(reportSizeStr.replace(' bytes', ''), 10); 
+          const mb = bytes / 1024 / 1024; 
+          return <span>{mb.toFixed(2)} MB</span>;
+        },
       },
+      
+      
       // {
       //   header: "Permission",
       //   accessorKey: "permission",
       //   // minSize: 200,
       //   cell: (item) => <span>{item.row.original.permission}</span>,
       // },
-      {
-        header: "Date Modified",
-        accessorKey: "date_modified",
-        minSize: 200,
-        cell: (item) => <span>18 Dec 2024</span>,
-      },
+      // {
+      //   header: "Date Modified",
+      //   accessorKey: "date_modified",
+      //   minSize: 200,
+      //   cell: (item) => <span>18 Dec 2024</span>,
+      // },
       // columnHelper.display({
       //   id: "actions",
       //   // minSize: 100,
@@ -258,17 +270,38 @@ const AdminReports = () => {
         id: "actions",
         cell: (item) => (
           <div
-            className="text-white bg-primary-800 py-1 w-15 text-center rounded-md font-semibold cursor-pointer"
+            className="text-white bg-primary-800 py-1 w-13 text-center rounded-md font-semibold cursor-pointer flex items-center justify-center gap-2"
             onClick={() => {
-              const itemData = item.row.original; 
-              navigate(`/detailed-report?project_id=${id}&user_id=${user_id}`, { state: itemData }); 
+              const itemData = item.row.original;
+              navigate(`/detailed-report?project_id=${id}&user_id=${user_id}`, { state: itemData });
             }}
           >
-            + Add Report
+            <svg
+              className="w-3 h-3 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                strokeWidth="2"
+                d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"
+              />
+              <path
+                stroke="currentColor"
+                strokeWidth="2"
+                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+            View
           </div>
         ),
       })
       
+
       // columnHelper.display({
       //   id: "actions",
       //   // minSize: 100,

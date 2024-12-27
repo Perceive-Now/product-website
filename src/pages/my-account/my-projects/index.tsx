@@ -42,29 +42,30 @@ const MyProjects = () => {
         )
       : [];
 
-  useEffect(() => {
-    const fetchHistoryData = async () => {
-      try {
-        const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/projects/${userId}`,
-          {
-            method: "GET",
-            headers: { Accept: "application/json" },
-          },
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("data=------------", data);
-          setreports(data);
+      const fetchHistoryData = async () => {
+        try {
+          const response = await fetch(
+            `https://templateuserrequirements.azurewebsites.net/projects/${userId}`,
+            {
+              method: "GET",
+              headers: { Accept: "application/json" },
+            },
+          );
+  
+          if (response.ok) {
+            const data = await response.json();
+            console.log("data=------------", data);
+            setreports(data);
+          }
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
+      
+  useEffect(() => {
     fetchHistoryData();
   }, []);
 
@@ -102,7 +103,7 @@ const MyProjects = () => {
   const deleteReportHandler = async (projectid: string, index: number) => {
     try {
       const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/project/${userId}/${projectid}/`,
+        `https://templateuserrequirements.azurewebsites.net/project/${userId}/${projectid}`,
         {
           method: "DELETE",
           headers: { Accept: "application/json" },
@@ -110,7 +111,8 @@ const MyProjects = () => {
       );
   
       if (response.ok) {
-        setreports((prevReports) => prevReports.filter((_, i) => i !== index));
+        // setreports((prevReports) => prevReports.filter((_, i) => i !== index));
+        fetchHistoryData();
       }
     } catch (err) {
       console.error(err);
