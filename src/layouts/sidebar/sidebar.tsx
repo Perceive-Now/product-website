@@ -1,6 +1,9 @@
 import { useState, useRef, FunctionComponent, useCallback, useEffect, Fragment } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
+import PerceiveLogo from "../../assets/images/logo.svg";
+import PerceiveIcon from "../../assets/images/logo-small.svg"
+
 //
 import LogoSm from "../../assets/images/logo-small.svg";
 import Logo from "../../assets/images/logo.svg";
@@ -474,12 +477,21 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
     </div> */}
 
       {/* new one */}
-      <div className={`flex mr-[66px] sidebar fixed top-[64px] left-0 z-10`}>
+      <div className={`flex mr-[66px] sidebar fixed top-0 left-0 z-10`}>
         <div
-          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
-            open ? "pl-3" : "pl-1"
-          } duration-300  flex flex-col justify-between h-[calc(100vh-112px)] z-10 pb-[20%]`}
+          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${open ? "pl-3" : "pl-1 pb-[54px]"
+            } duration-300  flex flex-col justify-between h-[100vh] z-10 pb-[20%]`}
         >
+
+          <div className="z-10">
+            <div className="py-2 px-2 container">
+              <Link to="/">
+                <img src={open ? PerceiveLogo : PerceiveIcon} alt="PerceiveNow logo" className="h-[32px]" />
+              </Link>
+            </div>
+          </div>
+
+
           <Joyride
             steps={steps}
             run={runTour}
@@ -502,7 +514,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             stepIndex={currentStepIndex}
           />
 
-          <div className="space-y-2 mb-auto">
+          <div className="space-y-0 mb-auto text-nowrap">
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
                 type="button"
@@ -527,7 +539,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             ))}
           </div>
 
-          <div className="space-y-1">
+          <div className="space-y-0 text-nowrap">
             <div
               onClick={() => setOpen((prev) => !prev)}
               className={classNames(
