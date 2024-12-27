@@ -237,10 +237,20 @@ const Reports = () => {
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
       },
       {
+        header: "Status",
+        accessorKey: "status",
+        // minSize: 200,
+        cell: (item) => <span>{item.row.original.report_complete_status ? 'Completed' : 'Pending'}</span>,
+      },
+      {
         header: "Size",
         accessorKey: "size",
-        // minSize: 200,
-        cell: (item) => <span>{item.row.original.report_size}</span>,
+        cell: (item) => {
+          const reportSizeStr = item.row.original.report_size;
+          const bytes = parseInt(reportSizeStr.replace(' bytes', ''), 10); 
+          const mb = bytes / 1024 / 1024; 
+          return <span>{mb.toFixed(2)} MB</span>;
+        },
       },
       // {
       //   header: "Permission",
@@ -248,12 +258,12 @@ const Reports = () => {
       //   // minSize: 200,
       //   cell: (item) => <span>{item.row.original.permission}</span>,
       // },
-      {
-        header: "Date Modified",
-        accessorKey: "date_modified",
-        minSize: 200,
-        cell: (item) => <span>18 Dec 2024</span>,
-      },
+      // {
+      //   header: "Date Modified",
+      //   accessorKey: "date_modified",
+      //   minSize: 200,
+      //   cell: (item) => <span>18 Dec 2024</span>,
+      // },
       // {
       //   header: " ",
       //   // accessorKey: "lead_investigator_given",

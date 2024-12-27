@@ -1,6 +1,5 @@
 import { useMemo, useState, useRef } from "react";
 
-
 //
 import { UploadIcon } from "src/components/icons";
 import toast from "react-hot-toast";
@@ -141,96 +140,96 @@ const DetailedReport = () => {
     }
   };
 
-//   const handleDownload = async () => {
-//     // Check if the file_data object has files to download
-//     console.log("ooooooooooo")
-//     const filesToDownload = Object.keys(itemData.file_data).filter(key => itemData.file_data[key]);
-  
-//     if (filesToDownload.length > 0) {
-//       const zip = new JSZip();
-  
-//       try {
-//         // Loop over the files and add them to the zip
-//         for (const fileKey of filesToDownload) {
-//           const fileUrl = itemData.file_data[fileKey];
-  
-//           // Fetch the file if the URL is a remote resource
-//           const response = await fetch(fileUrl);
-//           if (!response.ok) {
-//             throw new Error(`Failed to fetch ${fileKey}`);
-//           }
-  
-//           const fileBlob = await response.blob();
-//           zip.file(fileKey, fileBlob); // Add file to the zip with the key as the file name
-//         }
-  
-//         // Generate the zip file asynchronously
-//         const content = await zip.generateAsync({ type: "blob" });
-  
-//         // Trigger the download of the zip file
-//         saveAs(content, "files.zip");
-  
-//         toast.success("Downloading files as zip...");
-  
-//       } catch (error) {
-//         console.error("Error generating zip file:", error);
-//         toast.error("Failed to download the zip file.");
-//       }
-//     } else {
-//       toast.error("No files available to download");
-//     }
-//   };
+  //   const handleDownload = async () => {
+  //     // Check if the file_data object has files to download
+  //     console.log("ooooooooooo")
+  //     const filesToDownload = Object.keys(itemData.file_data).filter(key => itemData.file_data[key]);
 
-// const handleDownload = () => {
-//     // Check if the file_data object has files to download
-//     console.log("ooooooooooo");
-  
-//     const filesToDownload = Object.keys(itemData.file_data).filter(key => itemData.file_data[key]);
-  
-//     if (filesToDownload.length > 0) {
-//       const zip = new JSZip();
-  
-//       try {
-//         // Loop over the files and add them to the zip
-//         for (const fileKey of filesToDownload) {
-//           const fileUrl = itemData.file_data[fileKey]; // URL for the file
-  
-//           // Extract the file name from the URL
-//           const fileName = fileUrl.split('/').pop(); 
-  
-//           if (fileUrl.startsWith("data:")) {
-//             // Handle data URIs (base64 encoded files)
-//             const [metadata, base64Content] = fileUrl.split(",");
-//             const mimeType = metadata.split(";")[0].split(":")[1]; // Get MIME type (e.g., application/pdf, image/jpeg)
-            
-//             // Create a Blob from the base64 content
-//             const fileBlob = new Blob([Uint8Array.from(atob(base64Content), c => c.charCodeAt(0))], { type: mimeType });
-//             zip.file(fileName, fileBlob); // Add the file to the zip
-  
-//           } else {
-//             // Handle URLs (remote or local files)
-//             // Create a Blob object directly from the URL if it's a valid object URL
-//             const fileBlob = new Blob([fileUrl], { type: "application/pdf" }); // Default to PDF if not base64
-  
-//             zip.file(fileName, fileBlob); // Add the file to the zip
-//           }
-//         }
-  
-//         // Generate the zip file asynchronously
-//         zip.generateAsync({ type: "blob" }).then((content) => {
-//           // Trigger the download of the zip file
-//           saveAs(content, "files.zip");
-//           toast.success("Downloading files as zip...");
-//         });
-  
-//       } catch (error) {
-//         console.error("Error generating zip file:", error);
-//         toast.error("Failed to download the zip file.");
-//       }
-//     } else {
-//       toast.error("No files available to download");
-//     }
-//   };
+  //     if (filesToDownload.length > 0) {
+  //       const zip = new JSZip();
+
+  //       try {
+  //         // Loop over the files and add them to the zip
+  //         for (const fileKey of filesToDownload) {
+  //           const fileUrl = itemData.file_data[fileKey];
+
+  //           // Fetch the file if the URL is a remote resource
+  //           const response = await fetch(fileUrl);
+  //           if (!response.ok) {
+  //             throw new Error(`Failed to fetch ${fileKey}`);
+  //           }
+
+  //           const fileBlob = await response.blob();
+  //           zip.file(fileKey, fileBlob); // Add file to the zip with the key as the file name
+  //         }
+
+  //         // Generate the zip file asynchronously
+  //         const content = await zip.generateAsync({ type: "blob" });
+
+  //         // Trigger the download of the zip file
+  //         saveAs(content, "files.zip");
+
+  //         toast.success("Downloading files as zip...");
+
+  //       } catch (error) {
+  //         console.error("Error generating zip file:", error);
+  //         toast.error("Failed to download the zip file.");
+  //       }
+  //     } else {
+  //       toast.error("No files available to download");
+  //     }
+  //   };
+
+  // const handleDownload = () => {
+  //     // Check if the file_data object has files to download
+  //     console.log("ooooooooooo");
+
+  //     const filesToDownload = Object.keys(itemData.file_data).filter(key => itemData.file_data[key]);
+
+  //     if (filesToDownload.length > 0) {
+  //       const zip = new JSZip();
+
+  //       try {
+  //         // Loop over the files and add them to the zip
+  //         for (const fileKey of filesToDownload) {
+  //           const fileUrl = itemData.file_data[fileKey]; // URL for the file
+
+  //           // Extract the file name from the URL
+  //           const fileName = fileUrl.split('/').pop();
+
+  //           if (fileUrl.startsWith("data:")) {
+  //             // Handle data URIs (base64 encoded files)
+  //             const [metadata, base64Content] = fileUrl.split(",");
+  //             const mimeType = metadata.split(";")[0].split(":")[1]; // Get MIME type (e.g., application/pdf, image/jpeg)
+
+  //             // Create a Blob from the base64 content
+  //             const fileBlob = new Blob([Uint8Array.from(atob(base64Content), c => c.charCodeAt(0))], { type: mimeType });
+  //             zip.file(fileName, fileBlob); // Add the file to the zip
+
+  //           } else {
+  //             // Handle URLs (remote or local files)
+  //             // Create a Blob object directly from the URL if it's a valid object URL
+  //             const fileBlob = new Blob([fileUrl], { type: "application/pdf" }); // Default to PDF if not base64
+
+  //             zip.file(fileName, fileBlob); // Add the file to the zip
+  //           }
+  //         }
+
+  //         // Generate the zip file asynchronously
+  //         zip.generateAsync({ type: "blob" }).then((content) => {
+  //           // Trigger the download of the zip file
+  //           saveAs(content, "files.zip");
+  //           toast.success("Downloading files as zip...");
+  //         });
+
+  //       } catch (error) {
+  //         console.error("Error generating zip file:", error);
+  //         toast.error("Failed to download the zip file.");
+  //       }
+  //     } else {
+  //       toast.error("No files available to download");
+  //     }
+  //   };
 
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
@@ -241,13 +240,13 @@ const DetailedReport = () => {
             Admin Report management &gt; {itemData?.report_name}
           </h6>
           <div className="flex justify-start items-center pt-3 pl-1">
-              <Link to={`/admin-reports/${project_id}?user_id=${user_id}`}>
-                <p className="mr-4 text-secondary-800 flex items-center">
-                  <ArrowLeftIcon className="mr-1" />
-                  Back
-                </p>
-              </Link>
-            </div>
+            <Link to={`/admin-reports/${project_id}?user_id=${user_id}`}>
+              <p className="mr-4 text-secondary-800 flex items-center">
+                <ArrowLeftIcon className="mr-1" />
+                Back
+              </p>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -416,7 +415,8 @@ const DetailedReport = () => {
                   {/* Added Reports Listing */}
                   <div className="rounded-lg p-2 flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito flex items-center">
-                      Uploaded files <DownloadIcon className="ml-2 cursor-pointer"/>
+                      Uploaded files
+                      {/* <DownloadIcon className="ml-2 cursor-pointer"/> */}
                     </h6>
 
                     {Object.keys(itemData.file_data).length > 0 ? (
@@ -427,6 +427,7 @@ const DetailedReport = () => {
                           return (
                             <div key={index}>
                               {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                              <IconFile className="cursor-pointer"/>
                               <div className="flex justify-between items-center">
                                 <p className="text-sm font-nunito">{fileUrl}</p>{" "}
                               </div>
