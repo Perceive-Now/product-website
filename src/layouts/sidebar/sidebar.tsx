@@ -484,7 +484,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
         >
 
           <div className="z-10">
-            <div className="py-2 px-2 container">
+            <div className="py-1 px-1 container">
               <Link to="/">
                 <img src={open ? PerceiveLogo : PerceiveIcon} alt="PerceiveNow logo" className="h-[32px]" />
               </Link>
@@ -514,7 +514,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             stepIndex={currentStepIndex}
           />
 
-          <div className="space-y-0 mb-auto text-nowrap">
+          <div className="space-y-1 mb-auto text-nowrap">
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
                 type="button"

@@ -39,6 +39,7 @@ import ReportMangement from "./pages/my-account/my-reports";
 import MyProjects from "./pages/my-account/my-projects";
 import AdminUploadReport from "./pages/my-account/admin-projects/upload-projects";
 import AdminDashboard from "./pages/my-account/admin-projects/landing";
+import DetailedReport from "./pages/my-account/admin-projects/detailed-report";
 
 // Payment
 import StayTunedPage from "./pages/stay-tuned";
@@ -128,6 +129,7 @@ function App() {
             <Route path="/admin-reports/:id" element={<AdminReports />} />
             <Route path="/upload-report/:id" element={<AdminUploadReport />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/detailed-report" element={<DetailedReport />} />
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>

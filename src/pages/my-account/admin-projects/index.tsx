@@ -30,7 +30,7 @@ const AdmimProjects = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
   console.log("sledct---------", selectedRows);
@@ -156,7 +156,7 @@ const AdmimProjects = () => {
       </div>
       </div>
       {loading ? (
-        <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
