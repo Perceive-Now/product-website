@@ -105,18 +105,18 @@ export default function SignupPage() {
     navigate("/signup/confirm")
 
     // Signup user
-    // const response = await dispatch(signUpUser(params)).unwrap();
+    const response = await dispatch(signUpUser(params)).unwrap();
 
-    // if (response.success) {
-    //   if (callbackPath) {
-    //     navigate(callbackPath);
-    //   } else {
-    //     toast.success("User is registered");
-    //     navigate("/user-registration");
-    //   }
-    // } else {
-    //   toast.error(response.message);
-    // }
+    if (response.success) {
+      if (callbackPath) {
+        navigate(callbackPath);
+      } else {
+        toast.success("User is registered");
+        navigate("/signup/organization-setting");
+      }
+    } else {
+      toast.error(response.message);
+    }
 
     setIsSubmitting(false);
   };

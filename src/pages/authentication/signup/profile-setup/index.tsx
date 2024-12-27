@@ -6,6 +6,9 @@ import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 import { profileAvatarSVG, profileEditSVG } from "../_assets";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
+import toast from "react-hot-toast";
+import { useAppSelector } from "src/hooks/redux";
 
 type FormValues = {
   fullName: string;
@@ -15,8 +18,15 @@ type FormValues = {
   profileImage: File | null;
 };
 
-// Validation schema
+// Validation schema for the new users
 const schema = yup.object({
+  fullName: yup.string().required("Full name is required"),
+  role: yup.string().required("Role is required"),
+  profileImage: yup.mixed().nullable(),
+});
+
+// validation schema for the invited users
+const invitedUserSchema = yup.object({
   fullName: yup.string().required("Full name is required"),
   role: yup.string().required("Role is required"),
   email: yup.string().email("Invalid email address").required("Email is required"),
@@ -31,6 +41,20 @@ const schema = yup.object({
   profileImage: yup.mixed().nullable(),
 });
 
+function extractName(fullname: string): { first_name: string; last_name: string } {
+  // Trim any extra spaces
+  const trimmedName = fullname.trim();
+
+  // Split the fullname into parts by spaces
+  const parts = trimmedName.split(/\s+/);
+
+  // Extract first name and last name
+  const first_name = parts[0] || ""; // Handle empty names
+  const last_name = parts.slice(1).join(" ") || ""; // Join remaining parts for last name
+
+  return { first_name, last_name };
+}
+
 const ProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,9 +66,9 @@ const ProfileSetup: React.FC = () => {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(invitedData ? invitedUserSchema : schema),
     defaultValues: {
       fullName: "",
       role: invitedData?.role || "",
@@ -69,8 +93,33 @@ const ProfileSetup: React.FC = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Form Data:", data);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const { first_name, last_name } = extractName(data.fullName);
+    const userProfile = await getUserProfile();
+    const totalCompanies = await getCompanies();
+    const company_name = totalCompanies.filter((c) => c.id === userProfile.company_id)[0].name;
+
+    const values = {
+      first_name,
+      last_name,
+      role: data.role,
+      registration_completed: true,
+      company_name,
+      job_position: data.role,
+    };
+
+    try {
+      const response = await updateUserProfile(values);
+      if (response.status === 200) {
+        toast.success("Profile setup completed successfully!");
+      } else {
+        toast.error("An error occurred. Please try again.");
+        return;
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+      return;
+    }
 
     if (invitedData) {
       navigate("/signup/review", {
@@ -79,8 +128,7 @@ const ProfileSetup: React.FC = () => {
           invitedData,
           profileData: data,
         },
-      }
-      );
+      });
       return;
     }
 
@@ -95,9 +143,7 @@ const ProfileSetup: React.FC = () => {
   };
 
   return (
-    <SignUpLayout
-      invitedData={invitedData}
-    currentStep={1} completedSteps={[0]}>
+    <SignUpLayout invitedData={invitedData} currentStep={1} completedSteps={[0]}>
       <div className="pt-5 px-8 h-screen">
         <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
 
@@ -186,53 +232,57 @@ const ProfileSetup: React.FC = () => {
           </div>
 
           {/* Email Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              What is your email address?
-            </label>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="email"
-                  placeholder="johndoe@orgname.com"
-                  className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.email
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-primary-500"
-                  }`}
-                  disabled={invitedData?.email}
-                />
-              )}
-            />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-          </div>
+          {invitedData && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                What is your email address?
+              </label>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="email"
+                    placeholder="johndoe@orgname.com"
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.email
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary-500"
+                    }`}
+                    disabled={invitedData?.email}
+                  />
+                )}
+              />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            </div>
+          )}
 
           {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Please create a secure password.
-            </label>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="password"
-                  placeholder="Password"
-                  className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.password
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-primary-500"
-                  }`}
-                />
-              )}
-            />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-          </div>
+          {invitedData && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Please create a secure password.
+              </label>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="password"
+                    placeholder="Password"
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.password
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary-500"
+                    }`}
+                  />
+                )}
+              />
+              {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+            </div>
+          )}
 
           {/* Buttons */}
           <div className="flex gap-x-4">
@@ -248,7 +298,7 @@ const ProfileSetup: React.FC = () => {
                   });
                   return;
                 } else {
-                  navigate("/signup/organization-setting")
+                  navigate("/signup/organization-setting");
                 }
               }}
             >
@@ -258,6 +308,7 @@ const ProfileSetup: React.FC = () => {
               htmlType="submit"
               rounded="full"
               classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
+              loading={isSubmitting}
             >
               <span className="font-normal">Next</span>
             </Button>

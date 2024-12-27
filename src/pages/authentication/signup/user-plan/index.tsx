@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 import checkIcon from "./_assets/check-icon.svg";
 import { Switch } from "@headlessui/react";
+import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
+import toast from "react-hot-toast";
 
 interface PlanData {
   monthlyPrice: number;
@@ -135,14 +137,33 @@ const UserPlan = () => {
   );
   const [planType, setPlanType] = useState<"monthly" | "annually">("monthly");
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const selectedPlanData = planValues[selectedPlan];
     console.log("Selected Plan:", selectedPlan);
     console.log("Plan Data:", selectedPlanData);
     // You can now proceed with the next step using selectedPlan and selectedPlanData
 
-    alert("Plan selected");
-    naviagate("/signup/payment");
+    try {
+      const UserDetails = await getUserProfile();
+      const totalCompanies = await getCompanies();
+      const company_name = totalCompanies.find((c) => c.id === UserDetails.company_id)?.name;
+
+      const values = {
+        subscription_type: selectedPlan,
+        registration_completed: true,
+        company_name
+      };
+
+      const result = await updateUserProfile(values);
+      if (result.status === 200) {
+        toast.success("Plan selected successfully");
+        // naviagate("/signup/payment");
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -240,28 +261,30 @@ const UserPlan = () => {
               <div className="flex flex-col gap-2">
                 {allOptions.templates.map((option) => (
                   <div key={option}>
-                  <div className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].templates.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].templates.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].templates.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].templates.includes(option) && <img src={checkIcon} />}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].templates.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].templates.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                  </div>
-                  <hr className="mt-1" />
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
@@ -275,30 +298,30 @@ const UserPlan = () => {
               <div className="flex flex-col gap-2">
                 {allOptions.dynamicSectionCustomization.map((option) => (
                   <div key={option}>
-                  <div className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].dynamicSectionCustomization.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].dynamicSectionCustomization.includes(
+                          option,
+                        ) && <img src={checkIcon} />}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].dynamicSectionCustomization.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].dynamicSectionCustomization.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].dynamicSectionCustomization.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].dynamicSectionCustomization.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                  </div>
-                  <hr className="mt-1" />
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
@@ -310,30 +333,30 @@ const UserPlan = () => {
               <div className="flex flex-col gap-2">
                 {allOptions.knowNowChat.map((option) => (
                   <div key={option}>
-                  <div className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].knowNowChat.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].knowNowChat.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].knowNowChat.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].knowNowChat.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].knowNowChat.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].knowNowChat.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                  </div>
-                  <hr className="mt-1" />
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
@@ -345,30 +368,30 @@ const UserPlan = () => {
               <div className="flex flex-col gap-2">
                 {allOptions.quickViewReports.map((option) => (
                   <div key={option}>
-                  <div className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].quickViewReports.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].quickViewReports.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].quickViewReports.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].quickViewReports.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].quickViewReports.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].quickViewReports.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                  </div>
-                  <hr className="mt-1" />
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
@@ -380,30 +403,30 @@ const UserPlan = () => {
               <div className="flex flex-col gap-2">
                 {allOptions.explainability.map((option) => (
                   <div key={option}>
-                  <div className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].explainability.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].explainability.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].explainability.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].explainability.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].explainability.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].explainability.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                  </div>
-                  <hr className="mt-1" />
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
@@ -415,30 +438,30 @@ const UserPlan = () => {
               <div className="flex flex-col gap-2">
                 {allOptions.reportFormats.map((option) => (
                   <div key={option}>
-                  <div className="grid grid-cols-5">
-                    <div className="col-span-2">
-                      <span className="text-sm text-[#373D3F]">{option}</span>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for standard */}
+                        {planValues["Standard"].reportFormats.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for professional */}
+                        {planValues["Professional"].reportFormats.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for enterprise */}
+                        {planValues["Enterprise"].reportFormats.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for standard */}
-                      {planValues["Standard"].reportFormats.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for professional */}
-                      {planValues["Professional"].reportFormats.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                    <div className="col-span-1 place-items-center">
-                      {/* render check icon for enterprise */}
-                      {planValues["Enterprise"].reportFormats.includes(option) && (
-                        <img src={checkIcon} />
-                      )}
-                    </div>
-                  </div>
-                  <hr className="mt-1" />
+                    <hr className="mt-1" />
                   </div>
                 ))}
               </div>
