@@ -34,9 +34,9 @@ export default function TableYearSelect(props: ITableYearSelectProps) {
         defaultValue={defaultValue}
         value={value}
         isSearchable={false}
-        onChange={(item) => item && handleChange(item.value)}
+        onChange={(item: any) => item && handleChange(item.value)}
         styles={{
-          option: (styles, { isFocused, isSelected, isDisabled }) => {
+          option: (styles: any, { isFocused, isSelected, isDisabled }: any) => {
             return {
               ...styles,
               backgroundColor: isFocused || isSelected ? "rgb(225,213,242)" : "#fff",

@@ -16,6 +16,12 @@ import { LoadingIcon } from "src/components/icons";
 import { useParams } from "react-router-dom";
 import { Tab } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import classNames from "classnames";
+
 /**
  *
  */
@@ -38,6 +44,10 @@ const urlContent = [
   "Other Relevant URLs",
 ];
 
+interface INewReportValues {
+  projectName: string;
+}
+
 const QuickReports = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -49,7 +59,6 @@ const QuickReports = () => {
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
   const [step, setStep] = useState(id ? 2 : 1);
-  const [projectName, setProjectName] = useState<string>("");
   const [reportName, setReportName] = useState<string>("");
   const [usecase, setUsecase] = useState("");
   const [questions, setQuestions] = useState(["", "", ""]);
@@ -156,18 +165,33 @@ const QuickReports = () => {
     console.log("formData------", formData);
   };
 
-  const handleSubmitProject = async () => {
+  const formInitialValue: INewReportValues = {
+    projectName: "",
+  };
+
+  const formResolver = yup.object().shape({
+    projectName: yup.string().trim().required("Project name is required"),
+  });
+
+  const {
+    register,
+    formState,
+    handleSubmit: handleSubmitForm,
+  } = useForm({
+    defaultValues: formInitialValue,
+    resolver: yupResolver(formResolver),
+    mode: "onBlur",
+  });
+
+  const { errors } = formState;
+
+  const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
-    if (!projectName) {
-      toast.error("Project name is required");
-      setLoading(false);
-      return;
-    }
     const user_id = userId ?? "";
 
     const formData = {
       user_id: user_id,
-      project_name: projectName,
+      project_name: values.projectName,
       size: "0KB",
     };
 
@@ -256,7 +280,7 @@ const QuickReports = () => {
           </div>
         )}
 
-        {id && step!== 3 && (
+        {id && step !== 3 && (
           <div className="mt-2">
             <Tab.Group defaultIndex={1}>
               <Tab.List className="flex w-[15%] h-[45px]">
@@ -285,7 +309,6 @@ const QuickReports = () => {
             </Tab.Group>
           </div>
         )}
-
       </div>
 
       <div className="overflow-y-auto">
@@ -525,29 +548,33 @@ const QuickReports = () => {
           </div>
         ) : step === 1 ? (
           <div className="p-3 w-[50%]">
-            <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
-              Name your project
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              value={projectName}
-              onChange={(e: any) => {
-                setProjectName(e.target.value);
-              }}
-              required
-              placeholder="Project Name"
-              className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-            />
-            <div className="max-w-[125px] mt-5 justify-center items-center">
-              <div
-                onClick={handleSubmitProject}
-                className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-              >
-                {loading ? <LoadingIcon width={18} height={18} className="" /> : "Next"}
+            <form onSubmit={handleSubmitForm(handleSubmitProject)}>
+              <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
+                Name your project
+              </label>
+              <input
+                type="text"
+                id="projectName"
+                {...register("projectName")}
+                placeholder="Project Name"
+                className={classNames("mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                  errors.projectName
+                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",)}
+              />
+              {errors.projectName?.message && (
+                <div className="mt-1 text-xs text-danger-500">{errors.projectName?.message}</div>
+              )}
+              <div className="max-w-[125px] mt-5 justify-center items-center">
+                <div
+                  role="button"
+                  onClick={handleSubmitForm(handleSubmitProject)}
+                  className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                >
+                  {loading ? <LoadingIcon width={18} height={18} className="" /> : "Next"}
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         ) : (
           <TakeoffScreen />

@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { ColumnDef, PaginationState, createColumnHelper } from "@tanstack/react-table";
 import { VerticalThreeDots } from "src/components/icons";
 import ShareModal from "src/components/reusable/share-modal";
 import Tooltip from "src/components/reusable/popover";
@@ -22,6 +22,7 @@ import DownloadIcon from "src/components/icons/common/download-icon";
 import { useParams } from "react-router-dom";
 import { Tab } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import Pagination from "src/components/reusable/pagination";
 /**
  *
  */
@@ -38,11 +39,16 @@ const Reports = () => {
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
 
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
   const filteredReports =
     reports.length > 0
       ? reports.filter((report: any) =>
           report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+        ).slice(pagination.pageIndex * pagination.pageSize, pagination.pageIndex * pagination.pageSize + pagination.pageSize)
       : [];
 
       const fetchHistoryData = async () => {
@@ -174,9 +180,9 @@ const Reports = () => {
     return (
       <Tooltip
         isCustomPanel={true}
-        right="100px"
+        right="0px"
         trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
-        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
       >
         <ul id="dropdown">
           <li className="mb-2 cursor-pointer" onClick={handleDownload}>
@@ -346,7 +352,13 @@ const Reports = () => {
         </div>
         <div className="flex items-center gap-1 w-full">
           <div className="w-[300px]">
-            <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <TableSearch searchQuery={searchQuery} setSearchQuery={(search: string)=>{
+              setSearchQuery(search)
+              setPagination({
+                ...pagination,
+                pageIndex: 0
+              })
+            }} />
           </div>
           {selectedRows.length > 0 && (
             <div className="ml-auto flex gap-3">
@@ -390,6 +402,9 @@ const Reports = () => {
                 rowSelection={rowSelection}
                 onRowSelectionChange={handleRowSelectionChange}
               />
+              <div className=" flex items-center justify-end mt-2.5">
+                <Pagination page={pagination.pageIndex + 1} total={Math.ceil(reports.length/pagination.pageSize)} onChange={(pageNo)=>setPagination({...pagination, pageIndex: pageNo - 1})}/>
+              </div>
             </Tab.Panel>
           </Tab.Panels>
         )}

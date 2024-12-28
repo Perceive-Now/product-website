@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { ColumnDef, PaginationState, createColumnHelper } from "@tanstack/react-table";
 import { VerticalThreeDots } from "src/components/icons";
 import ShareModal from "src/components/reusable/share-modal";
 import Tooltip from "src/components/reusable/popover";
@@ -19,6 +19,7 @@ import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 import { useNavigate } from "react-router-dom";
+import Pagination from "src/components/reusable/pagination";
 /**
  *
  */
@@ -33,38 +34,46 @@ const MyProjects = () => {
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
-  console.log("sledct---------", selectedRows);
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const filteredReports =
     reports.length > 0
-      ? reports.filter((report: any) =>
-          report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+      ? reports
+          .filter((report: any) =>
+            report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+          .slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+          )
       : [];
 
-      const fetchHistoryData = async () => {
-        try {
-          const response = await fetch(
-            `https://templateuserrequirements.azurewebsites.net/projects/${userId}`,
-            {
-              method: "GET",
-              headers: { Accept: "application/json" },
-            },
-          );
-  
-          if (response.ok) {
-            const data = await response.json();
-            console.log("data=------------", data);
-            setreports(data);
-          }
-        } catch (err) {
-          console.error(err);
-        } finally {
-          setLoading(false);
-        }
-      };
+  const fetchHistoryData = async () => {
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/projects/${userId}`,
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        },
+      );
 
-      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("data=------------", data);
+        setreports(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchHistoryData();
   }, []);
@@ -109,7 +118,7 @@ const MyProjects = () => {
           headers: { Accept: "application/json" },
         },
       );
-  
+
       if (response.ok) {
         // setreports((prevReports) => prevReports.filter((_, i) => i !== index));
         fetchHistoryData();
@@ -118,7 +127,7 @@ const MyProjects = () => {
       console.error(err);
     }
   };
-  
+
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
   };
@@ -129,17 +138,15 @@ const MyProjects = () => {
     openFileHandler,
   }: {
     row: any;
-    deleteReportHandler: (reportId: string ,index: number) => void;
+    deleteReportHandler: (reportId: string, index: number) => void;
     openFileHandler: (fileUrl: string) => void;
   }) => {
-   
-
     const handleDelete = (event: React.MouseEvent) => {
-      event.preventDefault(); 
-      event.stopPropagation(); 
+      event.preventDefault();
+      event.stopPropagation();
 
       const { project_id } = row.original;
-      deleteReportHandler(project_id,row.index); 
+      deleteReportHandler(project_id, row.index);
     };
 
     const handleShareReport = () => {
@@ -194,9 +201,7 @@ const MyProjects = () => {
           </div>
         ),
         cell: ({ row }) => (
-          <div className="pl-1 pt-1"
-          onClick={(e) => e.stopPropagation()} 
-          >
+          <div className="pl-1 pt-1" onClick={(e) => e.stopPropagation()}>
             <CheckboxInput
               className="border-white"
               checked={row.getIsSelected()}
@@ -242,7 +247,6 @@ const MyProjects = () => {
     },
   });
 
-
   return (
     <div className="space-y-[20px]  w-full z-10">
       <div className="p-1 pl-0">
@@ -268,7 +272,16 @@ const MyProjects = () => {
       </div>
       <div className="flex items-center gap-1 w-full">
         <div className="w-[300px]">
-          <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <TableSearch
+            searchQuery={searchQuery}
+            setSearchQuery={(search: string) => {
+              setSearchQuery(search);
+              setPagination({
+                ...pagination,
+                pageIndex: 0,
+              });
+            }}
+          />
         </div>
         {selectedRows.length > 0 && (
           <div className="ml-auto flex gap-3">
@@ -298,15 +311,24 @@ const MyProjects = () => {
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
-        <ReactTable
-          columnsData={columns}
-          rowsData={filteredReports}
-          size="medium"
-          noTopBorder
-          rowSelection={rowSelection} 
-          onRowSelectionChange={handleRowSelectionChange}
-          getRowProps={getRowProps} // Add getRowProps to the Table component
-        />
+        <>
+          <ReactTable
+            columnsData={columns}
+            rowsData={filteredReports}
+            size="medium"
+            noTopBorder
+            rowSelection={rowSelection}
+            onRowSelectionChange={handleRowSelectionChange}
+            getRowProps={getRowProps} // Add getRowProps to the Table component
+          />
+          <div className=" flex items-center justify-end">
+            <Pagination
+              page={pagination.pageIndex + 1}
+              total={Math.ceil(reports.length / pagination.pageSize)}
+              onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
+            />
+          </div>
+        </>
       )}
 
       <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />
