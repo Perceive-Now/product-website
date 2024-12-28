@@ -78,18 +78,18 @@ export default function SelectBox({
       placeholder={placeholder || "Select an options"}
       menuPosition={position || ("" as MenuPosition)}
       styles={{
-        input: (base) => ({
+        input: (base: any) => ({
           ...base,
           "input:focus": {
             boxShadow: "none",
           },
         }),
-        multiValueLabel: (base) => ({
+        multiValueLabel: (base: any) => ({
           ...base,
           whiteSpace: "normal",
           overflow: "visible",
         }),
-        control: (base, { isFocused }) => ({
+        control: (base: any, { isFocused }: any) => ({
           ...base,
           transition: "none",
           borderColor: isFocused ? "#E5E5E5" : "",
@@ -100,7 +100,7 @@ export default function SelectBox({
         }),
       }}
       classNames={{
-        control: ({ isFocused }) =>
+        control: ({ isFocused }: any) =>
           classNames(isFocused ? controlStyles.focus : controlStyles.nonFocus, controlStyles.base),
         placeholder: () => placeholderStyles,
         input: () => selectInputStyles,
@@ -112,7 +112,7 @@ export default function SelectBox({
         dropdownIndicator: () => dropdownIndicatorStyles,
         menu: () => menuStyles,
         groupHeading: () => groupHeadingStyles,
-        option: ({ isFocused, isSelected }) =>
+        option: ({ isFocused, isSelected }: any) =>
           classNames(
             isFocused && optionStyles.focus,
             isSelected && optionStyles.selected,
