@@ -11,7 +11,7 @@ const TableSearch = ({ searchQuery, setSearchQuery }:any) => {
         type="search"
         value={searchQuery}  // Bind value to searchQuery state
         onChange={(e) => setSearchQuery(e.target.value)}  // Update searchQuery state
-        className="block w-full pl-6 py-[10px] text-sm text-gray-900 border border-appGray-200 bg-transparent placeholder-black rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-primary-900"
+        className="block w-full pl-6 py-[10px] text-sm text-gray-900 border-[2px] border-appGray-300 bg-transparent placeholder-black rounded-lg bg-white focus:outline-none focus:ring-0 focus:border-primary-900"
         placeholder="Search"
         required
       />

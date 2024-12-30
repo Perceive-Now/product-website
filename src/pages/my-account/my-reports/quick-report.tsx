@@ -80,6 +80,14 @@ const QuickReports = () => {
     }
   };
 
+  const handleAddQuestion = () => {
+    setQuestions([...questions, ""]);
+  };
+
+  const handleRemoveQuestion = (index: number) => {
+    setQuestions(questions.filter((_, i) => i !== index));
+  };
+
   const handleFileChange = (e: any) => {
     const files = e.target.files;
     if (files) {
@@ -357,7 +365,7 @@ const QuickReports = () => {
 
                 <div className="mb-1">
                   <label htmlFor="industry" className="block text-md text-secondary-800">
-                    Select use case
+                    Primary Objective
                   </label>
                   <select
                     id="usecase"
@@ -380,7 +388,7 @@ const QuickReports = () => {
 
                 {/* File Upload Box */}
                 <h6 className="font-semibold text-base font-nunito">
-                  Add resources to create reports for this project
+                  Upload Resources for Your Report
                 </h6>
                 <div
                   className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
@@ -417,12 +425,12 @@ const QuickReports = () => {
                 {/* Paste URL Section */}
                 <div>
                   <h6 className="font-semibold text-base mb-2 font-nunito">
-                    Type or Paste Your URL
+                    Enter or Paste Your URL
                   </h6>
                   <div className="flex">
                     <input
                       type="text"
-                      placeholder="Paste URL here"
+                      placeholder="Paste Your URL here"
                       value={urlInput}
                       onChange={handleUrlChange}
                       className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
@@ -466,38 +474,34 @@ const QuickReports = () => {
 
               {/* Second Part: Added Websites and Urls Listing */}
               <div className="w-1/2 px-3 flex flex-col">
-                <div className="h-[30%]">
-                  <h6 className="font-nunito">Questions you want to get answer in report</h6>
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={questions[0]}
-                    onChange={(e) => handleQuestionChange(e, 0)}
-                    required
-                    placeholder="Question 1"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={questions[1]}
-                    onChange={(e) => handleQuestionChange(e, 1)}
-                    required
-                    placeholder="Question 2"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={questions[2]}
-                    onChange={(e) => handleQuestionChange(e, 2)}
-                    required
-                    placeholder="Question 3"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
+                <div className="h-fit py-2">
+                  {questions.map((question, index) => (
+                    <div key={index} className="flex items-center space-x-2 mt-2">
+                      <input
+                        type="text"
+                        value={question}
+                        onChange={(e) => handleQuestionChange(e, index)}
+                        placeholder={`Enter here`}
+                        className="flex-grow p-[10px] w-full placeholder-black border border-appGray-600 focus:outline-none rounded-lg bg-transparent"
+                      />
+                      {questions.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveQuestion(index)}
+                          className="text-red-500 hover:text-red-700 transition duration-300"
+                        >
+                          <TrashIcon className="w-3 h-3"  />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <Button
+                    type="primary"
+                    handleClick={handleAddQuestion}
+                    classname="mt-2"
+                  >
+                    + Add
+                  </Button>
                 </div>
                 {/* Added Websites */}
                 <div className="h-[70%] pr-[25%]">

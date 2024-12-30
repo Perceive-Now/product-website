@@ -182,10 +182,10 @@ const InitialScreening: React.FC = () => {
               <LayoutIcon />
             </div>
             <div className="ml-2">
-              <h2 className="text-sm md:text-lg font-semibold">Initial Screening</h2>
+              <h2 className="text-sm md:text-lg font-semibold">First Look</h2>
               {open && (
                 <>
-                  <h4 className="mb-4">Arrange/add sections as your need</h4>
+                  <h4 className="mb-4">Customize sections to suit your needs.</h4>
                   <div className="text-xs">
                     {/* <button
                       className={`p-1 rounded-lg ${activeTab === "report" ? "bg-appGray-200" : ""}`}

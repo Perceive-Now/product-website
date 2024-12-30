@@ -73,7 +73,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
   };
 
   return (
-    <div className="w-full flex flex-col rounded-lg shadow-inputBox overflow-hidden bg-white relative mb-[70px]">
+    <div className="w-full flex flex-col rounded-lg border border-gray-200 shadow-inputBox overflow-hidden bg-white relative mb-[70px]">
       <div className="flex items-center p-1">
         <textarea
           ref={textareaRef}
