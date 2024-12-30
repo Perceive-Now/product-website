@@ -272,7 +272,7 @@ const QuickReports = () => {
   const handleFinalSubmitProject = async () => {
     setLoading(true);
 
-    const values  = requirementValues()
+    const values = requirementValues();
 
     const formData = new FormData();
 
@@ -414,7 +414,7 @@ const QuickReports = () => {
 
                   <div className="mb-1">
                     <label htmlFor="industry" className="block text-md text-secondary-800">
-                      Select use case
+                      Primary Objective
                     </label>
                     <select
                       id="usecase"
@@ -446,7 +446,7 @@ const QuickReports = () => {
 
                   {/* File Upload Box */}
                   <h6 className="font-semibold text-base font-nunito">
-                    Add resources to create reports for this project
+                    Upload Resources for Your Report
                   </h6>
                   <div
                     className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
@@ -483,12 +483,12 @@ const QuickReports = () => {
                   {/* Paste URL Section */}
                   <div>
                     <h6 className="font-semibold text-base mb-2 font-nunito">
-                      Type or Paste Your URL
+                      Enter or Paste Your URL
                     </h6>
                     <div className="flex">
                       <input
                         type="text"
-                        placeholder="Paste URL here"
+                        placeholder="Paste Your URL here"
                         value={urlInput}
                         onChange={handleUrlChange}
                         className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
@@ -533,32 +533,31 @@ const QuickReports = () => {
 
                 {/* Second Part: Added Websites and Urls Listing */}
                 <div className="w-1/2 px-3 flex flex-col">
-                  <div className="h-[30%]">
-                    <h6 className="font-nunito">Questions you want to get answer in report</h6>
+                  <div className="h-fit py-2">
                     {requirementQuestions?.map((requirement, index) => (
                       <>
-                        <div className="flex  justify-center items-center gap-1">
+                        <div key={index} className="flex items-center space-x-2 mt-2">
                           <input
                             type="text"
                             id={`questions.${index}`}
                             {...requirementRegister(`questions.${index}`)}
                             // required
-                            placeholder={`Question ${index + 1}`}
+                            placeholder={`Enter here`}
                             className={classNames(
-                              "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                              "flex-grow p-[10px] w-full placeholder-black border border-appGray-600 focus:outline-none rounded-lg bg-transparent",
                               requirementErrors.questions?.[index]
                                 ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                                 : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                             )}
                           />
                           {requirementQuestions.length > 3 ? (
-                            <Button
-                              type="primary"
-                              handleClick={() => removeQuestion(index)}
-                              htmlType="button"
+                            <button
+                              type="button"
+                              onClick={() => removeQuestion(index)}
+                              className="text-red-500 hover:text-red-700 transition duration-300"
                             >
-                              <TrashIcon />
-                            </Button>
+                              <TrashIcon className="w-3 h-3" />
+                            </button>
                           ) : null}
                         </div>
                         {requirementErrors.questions?.[index] && (
@@ -569,8 +568,13 @@ const QuickReports = () => {
                       </>
                     ))}
                     {requirementQuestions.length < 10 ? (
-                      <Button type="primary" handleClick={handleAddMoreQuestions} htmlType="button">
-                        +
+                      <Button
+                        type="primary"
+                        classname="mt-2"
+                        handleClick={handleAddMoreQuestions}
+                        htmlType="button"
+                      >
+                        + Add
                       </Button>
                     ) : (
                       <></>

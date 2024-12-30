@@ -11,6 +11,9 @@ import AddQuery from "src/components/@vc-product/add-query";
 import PN from "../../../assets/images/pn.svg";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setStartTour, setFinishTour } from "src/stores/dashboard";
+
+import pnLogo from "../../../assets/images/pn.svg";
+
 const stepsList = [
   {
     id: 1,
@@ -255,19 +258,44 @@ export default function Landing() {
         </nav>
 
         <div className="h-[calc(100vh-160px)] px-3 w-full mx-auto flex flex-col justify-center items-center">
-          <div className="flex items-center justify-between w-full max-w-xl px-6 py-4">
+          <div className="flex items-center justify-between w-full max-w-2xl 2xl:max-w-3xl px-6 py-4">
             <div className="flex flex-col ml-6 w-full">
-              <div className="h-16 w-16 rounded-full flex mb-2">
+              {/* <div className="h-16 w-16 rounded-full flex mb-2">
                 <img className="h-10 w-10" src={PN} alt="Pn" />
-              </div>
-              <h1 className="text-2xl font-semibold mb-3 font-nunito">
-                Discover Insights and Create Impact.
+              </div> */}
+              <h1 className="text-3xl font-semibold mb-3 font-nunito">
+                See the Future, Shape the Present.
               </h1>
-              <p className="text-base mb-4 font-nunito font-normal">
-                Generate tailored reports or get instant answers with Know Now—your partner for
-                smarter IP and market research.
+              <p className="text-base leading-relaxed mb-4 font-nunito font-normal">
+                You bring us your intel. You tell us what you need. We torture the data, break it
+                down, and make it confess to anything you need. We&apos;re excited for you to
+                experience our solutions.
               </p>
-
+              <p className="text-base leading-relaxed mb-4 font-nunito font-normal">
+                We are excited for you to experience our solutions.
+              </p>
+              <div className="flex gap-x-2 mb-3">
+                <div className="flex items-center gap-1">
+                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <p className="text-xs font-light font-nunito">Context-richness</p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <p className="text-xs font-light font-nunito">Hyper-tailored</p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <p className="text-xs font-light font-nunito">48-hour delivery</p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <p className="text-xs font-light font-nunito">Zero hallucinations</p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <p className="text-xs font-light font-nunito">Complete AI Transparency</p>
+                </div>
+              </div>
               <div className="flex gap-2">
                 {/* <Link to="/start-conversation">
                   <div className="border text-[#442873] border-[#442873] hover:bg-[#442873] hover:text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">

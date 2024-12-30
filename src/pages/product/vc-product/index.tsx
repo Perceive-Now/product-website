@@ -28,7 +28,9 @@ import {
   updateButtonSelection,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
+import { useNavigate } from "react-router-dom";
 const VCReport = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // const userId = "tes1234567";
   let thread_id = generateKnowIdstring();
@@ -78,6 +80,17 @@ const VCReport = () => {
       try {
         if (answer && !file) {
           console.log("answer");
+
+          if (answer === "Go Home") {
+            dispatch(resetChats());
+            thread_id = generateKnowIdstring();
+            firstRun.current = true;
+            setFile("false");
+            navigate("/", {
+              replace: true
+            });
+            return;
+          }
 
           if (answer === "Start another report") {
             dispatch(resetChats());
@@ -162,7 +175,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   setVSChats({
                     query: "",
                     answer: "",
-                    options: ["Quick Insights", "Deep Dive"],
+                    options: ["First Look", "Deep Dive"],
                     hasbutton: true,
                   }),
                 );
@@ -175,14 +188,15 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             } else if (Step == 5 && answer == "Confirm") {
               dispatch(
                 updateChatQuery({
-                  query: `Your final report will be generated within 24hr - 48hr. We will update you through email with link to download the reports.`,
+                  query: `Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`,
                 }),
               );
+              
               dispatch(
                 setVSChats({
                   query: "",
                   answer: "",
-                  options: ["Start another report"],
+                  options: ["Start another report", "Go Home"],
                   hasbutton: true,
                 }),
               );
@@ -349,7 +363,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               }
               //**     **//
             } else if (chatOptions?.includes("Deep Dive")) {
-              if (["deep dive", "quick insights"].includes(queries.answer.trim().toLowerCase())) {
+              if (["deep dive", "quick insights", "first look"].includes(queries.answer.trim().toLowerCase())) {
                 setIsloading(false);
                 setDelayLoading(true);
                 setTimeout(() => {
@@ -390,7 +404,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   setVSChats({
                     query: "",
                     answer: "",
-                    options: ["Quick Insights", "Deep Dive"],
+                    options: ["First Look", "Deep Dive"],
                     hasbutton: true,
                   }),
                 );
