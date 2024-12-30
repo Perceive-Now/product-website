@@ -1,7 +1,6 @@
 import { useMemo, useState, useRef } from "react";
 
 //
-import EditIcon from "../../../components/icons/miscs/Edit";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 //
@@ -10,7 +9,6 @@ import TrashIcon from "src/components/icons/common/trash";
 import { UploadIcon } from "src/components/icons";
 import TakeoffScreen from "./takeoffScreen";
 import jsCookie from "js-cookie";
-import { generateKnowIdstring } from "src/utils/helpers";
 import toast from "react-hot-toast";
 import { LoadingIcon } from "src/components/icons";
 import { useParams } from "react-router-dom";
@@ -18,7 +16,7 @@ import { Tab } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import SelectBox from "./selectBox";
@@ -48,6 +46,12 @@ interface INewReportValues {
   projectName: string;
 }
 
+interface IRequirementValues {
+  reportName: string;
+  usecase: string;
+  questions: Array<string>;
+}
+
 const QuickReports = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -59,10 +63,13 @@ const QuickReports = () => {
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
   const [step, setStep] = useState(id ? 2 : 1);
-  const [reportName, setReportName] = useState<string>("");
-  const [usecase, setUsecase] = useState("");
-  const [questions, setQuestions] = useState(["", "", ""]);
-  const [customReport, setCustomReport] = useState({report_tone:"",no_of_charts:"",visual_style:"",citations:"",format:""})
+  const [customReport, setCustomReport] = useState({
+    report_tone: "",
+    no_of_charts: "",
+    visual_style: "",
+    citations: "",
+    format: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const handleDrop = (e: any) => {
@@ -113,61 +120,19 @@ const QuickReports = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    console.log("cutsome ",customReport)
-    return;
-    setLoading(true);
+  const handleSubmit = async (values: IRequirementValues) => {
+    console.log("cutsome ", customReport);
     if (uploadedFiles.length === 0) {
       toast.error("Upload a file to submit");
       setLoading(false);
       setStep(2);
       return;
     }
-
-    if (!reportName) {
-      toast.error("Report name is required");
-      setLoading(false);
-      return;
-    }
-
-    const formData = new FormData();
-
-    uploadedFiles.forEach((file: File) => {
-      formData.append("files", file);
+    setStep(3);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
-
-    pastedURLs.forEach((url: string) => {
-      formData.append("websites", url);
-    });
-
-    formData.append("questions", JSON.stringify(questions));
-    
-
-    console.log("formData---------", formData, reportName, usecase, questions);
-    try {
-      const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${reportName}&report_completed_url=test&report_complete_status=false&report_size=0KB&usecase=${usecase}`,
-        {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: formData,
-        },
-      );
-
-      if (response.ok) {
-        setStep(3);
-      } else {
-        toast.error("Unable to submit report");
-      }
-
-      console.log("response", response);
-    } catch (e) {
-      console.log("err", e);
-    } finally {
-      setLoading(false);
-    }
-
-    console.log("formData------", formData);
   };
 
   const formInitialValue: INewReportValues = {
@@ -189,6 +154,46 @@ const QuickReports = () => {
   });
 
   const { errors } = formState;
+
+  const projectRequitementInitialValue: IRequirementValues = {
+    reportName: "",
+    usecase: "",
+    questions: ["", "", ""],
+  };
+
+  const projectFormResolver = yup.object().shape({
+    reportName: yup.string().trim().required("Report name is required"),
+    usecase: yup.string().trim().required("Usecase is required"),
+    questions: yup
+      .array()
+      .of(
+        yup
+          .string()
+          .trim() // Remove leading/trailing spaces
+          .required("Question is required"),
+      )
+      .min(3, "Array must contain at least 3 non-empty strings"), // Minimum 3 valid items
+  });
+
+  const {
+    register: requirementRegister,
+    formState: requirementFormState,
+    handleSubmit: handleSubmitFormRequirement,
+    getValues: requirementValues,
+    control: requirementControl,
+    setValue: setRequirementValue,
+  } = useForm({
+    defaultValues: projectRequitementInitialValue,
+    resolver: yupResolver(projectFormResolver),
+    mode: "onBlur",
+  });
+
+  const { errors: requirementErrors } = requirementFormState;
+
+  const requirementQuestions = useWatch({
+    control: requirementControl,
+    name: "questions",
+  });
 
   const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
@@ -248,12 +253,6 @@ const QuickReports = () => {
     }
   };
 
-  const handleQuestionChange = (e: any, index: any) => {
-    const newQuestions = [...questions];
-    newQuestions[index] = e.target.value;
-    setQuestions(newQuestions);
-  };
-
   const handleReportChange = (field: string, value: string) => {
     setCustomReport((prevState) => ({
       ...prevState,
@@ -261,28 +260,79 @@ const QuickReports = () => {
     }));
   };
 
+  const handleAddMoreQuestions = () => {
+    setRequirementValue("questions", [...requirementQuestions, ""]);
+  };
+
+  const removeQuestion = (quesIndex: number) => {
+    const updatedQuestions = requirementQuestions.filter((ques, index) => index !== quesIndex);
+    setRequirementValue("questions", updatedQuestions);
+  };
+
+  const handleFinalSubmitProject = async () => {
+    setLoading(true);
+
+    const values  = requirementValues()
+
+    const formData = new FormData();
+
+    uploadedFiles.forEach((file: File) => {
+      formData.append("files", file);
+    });
+
+    pastedURLs.forEach((url: string) => {
+      formData.append("websites", url);
+    });
+
+    formData.append("questions", JSON.stringify(values.questions));
+
+    try {
+      const response: any = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&report_completed_url=test&report_complete_status=false&report_size=0KB&usecase=${values.usecase}`,
+        {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        },
+      );
+
+      if (response.ok) {
+        setStep(3);
+      } else {
+        toast.error("Unable to submit report");
+      }
+
+      console.log("response", response);
+    } catch (e) {
+      console.log("err", e);
+    } finally {
+      setLoading(false);
+    }
+
+    console.log("formData------", formData);
+  };
 
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
       <div>
         {id ? (
-        <div className="p-1 pl-0">
-        <div className="flex justify-start items-center pt-3 pl-1">
-          <p
-            className="mr-4 text-secondary-800 flex items-center cursor-pointer"
-            onClick={() => {
-              if (step === 3) {
-                setStep(2); 
-              } else {
-                navigate(`/my-reports/${id}`);
-              }
-            }}
-          >
-            <ArrowLeftIcon className="mr-1" />
-            Back
-          </p>
-        </div>
-      </div>
+          <div className="p-1 pl-0">
+            <div className="flex justify-start items-center pt-3 pl-1">
+              <p
+                className="mr-4 text-secondary-800 flex items-center cursor-pointer"
+                onClick={() => {
+                  if (step === 3) {
+                    setStep(2);
+                  } else {
+                    navigate(`/my-reports/${id}`);
+                  }
+                }}
+              >
+                <ArrowLeftIcon className="mr-1" />
+                Back
+              </p>
+            </div>
+          </div>
         ) : (
           <div className="p-1 pl-0">
             <h6 className="text-lg font-semibold ml-0">
@@ -334,242 +384,271 @@ const QuickReports = () => {
       <div className="overflow-y-auto">
         {step === 2 ? (
           <div className="">
-            <div className="flex space-x-4">
-              {/* First Part: File Upload and Paste URL */}
-              <div className="w-1/2 space-y-4">
-                <div className="w-full">
-                  <label htmlFor="fullName" className="block text-md  text-secondary-800">
-                    Name your report
-                  </label>
-                  <input
-                    type="text"
-                    id="reportName"
-                    name="reportName"
-                    value={reportName}
-                    onChange={(e) => {
-                      setReportName(e.target.value);
-                    }}
-                    required
-                    placeholder="Report Name"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
-                </div>
-
-                <div className="mb-1">
-                  <label htmlFor="industry" className="block text-md text-secondary-800">
-                    Select use case
-                  </label>
-                  <select
-                    id="usecase"
-                    name="usecase"
-                    value={usecase}
-                    onChange={(e) => setUsecase(e.target.value)}
-                    required
-                    className="mt-1 p-[14px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  >
-                    <option value="">Select</option>
-                    <option value="founder">Venture Capital</option>
-                    <option value="admin">Market and IP Research Firms</option>
-                    <option value="admin">Web3</option>
-                    <option value="admin">M&A</option>
-                    <option value="admin">IP Attorny</option>
-                    <option value="admin">Technology Transfer Office</option>
-                    <option value="admin">Healthcare</option>
-                  </select>
-                </div>
-
-                {/* File Upload Box */}
-                <h6 className="font-semibold text-base font-nunito">
-                  Add resources to create reports for this project
-                </h6>
-                <div
-                  className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                    dragging ? "bg-gray-200" : ""
-                  }`}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setDragging(true);
-                  }}
-                  onDragLeave={() => setDragging(false)}
-                  onDrop={handleDrop}
-                >
-                  <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
-                    <UploadIcon />
-                    <p className="text-center text-base font-bold font-nunito mt-3">
-                      Drag and Drop files to upload
-                    </p>
-                    <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                    <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
-                      Browse
-                    </p>
-                  </div>
-                </div>
-
-                {/* Hidden File Input */}
-                <input
-                  type="file"
-                  multiple
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-
-                {/* Paste URL Section */}
-                <div>
-                  <h6 className="font-semibold text-base mb-2 font-nunito">
-                    Type or Paste Your URL
-                  </h6>
-                  <div className="flex">
+            <form onSubmit={handleSubmitFormRequirement(handleSubmit)}>
+              <div className="flex space-x-4">
+                {/* First Part: File Upload and Paste URL */}
+                <div className="w-1/2 space-y-4">
+                  <div className="w-full">
+                    <label htmlFor="fullName" className="block text-md  text-secondary-800">
+                      Name your report
+                    </label>
                     <input
                       type="text"
-                      placeholder="Paste URL here"
-                      value={urlInput}
-                      onChange={handleUrlChange}
-                      className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                      id="reportName"
+                      {...requirementRegister("reportName")}
+                      // required
+                      placeholder="Report Name"
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        requirementErrors.reportName
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
                     />
-                    <button
-                      className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
-                      onClick={handlePasteURL}
+                    {requirementErrors.reportName && (
+                      <div className="mt-1 text-xs text-danger-500">
+                        {requirementErrors.reportName?.message}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mb-1">
+                    <label htmlFor="industry" className="block text-md text-secondary-800">
+                      Select use case
+                    </label>
+                    <select
+                      id="usecase"
+                      {...requirementRegister("usecase")}
+                      // onChange={(e) => setUsecase(e.target.value)}
+                      // required
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        requirementErrors.usecase
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
                     >
-                      Paste
-                    </button>
+                      <option value="">Select</option>
+                      <option value="founder">Venture Capital</option>
+                      <option value="admin">Market and IP Research Firms</option>
+                      <option value="admin">Web3</option>
+                      <option value="admin">M&A</option>
+                      <option value="admin">IP Attorny</option>
+                      <option value="admin">Technology Transfer Office</option>
+                      <option value="admin">Healthcare</option>
+                    </select>
+                    {requirementErrors.usecase && (
+                      <div className="mt-1 text-xs text-danger-500">
+                        {requirementErrors.usecase?.message}
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                {/* Supported Files and URLs */}
-                <div className="mt-4 flex justify-between">
+                  {/* File Upload Box */}
+                  <h6 className="font-semibold text-base font-nunito">
+                    Add resources to create reports for this project
+                  </h6>
+                  <div
+                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                      dragging ? "bg-gray-200" : ""
+                    }`}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setDragging(true);
+                    }}
+                    onDragLeave={() => setDragging(false)}
+                    onDrop={handleDrop}
+                  >
+                    <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
+                      <UploadIcon />
+                      <p className="text-center text-base font-bold font-nunito mt-3">
+                        Drag and Drop files to upload
+                      </p>
+                      <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                      <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
+                        Browse
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Hidden File Input */}
+                  <input
+                    type="file"
+                    multiple
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+
+                  {/* Paste URL Section */}
                   <div>
-                    <p className="text-lg font-semibold font-nunito">
-                      Supported file types (up to 200mb)
-                    </p>
-                    <ul className="list-disc pl-[20px]">
-                      {listContent.map((content) => (
-                        <li key={content} className="text-xs">
-                          {content}
-                        </li>
-                      ))}
-                    </ul>
+                    <h6 className="font-semibold text-base mb-2 font-nunito">
+                      Type or Paste Your URL
+                    </h6>
+                    <div className="flex">
+                      <input
+                        type="text"
+                        placeholder="Paste URL here"
+                        value={urlInput}
+                        onChange={handleUrlChange}
+                        className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
+                        onClick={handlePasteURL}
+                      >
+                        Paste
+                      </button>
+                    </div>
                   </div>
 
-                  <div>
-                    <p className="text-lg font-semibold font-nunito">Recommended URL</p>
-                    <ul className="list-disc pl-[20px]">
-                      {urlContent.map((content) => (
-                        <li key={content} className="text-xs">
-                          {content}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* Second Part: Added Websites and Urls Listing */}
-              <div className="w-1/2 px-3 flex flex-col">
-                <div className="h-[30%]">
-                  <h6 className="font-nunito">Questions you want to get answer in report</h6>
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={questions[0]}
-                    onChange={(e) => handleQuestionChange(e, 0)}
-                    required
-                    placeholder="Question 1"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={questions[1]}
-                    onChange={(e) => handleQuestionChange(e, 1)}
-                    required
-                    placeholder="Question 2"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={questions[2]}
-                    onChange={(e) => handleQuestionChange(e, 2)}
-                    required
-                    placeholder="Question 3"
-                    className="mt-1 p-[10px] w-full placeholder-black border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-                  />
-                </div>
-                {/* Added Websites */}
-                <div className="h-[70%] pr-[25%]">
-                  <div className="border border-appGray-600 rounded-lg h-full flex flex-col px-2 pt-2 pb-[20px]">
-                    <div className="rounded-lg p-2 flex-1">
-                      <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
-
-                      {pastedURLs.length > 0 ? (
-                        <div className="h-[180px] pn_scroller overflow-y-auto p-1">
-                          {pastedURLs.map((url, index) => (
-                            <div key={index}>
-                              {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
-                              <div className="flex justify-between items-center">
-                                <p className="text-sm font-nunito">{url}</p>
-                                <TrashIcon
-                                  className="cursor-pointer"
-                                  onClick={() => handleDelete(index, "url")}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
-                          No websites added yet.
-                        </p>
-                      )}
+                  {/* Supported Files and URLs */}
+                  <div className="mt-4 flex justify-between">
+                    <div>
+                      <p className="text-lg font-semibold font-nunito">
+                        Supported file types (up to 200mb)
+                      </p>
+                      <ul className="list-disc pl-[20px]">
+                        {listContent.map((content) => (
+                          <li key={content} className="text-xs">
+                            {content}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    {/* Added Reports Listing */}
-                    <div className="rounded-lg p-2 flex-1">
-                      <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
-                      {uploadedFiles.length > 0 ? (
-                        <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
-                          {uploadedFiles.map((file, index) => (
-                            <div key={index}>
-                              {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
-                              <div className="flex justify-between items-center">
-                                <p className="text-sm font-nunito">{file.name}</p>
-                                <TrashIcon
-                                  className="cursor-pointer"
-                                  width={25}
-                                  onClick={() => handleDelete(index, "file")}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                          No file uploaded yet.
-                        </p>
-                      )}
+                    <div>
+                      <p className="text-lg font-semibold font-nunito">Recommended URL</p>
+                      <ul className="list-disc pl-[20px]">
+                        {urlContent.map((content) => (
+                          <li key={content} className="text-xs">
+                            {content}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
                 </div>
+
+                {/* Second Part: Added Websites and Urls Listing */}
+                <div className="w-1/2 px-3 flex flex-col">
+                  <div className="h-[30%]">
+                    <h6 className="font-nunito">Questions you want to get answer in report</h6>
+                    {requirementQuestions?.map((requirement, index) => (
+                      <>
+                        <div className="flex  justify-center items-center gap-1">
+                          <input
+                            type="text"
+                            id={`questions.${index}`}
+                            {...requirementRegister(`questions.${index}`)}
+                            // required
+                            placeholder={`Question ${index + 1}`}
+                            className={classNames(
+                              "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                              requirementErrors.questions?.[index]
+                                ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                                : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                            )}
+                          />
+                          {requirementQuestions.length > 3 ? (
+                            <Button
+                              type="primary"
+                              handleClick={() => removeQuestion(index)}
+                              htmlType="button"
+                            >
+                              <TrashIcon />
+                            </Button>
+                          ) : null}
+                        </div>
+                        {requirementErrors.questions?.[index] && (
+                          <div className="mt-1 text-xs text-danger-500">
+                            {requirementErrors.questions[index]?.message}
+                          </div>
+                        )}
+                      </>
+                    ))}
+                    {requirementQuestions.length < 10 ? (
+                      <Button type="primary" handleClick={handleAddMoreQuestions} htmlType="button">
+                        +
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                  {/* Added Websites */}
+                  <div className="h-[70%] pr-[25%]">
+                    <div className="border border-appGray-600 rounded-lg h-full flex flex-col px-2 pt-2 pb-[20px]">
+                      <div className="rounded-lg p-2 flex-1">
+                        <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
+
+                        {pastedURLs.length > 0 ? (
+                          <div className="h-[180px] pn_scroller overflow-y-auto p-1">
+                            {pastedURLs.map((url, index) => (
+                              <div key={index}>
+                                {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                                <div className="flex justify-between items-center">
+                                  <p className="text-sm font-nunito">{url}</p>
+                                  <TrashIcon
+                                    className="cursor-pointer"
+                                    onClick={() => handleDelete(index, "url")}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
+                            No websites added yet.
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Added Reports Listing */}
+                      <div className="rounded-lg p-2 flex-1">
+                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
+                        {uploadedFiles.length > 0 ? (
+                          <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
+                            {uploadedFiles.map((file, index) => (
+                              <div key={index}>
+                                {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                                <div className="flex justify-between items-center">
+                                  <p className="text-sm font-nunito">{file.name}</p>
+                                  <TrashIcon
+                                    className="cursor-pointer"
+                                    width={25}
+                                    onClick={() => handleDelete(index, "file")}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                            No file uploaded yet.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="max-w-[120px] mt-5">
-              <button
-                onClick={() => {
-                  setStep(3);
-                  window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                  });
-                }}
-                className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-              >
-                Next
-              </button>
-            </div>
+              <div className="max-w-[120px] mt-5">
+                <button
+                  type="submit"
+                  // onClick={() => {
+                  //   setStep(3);
+                  //   window.scrollTo({
+                  //     top: 0,
+                  //     behavior: "smooth",
+                  //   });
+                  // }}
+                  className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                >
+                  Next
+                </button>
+              </div>
+            </form>
           </div>
         ) : step === 1 ? (
           <div className="p-3 w-[50%]">
@@ -607,87 +686,88 @@ const QuickReports = () => {
           <div className="p-3 w-full">
             <h6 className="text-lg font-semibold ml-0 mb-3">Report Customization</h6>
 
-           
-              <div className="mb-2">
-                <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
-                <SelectBox
-                  options={[
-                    "Analytical (Data-focused, emphasizing metrics and insights)",
-                    "Narrative (Storytelling, highlighting trends and key takeaways)",
-                    "Actionable (Focused on recommendations and next steps)",
-                    "Balanced (Mix of data, narrative, and recommendations)",
-                  ]}
-                  onChangeValue={(value)=>{handleReportChange("report_tone",value)}}
-          
-                />
+            <div className="mb-2">
+              <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
+              <SelectBox
+                options={[
+                  "Analytical (Data-focused, emphasizing metrics and insights)",
+                  "Narrative (Storytelling, highlighting trends and key takeaways)",
+                  "Actionable (Focused on recommendations and next steps)",
+                  "Balanced (Mix of data, narrative, and recommendations)",
+                ]}
+                onChangeValue={(value) => {
+                  handleReportChange("report_tone", value);
+                }}
+              />
+            </div>
+
+            <div className="mb-2">
+              <h6 className="font-semibold mb-1 text-base font-nunito"> Number of Charts/Tables</h6>
+              <SelectBox
+                options={[
+                  "Minimal (1-2 per section)",
+                  "Moderate (3-4 per section)",
+                  "Extensive (5+ per section)",
+                ]}
+                onChangeValue={(value) => {
+                  handleReportChange("no_of_charts", value);
+                }}
+              />
+            </div>
+
+            <div className="mb-2">
+              <h6 className="font-semibold mb-1 text-base font-nunito">Visual Style</h6>
+              <SelectBox
+                options={[
+                  "Simple (Clean and easy to understand)",
+                  "Annotated (Explanatory visuals with supporting details)",
+                ]}
+                onChangeValue={(value) => {
+                  handleReportChange("visual_style", value);
+                }}
+              />
+            </div>
+
+            <div className="mb-2">
+              <h6 className="font-semibold mb-1 text-base font-nunito">Citations</h6>
+              <SelectBox
+                options={[
+                  "Inline Links (Clickable web URLs in the text)",
+                  "Endnotes (References listed at the end)",
+                  "No Citations (Focused on insights)",
+                ]}
+                onChangeValue={(value) => {
+                  handleReportChange("citations", value);
+                }}
+              />
+            </div>
+
+            <div className="mb-2">
+              <h6 className="font-semibold mb-1 text-base font-nunito">Format</h6>
+              <SelectBox
+                options={[
+                  "PDF Report (Static and easy to share)",
+                  "Presentation Deck (Ready-to-use slides)",
+                  "Word Document (Editable format for custom updates)",
+                  "Spreadsheet Summary (Key data in tabular format)",
+                ]}
+                onChangeValue={(value) => {
+                  handleReportChange("format", value);
+                }}
+              />
+            </div>
+
+            <div className="max-w-[125px] mt-5 justify-center items-center">
+              <div className="max-w-[120px] mt-5">
+                <button
+                  onClick={handleFinalSubmitProject}
+                  disabled={loading}
+                  className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                >
+                  {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
+                </button>
               </div>
-
-              <div className="mb-2">
-                <h6 className="font-semibold mb-1 text-base font-nunito">
-                  {" "}
-                  Number of Charts/Tables
-                </h6>
-                <SelectBox
-                  options={[
-                    "Minimal (1-2 per section)",
-                    "Moderate (3-4 per section)",
-                    "Extensive (5+ per section)",
-                  ]}
-                  onChangeValue={(value)=>{handleReportChange("no_of_charts",value)}}
-
-                />
-              </div>
-
-              <div className="mb-2">
-                <h6 className="font-semibold mb-1 text-base font-nunito">Visual Style</h6>
-                <SelectBox
-                  options={[
-                    "Simple (Clean and easy to understand)",
-                    "Annotated (Explanatory visuals with supporting details)",
-                  ]}
-                  onChangeValue={(value)=>{handleReportChange("visual_style",value)}}
-
-                />
-              </div>
-
-              <div className="mb-2">
-                <h6 className="font-semibold mb-1 text-base font-nunito">Citations</h6>
-                <SelectBox
-                  options={[
-                    "Inline Links (Clickable web URLs in the text)",
-                    "Endnotes (References listed at the end)",
-                    "No Citations (Focused on insights)",
-                  ]}
-                  onChangeValue={(value)=>{handleReportChange("citations",value)}}
-
-                />
-              </div>
-
-              <div className="mb-2">
-                <h6 className="font-semibold mb-1 text-base font-nunito">Format</h6>
-                <SelectBox
-                  options={[
-                    "PDF Report (Static and easy to share)",
-                    "Presentation Deck (Ready-to-use slides)",
-                    "Word Document (Editable format for custom updates)",
-                    "Spreadsheet Summary (Key data in tabular format)",
-                  ]}
-                  onChangeValue={(value)=>{handleReportChange("format",value)}}
-
-                />
-              </div>
-
-              <div className="max-w-[125px] mt-5 justify-center items-center">
-                <div className="max-w-[120px] mt-5">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={loading}
-                    className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-                  >
-                    {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
-                  </button>
-                </div>
-              </div>
+            </div>
           </div>
         ) : (
           <TakeoffScreen />
