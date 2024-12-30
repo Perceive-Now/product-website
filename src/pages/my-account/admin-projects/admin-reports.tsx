@@ -38,6 +38,7 @@ const AdminReports = () => {
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   const filteredReports =
     reports.length > 0
@@ -50,7 +51,7 @@ const AdminReports = () => {
     const fetchHistoryData = async () => {
       try {
         const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
+          `https://templateuserrequirements.azurewebsites.net/reports/${user_id}/${id}`,
           {
             method: "GET",
             headers: { Accept: "application/json" },
@@ -69,7 +70,12 @@ const AdminReports = () => {
       }
     };
 
-    fetchHistoryData();
+    if (!isAuthenticated) {
+      navigate("/admin");
+      return;
+    } else {
+      fetchHistoryData();
+    }
   }, []);
 
   const handleRowSelectionChange = (selection: any) => {

@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef ,useEffect} from "react";
 
 //
 import { UploadIcon } from "src/components/icons";
@@ -232,7 +232,7 @@ const DetailedReport = () => {
   //   };
 
   return (
-    <div className="space-y-[20px] w-full z-10 p-1">
+    <div className="space-y-[20px] w-full z-10">
       <div>
         <div className="p-1 pl-0">
           <h6 className="text-lg font-semibold ml-0">
@@ -445,7 +445,7 @@ const DetailedReport = () => {
               </div>
             </div>
           </div>
-          <div className="max-w-[120px] mt-5">
+          <div className="max-w-[120px] mt-5 mb-5">
             <button
               onClick={handleSubmit}
               disabled={loading}

@@ -74,7 +74,7 @@ const StepBar: React.FC = () => {
             </div>
           )}
 
-          {!(Step === 3 || Step === 4 || Step === 5) && (
+          {!(Step == 3 || Step == 4 || Step == 5) && (
             <div className={`absolute right-[110%] lg:block hidden top-0 max-w-xs text-nowrap font-semibold text-right w-auto text-[12px] px-[15px] py-1 text-[#373D3F] rounded-lg z-10 leading-none font-nunito`}>
               {Array.isArray(stepDescriptionsTwo[index]) ? (
                 (stepDescriptionsTwo[index] as string[]).map((line: string, i: number) => (

@@ -29,7 +29,7 @@ const AdminDashboard = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(""); // State for password input
   const [passwordEntered, setPasswordEntered] = useState(false); // State to track if password is entered
   const [passwordError, setPasswordError] = useState("");
@@ -53,6 +53,7 @@ const AdminDashboard = () => {
       );
 
       if (response.ok) {
+        localStorage.setItem('isAuthenticated', 'true');
         const data = await response.json();
         const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
           id: index + 1,
@@ -145,6 +146,11 @@ const AdminDashboard = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  fetchUsers(); 
+                }
+              }}
               className={classNames(
                 "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                 passwordError &&
@@ -170,8 +176,8 @@ const AdminDashboard = () => {
               classname="w-full"
               htmlType="submit"
               handleClick={fetchUsers}
-              // disabled={isSubmitting || isGoogleSubmitting}
-              // loading={isSubmitting}
+              disabled={loading}
+              loading={loading}
             >
               Sign In
             </Button>
@@ -186,17 +192,9 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+    <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10 p-2">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; Admin Report management</h6>
-        <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to="/">
-            <p className="mr-4 text-secondary-800 flex items-center">
-              <ArrowLeftIcon className="mr-1" />
-              Back
-            </p>
-          </Link>
-        </div>
       </div>
       <div className="flex items-center gap-1 justify-between ">
         <div className="font-bold text-base">

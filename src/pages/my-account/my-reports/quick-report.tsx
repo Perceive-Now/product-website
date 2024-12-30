@@ -21,7 +21,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
-
+import SelectBox from "./selectBox";
 /**
  *
  */
@@ -62,6 +62,7 @@ const QuickReports = () => {
   const [reportName, setReportName] = useState<string>("");
   const [usecase, setUsecase] = useState("");
   const [questions, setQuestions] = useState(["", "", ""]);
+  const [customReport, setCustomReport] = useState({report_tone:"",no_of_charts:"",visual_style:"",citations:"",format:""})
   const [loading, setLoading] = useState(false);
 
   const handleDrop = (e: any) => {
@@ -113,10 +114,13 @@ const QuickReports = () => {
   };
 
   const handleSubmit = async () => {
+    console.log("cutsome ",customReport)
+    return;
     setLoading(true);
     if (uploadedFiles.length === 0) {
       toast.error("Upload a file to submit");
       setLoading(false);
+      setStep(2);
       return;
     }
 
@@ -137,6 +141,7 @@ const QuickReports = () => {
     });
 
     formData.append("questions", JSON.stringify(questions));
+    
 
     console.log("formData---------", formData, reportName, usecase, questions);
     try {
@@ -249,20 +254,35 @@ const QuickReports = () => {
     setQuestions(newQuestions);
   };
 
+  const handleReportChange = (field: string, value: string) => {
+    setCustomReport((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
+
+
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
       <div>
         {id ? (
-          <div className="p-1 pl-0">
-            <div className="flex justify-start items-center pt-3 pl-1">
-              <Link to={`/my-reports/${id}`}>
-                <p className="mr-4 text-secondary-800 flex items-center">
-                  <ArrowLeftIcon className="mr-1" />
-                  Back
-                </p>
-              </Link>
-            </div>
-          </div>
+        <div className="p-1 pl-0">
+        <div className="flex justify-start items-center pt-3 pl-1">
+          <p
+            className="mr-4 text-secondary-800 flex items-center cursor-pointer"
+            onClick={() => {
+              if (step === 3) {
+                setStep(2); 
+              } else {
+                navigate(`/my-reports/${id}`);
+              }
+            }}
+          >
+            <ArrowLeftIcon className="mr-1" />
+            Back
+          </p>
+        </div>
+      </div>
         ) : (
           <div className="p-1 pl-0">
             <h6 className="text-lg font-semibold ml-0">
@@ -538,11 +558,16 @@ const QuickReports = () => {
             </div>
             <div className="max-w-[120px] mt-5">
               <button
-                onClick={handleSubmit}
-                disabled={loading}
+                onClick={() => {
+                  setStep(3);
+                  window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                  });
+                }}
                 className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
               >
-                {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
+                Next
               </button>
             </div>
           </div>
@@ -557,10 +582,12 @@ const QuickReports = () => {
                 id="projectName"
                 {...register("projectName")}
                 placeholder="Project Name"
-                className={classNames("mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                className={classNames(
+                  "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
                   errors.projectName
                     ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",)}
+                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                )}
               />
               {errors.projectName?.message && (
                 <div className="mt-1 text-xs text-danger-500">{errors.projectName?.message}</div>
@@ -575,6 +602,92 @@ const QuickReports = () => {
                 </div>
               </div>
             </form>
+          </div>
+        ) : step === 3 ? (
+          <div className="p-3 w-full">
+            <h6 className="text-lg font-semibold ml-0 mb-3">Report Customization</h6>
+
+           
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
+                <SelectBox
+                  options={[
+                    "Analytical (Data-focused, emphasizing metrics and insights)",
+                    "Narrative (Storytelling, highlighting trends and key takeaways)",
+                    "Actionable (Focused on recommendations and next steps)",
+                    "Balanced (Mix of data, narrative, and recommendations)",
+                  ]}
+                  onChangeValue={(value)=>{handleReportChange("report_tone",value)}}
+          
+                />
+              </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">
+                  {" "}
+                  Number of Charts/Tables
+                </h6>
+                <SelectBox
+                  options={[
+                    "Minimal (1-2 per section)",
+                    "Moderate (3-4 per section)",
+                    "Extensive (5+ per section)",
+                  ]}
+                  onChangeValue={(value)=>{handleReportChange("no_of_charts",value)}}
+
+                />
+              </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Visual Style</h6>
+                <SelectBox
+                  options={[
+                    "Simple (Clean and easy to understand)",
+                    "Annotated (Explanatory visuals with supporting details)",
+                  ]}
+                  onChangeValue={(value)=>{handleReportChange("visual_style",value)}}
+
+                />
+              </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Citations</h6>
+                <SelectBox
+                  options={[
+                    "Inline Links (Clickable web URLs in the text)",
+                    "Endnotes (References listed at the end)",
+                    "No Citations (Focused on insights)",
+                  ]}
+                  onChangeValue={(value)=>{handleReportChange("citations",value)}}
+
+                />
+              </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Format</h6>
+                <SelectBox
+                  options={[
+                    "PDF Report (Static and easy to share)",
+                    "Presentation Deck (Ready-to-use slides)",
+                    "Word Document (Editable format for custom updates)",
+                    "Spreadsheet Summary (Key data in tabular format)",
+                  ]}
+                  onChangeValue={(value)=>{handleReportChange("format",value)}}
+
+                />
+              </div>
+
+              <div className="max-w-[125px] mt-5 justify-center items-center">
+                <div className="max-w-[120px] mt-5">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  >
+                    {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
+                  </button>
+                </div>
+              </div>
           </div>
         ) : (
           <TakeoffScreen />

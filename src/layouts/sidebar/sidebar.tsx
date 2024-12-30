@@ -52,17 +52,17 @@ interface INavLinkItemProps extends ISidebarListItem {
 
 const SidebarBottom = [
   {
-    title: "Basics",
+    title: "Account Info",
     href: "/profile",
     icon: SettingsIcon,
   },
+  // {
+  //   title: "Preferences",
+  //   href: "/preferences",
+  //   icon: LogoutIcon,
+  // },
   {
-    title: "Preferences",
-    href: "/preferences",
-    icon: LogoutIcon,
-  },
-  {
-    title: "Reports",
+    title: "AI Agents Reports",
     href: "/reports",
     icon: LogoutIcon,
   },

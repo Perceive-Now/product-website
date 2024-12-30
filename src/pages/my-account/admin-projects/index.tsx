@@ -18,7 +18,7 @@ import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
-import { useNavigate , useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 /**
  *
  */
@@ -33,6 +33,9 @@ const AdmimProjects = () => {
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  console.log("isAuthenticated", isAuthenticated);
+
   console.log("sledct---------", selectedRows);
 
   const filteredReports =
@@ -42,9 +45,7 @@ const AdmimProjects = () => {
         )
       : [];
 
- 
-
-       useEffect(() => {
+  useEffect(() => {
     const fetchHistoryData = async () => {
       try {
         const response = await fetch(
@@ -67,7 +68,12 @@ const AdmimProjects = () => {
       }
     };
 
-    fetchHistoryData();
+    if (!isAuthenticated) {
+      navigate("/admin");
+      return;
+    } else {
+      fetchHistoryData();
+    }
   }, []);
 
   const columnHelper = createColumnHelper<any>();
@@ -87,7 +93,7 @@ const AdmimProjects = () => {
       //   ),
       //   cell: ({ row }) => (
       //     <div className="pl-1 pt-1"
-      //     onClick={(e) => e.stopPropagation()} 
+      //     onClick={(e) => e.stopPropagation()}
       //     >
       //       <CheckboxInput
       //         className="border-white"
@@ -153,7 +159,7 @@ const AdmimProjects = () => {
         </div>
         <div className="w-[300px]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      </div>
+        </div>
       </div>
       {loading ? (
         <div className="flex justify-center items-center">
@@ -163,7 +169,7 @@ const AdmimProjects = () => {
         <ReactTable
           columnsData={columns}
           rowsData={filteredReports}
-          getRowProps={getRowProps} 
+          getRowProps={getRowProps}
           size="medium"
           noTopBorder
         />

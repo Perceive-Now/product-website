@@ -123,14 +123,14 @@ function App() {
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/my-users" element={<MyUsers />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
-            <Route path="/add-user" element={<AddUser />} />
-
+            <Route path="/add-user" element={<AddUser />} /> 
+            
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
             <Route path="/admin-reports/:id" element={<AdminReports />} />
             <Route path="/upload-report/:id" element={<AdminUploadReport />} />
-            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/detailed-report" element={<DetailedReport />} />
-
+            
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
               <Route path="/draft-reports" element={<DraftReports />} />
