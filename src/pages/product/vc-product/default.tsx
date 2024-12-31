@@ -25,7 +25,7 @@ const ReportDefault: React.FC = () => {
       : `
       Ready to percive the future? 🚀 
 
-      Ready to perceive the future? Start by telling us the name of the startup.
+      Start by telling us the name of the startup.
           `.trim();
 
   // useEffect(() => {

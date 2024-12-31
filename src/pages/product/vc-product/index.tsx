@@ -165,7 +165,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               setTimeout(() => {
                 dispatch(
                   updateChatQuery({
-                    query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                    query: `Ready to choose your diligence level? I offer two options— first look or a deep dive. 
                   You can expand any section for more details if needed.`,
                   }),
                 );
@@ -325,7 +325,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               if (["proceed", "looks good"].includes(queries.answer.trim().toLowerCase())) {
                 dispatch(
                   updateChatQuery({
-                    query: `Ready to choose your diligence level? I offer two options—quick insights or a deep dive. 
+                    query: `Ready to choose your diligence level? I offer two options— first look or a deep dive. 
                   You can expand any section for more details if needed.`,
                   }),
                 );
@@ -333,7 +333,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   setVSChats({
                     query: "",
                     answer: "",
-                    options: ["Quick Insights", "Deep Dive"],
+                    options: ["First Look", "Deep Dive"],
                     hasbutton: true,
                   }),
                 );
@@ -363,7 +363,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               }
               //**     **//
             } else if (chatOptions?.includes("Deep Dive")) {
-              if (["deep dive", "quick insights", "first look"].includes(queries.answer.trim().toLowerCase())) {
+              if (["deep dive", "first look"].includes(queries.answer.trim().toLowerCase())) {
                 setIsloading(false);
                 setDelayLoading(true);
                 setTimeout(() => {

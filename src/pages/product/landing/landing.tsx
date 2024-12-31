@@ -11,6 +11,12 @@ import AddQuery from "src/components/@vc-product/add-query";
 import PN from "../../../assets/images/pn.svg";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setStartTour, setFinishTour } from "src/stores/dashboard";
+import RightArrow from "src/components/icons/common/right-arrow";
+import handClock from "../../../components/icons/home-images/handclock.svg";
+import targetPaper from "../../../components/icons/home-images/targetPaper.svg";
+import bulbIcon from '../../../components/icons/home-images/bulbicon.svg';
+import aimDart from '../../../components/icons/home-images/aimdart.svg';
+import bulbMagni from '../../../components/icons/home-images/bulbmagni.svg';
 
 import pnLogo from "../../../assets/images/pn.svg";
 
@@ -276,35 +282,43 @@ export default function Landing() {
               </p>
               <div className="flex gap-x-2 mb-3">
                 <div className="flex items-center gap-1">
-                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <img src={targetPaper} alt="arrow-down" className="w-4 h-4" />
                   <p className="text-xs font-light font-nunito">Context-richness</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <img src={bulbIcon} alt="arrow-down" className="w-4 h-4" />
                   <p className="text-xs font-light font-nunito">Hyper-tailored</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <img src={handClock} alt="arrow-down" className="w-4 h-4" />
                   <p className="text-xs font-light font-nunito">48-hour delivery</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <img src={bulbMagni} alt="arrow-down" className="w-4 h-4" />
                   <p className="text-xs font-light font-nunito">Zero hallucinations</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <img src={pnLogo} alt="arrow-down" className="w-4 h-4" />
+                  <img src={aimDart} alt="arrow-down" className="w-4 h-4" />
                   <p className="text-xs font-light font-nunito">Complete AI Transparency</p>
                 </div>
               </div>
-              <div className="flex gap-2">
-                {/* <Link to="/start-conversation">
-                  <div className="border text-[#442873] border-[#442873] hover:bg-[#442873] hover:text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
-                    KnowNow
+              <div className="flex gap-2 mt-4">
+                <Link to="/my-projects">
+                  <div className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
+                    Get Started
+                    <RightArrow className="ml-1"/>
                   </div>
-                </Link> */}
+                </Link>
                 <Link to="/vc-product">
-                  <div className="border border-[#442873] text-[#442873] hover:text-white hover:bg-[#442873] rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito">
-                    Report
+                  <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]  rounded-[32px] py-1 px-2 text-lg font-nunito text-white font-bold">
+                    Explore Agents
+                    <RightArrow className="ml-1"/>
+                  </div>
+                </Link>
+                <Link to="/start-conversation">
+                  <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]   rounded-[32px] py-1 px-2  text-lg font-nunito text-white font-bold">
+                    KnowNow Chat
+                    <RightArrow className="ml-1"/>
                   </div>
                 </Link>
               </div>

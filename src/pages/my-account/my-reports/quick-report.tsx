@@ -288,7 +288,7 @@ const QuickReports = () => {
 
     try {
       const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&report_completed_url=test&report_complete_status=false&report_size=0KB&usecase=${values.usecase}`,
+        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&report_complete_status=false&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
         {
           method: "POST",
           headers: { Accept: "application/json" },
@@ -297,7 +297,7 @@ const QuickReports = () => {
       );
 
       if (response.ok) {
-        setStep(3);
+        setStep(4);
       } else {
         toast.error("Unable to submit report");
       }
@@ -350,7 +350,7 @@ const QuickReports = () => {
           </div>
         )}
 
-        {id && step !== 3 && (
+        {id && step !== 3 && step !== 4 && (
           <div className="mt-2">
             <Tab.Group defaultIndex={1}>
               <Tab.List className="flex w-[15%] h-[45px]">

@@ -344,42 +344,24 @@ const DetailedReport = () => {
             {/* Second Part: Added Websites and Urls Listing */}
             <div className="w-1/2 px-3 flex flex-col">
               <div className="h-[30%]">
-                <h6 className="font-nunito">Questions need to answer</h6>
-                <input
-                  type="text"
-                  disabled={true}
-                  value={
-                    Array.isArray(itemData?.questions) && itemData.questions.length > 0
-                      ? itemData.questions[0]
-                      : ""
-                  }
-                  placeholder="No question asked"
-                  className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
-                />
-                <input
-                  type="text"
-                  disabled={true}
-                  value={
-                    Array.isArray(itemData?.questions) && itemData.questions.length > 0
-                      ? itemData.questions[1]
-                      : ""
-                  }
-                  required
-                  placeholder="No question asked"
-                  className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
-                />
-                <input
-                  type="text"
-                  disabled={true}
-                  value={
-                    Array.isArray(itemData?.questions) && itemData.questions.length > 0
-                      ? itemData.questions[2]
-                      : ""
-                  }
-                  required
-                  placeholder="No question asked"
-                  className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
-                />
+              <h6 className="font-nunito">Questions need to answer</h6>
+
+{Array.isArray(itemData?.question) && itemData.question.length > 0 ? (
+  itemData.question.map((question:string, index:number) => (
+    <input
+      key={index}
+      type="text"
+      disabled={true}
+      value={question}
+      required={index < 2}  
+      placeholder="No question asked"
+      className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
+    />
+  ))
+) : (
+  <p className="flex justify-center items-center pt-5 text-xs text-gray-500">No questions available</p> 
+)}
+
               </div>
               {/* Added Websites */}
               <div className="h-[70%] pr-[28%]">
