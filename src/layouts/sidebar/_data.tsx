@@ -30,10 +30,17 @@ const sidebarItems: ISidebarListItem[] = [
     to: "/",
   },
   {
-    title: "New Report",
+    title: "AI Agents",
     key: "new-report",
     icon: NewReport,
     to: "/vc-product",
+  },
+  {
+    title: "Project Hub",
+    key: "reportManagement",
+    classname:"mb-1",
+    icon: NewReportIcon,
+    to:"/my-projects"
   },
   // {
   //   title: "Know Now",
@@ -42,13 +49,6 @@ const sidebarItems: ISidebarListItem[] = [
   //   icon: KnowNowIcon,
   //   to:"/start-conversation"
   // },
-  {
-    title: "Report Management",
-    key: "reportManagement",
-    classname:"mb-1",
-    icon: NewReportIcon,
-    to:"/my-projects"
-  },
   // {
   //   title: "New Conversation",
   //   key: "new-chat",

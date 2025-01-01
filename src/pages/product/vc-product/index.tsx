@@ -233,7 +233,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 setTimeout(() => {
                   dispatch(
                     updateChatQuery({
-                      query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below? lol`,
+                      query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below?`,
                     }),
                   );
                 }, 1500);

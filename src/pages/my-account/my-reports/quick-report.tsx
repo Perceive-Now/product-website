@@ -163,7 +163,7 @@ const QuickReports = () => {
 
   const projectFormResolver = yup.object().shape({
     reportName: yup.string().trim().required("Report name is required"),
-    usecase: yup.string().trim().required("Usecase is required"),
+    usecase: yup.string().trim().required("Primary objective is required"),
     questions: yup
       .array()
       .of(
@@ -414,9 +414,20 @@ const QuickReports = () => {
 
                   <div className="mb-1">
                     <label htmlFor="industry" className="block text-md text-secondary-800">
-                      Primary Objective
+                      Primary Objective <span className="text-red-500 ml-0">*</span>
                     </label>
-                    <select
+                    <textarea
+                      id="usecase"
+                      {...requirementRegister("usecase")}
+                      placeholder="Describe the overall objective of the report"
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                        requirementErrors.usecase
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                      )}
+                    />
+                    {/* <select
                       id="usecase"
                       {...requirementRegister("usecase")}
                       // onChange={(e) => setUsecase(e.target.value)}
@@ -437,8 +448,9 @@ const QuickReports = () => {
                       <option value="admin">Technology Transfer Office</option>
                       <option value="admin">Healthcare</option>
                     </select>
+                    */}
                     {requirementErrors.usecase && (
-                      <div className="mt-1 text-xs text-danger-500">
+                      <div className="mt-0 text-xs text-danger-500">
                         {requirementErrors.usecase?.message}
                       </div>
                     )}
@@ -532,11 +544,14 @@ const QuickReports = () => {
                 </div>
 
                 {/* Second Part: Added Websites and Urls Listing */}
-                <div className="w-1/2 px-3 flex flex-col">
-                  <div className="h-fit py-2">
+                <div className="w-1/2 px-1 flex flex-col">
+                    <label htmlFor="requirement" className="block text-md text-secondary-800 mb-1">
+                      Questions you want answered in the report <span className="text-red-500 ml-0">*</span>
+                    </label>
+                  <div className="h-fit">
                     {requirementQuestions?.map((requirement, index) => (
                       <>
-                        <div key={index} className="flex items-center space-x-2 mt-2">
+                        <div key={index} className="flex items-center space-x-2  mb-2">
                           <input
                             type="text"
                             id={`questions.${index}`}
@@ -561,7 +576,7 @@ const QuickReports = () => {
                           ) : null}
                         </div>
                         {requirementErrors.questions?.[index] && (
-                          <div className="mt-1 text-xs text-danger-500">
+                          <div className="mt-0 text-xs text-danger-500">
                             {requirementErrors.questions[index]?.message}
                           </div>
                         )}
@@ -570,7 +585,7 @@ const QuickReports = () => {
                     {requirementQuestions.length < 10 ? (
                       <Button
                         type="primary"
-                        classname="mt-2"
+                        classname="mt-2 mb-2"
                         handleClick={handleAddMoreQuestions}
                         htmlType="button"
                       >

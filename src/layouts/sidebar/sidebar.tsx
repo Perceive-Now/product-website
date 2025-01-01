@@ -210,7 +210,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [isChat, setIsChat] = useState(false);
   const [activeItem, setActiveItem] = useState("");
   const [activeSubItem, setActiveSubItem] = useState(null);
