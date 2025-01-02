@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,7 +6,7 @@ import classNames from "classnames";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 import { useLocation, useNavigate } from "react-router-dom";
-import { updateUserProfile } from "src/utils/api/userProfile";
+import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
 import toast from "react-hot-toast";
 
 type OrganizationDetails = {
@@ -27,19 +27,43 @@ const OrganizationSettings = () => {
   const invitedData = location.state?.invitedData;
   console.log(invitedData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [user, setUser] = useState<any | null>(null);
+  const [company, setCompany] = useState<any | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting: formSubmitting  },
+    reset
   } = useForm<OrganizationDetails>({
     resolver: yupResolver(schema),
     mode: "onTouched", // Show errors on blur/touch
     defaultValues: {
-      organizationName: invitedData?.organization_name || "",
-      industry: invitedData?.organization_industry || "",
+      organizationName: invitedData?.organization_name || company?.name || "",
+      industry: invitedData?.organization_industry || company?.industry || "",
     },
   });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUserProfile();
+        const companies = await getCompanies();
+        const user_company = companies.find((company) => company.id === user.company_id);
+        setUser(user);
+        setCompany(user_company);
+
+        // Update the form values with the fetched data
+      reset({
+        organizationName: invitedData?.organization_name || user_company?.name || "",
+        industry: invitedData?.organization_industry || user_company?.industry || "",
+      });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const onSubmit: SubmitHandler<OrganizationDetails> = async (data) => {
     setIsSubmitting(true);
@@ -63,19 +87,6 @@ const OrganizationSettings = () => {
     } finally {
       setIsSubmitting(false);
     }
-
-    // Simulate API call
-    // setTimeout(() => {
-    //   setIsSubmitting(false);
-    //   alert("Organization Settings Saved Successfully!");
-
-    //   navigate("/signup/profile", {
-    //     replace: true,
-    //     state: {
-    //       invitedData
-    //     }
-    //   });
-    // }, 1000);
   };
 
   return (

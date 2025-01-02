@@ -66,7 +66,7 @@ export default function AuthLayout() {
     if (user) {
       setChecking(false);
       if (!user.registration_completed) {
-        navigate("/user-registration");
+        navigate("/signup/confirm");
         // toast.("Please provide all the information to proceed")
       }
     }

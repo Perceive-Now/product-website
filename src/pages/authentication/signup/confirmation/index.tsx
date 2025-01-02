@@ -10,6 +10,9 @@ import Button from "src/components/reusable/button";
 // image
 import perceiveNowImage from "src/assets/images/pn.svg";
 import { useNavigate } from "react-router-dom";
+import { getUserProfile } from "src/utils/api/userProfile";
+import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 
 interface IConfirmEmail {
   verification_code: string;
@@ -17,6 +20,7 @@ interface IConfirmEmail {
 
 const VerificationConfirm = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<any | null>(null);
   const formInitialValue: IConfirmEmail = {
     verification_code: "",
   };
@@ -33,9 +37,47 @@ const VerificationConfirm = () => {
     mode: "onBlur",
   });
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUserProfile();
+        setUser(user);
+        
+        if (user?.registration_completed) {
+          navigate("/signup/organization-setting", {
+            replace: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleProceed = async () => {
+    try {
+      if (!user?.registration_completed) {
+        toast.error("Please confirm your email address to proceed.", {
+          position: "top-right",
+        });
+        return;
+      }
+      navigate("/signup/organization-setting", {
+        replace: true,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("An error occurred. Please try again", {
+        position: "top-right",
+      });
+    }
+    // navigate("/signup/organization-setting");
+  };
+
   return (
     <div className="flex justify-center items-start min-h-screen bg-gradient-to-b from-white to-[#F7F5FF] p-2">
-      <div className="max-w-[400px] mt-[30vh] 2xl:mt-[20vh]">
+      <div className="max-w-[600px] mt-[30vh] 2xl:mt-[20vh]">
         <div className="flex flex-col gap-y-2">
           <div>
             <img src={perceiveNowImage} alt="welcome" className="w-[3rem] h-[3rem]" />
@@ -44,11 +86,24 @@ const VerificationConfirm = () => {
             Great! 🎉 We’ve sent you a link to continue
             <br /> signing up.
           </p>
-          <p
-            className="text-[#373D3F] font-semibold mt-[0.5] cursor-pointer"
-            onClick={() => navigate("/signup/success")}
-          >
-            📩 Check your inbox!
+          <p className="text-[#373D3F] font-semibold mt-[0.5] cursor-pointer">
+            <a
+              rel="noreferrer"
+              target="_blank"
+              href="https://mail.google.com/mail/u/0/#inbox"
+              className="text-inherit hover:underline"
+            >
+              📩 Check your inbox!
+            </a>
+          </p>
+          <p className="mt-2 text-[#373D3F] font-semibold">
+            Confirmed your email address?
+            <span
+              className="mx-1 underline text-primary-500 cursor-pointer"
+              onClick={handleProceed}
+            >
+              Proceed to the next step
+            </span>
           </p>
         </div>
         {/* <div className="text-center w-full">

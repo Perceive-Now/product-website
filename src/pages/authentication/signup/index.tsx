@@ -43,8 +43,6 @@ export default function SignupPage() {
     organization_industry: searchParams.get("organization_industry"),
   };
 
-  
-
   //
   const dispatch = useAppDispatch();
 
@@ -102,20 +100,22 @@ export default function SignupPage() {
       topics_of_interest: "",
     };
 
-    navigate("/signup/confirm")
-
     // Signup user
     const response = await dispatch(signUpUser(params)).unwrap();
-
+    console.log(response)
     if (response.success) {
       if (callbackPath) {
         navigate(callbackPath);
       } else {
-        toast.success("User is registered");
-        navigate("/signup/organization-setting");
+        toast.success("User is registered", {
+          position: "top-right"
+        });
+        navigate("/signup/confirm");
       }
     } else {
-      toast.error(response.message);
+      toast.error(response.message, {
+        position: "top-right"
+      });
     }
 
     setIsSubmitting(false);
@@ -133,7 +133,12 @@ export default function SignupPage() {
   // }
 
   useEffect(() => {
-    if (invitedData.invited && invitedData.email && invitedData.organization_name && invitedData.role) {
+    if (
+      invitedData.invited &&
+      invitedData.email &&
+      invitedData.organization_name &&
+      invitedData.role
+    ) {
       console.log("invitedData", invitedData);
       navigate("/signup/success", { state: { invitedData } });
     }
@@ -214,7 +219,7 @@ export default function SignupPage() {
                 <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
               )}
             </fieldset> */}
-            <fieldset className="mt-2">
+            {/* <fieldset className="mt-2">
               <div className="mt-0.5 rounded-md shadow-sm relative">
                 <input
                   id="password"
@@ -228,6 +233,36 @@ export default function SignupPage() {
                   )}
                   placeholder="Password"
                 />
+              </div>
+
+              {errors.password?.message && (
+                <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
+              )}
+            </fieldset> */}
+
+            <fieldset className="mt-2">
+              <div className="mt-0.5 rounded-md shadow-sm relative">
+                <input
+                  id="password"
+                  {...register("password")}
+                  type={isPasswordVisible ? "text" : "password"}
+                  className={classNames(
+                    "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                    errors.password
+                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                  )}
+                  placeholder="Password"
+                />
+
+                {passwordValue && (
+                  <div
+                    className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  >
+                    {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
+                  </div>
+                )}
               </div>
 
               {errors.password?.message && (
@@ -262,7 +297,7 @@ export default function SignupPage() {
               classname="w-[160px]"
               rounded="full"
               htmlType="submit"
-              // disabled={!emailValue}
+              disabled={!emailValue}
               loading={isSubmitting}
               type="primary"
             >

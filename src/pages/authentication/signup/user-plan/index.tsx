@@ -131,7 +131,7 @@ const planValues: { [key: string]: PlanData } = {
 };
 
 const UserPlan = () => {
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<"Standard" | "Professional" | "Enterprise">(
     "Standard",
   );
@@ -157,7 +157,7 @@ const UserPlan = () => {
       const result = await updateUserProfile(values);
       if (result.status === 200) {
         toast.success("Plan selected successfully");
-        // naviagate("/signup/payment");
+        navigate("/signup/team");
       } else {
         toast.error("An error occurred. Please try again.");
       }
@@ -475,7 +475,7 @@ const UserPlan = () => {
               type="secondary"
               classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
               rounded="full"
-              handleClick={() => naviagate("/signup/profile")}
+              handleClick={() => navigate("/signup/profile")}
             >
               <span className="font-normal">Back</span>
             </Button>
