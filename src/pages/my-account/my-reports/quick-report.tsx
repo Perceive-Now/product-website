@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef , useEffect} from "react";
 
 //
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { LoadingIcon } from "src/components/icons";
 import { useParams } from "react-router-dom";
 import { Tab } from "@headlessui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import * as yup from "yup";
 import { useForm, useWatch } from "react-hook-form";
@@ -54,11 +54,15 @@ interface IRequirementValues {
 
 const QuickReports = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log("ppppppp",location.state);
   const { id } = useParams();
+  const urlParams = new URLSearchParams(location.search);
+  const project_name = urlParams.get("project");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const userId = jsCookie.get("user_id");
   const [projectId, setProjectId] = useState(id);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [pastedURLs, setPastedURLs] = useState<string[]>([]);
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
@@ -71,7 +75,7 @@ const QuickReports = () => {
     format: "",
   });
   const [loading, setLoading] = useState(false);
-
+   
   const handleDrop = (e: any) => {
     e.preventDefault();
     setDragging(false);
@@ -120,14 +124,7 @@ const QuickReports = () => {
     }
   };
 
-  const handleSubmit = async (values: IRequirementValues) => {
-    console.log("cutsome ", customReport);
-    if (uploadedFiles.length === 0) {
-      toast.error("Upload a file to submit");
-      setLoading(false);
-      setStep(2);
-      return;
-    }
+  const handleSubmit = async (values: IRequirementValues) => {  
     setStep(3);
     window.scrollTo({
       top: 0,
@@ -176,6 +173,7 @@ const QuickReports = () => {
   });
 
   const {
+    setValue,
     register: requirementRegister,
     formState: requirementFormState,
     handleSubmit: handleSubmitFormRequirement,
@@ -194,6 +192,38 @@ const QuickReports = () => {
     control: requirementControl,
     name: "questions",
   });
+
+
+  
+  
+  useEffect(() => {
+    if (location.state) {
+      const transformFileData = (data: { [key: string]: string }) => {
+        return Object.values(data).map((url) => ({
+          name: url,
+          url: url,
+        }));
+      };
+  
+      if (location.state.file_data) {
+        const transformedData = transformFileData(location.state.file_data);
+        setUploadedFiles(transformedData);
+      }
+  
+      if (location.state.websites) {
+        setPastedURLs(location.state.websites);
+      }
+  
+      setValue("reportName", location.state.report_name || "");
+      setValue("usecase", location.state.usecase || "");
+  
+      if (Array.isArray(location.state.question)) {
+        setValue("questions", location.state.question);
+      }
+    }
+  }, [location.state]);
+  
+
 
   const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
@@ -324,7 +354,9 @@ const QuickReports = () => {
                   if (step === 3) {
                     setStep(2);
                   } else {
-                    navigate(`/my-reports/${id}`);
+                    navigate(`/my-reports/${id}?project=${project_name}`, {
+                      state: { tab: 1 },
+                    });
                   }
                 }}
               >
@@ -350,7 +382,7 @@ const QuickReports = () => {
           </div>
         )}
 
-        {id && step !== 3 && step !== 4 && (
+        {/* {id && step !== 3 && step !== 4 && (
           <div className="mt-2">
             <Tab.Group defaultIndex={1}>
               <Tab.List className="flex w-[15%] h-[45px]">
@@ -378,7 +410,7 @@ const QuickReports = () => {
               </Tab.List>
             </Tab.Group>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="overflow-y-auto">
@@ -390,7 +422,7 @@ const QuickReports = () => {
                 <div className="w-1/2 space-y-4">
                   <div className="w-full">
                     <label htmlFor="fullName" className="block text-md  text-secondary-800">
-                      Name your report
+                      Name your report <span className="text-red-500 ml-0">*</span>
                     </label>
                     <input
                       type="text"
@@ -424,7 +456,7 @@ const QuickReports = () => {
                         "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
                         requirementErrors.usecase
                           ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                       )}
                     />
                     {/* <select
@@ -545,21 +577,25 @@ const QuickReports = () => {
 
                 {/* Second Part: Added Websites and Urls Listing */}
                 <div className="w-1/2 px-1 flex flex-col">
-                    <label htmlFor="requirement" className="block text-md text-secondary-800 mb-1">
-                      Questions you want answered in the report <span className="text-red-500 ml-0">*</span>
-                    </label>
+                  <label htmlFor="requirement" className="block text-md text-secondary-800 mb-1">
+                    Questions you want answered in the report{" "}
+                    <span className="text-red-500 ml-0">*</span>
+                  </label>
                   <div className="h-fit">
                     {requirementQuestions?.map((requirement, index) => (
                       <>
-                        <div key={index} className="flex items-center space-x-2  mb-2">
+                        <div key={index} className="flex items-center space-x-2">
                           <input
                             type="text"
                             id={`questions.${index}`}
                             {...requirementRegister(`questions.${index}`)}
+                            // {...(index === 0 || index === 1 || index === 2
+                            //   ? requirementRegister(`questions.${index}`)
+                            //   : {})}
                             // required
                             placeholder={`Enter here`}
                             className={classNames(
-                              "flex-grow p-[10px] w-full placeholder-black border border-appGray-600 focus:outline-none rounded-lg bg-transparent",
+                              "flex-grow p-[10px] w-full placeholder-black border border-appGray-600 focus:outline-none rounded-lg bg-transparent mt-1",
                               requirementErrors.questions?.[index]
                                 ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                                 : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -568,18 +604,22 @@ const QuickReports = () => {
                           {requirementQuestions.length > 3 ? (
                             <button
                               type="button"
+                              disabled={index === 0 || index === 1 || index === 2}
                               onClick={() => removeQuestion(index)}
                               className="text-red-500 hover:text-red-700 transition duration-300"
                             >
-                              <TrashIcon className="w-3 h-3" />
+                              {index === 0 || index === 1 || index === 2 ? (
+                                <div className="w-3"></div>
+                              ) : (
+                                <TrashIcon className="w-3 h-3" />
+                              )}
                             </button>
                           ) : null}
                         </div>
-                        {requirementErrors.questions?.[index] && (
-                          <div className="mt-0 text-xs text-danger-500">
-                            {requirementErrors.questions[index]?.message}
-                          </div>
-                        )}
+                        <div className="mt-1 text-xs text-danger-500">
+                          {requirementErrors.questions?.[index]?.message &&
+                            requirementErrors.questions[index]?.message}
+                        </div>
                       </>
                     ))}
                     {requirementQuestions.length < 10 ? (

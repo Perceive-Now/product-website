@@ -240,7 +240,8 @@ const MyProjects = () => {
   const getRowProps = (row: any) => ({
     onClick: () => {
       const project_id = row.original.project_id;
-      navigate(`/my-reports/${project_id}`);
+      navigate(`/my-reports/${project_id}?project=${row.original.project_name}`
+      );
     },
     style: {
       cursor: "pointer",

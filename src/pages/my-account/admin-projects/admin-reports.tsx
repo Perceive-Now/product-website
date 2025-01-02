@@ -30,6 +30,7 @@ const AdminReports = () => {
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const user_id = urlParams.get("user_id");
+  const project_name = urlParams.get("project");
   const { id } = useParams();
   const [reports, setreports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -279,7 +280,7 @@ const AdminReports = () => {
             className="text-white bg-primary-800 py-1 w-13 text-center rounded-md font-semibold cursor-pointer flex items-center justify-center gap-2"
             onClick={() => {
               const itemData = item.row.original;
-              navigate(`/detailed-report?project_id=${id}&user_id=${user_id}`, { state: itemData });
+              navigate(`/detailed-report?project_id=${id}&user_id=${user_id}&project=${project_name}`, { state: itemData });
             }}
           >
             <svg
@@ -327,7 +328,7 @@ const AdminReports = () => {
     <div className="space-y-[20px] w-full z-10">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">
-          Settings &gt; Admin Report management &gt; Project Name
+          Settings &gt; Admin Report management &gt; {project_name}
         </h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to={`/admin-projects/${user_id}`}>

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
@@ -41,7 +41,17 @@ const AdminDashboard = () => {
         )
       : [];
 
-  const fetchUsers = async () => {
+  useEffect(() => {
+    const savedPassword = localStorage.getItem("adminKey");
+    if (savedPassword) {
+      setPassword(savedPassword);
+      fetchUsers(savedPassword);
+      setPasswordEntered(true);
+    }
+  }, []);
+
+  const fetchUsers = useCallback(
+    async (password: string) => {    console.log("ajaj", password);
     try {
       setLoading(true);
       const response = await fetch(
@@ -53,7 +63,7 @@ const AdminDashboard = () => {
       );
 
       if (response.ok) {
-        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem("isAuthenticated", "true");
         const data = await response.json();
         const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
           id: index + 1,
@@ -61,7 +71,8 @@ const AdminDashboard = () => {
           user_name: userId,
         }));
         setUsers(transformedUserIds);
-        setPasswordEntered(true); // Mark that password has been entered and API is successful
+        setPasswordEntered(true);
+        localStorage.setItem("adminKey", password);
       } else {
         setPasswordError("Incorrect password. Please try again.");
       }
@@ -71,7 +82,7 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  },[password]);
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -147,8 +158,8 @@ const AdminDashboard = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  fetchUsers(); 
+                if (e.key === "Enter") {
+                  fetchUsers(password);
                 }
               }}
               className={classNames(
@@ -175,7 +186,7 @@ const AdminDashboard = () => {
             <Button
               classname="w-full"
               htmlType="submit"
-              handleClick={fetchUsers}
+              handleClick={()=>{fetchUsers(password)}}
               disabled={loading}
               loading={loading}
             >
@@ -187,7 +198,7 @@ const AdminDashboard = () => {
     </div>
   );
 
-  if (!passwordEntered) {
+  if (!passwordEntered && !password) {
     return renderPasswordScreen;
   }
 

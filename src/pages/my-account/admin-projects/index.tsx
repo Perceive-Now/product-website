@@ -133,7 +133,7 @@ const AdmimProjects = () => {
   const getRowProps = (row: any) => ({
     onClick: () => {
       const threadId = row.original.project_id;
-      navigate(`/admin-reports/${threadId}?user_id=${id}`);
+      navigate(`/admin-reports/${threadId}?user_id=${id}&project=${row.original.project_name}`);
     },
     style: {
       cursor: "pointer",

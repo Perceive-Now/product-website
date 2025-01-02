@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef ,useEffect} from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 
 //
 import { UploadIcon } from "src/components/icons";
@@ -41,6 +41,7 @@ const DetailedReport = () => {
   const itemData = location.state;
   const urlParams = new URLSearchParams(location.search);
   const project_id = urlParams.get("project_id");
+  const project_name = urlParams.get("project");
   const user_id = urlParams.get("user_id");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -132,6 +133,10 @@ const DetailedReport = () => {
     }
 
     console.log("formData------", formData);
+  };
+
+  const openFileHandler = (fileUrl: string) => {
+    window.open(fileUrl, "_blank");
   };
 
   const handleBrowseClick = () => {
@@ -240,7 +245,7 @@ const DetailedReport = () => {
             Admin Report management &gt; {itemData?.report_name}
           </h6>
           <div className="flex justify-start items-center pt-3 pl-1">
-            <Link to={`/admin-reports/${project_id}?user_id=${user_id}`}>
+            <Link to={`/admin-reports/${project_id}?user_id=${user_id}&project=${project_name}`}>
               <p className="mr-4 text-secondary-800 flex items-center">
                 <ArrowLeftIcon className="mr-1" />
                 Back
@@ -344,24 +349,25 @@ const DetailedReport = () => {
             {/* Second Part: Added Websites and Urls Listing */}
             <div className="w-1/2 px-3 flex flex-col">
               <div className="h-[30%]">
-              <h6 className="font-nunito">Questions need to answer</h6>
+                <h6 className="font-nunito">Questions need to answer</h6>
 
-{Array.isArray(itemData?.question) && itemData.question.length > 0 ? (
-  itemData.question.map((question:string, index:number) => (
-    <input
-      key={index}
-      type="text"
-      disabled={true}
-      value={question}
-      required={index < 2}  
-      placeholder="No question asked"
-      className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
-    />
-  ))
-) : (
-  <p className="flex justify-center items-center pt-5 text-xs text-gray-500">No questions available</p> 
-)}
-
+                {Array.isArray(itemData?.question) && itemData.question.length > 0 ? (
+                  itemData.question.map((question: string, index: number) => (
+                    <input
+                      key={index}
+                      type="text"
+                      disabled={true}
+                      value={question}
+                      required={index < 2}
+                      placeholder="No question asked"
+                      className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
+                    />
+                  ))
+                ) : (
+                  <p className="flex justify-center items-center pt-5 text-xs text-gray-500">
+                    No questions available
+                  </p>
+                )}
               </div>
               {/* Added Websites */}
               <div className="h-[70%] pr-[28%]">
@@ -409,7 +415,13 @@ const DetailedReport = () => {
                           return (
                             <div key={index}>
                               {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
-                              <IconFile className="cursor-pointer"/>
+                              <div
+                                onClick={() => {
+                                  openFileHandler(fileUrl);
+                                }}
+                              >
+                                <IconFile className="cursor-pointer" />
+                              </div>
                               <div className="flex justify-between items-center">
                                 <p className="text-sm font-nunito">{fileUrl}</p>{" "}
                               </div>
