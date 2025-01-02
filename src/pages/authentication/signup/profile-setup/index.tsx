@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,7 +15,7 @@ type FormValues = {
   role: string;
   email: string;
   password: string;
-  profileImage: File | null;
+  profileImage: File | null | string;
 };
 
 // Validation schema for the new users
@@ -62,11 +62,13 @@ const ProfileSetup: React.FC = () => {
   const invitedData = location.state?.invitedData;
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [user, setUser] = useState<any | null>(null);
   const {
     control,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<FormValues>({
     resolver: yupResolver(invitedData ? invitedUserSchema : schema),
     defaultValues: {
@@ -89,9 +91,34 @@ const ProfileSetup: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } else {
+      if (user?.profile_photo) {
+        console.log("updating!!!!");
+      }
       setImagePreview(null);
     }
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUserProfile();
+        setUser(user);
+        //
+        if (user?.profile_photo) {
+          setImagePreview(user?.profile_photo);
+        }
+        reset({
+          fullName: `${user?.first_name} ${user?.last_name}`,
+          role: user?.job_position || "",
+          profileImage: user?.profile_photo || "",
+          email: user?.email || "",
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { first_name, last_name } = extractName(data.fullName);
@@ -106,14 +133,23 @@ const ProfileSetup: React.FC = () => {
       registration_completed: true,
       company_name,
       job_position: data.role,
+      profile_photo: imagePreview || user?.profile_photo || "",
+      email: data.email || user?.email,
     };
 
     try {
       const response = await updateUserProfile(values);
       if (response.status === 200) {
-        toast.success("Profile setup completed successfully!");
+        toast.success("Profile setup completed successfully!", {
+          position: "top-right"
+        });
+        navigate("/signup/plan", {
+          replace: true,
+        });
       } else {
-        toast.error("An error occurred. Please try again.");
+        toast.error("An error occurred. Please try again.", {
+          position: "top-right"
+        });
         return;
       }
     } catch (error) {
@@ -131,15 +167,13 @@ const ProfileSetup: React.FC = () => {
       });
       return;
     }
-
-    alert("Form submitted successfully!");
-    navigate("/signup/plan", {
-      replace: true,
-      state: {
-        invitedData,
-        profileData: data,
-      },
-    });
+    // navigate("/signup/plan", {
+    //   replace: true,
+    //   state: {
+    //     invitedData,
+    //     profileData: data,
+    //   },
+    // });
   };
 
   return (
@@ -155,7 +189,7 @@ const ProfileSetup: React.FC = () => {
               className={`relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group`}
             >
               <img
-                src={imagePreview || profileAvatarSVG}
+                src={imagePreview || user?.profile_photo || profileAvatarSVG}
                 alt="Profile Avatar"
                 className={`object-cover ${
                   imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"

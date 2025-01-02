@@ -40,19 +40,17 @@ const OrganizationSettings = () => {
     mode: "onTouched", // Show errors on blur/touch
     defaultValues: {
       organizationName: invitedData?.organization_name || company?.name || "",
-      industry: invitedData?.organization_industry || company?.industry || "",
+      industry: invitedData?.organization_industry || user?.about_me || "",
     },
   });
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const user = await getUserProfile();
-        const companies = await getCompanies();
+        const [user, companies] = await Promise.all([getUserProfile(), getCompanies()]);
         const user_company = companies.find((company) => company.id === user.company_id);
         setUser(user);
         setCompany(user_company);
-
         // Update the form values with the fetched data
       reset({
         organizationName: invitedData?.organization_name || user_company?.name || "",
@@ -73,17 +71,21 @@ const OrganizationSettings = () => {
       const value = {
         company_name: data.organizationName,
         about_me: data.industry,
-        registration_completed: true
+        registration_completed: true,
       };
       const result = await updateUserProfile(value);
       if (result.status === 200) {
-        toast.success("Organization Settings Saved Successfully!");
+        toast.success("Organization Settings Saved Successfully!", {
+          position: "top-right",
+        });
         navigate("/signup/profile", {
           replace: true,
         })
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.", {
+        position: "top-right",
+      });
     } finally {
       setIsSubmitting(false);
     }

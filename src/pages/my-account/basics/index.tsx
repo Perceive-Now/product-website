@@ -59,6 +59,8 @@ const Basics = () => {
       id: UserDetail?.id,
     };
 
+    console.log(updatedProfileData);
+
     try {
       await updateProfile(updatedProfileData);
       toast.success('Profile updated successfully!');
