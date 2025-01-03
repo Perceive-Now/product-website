@@ -8,16 +8,23 @@ import Button from "src/components/reusable/button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
 import toast from "react-hot-toast";
+import industries from "./option";
 
 type OrganizationDetails = {
   organizationName: string;
   industry: string;
+  otherIndustry?: string;
 };
 
 // Yup Schema for Validation
 const schema = yup.object({
   organizationName: yup.string().required("Organization name is required"),
   industry: yup.string().required("Please select an industry"),
+  otherIndustry: yup.string().when("industry", {
+    is: "Other",
+    then: yup.string().required("Please specify the industry"),
+    otherwise: yup.string(),
+  }),
 });
 
 const OrganizationSettings = () => {
@@ -25,19 +32,19 @@ const OrganizationSettings = () => {
   const location = useLocation();
 
   const invitedData = location.state?.invitedData;
-  console.log(invitedData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<any | null>(null);
   const [company, setCompany] = useState<any | null>(null);
+  const [selectedIndustry, setSelectedIndustry] = useState("");
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting: formSubmitting  },
-    reset
+    formState: { errors, isSubmitting: formSubmitting },
+    reset,
   } = useForm<OrganizationDetails>({
     resolver: yupResolver(schema),
-    mode: "onTouched", // Show errors on blur/touch
+    mode: "onTouched",
     defaultValues: {
       organizationName: invitedData?.organization_name || company?.name || "",
       industry: invitedData?.organization_industry || user?.about_me || "",
@@ -51,17 +58,29 @@ const OrganizationSettings = () => {
         const user_company = companies.find((company) => company.id === user.company_id);
         setUser(user);
         setCompany(user_company);
-        // Update the form values with the fetched data
-      reset({
-        organizationName: invitedData?.organization_name || user_company?.name || "",
-        industry: invitedData?.organization_industry || user_company?.industry || "",
-      });
+        reset({
+          organizationName: invitedData?.organization_name || user_company?.name || "",
+          industry: industries.includes(user?.about_me as string)
+            ? user?.about_me
+            : user?.about_me
+            ? "Other"
+            : "",
+          otherIndustry: industries.includes(user?.about_me as string) ? "" : user?.about_me,
+        });
+
+        if (!industries.includes(user?.about_me as string) && user?.about_me) {
+          setSelectedIndustry("Other");
+        }
       } catch (error) {
         console.log(error);
       }
     };
     fetchUser();
   }, []);
+
+  const handleIndustryChange = (event: any) => {
+    setSelectedIndustry(event.target.value);
+  };
 
   const onSubmit: SubmitHandler<OrganizationDetails> = async (data) => {
     setIsSubmitting(true);
@@ -70,7 +89,7 @@ const OrganizationSettings = () => {
     try {
       const value = {
         company_name: data.organizationName,
-        about_me: data.industry,
+        about_me: data.industry === "Other" ? data.otherIndustry : data.industry,
         registration_completed: true,
       };
       const result = await updateUserProfile(value);
@@ -80,7 +99,7 @@ const OrganizationSettings = () => {
         });
         navigate("/signup/profile", {
           replace: true,
-        })
+        });
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.", {
@@ -92,16 +111,11 @@ const OrganizationSettings = () => {
   };
 
   return (
-    <SignUpLayout
-    invitedData={invitedData}
-      currentStep={0}
-      completedSteps={[]} // Pass an empty array since no steps are completed yet
-    >
+    <SignUpLayout invitedData={invitedData} currentStep={0} completedSteps={[]}>
       <div className="pt-5 px-8">
         <h1 className="text-[19px] font-semibold text-[#373D3F]">Organization Settings</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4 max-w-[550px]" noValidate>
-          {/* Organization Name Input */}
           <div>
             <label htmlFor="organizationName" className="block text-sm font-medium text-gray-700">
               What is your organization’s name?
@@ -124,7 +138,6 @@ const OrganizationSettings = () => {
             )}
           </div>
 
-          {/* Industry Select */}
           <div>
             <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
               Which industry does your organization belong to?
@@ -132,29 +145,49 @@ const OrganizationSettings = () => {
             <select
               id="industry"
               {...register("industry")}
+              onChange={handleIndustryChange}
               className={classNames(
                 "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
                 errors.industry
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-primary-500",
               )}
-              defaultValue="Healthcare"
-              disabled={invitedData?.organization_industry}
             >
               <option value="" disabled>
                 Select an industry
               </option>
-              <option value="Healthcare">Healthcare</option>
-              <option value="Finance">Finance</option>
-              <option value="Education">Education</option>
-              <option value="Technology">Technology</option>
+              {industries.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
+
+            {selectedIndustry === "Other" &&
+              industries.includes(user?.about_me as string) === false &&
+              user?.about_me && (
+                <div>
+                  <label
+                    htmlFor="otherIndustry"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Please specify:
+                  </label>
+                  <input
+                    id="otherIndustry"
+                    type="text"
+                    {...register("otherIndustry")}
+                    className="mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2"
+                    placeholder="Enter industry"
+                  />
+                </div>
+              )}
+
             {errors.industry && (
               <p className="mt-1 text-sm text-red-600">{errors.industry.message}</p>
             )}
           </div>
 
-          {/* Submit Button */}
           <div className="flex justify-start">
             <Button
               htmlType="submit"
