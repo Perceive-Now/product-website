@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignUpLayout from "../_components/layout";
 import { inputArrow } from "../_assets"; // Replace with your arrow asset path
 import Button from "src/components/reusable/button";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getCompanies, getUserProfile } from "src/utils/api/userProfile";
 
 type ExpandedSections = {
   organizationSettings: boolean;
@@ -20,6 +21,8 @@ const ReviewConfirmationScreen = () => {
     organizationSettings: false,
     teamMembers: false,
   });
+  const [user, setUser] = useState<any | null>(null);
+  const [company, setCompany] = useState<any | null>(null);
 
   const toggleSection = (section: keyof ExpandedSections) => {
     setExpanded((prev) => ({
@@ -28,10 +31,23 @@ const ReviewConfirmationScreen = () => {
     }));
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const [user, companies] = await Promise.all([getUserProfile(), getCompanies()]);
+        const user_company = await companies.find((company) => company.id === user.company_id);
+
+        setUser(user);
+        setCompany(user_company);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUser();
+  }, []);
+
   return (
-    <SignUpLayout
-      invitedData={invitedData}
-    currentStep={5} completedSteps={[0, 1, 2, 3, 4]}>
+    <SignUpLayout invitedData={invitedData} currentStep={5} completedSteps={[0, 1, 2, 3, 4]}>
       <div className="max-w-[800px] p-7 space-y-[40px]">
         {/* Title */}
         <h1 className="text-[20px] font-semibold text-[#373D3F]">Review & Confirmation</h1>
@@ -41,21 +57,24 @@ const ReviewConfirmationScreen = () => {
         <div className="flex items-center justify-between bg-[#F5F7FF66] p-2 rounded-md">
           <div className="flex gap-3 items-center">
             <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg text-sm font-medium">
-              {invitedData?.role || "Member"}
+              {user?.job_position || invitedData?.role || "Member"}
             </span>
-            <p className="text-[16px] font-medium text-[#4F4F4F]">{
-              profileData?.fullName || "John Doe"
-              }</p>
+            <p className="text-[16px] font-medium text-[#4F4F4F]">
+              { user && user?.first_name + " " + user?.last_name || profileData?.fullName || "John Doe"}
+            </p>
           </div>
-          <button className="text-[#4F4F4F] text-xs"
+          <button
+            className="text-[#4F4F4F] text-xs"
             onClick={() => {
               if (invitedData) {
                 navigate("/signup/profile", { state: { invitedData } });
               } else {
-                navigate("/signup/profile")
+                navigate("/signup/profile");
               }
             }}
-          >Edit</button>
+          >
+            Edit
+          </button>
         </div>
 
         {/* Organization Settings - Expandable */}
@@ -83,7 +102,7 @@ const ReviewConfirmationScreen = () => {
                 <div className="grid grid-cols-2 gap-x-1">
                   <p className="text-[#4F4F4F]">Organization Name</p>
                   <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg w-fit">
-                    {invitedData?.organization_name || "Perceive Now"}
+                    {company && company?.name || invitedData?.organization_name || "Perceive Now"}
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-x-1">
@@ -100,16 +119,18 @@ const ReviewConfirmationScreen = () => {
                 </div>
               </div>
               <div className="text-right">
-                <button className="text-[#4F4F4F] text-xs"
+                <button
+                  className="text-[#4F4F4F] text-xs"
                   onClick={() => {
                     if (invitedData) {
                       navigate("/signup/organization-setting", { state: { invitedData } });
                     } else {
-                      navigate("/signup/organization-setting")
+                      navigate("/signup/organization-setting");
                     }
-                  }
-                  }
-                >Edit</button>
+                  }}
+                >
+                  Edit
+                </button>
               </div>
             </div>
           )}
@@ -153,7 +174,7 @@ const ReviewConfirmationScreen = () => {
               if (invitedData) {
                 navigate("/signup/profile", { state: { invitedData } });
               } else {
-                navigate("/signup/team")
+                navigate("/signup/team");
               }
             }}
           >

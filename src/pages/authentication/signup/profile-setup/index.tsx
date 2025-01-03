@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
 import toast from "react-hot-toast";
 import { useAppSelector } from "src/hooks/redux";
+import { Countries } from "src/utils/constants";
 
 type FormValues = {
   fullName: string;
@@ -16,12 +17,14 @@ type FormValues = {
   email: string;
   password: string;
   profileImage: File | null | string;
+  country: string;
 };
 
 // Validation schema for the new users
 const schema = yup.object({
   fullName: yup.string().required("Full name is required"),
   role: yup.string().required("Role is required"),
+  country: yup.string().required("Country is required"),
   profileImage: yup.mixed().nullable(),
 });
 
@@ -76,6 +79,7 @@ const ProfileSetup: React.FC = () => {
       role: invitedData?.role || "",
       email: invitedData?.email || "",
       password: "",
+      country: "",
       profileImage: null,
     },
   });
@@ -112,6 +116,7 @@ const ProfileSetup: React.FC = () => {
           role: user?.job_position || "",
           profileImage: user?.profile_photo || "",
           email: user?.email || "",
+          country: user?.country || "",
         });
       } catch (error) {
         console.log(error);
@@ -135,20 +140,21 @@ const ProfileSetup: React.FC = () => {
       job_position: data.role,
       profile_photo: imagePreview || user?.profile_photo || "",
       email: data.email || user?.email,
+      country: data.country,
     };
 
     try {
       const response = await updateUserProfile(values);
       if (response.status === 200) {
         toast.success("Profile setup completed successfully!", {
-          position: "top-right"
+          position: "top-right",
         });
         navigate("/signup/plan", {
           replace: true,
         });
       } else {
         toast.error("An error occurred. Please try again.", {
-          position: "top-right"
+          position: "top-right",
         });
         return;
       }
@@ -263,6 +269,35 @@ const ProfileSetup: React.FC = () => {
               )}
             />
             {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
+          </div>
+
+          {/* country  */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Country</label>
+            <Controller
+              name="country"
+              control={control}
+              render={({ field }) => (
+                <select
+                  {...field}
+                  className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                    errors.country
+                      ? "border-red-500 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-primary-500"
+                  }`}
+                >
+                  <option value="" disabled>
+                    Select country
+                  </option>
+                  {Countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              )}
+            />
+            {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
           </div>
 
           {/* Email Address */}

@@ -33,7 +33,15 @@ const Finish = () => {
           Click below to dive right in and explore what’s next.
         </p>
         <div className="mt-3">
-          <Button type="primary" rounded="full">
+          <Button
+            type="primary"
+            rounded="full"
+            handleClick={() =>
+              navigate("/", {
+                replace: true,
+              })
+            }
+          >
             <span className="font-light text-[15px]">Let&apos;s Get to Work!</span>
           </Button>
         </div>

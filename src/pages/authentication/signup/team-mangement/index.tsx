@@ -110,7 +110,7 @@ const TeamManagementScreen = () => {
             rounded="full"
             type="secondary"
             classname="w-[120px]"
-            handleClick={() => navigate("/signup/payment")}
+            handleClick={() => navigate("/signup/plan")}
           >
             Back
           </Button>
