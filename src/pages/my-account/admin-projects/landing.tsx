@@ -198,7 +198,7 @@ const AdminDashboard = () => {
     </div>
   );
 
-  if (!passwordEntered && !password) {
+  if (!passwordEntered) {
     return renderPasswordScreen;
   }
 
