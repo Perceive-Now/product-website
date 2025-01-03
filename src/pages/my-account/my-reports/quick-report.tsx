@@ -67,12 +67,13 @@ const QuickReports = () => {
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
   const [step, setStep] = useState(id ? 2 : 1);
+  const [disabled, setDisabled] = useState<boolean>(false);
   const [customReport, setCustomReport] = useState({
     report_tone: "",
     no_of_charts: "",
     visual_style: "",
     citations: "",
-    format: "",
+    format: [],
   });
   const [loading, setLoading] = useState(false);
    
@@ -198,28 +199,10 @@ const QuickReports = () => {
   
   useEffect(() => {
     if (location.state) {
-      const transformFileData = (data: { [key: string]: string }) => {
-        return Object.values(data).map((url) => ({
-          name: url,
-          url: url,
-        }));
-      };
-  
-      if (location.state.file_data) {
-        const transformedData = transformFileData(location.state.file_data);
-        setUploadedFiles(transformedData);
-      }
-  
-      if (location.state.websites) {
-        setPastedURLs(location.state.websites);
-      }
-  
+    
       setValue("reportName", location.state.report_name || "");
       setValue("usecase", location.state.usecase || "");
-  
-      if (Array.isArray(location.state.question)) {
-        setValue("questions", location.state.question);
-      }
+      setDisabled(true);
     }
   }, [location.state]);
   
@@ -283,7 +266,7 @@ const QuickReports = () => {
     }
   };
 
-  const handleReportChange = (field: string, value: string) => {
+  const handleReportChange = (field: string, value: any) => {
     setCustomReport((prevState) => ({
       ...prevState,
       [field]: value,
@@ -314,7 +297,14 @@ const QuickReports = () => {
       formData.append("websites", url);
     });
 
-    formData.append("questions", JSON.stringify(values.questions));
+    values.questions.forEach((question: string) => {
+      formData.append("question", question); 
+    });
+
+    customReport.format.forEach((question: string) => {
+      formData.append("format", question); 
+    });
+
 
     try {
       const response: any = await fetch(
@@ -430,8 +420,10 @@ const QuickReports = () => {
                       {...requirementRegister("reportName")}
                       // required
                       placeholder="Report Name"
+                      disabled= {disabled}
                       className={classNames(
                         "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" :"",
                         requirementErrors.reportName
                           ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                           : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -450,10 +442,12 @@ const QuickReports = () => {
                     </label>
                     <textarea
                       id="usecase"
+                      disabled= {disabled}
                       {...requirementRegister("usecase")}
                       placeholder="Describe the overall objective of the report"
                       className={classNames(
                         "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                        disabled ? "bg-gray-400 cursor-not-allowed" :"",
                         requirementErrors.usecase
                           ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                           : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -754,7 +748,7 @@ const QuickReports = () => {
                   "Actionable (Focused on recommendations and next steps)",
                   "Balanced (Mix of data, narrative, and recommendations)",
                 ]}
-                onChangeValue={(value) => {
+                onChangeValue={(value:any) => {
                   handleReportChange("report_tone", value);
                 }}
               />
@@ -768,7 +762,7 @@ const QuickReports = () => {
                   "Moderate (3-4 per section)",
                   "Extensive (5+ per section)",
                 ]}
-                onChangeValue={(value) => {
+                onChangeValue={(value:any) => {
                   handleReportChange("no_of_charts", value);
                 }}
               />
@@ -781,7 +775,7 @@ const QuickReports = () => {
                   "Simple (Clean and easy to understand)",
                   "Annotated (Explanatory visuals with supporting details)",
                 ]}
-                onChangeValue={(value) => {
+                onChangeValue={(value:any) => {
                   handleReportChange("visual_style", value);
                 }}
               />
@@ -795,7 +789,7 @@ const QuickReports = () => {
                   "Endnotes (References listed at the end)",
                   "No Citations (Focused on insights)",
                 ]}
-                onChangeValue={(value) => {
+                onChangeValue={(value:any) => {
                   handleReportChange("citations", value);
                 }}
               />
@@ -810,7 +804,8 @@ const QuickReports = () => {
                   "Word Document (Editable format for custom updates)",
                   "Spreadsheet Summary (Key data in tabular format)",
                 ]}
-                onChangeValue={(value) => {
+                multiple = {true}
+                onChangeValue={(value:any) => {
                   handleReportChange("format", value);
                 }}
               />

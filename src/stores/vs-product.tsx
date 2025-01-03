@@ -258,9 +258,11 @@ export const VSProductSlice = createSlice({
           state.ReportTemplate = response;
           state.chats[
             state.chats.length - 1
-          ].query = `Here’s the final report template for ${state.companyName} based on all the details we’ve discussed. Please review and make any adjustments`;
-          state.chats.push({ query: "If everything looks good. Please confirm to generate report.",  answer: "" });
-          state.chats.push({ query: "",  answer: "" ,options:["Confirm"]});
+          ].query = `Almost there! 🚀 The final stencil of your report is ready in the right pane. Fine-tune them to match your vision before submission.\n
+Ready to proceed? Confirm now to generate your report
+`;
+          // state.chats.push({ query: "If everything looks good. Please confirm to generate report.",  answer: "" });
+          state.chats.push({ query: "",  answer: "" ,options:["Submit"]});
         } else if (response.includes("//")) {
           const options: string[] =
             response

@@ -76,14 +76,15 @@ Props) => {
                     // dispatch(setprevres({ answer: stage }));
 
                     // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
-                    if(options.length === 1)
+                    if(options.length === 1 || options.includes("Edit Summary"))
                       onSendQuery(query, stage,undefined,true);
                     else{
                       setanswer(stage);
                       dispatch(setprevres({ answer: stage }));
                     }
                   }}
-                  disabled={hasselected}
+                  // disabled={stage !== "Edit Summary" ? hasselected : false}
+                  disabled = {hasselected}
                   className={`${
                     answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
                   } cursor-pointer text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}

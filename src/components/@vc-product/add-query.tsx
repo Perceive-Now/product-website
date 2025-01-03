@@ -73,7 +73,8 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
   };
 
   return (
-    <div className="w-full flex flex-col rounded-lg border border-gray-200 shadow-inputBox overflow-hidden bg-white relative mb-[70px]">
+    <div className="flex flex-col w-full mb-[80px]">
+    <div className="w-full flex flex-col rounded-lg border border-gray-200 shadow-inputBox overflow-hidden bg-white relative mb-[0px]">
       <div className="flex items-center p-1">
         <textarea
           ref={textareaRef}
@@ -118,6 +119,10 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
         </div>
       </div>
     </div>
+     <div className="pt-2 text-center text-sm text-black font-nunito">
+     Review your inputs carefully before proceeding; previous steps cannot be revisited.
+   </div>
+   </div>
   );
 };
 

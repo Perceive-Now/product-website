@@ -14,7 +14,7 @@ import { Switch } from "@headlessui/react";
 import debounce from "lodash.debounce";
 import { AppConfig } from "src/config/app.config";
 import DotLoader from "src/components/reusable/dot-loader";
-import { generateKnowId, generateKnowIdstring } from "src/utils/helpers";
+import { generateKnowId, generateKnowIdstring, getRandomErrorMessage } from "src/utils/helpers";
 import ExtractInfo from "src/components/@vc-product/extractInfo";
 import { sendQuery, extractFileData } from "src/stores/vs-product";
 
@@ -52,6 +52,8 @@ const VCReport = () => {
   const chatRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsloading] = useState(false);
   const [delayLoading, setDelayLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [finalMessage, setFinalMessage] = useState(false);
 
   const { chats } = useAppSelector((state) => state.VSProduct);
   let { companyName } = useAppSelector((state) => state.VSProduct);
@@ -71,6 +73,10 @@ const VCReport = () => {
     }
   };
 
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
   const onSendQuery = useCallback(
     async (query: string, answer: string, file?: File, button?: boolean) => {
       console.log("anserrrrr", answer);
@@ -87,7 +93,7 @@ const VCReport = () => {
             firstRun.current = true;
             setFile("false");
             navigate("/", {
-              replace: true
+              replace: true,
             });
             return;
           }
@@ -122,7 +128,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               dispatch(
                 setVSChats({
                   query:
-                    "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
+                    "Thank you for providing the startup name. Please select the current stage of your startup from the options below.",
                   answer: companyName,
                 }),
               );
@@ -156,7 +162,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
-            dispatch(updateButtonSelection({ hasselected: true }));
+            if(answer !== "Edit Summary") dispatch(updateButtonSelection({ hasselected: true }));
             dispatch(setprevres({ answer: answer }));
             if (answer === "Looks good") {
               //** Fifth Converstaion **//
@@ -182,24 +188,33 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 setDelayLoading(false);
               }, 2500);
               //**     **//
+            }else if(answer === "Edit Summary"){
+              setModalOpen(true);
+              return;
             } else if (Step == 3 && answer == "Continue") {
               ai_query.user_input = "skip";
               await dispatch(sendQuery(ai_query)).unwrap();
-            } else if (Step == 5 && answer == "Confirm") {
-              dispatch(
-                updateChatQuery({
-                  query: `Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`,
-                }),
-              );
-              
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Start another report", "Go Home"],
-                  hasbutton: true,
-                }),
-              );
+            } else if (Step == 5 && answer == "Submit") {
+              dispatch(resetChats());
+              thread_id = generateKnowIdstring();
+              firstRun.current = true;
+              setFile("false");
+              setFinalMessage(true);
+              return;
+              // dispatch(
+              //   updateChatQuery({
+              //     query: `Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`,
+              //   }),
+              // );
+
+              // dispatch(
+              //   setVSChats({
+              //     query: "",
+              //     answer: "",
+              //     options: ["Start another report", "Go Home"],
+              //     hasbutton: true,
+              //   }),
+              // );
             } else await dispatch(sendQuery(ai_query)).unwrap();
 
             // dispatch(setprevres({answer:answer}));
@@ -212,7 +227,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             if (isfile === "false") {
               dispatch(
                 setVSChats({
-                  query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                  query: `Go ahead and upload the pitch deck for ${companyName} to help me extract the key details.`,
                 }),
               );
               return;
@@ -233,7 +248,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 setTimeout(() => {
                   dispatch(
                     updateChatQuery({
-                      query: `Thank you! Since ${companyName} is in the **${queries.answer.trim()}** stage, could you specify the current development phase from the options below?`,
+                      query: `Since ${companyName} is in the **${queries.answer.trim()}** stage, let’s narrow it down to the exact development phase using the options below.`,
                     }),
                   );
                 }, 1500);
@@ -251,19 +266,10 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               } else {
                 dispatch(
                   setVSChats({
-                    query:
-                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    query: getRandomErrorMessage(),
                     answer: "",
                   }),
                 );
-
-                // dispatch(
-                //   setVSChats({
-                //     query:
-                //       "Great! Thanks for sharing the startup name. Could you select the current stage of your startup from the options below?",
-                //     answer: "",
-                //   }),
-                // );
 
                 dispatch(
                   setVSChats({
@@ -276,20 +282,27 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               }
 
               //**   **//
-            } else if (chatOptions?.includes("Seed Stage") || chatOptions?.includes("Pre-Seed Stage")) {
+            } else if (
+              chatOptions?.includes("Seed Stage") ||
+              chatOptions?.includes("Pre-Seed Stage")
+            ) {
               //** Fourth Converstaion **//
 
               if (
-                ["pre-seed stage", "seed stage", "ideation stage","series a stage", "series b+ stage"].includes(
-                  queries.answer.trim().toLowerCase(),
-                )
+                [
+                  "pre-seed stage",
+                  "seed stage",
+                  "ideation stage",
+                  "series a stage",
+                  "series b+ stage",
+                ].includes(queries.answer.trim().toLowerCase())
               ) {
                 setIsloading(false);
                 setDelayLoading(true);
                 setTimeout(() => {
                   dispatch(
                     updateChatQuery({
-                      query: `Thanks! Now, please upload the pitch deck for ${companyName} so I can extract the key details.`,
+                      query: `Go ahead and upload the pitch deck for ${companyName} to help me extract the key details.`,
                     }),
                   );
                   setDelayLoading(false);
@@ -303,8 +316,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
                 dispatch(
                   setVSChats({
-                    query:
-                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    query: getRandomErrorMessage(),
                     answer: "",
                   }),
                 );
@@ -340,8 +352,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               } else {
                 dispatch(
                   setVSChats({
-                    query:
-                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    query: getRandomErrorMessage(),
                     answer: "",
                   }),
                 );
@@ -370,7 +381,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   dispatch(setCurrentStep(3));
                   dispatch(
                     updateChatQuery({
-                      query: `The ${answer} option has been selected for the report. It will have the sections to the right. Please modify if necessary by scrolling to the bottom of the list.`,
+                      query: `The ${answer} option is selected. Customizable sections are displayed in the right pane. Feel free to adjust them to suit your needs.`,
                     }),
                   );
                 }, 1500);
@@ -388,8 +399,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               } else {
                 dispatch(
                   setVSChats({
-                    query:
-                      "**Oops!** It looks like you've entered a wrong input. Please choose one of the available options and try again.",
+                    query: getRandomErrorMessage(),
                     answer: "",
                   }),
                 );
@@ -416,7 +426,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               } else {
                 dispatch(
                   updateChatQuery({
-                    query: `Please continue to proceed`,
+                    query: `Apologies, but I can’t modify sections directly. Please use the right pane to customize your report by adding or modifying sections as needed.`,
                   }),
                 );
 
@@ -475,7 +485,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
               dispatch(
                 setVSChats({
-                  query: `I’ve extracted the key details from ${companyName}’s pitch deck. Please review and confirm if everything looks good.`,
+                  query: `Here’s the summary of key details from ${companyName}’s pitch deck. Edit as needed or confirm if it looks good.`,
                   answer: "",
                 }),
               );
@@ -483,7 +493,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 setVSChats({
                   query: "",
                   answer: "",
-                  options: ["Looks good"],
+                  options: ["Edit Summary", "Looks good"],
                   hasbutton: true,
                 }),
               );
@@ -528,7 +538,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
             {chats && chats.length <= 0 ? (
               <div className="flex flex-row justify-between flex-auto">
-                <ReportDefault />
+                <ReportDefault finalMessage={finalMessage} setFinalMessage={()=>{setFinalMessage(false)}}/>
               </div>
             ) : (
               <div className="flex flex-row flex-auto justify-center">
@@ -556,6 +566,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                         {chat.extract && (
                           <ExtractInfo
                             onSendQuery={onSendQuery}
+                            modalOpen={modalOpen}
+                            setModalOpen={setModalOpen}
                             info={chat.extract}
                             obj={chat.extractObject}
                           />

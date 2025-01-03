@@ -337,7 +337,7 @@ const TemplateReport: React.FC = () => {
             <div>
 
               <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
-              {open && <h4 className="mb-4">Arrange/add sections as needed</h4>}
+              {open && <h4 className="mb-4">Customize sections to suit your needs.</h4>}
             </div>
             </div>
           </div>

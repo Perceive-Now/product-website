@@ -10,13 +10,15 @@ interface ExtractInfoProps {
   info: string;
   obj?: any;
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
+  modalOpen: boolean; 
+  setModalOpen: (open: boolean) => void;
 }
 
-const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, obj, onSendQuery }) => {
+const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, obj, onSendQuery, modalOpen, setModalOpen }) => {
   console.log("infooo", info);
   console.log("obj-----", obj);
   const dispatch = useAppDispatch();
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
 
   const handleModalClose = () => {
     setModalOpen(false);

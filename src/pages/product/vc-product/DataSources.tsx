@@ -65,7 +65,7 @@ const SourcesData: React.FC = () => {
         <h2 className="text-lg font-semibold">Data Sources</h2>
         {open && (
           <>
-            <h4 className="mb-4 text-sm sm:text-base">Arrange/add sections as your need</h4>
+            <h4 className="mb-4 text-sm sm:text-base">Customize sections to suit your needs.</h4>
             <div className="text-xs sm:text-sm">
               {dataSourceKeys.map((tab) => (
                 <button

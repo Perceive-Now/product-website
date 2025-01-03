@@ -117,3 +117,12 @@ export function generateKnowIdstring() {
   const newUuid = uuidv4();
   return newUuid;
 }
+
+export function getRandomErrorMessage() {
+  const messages = [
+    "I’m sorry, I didn’t quite catch that. Could you please select one of the available options to help me assist you better?",
+    "Apologies, I couldn’t process that input. Please choose from the provided options so we can continue smoothly."
+  ];
+
+  return messages[Math.floor(Math.random() * messages.length)];
+}

@@ -4,12 +4,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PN from "../../../assets/images/pn.svg";
 import { setStartTour } from "src/stores/dashboard";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-// interface Props {
-//   setQuery: (query: string) => void;
-//   query?: string;
-// }
+interface Props {
+  // setQuery: (query: string) => void;
+  // query?: string;
+  finalMessage?: boolean;
+  setFinalMessage?: () => void;
+}
 
-const ReportDefault: React.FC = () => {
+  const ReportDefault: React.FC<Props> = ({ finalMessage , setFinalMessage}) => {
+
   const runTour = useAppSelector((state) => state.dashboard.startTour);
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -22,8 +25,10 @@ const ReportDefault: React.FC = () => {
       ? `Hey! 👋 Let’s get you familiar with Perceive Now. We'll walk 
        through two main sections: Know Now and Industry Reports. 
        Ready?`
-      : `
-      Ready to percive the future? 🚀 
+      :  finalMessage ?
+      `🎉 Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`
+       :
+      `Ready to percive the future? 🚀 
 
       Start by telling us the name of the startup.
           `.trim();
@@ -78,6 +83,24 @@ const ReportDefault: React.FC = () => {
               hover:bg-primary-900 hover:text-white transition-colors duration-200"
             >
               Skip the tour
+            </button>
+          </div>
+        )}
+          {finalMessage && (
+          <div className="flex justify-center w-full mt-4">
+            <button
+              onClick={setFinalMessage}
+              className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
+              hover:bg-primary-900 hover:text-white transition-colors duration-200"
+            >
+              Start another report
+            </button>
+            <button
+              onClick={() => navigate("/")}
+              className="px-4 py-2 border border-appGray-200 rounded-xl 
+              hover:bg-primary-900 hover:text-white transition-colors duration-200"
+            >
+              Go Home
             </button>
           </div>
         )}

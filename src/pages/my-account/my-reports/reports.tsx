@@ -24,6 +24,9 @@ import { useParams } from "react-router-dom";
 import { Tab } from "@headlessui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Pagination from "src/components/reusable/pagination";
+import { Disclosure } from "@headlessui/react";
+import ArrowDown from "src/components/icons/miscs/ArrowDown";
+import ArrowUp from "src/components/icons/miscs/ArrowUp";
 /**
  *
  */
@@ -33,7 +36,7 @@ const Reports = () => {
 
   const userId = jsCookie.get("user_id");
   const { id } = useParams();
-  const { tab } = location.state || 0 ; 
+  const { tab } = location.state || 0;
   const urlParams = new URLSearchParams(location.search);
   const project_name = urlParams.get("project");
   const [reports, setreports] = useState<any[]>([]);
@@ -358,7 +361,7 @@ const Reports = () => {
     <div className="space-y-[20px] w-full z-10">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">
-        Project Hub (Report Management) &gt; {project_name}
+          Project Hub (Report Management) &gt; {project_name}
         </h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/my-projects">
@@ -399,7 +402,7 @@ const Reports = () => {
               <Button
                 type="primary"
                 handleClick={() => {
-                  navigate(`/quick-reports/${id}?project=${project_name}`,{state: reports[0]});
+                  navigate(`/quick-reports/${id}?project=${project_name}`, { state: reports[0] });
                 }}
               >
                 <div className="flex items-center gap-1">Add Resources</div>
@@ -483,145 +486,189 @@ const Reports = () => {
             <Tab.Panel>
               <div className="mt-5 w-full z-10">
                 {reports.length > 0 && (
-                  <div className="overflow-y-auto">
-                    <div className="">
-                      <div className="flex space-x-4">
-                        {/* First Part: File Upload and Paste URL */}
-                        <div className="w-1/2 space-y-4">
-                          <div className="w-full">
-                            <label htmlFor="fullName" className="block text-lg font-semibold">
-                              Report Name :{" "}
-                              <span className="font-normal">{reports[0]?.report_name}</span>
-                            </label>
-                          </div>
+                  <div className="flex space-x-4">
+                    {/* First Part: File Upload and Paste URL */}
+                    <div className="w-full space-y-4">
+                      <div className="w-full flex gap-15">
+                        <label htmlFor="fullName" className="block text-lg font-semibold">
+                          Report Name :{" "}
+                          <span className="font-normal">{reports[0]?.report_name}</span>
+                        </label>
+                        <label htmlFor="fullName" className="block text-lg font-semibold">
+                          Primary Objective :{" "}
+                          <span className="font-normal">{reports[0]?.usecase}</span>
+                        </label>
+                      </div>
 
-                          <div className="w-full">
-                            <label htmlFor="fullName" className="block text-lg  font-semibold">
-                              Primary Objective :{" "}
-                              <span className="font-normal">{reports[0]?.usecase}</span>
-                            </label>
-                          </div>
-
-                          <div className="w-full">
-                            <label htmlFor="fullName" className="block text-lg font-semibold">
-                              Questions:
-                            </label>
-                            {Array.isArray(reports[0]?.question) &&
-                              reports[0]?.question.length > 0 ?
-                              reports[0]?.question.map(
-                                (question: string, index: number) => `${index+1}. ${question}`,
-                              ):('No questions available')}
-                          </div>
-                          <div className="w-full">
-                            <label htmlFor="fullName" className="block text-lg font-semibold">
-                              Report Customization:
-                            </label>
-
-                            <ul className="list-disc pl-6">
-                              <li>
-                                <span className="font-semibold text-lg">Report Tone:</span>
-                                <span className="font-normal"> {reports[0]?.report_tone}</span>
-                              </li>
-                              <li>
-                                <span className="font-semibold text-lg">No. of charts/Tables:</span>
-                                <span className="font-normal"> {reports[0]?.no_of_charts}</span>
-                              </li>
-                              <li>
-                                <span className="font-semibold text-lg">Visual Style:</span>
-                                <span className="font-normal"> {reports[0]?.visual_style}</span>
-                              </li>
-                              <li>
-                                <span className="font-semibold text-lg">Citations:</span>
-                                <span className="font-normal"> {reports[0]?.citations}</span>
-                              </li>
-                              <li>
-                                <span className="font-semibold text-lg">Format:</span>
-                                <span className="font-normal">
-                                  {reports[0]?.format && reports[0]?.format.length > 0
-                                    ? reports[0]?.format.map((item: any) => item).join(", ")
-                                    : "No formats available"}
-                                </span>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-
-                        {/* Second Part: Added Websites and Urls Listing */}
-                        <div className="w-1/2 px-3 flex flex-col">
-                          {/* Added Websites */}
-                          <div className="h-full pl-[28%]">
-                            <div className="border border-appGray-600 rounded-lg h-full flex flex-col p-2">
-                              <div className="rounded-lg p-2 flex-1">
-                                <h6 className="font-semibold mb-1 text-base font-nunito">
-                                  Added Websites
-                                </h6>
-
-                                {reports[0]?.websites && reports[0]?.websites.length > 0 ? (
-                                  <div className="h-[210px] pn_scroller overflow-y-auto p-1">
-                                    {reports[0]?.websites.map((url: any, index: number) => (
-                                      <div key={index}>
-                                        {index !== 0 && (
-                                          <hr className="my-1 border-1 border-appGray-300" />
-                                        )}
-                                        <div className="flex justify-between items-center">
-                                          <a
-                                            href={url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-sm font-nunito cursor-pointer text-blue-600"
-                                          >
-                                            {url}
-                                          </a>
+                      <div className="h-screen w-full mb-10">
+                        <div className="mx-1 w-full divide-y divide-gray-300 bg-white shadow-lg rounded-lg">
+                          {reports.map((report, index) => (
+                            <Disclosure as="div" className="p-3" key={index}>
+                              {({ open }) => (
+                                <>
+                                  <Disclosure.Button className="group flex w-full items-center justify-between">
+                                    <span className="text-base font-semibold text-black">
+                                      {report?.date && report.date !== "2025-01-03"
+                                        ? report.date
+                                        : "3 Jan 2025"}
+                                    </span>
+                                    {open ? (
+                                      <ArrowUp className="size-2" />
+                                    ) : (
+                                      <ArrowDown className="size-2" />
+                                    )}
+                                  </Disclosure.Button>
+                                  <Disclosure.Panel 
+                                  className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
+                                     
+                                    <div className="w-full mt-4">
+                                      <label
+                                        htmlFor="fullName"
+                                        className="block text-base font-semibold"
+                                      >
+                                        Questions:
+                                      </label>
+                                      <div className="ml-3 mt-1">
+                                      {Array.isArray(report?.question) &&
+                                      report?.question.length > 0
+                                        ? report?.question.map(
+                                            (question: string, index: number) =>(
+                                              <div key={index}>
+                                              {index + 1}. {question}
+                                            </div>
+                                            )
+                                          )
+                                        : "No questions available"}
                                         </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                ) : (
-                                  <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
-                                    No websites added.
-                                  </p>
-                                )}
-                              </div>
+                                    </div>
+                                    <div className="flex justify-between my-2">
 
-                              {/* Added Reports Listing */}
-                              <div className="rounded-lg p-2 flex-1">
-                                <h6 className="font-semibold mb-1 text-base font-nunito flex items-center">
-                                  Uploaded files
-                                  {/* <DownloadIcon className="ml-2 cursor-pointer"/> */}
-                                </h6>
+                                    <div className="flex flex-col w-1/2">
 
-                                {Object.keys(reports[0]?.file_data).length > 0 ? (
-                                  <div className="h-[210px] pn_scroller overflow-y-auto pr-1">
-                                    {Object.keys(reports[0]?.file_data).map((key, index) => {
-                                      const fileUrl = reports[0]?.file_data[key];
-                                      if (!fileUrl) return null;
-                                      return (
-                                        <div key={index}>
-                                          {index !== 0 && (
-                                            <hr className="my-1 border-1 border-appGray-300" />
-                                          )}
-                                          <div
-                                            onClick={() => {
-                                              openFileHandler(fileUrl);
-                                            }}
-                                          >
-                                            <IconFile className="cursor-pointer" />
-                                          </div>
-                                          <div className="flex justify-between items-center">
-                                            <p className="text-sm font-nunito">{fileUrl}</p>{" "}
-                                          </div>
+                                    <div className="mt-1">
+                                    <label
+                                      htmlFor="fullName"
+                                      className="block text-base font-semibold"
+                                    >
+                                      Report Customization:
+                                    </label>
+                                    <ul className="list-disc pl-5">
+                                      <li>
+                                        <span className="font-semibold text-base">Report Tone:</span>
+                                        <span className="font-normal">
+                                          {" "}
+                                          {report?.report_tone || "N/A"}
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="font-semibold text-base">
+                                          No. of charts/Tables:
+                                        </span>
+                                        <span className="font-normal">
+                                          {" "}
+                                          {report?.no_of_charts || "N/A"}
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="font-semibold text-base">Visual Style:</span>
+                                        <span className="font-normal">
+                                          {" "}
+                                          {report?.visual_style || "N/A"}
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="font-semibold text-base">Citations:</span>
+                                        <span className="font-normal">
+                                          {" "}
+                                          {report?.citations || "N/A"}
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="font-semibold text-base">Format:</span>
+                                        <span className="font-normal">
+                                          {report?.format && report?.format.length > 0
+                                            ? report?.format.join(", ")
+                                            : "No formats available"}
+                                        </span>
+                                      </li>
+                                    </ul>
+                                    </div>
+                                    </div>
+
+                                    <div className="flex flex-col w-1/2">
+
+                                    <div className="mt-1 ml-2">
+                                      <h6 className="font-semibold mb-1 text-base font-nunito">
+                                        Added Websites
+                                      </h6>
+
+                                      {report?.websites && report?.websites.length > 0 ? (
+                                        <div className="p-1">
+                                          {report?.websites.map((url: any, index: number) => (
+                                            <div key={index}>
+                                              <div className="flex justify-between items-center">
+                                                <a
+                                                  href={url}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="text-sm font-nunito cursor-pointer text-blue-600"
+                                                >
+                                                  {url}
+                                                </a>
+                                              </div>
+                                            </div>
+                                          ))}
                                         </div>
-                                      );
-                                    })}
-                                  </div>
-                                ) : (
-                                  <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                    No file uploaded
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
+                                      ) : (
+                                        <p className="">
+                                          No websites added.
+                                        </p>
+                                      )}
+                                    </div>
+                                    </div>
+
+                                    </div>
+
+
+
+                                    <div className="mt-2">
+                                      <h6 className="font-semibold mb-1 text-base font-nunito flex items-center">
+                                        Uploaded files
+                                      </h6>
+
+                                      {Object.keys(report?.file_data).length > 0 ? (
+                                        <div className="pr-1">
+                                          {Object.keys(report?.file_data).map((key, index) => {
+                                            const fileUrl = report?.file_data[key];
+                                            if (!fileUrl) return null;
+                                            return (
+                                              <div key={index}>
+                                                <div
+                                                  onClick={() => {
+                                                    openFileHandler(fileUrl);
+                                                  }}
+                                                >
+                                                  <IconFile className="cursor-pointer" />
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                  <p className="text-sm font-nunito">{fileUrl}</p>{" "}
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      ) : (
+                                        <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                          No file uploaded
+                                        </p>
+                                      )}
+                                    </div>
+
+                                  </Disclosure.Panel>
+                                </>
+                              )}
+                            </Disclosure>
+                          ))}
                         </div>
                       </div>
                     </div>
