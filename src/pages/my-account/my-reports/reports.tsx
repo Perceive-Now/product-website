@@ -650,8 +650,8 @@ const Reports = () => {
                                                 >
                                                   <IconFile className="cursor-pointer" />
                                                 </div>
-                                                <div className="flex justify-between items-center">
-                                                  <p className="text-sm font-nunito">{fileUrl}</p>{" "}
+                                                <div className="w-full">
+                                                  <p className="text-[12px] text-wrap font-nunito">{fileUrl}</p>{" "}
                                                 </div>
                                               </div>
                                             );
