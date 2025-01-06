@@ -26,14 +26,12 @@ import SelectBox from "./selectBox";
 
 const Texts = [
   "",
-  "For example, single page summaries",
-  "For example, stakeholder",
-  "For example, specific reports",
-  "For example, investor centric insights",
-  "For example, single page summaries",
-  "For example, stakeholder",
-  "For example, specific reports",
-  "For example, investor centric insights",
+  "single page summaries",
+  "stakeholder specific reports",
+  "investor centric insights",
+  "single page summaries",
+  "stakeholder specific reports",
+  "investor centric insights",
 ];
 
 const listContent = [
