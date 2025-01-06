@@ -26,6 +26,7 @@ import {
   updateChatQuery,
   setCompanyName,
   updateButtonSelection,
+  setUploadStatus
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 import { useNavigate } from "react-router-dom";
@@ -307,6 +308,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   );
                   setDelayLoading(false);
                 }, 1500);
+                dispatch(setUploadStatus(true));
                 setFile("false");
               } else {
                 const optionsMap: any = {
@@ -497,6 +499,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                   hasbutton: true,
                 }),
               );
+              dispatch(setUploadStatus(false));
+
             } catch (error) {
               dispatch(
                 setVSChats({

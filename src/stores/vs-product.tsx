@@ -20,6 +20,7 @@ interface VSProduct {
   DataSources?: any;
   ReportTemplate?: any;
   pitchdeck_data: any;
+  uploadStatus: boolean;
 }
 
 const initialState: VSProduct = {
@@ -47,6 +48,7 @@ const initialState: VSProduct = {
   DataSources: {},
   ReportTemplate: {},
   pitchdeck_data: {},
+  uploadStatus: false,
 };
 
 const formatJsonResponse = (inputString: string): any => {
@@ -197,6 +199,9 @@ export const VSProductSlice = createSlice({
     setCurrentStep: (state, action: PayloadAction<number>) => {
       state.Step = action.payload;
     },
+    setUploadStatus: (state, action: PayloadAction<boolean>) => {
+      state.uploadStatus = action.payload;
+    },
     updatePitchdeckData: (
       state,
       action: PayloadAction<{
@@ -248,19 +253,19 @@ export const VSProductSlice = createSlice({
         //   state.chats[state.chats.length - 1].query = response;
         //   state.chats.push({ query: "",  answer: "" ,options:option});
         // }
-        else if (Step == 4) {
-          if (DataSources) state.DataSources = DataSources;
-          console.log("data sources",DataSources);
-          state.chats[state.chats.length - 1].query = response;
-          state.chats.push({ query: "",  answer: "" ,options:["Continue"]});
-        } else if (Step == 5) {
-          console.log("step 6 response", response);
-          state.ReportTemplate = response;
-          state.chats[
-            state.chats.length - 1
-          ].query = `Almost there! 🚀 The final stencil of your report is ready in the right pane. Fine-tune them to match your vision before submission.\n
-Ready to proceed? Confirm now to generate your report
-`;
+          else if (Step == 4) {
+            if (DataSources) state.DataSources = DataSources;
+            console.log("data sources",DataSources);
+            state.chats[state.chats.length - 1].query = response;
+            state.chats.push({ query: "",  answer: "" ,options:["Continue"]});
+          } else if (Step == 5) {
+            console.log("step 6 response", response);
+            state.ReportTemplate = response;
+            state.chats[
+              state.chats.length - 1
+            ].query = `Almost there! 🚀 The final stencil of your report is ready in the right pane. Fine-tune them to match your vision before submission.\n
+  Ready to proceed? Confirm now to generate your report
+  `;
           // state.chats.push({ query: "If everything looks good. Please confirm to generate report.",  answer: "" });
           state.chats.push({ query: "",  answer: "" ,options:["Submit"]});
         } else if (response.includes("//")) {
@@ -335,6 +340,7 @@ export const {
   resetChats,
   setprevres,
   setCurrentStep,
+  setUploadStatus,
   setCompanyName,
   updatePitchdeckData,
 } = VSProductSlice.actions;

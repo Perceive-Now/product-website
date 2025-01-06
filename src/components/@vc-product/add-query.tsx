@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import { LoaderIcon } from "react-hot-toast";
 import { CrossIcon } from "../icons";
+import { useAppSelector } from "src/hooks/redux";
 import IconFile from "../icons/side-bar/icon-file";
 interface Props {
   sendQuery: (query: string, answer: string, file?: File, button?:boolean) => void;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
+  const { uploadStatus } = useAppSelector((state) => state.VSProduct);
   const textareaRef = useRef<any>(null);
   const fileInputRef = useRef<any>(null);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
@@ -79,16 +81,20 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
         <textarea
           ref={textareaRef}
           onChange={(e) => {setanswer(e.target.value),console.log(e.target.value)}}
+          disabled={uploadStatus}
           value={answer}
           onKeyDown={handleKeyDown}
           className={classNames(
             "appearance-none leading-tight w-full h-full p-2 border-none rounded-md bg-white placeholder:text-appGray-600 focus:border-none focus-visible:border-none focus:outline-none focus:ring-0",
+            uploadStatus?'cursor-not-allowed':''
           )}
           placeholder="Type here"
         />
       </div>
 
       <div className="bg-appGray-100 rounded-b-lg p-2 flex items-center">
+        {uploadStatus ? ( 
+        <>
         <button className="inline-flex gitems-center" onClick={handleAttachClick}>
           <IconFile /> <span className="mr-2 ml-1 relative">Attach</span>
         </button>
@@ -108,6 +114,10 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
             <div className="text-red-500 text-sm mr-2">{error}</div>
           </div>
         )}
+        </>
+      ):(
+        <div className="py-1"></div>
+      )}
         <div className="absolute right-2">
           <button
             className="bg-primary-900 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer"
