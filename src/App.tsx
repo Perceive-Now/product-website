@@ -156,9 +156,9 @@ function App() {
             </div>
           </div>
         ));
-      }, index * 8000);
+      }, index * 30000);
     });
-  }, [location]);
+  }, []);
 
   return (
     <>
