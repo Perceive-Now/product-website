@@ -35,14 +35,13 @@ const allOptions = {
     "Citation Style",
   ],
   knowNowChat: [
-    "Hyper-specialized for market and patent",
-    "Delivers strategic recommendations",
-    "Interactive visual-first insights",
-    "Predictive scenario modeling",
-    "Fine-tuned for key industries",
-    "Streamlined for team collaboration",
-    "Context-aware responses",
-    "Predictive Modeling",
+    "Basic Responses",
+    "Analytical Insights",
+    "Visual Data Representation",
+    "Interactive Analysis",
+    "Comprehensive Analytics",
+    "Real-time Web Search",
+    "Predictive Modeling"
   ],
   quickViewReports: [
     "Single-Page Summaries",
@@ -73,17 +72,7 @@ const allOptions = {
 
 const descriptions = {
   agents: [
-    "Detailed reports to evaluate startups, assess risks, and identify growth opportunities.",
-    "Insights to optimize and manage investment portfolios effectively.",
-    "Data-driven strategies to help raise funds from investors with confidence.",
-    "Actionable insights to understand markets and stay ahead of competitors.",
-    "Reports focused on innovation, research, and development trends in your industry.",
-    "Data to guide product development and improve engineering processes.",
-    "Insights to craft marketing strategies and drive sales performance.",
-    "Financial data and analysis for informed decision-making and planning.",
-    "Reports focused on legal and compliance requirements for smooth operations.",
-    "Fully customizable reports based on unique needs and specifications.",
-    "Strategic reports for high-level corporate growth and decision-making.",
+    "Our AI-powered agents act as your team of specialized experts, delivering in-depth analysis, personalized strategies, and automated reports. Make informed decisions and accelerate your growth.",
   ],
   datasets: [
     "Allows users to upload and integrate their own datasets for analysis.",
@@ -101,20 +90,10 @@ const descriptions = {
     "Fully flexible layouts and advanced design options for unique needs.",
   ],
   reportContentCustomization: [
-    "Our report content customization options allow you to create reports that reflect your brand and style.",
-    "Our report content customization options allow you to create reports that reflect your brand and style.",
-    "Our report content customization options allow you to create reports that reflect your brand and style.",
-    "Our report content customization options allow you to create reports that reflect your brand and style.",
+    "Tailor your reports with customizable tones, visuals, and formats to match your specific needs.",
   ],
   knowNowChat: [
-    "AI tool specializing in delivering insights from market and patent datasets.",
-    "Provides actionable suggestions based on in-depth analysis.",
-    "Presents insights through interactive, visual dashboards for easy understanding.",
-    "Simulates and predicts outcomes based on data analysis.",
-    "Optimized insights for industries like healthcare, aerospace, and technology.",
-    "Designed for team-wide use, making collaboration seamless.",
-    "AI adapts its answers to your specific context and needs.",
-    "Forecasts trends and opportunities with high accuracy.",
+    "Expert AI chat assistant for IP and market analysis.",
   ],
   quickViewReports: [
     "Condensed reports that highlight only the most important details.",
@@ -123,12 +102,7 @@ const descriptions = {
     "Designed to address the specific needs of various stakeholders.",
   ],
   explainability: [
-    "Explains statistical data clearly for better understanding.",
-    "Includes references for transparency and credibility.",
-    "Breaks down complex data into logical, easy-to-follow layers.",
-    "Enables customization of data and metrics for tailored analysis.",
-    "In-depth data exploration for power users seeking advanced insights.",
-    "Provides clear explanations for forecasting methodologies.",
+    "Understandable explanations of AI-driven outcomes, for transparency and trust",
   ],
   templates: [
     "Our templates are designed to provide you with the most accurate and up-to-date information available.",
@@ -150,5 +124,119 @@ const descriptions = {
 };
 
 export { descriptions };
+
+const subAgentsDescription = {
+  agents: {
+    "Startup diligence": [
+      "Seamlessly evaluate startups, from uncovering risks to making informed investment choices.",
+    ],
+    "Portfolio support": [
+      "Continuously enhance your portfolio by monitoring performance and exploring diversification strategies.",
+    ],
+    "Fundraising strategy": [
+      "Strategically navigate fundraising, from identifying investors to securing essential funding.",
+    ],
+    "Market strategy": [
+      "Comprehensively develop market approaches, from analyzing trends to maximizing product potential.",
+    ],
+    "Technology & R&D": [
+      "Proactively stay ahead with insights into emerging technologies and support for innovation initiatives.",
+    ],
+    "Product & Engineering": [
+      "Efficiently accelerate product development, from optimizing processes to aligning with market demands.",
+    ],
+    "Marketing & Sales": [
+      "Effectively drive revenue growth, from crafting campaigns to closing deals with precision.",
+    ],
+    "Finance & Strategy": [
+      "Confidently make financial decisions through detailed analysis and strategic insights.",
+    ],
+    "Legal & Compliance": [
+      "Easily navigate legal landscapes, from understanding regulations to ensuring compliance.",
+    ],
+    "Report on Anything": [
+      "Instantly access customized, data-rich reports tailored to your business needs.",
+    ],
+    "Corporate Development": [
+      "Strategically invest by identifying promising startups and managing venture capital endeavors.",
+    ],
+  },
+  reportDesignCustomization: {
+    "Font & Color Customization": [
+      "• Standard and expanded font selections.",
+      "• Preset and customizable color schemes.",
+    ],
+    "Logo & Branding Integration": [
+      "• Single and multiple logo placements.",
+      "• Integration of various brand assets.",
+    ],
+    "Layout & Design Flexibility": [
+      "• Layout adjustments.",
+      "• Complete template restructuring.",
+      "• Advanced design elements.",
+    ],
+  },
+  knowNowChat: {
+    "Basic Responses": [
+      "Delivers straightforward answers to direct questions.",
+    ],
+    "Analytical Insights": [
+      "Provides core insights through targeted analytics.",
+    ],
+    "Visual Data Representation": [
+      "Offers engaging visuals, graphs, trend forecasts, and more.",
+    ],
+    "Interactive Analysis": [
+      "Combines advanced visuals with interactive, data-driven insights.",
+    ],
+    "Comprehensive Analytics": [
+      "Supplies in-depth analysis with interactive tools for strategic decision-making.",
+    ],
+    "Real-time Web Search": [
+      "Access the latest online information, ensuring your analyses are always current and comprehensive.",
+    ],
+    "Predictive Modeling": [
+      "Forecast future market behaviors, aiding in proactive strategy development.",
+    ],
+  },
+  quickViewReports: {
+    "Single-Page Summaries": [
+      "Concise overviews designed for quick and effective decision-making.",
+    ],
+    "Simplified Tone": [
+      "Friendly, jargon-free narratives that make complex data accessible to everyone.",
+    ],
+    "Investor-Centric Insights": [
+      "Tailored content focusing on key metrics, growth areas, and actionable recommendations for investment success.",
+    ],
+    "Stakeholder-Specific Reports": [
+      "Provide tailored summaries for different stakeholders, ensuring relevance and clarity for diverse audiences.",
+    ],
+  },
+  explainability: {
+    "Basic Stat Explanations": [
+      "Simplified descriptions of key statistics, making data accessible to everyone.",
+    ],
+    "Source Citations": [
+      "Transparent linking to data origins for credibility and accountability.",
+    ],
+    "Logical Breakdown Layers": [
+      "Multi-step insights that dissect the reasoning behind conclusions.",
+    ],
+    "Editable Data & Metrics": [
+      "Flexibility to add, modify, or adjust data points and metrics to align with specific needs.",
+    ],
+    "Advanced Multi-Layered Insights": [
+      "Comprehensive explanations that provide depth and context for complex data interpretations.",
+    ],
+    "Forecasting Transparency": [
+      "Clear methodologies behind predictions, ensuring trust in forward-looking analytics.",
+    ],
+  },
+};
+
+export {
+  subAgentsDescription
+}
 
 export default allOptions;

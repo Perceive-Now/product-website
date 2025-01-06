@@ -23,6 +23,8 @@ import { AppConfig } from "src/config/app.config";
 
 // images
 import perceiveNowImage from "../../../assets/images/pn.svg";
+import quotes from "./_constants/quote";
+import backgroundImage from "./_assets/background.png";
 
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
@@ -102,19 +104,19 @@ export default function SignupPage() {
 
     // Signup user
     const response = await dispatch(signUpUser(params)).unwrap();
-    console.log(response)
+    console.log(response);
     if (response.success) {
       if (callbackPath) {
         navigate(callbackPath);
       } else {
         toast.success("User is registered", {
-          position: "top-right"
+          position: "top-right",
         });
         navigate("/signup/confirm");
       }
     } else {
       toast.error(response.message, {
-        position: "top-right"
+        position: "top-right",
       });
     }
 
@@ -144,53 +146,64 @@ export default function SignupPage() {
     }
   }, [invitedData, navigate]);
 
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+
+  useEffect(() => {
+    const quoteInterval = setInterval(() => {
+      setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
+    }, 5000);
+
+    return () => clearInterval(quoteInterval);
+  }, []);
+
   return (
-    <div className="flex h-screen lg:min-h-screen justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
-      <form onSubmit={handleSubmit(handleLogin)} className="">
-        <div className="w-full p-1 md:p-0 md:w-[400px]">
-          <img
-            src={perceiveNowImage}
-            alt="Welcome to Perceive Now"
-            className="w-[3rem] h-[3rem] mb-1"
-          />
-          <h1 className="text-2xl font-semibold text-[#373D3F] text-left">
-            Enter your email to sign up.
-          </h1>
-          <p className="text-left text-[#373D3F] mt-2 mb-1">
-            <span>Already have an account?</span>
-            <Link
-              to={"/login"}
-              className={classNames("ml-1 font-bold text-primary-500", {
-                "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
-              })}
-              aria-disabled={isSubmitting}
-            >
-              Sign In
-            </Link>
-          </p>
-          <div>
-            <fieldset>
-              <div className="mt-0.5 rounded-md shadow-sm">
-                <input
-                  id="email"
-                  {...register("email")}
-                  type="text"
-                  className={classNames(
-                    "appearance-none block w-full px-2 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                    errors.email
-                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                  )}
-                  placeholder="Email*"
-                />
-              </div>
+    <div className="flex h-screen lg:min-h-screen justify-center items-center bg-gradient-to-b from-white to-[#F7F5FF]">
+      <div className="flex flex-col items-center flex-[1.5]">
+        <form onSubmit={handleSubmit(handleLogin)} className="">
+          <div className="w-full p-1 md:p-0 md:w-[400px]">
+            <img
+              src={perceiveNowImage}
+              alt="Welcome to Perceive Now"
+              className="w-[3rem] h-[3rem] mb-1"
+            />
+            <h1 className="text-2xl font-semibold text-[#373D3F] text-left">
+              Enter your email to sign up.
+            </h1>
+            <p className="text-left text-[#373D3F] mt-2 mb-1">
+              <span>Already have an account?</span>
+              <Link
+                to={"/login"}
+                className={classNames("ml-1 font-bold text-primary-500", {
+                  "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
+                })}
+                aria-disabled={isSubmitting}
+              >
+                Sign In
+              </Link>
+            </p>
+            <div>
+              <fieldset>
+                <div className="mt-0.5 rounded-md shadow-sm">
+                  <input
+                    id="email"
+                    {...register("email")}
+                    type="text"
+                    className={classNames(
+                      "appearance-none block w-full px-2 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                      errors.email
+                        ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    )}
+                    placeholder="Email*"
+                  />
+                </div>
 
-              {errors.email?.message && (
-                <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
-              )}
-            </fieldset>
+                {errors.email?.message && (
+                  <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
+                )}
+              </fieldset>
 
-            {/* <fieldset className="mt-2">
+              {/* <fieldset className="mt-2">
               <div className="mt-0.5 rounded-md shadow-sm relative">
                 <input
                   id="password"
@@ -219,7 +232,7 @@ export default function SignupPage() {
                 <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
               )}
             </fieldset> */}
-            {/* <fieldset className="mt-2">
+              {/* <fieldset className="mt-2">
               <div className="mt-0.5 rounded-md shadow-sm relative">
                 <input
                   id="password"
@@ -240,81 +253,81 @@ export default function SignupPage() {
               )}
             </fieldset> */}
 
-            <fieldset className="mt-2">
-              <div className="mt-0.5 rounded-md shadow-sm relative">
-                <input
-                  id="password"
-                  {...register("password")}
-                  type={isPasswordVisible ? "text" : "password"}
-                  className={classNames(
-                    "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                    errors.password
-                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+              <fieldset className="mt-2">
+                <div className="mt-0.5 rounded-md shadow-sm relative">
+                  <input
+                    id="password"
+                    {...register("password")}
+                    type={isPasswordVisible ? "text" : "password"}
+                    className={classNames(
+                      "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                      errors.password
+                        ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    )}
+                    placeholder="Password"
+                  />
+
+                  {passwordValue && (
+                    <div
+                      className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
+                      onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    >
+                      {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
+                    </div>
                   )}
-                  placeholder="Password"
-                />
+                </div>
 
-                {passwordValue && (
-                  <div
-                    className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
-                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  >
-                    {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
-                  </div>
+                {errors.password?.message && (
+                  <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
                 )}
-              </div>
-
-              {errors.password?.message && (
-                <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
-              )}
-            </fieldset>
-          </div>
-          <div className="my-2">
-            <label className="text-[15px] text-[#373D3F] font-medium">
-              By continuing, I agree to Perceive Now&apos;s{" "}
-              <a
-                target="_blank"
-                className="text-inherit underline"
-                rel="noreferrer noopener"
-                href={`${WEBSITE_URL}/privacy-policy`}
+              </fieldset>
+            </div>
+            <div className="my-2">
+              <label className="text-[15px] text-[#373D3F] font-medium">
+                By continuing, I agree to Perceive Now&apos;s{" "}
+                <a
+                  target="_blank"
+                  className="text-inherit underline"
+                  rel="noreferrer noopener"
+                  href={`${WEBSITE_URL}/privacy-policy`}
+                >
+                  Privacy Policy
+                </a>{" "}
+                and{" "}
+                <a
+                  target="_blank"
+                  className="text-inherit underline"
+                  rel="noreferrer noopener"
+                  href={`${WEBSITE_URL}/terms`}
+                >
+                  Terms of Use
+                </a>
+              </label>
+            </div>
+            <div className="flex justify-end w-full mt-2">
+              <Button
+                classname="w-[160px]"
+                rounded="full"
+                htmlType="submit"
+                disabled={!emailValue}
+                loading={isSubmitting}
+                type="primary"
               >
-                Privacy Policy
-              </a>{" "}
-              and{" "}
-              <a
-                target="_blank"
-                className="text-inherit underline"
-                rel="noreferrer noopener"
-                href={`${WEBSITE_URL}/terms`}
-              >
-                Terms of Use
-              </a>
-            </label>
-          </div>
-          <div className="flex justify-end w-full mt-2">
-            <Button
-              classname="w-[160px]"
-              rounded="full"
-              htmlType="submit"
-              disabled={!emailValue}
-              loading={isSubmitting}
-              type="primary"
-            >
-              <span className="font-[400]">Continue</span>
-            </Button>
-          </div>
-          {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
+                <span className="font-[400]">Continue</span>
+              </Button>
+            </div>
+            {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
 
-          {/* <GoogleAuth
+            {/* <GoogleAuth
             type="signup"
             isAgree={isAgree}
             title="Sign up with Google"
             isSubmitting={isGoogleSubmitting}
             setIsSubmitting={setIsGoogleSubmitting}
           /> */}
-        </div>
-        {/* <label className="mt-2.5 flex items-center justify-center gap-1">
+          </div>
+          {/* <label className="mt-2.5 flex items-center justify-center gap-1">
           <CheckboxInput
             onChange={() => setIsAgree(!isAgree)}
             style={{
@@ -332,7 +345,22 @@ export default function SignupPage() {
             </a>
           </p>
         </label> */}
-      </form>
+        </form>
+      </div>
+      <div className="hidden xl:flex flex-[1] flex-col gap-y-2 justify-center min-h-screen px-5"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+        }}
+      >
+        <p>⭐️⭐️⭐️⭐️⭐️</p>
+        <p className={`font-bold transition-all duration-500`}>{quotes[currentQuoteIndex]}</p>
+        <div className="flex flex-col gap-y-[2px]">
+          <h3>Dr. Vinitha TU</h3>
+          <p>Founder</p>
+          <p>Perceive Now</p>
+        </div>
+      </div>
     </div>
   );
 }

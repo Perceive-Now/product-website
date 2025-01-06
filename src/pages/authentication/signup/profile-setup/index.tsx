@@ -10,6 +10,7 @@ import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/u
 import toast from "react-hot-toast";
 import { useAppSelector } from "src/hooks/redux";
 import { Countries } from "src/utils/constants";
+import { roles } from "./_constants/roles";
 
 type FormValues = {
   fullName: string;
@@ -261,10 +262,9 @@ const ProfileSetup: React.FC = () => {
                   <option value="" disabled>
                     Select role
                   </option>
-                  <option value="Founder">Founder</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Developer">Developer</option>
-                  <option value="Other">Other</option>
+                  {roles.map((role) => (
+                    <option key={role} value={role}>{role}</option>
+                  ))}
                 </select>
               )}
             />

@@ -89,6 +89,7 @@ import TeamMangementScreen from "./pages/authentication/signup/team-mangement";
 import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-confirmation";
 import VerificationSuccess from "./pages/authentication/signup/verification-success";
 import Finish from "./pages/authentication/signup/finish";
+import TakeoffScreen from "./pages/my-account/my-reports/takeoffScreen";
 // import MadLibEditor from "./test";
 
 /**
@@ -178,6 +179,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerificationConfirm />} />
           <Route path="/signup/confirm" element={<VerificationConfirm />} />
+          <Route path="/signup/report" element={<TakeoffScreen />} />
         </Route>
 
         {/* Share */}
@@ -197,6 +199,7 @@ function App() {
           <Route path="/signup/team" element={<TeamMangementScreen />} />
           <Route path="/signup/review" element={<ReviewConfirmationScreen />} />
           <Route path="/signup/finish" element={<Finish />} />
+     
 
           {/* Actual product pages */}
 

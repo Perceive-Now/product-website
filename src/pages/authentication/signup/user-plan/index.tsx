@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 
-import allOptions from "./_constants/options";
+import allOptions, { subAgentsDescription } from "./_constants/options";
 import { useNavigate } from "react-router-dom";
 
 import checkIcon from "./_assets/check-icon.svg";
@@ -10,8 +10,15 @@ import { Switch } from "@headlessui/react";
 import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
 import toast from "react-hot-toast";
 
+import infoSvg from "./_assets/info-icon.svg";
+
 import { descriptions } from "./_constants/options";
 import Modal from "src/components/reusable/modal";
+import {
+  description,
+  ReportContentCustomizationModal,
+  ReportDesignCustomizationModal,
+} from "./_constants/tier-modal";
 
 interface PlanData {
   monthlyPrice: number;
@@ -167,12 +174,26 @@ const UserPlan = () => {
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<"Launch" | "Accelerate" | "Ascend">("Launch");
   const [planType, setPlanType] = useState<"monthly" | "annually">("monthly");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // for description modal
+  const [isPriceModal, setIsPriceModal] = useState(false); // for price modal
+  const [subAgentModal, setSubAgentModal] = useState(false); // for sub agent modal
+
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [currentReportModal, setCurrentReportModal] = useState<React.ReactNode | null>(null);
+
+  const [subAgentDescription, setSubAgentDescription] = useState<string | null>(
+    description.launch[1],
+  );
+  const [priceDescription, setPriceDescription] = useState<string | null>(description.launch[0]);
   const [currentDescription, setCurrentDescription] = useState<string | null>(null);
 
   const openDescriptionModal = (field: keyof typeof descriptions) => {
     setCurrentDescription(descriptions[field].join("\n")); // Join the array of descriptions for display
     setIsModalOpen(true);
+  };
+
+  const togglePriceModal = () => {
+    setIsPriceModal(!isPriceModal);
   };
 
   const handleNext = async () => {
@@ -194,7 +215,9 @@ const UserPlan = () => {
 
       const result = await updateUserProfile(values);
       if (result.status === 200) {
-        toast.success("Plan selected successfully");
+        toast.success("Plan selected successfully" , {
+          position: "top-right"
+        });
         navigate("/signup/team");
       } else {
         toast.error("An error occurred. Please try again.");
@@ -239,7 +262,28 @@ const UserPlan = () => {
                   key={plan}
                   className={`col-span-1 flex flex-col items-center justify-center gap-y-3`}
                 >
-                  <div className="font-semibold">{plan}</div>
+                  <div className="font-semibold">
+                    {plan}
+
+                    <img
+                      src={infoSvg}
+                      className="w-[13px] h-[13px] cursor-pointer inline-block ml-1"
+                      onClick={() => {
+                        switch (plan.toLowerCase()) {
+                          case "launch":
+                            setPriceDescription(description.launch[0]);
+                            break;
+                          case "accelerate":
+                            setPriceDescription(description.accelerate[0]);
+                            break;
+                          case "ascend":
+                            setPriceDescription(description.ascend[0]);
+                            break;
+                        }
+                        setIsPriceModal(true);
+                      }}
+                    />
+                  </div>
                   <div>
                     $
                     {planType === "monthly"
@@ -268,7 +312,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("agents")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -277,6 +321,70 @@ const UserPlan = () => {
                     <div className="grid grid-cols-5">
                       <div className="col-span-2">
                         <span className="text-sm text-[#373D3F]">{option}</span>
+                        <img
+                          src={infoSvg}
+                          className="w-[13px] h-[13px] cursor-pointer inline-block ml-1"
+                          onClick={() => {
+                            switch (option) {
+                              case "Startup diligence":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Startup diligence"][0],
+                                );
+                                break;
+                              case "Portfolio support":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Portfolio support"][0],
+                                );
+                                break;
+                              case "Fundraising strategy":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Fundraising strategy"][0],
+                                );
+                                break;
+                              case "Market strategy":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Market strategy"][0],
+                                );
+                                break;
+                              case "Technology & R&D":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Technology & R&D"][0],
+                                );
+                                break;
+                              case "Product & Engineering":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Product & Engineering"][0],
+                                );
+                                break;
+                              case "Marketing & Sales":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Marketing & Sales"][0],
+                                );
+                                break;
+                              case "Finance & Strategy":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Finance & Strategy"][0],
+                                );
+                                break;
+                              case "Legal & Compliance":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Legal & Compliance"][0],
+                                );
+                                break;
+                              case "Report on Anything":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Report on Anything"][0],
+                                );
+                                break;
+                              case "Corporate Development":
+                                setSubAgentDescription(
+                                  subAgentsDescription.agents["Corporate Development"][0],
+                                );
+                                break;
+                            }
+                            setSubAgentModal(true);
+                          }}
+                        />
                       </div>
                       <div className="col-span-1 place-items-center">
                         {/* render check icon for Launch */}
@@ -307,7 +415,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("datasets")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -343,10 +451,16 @@ const UserPlan = () => {
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">
                 Report Design Customization
                 <span
-                  onClick={() => openDescriptionModal("reportDesignCustomization")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img
+                    src={infoSvg}
+                    className="w-2 h-2 inline-block ml-1"
+                    onClick={() => {
+                      setIsReportModalOpen(true);
+                      setCurrentReportModal(ReportDesignCustomizationModal);
+                    }}
+                  />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -355,6 +469,37 @@ const UserPlan = () => {
                     <div className="grid grid-cols-5">
                       <div className="col-span-2">
                         <span className="text-sm text-[#373D3F]">{option}</span>
+
+                        <img
+                          src={infoSvg}
+                          className="w-[13px] h-[13px] cursor-pointer inline-block ml-1"
+                          onClick={() => {
+                            switch (option) {
+                              case "Font & Color Customization":
+                                setSubAgentDescription(
+                                  subAgentsDescription.reportDesignCustomization[
+                                    "Font & Color Customization"
+                                  ].join("\n"),
+                                );
+                                break;
+                              case "Logo & Branding Integration":
+                                setSubAgentDescription(
+                                  subAgentsDescription.reportDesignCustomization[
+                                    "Logo & Branding Integration"
+                                  ].join("\n"),
+                                );
+                                break;
+                              case "Layout & Design Flexibility":
+                                setSubAgentDescription(
+                                  subAgentsDescription.reportDesignCustomization[
+                                    "Layout & Design Flexibility"
+                                  ].join("\n"),
+                                );
+                                break;
+                            }
+                            setSubAgentModal(true);
+                          }}
+                        />
                       </div>
                       <div className="col-span-1 place-items-center">
                         {/* render check icon for Launch */}
@@ -381,6 +526,53 @@ const UserPlan = () => {
               </div>
             </div>
 
+            {/* // reportContentCustomization */}
+            <div className="mt-5">
+              <h2 className="text-lg text-[#373D3F] font-semibold mb-2">
+                Report Content Customization
+                <span className="text-sm text-[#373D3F] cursor-pointer">
+                  <img
+                    src={infoSvg}
+                    className="w-2 h-2 inline-block ml-1"
+                    onClick={() => {
+                      setIsReportModalOpen(true);
+                      setCurrentReportModal(ReportContentCustomizationModal);
+                    }}
+                  />
+                </span>
+              </h2>
+              <div className="flex flex-col gap-2">
+                {allOptions.reportContentCustomization.map((option) => (
+                  <div key={option}>
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-2">
+                        <span className="text-sm text-[#373D3F]">{option}</span>
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for Launch */}
+                        {planValues["Launch"].reportContentCustomization.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for Accelerate */}
+                        {planValues["Accelerate"].reportContentCustomization.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                      <div className="col-span-1 place-items-center">
+                        {/* render check icon for Ascend */}
+                        {planValues["Ascend"].reportContentCustomization.includes(option) && (
+                          <img src={checkIcon} />
+                        )}
+                      </div>
+                    </div>
+                    <hr className="mt-1" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* // knowNowChat */}
             <div className="mt-5">
               <h2 className="text-lg text-[#373D3F] font-semibold mb-2">
@@ -389,7 +581,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("knowNowChat")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -398,6 +590,51 @@ const UserPlan = () => {
                     <div className="grid grid-cols-5">
                       <div className="col-span-2">
                         <span className="text-sm text-[#373D3F]">{option}</span>
+
+                        <img
+                          src={infoSvg}
+                          className="w-[13px] h-[13px] cursor-pointer inline-block ml-1"
+                          onClick={() => {
+                            switch (option) {
+                              case "Basic Responses":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Basic Responses"][0],
+                                );
+                                break;
+                              case "Analytical Insights":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Analytical Insights"][0],
+                                );
+                                break;
+                              case "Visual Data Representation":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Visual Data Representation"][0],
+                                );
+                                break;
+                              case "Interactive Analysis":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Interactive Analysis"][0],
+                                );
+                                break;
+                              case "Comprehensive Analytics":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Comprehensive Analytics"][0],
+                                );
+                                break;
+                              case "Real-time Web Search":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Real-time Web Search"][0],
+                                );
+                                break;
+                              case "Predictive Modeling":
+                                setSubAgentDescription(
+                                  subAgentsDescription.knowNowChat["Predictive Modeling"][0],
+                                );
+                                break;
+                            }
+                            setSubAgentModal(true);
+                          }}
+                        />
                       </div>
                       <div className="col-span-1 place-items-center">
                         {/* render check icon for Launch */}
@@ -432,7 +669,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("quickViewReports")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -441,6 +678,40 @@ const UserPlan = () => {
                     <div className="grid grid-cols-5">
                       <div className="col-span-2">
                         <span className="text-sm text-[#373D3F]">{option}</span>
+
+                        <img
+                          src={infoSvg}
+                          className="w-[13px] h-[13px] cursor-pointer inline-block ml-1"
+                          onClick={() => {
+                            switch (option) {
+                              case "Single-Page Summaries":
+                                setSubAgentDescription(
+                                  subAgentsDescription.quickViewReports["Single-Page Summaries"][0],
+                                );
+                                break;
+                              case "Simplified Tone":
+                                setSubAgentDescription(
+                                  subAgentsDescription.quickViewReports["Simplified Tone"][0],
+                                );
+                                break;
+                              case "Investor-Centric Insights":
+                                setSubAgentDescription(
+                                  subAgentsDescription.quickViewReports[
+                                    "Investor-Centric Insights"
+                                  ][0],
+                                );
+                                break;
+                              case "Stakeholder-Specific Reports":
+                                setSubAgentDescription(
+                                  subAgentsDescription.quickViewReports[
+                                    "Stakeholder-Specific Reports"
+                                  ][0],
+                                );
+                                break;
+                            }
+                            setSubAgentModal(true);
+                          }}
+                        />
                       </div>
                       <div className="col-span-1 place-items-center">
                         {/* render check icon for Launch */}
@@ -475,7 +746,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("explainability")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -484,6 +755,52 @@ const UserPlan = () => {
                     <div className="grid grid-cols-5">
                       <div className="col-span-2">
                         <span className="text-sm text-[#373D3F]">{option}</span>
+
+                        <img
+                          src={infoSvg}
+                          className="w-[13px] h-[13px] cursor-pointer inline-block ml-1"
+                          onClick={() => {
+                            switch (option) {
+                              case "Basic Stat Explanations":
+                                setSubAgentDescription(
+                                  subAgentsDescription.explainability["Basic Stat Explanations"][0],
+                                );
+                                break;
+                              case "Source Citations":
+                                setSubAgentDescription(
+                                  subAgentsDescription.explainability["Source Citations"][0],
+                                );
+                                break;
+                              case "Logical Breakdown Layers":
+                                setSubAgentDescription(
+                                  subAgentsDescription.explainability[
+                                    "Logical Breakdown Layers"
+                                  ][0],
+                                );
+                                break;
+                              case "Editable Data & Metrics":
+                                setSubAgentDescription(
+                                  subAgentsDescription.explainability["Editable Data & Metrics"][0],
+                                );
+                                break;
+                              case "Advanced Multi-Layered Insights":
+                                setSubAgentDescription(
+                                  subAgentsDescription.explainability[
+                                    "Advanced Multi-Layered Insights"
+                                  ][0],
+                                );
+                                break;
+                              case "Forecasting Transparency":
+                                setSubAgentDescription(
+                                  subAgentsDescription.explainability[
+                                    "Forecasting Transparency"
+                                  ][0],
+                                );
+                                break;
+                            }
+                            setSubAgentModal(true);
+                          }}
+                        />
                       </div>
                       <div className="col-span-1 place-items-center">
                         {/* render check icon for Launch */}
@@ -518,7 +835,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("templates")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -557,7 +874,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("dynamicSectionCustomization")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -600,7 +917,7 @@ const UserPlan = () => {
                   onClick={() => openDescriptionModal("reportFormats")}
                   className="text-sm text-[#373D3F] cursor-pointer"
                 >
-                  (What's this?)
+                  <img src={infoSvg} className="w-2 h-2 inline-block ml-1" />
                 </span>
               </h2>
               <div className="flex flex-col gap-2">
@@ -664,12 +981,37 @@ const UserPlan = () => {
       {/* Modal for Descriptions */}
       {isModalOpen && (
         <Modal open={isModalOpen} handleOnClose={() => setIsModalOpen(false)}>
-          <div className="p-4 text-left bg-white rounded-lg">
-            <h2 className="text-lg font-semibold mb-4">Description</h2>
-            <p className="text-sm text-gray-600 whitespace-pre-line leading-7">
+          <div className="p-4 text-left bg-white rounded-lg max-w-2xl">
+            <h2 className="text-lg font-semibold mb-2">Description</h2>
+            <p className="text-base text-gray-600 whitespace-pre-line leading-7">
               {currentDescription}
             </p>
           </div>
+        </Modal>
+      )}
+
+      {/* Modal for Price */}
+      {isPriceModal && (
+        <Modal open={isPriceModal} handleOnClose={togglePriceModal}>
+          <div className="p-4 text-left bg-white rounded-lg max-w-2xl">
+            <p className="text-lg whitespace-pre-line leading-7">{priceDescription}</p>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal for Sub Agent Description */}
+      {subAgentModal && (
+        <Modal open={subAgentModal} handleOnClose={() => setSubAgentModal(false)}>
+          <div className="p-4 text-left bg-white rounded-lg max-w-2xl">
+            <p className="text-lg whitespace-pre-line leading-7">{subAgentDescription}</p>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal for Report Design Customization */}
+      {isReportModalOpen && (
+        <Modal open={isReportModalOpen} handleOnClose={() => setIsReportModalOpen(false)}>
+          <div className="p-4 text-left bg-white rounded-lg max-w-2xl">{currentReportModal}</div>
         </Modal>
       )}
     </SignUpLayout>
