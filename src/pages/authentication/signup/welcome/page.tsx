@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PN from "../../../assets/images/pn.svg";
-import RightArrow from "src/components/icons/common/right-arrow";
-import messages from "./_constants/messages";
+import RightArrow from "src/components/icons/common/right-arrow"; // Ensure this path is correct
+import messages from "./_constants/message"; // Adjust this import if necessary
+import backgroundImage from "../_assets/background.png"; // Make sure this path is correct
 
-import backgroundImage from "./_assets/background.png";
-import pnCloveSvg from "src/assets/images/pn_clove.svg";
-
-const TakeoffScreen: React.FC = () => {
-  const [currentMessages, setCurrentMessages] = useState<string[]>([]); // Define state type as string[]
+const SignupWelcome: React.FC = () => {
+  const [currentMessages, setCurrentMessages] = useState<string[]>([]);
 
   useEffect(() => {
     const randomMessages = () => {
@@ -22,34 +19,33 @@ const TakeoffScreen: React.FC = () => {
 
     // Set the initial messages
     randomMessages();
-
+    
     // Change messages every 5 seconds
     const intervalId = setInterval(randomMessages, 5000);
-
+    
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <div className="flex relative justify-between items-center">
+    <div className="flex justify-between items-center">
       <div className="min-h-screen px-3 w-full mx-auto flex flex-col justify-start flex-[1.5]">
-      <img src={pnCloveSvg} alt="Perceive Now" className="absolute bottom-0 -left-[18%] w-[80%] h-[80%] opacity-10 z-0" />
         <div className="flex justify-between w-full px-6 max-w-[600px] py-4 flex-1">
           <div className="flex flex-col ml-6 w-full mt-[25%]">
-            <h1 className="text-3xl font-bold mb-3 font-nunito">
-              🎉 Your Report Is On Its Way!
+            <h1 className="text-4xl font-bold mb-3 font-nunito">
+              Welcome 🎉
             </h1>
             <p className="text-lg mb-2 font-mulish font-normal">
-              Finalizing your report takes up to 48 hours.
+              We’re excited to get you started. This is the first step in setting up your account.
             </p>
             <p className="text-lg mb-4 font-mulish font-normal">
-              If you need a word with us in the meantime - reach out to us.
+              You'll be guided through a few simple steps to personalize your experience.
             </p>
 
             <div className="flex gap-2 justify-end">
-              <Link to="/my-projects" className="cursor-pointer">
+              <Link to="/signup/organization-setting"> {/* Change the path as needed */}
                 <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
-                  Go Home
+                  Let’s get started
                   <RightArrow className="w-2 h-2 ml-2" />
                 </div>
               </Link>
@@ -62,7 +58,7 @@ const TakeoffScreen: React.FC = () => {
         style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
       >
         <div className="mt-[25%]">
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col gap-4">
             {currentMessages.map((message, index) => (
               <p key={index} className={`text-gray-800 font-semibold text-lg fade-in`}>
                 {message}
@@ -75,4 +71,4 @@ const TakeoffScreen: React.FC = () => {
   );
 };
 
-export default TakeoffScreen;
+export default SignupWelcome;

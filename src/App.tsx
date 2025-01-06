@@ -90,6 +90,7 @@ import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-c
 import VerificationSuccess from "./pages/authentication/signup/verification-success";
 import Finish from "./pages/authentication/signup/finish";
 import TakeoffScreen from "./pages/my-account/my-reports/takeoffScreen";
+import SignupWelcome from "./pages/authentication/signup/welcome/page";
 // import MadLibEditor from "./test";
 
 /**
@@ -179,7 +180,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerificationConfirm />} />
           <Route path="/signup/confirm" element={<VerificationConfirm />} />
-          <Route path="/signup/report" element={<TakeoffScreen />} />
+          <Route path="/signup/welcome" element={<SignupWelcome />} />
         </Route>
 
         {/* Share */}
@@ -192,6 +193,7 @@ function App() {
           <Route path="/welcome" element={<WelcomePage />} />
 
           <Route path="/signup/success" element={<VerificationSuccess />} />
+          <Route path="/signup/welcome" element={<SignupWelcome />} />
           <Route path="/signup/organization-setting" element={<OrganizationSettings />} />
           <Route path="/signup/profile" element={<ProfileSetup />} />
           <Route path="/signup/plan" element={<UserPlan />} />

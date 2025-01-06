@@ -11,6 +11,8 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import quotes from "./_constants/quote";
 
+import pnCloveSvg from "src/assets/images/pn_clove.svg";
+
 import backgroundImage from "../_assets/background.png";
 
 interface IConfirmEmail {
@@ -44,7 +46,7 @@ const VerificationConfirm = () => {
         setUser(user);
 
         if (user?.registration_completed) {
-          navigate("/signup/organization-setting", {
+          navigate("/signup/welcome", {
             replace: true,
           });
         }
@@ -71,7 +73,7 @@ const VerificationConfirm = () => {
         });
         return;
       }
-      navigate("/signup/organization-setting", {
+      navigate("/signup/welcome", {
         replace: true,
       });
     } catch (error) {
@@ -88,7 +90,8 @@ const VerificationConfirm = () => {
   };
 
   return (
-    <div className="flex justify-center items-start min-h-screen bg-gradient-to-b from-white to-[#F7F5FF]">
+    <div className="flex relative justify-center items-start min-h-screen bg-gradient-to-b from-white to-[#F7F5FF]">
+      <img src={pnCloveSvg} alt="Perceive Now" className="w-[75%] h-[75%] absolute -left-[18%] bottom-0 opacity-10 mt-5" />
       <div className="flex flex-col items-center flex-1 xl:flex-[1.5] xl:max-w-full max-w-[600px]">
         <div className="flex flex-col gap-y-2 min-h-screen bg-gray-200 w-full justify-center xl:pl-[10%]">
           {/* <div>
@@ -108,7 +111,9 @@ const VerificationConfirm = () => {
             >
               Check your inbox
             </a>{" "}
-            and complete your signup process.
+            and complete your signup process. <span className="underline"
+              onClick={handleProceed}
+            >Proceed</span>
           </p>
 
           <div className="flex flex-col text-gray-700 mt-[10%]">

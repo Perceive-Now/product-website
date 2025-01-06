@@ -25,6 +25,7 @@ import { AppConfig } from "src/config/app.config";
 import perceiveNowImage from "../../../assets/images/pn.svg";
 import quotes from "./_constants/quote";
 import backgroundImage from "./_assets/background.png";
+import pnCloveSvg from "src/assets/images/pn_clove.svg";
 
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
@@ -157,8 +158,9 @@ export default function SignupPage() {
   }, []);
 
   return (
-    <div className="flex h-screen lg:min-h-screen justify-center items-center bg-gradient-to-b from-white to-[#F7F5FF]">
-      <div className="flex flex-col items-center flex-[1.5]">
+    <div className="flex relative bg-green-200 h-screen lg:min-h-screen justify-center items-center bg-gradient-to-b from-white to-[#F7F5FF]">
+      <img src={pnCloveSvg} alt="Perceive Now" className="w-[80%] h-[80%] absolute -left-[19%] bottom-0 opacity-10" />
+      <div className="flex flex-col items-center flex-[1.5] relative">
         <form onSubmit={handleSubmit(handleLogin)} className="">
           <div className="w-full p-1 md:p-0 md:w-[400px]">
             <img
@@ -347,7 +349,8 @@ export default function SignupPage() {
         </label> */}
         </form>
       </div>
-      <div className="hidden xl:flex flex-[1] flex-col gap-y-2 justify-center min-h-screen px-5"
+      <div
+        className="hidden xl:flex flex-[1] flex-col gap-y-2 justify-center min-h-screen px-5"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",

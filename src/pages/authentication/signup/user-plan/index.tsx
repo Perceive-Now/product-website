@@ -174,6 +174,7 @@ const UserPlan = () => {
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState<"Launch" | "Accelerate" | "Ascend">("Launch");
   const [planType, setPlanType] = useState<"monthly" | "annually">("monthly");
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // for description modal
   const [isPriceModal, setIsPriceModal] = useState(false); // for price modal
   const [subAgentModal, setSubAgentModal] = useState(false); // for sub agent modal
@@ -201,8 +202,9 @@ const UserPlan = () => {
     console.log("Selected Plan:", selectedPlan);
     console.log("Plan Data:", selectedPlanData);
     // You can now proceed with the next step using selectedPlan and selectedPlanData
-
+    setIsLoading(true);
     try {
+
       const UserDetails = await getUserProfile();
       const totalCompanies = await getCompanies();
       const company_name = totalCompanies.find((c) => c.id === UserDetails.company_id)?.name;
@@ -224,6 +226,8 @@ const UserPlan = () => {
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -971,6 +975,7 @@ const UserPlan = () => {
               classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
               rounded="full"
               handleClick={handleNext}
+              loading={isLoading}
             >
               <span className="font-normal">Next</span>
             </Button>
