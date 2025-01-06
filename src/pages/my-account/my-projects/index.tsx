@@ -20,6 +20,7 @@ import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/reusable/pagination";
+import EditIcon from "src/components/icons/miscs/Edit";
 /**
  *
  */
@@ -66,6 +67,27 @@ const MyProjects = () => {
         const data = await response.json();
         console.log("data=------------", data);
         setreports(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProjectData = async (id:any) => {
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+        return data.reports[0];
       }
     } catch (err) {
       console.error(err);
@@ -213,18 +235,18 @@ const MyProjects = () => {
       {
         header: "Project",
         accessorKey: "report_name",
-        // minSize: 400,
+        minSize: 200,
         cell: (item) => <p className="line-clamp-1">{item.row.original.project_name}</p>,
       },
       {
         header: "Date Modified",
         accessorKey: "date_modified",
-        // minSize: 200,
+        minSize: 200,
         cell: (item) => <span>18 Dec 2024</span>,
       },
       columnHelper.display({
         id: "actions",
-        minSize: 100,
+        minSize: 200,
         cell: ({ row }) => (
           <RowActions
             row={row}
@@ -233,6 +255,29 @@ const MyProjects = () => {
           />
         ),
       }),
+      columnHelper.display({
+        id: "actions",
+        cell: (item) => (
+          <div
+            className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-800 text-white rounded-md font-semibold cursor-pointer"
+            onClick={async (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              const project_name = item.row.original.project_name;
+              const project_id = item.row.original.project_id;
+      
+              const reportData = await fetchProjectData(project_id);
+              navigate(`/quick-reports/${project_id}?project=${project_name}`, {
+                state: reportData,
+              });
+            }}
+          >
+          <EditIcon/>
+          Update Requirements
+          </div>
+        ),
+      })
+      
     ],
     [],
   );
@@ -251,7 +296,7 @@ const MyProjects = () => {
   return (
     <div className="space-y-[20px]  w-full z-10">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">Project Hub (Report Management)</h6>
+        <h6 className="text-lg font-semibold ml-0">Project Hub</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/">
             <p className="mr-4 text-secondary-800 flex items-center">

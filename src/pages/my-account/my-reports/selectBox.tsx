@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { ReactComponent as CrownIcon } from './crown.svg'; // Importing crown SVG
 
 interface SelectBoxProps {
   options: string[];
   onChangeValue: (value: string | string[]) => void;
-  multiple?: boolean; // New prop to allow multiple selections
+  multiple?: boolean;
 }
 
 const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple = false }) => {
@@ -11,14 +12,13 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
 
   const handleSelect = (value: string) => {
     if (multiple) {
-      // If the value is already selected, remove it; otherwise, add it
       const updatedSelectedValues = selectedValue instanceof Array ? [...selectedValue] : [];
       const index = updatedSelectedValues.indexOf(value);
 
       if (index > -1) {
-        updatedSelectedValues.splice(index, 1); // Remove value
+        updatedSelectedValues.splice(index, 1); 
       } else {
-        updatedSelectedValues.push(value); // Add value
+        updatedSelectedValues.push(value); 
       }
 
       setSelectedValue(updatedSelectedValues);
@@ -41,10 +41,12 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
           ? selectedValue instanceof Array && selectedValue.includes(option)
           : selectedValue === option;
 
+        const isDisabled = !isFirstItem && !multiple;
+
         return (
           <div
             key={option}
-            onClick={() => handleSelect(option)}
+            onClick={() => !isDisabled && handleSelect(option)}
             className={`
               cursor-pointer
               py-1 px-2
@@ -56,11 +58,15 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
               ${isFirstItem ? 'rounded-l-md border' : ''}
               ${isLastItem ? 'rounded-r-md border-t border-r border-b' : ''}
               ${!(isFirstItem || isLastItem) ? 'border-r border-t border-b' : ''}
-              hover:bg-primary-800 hover:text-white hover:border-primary-800
+              ${!isDisabled ? 'hover:bg-primary-800 hover:text-white hover:border-primary-800' : '' }
+              ${isDisabled ? 'bg-appGray-1000 cursor-not-allowed' : 'pt-3'}
             `}
           >
-            <div className="flex items-center justify-center text-base">{mainText}</div>
-            {bracketText && <div className="flex items-center justify-center text-xs">({bracketText})</div>}
+           {!isFirstItem && !multiple && <div className='flex items-center justify-center text-center'><img src="https://cdna.iconscout.com/img/crown-gold.0b35b6a.svg" width="25" alt="crown" /></div>} 
+            <div className="text-center text-base">
+              {mainText}
+            </div>
+            {bracketText && <div className="text-center text-xs">({bracketText})</div>}
           </div>
         );
       })}

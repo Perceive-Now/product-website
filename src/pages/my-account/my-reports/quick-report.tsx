@@ -1,5 +1,5 @@
-import { useMemo, useState, useRef , useEffect} from "react";
-
+import { useMemo, useState, useRef, useEffect } from "react";
+import "./index.css";
 //
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
@@ -23,6 +23,18 @@ import SelectBox from "./selectBox";
 /**
  *
  */
+
+const Texts = [
+  "",
+  "For example, single page summaries",
+  "For example, stakeholder",
+  "For example, specific reports",
+  "For example, investor centric insights",
+  "For example, single page summaries",
+  "For example, stakeholder",
+  "For example, specific reports",
+  "For example, investor centric insights",
+];
 
 const listContent = [
   "PDF (.pdf) - Portable Document Format",
@@ -55,7 +67,7 @@ interface IRequirementValues {
 const QuickReports = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("ppppppp",location.state);
+  console.log("ppppppp", location.state);
   const { id } = useParams();
   const urlParams = new URLSearchParams(location.search);
   const project_name = urlParams.get("project");
@@ -74,9 +86,24 @@ const QuickReports = () => {
     visual_style: "",
     citations: "",
     format: [],
+    additional: "",
   });
   const [loading, setLoading] = useState(false);
-   
+
+  const AnimatedPlaceholder = ({ className }: { className: any }) => {
+    return (
+      <div className={classNames(className, "wrapper")}>
+        <div className="words">
+          {Texts.map((text, idx) => (
+            <span key={idx * 499} className="text-secondary-800">
+              {text}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const handleDrop = (e: any) => {
     e.preventDefault();
     setDragging(false);
@@ -125,7 +152,7 @@ const QuickReports = () => {
     }
   };
 
-  const handleSubmit = async (values: IRequirementValues) => {  
+  const handleSubmit = async (values: IRequirementValues) => {
     setStep(3);
     window.scrollTo({
       top: 0,
@@ -194,19 +221,13 @@ const QuickReports = () => {
     name: "questions",
   });
 
-
-  
-  
   useEffect(() => {
     if (location.state) {
-    
       setValue("reportName", location.state.report_name || "");
       setValue("usecase", location.state.usecase || "");
       setDisabled(true);
     }
   }, [location.state]);
-  
-
 
   const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
@@ -298,13 +319,12 @@ const QuickReports = () => {
     });
 
     values.questions.forEach((question: string) => {
-      formData.append("question", question); 
+      formData.append("question", question);
     });
 
     customReport.format.forEach((question: string) => {
-      formData.append("format", question); 
+      formData.append("format", question);
     });
-
 
     try {
       const response: any = await fetch(
@@ -420,10 +440,10 @@ const QuickReports = () => {
                       {...requirementRegister("reportName")}
                       // required
                       placeholder="Report Name"
-                      disabled= {disabled}
+                      disabled={disabled}
                       className={classNames(
                         "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                        disabled ? "bg-gray-400 cursor-not-allowed" :"",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
                         requirementErrors.reportName
                           ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                           : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -442,12 +462,12 @@ const QuickReports = () => {
                     </label>
                     <textarea
                       id="usecase"
-                      disabled= {disabled}
+                      disabled={disabled}
                       {...requirementRegister("usecase")}
                       placeholder="Describe the overall objective of the report"
                       className={classNames(
                         "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
-                        disabled ? "bg-gray-400 cursor-not-allowed" :"",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
                         requirementErrors.usecase
                           ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                           : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -745,24 +765,25 @@ const QuickReports = () => {
                 options={[
                   "Analytical (Data-focused, emphasizing metrics and insights)",
                   "Narrative (Storytelling, highlighting trends and key takeaways)",
-                  "Actionable (Focused on recommendations and next steps)",
-                  "Balanced (Mix of data, narrative, and recommendations)",
+                  "Strategic (Focused on recommendations and next steps)",
+                  "Hybrid (Mix of data, narrative, and recommendations)",
                 ]}
-                onChangeValue={(value:any) => {
+                onChangeValue={(value: any) => {
                   handleReportChange("report_tone", value);
                 }}
               />
             </div>
 
             <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito"> Number of Charts/Tables</h6>
+              <h6 className="font-semibold mb-1 text-base font-nunito">Charts and Visuals</h6>
               <SelectBox
                 options={[
-                  "Minimal (1-2 per section)",
-                  "Moderate (3-4 per section)",
-                  "Extensive (5+ per section)",
+                  "Basic (1-2 per section)",
+                  "Analytical (3-4 per section)",
+                  "Intuitive (5+ per section)",
+                  "Statical (7+ per section)",
                 ]}
-                onChangeValue={(value:any) => {
+                onChangeValue={(value: any) => {
                   handleReportChange("no_of_charts", value);
                 }}
               />
@@ -774,22 +795,22 @@ const QuickReports = () => {
                 options={[
                   "Simple (Clean and easy to understand)",
                   "Annotated (Explanatory visuals with supporting details)",
+                  "Detailed (Explanatory visuals with deep details)",
                 ]}
-                onChangeValue={(value:any) => {
+                onChangeValue={(value: any) => {
                   handleReportChange("visual_style", value);
                 }}
               />
             </div>
 
             <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito">Citations</h6>
+              <h6 className="font-semibold mb-1 text-base font-nunito">Citation Style</h6>
               <SelectBox
                 options={[
                   "Inline Links (Clickable web URLs in the text)",
                   "Endnotes (References listed at the end)",
-                  "No Citations (Focused on insights)",
                 ]}
-                onChangeValue={(value:any) => {
+                onChangeValue={(value: any) => {
                   handleReportChange("citations", value);
                 }}
               />
@@ -804,11 +825,32 @@ const QuickReports = () => {
                   "Word Document (Editable format for custom updates)",
                   "Spreadsheet Summary (Key data in tabular format)",
                 ]}
-                multiple = {true}
-                onChangeValue={(value:any) => {
+                multiple={true}
+                onChangeValue={(value: any) => {
                   handleReportChange("format", value);
                 }}
               />
+            </div>
+            <div className="mt-5">
+              <h6 className="font-semibold mb-1 text-base font-nunito">
+                Have any special requests? Let us know what you need, and we’ll tailor the report to
+                fit your goals!
+              </h6>
+              <div className="relative w-full overflow-hidden bg-white" aria-disabled>
+                <input
+                  type="text"
+                  className="w-full p-2 rounded-md border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                  placeholder=""
+                  value={customReport.additional}
+                  onChange={(e: any) => {
+                    handleReportChange("additional", e.target.value);
+                  }}
+                />
+
+                {customReport.additional === "" && (
+                  <AnimatedPlaceholder className="absolute top-1 left-6 pt-1 bg-transparent" />
+                )}
+              </div>
             </div>
 
             <div className="max-w-[125px] mt-5 justify-center items-center">
