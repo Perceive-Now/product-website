@@ -397,7 +397,7 @@ const Reports = () => {
               Requirements
             </Tab>
           </Tab.List>
-          {selectedTabIndex === 1 && (
+          {/* {selectedTabIndex === 1 && (
             <div className="ml-auto">
               <Button
                 type="primary"
@@ -408,7 +408,7 @@ const Reports = () => {
                 <div className="flex items-center gap-1">Add Resources</div>
               </Button>
             </div>
-          )}
+          )} */}
         </div>
         {loading ? (
           <div className="flex justify-center items-center">

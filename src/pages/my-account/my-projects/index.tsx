@@ -273,7 +273,7 @@ const MyProjects = () => {
             }}
           >
           <EditIcon/>
-          Update Requirements
+          {/* Update Requirements */}
           </div>
         ),
       })

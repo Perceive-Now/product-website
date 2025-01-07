@@ -1,13 +1,14 @@
 import { useMemo, useState, useEffect } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { ColumnDef, createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { VerticalThreeDots } from "src/components/icons";
 import ShareModal from "src/components/reusable/share-modal";
 import Tooltip from "src/components/reusable/popover";
 import jsCookie from "js-cookie";
 import { LoadingIcon, ShareIcon } from "src/components/icons";
 import TrashIcon from "src/components/icons/common/trash";
+import Pagination from "src/components/reusable/pagination";
 
 //
 import { Link } from "react-router-dom";
@@ -34,15 +35,21 @@ const AdmimProjects = () => {
   const [shareLink, setShareLink] = useState("");
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-  console.log("isAuthenticated", isAuthenticated);
-
-  console.log("sledct---------", selectedRows);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 8,
+  });
 
   const filteredReports =
     reports.length > 0
-      ? reports.filter((report: any) =>
-          report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+      ? reports
+          .filter((report: any) =>
+            report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+          .slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+          )
       : [];
 
   useEffect(() => {
@@ -158,7 +165,16 @@ const AdmimProjects = () => {
           Total Projects<span className="ml-3">{reports.length}</span>
         </div>
         <div className="w-[300px]">
-          <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <TableSearch
+            searchQuery={searchQuery}
+            setSearchQuery={(search: string) => {
+              setSearchQuery(search);
+              setPagination({
+                ...pagination,
+                pageIndex: 0,
+              });
+            }}
+          />
         </div>
       </div>
       {loading ? (
@@ -166,13 +182,22 @@ const AdmimProjects = () => {
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
-        <ReactTable
-          columnsData={columns}
-          rowsData={filteredReports}
-          getRowProps={getRowProps}
-          size="medium"
-          noTopBorder
-        />
+        <>
+          <ReactTable
+            columnsData={columns}
+            rowsData={filteredReports}
+            getRowProps={getRowProps}
+            size="medium"
+            noTopBorder
+          />
+          <div className="flex items-center justify-end mb-10">
+            <Pagination
+              page={pagination.pageIndex + 1}
+              total={Math.ceil(reports.length / pagination.pageSize)}
+              onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
+            />
+          </div>
+        </>
       )}
 
       <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />

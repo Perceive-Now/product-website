@@ -1,7 +1,8 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { ColumnDef, createColumnHelper, PaginationState } from "@tanstack/react-table";
+import Pagination from "src/components/reusable/pagination";
 import { VerticalThreeDots } from "src/components/icons";
 import ShareModal from "src/components/reusable/share-modal";
 import Tooltip from "src/components/reusable/popover";
@@ -34,11 +35,21 @@ const AdminDashboard = () => {
   const [passwordEntered, setPasswordEntered] = useState(false); // State to track if password is entered
   const [passwordError, setPasswordError] = useState("");
 
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 8,
+  });
+
   const filteredUser =
     users.length > 0
-      ? users.filter((report: any) =>
-          report.user_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+      ? users
+          .filter((report: any) =>
+            report.user_name.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+          .slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+          )
       : [];
 
   useEffect(() => {
@@ -51,38 +62,41 @@ const AdminDashboard = () => {
   }, []);
 
   const fetchUsers = useCallback(
-    async (password: string) => {    console.log("ajaj", password);
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=${password}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
-      );
+    async (password: string) => {
+      console.log("ajaj", password);
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=${password}`,
+          {
+            method: "GET",
+            headers: { Accept: "application/json" },
+          },
+        );
 
-      if (response.ok) {
-        localStorage.setItem("isAuthenticated", "true");
-        const data = await response.json();
-        const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
-          id: index + 1,
-          user_id: userId,
-          user_name: userId,
-        }));
-        setUsers(transformedUserIds);
-        setPasswordEntered(true);
-        localStorage.setItem("adminKey", password);
-      } else {
-        setPasswordError("Incorrect password. Please try again.");
+        if (response.ok) {
+          localStorage.setItem("isAuthenticated", "true");
+          const data = await response.json();
+          const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
+            id: index + 1,
+            user_id: userId,
+            user_name: userId,
+          }));
+          setUsers(transformedUserIds);
+          setPasswordEntered(true);
+          localStorage.setItem("adminKey", password);
+        } else {
+          setPasswordError("Incorrect password. Please try again.");
+        }
+      } catch (err) {
+        console.error(err);
+        setPasswordError("An error occurred while fetching users.");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      setPasswordError("An error occurred while fetching users.");
-    } finally {
-      setLoading(false);
-    }
-  },[password]);
+    },
+    [password],
+  );
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -186,7 +200,9 @@ const AdminDashboard = () => {
             <Button
               classname="w-full"
               htmlType="submit"
-              handleClick={()=>{fetchUsers(password)}}
+              handleClick={() => {
+                fetchUsers(password);
+              }}
               disabled={loading}
               loading={loading}
             >
@@ -212,7 +228,16 @@ const AdminDashboard = () => {
           Total User<span className="ml-3">{users.length}</span>
         </div>
         <div className="w-[300px]">
-          <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <TableSearch
+            searchQuery={searchQuery}
+            setSearchQuery={(search: string) => {
+              setSearchQuery(search);
+              setPagination({
+                ...pagination,
+                pageIndex: 0,
+              });
+            }}
+          />
         </div>
       </div>
       {loading ? (
@@ -220,13 +245,22 @@ const AdminDashboard = () => {
           <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
         </div>
       ) : (
-        <ReactTable
-          columnsData={columns}
-          rowsData={filteredUser}
-          getRowProps={getRowProps}
-          size="medium"
-          noTopBorder
-        />
+        <>
+          <ReactTable
+            columnsData={columns}
+            rowsData={filteredUser}
+            getRowProps={getRowProps}
+            size="medium"
+            noTopBorder
+          />
+          <div className="flex items-center justify-end mb-10">
+            <Pagination
+              page={pagination.pageIndex + 1}
+              total={Math.ceil(users.length / pagination.pageSize)}
+              onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
+            />
+          </div>
+        </>
       )}
     </div>
   );

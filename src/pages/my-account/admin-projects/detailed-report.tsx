@@ -41,6 +41,7 @@ const DetailedReport = () => {
   const itemData = location.state;
   const urlParams = new URLSearchParams(location.search);
   const project_id = urlParams.get("project_id");
+  const report_id = urlParams.get("report_id");
   const project_name = urlParams.get("project");
   const user_id = urlParams.get("user_id");
 
@@ -107,11 +108,12 @@ const DetailedReport = () => {
     }
 
     const formData = new FormData();
-    formData.append("file", uploadedFile);
+    formData.append("files", uploadedFile);
 
     try {
       const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-report-file/${user_id}/${project_id}/${itemData.report_id}`,
+        `https://templateuserrequirements.azurewebsites.net/upload-report-files/${user_id}/${project_id}/${report_id}`,
+        // {itemData.report_id}`,
         {
           method: "POST",
           headers: { Accept: "application/json" },
@@ -242,7 +244,8 @@ const DetailedReport = () => {
         <div className="p-1 pl-0">
           <h6 className="text-lg font-semibold ml-0">
             {" "}
-            Admin Report management &gt; {itemData?.report_name}
+            Admin Report management 
+            {/* &gt; {itemData?.report_name} */}
           </h6>
           <div className="flex justify-start items-center pt-3 pl-1">
             <Link to={`/admin-reports/${project_id}?user_id=${user_id}&project=${project_name}`}>
@@ -260,7 +263,7 @@ const DetailedReport = () => {
           <div className="flex space-x-4">
             {/* First Part: File Upload and Paste URL */}
             <div className="w-1/2 space-y-4">
-              <div className="w-full">
+              {/* <div className="w-full">
                 <label htmlFor="fullName" className="block text-md  text-secondary-800">
                   Report Name
                 </label>
@@ -284,7 +287,7 @@ const DetailedReport = () => {
                   placeholder="Report Name"
                   className="mt-1 p-[14px] w-full border border-appGray-700 rounded-lg"
                 />
-              </div>
+              </div> */}
 
               {/* File Upload Box */}
               <h6 className="font-semibold text-base font-nunito">Add Report File</h6>
@@ -347,7 +350,7 @@ const DetailedReport = () => {
             </div>
 
             {/* Second Part: Added Websites and Urls Listing */}
-            <div className="w-1/2 px-3 flex flex-col">
+            {/* <div className="w-1/2 px-3 flex flex-col">
               <div className="h-[30%]">
                 <h6 className="font-nunito">Questions need to answer</h6>
 
@@ -369,7 +372,7 @@ const DetailedReport = () => {
                   </p>
                 )}
               </div>
-              {/* Added Websites */}
+
               <div className="h-[70%] pr-[28%]">
                 <div className="border border-appGray-600 rounded-lg h-full flex flex-col p-2">
                   <div className="rounded-lg p-2 flex-1">
@@ -400,11 +403,10 @@ const DetailedReport = () => {
                     )}
                   </div>
 
-                  {/* Added Reports Listing */}
                   <div className="rounded-lg p-2 flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito flex items-center">
                       Uploaded files
-                      {/* <DownloadIcon className="ml-2 cursor-pointer"/> */}
+                      <DownloadIcon className="ml-2 cursor-pointer"/>
                     </h6>
 
                     {Object.keys(itemData.file_data).length > 0 ? (
@@ -437,7 +439,8 @@ const DetailedReport = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
+
           </div>
           <div className="max-w-[120px] mt-5 mb-5">
             <button
