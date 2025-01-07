@@ -137,7 +137,7 @@ export default function SignupPage() {
     ) {
       console.log("invitedData", invitedData);
       navigate("/signup/success", { state: { invitedData } });
-  }
+    }
   }, [invitedData, navigate]);
 
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
@@ -230,7 +230,7 @@ export default function SignupPage() {
                 <input
                   id="password"
                   {...register("password")}
-                  type="password"
+                  type={isPasswordVisible ? "text" : "password"}
                   className={classNames(
                     "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
                     errors.password
@@ -239,6 +239,15 @@ export default function SignupPage() {
                   )}
                   placeholder="Password"
                 />
+
+                {passwordValue && (
+                  <div
+                    className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  >
+                    {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
+                  </div>
+                )}
               </div>
 
               {errors.password?.message && (

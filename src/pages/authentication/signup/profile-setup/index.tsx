@@ -95,7 +95,9 @@ const ProfileSetup: React.FC = () => {
 
         const job_position = roles.includes(user?.job_position as string)
           ? (user?.job_position as string)
-          : "Other";
+          : "";
+
+          console.log(job_position)
         reset({
           fullName: `${user?.first_name || ""} ${user?.last_name || ""}`,
           role: job_position,

@@ -66,7 +66,6 @@ export default function AuthLayout() {
     console.log(user);
     if (user) {
       setChecking(false);
-      console.log(user)
       if (!user) {
         navigate("/signup/confirm");
         // toast.("Please provide all the information to proceed")
