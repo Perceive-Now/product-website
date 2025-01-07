@@ -2,6 +2,10 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  safelist: [
+    // Add the classes you want to preserve
+    'bg-customDisableGray-100',
+  ],
   theme: {
     screens: {
       sm: "428px",
@@ -89,7 +93,7 @@ module.exports = {
         heroDark: {
           900: "#120824",
         },
-        disableGray:{
+        customDisableGray:{
           100:'#EBEBE4',
         },
       },
