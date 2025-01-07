@@ -1,4 +1,5 @@
 export const roles = [
+  "Admin",
   "Analyst",
   "Associate",
   "C-level",

@@ -2,6 +2,16 @@ import { useState } from "react";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const mockApiCall = async (data: { email: string; role: string }) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("Mock API called with:", data);
+      resolve("Success");
+    }, 1000);
+  });
+};
 
 const TeamManagementScreen = () => {
   const navigate = useNavigate();
@@ -9,12 +19,54 @@ const TeamManagementScreen = () => {
   const [role, setRole] = useState("Co-founder");
   const [note, setNote] = useState("");
   const [teamMembers, setTeamMembers] = useState<{ email: string; role: string }[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInvite = () => {
-    if (email.trim()) {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleInvite = async () => {
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.", {
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (note.length > 200) {
+      toast.error("The note cannot exceed 200 characters.", {
+        position: "top-right",
+      });
+      return;
+    }
+
+    // Check if the email already exists in the team members list
+    const isDuplicate = teamMembers.some((member) => member.email === email);
+    if (isDuplicate) {
+      toast.error("This email is already in your team.", {
+        position: "top-right",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Mock API call
+      await mockApiCall({ email, role });
       setTeamMembers([...teamMembers, { email, role }]);
       setEmail("");
       setNote("");
+      toast.success("Team member invitation sent!", {
+        position: "top-right",
+      });
+    } catch (error) {
+      toast.error("Failed to add team member. Please try again.", {
+        position: "top-right",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -61,17 +113,19 @@ const TeamManagementScreen = () => {
                 Would you like to include a personalized message in the invitation? (Optional)
               </label>
               <textarea
-                placeholder="Optional note"
+                placeholder="Optional note (max 200 characters)"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 className="w-[60%] h-[120px] border-[1px] border-[#87888C] rounded-lg px-[12px] py-[8px] text-[16px] bg-[#FCFCFC] text-[#4F4F4F] outline-none"
+                maxLength={200}
               />
             </div>
             <Button
               rounded="full"
               classname="w-[120px] mt-2"
-              disabled={!email.trim()}
+              disabled={isSubmitting}
               handleClick={handleInvite}
+              loading={isSubmitting}
             >
               Add
             </Button>
@@ -95,7 +149,12 @@ const TeamManagementScreen = () => {
                       Pending
                     </span>
                   </div>
-                  <p className="text-xs text-[#373D3F]">Cancel</p>
+                  <p
+                    className="text-xs text-[#373D3F] cursor-pointer"
+                    onClick={() => setTeamMembers(teamMembers.filter((_, i) => i !== index))}
+                  >
+                    Cancel
+                  </p>
                 </div>
               ))}
             </div>

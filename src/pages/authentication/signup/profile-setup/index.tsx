@@ -99,7 +99,7 @@ const ProfileSetup: React.FC = () => {
         reset({
           fullName: `${user?.first_name || ""} ${user?.last_name || ""}`,
           role: job_position,
-          otherRole: job_position === "Other" ? user?.job_position as string : "",
+          otherRole: job_position === "Other" ? (user?.job_position as string) : "",
           profileImage: user?.profile_photo || "",
           email: user?.email || "",
           country: user?.country || "",
@@ -119,7 +119,6 @@ const ProfileSetup: React.FC = () => {
     const totalCompanies = await getCompanies();
     const company_name = totalCompanies.find((c) => c.id === userProfile.company_id)?.name;
 
-
     const values = {
       first_name,
       last_name,
@@ -132,7 +131,6 @@ const ProfileSetup: React.FC = () => {
       country: data.country,
       additional_info: data.otherRole || "", // Include additional info
     };
-
 
     try {
       const response = await updateUserProfile(values);
@@ -163,21 +161,28 @@ const ProfileSetup: React.FC = () => {
           <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
             {/* Profile Image Upload */}
             <div className="flex flex-col gap-y-1">
-              <label className="text-sm font-medium text-gray-700">Profile image</label>
-              <div className="relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center">
+              <p className="text-sm font-medium text-gray-700">Profile image</p>
+              <div className="relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group">
                 <img
                   src={imagePreview || profileAvatarSVG}
                   alt="Profile Avatar"
-                  className="object-cover w-full h-full rounded-full"
+                  className={`object-cover ${
+                    imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"
+                  }`}
                 />
-                <input
-                  id="profileImage"
-                  type="file"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                  accept="image/*"
-                />
+                <div className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
+                  <label htmlFor="profileImage">
+                    <img src={profileEditSVG} alt="Edit Profile" />
+                  </label>
+                </div>
               </div>
+              <input
+                id="profileImage"
+                type="file"
+                className="hidden"
+                onChange={handleImageUpload}
+                accept="image/*"
+              />
             </div>
 
             {/* Full Name */}
