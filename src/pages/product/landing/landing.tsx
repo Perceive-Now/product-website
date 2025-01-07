@@ -222,11 +222,11 @@ export default function Landing() {
     // </div>
     <>
       <div className="w-full">
-        <nav className="w-full text-white px-6 py-4">
+        <nav className="w-full text-white px-6">
           <div className="flex justify-between items-center">
-            <Link to="/" className="text-[18px] font-semibold text-black">
+            {/* <Link to="/" className="text-[18px] font-semibold text-black">
               Home
-            </Link>
+            </Link> */}
             {/* <div className="flex gap-4 items-center">
               <Link to="/" className="text-black text-nowrap text-base">
                 Current Agent
@@ -263,10 +263,10 @@ export default function Landing() {
           </div>
         </nav>
 
-        <div className="h-[calc(100vh-160px)] px-3 w-full mx-auto flex flex-col justify-center items-center">
-          <div className="flex items-center justify-between w-full max-w-2xl 2xl:max-w-3xl px-6 py-4">
+        <div className="h-screen px-3 w-full mx-auto flex flex-col justify-center items-center">
+          <div className="flex items-center justify-between w-full max-w-2xl 2xl:max-w-3xl px-6">
             <div className="flex flex-col ml-6 w-full">
-              {/* <div className="h-16 w-16 rounded-full flex mb-2">
+              {/* <div className="h-16 w-16 rounded-full flex mb-2">  
                 <img className="h-10 w-10" src={PN} alt="Pn" />
               </div> */}
               <h1 className="text-3xl font-semibold mb-3 font-nunito">
@@ -315,12 +315,12 @@ export default function Landing() {
                     <RightArrow className="ml-1"/>
                   </div>
                 </Link>
-                <Link to="/start-conversation">
+                {/* <Link to="/start-conversation">
                   <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]   rounded-[32px] py-1 px-2  text-lg font-nunito text-white font-bold">
                     KnowNow Chat
                     <RightArrow className="ml-1"/>
                   </div>
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

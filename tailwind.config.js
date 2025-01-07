@@ -89,6 +89,9 @@ module.exports = {
         heroDark: {
           900: "#120824",
         },
+        disableGray:{
+          100:'#EBEBE4',
+        },
       },
       ringWidth: {
         0.5: "0.5px",

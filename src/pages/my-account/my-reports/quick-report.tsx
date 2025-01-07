@@ -421,7 +421,7 @@ const QuickReports = () => {
         )} */}
       </div>
 
-      <div className="overflow-y-auto">
+      <div className="overflow-y-auto pb-[11%]">
         {step === 2 ? (
           <div className="">
             <form onSubmit={handleSubmitFormRequirement(handleSubmit)}>
@@ -714,7 +714,7 @@ const QuickReports = () => {
                   //     behavior: "smooth",
                   //   });
                   // }}
-                  className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   Next
                 </button>
@@ -746,7 +746,7 @@ const QuickReports = () => {
                 <div
                   role="button"
                   onClick={handleSubmitForm(handleSubmitProject)}
-                  className="cursor-pointer border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="cursor-pointer border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   {loading ? <LoadingIcon width={18} height={18} className="" /> : "Next"}
                 </div>
@@ -856,7 +856,7 @@ const QuickReports = () => {
                 <button
                   onClick={handleFinalSubmitProject}
                   disabled={loading}
-                  className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
                 </button>

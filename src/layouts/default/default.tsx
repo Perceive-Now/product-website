@@ -23,9 +23,9 @@ export default function DefaultLayout() {
       <AppSidebar onSidebarToggle={handleSidebarToggle} />
       <div className={`mb-auto ${ isSidebarOpen ? 'ml-[256px]' : 'ml-[56px]' }`}>      
         <div className="flex flex-auto h-full">
-          <div className="h-full w-full duration-500 px-4 pt-2 flex-auto pb-[11%]">
+          <div className="h-full w-full duration-500 px-4 flex-auto">
             {/* {location.pathname !== "/q&a" && <AppHeader />} */}
-            <div className="relative py-1 h-full w-full pl-1 flex justify-center items-center">
+            <div className="relative h-full w-full pl-1 flex justify-center items-center">
               <Outlet />
             </div>
           </div>
