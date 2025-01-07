@@ -21,6 +21,7 @@ const SignUpLayout: React.FC<SignUpLayoutProps> = ({
   completedSteps,
   invitedData = null,
 }) => {
+
   return (
     <div className="flex">
       {/* Pass currentStep and completedSteps to the SideBar */}

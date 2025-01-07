@@ -63,9 +63,11 @@ export default function AuthLayout() {
 
   useEffect(() => {
     setChecking(true);
+    console.log(user);
     if (user) {
       setChecking(false);
-      if (!user.registration_completed) {
+      console.log(user)
+      if (!user) {
         navigate("/signup/confirm");
         // toast.("Please provide all the information to proceed")
       }

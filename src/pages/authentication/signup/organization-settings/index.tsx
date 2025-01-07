@@ -34,7 +34,7 @@ const OrganizationSettings = () => {
   const invitedData = location.state?.invitedData;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState<any | null>(null);
-  const [company, setCompany] = useState<any | null>(null);
+  const [company, setCompany] = useState<any | null>("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
 
   const {
@@ -57,16 +57,30 @@ const OrganizationSettings = () => {
         const [user, companies] = await Promise.all([getUserProfile(), getCompanies()]);
         const user_company = companies.find((company) => company.id === user.company_id);
         setUser(user);
-        setCompany(user_company);
-        reset({
-          organizationName: invitedData?.organization_name || user_company?.name || "",
-          industry: industries.includes(user?.about_me as string)
-            ? user?.about_me
-            : user?.about_me
-            ? "Other"
-            : "",
-          otherIndustry: industries.includes(user?.about_me as string) ? "" : user?.about_me,
-        });
+        if (user_company) {
+          setCompany(user_company);
+        }
+
+        if (user_company) {
+          reset({
+            organizationName: user_company?.name || "",
+            industry: industries.includes(user?.about_me as string)
+              ? user?.about_me
+              : user?.about_me
+              ? "Other"
+              : "",
+            otherIndustry: industries.includes(user?.about_me as string) ? "" : user?.about_me,
+          });
+
+          if (!industries.includes(user?.about_me as string) && user?.about_me) {
+            setSelectedIndustry("Other");
+          }
+        } else {
+          reset({
+            organizationName: "",
+            industry: ""
+          });
+        }
 
         if (!industries.includes(user?.about_me as string) && user?.about_me) {
           setSelectedIndustry("Other");
@@ -92,6 +106,7 @@ const OrganizationSettings = () => {
         about_me: data.industry === "Other" ? data.otherIndustry : data.industry,
         registration_completed: true,
       };
+
       const result = await updateUserProfile(value);
       if (result.status === 200) {
         toast.success("Organization Settings Saved Successfully!", {
@@ -163,9 +178,30 @@ const OrganizationSettings = () => {
               ))}
             </select>
 
-            {selectedIndustry === "Other" &&
-              industries.includes(user?.about_me as string) === false &&
-              user?.about_me && (
+              {/* for first signup */}
+            {selectedIndustry === "Other" && 
+              !user?.about_me && !company &&
+            (
+                <div>
+                  <label
+                    htmlFor="otherIndustry"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Please specify:
+                  </label>
+                  <input
+                    id="otherIndustry"
+                    type="text"
+                    {...register("otherIndustry")}
+                    className="mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2"
+                    placeholder="Enter industry"
+                  />
+                </div>
+              )}
+
+            {selectedIndustry === "Other" && 
+              user?.about_me &&
+            (
                 <div>
                   <label
                     htmlFor="otherIndustry"

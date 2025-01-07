@@ -10,6 +10,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
 import { AppConfig } from "../config/app.config";
+import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
 
 /**
  * Interfaces
@@ -18,6 +19,7 @@ interface IResponse<T = any> {
   success: boolean;
   message: string;
   data?: T;
+  detail?: string;
 }
 
 interface AuthState {
@@ -83,6 +85,39 @@ export const signUpUser = createAsyncThunk(
     } catch (error: any) {
       const errorMessage = error.response?.data?.error ?? error.message;
 
+      return {
+        success: false,
+        message: errorMessage,
+      };
+    }
+  },
+);
+
+export const newSignupUser = createAsyncThunk(
+  "login",
+  async (payload: ISignupParams): Promise<IResponse> => {
+    try {
+      const { data } = await axios.post(
+        `${NEW_BACKEND_URL}/register`,
+        payload,
+      );
+
+      //
+      jsCookie.set("pn_refresh", data.value.token);
+      jsCookie.set("session_id", data.value.session_id);
+      sessionStorage.setItem("pn_access", data.value.token);
+      jsCookie.set("user_id", data.value.user.id);
+      // sessionStorage.setItem("pn_access", data.token);
+
+      //
+      return {
+        success: true,
+        message: "Successfull",
+        data: { token: data.token },
+      };
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail || error.message;
+      console.log(error)
       return {
         success: false,
         message: errorMessage,

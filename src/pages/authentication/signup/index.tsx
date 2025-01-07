@@ -15,8 +15,8 @@ import { EyeClosedIcon, EyeIcon } from "../../../components/icons";
 //
 
 // Store
-import { useAppDispatch } from "../../../hooks/redux";
-import { signUpUser } from "../../../stores/auth";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { newSignupUser, signUpUser } from "../../../stores/auth";
 import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import GoogleAuth from "../../../components/@auth/google";
 import { AppConfig } from "src/config/app.config";
@@ -26,6 +26,7 @@ import perceiveNowImage from "../../../assets/images/pn.svg";
 import quotes from "./_constants/quote";
 import backgroundImage from "./_assets/background.png";
 import pnCloveSvg from "src/assets/images/pn_clove.svg";
+import { setSession } from "src/stores/session";
 
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
@@ -37,6 +38,9 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const callbackPath = searchParams.get("callback_path");
+
+  // const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
+  // const session = useAppSelector((state) => state.sessionDetail.session);
 
   const invitedData = {
     invited: searchParams.get("invited"),
@@ -90,23 +94,13 @@ export default function SignupPage() {
     setIsSubmitting(true);
 
     const params = {
-      username: values.email,
       email: values.email,
       password: values.password,
-      first_name: "",
-      last_name: "",
-      accept_terms: true,
-      two_fa: false,
-      phone_number: "",
-      profile_photo: "",
-      about_me: "",
-      topics_of_interest: "",
     };
-
     // Signup user
-    const response = await dispatch(signUpUser(params)).unwrap();
-    console.log(response);
+    const response = await dispatch(newSignupUser(params)).unwrap();
     if (response.success) {
+
       if (callbackPath) {
         navigate(callbackPath);
       } else {
@@ -159,7 +153,11 @@ export default function SignupPage() {
 
   return (
     <div className="flex relative bg-green-200 h-screen lg:min-h-screen justify-center items-center bg-gradient-to-b from-white to-[#F7F5FF]">
-      <img src={pnCloveSvg} alt="Perceive Now" className="w-[80%] h-[80%] absolute -left-[19%] bottom-0 opacity-10" />
+      <img
+        src={pnCloveSvg}
+        alt="Perceive Now"
+        className="w-[80%] h-[80%] absolute -left-[19%] bottom-0 opacity-10"
+      />
       <div className="flex flex-col items-center flex-[1.5] relative">
         <form onSubmit={handleSubmit(handleLogin)} className="">
           <div className="w-full p-1 md:p-0 md:w-[400px]">

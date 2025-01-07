@@ -201,13 +201,13 @@ export default function LoginPage() {
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <GoogleAuth
+        {/* <GoogleAuth
           type="signin"
           isAgree={true}
           title="Sign in with Google"
           isSubmitting={isGoogleSubmitting}
           setIsSubmitting={setIsGoogleSubmitting}
-        />
+        /> */}
       </form>
     </div>
   );

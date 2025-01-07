@@ -113,7 +113,7 @@ const ProfileSetup: React.FC = () => {
           setImagePreview(user?.profile_photo);
         }
         reset({
-          fullName: `${user?.first_name} ${user?.last_name}`,
+          fullName: `${user?.first_name || ""} ${user?.last_name || ""}`,
           role: user?.job_position || "",
           profileImage: user?.profile_photo || "",
           email: user?.email || "",
