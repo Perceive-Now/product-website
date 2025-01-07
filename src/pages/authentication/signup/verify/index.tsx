@@ -15,7 +15,7 @@ const SignupVerify = () => {
     const user = await getUserProfile();
     if (user?.registration_completed) {
         toast.success("Email is already verified", { position: "top-right" });
-        navigate("/signup/welcome");
+        navigate("/signup/success");
     }
 
     // if not verified, verify the token
@@ -32,12 +32,12 @@ const SignupVerify = () => {
 
       if (result.status === 200) {
         toast.success("Email verified successfully", { position: "top-right" });
-        navigate("/signup/welcome");
+        navigate("/signup/success");
       } else {
         setErrorMessage("The token is invalid or expired.");
         if (user?.registration_completed) {
           toast.success("Email is already verified", { position: "top-right" });
-          navigate("/signup/welcome");
+          navigate("/signup/success");
         }
       }
     } catch (error) {

@@ -19,7 +19,7 @@ const TeamManagementScreen = () => {
   };
 
   return (
-    <SignUpLayout currentStep={4} completedSteps={[0, 1, 2, 3]}>
+    <SignUpLayout currentStep={2} completedSteps={[0, 1]}>
       <div className="max-w-[1000px] p-7 space-y-[40px]">
         {/* Title */}
         <h1 className="text-[20px] font-semibold text-[#373D3F]">Team Management</h1>
@@ -110,7 +110,7 @@ const TeamManagementScreen = () => {
             rounded="full"
             type="secondary"
             classname="w-[120px]"
-            handleClick={() => navigate("/signup/plan")}
+            handleClick={() => navigate("/signup/profile")}
           >
             Back
           </Button>

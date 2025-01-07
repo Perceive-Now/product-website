@@ -25,7 +25,7 @@ interface SideBarProps {
 const sidebarSteps: Steps[] = [
   { label: "Organization Settings", logo: organizationSettingSVG },
   { label: "Profile Setup", logo: profileSetupSVG },
-  { label: "Plan Selection", logo: planSelectionSVG },
+  // { label: "Plan Selection", logo: planSelectionSVG },
   // { label: "Payment", logo: paymentSVG },
   { label: "Team Management", logo: teamManagementSVG },
   { label: "Review & Confirmation", logo: reviewConfirmationSVG },

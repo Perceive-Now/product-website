@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { useAppSelector } from "src/hooks/redux";
 import { Countries } from "src/utils/constants";
 import { roles } from "./_constants/roles";
+import Loading from "src/components/reusable/loading";
 
 type FormValues = {
   fullName: string;
@@ -67,6 +68,8 @@ const ProfileSetup: React.FC = () => {
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -105,6 +108,7 @@ const ProfileSetup: React.FC = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      setLoading(true);
       try {
         const user = await getUserProfile();
         setUser(user);
@@ -121,6 +125,8 @@ const ProfileSetup: React.FC = () => {
         });
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
@@ -150,7 +156,7 @@ const ProfileSetup: React.FC = () => {
         toast.success("Profile setup completed successfully!", {
           position: "top-right",
         });
-        navigate("/signup/plan", {
+        navigate("/signup/team", {
           replace: true,
         });
       } else {
@@ -185,205 +191,213 @@ const ProfileSetup: React.FC = () => {
 
   return (
     <SignUpLayout invitedData={invitedData} currentStep={1} completedSteps={[0]}>
-      <div className="pt-5 px-8 h-screen">
-        <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
+      {loading ? (
+        <Loading width="50px" height="50px" isLoading={loading} />
+      ) : (
+        <div className="pt-5 px-8 h-screen">
+          <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
 
-        <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
-          {/* Profile Image Upload */}
-          <div className="flex flex-col gap-y-1">
-            <p className="text-sm font-medium text-gray-700">Profile image</p>
-            <div
-              className={`relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group`}
-            >
-              <img
-                src={imagePreview || user?.profile_photo || profileAvatarSVG}
-                alt="Profile Avatar"
-                className={`object-cover ${
-                  imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"
-                }`}
-              />
-              <div className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
-                <label htmlFor="profileImage">
-                  <img src={profileEditSVG} alt="Edit Profile" />
-                </label>
-              </div>
-            </div>
-            <input
-              id="profileImage"
-              type="file"
-              className="hidden"
-              onChange={handleImageUpload}
-              accept="image/*"
-            />
-          </div>
-
-          {/* Full Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              What is your full name?
-            </label>
-            <Controller
-              name="fullName"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  placeholder="Full name"
-                  className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.fullName
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-primary-500"
+          <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
+            {/* Profile Image Upload */}
+            <div className="flex flex-col gap-y-1">
+              <p className="text-sm font-medium text-gray-700">Profile image</p>
+              <div
+                className={`relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group`}
+              >
+                <img
+                  src={imagePreview || user?.profile_photo || profileAvatarSVG}
+                  alt="Profile Avatar"
+                  className={`object-cover ${
+                    imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"
                   }`}
                 />
-              )}
-            />
-            {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName.message}</p>}
-          </div>
+                <div className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
+                  <label htmlFor="profileImage">
+                    <img src={profileEditSVG} alt="Edit Profile" />
+                  </label>
+                </div>
+              </div>
+              <input
+                id="profileImage"
+                type="file"
+                className="hidden"
+                onChange={handleImageUpload}
+                accept="image/*"
+              />
+            </div>
 
-          {/* Role Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              What is your role within the organization?
-            </label>
-            <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.role
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-primary-500"
-                  }`}
-                  disabled={invitedData?.role}
-                >
-                  <option value="" disabled>
-                    Select role
-                  </option>
-                  {roles.map((role) => (
-                    <option key={role} value={role}>{role}</option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
-          </div>
+            {/* Full Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                What is your full name?
+              </label>
+              <Controller
+                name="fullName"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    placeholder="Full name"
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.fullName
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary-500"
+                    }`}
+                  />
+                )}
+              />
+              {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName.message}</p>}
+            </div>
 
-          {/* country  */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Country</label>
-            <Controller
-              name="country"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.country
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-primary-500"
-                  }`}
-                >
-                  <option value="" disabled>
-                    Select country
-                  </option>
-                  {Countries.map((country) => (
-                    <option key={country} value={country}>
-                      {country}
+            {/* Role Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                What is your role within the organization?
+              </label>
+              <Controller
+                name="role"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.role
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-primary-500"
+                    }`}
+                    disabled={invitedData?.role}
+                  >
+                    <option value="" disabled>
+                      Select role
                     </option>
-                  ))}
-                </select>
-              )}
-            />
-            {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
-          </div>
+                    {roles.map((role) => (
+                      <option key={role} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+              {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
+            </div>
 
-          {/* Email Address */}
-          {invitedData && (
+            {/* country  */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                What is your email address?
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Country</label>
               <Controller
-                name="email"
+                name="country"
                 control={control}
                 render={({ field }) => (
-                  <input
+                  <select
                     {...field}
-                    type="email"
-                    placeholder="johndoe@orgname.com"
                     className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.email
+                      errors.country
                         ? "border-red-500 focus:ring-red-500"
                         : "border-gray-300 focus:ring-primary-500"
                     }`}
-                    disabled={invitedData?.email}
-                  />
+                  >
+                    <option value="" disabled>
+                      Select country
+                    </option>
+                    {Countries.map((country) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
                 )}
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
             </div>
-          )}
 
-          {/* Password */}
-          {invitedData && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Please create a secure password.
-              </label>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="password"
-                    placeholder="Password"
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.password
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:ring-primary-500"
-                    }`}
-                  />
+            {/* Email Address */}
+            {invitedData && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  What is your email address?
+                </label>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      type="email"
+                      placeholder="johndoe@orgname.com"
+                      className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                        errors.email
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 focus:ring-primary-500"
+                      }`}
+                      disabled={invitedData?.email}
+                    />
+                  )}
+                />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              </div>
+            )}
+
+            {/* Password */}
+            {invitedData && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Please create a secure password.
+                </label>
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      type="password"
+                      placeholder="Password"
+                      className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
+                        errors.password
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-gray-300 focus:ring-primary-500"
+                      }`}
+                    />
+                  )}
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password.message}</p>
                 )}
-              />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-            </div>
-          )}
+              </div>
+            )}
 
-          {/* Buttons */}
-          <div className="flex gap-x-4">
-            <Button
-              htmlType="button"
-              classname="w-[120px]"
-              type="secondary"
-              rounded="full"
-              handleClick={() => {
-                if (invitedData) {
-                  navigate("/signup/organization-setting", {
-                    state: { invitedData },
-                  });
-                  return;
-                } else {
-                  navigate("/signup/organization-setting");
-                }
-              }}
-            >
-              <span className="font-normal">Back</span>
-            </Button>
-            <Button
-              htmlType="submit"
-              rounded="full"
-              classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
-              loading={isSubmitting}
-            >
-              <span className="font-normal">Next</span>
-            </Button>
-          </div>
-        </form>
-      </div>
+            {/* Buttons */}
+            <div className="flex gap-x-4">
+              <Button
+                htmlType="button"
+                classname="w-[120px]"
+                type="secondary"
+                rounded="full"
+                handleClick={() => {
+                  if (invitedData) {
+                    navigate("/signup/organization-setting", {
+                      state: { invitedData },
+                    });
+                    return;
+                  } else {
+                    navigate("/signup/organization-setting");
+                  }
+                }}
+              >
+                <span className="font-normal">Back</span>
+              </Button>
+              <Button
+                htmlType="submit"
+                rounded="full"
+                classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
+                loading={isSubmitting}
+              >
+                <span className="font-normal">Next</span>
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
     </SignUpLayout>
   );
 };

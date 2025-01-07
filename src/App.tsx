@@ -180,9 +180,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerificationConfirm />} />
-          <Route path="/signup/confirm" element={<VerificationConfirm />} />
-         
-          
+          <Route path="/signup/confirm" element={<VerificationConfirm />} />          
         </Route>
 
         {/* Share */}

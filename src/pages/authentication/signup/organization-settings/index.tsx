@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/userProfile";
 import toast from "react-hot-toast";
 import industries from "./option";
+import Loading from "src/components/reusable/loading";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -36,6 +37,7 @@ const OrganizationSettings = () => {
   const [user, setUser] = useState<any | null>(null);
   const [company, setCompany] = useState<any | null>("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -53,6 +55,7 @@ const OrganizationSettings = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      setLoading(true);
       try {
         const [user, companies] = await Promise.all([getUserProfile(), getCompanies()]);
         const user_company = companies.find((company) => company.id === user.company_id);
@@ -78,7 +81,7 @@ const OrganizationSettings = () => {
         } else {
           reset({
             organizationName: "",
-            industry: ""
+            industry: "",
           });
         }
 
@@ -87,6 +90,8 @@ const OrganizationSettings = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchUser();
@@ -127,61 +132,70 @@ const OrganizationSettings = () => {
 
   return (
     <SignUpLayout invitedData={invitedData} currentStep={0} completedSteps={[]}>
-      <div className="pt-5 px-8">
-        <h1 className="text-[19px] font-semibold text-[#373D3F]">Organization Settings</h1>
+      {loading ? (
+        <Loading 
+          width="50px"
+          height="50px"
+          isLoading={loading}
+        />
+      ) : (
+        <div className="pt-5 px-8">
+          <h1 className="text-[19px] font-semibold text-[#373D3F]">Organization Settings</h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4 max-w-[550px]" noValidate>
-          <div>
-            <label htmlFor="organizationName" className="block text-sm font-medium text-gray-700">
-              What is your organization’s name?
-            </label>
-            <input
-              id="organizationName"
-              type="text"
-              {...register("organizationName")}
-              className={classNames(
-                "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
-                errors.organizationName
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-primary-500",
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-4 mt-4 max-w-[550px]"
+            noValidate
+          >
+            <div>
+              <label htmlFor="organizationName" className="block text-sm font-medium text-gray-700">
+                What is your organization’s name?
+              </label>
+              <input
+                id="organizationName"
+                type="text"
+                {...register("organizationName")}
+                className={classNames(
+                  "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
+                  errors.organizationName
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-primary-500",
+                )}
+                disabled={invitedData?.organization_name}
+                placeholder="Enter organization name"
+              />
+              {errors.organizationName && (
+                <p className="mt-1 text-sm text-red-600">{errors.organizationName.message}</p>
               )}
-              disabled={invitedData?.organization_name}
-              placeholder="Enter organization name"
-            />
-            {errors.organizationName && (
-              <p className="mt-1 text-sm text-red-600">{errors.organizationName.message}</p>
-            )}
-          </div>
+            </div>
 
-          <div>
-            <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
-              Which industry does your organization belong to?
-            </label>
-            <select
-              id="industry"
-              {...register("industry")}
-              onChange={handleIndustryChange}
-              className={classNames(
-                "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
-                errors.industry
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-primary-500",
-              )}
-            >
-              <option value="" disabled>
-                Select an industry
-              </option>
-              {industries.map((item) => (
-                <option key={item} value={item}>
-                  {item}
+            <div>
+              <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
+                Which industry does your organization belong to?
+              </label>
+              <select
+                id="industry"
+                {...register("industry")}
+                onChange={handleIndustryChange}
+                className={classNames(
+                  "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
+                  errors.industry
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-primary-500",
+                )}
+              >
+                <option value="" disabled>
+                  Select an industry
                 </option>
-              ))}
-            </select>
+                {industries.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
 
               {/* for first signup */}
-            {selectedIndustry === "Other" && 
-              !user?.about_me && !company &&
-            (
+              {selectedIndustry === "Other" && !user?.about_me && !company && (
                 <div>
                   <label
                     htmlFor="otherIndustry"
@@ -199,9 +213,7 @@ const OrganizationSettings = () => {
                 </div>
               )}
 
-            {selectedIndustry === "Other" && 
-              user?.about_me &&
-            (
+              {selectedIndustry === "Other" && user?.about_me && (
                 <div>
                   <label
                     htmlFor="otherIndustry"
@@ -219,24 +231,25 @@ const OrganizationSettings = () => {
                 </div>
               )}
 
-            {errors.industry && (
-              <p className="mt-1 text-sm text-red-600">{errors.industry.message}</p>
-            )}
-          </div>
+              {errors.industry && (
+                <p className="mt-1 text-sm text-red-600">{errors.industry.message}</p>
+              )}
+            </div>
 
-          <div className="flex justify-start">
-            <Button
-              htmlType="submit"
-              loading={isSubmitting || formSubmitting}
-              disabled={isSubmitting || formSubmitting}
-              rounded="full"
-              classname="w-[120px] bg-primary-600 text-white p-2"
-            >
-              <span className="font-normal">Next</span>
-            </Button>
-          </div>
-        </form>
-      </div>
+            <div className="flex justify-start">
+              <Button
+                htmlType="submit"
+                loading={isSubmitting || formSubmitting}
+                disabled={isSubmitting || formSubmitting}
+                rounded="full"
+                classname="w-[120px] bg-primary-600 text-white p-2"
+              >
+                <span className="font-normal">Next</span>
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
     </SignUpLayout>
   );
 };
