@@ -20,50 +20,28 @@ type FormValues = {
   password: string;
   profileImage: File | null | string;
   country: string;
+  otherRole?: string; // Field for additional role-based information
 };
 
-// Validation schema for the new users
 const schema = yup.object({
   fullName: yup.string().required("Full name is required"),
   role: yup.string().required("Role is required"),
   country: yup.string().required("Country is required"),
   profileImage: yup.mixed().nullable(),
-});
-
-// validation schema for the invited users
-const invitedUserSchema = yup.object({
-  fullName: yup.string().required("Full name is required"),
-  role: yup.string().required("Role is required"),
-  email: yup.string().email("Invalid email address").required("Email is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/,
-      "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
-    ),
-  profileImage: yup.mixed().nullable(),
+  otherRole: yup.string().when("role", {
+    is: (role: string) => role && role === "Other", // Conditional validation for "Other"
+    then: yup.string().required("This field is required"),
+  }),
 });
 
 function extractName(fullname: string): { first_name: string; last_name: string } {
-  // Trim any extra spaces
-  const trimmedName = fullname.trim();
-
-  // Split the fullname into parts by spaces
-  const parts = trimmedName.split(/\s+/);
-
-  // Extract first name and last name
-  const first_name = parts[0] || ""; // Handle empty names
-  const last_name = parts.slice(1).join(" ") || ""; // Join remaining parts for last name
-
-  return { first_name, last_name };
+  const parts = fullname.trim().split(/\s+/);
+  return { first_name: parts[0] || "", last_name: parts.slice(1).join(" ") || "" };
 }
 
 const ProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const invitedData = location.state?.invitedData;
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -74,10 +52,11 @@ const ProfileSetup: React.FC = () => {
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<FormValues>({
-    resolver: yupResolver(invitedData ? invitedUserSchema : schema),
+    resolver: yupResolver(schema),
     defaultValues: {
       fullName: "",
       role: invitedData?.role || "",
@@ -85,8 +64,11 @@ const ProfileSetup: React.FC = () => {
       password: "",
       country: "",
       profileImage: null,
+      otherRole: "",
     },
   });
+
+  const selectedRole = watch("role");
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -99,9 +81,6 @@ const ProfileSetup: React.FC = () => {
       };
       reader.readAsDataURL(file);
     } else {
-      if (user?.profile_photo) {
-        console.log("updating!!!!");
-      }
       setImagePreview(null);
     }
   };
@@ -112,31 +91,34 @@ const ProfileSetup: React.FC = () => {
       try {
         const user = await getUserProfile();
         setUser(user);
-        //
-        if (user?.profile_photo) {
-          setImagePreview(user?.profile_photo);
-        }
+        setImagePreview(user?.profile_photo || null);
+
+        const job_position = roles.includes(user?.job_position as string)
+          ? (user?.job_position as string)
+          : "Other";
         reset({
           fullName: `${user?.first_name || ""} ${user?.last_name || ""}`,
-          role: user?.job_position || "",
+          role: job_position,
+          otherRole: job_position === "Other" ? user?.job_position as string : "",
           profileImage: user?.profile_photo || "",
           email: user?.email || "",
           country: user?.country || "",
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
     };
     fetchUser();
-  }, []);
+  }, [reset]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { first_name, last_name } = extractName(data.fullName);
     const userProfile = await getUserProfile();
     const totalCompanies = await getCompanies();
-    const company_name = totalCompanies.filter((c) => c.id === userProfile.company_id)[0].name;
+    const company_name = totalCompanies.find((c) => c.id === userProfile.company_id)?.name;
+
 
     const values = {
       first_name,
@@ -144,11 +126,13 @@ const ProfileSetup: React.FC = () => {
       role: data.role,
       registration_completed: true,
       company_name,
-      job_position: data.role,
+      job_position: data.role === "Other" ? data.otherRole : data.role,
       profile_photo: imagePreview || user?.profile_photo || "",
       email: data.email || user?.email,
       country: data.country,
+      additional_info: data.otherRole || "", // Include additional info
     };
+
 
     try {
       const response = await updateUserProfile(values);
@@ -156,37 +140,17 @@ const ProfileSetup: React.FC = () => {
         toast.success("Profile setup completed successfully!", {
           position: "top-right",
         });
-        navigate("/signup/team", {
-          replace: true,
-        });
+        navigate("/signup/team", { replace: true });
       } else {
         toast.error("An error occurred. Please try again.", {
           position: "top-right",
         });
-        return;
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
-      return;
-    }
-
-    if (invitedData) {
-      navigate("/signup/review", {
-        replace: true,
-        state: {
-          invitedData,
-          profileData: data,
-        },
+      toast.error("An error occurred. Please try again.", {
+        position: "top-right",
       });
-      return;
     }
-    // navigate("/signup/plan", {
-    //   replace: true,
-    //   state: {
-    //     invitedData,
-    //     profileData: data,
-    //   },
-    // });
   };
 
   return (
@@ -196,41 +160,29 @@ const ProfileSetup: React.FC = () => {
       ) : (
         <div className="pt-5 px-8 h-screen">
           <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
-
           <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
             {/* Profile Image Upload */}
             <div className="flex flex-col gap-y-1">
-              <p className="text-sm font-medium text-gray-700">Profile image</p>
-              <div
-                className={`relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group`}
-              >
+              <label className="text-sm font-medium text-gray-700">Profile image</label>
+              <div className="relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center">
                 <img
-                  src={imagePreview || user?.profile_photo || profileAvatarSVG}
+                  src={imagePreview || profileAvatarSVG}
                   alt="Profile Avatar"
-                  className={`object-cover ${
-                    imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"
-                  }`}
+                  className="object-cover w-full h-full rounded-full"
                 />
-                <div className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
-                  <label htmlFor="profileImage">
-                    <img src={profileEditSVG} alt="Edit Profile" />
-                  </label>
-                </div>
+                <input
+                  id="profileImage"
+                  type="file"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                />
               </div>
-              <input
-                id="profileImage"
-                type="file"
-                className="hidden"
-                onChange={handleImageUpload}
-                accept="image/*"
-              />
             </div>
 
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                What is your full name?
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Full name</label>
               <Controller
                 name="fullName"
                 control={control}
@@ -239,10 +191,8 @@ const ProfileSetup: React.FC = () => {
                     {...field}
                     type="text"
                     placeholder="Full name"
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.fullName
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:ring-primary-500"
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                      errors.fullName ? "border-red-500" : "border-gray-300"
                     }`}
                   />
                 )}
@@ -252,21 +202,16 @@ const ProfileSetup: React.FC = () => {
 
             {/* Role Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
-                What is your role within the organization?
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Role</label>
               <Controller
                 name="role"
                 control={control}
                 render={({ field }) => (
                   <select
                     {...field}
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.role
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:ring-primary-500"
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                      errors.role ? "border-red-500" : "border-gray-300"
                     }`}
-                    disabled={invitedData?.role}
                   >
                     <option value="" disabled>
                       Select role
@@ -282,7 +227,30 @@ const ProfileSetup: React.FC = () => {
               {errors.role && <p className="text-red-500 text-sm">{errors.role.message}</p>}
             </div>
 
-            {/* country  */}
+            {/* Additional Info for Other Roles */}
+            {selectedRole === "Other" && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Specify your role</label>
+                <Controller
+                  name="otherRole"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      placeholder="Provide additional details for your role"
+                      className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                        errors.otherRole ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                  )}
+                />
+                {errors.otherRole && (
+                  <p className="text-red-500 text-sm">{errors.otherRole.message}</p>
+                )}
+              </div>
+            )}
+
+            {/* Country */}
             <div>
               <label className="block text-sm font-medium text-gray-700">Country</label>
               <Controller
@@ -291,10 +259,8 @@ const ProfileSetup: React.FC = () => {
                 render={({ field }) => (
                   <select
                     {...field}
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.country
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:ring-primary-500"
+                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                      errors.country ? "border-red-500" : "border-gray-300"
                     }`}
                   >
                     <option value="" disabled>
@@ -311,61 +277,6 @@ const ProfileSetup: React.FC = () => {
               {errors.country && <p className="text-red-500 text-sm">{errors.country.message}</p>}
             </div>
 
-            {/* Email Address */}
-            {invitedData && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  What is your email address?
-                </label>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="email"
-                      placeholder="johndoe@orgname.com"
-                      className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                        errors.email
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary-500"
-                      }`}
-                      disabled={invitedData?.email}
-                    />
-                  )}
-                />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-              </div>
-            )}
-
-            {/* Password */}
-            {invitedData && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Please create a secure password.
-                </label>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type="password"
-                      placeholder="Password"
-                      className={`mt-1 w-full px-3 py-[10px] border rounded-lg focus:outline-none focus:ring-2 ${
-                        errors.password
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-primary-500"
-                      }`}
-                    />
-                  )}
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password.message}</p>
-                )}
-              </div>
-            )}
-
             {/* Buttons */}
             <div className="flex gap-x-4">
               <Button
@@ -373,26 +284,17 @@ const ProfileSetup: React.FC = () => {
                 classname="w-[120px]"
                 type="secondary"
                 rounded="full"
-                handleClick={() => {
-                  if (invitedData) {
-                    navigate("/signup/organization-setting", {
-                      state: { invitedData },
-                    });
-                    return;
-                  } else {
-                    navigate("/signup/organization-setting");
-                  }
-                }}
+                handleClick={() => navigate("/signup/organization-setting")}
               >
-                <span className="font-normal">Back</span>
+                Back
               </Button>
               <Button
                 htmlType="submit"
                 rounded="full"
-                classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
+                classname="w-[120px] bg-primary-600 text-white p-2"
                 loading={isSubmitting}
               >
-                <span className="font-normal">Next</span>
+                Next
               </Button>
             </div>
           </form>
