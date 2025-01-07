@@ -137,7 +137,7 @@ export default function SignupPage() {
     ) {
       console.log("invitedData", invitedData);
       navigate("/signup/success", { state: { invitedData } });
-    }
+  }
   }, [invitedData, navigate]);
 
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);

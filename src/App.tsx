@@ -92,6 +92,10 @@ import Finish from "./pages/authentication/signup/finish";
 import TakeoffScreen from "./pages/my-account/my-reports/takeoffScreen";
 import SignupWelcome from "./pages/authentication/signup/welcome/page";
 import SignupVerify from "./pages/authentication/signup/verify";
+import InviteLayout from "./layouts/invitation/layout";
+import InviteWelcome from "./pages/authentication/invite";
+import OrganizationInviteSetting from "./pages/authentication/invite/organization-setting";
+import InviteProfileSetup from "./pages/authentication/invite/profile-setup";
 // import MadLibEditor from "./test";
 
 /**
@@ -180,7 +184,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<VerificationConfirm />} />
-          <Route path="/signup/confirm" element={<VerificationConfirm />} />          
+          <Route path="/signup/confirm" element={<VerificationConfirm />} />
         </Route>
 
         {/* Share */}
@@ -201,7 +205,6 @@ function App() {
           <Route path="/signup/team" element={<TeamMangementScreen />} />
           <Route path="/signup/review" element={<ReviewConfirmationScreen />} />
           <Route path="/signup/finish" element={<Finish />} />
-     
 
           {/* Actual product pages */}
 
@@ -273,6 +276,14 @@ function App() {
             <Route path="/feedback" element={<FeedbackPage />} />
             <Route path="/help" element={<HelpPage />} />
           </Route>
+        </Route>
+
+        {/* invitation route */}
+        <Route element={<InviteLayout />}>
+          <Route path="/signup/invite" element={<InviteWelcome />} />
+          <Route path="/invite/organization-setting" element={<OrganizationInviteSetting />} />
+          <Route path="/invite/profile" element={<InviteProfileSetup />} />
+          <Route path="/invite/review" element={<ReviewConfirmationScreen />} />
         </Route>
 
         {/* 404 not found */}
