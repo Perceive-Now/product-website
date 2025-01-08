@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { getCurrentSession, getUserDetails } from "../../stores/auth";
 //
 import { getSessionDetails } from "../../stores/session";
+import toast from "react-hot-toast";
 
 interface PathPersistRefProps {
   path: string | null;
@@ -63,15 +64,34 @@ export default function AuthLayout() {
 
   useEffect(() => {
     setChecking(true);
-    console.log(user);
+
     if (user) {
       setChecking(false);
-      if (!user) {
-        navigate("/signup/confirm");
-        // toast.("Please provide all the information to proceed")
+
+      const { first_name, job_position, about_me } = user;
+
+      // List of allowed paths during signup flow
+      const signupFlowPaths = [
+        "/signup/success",
+        "/signup/organization-setting",
+        "/signup/profile",
+        "/signup/team",
+        "/signup/review",
+        "/signup/finish",
+      ];
+
+      // Check if the user is missing required fields
+      const isProfileIncomplete = !first_name || !job_position || !about_me;
+
+      if (isProfileIncomplete && !signupFlowPaths.includes(location.pathname)) {
+        toast.error("Please complete your profile to proceed.", {
+          position: "top-right",
+        });
+
+        navigate("/signup/success");
       }
     }
-  }, [navigate, user]);
+  }, [navigate, user, location.pathname]);
 
   // Do not show the content initially
   if (isLoading || checking) return <PageLoading />;

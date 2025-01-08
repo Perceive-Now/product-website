@@ -91,23 +91,22 @@ const VerificationConfirm = () => {
 
   return (
     <div className="flex justify-center items-start min-h-screen bg-gradient-to-b from-white to-[#F7F5FF] p-2">
-    <div className="max-w-[400px] mt-[30vh] 2xl:mt-[20vh]">
-      <div className="flex flex-col gap-y-2">
-        <div>
-          <img src={perceiveNowImage} alt="welcome" className="w-[3rem] h-[3rem]" />
+      <div className="max-w-[400px] mt-[30vh] 2xl:mt-[20vh]">
+        <div className="flex flex-col gap-y-2">
+          <div>
+            <img src={perceiveNowImage} alt="welcome" className="w-[3rem] h-[3rem]" />
+          </div>
+          <p className="text-left text-[#373D3F] font-semibold">
+            Great! 🎉 We’ve sent you a link to continue
+            <br /> signing up.
+          </p>
+          <p className="text-[#373D3F] font-semibold mt-[0.5] cursor-pointer">
+            <a href="https://mail.google.com/mail/u/0/#inbox" className="text-inherit" target="_blank" rel="noreferrer">
+              📩 Check your inbox!
+            </a>
+          </p>
         </div>
-        <p className="text-left text-[#373D3F] font-semibold">
-          Great! 🎉 We’ve sent you a link to continue
-          <br /> signing up.
-        </p>
-        <p
-          className="text-[#373D3F] font-semibold mt-[0.5] cursor-pointer"
-          onClick={() => navigate("/signup/success")}
-        >
-          📩 Check your inbox!
-        </p>
-      </div>
-      {/* <div className="text-center w-full">
+        {/* <div className="text-center w-full">
         <p className="text-secondary-800 ">drake@example.com</p>
         <div className="relative w-1/4 mx-auto">
           <input
@@ -128,8 +127,8 @@ const VerificationConfirm = () => {
           </Button>
         </p>
       </div> */}
+      </div>
     </div>
-  </div>
   );
 };
 

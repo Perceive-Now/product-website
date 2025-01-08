@@ -99,7 +99,7 @@ const ProfileSetup: React.FC = () => {
 
           console.log(job_position)
         reset({
-          fullName: `${user?.first_name || ""} ${user?.last_name || ""}`,
+          fullName: user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : "",
           role: job_position,
           otherRole: job_position === "Other" ? (user?.job_position as string) : "",
           profileImage: user?.profile_photo || "",
