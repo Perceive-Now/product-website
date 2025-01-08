@@ -120,7 +120,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
       )}
         <div className="absolute right-2">
           <button
-            className="bg-secondary-500 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer"
+            className="bg-primary-900 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer"
             type="button"
             onClick={() => { sendQuery(query, answer, attachedFile || undefined), setAttachedFile(null) }}
           >

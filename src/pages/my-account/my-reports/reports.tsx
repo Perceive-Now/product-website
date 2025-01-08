@@ -379,7 +379,7 @@ const Reports = () => {
             <Tab
               className={({ selected }) =>
                 `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-r border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-secondary-500" : "text-black"
+                  selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -388,7 +388,7 @@ const Reports = () => {
             <Tab
               className={({ selected }) =>
                 `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-secondary-500" : "text-black"
+                  selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -397,7 +397,7 @@ const Reports = () => {
             <Tab
               className={({ selected }) =>
                 `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${
-                  selected ? "text-white bg-secondary-500" : "text-black"
+                  selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >

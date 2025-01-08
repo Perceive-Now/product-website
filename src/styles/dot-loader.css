@@ -1,7 +1,6 @@
 .loader-container {
   --uib-size: 24px;
-  /* --uib-color: #533F73; */
-  --uib-color: #FFA300;
+  --uib-color: #533F73;
   --uib-speed: 1.3s;
   --uib-dot-size: calc(var(--uib-size) * 0.24);
   position: relative;
