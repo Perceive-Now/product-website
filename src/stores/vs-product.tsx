@@ -258,7 +258,7 @@ export const VSProductSlice = createSlice({
             console.log("data sources",DataSources);
             state.chats[state.chats.length - 1].query = response;
             state.chats.push({ query: "",  answer: "" ,options:["Continue"]});
-          } else if (Step == 5) {
+          } else if (Step == 5 && typeof response === 'object') {
             console.log("step 6 response", response);
             state.ReportTemplate = response;
             state.chats[

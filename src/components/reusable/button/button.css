@@ -24,7 +24,7 @@ button {
 } 
 
 .optional-button {
-  @apply bg-secondary-500 hover:bg-secondary-400 disabled:hover:bg-secondary-500 disabled:text-gray-700 disabled:cursor-not-allowed border border-secondary-500;
+  @apply bg-secondary-500 text-white hover:bg-secondary-400 hover:text-white disabled:hover:bg-secondary-500 disabled:text-gray-700 disabled:cursor-not-allowed border border-secondary-500;
 }
 
 .full-width {

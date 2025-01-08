@@ -259,7 +259,7 @@ const MyProjects = () => {
         id: "actions",
         cell: (item) => (
           <div
-            className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-800 text-white rounded-md font-semibold cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-secondary-500 text-white rounded-md font-semibold cursor-pointer"
             onClick={async (event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -312,7 +312,7 @@ const MyProjects = () => {
         </p>
         <div className="ml-auto">
           <Link to="/quick-reports">
-            <Button type="primary">+ Add Project</Button>
+            <Button type="optional">+ Add Project</Button>
           </Link>
         </div>
       </div>

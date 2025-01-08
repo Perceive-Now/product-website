@@ -87,7 +87,7 @@ Props) => {
                   disabled = {hasselected}
                   className={`${
                     answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
-                  } cursor-pointer text-sm rounded-lg py-1 px-2 border hover:border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
+                  } cursor-pointer text-sm rounded-lg py-1 px-2 border border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
                 >
                   {stage}
                 </button>

@@ -243,12 +243,18 @@ const TemplateReport: React.FC = () => {
   //   },
   // };
   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
+  console.log("report---------",ReportTemplate)
   const dispatch = useAppDispatch();
   const [reportItems, setReportItems] = useState(ReportTemplate);
   const [open, setOpen] = useState(true);
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemSummary, setNewItemSummary] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
+
+  useEffect(() => {
+    setReportItems(ReportTemplate);
+  }, [ReportTemplate]);
+
 
   useEffect(() => {
     dispatch(updatePitchdeckData({ reportGenerations: {...reportItems} }));
@@ -300,6 +306,7 @@ const TemplateReport: React.FC = () => {
   };
 
   const renderItems = (items: Record<string, ReportItem>, indentLevel = 0) => {
+    console.log("inseide con-----------",reportItems)
     return Object.entries(items).map(([key, item], index) => (
       <React.Fragment key={key}>
         <DraggableItem

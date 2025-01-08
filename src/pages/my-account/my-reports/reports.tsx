@@ -46,6 +46,7 @@ const Reports = () => {
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
+  const [activityLog, setActivityLog] = useState([{date:"Jan 7, 2025, 09:13 AM",log:"User provided report requirements."},{date:"Jan 7, 2025, 09:13 AM",log:"User provided report requirements."},{date:"Jan 7, 2025, 09:13 AM",log:"User provided report requirements."}]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(tab);
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
 
@@ -377,24 +378,30 @@ const Reports = () => {
           <Tab.List className="flex w-[15%] h-[45px]">
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-r border-t border-b border-appGray-600 ${
+                  selected ? "text-white bg-secondary-500" : "text-black"
                 }`
               }
             >
               Reports
             </Tab>
             <Tab
-              //  onClick={() => {
-              //   navigate(`/quick-reports/${id}`);
-              // }}
               className={({ selected }) =>
-                `w-full text-base px-2 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
+                  selected ? "text-white bg-secondary-500" : "text-black"
                 }`
               }
             >
               Requirements
+            </Tab>
+            <Tab
+              className={({ selected }) =>
+                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${
+                  selected ? "text-white bg-secondary-500" : "text-black"
+                }`
+              }
+            >
+              Activity log
             </Tab>
           </Tab.List>
           {/* {selectedTabIndex === 1 && (
@@ -674,6 +681,27 @@ const Reports = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>
+              <div className="border border-appGray-500 w-[60%] p-2 rounded-lg mt-5">
+              {activityLog && activityLog?.length > 0 ? (
+              <>
+                {activityLog?.map((log, idx) => (
+                  <div
+                    key={idx * 19}
+                    className="grid grid-cols-2 text-secondary-800 font-mulish mt-1 last:border-b-0 border-b border-gray-300"
+                  >
+                    <div className="font-nunito">{log.date}</div>
+                    <div className="font-nunito">{log.log}</div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p className="flex justify-center items-center mt-5 font-mulish text-sm">
+                No activity log found
+              </p>
+            )}
               </div>
             </Tab.Panel>
           </Tab.Panels>

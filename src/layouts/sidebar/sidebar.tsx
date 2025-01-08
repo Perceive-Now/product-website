@@ -615,7 +615,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                       >
                         <ToolTip title={s.title} placement="right">
                           <div>
-                            <s.icon className="text-primary-900 h-[20px] w-[20px]" />
+                            <s.icon className="text-secondary-500 h-[20px] w-[20px]" />
                           </div>
                         </ToolTip>
                       </button>
@@ -881,7 +881,7 @@ function NavLinkItem(props: INavLinkItemProps) {
                 "hover:bg-white h-5 w-5 rounded-full flex justify-center items-center",
               )}
             >
-              <props.icon className="text-primary-900" />
+              <props.icon className="text-secondary-500" />
             </div>
           </ToolTip>
         )}

@@ -521,7 +521,7 @@ const QuickReports = () => {
                         Drag and Drop files to upload
                       </p>
                       <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                      <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
+                      <p className="text-secondary-500 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
                         Browse
                       </p>
                     </div>
@@ -551,7 +551,7 @@ const QuickReports = () => {
                       />
                       <button
                         type="button"
-                        className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
+                        className="px-4 bg-secondary-500 text-white rounded-br-xl rounded-tr-xl"
                         onClick={handlePasteURL}
                       >
                         Paste
@@ -635,14 +635,12 @@ const QuickReports = () => {
                       </>
                     ))}
                     {requirementQuestions.length < 10 ? (
-                      <Button
-                        type="primary"
-                        classname="mt-2 mb-2"
-                        handleClick={handleAddMoreQuestions}
-                        htmlType="button"
+                      <div
+                        className="mt-2 mb-2 text-secondary-500 font-semibold text-end"
+                        onClick={handleAddMoreQuestions}
                       >
-                        + Add
-                      </Button>
+                        + Add more
+                      </div>
                     ) : (
                       <></>
                     )}
@@ -714,7 +712,7 @@ const QuickReports = () => {
                   //     behavior: "smooth",
                   //   });
                   // }}
-                  className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="cursor-pointer flex justify-center text-center border w-full border-secondary-500 bg-secondary-500 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   Next
                 </button>
@@ -746,7 +744,7 @@ const QuickReports = () => {
                 <div
                   role="button"
                   onClick={handleSubmitForm(handleSubmitProject)}
-                  className="cursor-pointer border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="cursor-pointer border w-full border-secondary-500 bg-secondary-500 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   {loading ? <LoadingIcon width={18} height={18} className="" /> : "Next"}
                 </div>
@@ -856,7 +854,7 @@ const QuickReports = () => {
                 <button
                   onClick={handleFinalSubmitProject}
                   disabled={loading}
-                  className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="cursor-pointer flex justify-center text-center border w-full border-secondary-500 bg-secondary-500 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
                 </button>

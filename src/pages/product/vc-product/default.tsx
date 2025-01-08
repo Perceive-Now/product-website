@@ -28,7 +28,7 @@ interface Props {
       :  finalMessage ?
       `🎉 Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`
        :
-      `Ready to percive the future? 🚀 
+      `Ready to perceive the future? 🚀 
 
       Start by telling us the name of the startup.
           `.trim();
@@ -91,14 +91,14 @@ interface Props {
             <button
               onClick={setFinalMessage}
               className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
-              hover:bg-primary-900 hover:text-white transition-colors duration-200"
+              hover:bg-secondary-500 hover:text-white transition-colors duration-200"
             >
               Start another report
             </button>
             <button
               onClick={() => navigate("/")}
               className="px-4 py-2 border border-appGray-200 rounded-xl 
-              hover:bg-primary-900 hover:text-white transition-colors duration-200"
+              hover:bg-secondary-500 hover:text-white transition-colors duration-200"
             >
               Go Home
             </button>

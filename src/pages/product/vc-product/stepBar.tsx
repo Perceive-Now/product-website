@@ -41,9 +41,9 @@ const StepBar: React.FC = () => {
           <div
             className={`w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] shadow-md md:w-[24px] md:h-[24px] lg:w-4 lg:h-4 border rounded-full flex items-center justify-center cursor-pointer transition-colors duration-300 group ${
               index < currentStep
-                ? "bg-primary-900 border-primary-900"
+                ? "bg-secondary-500 border-secondary-500"
                 : index === currentStep
-                ? "border-primary-900"
+                ? "border-secondary-500"
                 : "border-transparent hover:bg-[#FFA300]"
             }`}
             onMouseEnter={() => setHoveredStep(index)}
@@ -55,7 +55,7 @@ const StepBar: React.FC = () => {
               </span>
             ) : (
               <span
-                className={`text-primary-900 text-base font-semibold ${
+                className={`text-secondary-500 text-base font-semibold ${
                   currentStep === index ? "" : "group-hover:text-white"
                 }`}
               >
