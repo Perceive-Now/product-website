@@ -96,6 +96,9 @@ import InviteLayout from "./layouts/invitation/layout";
 import InviteWelcome from "./pages/authentication/invite";
 import OrganizationInviteSetting from "./pages/authentication/invite/organization-setting";
 import InviteProfileSetup from "./pages/authentication/invite/profile-setup";
+import InviteReviewConfirmation from "./pages/authentication/invite/review-confirmation";
+import VerifyInviteToken from "./pages/authentication/invite/verify-token";
+import InviteAuthLayout from "./layouts/invitation/layout";
 // import MadLibEditor from "./test";
 
 /**
@@ -279,12 +282,15 @@ function App() {
         </Route>
 
         {/* invitation route */}
-        <Route element={<InviteLayout />}>
+        <Route element={<InviteAuthLayout />}>
+          <Route path="/invite/success" element={<InviteWelcome />} />
           <Route path="/signup/invite" element={<InviteWelcome />} />
           <Route path="/invite/organization-setting" element={<OrganizationInviteSetting />} />
           <Route path="/invite/profile" element={<InviteProfileSetup />} />
-          <Route path="/invite/review" element={<ReviewConfirmationScreen />} />
+          <Route path="/invite/review" element={<InviteReviewConfirmation />} />
         </Route>
+
+        <Route path="/invite-link/:token" element={<VerifyInviteToken />} />
 
         {/* 404 not found */}
         <Route path="*" element={<PageNotFound404 />} />

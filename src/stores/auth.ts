@@ -94,30 +94,36 @@ export const signUpUser = createAsyncThunk(
 );
 
 export const newSignupUser = createAsyncThunk(
-  "login",
+  "signupUser",
   async (payload: ISignupParams): Promise<IResponse> => {
     try {
-      const { data } = await axios.post(
-        `${NEW_BACKEND_URL}/register`,
-        payload,
-      );
+      const { data } = await axios.post(`${NEW_BACKEND_URL}/register`, payload);
 
-      //
-      jsCookie.set("pn_refresh", data.value.token);
-      jsCookie.set("session_id", data.value.session_id);
-      sessionStorage.setItem("pn_access", data.value.token);
-      jsCookie.set("user_id", data.value.user.id);
-      // sessionStorage.setItem("pn_access", data.token);
+      if (data?.value?.token) {
+        //
+        jsCookie.set("pn_refresh", data?.value?.token);
+        jsCookie.set("session_id", data?.value?.session_id);
+        sessionStorage.setItem("pn_access", data?.value?.token);
+        jsCookie.set("user_id", data?.value?.user?.id);
+        // sessionStorage.setItem("pn_access", data.token);
 
-      //
+        //
+        return {
+          success: true,
+          message: "Successfull",
+          data: { token: data?.value?.token },
+        };
+      }
+
       return {
         success: true,
         message: "Successfull",
-        data: { token: data.token },
+        data: {
+          message: data?.value?.message,
+        },
       };
     } catch (error: any) {
       const errorMessage = error.response?.data?.detail || error.message;
-      console.log(error)
       return {
         success: false,
         message: errorMessage,
