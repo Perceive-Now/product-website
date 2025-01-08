@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignUpLayout from "../_components/layout";
 import Button from "src/components/reusable/button";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { getUserProfile } from "src/utils/api/userProfile";
+import { useAppSelector } from "src/hooks/redux";
+import { NEW_BACKEND_URL } from "../env";
+import { roles } from "../../invite/profile-setup/_constants/roles";
 
 const mockApiCall = async (data: { email: string; role: string }) => {
   return new Promise((resolve) => {
@@ -20,6 +24,20 @@ const TeamManagementScreen = () => {
   const [note, setNote] = useState("");
   const [teamMembers, setTeamMembers] = useState<{ email: string; role: string }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const session = useAppSelector((state) => state.sessionDetail.session);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      // Mock API call
+      const user = await getUserProfile();
+
+      if (user?.job_position !== "Admin") {
+        navigate("/signup/review");
+      }
+    };
+    fetchUser();
+  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,13 +72,39 @@ const TeamManagementScreen = () => {
 
     try {
       // Mock API call
-      await mockApiCall({ email, role });
-      setTeamMembers([...teamMembers, { email, role }]);
-      setEmail("");
-      setNote("");
-      toast.success("Team member invitation sent!", {
-        position: "top-right",
+      const user_id = session?.user_id;
+      if (!user_id)
+        return toast.error("Failed to add team member. Please try again.", {
+          position: "top-right",
+        });
+
+      const data = {
+        email,
+        role,
+        permissions: ["read"],
+      };
+
+      console.log(`${NEW_BACKEND_URL}/team/invite?user_id=${user_id}`);
+      const res = await fetch(`${NEW_BACKEND_URL}/team/invite?user_id=${user_id}`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       });
+      const result = await res.json();
+
+      if (res.status === 200) {
+        toast.success(`Invitation sent to ${email}.`, {
+          position: "top-right",
+        });
+        setTeamMembers([...teamMembers, { email, role }]);
+      } else {
+        toast.error("Failed to add team member. Please try again.", {
+          position: "top-right",
+        });
+      }
     } catch (error) {
       toast.error("Failed to add team member. Please try again.", {
         position: "top-right",
@@ -102,9 +146,14 @@ const TeamManagementScreen = () => {
                   onChange={(e) => setRole(e.target.value)}
                   className="w-full h-[48px] border-[1px] border-[#87888C] rounded-lg px-[12px] text-[16px] bg-[#FCFCFC] text-[#4F4F4F] outline-none"
                 >
-                  <option value="Co-founder">Co-founder</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Contributor">Contributor</option>
+                  {/* except the role "Admin"  */}
+                  {roles
+                    .filter((role) => role !== "Admin" && role !== "Other")
+                    .map((role, index) => (
+                      <option key={index} value={role}>
+                        {role}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -149,12 +198,12 @@ const TeamManagementScreen = () => {
                       Pending
                     </span>
                   </div>
-                  <p
+                  {/* <p
                     className="text-xs text-[#373D3F] cursor-pointer"
                     onClick={() => setTeamMembers(teamMembers.filter((_, i) => i !== index))}
                   >
                     Cancel
-                  </p>
+                  </p> */}
                 </div>
               ))}
             </div>

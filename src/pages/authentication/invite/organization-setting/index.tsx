@@ -34,7 +34,6 @@ const OrganizationInviteSetting = () => {
 
   // Extract invite data from navigation state
   const invitedData = location.state?.invitedData;
-  console.log(invitedData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedIndustry, setSelectedIndustry] = useState(
     invitedData?.organization_industry || "",
@@ -92,9 +91,6 @@ const OrganizationInviteSetting = () => {
         about_me: data.industry === "Other" ? data.otherIndustry : data.industry,
         registration_completed: true,
       };
-
-      // Simulate API submission
-      console.log("Form Submitted:", value);
 
       toast.success("Organization Settings Saved Successfully!", {
         position: "top-right",
