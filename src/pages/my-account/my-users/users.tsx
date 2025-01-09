@@ -2,6 +2,10 @@ import { useMemo, useState } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef } from "@tanstack/react-table";
+import Tooltip from "src/components/reusable/popover";
+import TrashIcon from "src/components/icons/common/trash";
+import { VerticalThreeDots } from "src/components/icons";
+import DownloadIcon from "src/components/icons/common/download-icon";
 
 //
 import EditIcon from "../../../components/icons/miscs/Edit";
@@ -39,23 +43,33 @@ const Users = () => {
     setRowSelection(selection);
   };
 
-  const menuItems = [
-    {
-      label: "Pin",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("yo"),
-    },
-    {
-      label: "Delete",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("yo"),
-    },
-    {
-      label: "Share",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("yo"),
-    },
-  ];
+  const RowActions = ({
+     
+   }: {
+    
+   }) => {
+    
+     return (
+       <Tooltip
+         isCustomPanel={true}
+         trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
+         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
+       >
+         <ul id="dropdown">
+           <li className="mb-2 cursor-pointer">
+             <div className="flex items-center">
+               <DownloadIcon className="mr-2" /> Download
+             </div>
+           </li>
+           <li className="cursor-pointer">
+             <div className="flex items-center">
+               <TrashIcon className="mr-2" /> Delete
+             </div>
+           </li>
+         </ul>
+       </Tooltip>
+     );
+   };
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
@@ -84,19 +98,19 @@ const Users = () => {
       {
         header: "User",
         accessorKey: "user_name",
-        minSize: 400,
+        minSize: 100,
         cell: (item) => <p className="line-clamp-1">{item.row.original.user_name}</p>,
       },
       {
         header: "Role",
         accessorKey: "role",
-        minSize: 200,
+        minSize: 100,
         cell: (item) => <span>{item.row.original.role}</span>,
       },
       {
         header: "Reports",
         accessorKey: "reports_count",
-        minSize: 200,
+        minSize: 100,
         cell: (item) => <span>{item.row.original.reports_count}</span>,
       },
       {
@@ -104,15 +118,8 @@ const Users = () => {
         // accessorKey: "lead_investigator_given",
         minSize: 80,
         cell: (item) => (
-          // <button type="button">
-          //   <EditIcon />
-          // </button>
-          <TableDropdown
-          // menuItems={menuItems}
-          // width="xs"
-          // alignment="right"
-          // conversation_id={item.row.original.id}
-          />
+          <RowActions
+        />
         ),
       },
     ],

@@ -68,7 +68,7 @@ const SidebarBottom = [
   },
   {
     title: "User management",
-    href: "/my-users",
+    href: "/users",
     icon: LogoutIcon,
   },
   // {

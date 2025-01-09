@@ -349,7 +349,7 @@ const Reports = () => {
       // },
       columnHelper.display({
         id: "actions",
-        // minSize: 100,
+        minSize: 100,
         cell: ({ row }) => (
           <RowActions
             row={row}

@@ -26,7 +26,7 @@ import {
   updateChatQuery,
   setCompanyName,
   updateButtonSelection,
-  setUploadStatus
+  setUploadStatus,
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 import { useNavigate } from "react-router-dom";
@@ -64,6 +64,13 @@ const VCReport = () => {
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
+
+  useEffect(() => {
+    dispatch(resetChats());
+    thread_id = generateKnowIdstring();
+    firstRun.current = true;
+    // setFile("false");
+  }, []);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -163,7 +170,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
           const queries = { id: newQueryIndex, query: "", answer: answer };
 
           if (button) {
-            if(answer !== "Edit Summary") dispatch(updateButtonSelection({ hasselected: true }));
+            if (answer !== "Edit Summary") dispatch(updateButtonSelection({ hasselected: true }));
             dispatch(setprevres({ answer: answer }));
             if (answer === "Looks good") {
               //** Fifth Converstaion **//
@@ -189,7 +196,7 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 setDelayLoading(false);
               }, 2500);
               //**     **//
-            }else if(answer === "Edit Summary"){
+            } else if (answer === "Edit Summary") {
               setModalOpen(true);
               return;
             } else if (Step == 3 && answer == "Continue") {
@@ -500,7 +507,6 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
                 }),
               );
               dispatch(setUploadStatus(false));
-
             } catch (error) {
               dispatch(
                 setVSChats({
@@ -542,7 +548,12 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
             {chats && chats.length <= 0 ? (
               <div className="flex flex-row justify-between flex-auto">
-                <ReportDefault finalMessage={finalMessage} setFinalMessage={()=>{setFinalMessage(false)}}/>
+                <ReportDefault
+                  finalMessage={finalMessage}
+                  setFinalMessage={() => {
+                    setFinalMessage(false);
+                  }}
+                />
               </div>
             ) : (
               <div className="flex flex-row flex-auto justify-center">
@@ -605,7 +616,9 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
 
           {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
           {Step == 4 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
-          {Step == 5 && ReportTemplate && Object.keys(ReportTemplate).length > 0 && <TemplateReport />}
+          {Step == 5 && ReportTemplate && Object.keys(ReportTemplate).length > 0 && (
+            <TemplateReport />
+          )}
           {Step == 3 && <InitialScreening />}
         </div>
       </div>

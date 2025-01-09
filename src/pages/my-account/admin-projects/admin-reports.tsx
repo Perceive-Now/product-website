@@ -369,20 +369,6 @@ const AdminReports = () => {
               Requirements
             </Tab>
           </Tab.List>
-          {selectedTabIndex === 1 && (
-            <div className="ml-auto">
-              <Button
-                type="primary"
-                handleClick={() => {
-                  navigate(
-                    `/detailed-report?project_id=${id}&user_id=${user_id}&project=${project_name}&report_id=${reports[0]?.report_id}`
-                  );
-                }}
-              >
-                <div className="flex items-center gap-1">+ Add Report</div>
-              </Button>
-            </div>
-          )}
         </div>
 
         {loading ? (
@@ -406,14 +392,8 @@ const AdminReports = () => {
                 <div className="w-[300px] my-2">
                   <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 </div>
-                {selectedRows.length > 0 && (
+                {/* {selectedRows.length > 0 && (
                   <div className="ml-auto flex gap-3">
-                    {/* <Button type="gray" handleClick={onShare}>
-              <div className="flex items-center gap-1">
-                <ShareIcon />
-                Share
-              </div>
-            </Button> */}
                     <Button type="gray" handleClick={handleBulkDownload}>
                       <div className="flex items-center gap-1">
                         <DownloadIcon />
@@ -431,7 +411,22 @@ const AdminReports = () => {
                       </div>
                     </Button>
                   </div>
-                )}
+                )} */}
+                
+          {/* {selectedTabIndex === 0 && ( */}
+            <div className="ml-auto">
+              <Button
+                type="primary"
+                handleClick={() => {
+                  navigate(
+                    `/detailed-report?project_id=${id}&user_id=${user_id}&project=${project_name}&report_id=${reports[0]?.report_id}`
+                  );
+                }}
+              >
+                <div className="flex items-center gap-1">+ Add Report</div>
+              </Button>
+            </div>
+          {/* )} */}
               </div>
               <ReactTable
                 columnsData={columns}

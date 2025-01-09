@@ -111,7 +111,7 @@ const EditUser = () => {
         <div className="p-1">
           <h6 className="text-lg font-semibold ml-0">Settings &gt; User management &gt; User</h6>
           <div className="flex justify-start items-center pt-3 pl-1">
-            <Link to="/my-users">
+            <Link to="/users">
               <p className="mr-4 text-secondary-800 flex items-center">
                 <ArrowLeftIcon className="mr-1" />
                 Back

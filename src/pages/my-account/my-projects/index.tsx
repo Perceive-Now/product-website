@@ -182,6 +182,7 @@ const MyProjects = () => {
 
     return (
       <Tooltip
+      right="3px"
         isCustomPanel={true}
         trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
