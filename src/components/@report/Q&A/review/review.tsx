@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 // import { setSession } from "../../../../stores/session";
 
 import { QAPages, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
-import { AppConfig } from "src/config/app.config";
+// import { AppConfig } from "src/config/app.config";
 import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 import axios from "axios";
 
@@ -42,7 +42,7 @@ export default function IPReview() {
 
   const [userChats, setUserChats] = useState<IAnswer[]>();
   const [loading, setLoading] = useState(false);
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  // const [paymentLoading, setPaymentLoading] = useState(false);
 
   // const ItemId = useMemo(() => sessionDetail?.plans, [sessionDetail?.plans]);
 
@@ -54,48 +54,34 @@ export default function IPReview() {
   const requirementGatheringId = jsCookie.get("requirement_gathering_id") ?? "";
 
   const handlePayment = useCallback(async () => {
-    setPaymentLoading(true);
-    try {
-      await axios.post(`https://templateuserrequirements.azurewebsites.net/send-email/`, {
-        to: AppConfig.EMAIL,
-        subject: "Detailed Q&A",
-        body: `
-        ${user?.first_name} has successfully submitted their requirement.
-    
-        Details:
-        - Full Name: ${user?.full_name}
-        - Email: ${user?.email}
+    navigate("/stay-tuned");
 
-        usecase: ${sessionDetail && (sessionDetail?.use_cases || []).map((u) => u)}
-        `,
-        labels: [],
-      });
-      navigate("/stay-tuned");
-      // const response = await axiosInstance.post<IPaymentIntent>(
-      //   `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
-      //   {
-      //     item_ids: ItemId !== undefined ? ItemId : item_id,
-      //   },
-      // );
-      // //
-      // setPaymentLoading(false);
-      // const clientSecret = response.data.clientSecret;
-      // dispatch(
-      //   setSession({
-      //     session_data: {
-      //       ...sessionDetail,
-      //       client_secret: clientSecret,
-      //     },
-      //   }),
-      // );
-      // sessionStorage.setItem("clientSecret", clientSecret);
-      // navigate("/payment");
-      setPaymentLoading(false);
-    } catch (error) {
-      setPaymentLoading(false);
-      toast.error("Server error");
-    }
-  }, [navigate, sessionDetail, user?.email, user?.first_name, user?.full_name]);
+    // setPaymentLoading(true);
+    // try {
+    //   const response = await axiosInstance.post<IPaymentIntent>(
+    //     `${API_URL}/api/create_payment_intent?code=${Auth_CODE}&clientId=default`,
+    //     {
+    //       item_ids: ItemId !== undefined ? ItemId : item_id,
+    //     },
+    //   );
+    //   //
+    //   setPaymentLoading(false);
+    //   const clientSecret = response.data.clientSecret;
+    //   dispatch(
+    //     setSession({
+    //       session_data: {
+    //         ...sessionDetail,
+    //         client_secret: clientSecret,
+    //       },
+    //     }),
+    //   );
+    //   sessionStorage.setItem("clientSecret", clientSecret);
+    //   navigate("/payment");
+    // } catch (error) {
+    //   setPaymentLoading(false);
+    //   toast.error("Failed to create payment intent");
+    // }
+  }, [navigate]);
 
   //
   const onContinue = useCallback(async () => {
@@ -176,7 +162,7 @@ export default function IPReview() {
         </div>
         <div className="flex justify-center items-center border-t pt-1 mt-1">
           <Button
-            loading={paymentLoading}
+            // loading={paymentLoading}
             htmlType={"button"}
             rounded={"large"}
             handleClick={onContinue}

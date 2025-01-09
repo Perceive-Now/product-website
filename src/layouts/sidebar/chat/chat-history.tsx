@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
@@ -138,6 +139,7 @@ const KnowNowHistory = ({ History }: Props) => {
   );
 
   //Share
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onShare = useCallback(
     (conversation_id: number) => {
       setModal(true);

@@ -94,6 +94,7 @@ const GenerateMarketReport = () => {
         });
         setComplete(true);
         // console.log(res);
+        // console.log(res);
         toast.success(`Report for section ${section[sectionIndex]} is complete`);
         setReportData((prevData) => ({
           ...prevData,

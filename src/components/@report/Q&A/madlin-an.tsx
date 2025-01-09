@@ -28,6 +28,7 @@ interface Props {
   setUpdatedAnswer: (answer: string) => void;
   setResetForm: (reset: boolean) => void;
   resetForm: boolean;
+  updatedAnswerRef: React.MutableRefObject<string>;
 }
 
 /**
@@ -41,9 +42,10 @@ const DiagnosticPlatform = ({
   isLoading,
   answer,
   setUpdatedAnswer,
-}: // resetForm,
-// setResetForm,
-Props) => {
+  resetForm,
+  setResetForm,
+  updatedAnswerRef,
+}: Props) => {
   const [hasInput, setHasInput] = useState(false);
   const [userInputs, setUserInputs] = useState<UserInputs>({});
 
@@ -58,7 +60,7 @@ Props) => {
     }
   }, [resetInputs]);
 
-  //
+  //For updating madlib inputs
   const handleInputChange = (placeholder: string, value: string) => {
     const updatedInputs = { ...userInputs, [placeholder]: value };
     setUserInputs(updatedInputs);
@@ -68,23 +70,31 @@ Props) => {
     // setError(errorMessage);
   };
 
-  //
-
+  // For updating the editable content
   const handleContentChange = useCallback(() => {
     if (contentRef.current) {
       const updatedText = contentRef.current.innerHTML.trim();
       if (updatedText.length <= 0) {
+        updatedAnswerRef.current = "";
         setHasInput(false);
+        setUpdatedAnswer("");
         setError("Please provide an answer");
         if (answer.length <= 1) {
           setUpdatedAnswer("");
         }
       } else {
+        // updatedAnswerRef.current = updatedText;
         setHasInput(true);
         setError(null);
       }
     }
-  }, [answer, setUpdatedAnswer]);
+  }, [setUpdatedAnswer, updatedAnswerRef]);
+
+  // useEffect(() => {
+  //   if (updatedAnswerRef.current.length <= 0) {
+  //     updatedAnswerRef.current = ""
+  //   }
+  // }, [updatedAnswerRef])
 
   //
   const handleContinue = useCallback(
@@ -117,6 +127,7 @@ Props) => {
     [error, isLoading, onContinue],
   );
 
+  // update editable content inside it
   const createEditableContentHTML = (text: string) => {
     const content = text ? text : " ";
     return content?.split(/(\[[^\]]+\])/g).map((part, index) => {
@@ -167,10 +178,9 @@ Props) => {
             )}
             <div
               contentEditable
-              suppressContentEditableWarning
               ref={contentRef}
+              suppressContentEditableWarning
               onInput={handleContentChange}
-              // placeholder="Please provide your answer here."
               className={classNames(
                 error ? "border-red-500" : "border-appGray-400 mt-2.5",
                 "space-y-[2px] font-semibold text-secondary-800 text-sm border py-1 px-2 rounded-md bg-appGray-100 min-h-[180px] relative focus:outline-none content-editable",

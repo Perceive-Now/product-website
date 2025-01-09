@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 // import { useForm } from "react-hook-form";
 
 // import { yupResolver } from "@hookform/resolvers/yup";
@@ -48,10 +48,13 @@ export default function QuestionAnswerForm({
   isEdit,
 }: Props) {
   const [updatedAnswer, setUpdatedAnswer] = useState("");
+  const [checkAnswer, setCheckAnswer] = useState("");
+  const updatedAnswerRef = useRef<any>(updatedAnswer);
 
   useEffect(() => {
     if (resetForm) {
       setUpdatedAnswer("");
+      updatedAnswerRef.current = "";
     }
   }, [exampleAnswer, resetForm]);
 
@@ -110,6 +113,8 @@ export default function QuestionAnswerForm({
 
   const useExample = useCallback(() => {
     setUpdatedAnswer(exampleAnswer);
+    setCheckAnswer(exampleAnswer);
+    updatedAnswerRef.current = exampleAnswer;
   }, [exampleAnswer]);
 
   const formattedAnswer = exampleAnswer.replace(/\n/g, "<br>");
@@ -158,14 +163,15 @@ export default function QuestionAnswerForm({
         ) : (
           <DiagnosticPlatform
             hasSkippedQuestion={hasSkippedQuestion}
+            setUpdatedAnswer={setCheckAnswer}
+            updatedAnswerRef={updatedAnswerRef}
+            setResetForm={setResetForm}
+            onContinue={onContinue}
+            answer={updatedAnswer}
+            isLoading={isLoading}
+            resetForm={resetForm}
             showSkip={showSkip}
             onSkip={onSkip}
-            onContinue={onContinue}
-            isLoading={isLoading}
-            answer={updatedAnswer}
-            setUpdatedAnswer={setUpdatedAnswer}
-            setResetForm={setResetForm}
-            resetForm={resetForm}
           />
         )}
       </>
@@ -227,3 +233,56 @@ export default function QuestionAnswerForm({
     </div>
   );
 }
+
+// useEffect(() => {
+//   if (resetForm) {
+//     setUpdatedAnswer("")
+//   }
+// }, [resetForm])
+
+// ----------------------Previous Code -------------------------------------------
+
+// const [madlibAnswer, setMadlibAnswer] = useState("");
+// const [edit, setEdit] = useState(false);
+
+// const formResolver = yup.object().shape({
+//   answer: yup.string().trim().required("Please provide your answer"),
+// });
+
+// const {
+//   register,
+//   formState: { errors },
+//   handleSubmit,
+//   setValue,
+//   reset,
+//   watch
+// } = useForm({
+//   defaultValues: {
+//     answer: updatedAnswer,
+//   },
+//   resolver: yupResolver(formResolver),
+//   mode: "onBlur",
+// });
+
+// const watchAnswer = watch('answer');
+
+// useEffect(() => {
+//   setUpdatedAnswer(answer || "");
+//   setValue("answer", answer || "");
+// }, [answer, exampleAnswer, setValue]);
+
+//
+// const onEdit = useCallback((answer: string) => {
+//   setEdit(!edit);
+//   setMadlibAnswer(answer);
+//   setValue("answer", answer); // Update the form value
+// }, [edit, setValue])
+
+// useEffect(() => {
+//   if (resetForm) {
+//     reset();
+//     setResetForm(false);
+//   }
+// });
+
+//--------------------------------------Previous Code ------------------------------
