@@ -15,7 +15,7 @@ import FeedbackPage from "./pages/miscs/feedback";
 
 //
 import PageNotFound404 from "./pages/404";
-
+import KnowNowPage from "./pages/product/know-now";
 //
 import AuthDefaultLayout from "./layouts/auth/default";
 import AuthLayout from "./layouts/auth";
@@ -139,7 +139,6 @@ function App() {
   // useEffect(() => {
   //   messages.forEach((message, index) => {
   //     setTimeout(() => {
-  //       console.log("ajaaaa", message.msg);
   //       // toast.success(message, {
   //       //   duration: 5000, // Duration of toast visibility
   //       //   position: "bottom-right", // Position of the toast
@@ -225,7 +224,7 @@ function App() {
             <Route path="/quick-reports/:id?" element={<QuickReports />} />
             <Route path="/setting" element={<Setting />} />
             <Route path="/preferences" element={<Preferences />} />
-            <Route path="/my-users" element={<MyUsers />} />
+            <Route path="/users" element={<MyUsers />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
 
@@ -258,8 +257,8 @@ function App() {
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
 
             {/* Know-now */}
-            {/* <Route path="/start-conversation" element={<KnowNowPage />} /> */}
-            <Route path="/start-conversation" element={<MarketIntelligenceKnowNow />} />
+            <Route path="/start-conversation" element={<KnowNowPage />} />
+            {/* <Route path="/start-conversation" element={<MarketIntelligenceKnowNow />} /> */}
 
             <Route path="/know-now/ip-analysis/:id" element={<KnowNowIP />} />
             <Route path="/know-now/ip-analysis" element={<KnowNowIP />} />
