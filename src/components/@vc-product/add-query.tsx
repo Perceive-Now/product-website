@@ -62,7 +62,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
     textareaRef.current.focus();
-    textareaRef.current.setSelectionRange(answer.length, answer.length);
+    // textareaRef.current.setSelectionRange(answer.length, answer.length);
 
   }, [query,answer]);
 
@@ -80,7 +80,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
       <div className="flex items-center p-1">
         <textarea
           ref={textareaRef}
-          onChange={(e) => {setanswer(e.target.value),console.log(e.target.value)}}
+          onChange={(e) => {setanswer(e.target.value)}}
           disabled={uploadStatus}
           value={answer}
           onKeyDown={handleKeyDown}

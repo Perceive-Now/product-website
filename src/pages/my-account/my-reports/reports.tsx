@@ -46,7 +46,11 @@ const Reports = () => {
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
-  const [activityLog, setActivityLog] = useState([{date:"Jan 7, 2025, 09:13 AM",log:"User provided report requirements."},{date:"Jan 7, 2025, 09:13 AM",log:"User provided report requirements."},{date:"Jan 7, 2025, 09:13 AM",log:"User provided report requirements."}]);
+  const [activityLog, setActivityLog] = useState([
+    { date: "Jan 7, 2025, 09:13 AM", log: "User provided report requirements." },
+    { date: "Jan 7, 2025, 09:13 AM", log: "User provided report requirements." },
+    { date: "Jan 7, 2025, 09:13 AM", log: "User provided report requirements." },
+  ]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(tab);
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
 
@@ -361,9 +365,7 @@ const Reports = () => {
   return (
     <div className="space-y-[20px] w-full z-10 pb-[7%]">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">
-          Project Hub &gt; {project_name}
-        </h6>
+        <h6 className="text-lg font-semibold ml-0">Project Hub &gt; {project_name}</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/my-projects">
             <p className="mr-4 text-secondary-800 flex items-center">
@@ -492,7 +494,7 @@ const Reports = () => {
             </Tab.Panel>
             <Tab.Panel>
               <div className="mt-5 w-full z-10">
-                {reports.length > 0 && (
+                {reports.length > 0 ? (
                   <div className="flex space-x-4">
                     {/* First Part: File Upload and Paste URL */}
                     <div className="w-full space-y-4">
@@ -525,9 +527,7 @@ const Reports = () => {
                                       <ArrowDown className="size-2" />
                                     )}
                                   </Disclosure.Button>
-                                  <Disclosure.Panel 
-                                  className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
-                                     
+                                  <Disclosure.Panel className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
                                     <div className="w-full mt-4">
                                       <label
                                         htmlFor="fullName"
@@ -536,107 +536,107 @@ const Reports = () => {
                                         Questions:
                                       </label>
                                       <div className="ml-3 mt-1">
-                                      {Array.isArray(report?.question) &&
-                                      report?.question.length > 0
-                                        ? report?.question.map(
-                                            (question: string, index: number) =>(
-                                              <div key={index}>
-                                              {index + 1}. {question}
-                                            </div>
+                                        {Array.isArray(report?.question) &&
+                                        report?.question.length > 0
+                                          ? report?.question.map(
+                                              (question: string, index: number) => (
+                                                <div key={index}>
+                                                  {index + 1}. {question}
+                                                </div>
+                                              ),
                                             )
-                                          )
-                                        : "No questions available"}
-                                        </div>
+                                          : "No questions available"}
+                                      </div>
                                     </div>
                                     <div className="flex justify-between my-2">
-
-                                    <div className="flex flex-col w-1/2">
-
-                                    <div className="mt-1">
-                                    <label
-                                      htmlFor="fullName"
-                                      className="block text-base font-semibold"
-                                    >
-                                      Report Customization:
-                                    </label>
-                                    <ul className="list-disc pl-5">
-                                      <li>
-                                        <span className="font-semibold text-base">Report Tone:</span>
-                                        <span className="font-normal">
-                                          {" "}
-                                          {report?.report_tone || "N/A"}
-                                        </span>
-                                      </li>
-                                      <li>
-                                        <span className="font-semibold text-base">
-                                          No. of charts/Tables:
-                                        </span>
-                                        <span className="font-normal">
-                                          {" "}
-                                          {report?.no_of_charts || "N/A"}
-                                        </span>
-                                      </li>
-                                      <li>
-                                        <span className="font-semibold text-base">Visual Style:</span>
-                                        <span className="font-normal">
-                                          {" "}
-                                          {report?.visual_style || "N/A"}
-                                        </span>
-                                      </li>
-                                      <li>
-                                        <span className="font-semibold text-base">Citations:</span>
-                                        <span className="font-normal">
-                                          {" "}
-                                          {report?.citations || "N/A"}
-                                        </span>
-                                      </li>
-                                      <li>
-                                        <span className="font-semibold text-base">Format:</span>
-                                        <span className="font-normal">
-                                          {report?.format && report?.format.length > 0
-                                            ? report?.format.join(", ")
-                                            : "No formats available"}
-                                        </span>
-                                      </li>
-                                    </ul>
-                                    </div>
-                                    </div>
-
-                                    <div className="flex flex-col w-1/2">
-
-                                    <div className="mt-1 ml-2">
-                                      <h6 className="font-semibold mb-1 text-base font-nunito">
-                                        Added Websites
-                                      </h6>
-
-                                      {report?.websites && report?.websites.length > 0 ? (
-                                        <div className="p-1">
-                                          {report?.websites.map((url: any, index: number) => (
-                                            <div key={index}>
-                                              <div className="flex justify-between items-center">
-                                                <a
-                                                  href={url}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                  className="text-sm font-nunito cursor-pointer text-blue-600"
-                                                >
-                                                  {url}
-                                                </a>
-                                              </div>
-                                            </div>
-                                          ))}
+                                      <div className="flex flex-col w-1/2">
+                                        <div className="mt-1">
+                                          <label
+                                            htmlFor="fullName"
+                                            className="block text-base font-semibold"
+                                          >
+                                            Report Customization:
+                                          </label>
+                                          <ul className="list-disc pl-5">
+                                            <li>
+                                              <span className="font-semibold text-base">
+                                                Report Tone:
+                                              </span>
+                                              <span className="font-normal">
+                                                {" "}
+                                                {report?.report_tone || "N/A"}
+                                              </span>
+                                            </li>
+                                            <li>
+                                              <span className="font-semibold text-base">
+                                                No. of charts/Tables:
+                                              </span>
+                                              <span className="font-normal">
+                                                {" "}
+                                                {report?.no_of_charts || "N/A"}
+                                              </span>
+                                            </li>
+                                            <li>
+                                              <span className="font-semibold text-base">
+                                                Visual Style:
+                                              </span>
+                                              <span className="font-normal">
+                                                {" "}
+                                                {report?.visual_style || "N/A"}
+                                              </span>
+                                            </li>
+                                            <li>
+                                              <span className="font-semibold text-base">
+                                                Citations:
+                                              </span>
+                                              <span className="font-normal">
+                                                {" "}
+                                                {report?.citations || "N/A"}
+                                              </span>
+                                            </li>
+                                            <li>
+                                              <span className="font-semibold text-base">
+                                                Format:
+                                              </span>
+                                              <span className="font-normal">
+                                                {report?.format && report?.format.length > 0
+                                                  ? report?.format.join(", ")
+                                                  : "No formats available"}
+                                              </span>
+                                            </li>
+                                          </ul>
                                         </div>
-                                      ) : (
-                                        <p className="">
-                                          No websites added.
-                                        </p>
-                                      )}
-                                    </div>
-                                    </div>
+                                      </div>
 
+                                      <div className="flex flex-col w-1/2">
+                                        <div className="mt-1 ml-2">
+                                          <h6 className="font-semibold mb-1 text-base font-nunito">
+                                            Added Websites
+                                          </h6>
+
+                                          {report?.websites && report?.websites.length > 0 ? (
+                                            <div className="p-1">
+                                              {report?.websites.map((url: any, index: number) => (
+                                                <div key={index}>
+                                                  <div className="flex justify-between items-center">
+                                                    <a
+                                                      href={url}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="text-sm font-nunito cursor-pointer text-blue-600"
+                                                    >
+                                                      {url}
+                                                    </a>
+                                                  </div>
+                                                </div>
+                                              ))}
+                                            </div>
+                                          ) : (
+                                            <p className="">No websites added.</p>
+                                          )}
+                                        </div>
+                                      </div>
                                     </div>
-
-
 
                                     <div className="mt-2">
                                       <h6 className="font-semibold mb-1 text-base font-nunito flex items-center">
@@ -658,7 +658,9 @@ const Reports = () => {
                                                   <IconFile className="cursor-pointer" />
                                                 </div>
                                                 <div className="w-full">
-                                                  <p className="text-[12px] text-wrap font-nunito">{fileUrl}</p>{" "}
+                                                  <p className="text-[12px] text-wrap font-nunito">
+                                                    {fileUrl}
+                                                  </p>{" "}
                                                 </div>
                                               </div>
                                             );
@@ -670,7 +672,6 @@ const Reports = () => {
                                         </p>
                                       )}
                                     </div>
-
                                   </Disclosure.Panel>
                                 </>
                               )}
@@ -680,28 +681,47 @@ const Reports = () => {
                       </div>
                     </div>
                   </div>
+                ) : (
+                  <>
+                    <div className="text-center mt-[10%] font-semibold">
+                      <div className="py-2">
+                        No requirements have been added yet. Please click below to add the
+                        requirements.
+                      </div>
+                      <Button
+                        type="primary"
+                        handleClick={() => {
+                          navigate(`/quick-reports/${id}?project=${project_name}`, {
+                            state: reports[0],
+                          });
+                        }}
+                      >
+                        <div className="flex items-center gap-1">Add Requirements</div>
+                      </Button>
+                    </div>
+                  </>
                 )}
               </div>
             </Tab.Panel>
             <Tab.Panel>
               <div className="border border-appGray-500 w-[60%] p-2 rounded-lg mt-5">
-              {activityLog && activityLog?.length > 0 ? (
-              <>
-                {activityLog?.map((log, idx) => (
-                  <div
-                    key={idx * 19}
-                    className="grid grid-cols-2 text-secondary-800 font-mulish mt-1 last:border-b-0 border-b border-gray-300"
-                  >
-                    <div className="font-nunito">{log.date}</div>
-                    <div className="font-nunito">{log.log}</div>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <p className="flex justify-center items-center mt-5 font-mulish text-sm">
-                No activity log found
-              </p>
-            )}
+                {activityLog && activityLog?.length > 0 ? (
+                  <>
+                    {activityLog?.map((log, idx) => (
+                      <div
+                        key={idx * 19}
+                        className="grid grid-cols-2 text-secondary-800 font-mulish mt-1 last:border-b-0 border-b border-gray-300"
+                      >
+                        <div className="font-nunito">{log.date}</div>
+                        <div className="font-nunito">{log.log}</div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <p className="flex justify-center items-center mt-5 font-mulish text-sm">
+                    No activity log found
+                  </p>
+                )}
               </div>
             </Tab.Panel>
           </Tab.Panels>

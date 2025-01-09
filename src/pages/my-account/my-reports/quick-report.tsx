@@ -362,9 +362,10 @@ const QuickReports = () => {
                   if (step === 3) {
                     setStep(2);
                   } else {
-                    navigate(`/my-reports/${id}?project=${project_name}`, {
-                      state: { tab: 1 },
-                    });
+                    // navigate(`/my-reports/${id}?project=${project_name}`, {
+                    //   state: { tab: 1 },
+                    // });
+                    navigate(`/my-projects`);
                   }
                 }}
               >
@@ -380,12 +381,18 @@ const QuickReports = () => {
               Report management &gt; {step === 1 ? "New Project" : "Project Requirements"}
             </h6>
             <div className="flex justify-start items-center pt-3 pl-1">
-              <Link to="/my-projects">
-                <p className="mr-4 text-secondary-800 flex items-center">
+                <p 
+                className="mr-4 text-secondary-800 flex items-center cursor-pointer"
+                onClick={() => {
+                  if (step === 3) {
+                    setStep(2);
+                  } else {
+                    navigate(`/my-projects`);
+                  }
+                }}>
                   <ArrowLeftIcon className="mr-1" />
                   Back
                 </p>
-              </Link>
             </div>
           </div>
         )}
@@ -636,7 +643,7 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-                        className="mt-2 mb-2 text-primary-900 font-semibold text-end"
+                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? 'mr-5':''}`}
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
