@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef } from "@tanstack/react-table";
@@ -7,119 +7,118 @@ import TrashIcon from "src/components/icons/common/trash";
 import { VerticalThreeDots } from "src/components/icons";
 import DownloadIcon from "src/components/icons/common/download-icon";
 
-//
 import EditIcon from "../../../components/icons/miscs/Edit";
-
-//
-import CheckboxInput from "../../../components/reusable/check-box/checkbox";
 import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import Button from "src/components/reusable/button";
-/**
- *
- */
+import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
+import { useAppSelector } from "src/hooks/redux";
+import toast from "react-hot-toast";
+
+interface OrganizationUser {
+  id: number;
+  full_name?: string | null;
+  email: string;
+  role: string;
+  job_position?: string;
+  created_at?: string; // ISO 8601 date-time string
+}
+
 const Users = () => {
-  const [users, setusers] = useState([
-    { id: 1, user_name: "xyz", role: "admin", reports_count: 6 },
-    { id: 2, user_name: "abc", role: "admin", reports_count: 6 },
-    { id: 3, user_name: "pqr", role: "admin", reports_count: 6 },
+  const session = useAppSelector((state) => state.sessionDetail.session);
+
+  const [users, setUsers] = useState<OrganizationUser[]>([
+    {
+      id: 1,
+      full_name: "John Doe",
+      email: "hello@xyz.com",
+      role: "Admin",
+    },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
-  const filteredUser = users.filter((user) =>
-    user.user_name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredUsers = users?.filter((user) =>
+    (user?.full_name || "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  interface IOptions {
-    label: string;
-    icon: JSX.Element;
-    action: () => void;
-  }
+  const fetchOrganizationUsers = async () => {
+    try {
+      const res = await fetch(`${NEW_BACKEND_URL}/team/users?user_id=${session?.user_id}`);
+      const result = await res.json();
 
-  const handleRowSelectionChange = (selection: any) => {
-    setRowSelection(selection);
+      if (res.status === 200) {
+        console.log(result);
+        setUsers(result);
+      } else {
+        console.log("Error fetching organization users");
+      }
+    } catch (error) {
+      toast.error("Error fetching organization users", {
+        position: "top-right",
+      });
+    }
   };
 
-  const RowActions = ({
-     
-   }: {
-    
-   }) => {
-    
-     return (
-       <Tooltip
-         isCustomPanel={true}
-         trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
-         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
-       >
-         <ul id="dropdown">
-           <li className="mb-2 cursor-pointer">
-             <div className="flex items-center">
-               <DownloadIcon className="mr-2" /> Download
-             </div>
-           </li>
-           <li className="cursor-pointer">
-             <div className="flex items-center">
-               <TrashIcon className="mr-2" /> Delete
-             </div>
-           </li>
-         </ul>
-       </Tooltip>
-     );
-   };
+  useEffect(() => {
+    fetchOrganizationUsers();
+  }, []);
 
-  const columns = useMemo<ColumnDef<any>[]>(
+  // Menu items for actions
+  const menuItems = [
+    {
+      label: "Pin",
+      icon: <EditIcon className="h-2 w-2" />,
+      action: () => console.log("Pin clicked"),
+    },
+    {
+      label: "Delete",
+      icon: <EditIcon className="h-2 w-2" />,
+      action: () => console.log("Delete clicked"),
+    },
+    {
+      label: "Share",
+      icon: <EditIcon className="h-2 w-2" />,
+      action: () => console.log("Share clicked"),
+    },
+  ];
+
+  const columns = useMemo<ColumnDef<OrganizationUser>[]>(
     () => [
       {
-        id: "select-col",
-        header: ({ table }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={table.getIsAllRowsSelected()}
-              // indeterminate={table.getIsSomeRowsSelected()}
-              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
-            />
-          </div>
-        ),
-        cell: ({ row }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={row.getIsSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          </div>
-        ),
+        header: "Name",
+        accessorKey: "full_name",
+        minSize: 400,
+        cell: ({ row }) => <p className="line-clamp-1">{row.original.full_name || "N/A"}</p>,
       },
       {
-        header: "User",
-        accessorKey: "user_name",
-        minSize: 100,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.user_name}</p>,
+        header: "Email",
+        accessorKey: "email",
+        minSize: 300,
+        cell: ({ row }) => <span>{row.original.email}</span>,
       },
       {
         header: "Role",
         accessorKey: "role",
-        minSize: 100,
-        cell: (item) => <span>{item.row.original.role}</span>,
+        minSize: 200,
+        cell: ({ row }) => <span className="capitalize">{row.original.role}</span>,
       },
       {
-        header: "Reports",
-        accessorKey: "reports_count",
-        minSize: 100,
-        cell: (item) => <span>{item.row.original.reports_count}</span>,
+        header: "Job Position",
+        accessorKey: "job_position",
+        minSize: 200,
+        cell: ({ row }) => <span className="capitalize">{row.original.job_position || "N/A"}</span>,
       },
       {
         header: " ",
-        // accessorKey: "lead_investigator_given",
         minSize: 80,
-        cell: (item) => (
-          <RowActions
-        />
+        cell: () => (
+          // Commenting out the menu icon
+          // <TableDropdown
+          //   menuItems={menuItems}
+          // />
+          <></>
         ),
       },
     ],
@@ -141,26 +140,18 @@ const Users = () => {
       </div>
       <div className="flex items-center justify-between gap-1 w-full">
         <div className="font-bold text-base ml-1">
-          All Users<span className="ml-3">{users.length}</span>
+          All Users<span className="ml-3">{users?.length}</span>
         </div>
         <div className="w-[300px] ml-auto">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
-
-        <div className="">
+        <div>
           <Link to="/add-user">
             <Button type="primary">+ Add User</Button>
           </Link>
         </div>
       </div>
-      <ReactTable
-        columnsData={columns}
-        rowsData={filteredUser}
-        size="medium"
-        noTopBorder
-        rowSelection={rowSelection}
-        onRowSelectionChange={handleRowSelectionChange}
-      />
+      <ReactTable columnsData={columns} rowsData={filteredUsers} size="medium" noTopBorder />
     </div>
   );
 };

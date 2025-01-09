@@ -213,21 +213,32 @@ const TeamManagementScreen = () => {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-start space-x-[16px]">
+        <div className="flex justify-between space-x-[16px]">
+          <div className="flex space-x-[16px]">
+            <Button
+              rounded="full"
+              type="danger"
+              classname="w-[120px]"
+              handleClick={() => navigate("/signup/profile")}
+            >
+              Back
+            </Button>
+            <Button
+              rounded="full"
+              classname="w-[120px]"
+              handleClick={() => navigate("/signup/review")}
+            >
+              Next
+            </Button>
+          </div>
+
           <Button
             rounded="full"
             type="secondary"
             classname="w-[120px]"
-            handleClick={() => navigate("/signup/profile")}
-          >
-            Back
-          </Button>
-          <Button
-            rounded="full"
-            classname="w-[120px]"
             handleClick={() => navigate("/signup/review")}
           >
-            Next
+            Skip
           </Button>
         </div>
       </div>
