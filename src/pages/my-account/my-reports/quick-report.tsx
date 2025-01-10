@@ -87,6 +87,13 @@ const QuickReports = () => {
     additional: "",
   });
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleInputFromAnimated = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   const AnimatedPlaceholder = ({ className }: { className: any }) => {
     return (
@@ -196,6 +203,7 @@ const QuickReports = () => {
           .required("Question is required"),
       )
       .min(3, "Array must contain at least 3 non-empty strings"), // Minimum 3 valid items
+    
   });
 
   const {
@@ -381,7 +389,7 @@ const QuickReports = () => {
               Report management &gt; {step === 1 ? "New Project" : "Project Requirements"}
             </h6>
             <div className="flex justify-start items-center pt-3 pl-1">
-                <p 
+              <p
                 className="mr-4 text-secondary-800 flex items-center cursor-pointer"
                 onClick={() => {
                   if (step === 3) {
@@ -389,10 +397,11 @@ const QuickReports = () => {
                   } else {
                     navigate(`/my-projects`);
                   }
-                }}>
-                  <ArrowLeftIcon className="mr-1" />
-                  Back
-                </p>
+                }}
+              >
+                <ArrowLeftIcon className="mr-1" />
+                Back
+              </p>
             </div>
           </div>
         )}
@@ -643,7 +652,9 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? 'mr-5':''}`}
+                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
+                          requirementQuestions.length > 3 ? "mr-5" : ""
+                        }`}
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
@@ -839,19 +850,24 @@ const QuickReports = () => {
                 Have any special requests? Let us know what you need, and we’ll tailor the report to
                 fit your goals!
               </h6>
-              <div className="relative w-full overflow-hidden bg-white" aria-disabled>
+              <div
+                className="relative w-full overflow-hidden bg-white"
+                aria-disabled
+                onClick={handleInputFromAnimated}
+              >
                 <input
+                  ref={inputRef}
+                  id="specialRequests"
                   type="text"
-                  className="w-full p-2 rounded-md border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                  className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"                
                   placeholder=""
                   value={customReport.additional}
                   onChange={(e: any) => {
                     handleReportChange("additional", e.target.value);
                   }}
                 />
-
                 {customReport.additional === "" && (
-                  <AnimatedPlaceholder className="absolute top-1 left-6 pt-1 bg-transparent" />
+                  <AnimatedPlaceholder className="absolute top-1 left-2 pt-1 bg-transparent" />
                 )}
               </div>
             </div>

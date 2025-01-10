@@ -280,7 +280,7 @@ export default function Landing() {
               <p className="text-base leading-relaxed mb-4 font-nunito font-normal">
                 We are excited for you to experience our solutions.
               </p>
-              <div className="flex gap-x-2 mb-3">
+              <div className="flex gap-x-2 mb-3 overflow-hidden">
                 <div className="flex items-center gap-1">
                   <img src={targetPaper} alt="arrow-down" className="w-4 h-4" />
                   <p className="text-xs font-light font-nunito">Context-richness</p>
