@@ -83,6 +83,12 @@ const InviteProfileSetup: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { first_name, last_name } = extractName(data.fullName);
+    if (!first_name || !last_name) {
+      toast.error("Please enter your full name.", {
+        position: "top-right",
+      });
+      return;
+    }
     const formData = {
       first_name,
       last_name,
