@@ -25,6 +25,7 @@ interface IResponse<T = any> {
 interface AuthState {
   user?: IUserProfile;
   token?: string;
+  invitedUser?: { token?: string }; // Added invitedUser state
 }
 
 //
@@ -50,6 +51,7 @@ interface IRefreshResponse {
 const initialState: AuthState = {
   token: undefined,
   user: undefined,
+  invitedUser: undefined, // Initialize invitedUser state
 };
 
 //
@@ -307,6 +309,15 @@ export const AuthSlice = createSlice({
     removeUser: (state) => {
       state.user = undefined;
     },
+    setInvitedUserToken: (state, action: PayloadAction<string | undefined>) => {
+      if (!state.invitedUser) {
+        state.invitedUser = {};
+      }
+      state.invitedUser.token = action.payload; // Set invitedUser's token
+    },
+    removeInvitedUser: (state) => {
+      state.invitedUser = undefined; // Clear invitedUser state
+    },
   },
 
   /**
@@ -344,5 +355,6 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
+export const { setUser, setAuthToken, removeUser, setInvitedUserToken, removeInvitedUser } =
+  AuthSlice.actions;
 export default AuthSlice.reducer;

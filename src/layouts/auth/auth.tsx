@@ -83,7 +83,11 @@ export default function AuthLayout() {
       // Check if the user is missing required fields
       const isProfileIncomplete = !first_name || !job_position || !about_me;
 
-      if (isProfileIncomplete && !signupFlowPaths.includes(location.pathname)) {
+      if (
+        isProfileIncomplete &&
+        !signupFlowPaths.includes(location.pathname) &&
+        !user.registration_completed // Ensure the registration_completed flag is considered
+      ) {
         toast.error("Please complete your profile to proceed.", {
           position: "top-right",
         });
@@ -92,7 +96,7 @@ export default function AuthLayout() {
       }
     }
   }, [navigate, user, location.pathname]);
-
+  
   // Do not show the content initially
   if (isLoading || checking) return <PageLoading />;
 
