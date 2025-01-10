@@ -2,12 +2,15 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { NEW_BACKEND_URL } from "../../signup/env";
+import { useAppDispatch } from "src/hooks/redux";
+import { setInvitedUserToken } from "src/stores/auth";
 
 const VerifyInviteToken = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
 
-  const verifyTokne = async (token: string) => {
+  const verifyToken = async (token: string) => {
     try {
       const res = await fetch(`${NEW_BACKEND_URL}/team/validate-invite/${token}`, {
         method: "GET",
@@ -18,28 +21,24 @@ const VerifyInviteToken = () => {
       const result = await res.json();
 
       if (res.status === 200) {
+        dispatch(setInvitedUserToken(token));
         toast.success("Token verified", {
           position: "top-right",
         });
         navigate("/invite/organization-setting", {
-          replace: true
+          replace: true,
         });
       } else if (
         res.status === 400 &&
         result?.detail === "You need to create an account first before accepting the invitation."
       ) {
+        dispatch(setInvitedUserToken(token));
         toast.error("You need to create an account first before accepting the invitation.", {
           position: "top-right",
         });
 
         navigate("/signup", {
           replace: true,
-          state: {
-            invited: {
-              invited: true,
-              token,
-            },
-          },
         });
       } else {
         toast.error("Failed to verify token", {
@@ -65,7 +64,7 @@ const VerifyInviteToken = () => {
     }
 
     if (token) {
-      verifyTokne(token);
+      verifyToken(token);
     }
   }, [token]);
 
