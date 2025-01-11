@@ -20,6 +20,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import SelectBox from "./selectBox";
+import axios from "axios";
 /**
  *
  */
@@ -306,36 +307,48 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
-    const formData = new FormData();
+    const dataPayload: Record<string, string[]> = {}
+    dataPayload.websites = pastedURLs;
+    dataPayload.question = values.questions;
+    dataPayload.format = customReport.format
 
-    uploadedFiles.forEach((file: File) => {
-      formData.append("files", file);
-    });
-
-    pastedURLs.forEach((url: string) => {
-      formData.append("websites", url);
-    });
-
-    values.questions.forEach((question: string) => {
-      formData.append("question", question);
-    });
-
-    customReport.format.forEach((question: string) => {
-      formData.append("format", question);
-    });
 
     try {
-      const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&report_complete_status=false&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
-        {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: formData,
-        },
+      const response: any = await axios.post(
+        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
+        dataPayload,
       );
 
-      if (response.ok) {
-        setStep(4);
+      if (response.status === 200) {
+        if(uploadedFiles.length === 0){
+          setStep(4)
+          return
+        }
+        const formData = new FormData();
+
+        uploadedFiles.forEach((file: File) => {
+          formData.append("files", file);
+        });
+        try {
+          const fileUploadResponse: any = await fetch(
+            `https://templateuserrequirements.azurewebsites.net/upload-files/${userId}/${projectId}/${response.data.report_id}`,
+            {
+              method: "POST",
+              headers: { Accept: "application/json" },
+              body: formData,
+            },
+          );
+
+          if (fileUploadResponse.ok) {
+            setStep(4);
+          } else {
+            toast.error("Unable to submit report");
+          }
+        } catch (e) {
+          console.log("err", e);
+        } finally {
+          setLoading(false);
+        }
       } else {
         toast.error("Unable to submit report");
       }
@@ -347,7 +360,7 @@ const QuickReports = () => {
       setLoading(false);
     }
 
-    console.log("formData------", formData);
+    // console.log("formData------", formData);
   };
 
   return (
@@ -381,7 +394,7 @@ const QuickReports = () => {
               Report management &gt; {step === 1 ? "New Project" : "Project Requirements"}
             </h6>
             <div className="flex justify-start items-center pt-3 pl-1">
-                <p 
+              <p
                 className="mr-4 text-secondary-800 flex items-center cursor-pointer"
                 onClick={() => {
                   if (step === 3) {
@@ -390,9 +403,9 @@ const QuickReports = () => {
                     navigate(`/my-projects`);
                   }
                 }}>
-                  <ArrowLeftIcon className="mr-1" />
-                  Back
-                </p>
+                <ArrowLeftIcon className="mr-1" />
+                Back
+              </p>
             </div>
           </div>
         )}
@@ -455,7 +468,7 @@ const QuickReports = () => {
                       )}
                     />
                     {requirementErrors.reportName && (
-                      <div className="mt-1 text-xs text-danger-500">
+                      <div className="mt-1 text-s text-danger-500">
                         {requirementErrors.reportName?.message}
                       </div>
                     )}
@@ -512,9 +525,8 @@ const QuickReports = () => {
                     Upload Resources for Your Report
                   </h6>
                   <div
-                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                      dragging ? "bg-gray-200" : ""
-                    }`}
+                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${dragging ? "bg-gray-200" : ""
+                      }`}
                     onDragOver={(e) => {
                       e.preventDefault();
                       setDragging(true);
@@ -643,7 +655,7 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? 'mr-5':''}`}
+                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? 'mr-5' : ''}`}
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
@@ -745,7 +757,7 @@ const QuickReports = () => {
                 )}
               />
               {errors.projectName?.message && (
-                <div className="mt-1 text-xs text-danger-500">{errors.projectName?.message}</div>
+                <div className="mt-1 text-s text-danger-500">{errors.projectName?.message}</div>
               )}
               <div className="max-w-[125px] mt-5 justify-center items-center">
                 <div
