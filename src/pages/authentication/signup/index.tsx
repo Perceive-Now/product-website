@@ -38,7 +38,8 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const userInvited = location?.state?.invited;
+  const userInvited = useAppSelector((state) => state.auth.invitedUser);
+  console.log(userInvited);
   const callbackPath = searchParams.get("callback_path");
 
   // const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
@@ -108,11 +109,13 @@ export default function SignupPage() {
         toast.success("User is registered", {
           position: "top-right",
         });
-        if (userInvited?.invited && userInvited?.token) {
+        if (userInvited?.token) {
           toast.success("User is registered, please accept invitation from your email", {
             position: "top-right",
           });
-          return;
+          navigate("/invite/organization-setting", {
+            replace: true,
+          });
         }
         navigate("/signup/confirm");
       }

@@ -27,13 +27,12 @@ const Basics = () => {
   const [photo, setPhoto] = useState<any>();
 
   const [formData, setFormData] = useState({
-    fullName: UserDetail?.full_name || '',
-    email: UserDetail?.email || '',
-    org: UserDetail?.company_name || '',
-    role: UserDetail?.job_position || '',  
-    profilePhoto: UserDetail?.profile_photo || null ,
+    fullName: UserDetail?.full_name || "",
+    email: UserDetail?.email || "",
+    org: UserDetail?.company_name || "",
+    role: UserDetail?.job_position || "",
+    profilePhoto: UserDetail?.profile_photo || null,
   });
-
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -43,13 +42,12 @@ const Basics = () => {
     });
   };
 
-
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const updatedProfileData = {
-      first_name: formData.fullName.split(' ')[0],
-      last_name: formData.fullName.split(' ')[1] || '',
+      first_name: formData.fullName.split(" ")[0],
+      last_name: formData.fullName.split(" ")[1] || "",
       profile_photo: formData.profilePhoto,
       company_name: formData.org,
       job_position: formData.role,
@@ -63,19 +61,25 @@ const Basics = () => {
 
     try {
       await updateProfile(updatedProfileData);
-      toast.success('Profile updated successfully!');
+      toast.success("Profile updated successfully!", {
+        position: "top-right",
+      });
     } catch (error) {
-      toast.error('Failed to update profile!');
+      toast.error("Failed to update profile!", {
+        position: "top-right",
+      });
     }
   };
 
   const updateProfile = useCallback(
-    async (values:any) => {
+    async (values: any) => {
       try {
-        console.log("ppppppppppppp")
+        console.log("ppppppppppppp");
         await updateUserProfile(values).then((res) => {
           if (res.status === 200) {
-            toast.success('Profile updated successfully');
+            toast.success("Profile updated successfully", {
+              position: "top-right",
+            });
             dispatch(
               setUser({
                 first_name: values.first_name,
@@ -91,11 +95,13 @@ const Basics = () => {
             );
           }
         });
-      } catch (error:any) {
-        toast.error(error.message);
+      } catch (error: any) {
+        toast.error(error.message, {
+          position: "top-right",
+        });
       }
     },
-    [dispatch, updateUserProfile]
+    [dispatch, updateUserProfile],
   );
 
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -106,9 +112,9 @@ const Basics = () => {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        const result = reader.result as string; 
+        const result = reader.result as string;
         // setPhoto(reader.result);
-        setFormData(prevData => ({
+        setFormData((prevData) => ({
           ...prevData,
           profilePhoto: result,
         }));
@@ -118,7 +124,6 @@ const Basics = () => {
     }
   };
 
-  
   if (UserDetail === undefined) {
     return <Loading isLoading={UserDetail === undefined} />;
   }
@@ -186,102 +191,102 @@ const Basics = () => {
     // </>
 
     <div className="space-y-[20px] w-full z-10 pb-[9%]">
-    <div className="p-1">
-      <h6 className="text-lg font-semibold ml-0">Settings &gt; Basics</h6>
-      <div className="flex justify-start items-center pt-3 pl-1">
-        <Link to="/profile">
-          <p className="text-secondary-800 flex items-center">
-            <ArrowLeftIcon className="mr-1" />
-            Back
-          </p>
-        </Link>
+      <div className="p-1">
+        <h6 className="text-lg font-semibold ml-0">Settings &gt; Basics</h6>
+        <div className="flex justify-start items-center pt-3 pl-1">
+          <Link to="/profile">
+            <p className="text-secondary-800 flex items-center">
+              <ArrowLeftIcon className="mr-1" />
+              Back
+            </p>
+          </Link>
+        </div>
       </div>
-    </div>
-    <div className="w-[660px] mx-auto">
-    <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
-        {formData?.profilePhoto ? (
-          <img
-            src={formData.profilePhoto}
-            alt="profile_picture"
-            className="h-full w-full rounded-full object-cover"
-          />
-        ) : (
-          <ProfileIcon />
-        )}
-        <label className="hover:cursor-pointer bottom-0 right-0 rounded-full w-[24px] h-[24px] bg-appGray-200 flex items-center justify-center absolute">
-          <EditIcon />
-          <input type="file" onChange={onSelectFile} accept="image/*" className="hidden" />
-        </label>
-      </div>
-      <form onSubmit={handleSubmit} className="w-full mt-3">
-        <div className="mb-2 w-full">
-          <label htmlFor="fullName" className="block text-md  text-secondary-800">
-            Full Name
+      <div className="w-[660px] mx-auto">
+        <div className="rounded-full over w-[100px] h-[100px] bg-appGray-200 flex items-center justify-center relative mt-0.5">
+          {formData?.profilePhoto ? (
+            <img
+              src={formData.profilePhoto}
+              alt="profile_picture"
+              className="h-full w-full rounded-full object-cover"
+            />
+          ) : (
+            <ProfileIcon />
+          )}
+          <label className="hover:cursor-pointer bottom-0 right-0 rounded-full w-[24px] h-[24px] bg-appGray-200 flex items-center justify-center absolute">
+            <EditIcon />
+            <input type="file" onChange={onSelectFile} accept="image/*" className="hidden" />
           </label>
-          <input
-            type="text"
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-            placeholder="Full Name"
-            className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
-          />
         </div>
+        <form onSubmit={handleSubmit} className="w-full mt-3">
+          <div className="mb-2 w-full">
+            <label htmlFor="fullName" className="block text-md  text-secondary-800">
+              Full Name
+            </label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              required
+              placeholder="Full Name"
+              className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"
+            />
+          </div>
 
-        <div className="mb-2">
-          <label htmlFor="email" className="block text-md text-secondary-800">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            disabled={true}
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-            className="mt-1 p-[14px] w-full border rounded-lg"
-          />
-        </div>
+          <div className="mb-2">
+            <label htmlFor="email" className="block text-md text-secondary-800">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              disabled={true}
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              required
+              className="mt-1 p-[14px] w-full border rounded-lg"
+            />
+          </div>
 
-        <div className="mb-2">
-          <label htmlFor="org" className="block text-md text-secondary-800">
-            Organization
-          </label>
-          <input
-            type="text"
-            id="org"
-            name="org"
-            disabled={true}
-            value={formData.org}
-            onChange={handleChange}
-            placeholder="Organization"
-            required
-            className="mt-1 p-[14px] w-full rounded-lg"
-          />
-        </div>
+          <div className="mb-2">
+            <label htmlFor="org" className="block text-md text-secondary-800">
+              Organization
+            </label>
+            <input
+              type="text"
+              id="org"
+              name="org"
+              disabled={true}
+              value={formData.org}
+              onChange={handleChange}
+              placeholder="Organization"
+              required
+              className="mt-1 p-[14px] w-full rounded-lg"
+            />
+          </div>
 
-        <div className="mb-2">
-          <label htmlFor="role" className="block text-md text-secondary-800">
-            Role
-          </label>
-          <input
-            type="text"
-            id="role"
-            name="role"
-            disabled={true}
-            value={formData.role}
-            onChange={handleChange}
-            placeholder="Organization"
-            required
-            className="mt-1 p-[14px] w-full rounded-lg"
-          />
-        </div>
+          <div className="mb-2">
+            <label htmlFor="role" className="block text-md text-secondary-800">
+              Role
+            </label>
+            <input
+              type="text"
+              id="role"
+              name="role"
+              disabled={true}
+              value={formData.role}
+              onChange={handleChange}
+              placeholder="Organization"
+              required
+              className="mt-1 p-[14px] w-full rounded-lg"
+            />
+          </div>
 
-        {/* <div className="mb-2">
+          {/* <div className="mb-2">
           <label htmlFor="role" className="block text-md text-secondary-800">
             Role
           </label>
@@ -303,19 +308,28 @@ const Basics = () => {
           </select>
         </div> */}
 
-        <div className="text-end m-0 text underline cursor-pointer" onClick={() => setModal("password")}>Change password</div>
-        <div className="mt-2">
-          <button
-            type="submit"
-            disabled={Object.values(formData).includes("")} 
-            className={`px-5 py-[10px] ${Object.values(formData).includes("") ? "bg-appGray-500 cursor-not-allowed" : "bg-primary-800"} text-white rounded-full focus:outline-none`}
+          <div
+            className="text-end m-0 text underline cursor-pointer"
+            onClick={() => setModal("password")}
+          >
+            Change password
+          </div>
+          <div className="mt-2">
+            <button
+              type="submit"
+              disabled={Object.values(formData).includes("")}
+              className={`px-5 py-[10px] ${
+                Object.values(formData).includes("")
+                  ? "bg-appGray-500 cursor-not-allowed"
+                  : "bg-primary-800"
+              } text-white rounded-full focus:outline-none`}
             >
-            Save
-          </button>
-        </div>
-      </form>
-      <ChangePasswordModal open={modal === "password"} onClose={() => setModal(null)} />
-    </div>
+              Save
+            </button>
+          </div>
+        </form>
+        <ChangePasswordModal open={modal === "password"} onClose={() => setModal(null)} />
+      </div>
     </div>
   );
 };

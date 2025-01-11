@@ -20,7 +20,7 @@ const AddUser = () => {
 
   const [formData, setFormData] = useState({
     email: "",
-    role: "",
+    role: "User",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -89,7 +89,7 @@ const AddUser = () => {
       <div className="p-1">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; User management &gt; User</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to="/my-users">
+          <Link to="/users">
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" />
               Back
@@ -118,7 +118,7 @@ const AddUser = () => {
               className="mt-1 p-[14px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent"
             />
           </div>
-
+{/* 
           <div className="mb-2">
             <label htmlFor="role" className="block text-md text-secondary-800">
               Change Role
@@ -138,7 +138,7 @@ const AddUser = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
           <div className="flex justify-between mt-4">
             <Button
               htmlType="submit"

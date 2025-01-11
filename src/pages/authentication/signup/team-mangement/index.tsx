@@ -20,7 +20,7 @@ const mockApiCall = async (data: { email: string; role: string }) => {
 const TeamManagementScreen = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("Co-founder");
+  const [role, setRole] = useState("User");
   const [note, setNote] = useState("");
   const [teamMembers, setTeamMembers] = useState<{ email: string; role: string }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +80,7 @@ const TeamManagementScreen = () => {
 
       const data = {
         email,
-        role,
+        role: "User",
         permissions: ["read"],
       };
 
@@ -137,7 +137,7 @@ const TeamManagementScreen = () => {
                   className="w-full flex-1 h-[48px] border-[1px] border-[#87888C] rounded-lg px-[12px] text-[16px] bg-[#FCFCFC] text-[#4F4F4F] outline-none"
                 />
               </div>
-              <div>
+              {/* <div>
                 <label htmlFor="role" className="text-[16px] text-[#4F4F4F] block mb-2">
                   What role would they have in the organization?
                 </label>
@@ -146,7 +146,6 @@ const TeamManagementScreen = () => {
                   onChange={(e) => setRole(e.target.value)}
                   className="w-full h-[48px] border-[1px] border-[#87888C] rounded-lg px-[12px] text-[16px] bg-[#FCFCFC] text-[#4F4F4F] outline-none"
                 >
-                  {/* except the role "Admin"  */}
                   {roles
                     .filter((role) => role !== "Admin" && role !== "Other")
                     .map((role, index) => (
@@ -155,7 +154,7 @@ const TeamManagementScreen = () => {
                       </option>
                     ))}
                 </select>
-              </div>
+              </div> */}
             </div>
             <div className="mt-2">
               <label htmlFor="note" className="text-[16px] text-[#4F4F4F] block mb-2">

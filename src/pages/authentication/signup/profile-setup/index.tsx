@@ -97,9 +97,10 @@ const ProfileSetup: React.FC = () => {
           ? (user?.job_position as string)
           : "";
 
-          console.log(job_position)
+        console.log(job_position);
         reset({
-          fullName: user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : "",
+          fullName:
+            user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : "",
           role: job_position,
           otherRole: job_position === "Other" ? (user?.job_position as string) : "",
           profileImage: user?.profile_photo || "",
@@ -117,6 +118,12 @@ const ProfileSetup: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { first_name, last_name } = extractName(data.fullName);
+    if (!first_name || !last_name) {
+      toast.error("Please enter your full name.", {
+        position: "top-right",
+      });
+      return;
+    }
     const userProfile = await getUserProfile();
     const totalCompanies = await getCompanies();
     const company_name = totalCompanies.find((c) => c.id === userProfile.company_id)?.name;
