@@ -48,7 +48,6 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
             key={option}
             onClick={() => !isDisabled && handleSelect(option)}
             className={`
-              cursor-pointer
               py-1 px-2
               m-0
               max-w-[210px]
@@ -59,7 +58,7 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
               ${isLastItem ? 'rounded-r-md border-t border-r border-b' : ''}
               ${!(isFirstItem || isLastItem) ? 'border-r border-t border-b' : ''}
               ${!isDisabled ? 'hover:bg-primary-800 hover:text-white hover:border-primary-800' : '' }
-              ${isDisabled ? 'bg-customDisableGray-100 cursor-not-allowed' : 'pt-3'}
+              ${isDisabled ? '!bg-customDisableGray-100 cursor-not-allowed' : 'pt-3 cursor-pointer'}
             `}
           >
            {!isFirstItem && !multiple && <div className='flex items-center justify-center text-center'><img src="https://cdna.iconscout.com/img/crown-gold.0b35b6a.svg" width="25" alt="crown" /></div>} 

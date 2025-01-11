@@ -25,6 +25,7 @@ import DownloadIcon from "src/components/icons/common/download-icon";
 // import JSZip from "jszip";
 import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
+import AddIcon from "src/components/icons/common/add-icon";
 /**
  *
  */
@@ -264,22 +265,23 @@ const AdminReports = () => {
       //   minSize: 200,
       //   cell: (item) => <span>18 Dec 2024</span>,
       // },
-      // columnHelper.display({
-      //   id: "actions",
-      //   // minSize: 100,
-      //   cell: (item) => (
-      //     <div
-      //       className="text-green-600 font-semibold cursor-pointer"
-      //       onClick={() => {
-      //         navigate(
-      //           `/upload-report/${item.row.original.report_id}?project_id=${id}&user_id=${user_id}`,
-      //         );
-      //       }}
-      //     >
-      //       + Add Report
-      //     </div>
-      //   ),
-      // }),
+      columnHelper.display({
+        header: "Add Report",
+        id: "actions",
+        // minSize: 100,
+        cell: (item) => (
+           <div
+            className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-900 text-white rounded-md font-semibold cursor-pointer"
+            onClick={() => {
+              navigate(
+                `/detailed-report?project_id=${id}&user_id=${user_id}&project=${project_name}&report_id=${item.row.original.report_id}`
+              );
+            }}
+          >
+            <AddIcon/>
+          </div>
+        ),
+      }),
 
       
       // columnHelper.display({
@@ -414,7 +416,7 @@ const AdminReports = () => {
                 )} */}
                 
           {/* {selectedTabIndex === 0 && ( */}
-            <div className="ml-auto">
+            {/* <div className="ml-auto">
               <Button
                 type="primary"
                 handleClick={() => {
@@ -425,7 +427,7 @@ const AdminReports = () => {
               >
                 <div className="flex items-center gap-1">+ Add Report</div>
               </Button>
-            </div>
+            </div> */}
           {/* )} */}
               </div>
               <ReactTable
