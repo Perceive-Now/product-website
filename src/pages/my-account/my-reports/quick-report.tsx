@@ -410,12 +410,8 @@ const QuickReports = () => {
                   } else {
                     navigate(`/my-projects`);
                   }
-<<<<<<< HEAD
-                }}>
-=======
                 }}
               >
->>>>>>> 81b40902d3da550a1f7df09c0511ccf163f83263
                 <ArrowLeftIcon className="mr-1" />
                 Back
               </p>
@@ -668,13 +664,9 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-<<<<<<< HEAD
-                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? 'mr-5' : ''}`}
-=======
                         className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
                           requirementQuestions.length > 3 ? "mr-5" : ""
                         }`}
->>>>>>> 81b40902d3da550a1f7df09c0511ccf163f83263
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
