@@ -128,15 +128,18 @@ export function getRandomErrorMessage() {
 }
 
 export function formatDate(dateString: string) {
-  const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  ];
-
   const date = new Date(dateString);
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
 
-  return `${day} ${month} ${year}`;
+  // Options for formatting the date and time
+  const options: any = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // Use 12-hour format with AM/PM
+  };
+
+  // Convert to local timezone
+  return date.toLocaleString("en-GB", options);
 }
