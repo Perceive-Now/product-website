@@ -897,7 +897,8 @@ const QuickReports = () => {
               <div className="mt-5">
                 <h6 className="font-semibold mb-1 text-base font-nunito">
                   Have any special requests? Let us know what you need, and we’ll tailor the report to
-                  fit your goals!
+                  fit your goals!{" "}
+                  <span className="text-red-500 ml-0">*</span>
                 </h6>
                 <div
                   className="relative w-full overflow-hidden bg-white"

@@ -33,7 +33,7 @@ const TakeoffScreen: React.FC = () => {
 
   return (
     <div className="flex relative justify-between items-center">
-      <div className="min-h-screen px-3 w-full mx-auto flex flex-col justify-start flex-[1.5]">
+      <div className="my-auto px-3 w-full mx-auto flex flex-col justify-start flex-[1.5]">
         {/* <img
           src={pnCloveSvg}
           alt="Perceive Now"
