@@ -345,7 +345,9 @@ const QuickReports = () => {
       if (response.ok) {
         setStep(4);
       } else {
-        toast.error("Unable to submit report");
+        toast.error("Unable to submit report", {
+          position: "bottom-right",
+        });
       }
 
       console.log("response", response);
