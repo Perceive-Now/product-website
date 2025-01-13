@@ -7,6 +7,8 @@ interface DeleteModalProps {
   handleClose: () => void;
   handleDelete: (id: number) => void;
   conversation_id: number;
+  title: string;
+  description: string
 }
 
 export default function DeleteConfirmationModal({
@@ -14,6 +16,8 @@ export default function DeleteConfirmationModal({
   handleClose,
   handleDelete,
   conversation_id,
+  title,
+  description
 }: DeleteModalProps) {
   const handleCloseAction = () => {
     handleClose();
@@ -30,8 +34,8 @@ export default function DeleteConfirmationModal({
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="relative bg-white w-full max-w-[400px] min-w-[400px] p-5 rounded-xl shadow-[7px_9px_14px_0] shadow-[#000]/[0.25]">
-          <p className="text-lg font-bold mb-4">Delete Chat?</p>
-          <p>This action will permanently delete the chat.</p>
+          <p className="text-lg font-bold mb-4">{title}</p>
+          <p>{description}</p>
           <div className="flex gap-2 mt-4">
             <Button type="gray" handleClick={handleCloseAction}>
               Cancel

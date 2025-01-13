@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef, PaginationState, createColumnHelper } from "@tanstack/react-table";
@@ -27,6 +27,7 @@ import Pagination from "src/components/reusable/pagination";
 import { Disclosure } from "@headlessui/react";
 import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
+import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
 /**
  *
  */
@@ -43,6 +44,8 @@ const Reports = () => {
   const [totalReports, setTotalReports] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
@@ -80,12 +83,15 @@ const Reports = () => {
           headers: { Accept: "application/json" },
         },
       );
-
       if (response.ok) {
         const data = await response.json();
         setTotalReports(data.total_reports);
         setreports(data.reports);
         console.log("Total reports---------", data.reports[0]);
+      }
+      else {
+        setreports([])
+        setTotalReports(0)
       }
     } catch (err) {
       console.error(err);
@@ -190,7 +196,7 @@ const Reports = () => {
   //   });
   // };
 
-  const deleteReportHandler = async (projectid: string, index: number) => {
+  const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
       const response = await fetch(
         `https://templateuserrequirements.azurewebsites.net/report/delete?user_id=${userId}&project_id=${id}&report_id=${projectid}`,
@@ -207,7 +213,7 @@ const Reports = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [])
 
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
@@ -215,20 +221,19 @@ const Reports = () => {
 
   const RowActions = ({
     row,
-    deleteReportHandler,
     openFileHandler,
   }: {
     row: any;
-    deleteReportHandler: (reportId: string, index: number) => void;
     openFileHandler: (fileUrl: string) => void;
   }) => {
     const handleDelete = () => {
       const { report_id } = row.original;
-      deleteReportHandler(report_id, row.index);
+      setDeleteModal(true);
+      setDeleteId(report_id);
     };
 
     const handleShareReport = () => {
-      setShareLink(row.original.report_url);
+      setShareLink(row.original.report_url[0]);
       setModal(true);
     };
 
@@ -356,7 +361,6 @@ const Reports = () => {
         cell: ({ row }) => (
           <RowActions
             row={row}
-            deleteReportHandler={deleteReportHandler}
             openFileHandler={openFileHandler}
           />
         ),
@@ -729,6 +733,14 @@ const Reports = () => {
       </Tab.Group>
 
       <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />
+      <DeleteConfirmationModal
+        open={deleteModal}
+        handleDelete={deleteReportHandler}
+        handleClose={() => setDeleteModal(false)}
+        conversation_id={deleteId}
+        title="Delete Report?"
+        description="Are you sure want to delete report?"
+      />
     </div>
   );
 };
