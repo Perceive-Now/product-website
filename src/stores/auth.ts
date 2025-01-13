@@ -26,6 +26,7 @@ interface AuthState {
   user?: IUserProfile;
   token?: string;
   invitedUser?: { token?: string }; // Added invitedUser state
+  team?: string[];
 }
 
 //
@@ -52,6 +53,7 @@ const initialState: AuthState = {
   token: undefined,
   user: undefined,
   invitedUser: undefined, // Initialize invitedUser state
+  team: [],
 };
 
 //
@@ -318,6 +320,22 @@ export const AuthSlice = createSlice({
     removeInvitedUser: (state) => {
       state.invitedUser = undefined; // Clear invitedUser state
     },
+    // Add a team member
+    addTeamMember: (state, action: PayloadAction<string>) => {
+      if (!state.team) {
+        state.team = [];
+      }
+      if (!state.team.includes(action.payload)) {
+        state.team.push(action.payload); // Add the new team member
+      }
+    },
+
+    // Remove a team member
+    removeTeamMember: (state, action: PayloadAction<string>) => {
+      if (state.team) {
+        state.team = state.team.filter((member) => member !== action.payload); // Remove the specified member
+      }
+    },
   },
 
   /**
@@ -355,6 +373,6 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { setUser, setAuthToken, removeUser, setInvitedUserToken, removeInvitedUser } =
+export const { setUser, setAuthToken, removeUser, setInvitedUserToken, removeInvitedUser, addTeamMember, removeTeamMember } =
   AuthSlice.actions;
 export default AuthSlice.reducer;

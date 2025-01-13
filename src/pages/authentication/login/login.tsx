@@ -189,6 +189,7 @@ export default function LoginPage() {
             disabled={isSubmitting || isGoogleSubmitting}
             loading={isSubmitting}
             type="primary"
+            rounded="full"
           >
             Sign In
           </Button>
