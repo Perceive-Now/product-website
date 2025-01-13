@@ -110,7 +110,7 @@ export default function SignupPage() {
           position: "top-right",
         });
         if (userInvited?.token) {
-          toast.success("User is registered, please accept invitation from your email", {
+          toast.success("please accept invitation from your email", {
             position: "top-right",
           });
           navigate("/invite/organization-setting", {

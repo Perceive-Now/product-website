@@ -10,4 +10,5 @@ export const AppConfig = {
   APP_URL: process.env.REACT_APP_APP_URL,
 
   EMAIL: process.env.REACT_APP_EMAIL,
+  ORGANIZATION_SECRET: process.env.REACT_APP_ORGANIZATION_SECRET_CODE,
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,65 +6,85 @@ import SignUpLayout from "../_components/InviteLayout";
 import Button from "src/components/reusable/button";
 import { profileAvatarSVG, profileEditSVG } from "../../signup/_assets";
 import { useLocation, useNavigate } from "react-router-dom";
-import { EyeClosedIcon, EyeIcon } from "src/components/icons";
 import classNames from "classnames";
 import toast from "react-hot-toast";
 import { Countries } from "src/utils/constants";
-import { newSignupUser } from "src/stores/auth";
-import { useAppDispatch } from "src/hooks/redux";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import { NEW_BACKEND_URL } from "../../signup/env";
+import { AppConfig } from "src/config/app.config";
+import { getCompanies, updateUserProfile } from "src/utils/api/userProfile";
 
-// Validation schema using Yup
 const schema = yup.object({
   fullName: yup.string().required("Full name is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/,
-      "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
-    ),
   profileImage: yup.mixed().nullable(),
   country: yup.string().required("Country is required"),
 });
 
 type FormValues = {
   fullName: string;
-  password: string;
   profileImage: File | null | string;
   country: string;
 };
 
-function extractName(fullname: string): { first_name: string; last_name: string } {
-  const parts = fullname.trim().split(/\s+/);
-  return { first_name: parts[0] || "", last_name: parts.slice(1).join(" ") || "" };
-}
-
 const InviteProfileSetup: React.FC = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const invitedData = location.state?.invitedData;
+  const session = useAppSelector((state) => state.sessionDetail.session);
+  const user = useAppSelector((state) => state.auth.user);
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    role: "",
+  });
+  const [company, setCompany] = useState<string | null>(null);
 
   const {
     control,
     handleSubmit,
     setValue,
-    watch,
-    register,
     formState: { errors },
+    reset,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     defaultValues: {
       fullName: "",
-      password: "",
       profileImage: null,
       country: "",
     },
   });
+
+  const fetchUserDetails = async () => {
+    try {
+      const res = await fetch(`${NEW_BACKEND_URL}/user/details/${session?.user_id}`, {
+        headers: {
+          Accept: "application/json",
+          "secret-code": AppConfig.ORGANIZATION_SECRET as string,
+        },
+      });
+      const data = await res.json();
+
+      const companies = await getCompanies();
+      const user_company = companies.find(
+        (company) => company.id === data?.user_details?.company_id,
+      );
+      setCompany(user_company?.name || null);
+      // Populate email and role
+      setUserDetails({
+        email: data?.user_details?.email || "",
+        role: data?.user_details?.role || "",
+      });
+      reset({
+        fullName: user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : "",
+        country: user?.country || "",
+      });
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -81,57 +101,63 @@ const InviteProfileSetup: React.FC = () => {
     }
   };
 
+  function extractName(fullname: string): { first_name: string; last_name: string } {
+    const parts = fullname.trim().split(/\s+/);
+    return { first_name: parts[0] || "", last_name: parts.slice(1).join(" ") || "" };
+  }
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const formData = {
+      ...data,
+      email: userDetails.email,
+      role: userDetails.role,
+    };
+
     const { first_name, last_name } = extractName(data.fullName);
     if (!first_name || !last_name) {
-      toast.error("Please enter your full name.", {
-        position: "top-right",
-      });
+      toast.error("Please enter your full name");
       return;
     }
-    const formData = {
+
+    const values = {
       first_name,
       last_name,
-      password: data.password,
-      profileImage: imagePreview || "",
       country: data.country,
-      email: invitedData?.email,
-      company_name: invitedData?.organization_name,
-      job_position: invitedData?.role,
+      profile_image: imagePreview,
+      company_name: company,
       registration_completed: true,
     };
 
-    console.log(formData, "dataa");
+    if (!company) {
+      toast.error("Failed to fetch company details");
+      return;
+    }
 
     try {
-      const response = await dispatch(newSignupUser(formData)).unwrap();
-      console.log(response, "response");
-      if (response.success) {
-        toast.success("Please confirm your email to get started.", {
+      const result = await updateUserProfile(values);
+
+      if (result.status === 200) {
+        toast.success("Profile details saved successfully", {
           position: "top-right",
         });
         navigate("/invite/review", {
-          state: {
-            invitedData,
-            formData,
-          },
+          replace: true,
         });
       } else {
-        toast.error(response.message, {
+        toast.error("Failed to save profile details", {
           position: "top-right",
         });
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.", {
+      console.error("Failed to save profile details:", error);
+      toast.error("Failed to save profile details", {
         position: "top-right",
       });
     }
   };
 
-  const passwordValue = watch("password");
-
   return (
-    <SignUpLayout invitedData={invitedData} currentStep={1} completedSteps={[0]}>
+    <SignUpLayout currentStep={1} completedSteps={[0]}>
       <div className="pt-5 px-8 h-screen">
         <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
         <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
@@ -187,7 +213,7 @@ const InviteProfileSetup: React.FC = () => {
             <input
               type="email"
               className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
-              value={invitedData?.email || ""}
+              value={userDetails.email}
               disabled
             />
           </div>
@@ -198,7 +224,7 @@ const InviteProfileSetup: React.FC = () => {
             <input
               type="text"
               className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
-              value={invitedData?.role || ""}
+              value={userDetails.role}
               disabled
             />
           </div>
@@ -229,42 +255,6 @@ const InviteProfileSetup: React.FC = () => {
               <p className="text-xs text-danger-500 mt-1">{errors.country.message}</p>
             )}
           </div>
-
-          {/* Password */}
-          <fieldset className="mt-2">
-            <div className="mt-0.5 rounded-md shadow-sm relative">
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type={isPasswordVisible ? "text" : "password"}
-                    className={classNames(
-                      "appearance-none border block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
-                      errors.password
-                        ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                    )}
-                    placeholder="Password"
-                  />
-                )}
-              />
-
-              {passwordValue && (
-                <div
-                  className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                >
-                  {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
-                </div>
-              )}
-            </div>
-
-            {errors.password && (
-              <p className="text-xs text-danger-500 mt-1">{errors.password.message}</p>
-            )}
-          </fieldset>
 
           {/* Buttons */}
           <div className="flex gap-x-4">

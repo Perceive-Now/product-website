@@ -3,6 +3,9 @@ import InviteLayout from "../_components/InviteLayout";
 import { inputArrow } from "../../signup/_assets"; // Replace with your arrow asset path
 import Button from "src/components/reusable/button";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppSelector } from "src/hooks/redux"; // Assuming you're using Redux to manage the session state
+import { NEW_BACKEND_URL } from "../../signup/env"; // Your backend URL
+import { AppConfig } from "src/config/app.config"; // Configuration for organization secret
 
 type ExpandedSections = {
   organizationSettings: boolean;
@@ -13,14 +16,40 @@ const InviteReviewConfirmation = () => {
   const location = useLocation();
   const formData = location.state?.formData; // Accessing formData from location.state
   const invitedData = location.state?.invitedData;
+  const session = useAppSelector((state) => state.sessionDetail.session); // Getting the session from Redux state
+  const user = useAppSelector((state) => state.auth.user);
 
-  console.log(invitedData, "hello");
-  console.log(formData);
-  console.log("from review and confirmation");
-
+  // User details state
+  const [userDetails, setUserDetails] = useState<any>(null); // State to hold the fetched user details
   const [expanded, setExpanded] = useState<ExpandedSections>({
     organizationSettings: false,
   });
+
+  // Fetch user details from the backend
+  const fetchUserDetails = async (sessionId: number) => {
+    try {
+      const res = await fetch(`${NEW_BACKEND_URL}/user/details/${sessionId}`, {
+        headers: {
+          Accept: "application/json",
+          "secret-code": AppConfig.ORGANIZATION_SECRET as string, // Use secret code as required
+        },
+      });
+      const data = await res.json();
+
+      if (data?.user_details) {
+        setUserDetails(data.user_details); // Populate user details state
+      }
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+    }
+  };
+
+  // Fetch user details when the session is available
+  useEffect(() => {
+    if (session?.user_id) {
+      fetchUserDetails(session?.user_id);
+    }
+  }, [session]);
 
   const toggleSection = (section: keyof ExpandedSections) => {
     setExpanded((prev) => ({
@@ -40,16 +69,13 @@ const InviteReviewConfirmation = () => {
         <div className="flex items-center justify-between bg-[#F5F7FF66] p-2 rounded-md">
           <div className="flex gap-3 items-center">
             <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg text-sm font-medium">
-              {invitedData?.role || "Member"}
+              {userDetails?.role || "Member"}
             </span>
             <p className="text-[16px] font-medium text-[#4F4F4F]">
-              {`${formData?.first_name || ""} ${formData.last_name || ""}` || "John Doe"}
+              {`${user?.first_name || "John"} ${user?.last_name || "Doe"}`}
             </p>
           </div>
-          <button
-            className="text-[#4F4F4F] text-xs"
-            onClick={() => navigate("/signup/profile", { state: { formData } })}
-          >
+          <button className="text-[#4F4F4F] text-xs" onClick={() => navigate("/invite/profile")}>
             Edit
           </button>
         </div>
@@ -79,15 +105,15 @@ const InviteReviewConfirmation = () => {
                 <div className="grid grid-cols-2 gap-x-1">
                   <p className="text-[#4F4F4F]">Organization Name</p>
                   <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg w-fit">
-                    {invitedData?.organization_name || "Perceive Now"}
+                    {user?.company_name || "Perceive Now"}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-x-1">
+                {/* <div className="grid grid-cols-2 gap-x-1">
                   <p className="text-[#4F4F4F]">Industry</p>
                   <span className="px-3 py-1 bg-[#F3F2F7] text-[#4F4F4F] rounded-lg w-fit">
-                    {invitedData?.organization_industry || "Not Specified"}
+                    {user?.organization_industry || "Not Specified"}
                   </span>
-                </div>
+                </div> */}
               </div>
               <div className="text-right hidden">
                 <button className="text-[#4F4F4F] text-xs">Edit</button>
