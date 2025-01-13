@@ -62,13 +62,13 @@ const Reports = () => {
   const filteredReports =
     reports.length > 0
       ? reports
-          .filter((report: any) =>
-            report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
-          )
-          .slice(
-            pagination.pageIndex * pagination.pageSize,
-            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
-          )
+        .filter((report: any) =>
+          report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        .slice(
+          pagination.pageIndex * pagination.pageSize,
+          pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+        )
       : [];
 
   const fetchHistoryData = async () => {
@@ -244,21 +244,24 @@ const Reports = () => {
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
       >
         <ul id="dropdown">
-          <li className="mb-2 cursor-pointer" onClick={handleDownload}>
-            <div className="flex items-center">
-              <DownloadIcon className="mr-2" /> Download
-            </div>
-          </li>
-          <li className="mb-2 cursor-pointer" onClick={handleDelete}>
+          {row.original.report_url ?
+            <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+              <div className="flex items-center">
+                <DownloadIcon className="mr-2" /> Download
+              </div>
+            </li> : null}
+          <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Report
             </div>
           </li>
-          <li className="cursor-pointer" onClick={handleShareReport}>
-            <div className="flex items-center">
-              <ShareIcon className="mr-2" /> Share
-            </div>
-          </li>
+          {row.original.report_url ?
+            <li className="cursor-pointer" onClick={handleShareReport}>
+              <div className="flex items-center">
+                <ShareIcon className="mr-2" /> Share
+              </div>
+            </li>
+            : null}
         </ul>
       </Tooltip>
     );
@@ -380,8 +383,7 @@ const Reports = () => {
           <Tab.List className="flex w-[15%] h-[45px]">
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-r border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-r border-t border-b border-appGray-600 ${selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -389,8 +391,7 @@ const Reports = () => {
             </Tab>
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -398,8 +399,7 @@ const Reports = () => {
             </Tab>
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -537,14 +537,14 @@ const Reports = () => {
                                       </label>
                                       <div className="ml-3 mt-1">
                                         {Array.isArray(report?.question) &&
-                                        report?.question.length > 0
+                                          report?.question.length > 0
                                           ? report?.question.map(
-                                              (question: string, index: number) => (
-                                                <div key={index}>
-                                                  {index + 1}. {question}
-                                                </div>
-                                              ),
-                                            )
+                                            (question: string, index: number) => (
+                                              <div key={index}>
+                                                {index + 1}. {question}
+                                              </div>
+                                            ),
+                                          )
                                           : "No questions available"}
                                       </div>
                                     </div>

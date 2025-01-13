@@ -46,8 +46,8 @@ const TakeoffScreen: React.FC = () => {
               If you need a word with us in the meantime - reach out to us.
             </p>
 
-            <div className="flex gap-2 justify-end">
-              <Link to="/my-projects" className="cursor-pointer">
+            <div className="flex gap-2 justify-end z-10">
+              <Link to="/my-projects" className="cursor-pointer z-1">
                 <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
                   Go Home
                   <RightArrow className="w-2 h-2 ml-2" />

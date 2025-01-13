@@ -20,6 +20,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import SelectBox from "./selectBox";
+import axios from "axios";
 /**
  *
  */
@@ -62,6 +63,10 @@ interface IRequirementValues {
   questions: Array<string>;
 }
 
+interface ICustomReportValues {
+  additional: string;
+}
+
 const QuickReports = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -95,9 +100,9 @@ const QuickReports = () => {
     }
   };
 
-  const AnimatedPlaceholder = ({ className }: { className: any }) => {
+  const AnimatedPlaceholder = ({ className, onClick }: { className: any, onClick: () => void }) => {
     return (
-      <div className={classNames(className, "wrapper")}>
+      <div className={classNames(className, "wrapper")} onClick={onClick}>
         <div className="words">
           {Texts.map((text, idx) => (
             <span key={idx * 499} className="text-secondary-800">
@@ -203,7 +208,7 @@ const QuickReports = () => {
           .required("Question is required"),
       )
       .min(3, "Array must contain at least 3 non-empty strings"), // Minimum 3 valid items
-    
+
   });
 
   const {
@@ -221,6 +226,37 @@ const QuickReports = () => {
   });
 
   const { errors: requirementErrors } = requirementFormState;
+
+  const customReportInitialValue: ICustomReportValues = {
+    additional: "",
+  };
+
+  const customReportFormResolver = yup.object().shape({
+    additional: yup.string().trim().required("Special Request is required"),
+  });
+
+  const {
+    register: customReportRegister,
+    formState: customReportFormState,
+    handleSubmit: handleSubmitCustomReport,
+    getValues: customReportValues,
+    control: customReportControl,
+    setValue: setCustomReportValue,
+    setFocus
+  } = useForm({
+    defaultValues: customReportInitialValue,
+    resolver: yupResolver(customReportFormResolver),
+    mode: "onBlur",
+  });
+
+  const { errors: customReportErrors } = customReportFormState;
+
+  const additionalSummary = useWatch({
+    control: customReportControl,
+    name: "additional",
+  });
+
+  console.log("customReportErrors",customReportErrors)
 
   const requirementQuestions = useWatch({
     control: requirementControl,
@@ -314,36 +350,48 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
-    const formData = new FormData();
+    const dataPayload: Record<string, string[]> = {}
+    dataPayload.websites = pastedURLs;
+    dataPayload.question = values.questions;
+    dataPayload.format = customReport.format
 
-    uploadedFiles.forEach((file: File) => {
-      formData.append("files", file);
-    });
-
-    pastedURLs.forEach((url: string) => {
-      formData.append("websites", url);
-    });
-
-    values.questions.forEach((question: string) => {
-      formData.append("question", question);
-    });
-
-    customReport.format.forEach((question: string) => {
-      formData.append("format", question);
-    });
 
     try {
-      const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&report_complete_status=false&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
-        {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: formData,
-        },
+      const response: any = await axios.post(
+        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
+        dataPayload,
       );
 
-      if (response.ok) {
-        setStep(4);
+      if (response.status === 200) {
+        if (uploadedFiles.length === 0) {
+          setStep(4)
+          return
+        }
+        const formData = new FormData();
+
+        uploadedFiles.forEach((file: File) => {
+          formData.append("files", file);
+        });
+        try {
+          const fileUploadResponse: any = await fetch(
+            `https://templateuserrequirements.azurewebsites.net/upload-files/${userId}/${projectId}/${response.data.report_id}`,
+            {
+              method: "POST",
+              headers: { Accept: "application/json" },
+              body: formData,
+            },
+          );
+
+          if (fileUploadResponse.ok) {
+            setStep(4);
+          } else {
+            toast.error("Unable to submit report");
+          }
+        } catch (e) {
+          console.log("err", e);
+        } finally {
+          setLoading(false);
+        }
       } else {
         toast.error("Unable to submit report", {
           position: "bottom-right",
@@ -357,7 +405,7 @@ const QuickReports = () => {
       setLoading(false);
     }
 
-    console.log("formData------", formData);
+    // console.log("formData------", formData);
   };
 
   return (
@@ -466,7 +514,7 @@ const QuickReports = () => {
                       )}
                     />
                     {requirementErrors.reportName && (
-                      <div className="mt-1 text-xs text-danger-500">
+                      <div className="mt-1 text-s text-danger-500">
                         {requirementErrors.reportName?.message}
                       </div>
                     )}
@@ -512,7 +560,7 @@ const QuickReports = () => {
                     </select>
                     */}
                     {requirementErrors.usecase && (
-                      <div className="mt-0 text-xs text-danger-500">
+                      <div className="mt-0 text-s text-danger-500">
                         {requirementErrors.usecase?.message}
                       </div>
                     )}
@@ -523,9 +571,8 @@ const QuickReports = () => {
                     Upload Resources for Your Report
                   </h6>
                   <div
-                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                      dragging ? "bg-gray-200" : ""
-                    }`}
+                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${dragging ? "bg-gray-200" : ""
+                      }`}
                     onDragOver={(e) => {
                       e.preventDefault();
                       setDragging(true);
@@ -646,7 +693,7 @@ const QuickReports = () => {
                             </button>
                           ) : null}
                         </div>
-                        <div className="mt-1 text-xs text-danger-500">
+                        <div className="mt-1 text-s text-danger-500">
                           {requirementErrors.questions?.[index]?.message &&
                             requirementErrors.questions[index]?.message}
                         </div>
@@ -654,9 +701,8 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
-                          requirementQuestions.length > 3 ? "mr-5" : ""
-                        }`}
+                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? "mr-5" : ""
+                          }`}
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
@@ -758,7 +804,7 @@ const QuickReports = () => {
                 )}
               />
               {errors.projectName?.message && (
-                <div className="mt-1 text-xs text-danger-500">{errors.projectName?.message}</div>
+                <div className="mt-1 text-s text-danger-500">{errors.projectName?.message}</div>
               )}
               <div className="max-w-[125px] mt-5 justify-center items-center">
                 <div
@@ -773,118 +819,128 @@ const QuickReports = () => {
           </div>
         ) : step === 3 ? (
           <div className="p-3 w-full">
-            <h6 className="text-lg font-semibold ml-0 mb-3">Report Customization</h6>
+            <form onSubmit={handleSubmitCustomReport(handleFinalSubmitProject)}>
+              <h6 className="text-lg font-semibold ml-0 mb-3">Report Customization</h6>
 
-            <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
-              <SelectBox
-                options={[
-                  "Analytical (Data-focused, emphasizing metrics and insights)",
-                  "Narrative (Storytelling, highlighting trends and key takeaways)",
-                  "Strategic (Focused on recommendations and next steps)",
-                  "Hybrid (Mix of data, narrative, and recommendations)",
-                ]}
-                onChangeValue={(value: any) => {
-                  handleReportChange("report_tone", value);
-                }}
-              />
-            </div>
-
-            <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito">Charts and Visuals</h6>
-              <SelectBox
-                options={[
-                  "Basic (1-2 per section)",
-                  "Analytical (3-4 per section)",
-                  "Intuitive (5+ per section)",
-                  "Statical (7+ per section)",
-                ]}
-                onChangeValue={(value: any) => {
-                  handleReportChange("no_of_charts", value);
-                }}
-              />
-            </div>
-
-            <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito">Visual Style</h6>
-              <SelectBox
-                options={[
-                  "Simple (Clean and easy to understand)",
-                  "Annotated (Explanatory visuals with supporting details)",
-                  "Detailed (Explanatory visuals with deep details)",
-                ]}
-                onChangeValue={(value: any) => {
-                  handleReportChange("visual_style", value);
-                }}
-              />
-            </div>
-
-            <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito">Citation Style</h6>
-              <SelectBox
-                options={[
-                  "Inline Links (Clickable web URLs in the text)",
-                  "Endnotes (References listed at the end)",
-                ]}
-                onChangeValue={(value: any) => {
-                  handleReportChange("citations", value);
-                }}
-              />
-            </div>
-
-            <div className="mb-2">
-              <h6 className="font-semibold mb-1 text-base font-nunito">Format</h6>
-              <SelectBox
-                options={[
-                  "PDF Report (Static and easy to share)",
-                  "Presentation Deck (Ready-to-use slides)",
-                  "Word Document (Editable format for custom updates)",
-                  "Spreadsheet Summary (Key data in tabular format)",
-                ]}
-                multiple={true}
-                onChangeValue={(value: any) => {
-                  handleReportChange("format", value);
-                }}
-              />
-            </div>
-            <div className="mt-5">
-              <h6 className="font-semibold mb-1 text-base font-nunito">
-                Have any special requests? Let us know what you need, and we’ll tailor the report to
-                fit your goals!
-              </h6>
-              <div
-                className="relative w-full overflow-hidden bg-white"
-                aria-disabled
-                onClick={handleInputFromAnimated}
-              >
-                <input
-                  ref={inputRef}
-                  id="specialRequests"
-                  type="text"
-                  className="mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent"                
-                  placeholder=""
-                  value={customReport.additional}
-                  onChange={(e: any) => {
-                    handleReportChange("additional", e.target.value);
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
+                <SelectBox
+                  options={[
+                    "Analytical (Data-focused, emphasizing metrics and insights)",
+                    "Narrative (Storytelling, highlighting trends and key takeaways)",
+                    "Strategic (Focused on recommendations and next steps)",
+                    "Hybrid (Mix of data, narrative, and recommendations)",
+                  ]}
+                  onChangeValue={(value: any) => {
+                    handleReportChange("report_tone", value);
                   }}
                 />
-                {customReport.additional === "" && (
-                  <AnimatedPlaceholder className="absolute top-1 left-2 pt-1 bg-transparent" />
-                )}
               </div>
-            </div>
 
-            <div className="max-w-[125px] mt-5 justify-center items-center">
-              <div className="max-w-[120px] mt-5">
-                <button
-                  onClick={handleFinalSubmitProject}
-                  disabled={loading}
-                  className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-                >
-                  {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
-                </button>
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Charts and Visuals</h6>
+                <SelectBox
+                  options={[
+                    "Basic (1-2 per section)",
+                    "Analytical (3-4 per section)",
+                    "Intuitive (5+ per section)",
+                    "Statical (7+ per section)",
+                  ]}
+                  onChangeValue={(value: any) => {
+                    handleReportChange("no_of_charts", value);
+                  }}
+                />
               </div>
-            </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Visual Style</h6>
+                <SelectBox
+                  options={[
+                    "Simple (Clean and easy to understand)",
+                    "Annotated (Explanatory visuals with supporting details)",
+                    "Detailed (Explanatory visuals with deep details)",
+                  ]}
+                  onChangeValue={(value: any) => {
+                    handleReportChange("visual_style", value);
+                  }}
+                />
+              </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Citation Style</h6>
+                <SelectBox
+                  options={[
+                    "Inline Links (Clickable web URLs in the text)",
+                    "Endnotes (References listed at the end)",
+                  ]}
+                  onChangeValue={(value: any) => {
+                    handleReportChange("citations", value);
+                  }}
+                />
+              </div>
+
+              <div className="mb-2">
+                <h6 className="font-semibold mb-1 text-base font-nunito">Format</h6>
+                <SelectBox
+                  options={[
+                    "PDF Report (Static and easy to share)",
+                    "Presentation Deck (Ready-to-use slides)",
+                    "Word Document (Editable format for custom updates)",
+                    "Spreadsheet Summary (Key data in tabular format)",
+                  ]}
+                  multiple={true}
+                  onChangeValue={(value: any) => {
+                    handleReportChange("format", value);
+                  }}
+                />
+              </div>
+              <div className="mt-5">
+                <h6 className="font-semibold mb-1 text-base font-nunito">
+                  Have any special requests? Let us know what you need, and we’ll tailor the report to
+                  fit your goals!
+                </h6>
+                <div
+                  className="relative w-full overflow-hidden bg-white"
+                  aria-disabled
+                  onClick={handleInputFromAnimated}
+                >
+                  <input
+                    // ref={inputRef}
+                    id="specialRequests"
+                    type="text"
+                    className={classNames(
+                      "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                      disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                      customReportErrors.additional
+                        ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    )}
+                    placeholder=""
+                    {...customReportRegister("additional")}
+                  />
+                  {customReportErrors.additional && (
+                    <div className="mt-1 text-s text-danger-500">
+                      {customReportErrors.additional?.message}
+                    </div>
+                  )}
+                  {additionalSummary === "" && (
+                    <AnimatedPlaceholder className="absolute top-1 left-2 pt-1 bg-transparent" onClick={() => setFocus("additional")} />
+                  )}
+                </div>
+              </div>
+
+              <div className="max-w-[125px] mt-5 justify-center items-center">
+                <div className="max-w-[120px] mt-5">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  >
+                    {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         ) : (
           <TakeoffScreen />
