@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef, PaginationState, createColumnHelper } from "@tanstack/react-table";
@@ -21,6 +21,7 @@ import DownloadIcon from "src/components/icons/common/download-icon";
 import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/reusable/pagination";
 import EditIcon from "src/components/icons/miscs/Edit";
+import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
 /**
  *
  */
@@ -31,6 +32,8 @@ const MyProjects = () => {
   const [reports, setreports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
@@ -44,13 +47,13 @@ const MyProjects = () => {
   const filteredReports =
     reports.length > 0
       ? reports
-          .filter((report: any) =>
-            report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
-          )
-          .slice(
-            pagination.pageIndex * pagination.pageSize,
-            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
-          )
+        .filter((report: any) =>
+          report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        .slice(
+          pagination.pageIndex * pagination.pageSize,
+          pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+        )
       : [];
 
   const fetchHistoryData = async () => {
@@ -75,7 +78,7 @@ const MyProjects = () => {
     }
   };
 
-  const fetchProjectData = async (id:any) => {
+  const fetchProjectData = async (id: any) => {
     try {
       const response = await fetch(
         `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
@@ -84,7 +87,7 @@ const MyProjects = () => {
           headers: { Accept: "application/json" },
         }
       );
-  
+
       if (response.ok) {
         const data = await response.json();
         return data.reports[0];
@@ -131,7 +134,7 @@ const MyProjects = () => {
     });
   };
 
-  const deleteReportHandler = async (projectid: string, index: number) => {
+  const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
       const response = await fetch(
         `https://templateuserrequirements.azurewebsites.net/project/${userId}/${projectid}`,
@@ -148,7 +151,9 @@ const MyProjects = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  },
+  [],
+);
 
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
@@ -156,11 +161,9 @@ const MyProjects = () => {
 
   const RowActions = ({
     row,
-    deleteReportHandler,
     openFileHandler,
   }: {
     row: any;
-    deleteReportHandler: (reportId: string, index: number) => void;
     openFileHandler: (fileUrl: string) => void;
   }) => {
     const handleDelete = (event: React.MouseEvent) => {
@@ -168,7 +171,8 @@ const MyProjects = () => {
       event.stopPropagation();
 
       const { project_id } = row.original;
-      deleteReportHandler(project_id, row.index);
+      setDeleteModal(true);
+        setDeleteId(project_id);
     };
 
     const handleShareReport = () => {
@@ -182,7 +186,7 @@ const MyProjects = () => {
 
     return (
       <Tooltip
-      right="3px"
+        right="3px"
         isCustomPanel={true}
         trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
@@ -195,7 +199,7 @@ const MyProjects = () => {
           </li> */}
           <li className="cursor-pointer" onClick={handleDelete}>
             <div className="flex items-center">
-              <TrashIcon className="mr-2" /> Delete Report
+              <TrashIcon className="mr-2" /> Delete Project
             </div>
           </li>
           {/* <li className="cursor-pointer" onClick={handleShareReport}>
@@ -251,7 +255,6 @@ const MyProjects = () => {
         cell: ({ row }) => (
           <RowActions
             row={row}
-            deleteReportHandler={deleteReportHandler}
             openFileHandler={openFileHandler}
           />
         ),
@@ -266,19 +269,19 @@ const MyProjects = () => {
               event.stopPropagation();
               const project_name = item.row.original.project_name;
               const project_id = item.row.original.project_id;
-      
+
               const reportData = await fetchProjectData(project_id);
               navigate(`/quick-reports/${project_id}?project=${project_name}`, {
                 state: reportData,
               });
             }}
           >
-          <EditIcon/>
-          {/* Update Requirements */}
+            <EditIcon />
+            {/* Update Requirements */}
           </div>
         ),
       })
-      
+
     ],
     [],
   );
@@ -379,6 +382,14 @@ const MyProjects = () => {
       )}
 
       <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />
+      <DeleteConfirmationModal
+        open={deleteModal}
+        handleDelete={deleteReportHandler}
+        handleClose={() => setDeleteModal(false)}
+        conversation_id={deleteId}
+        title="Delete Project?"
+        description="Are you sure want to delete project?"
+      />
     </div>
   );
 };

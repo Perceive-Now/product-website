@@ -300,6 +300,8 @@ const KnowNowHistory = ({ History }: Props) => {
         handleDelete={onDelete}
         handleClose={() => setDeleteModal(false)}
         conversation_id={deleteId}
+        title="Delete Chat?"
+        description="This action will permanently delete the chat."
       />
     </>
   );
