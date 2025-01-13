@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/reusable/pagination";
 import EditIcon from "src/components/icons/miscs/Edit";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
+import { formatDate } from "src/utils/helpers";
 /**
  *
  */
@@ -247,7 +248,7 @@ const MyProjects = () => {
         header: "Date Modified",
         accessorKey: "date_modified",
         minSize: 200,
-        cell: (item) => <span>18 Dec 2024</span>,
+        cell: (item) => <span>{formatDate(item.row.original.date_modified)}</span>,
       },
       columnHelper.display({
         id: "actions",

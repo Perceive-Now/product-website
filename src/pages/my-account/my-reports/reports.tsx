@@ -28,6 +28,7 @@ import { Disclosure } from "@headlessui/react";
 import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
+import { formatDate } from "src/utils/helpers";
 /**
  *
  */
@@ -521,9 +522,7 @@ const Reports = () => {
                                 <>
                                   <Disclosure.Button className="group flex w-full items-center justify-between">
                                     <span className="text-base font-semibold text-black">
-                                      {report?.date && report.date !== "2025-01-03"
-                                        ? report.date
-                                        : "3 Jan 2025"}
+                                      {formatDate(report.date_modified)}
                                     </span>
                                     {open ? (
                                       <ArrowUp className="size-2" />
