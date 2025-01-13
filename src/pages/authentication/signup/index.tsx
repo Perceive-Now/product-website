@@ -60,13 +60,13 @@ export default function SignupPage() {
   const [isAgree, setIsAgree] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const formInitialValue: IRegisterForm = {
     email: "",
     password: "",
-    agree: false,
   };
 
   const formResolver = yup.object().shape({
@@ -82,7 +82,6 @@ export default function SignupPage() {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/,
         "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
       ),
-    agree: yup.boolean().required(""),
   });
 
   const { watch, register, formState, handleSubmit } = useForm({
@@ -95,6 +94,14 @@ export default function SignupPage() {
 
   const handleLogin = async (values: IRegisterForm) => {
     setIsSubmitting(true);
+
+    if (!agreeTerms) {
+      toast.error("Please agree to the terms and conditions", {
+        position: "top-right",
+      });
+      setIsSubmitting(false);
+      return;
+    }
 
     const params = {
       email: values.email,
@@ -162,7 +169,7 @@ export default function SignupPage() {
   }, []);
 
   return (
-    <div className="flex h-screen lg:min-h-screen justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
+    <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
       <form onSubmit={handleSubmit(handleLogin)} className="">
         <div className="w-full p-1 md:p-0 md:w-[400px]">
           <img
@@ -266,28 +273,33 @@ export default function SignupPage() {
               )}
             </fieldset>
           </div>
-          <div className="my-2">
-            <label className="text-[15px] text-[#373D3F] font-medium">
-              By continuing, I agree to Perceive Now&apos;s{" "}
-              <a
-                target="_blank"
-                className="text-inherit underline"
-                rel="noreferrer noopener"
-                href={`${WEBSITE_URL}/privacy-policy`}
-              >
-                Privacy Policy
-              </a>{" "}
-              and{" "}
-              <a
-                target="_blank"
-                className="text-inherit underline"
-                rel="noreferrer noopener"
-                href={`${WEBSITE_URL}/terms`}
-              >
-                Terms of Use
-              </a>
-            </label>
+          <div className="my-2 flex">
+            <fieldset>
+              <CheckboxInput onChange={() => setAgreeTerms(!agreeTerms)} />
+
+              <label className="ml-2 text-[15px] text-[#373D3F] font-medium" htmlFor="agree">
+                By continuing, I agree to Perceive Now&apos;s{" "}
+                <a
+                  target="_blank"
+                  className="text-inherit underline"
+                  rel="noreferrer noopener"
+                  href={`${WEBSITE_URL}/privacy-policy`}
+                >
+                  Privacy Policy
+                </a>{" "}
+                and{" "}
+                <a
+                  target="_blank"
+                  className="text-inherit underline"
+                  rel="noreferrer noopener"
+                  href={`${WEBSITE_URL}/terms`}
+                >
+                  Terms of Use
+                </a>
+              </label>
+            </fieldset>
           </div>
+
           <div className="flex justify-end w-full mt-2">
             <Button
               classname="w-[160px]"
@@ -336,5 +348,4 @@ export default function SignupPage() {
 interface IRegisterForm {
   email: string;
   password: string;
-  agree: boolean;
 }
