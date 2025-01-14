@@ -61,11 +61,11 @@ const SidebarBottom = [
   //   href: "/preferences",
   //   icon: LogoutIcon,
   // },
-  {
-    title: "AI Agents Reports",
-    href: "/reports",
-    icon: LogoutIcon,
-  },
+  // {
+  //   title: "AI Agents Reports",
+  //   href: "/reports",
+  //   icon: LogoutIcon,
+  // },
   {
     title: "User management",
     href: "/users",

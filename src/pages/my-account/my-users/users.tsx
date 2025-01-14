@@ -16,6 +16,7 @@ import Button from "src/components/reusable/button";
 import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
 import { useAppSelector } from "src/hooks/redux";
 import toast from "react-hot-toast";
+import Loading from "src/components/reusable/loading";
 
 interface OrganizationUser {
   id: number;
@@ -24,6 +25,7 @@ interface OrganizationUser {
   role: string;
   job_position?: string;
   created_at?: string; // ISO 8601 date-time string
+  is_accepted?: boolean;
 }
 
 const Users = () => {
@@ -38,12 +40,14 @@ const Users = () => {
     },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const filteredUsers = users?.filter((user) =>
     (user?.full_name || "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const fetchOrganizationUsers = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${NEW_BACKEND_URL}/team/users?user_id=${session?.user_id}`);
       const result = await res.json();
@@ -58,6 +62,8 @@ const Users = () => {
       toast.error("Error fetching organization users", {
         position: "top-right",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -89,8 +95,16 @@ const Users = () => {
       {
         header: "Name",
         accessorKey: "full_name",
-        minSize: 400,
-        cell: ({ row }) => <p className="line-clamp-1">{row.original.full_name || "N/A"}</p>,
+        minSize: 200,
+        cell: ({ row }) => (
+          <span className="line-clamp-1">
+            {row.original.full_name
+              ? row.original.full_name.length > 20
+                ? row.original.full_name.substring(0, 20) + "..."
+                : row.original.full_name
+              : "N/A"}
+          </span>
+        ),
       },
       {
         header: "Email",
@@ -104,11 +118,19 @@ const Users = () => {
         minSize: 200,
         cell: ({ row }) => <span className="capitalize">{row.original.role}</span>,
       },
+      // {
+      //   header: "Job Position",
+      //   accessorKey: "job_position",
+      //   minSize: 200,
+      //   cell: ({ row }) => <span className="capitalize">{row.original.job_position || "N/A"}</span>,
+      // },
       {
-        header: "Job Position",
-        accessorKey: "job_position",
+        header: "Invitation Status",
+        accessorKey: "is_accepted",
         minSize: 200,
-        cell: ({ row }) => <span className="capitalize">{row.original.job_position || "N/A"}</span>,
+        cell: ({ row }) => (
+          <span>{row.original.is_accepted ? "Accepted Invitation" : "Pending"}</span>
+        ),
       },
       {
         header: " ",
@@ -125,7 +147,9 @@ const Users = () => {
     [],
   );
 
-  return (
+  return loading ? (
+    <Loading isLoading={loading} width="100" height="100" />
+  ) : (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
       <div className="p-1">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; User management</h6>
