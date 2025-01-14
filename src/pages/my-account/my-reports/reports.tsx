@@ -29,6 +29,8 @@ import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
 import { formatDate } from "src/utils/helpers";
+import { addActivityComment } from "src/stores/vs-product";
+import { ACTIVITY_COMMENT } from "src/utils/constants";
 /**
  *
  */
@@ -50,11 +52,7 @@ const Reports = () => {
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
-  const [activityLog, setActivityLog] = useState([
-    { date: "Jan 7, 2025, 09:13 AM", log: "User provided report requirements." },
-    { date: "Jan 7, 2025, 09:13 AM", log: "User provided report requirements." },
-    { date: "Jan 7, 2025, 09:13 AM", log: "User provided report requirements." },
-  ]);
+  const [activityLog, setActivityLog] = useState<{ comment: string, date_and_time: string }[]>([]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(tab);
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
 
@@ -74,6 +72,30 @@ const Reports = () => {
           pagination.pageIndex * pagination.pageSize + pagination.pageSize,
         )
       : [];
+
+  const fetchActivityLog = async () => {
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/comments/?user_id=${userId}&project_id=${id}`,
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        },
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setActivityLog(data)
+      }
+      else {
+        setActivityLog([])
+        // setreports([])
+        // setTotalReports(0)
+      }
+    } catch (err) {
+      setActivityLog([])
+      console.error(err);
+    }
+  };
 
   const fetchHistoryData = async () => {
     try {
@@ -103,6 +125,7 @@ const Reports = () => {
 
   useEffect(() => {
     fetchHistoryData();
+    fetchActivityLog()
   }, []);
 
   const handleRowSelectionChange = (selection: any) => {
@@ -209,6 +232,7 @@ const Reports = () => {
 
       if (response.ok) {
         // setreports((prevReports) => prevReports.filter((_, i) => i !== index));
+        addActivityComment(userId as string, ACTIVITY_COMMENT.REPORT_DELETE, id as string)
         fetchHistoryData();
       }
     } catch (err) {
@@ -715,8 +739,8 @@ const Reports = () => {
                         key={idx * 19}
                         className="grid grid-cols-2 text-secondary-800 font-mulish mt-1 last:border-b-0 border-b border-gray-300"
                       >
-                        <div className="font-nunito">{log.date}</div>
-                        <div className="font-nunito">{log.log}</div>
+                        <div className="font-nunito">{formatDate(log.date_and_time)}</div>
+                        <div className="font-nunito">{log.comment}</div>
                       </div>
                     ))}
                   </>

@@ -23,6 +23,9 @@ import Pagination from "src/components/reusable/pagination";
 import EditIcon from "src/components/icons/miscs/Edit";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
 import { formatDate } from "src/utils/helpers";
+import ToolTip from "src/components/reusable/tool-tip";
+import { addActivityComment } from "src/stores/vs-product";
+import { ACTIVITY_COMMENT } from "src/utils/constants";
 /**
  *
  */
@@ -48,6 +51,11 @@ const MyProjects = () => {
   const filteredReports =
     reports.length > 0
       ? reports
+        .sort((a: any, b: any) => {
+          const dateA = +new Date(a.date_modified);
+          const dateB = +new Date(b.date_modified);
+          return dateB - dateA; // Descending order
+        })
         .filter((report: any) =>
           report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
         )
@@ -146,6 +154,7 @@ const MyProjects = () => {
       );
 
       if (response.ok) {
+        addActivityComment(userId as string, ACTIVITY_COMMENT.PROJECT_DELETE, projectid.toString() as string)
         // setreports((prevReports) => prevReports.filter((_, i) => i !== index));
         fetchHistoryData();
       }
@@ -153,8 +162,8 @@ const MyProjects = () => {
       console.error(err);
     }
   },
-  [],
-);
+    [],
+  );
 
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
@@ -173,7 +182,7 @@ const MyProjects = () => {
 
       const { project_id } = row.original;
       setDeleteModal(true);
-        setDeleteId(project_id);
+      setDeleteId(project_id);
     };
 
     const handleShareReport = () => {
@@ -263,23 +272,26 @@ const MyProjects = () => {
       columnHelper.display({
         id: "actions",
         cell: (item) => (
-          <div
-            className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-900 text-white rounded-md font-semibold cursor-pointer"
-            onClick={async (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              const project_name = item.row.original.project_name;
-              const project_id = item.row.original.project_id;
+          <ToolTip title="Update Requirements" placement="right">
+            <div
+              className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-900 text-white rounded-md font-semibold cursor-pointer"
+              onClick={async (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                const project_name = item.row.original.project_name;
+                const project_id = item.row.original.project_id;
 
-              const reportData = await fetchProjectData(project_id);
-              navigate(`/quick-reports/${project_id}?project=${project_name}`, {
-                state: reportData,
-              });
-            }}
-          >
-            <EditIcon />
-            {/* Update Requirements */}
-          </div>
+                const reportData = await fetchProjectData(project_id);
+                navigate(`/quick-reports/${project_id}?project=${project_name}`, {
+                  state: reportData,
+                });
+              }}
+            >
+
+              <EditIcon />
+              {/* Update Requirements */}
+            </div>
+          </ToolTip>
         ),
       })
 
