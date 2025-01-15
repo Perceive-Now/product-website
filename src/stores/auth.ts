@@ -52,7 +52,9 @@ interface IRefreshResponse {
 const initialState: AuthState = {
   token: undefined,
   user: undefined,
-  invitedUser: undefined, // Initialize invitedUser state
+  invitedUser: {
+    token: localStorage.getItem("invitedUserToken") || undefined, // Load from localStorage
+  },
   team: [],
 };
 
@@ -316,10 +318,21 @@ export const AuthSlice = createSlice({
         state.invitedUser = {};
       }
       state.invitedUser.token = action.payload; // Set invitedUser's token
+
+      // Persist the token in localStorage
+      if (action.payload) {
+        localStorage.setItem("invitedUserToken", action.payload);
+      } else {
+        localStorage.removeItem("invitedUserToken");
+      }
     },
     removeInvitedUser: (state) => {
       state.invitedUser = undefined; // Clear invitedUser state
+
+      // Remove the token from localStorage
+      localStorage.removeItem("invitedUserToken");
     },
+
     // Add a team member
     addTeamMember: (state, action: PayloadAction<string>) => {
       if (!state.team) {
@@ -373,6 +386,13 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { setUser, setAuthToken, removeUser, setInvitedUserToken, removeInvitedUser, addTeamMember, removeTeamMember } =
-  AuthSlice.actions;
+export const {
+  setUser,
+  setAuthToken,
+  removeUser,
+  setInvitedUserToken,
+  removeInvitedUser,
+  addTeamMember,
+  removeTeamMember,
+} = AuthSlice.actions;
 export default AuthSlice.reducer;

@@ -9,6 +9,7 @@ import {
   reviewConfirmationSVG,
 } from "../_assets"; // Add SVG imports for all steps
 import { InvitedData } from "./layout";
+import { useLocation } from "react-router-dom";
 
 interface Steps {
   label: string;
@@ -38,7 +39,8 @@ const invitedSteps: Steps[] = [
 ];
 
 const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedData }) => {
-  const steps = invitedData ? invitedSteps : sidebarSteps;
+  const pathname = useLocation().pathname;
+  const steps = pathname.includes("/invite/") ? invitedSteps : sidebarSteps;
 
   return (
     <div className="max-w-[300px] bg-[#F5F7FF] min-h-screen p-3 flex flex-col gap-y-2 items-start">
@@ -77,9 +79,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedD
                 )}
               </div>
               {/* Step Label */}
-              <span className={`text-base text-[#373D3F]`}>
-                {step.label}
-              </span>
+              <span className={`text-base text-[#373D3F]`}>{step.label}</span>
             </div>
           ))}
         </div>

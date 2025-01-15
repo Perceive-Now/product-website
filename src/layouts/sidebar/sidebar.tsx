@@ -2,7 +2,7 @@ import { useState, useRef, FunctionComponent, useCallback, useEffect, Fragment }
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import PerceiveLogo from "../../assets/images/logo.svg";
-import PerceiveIcon from "../../assets/images/logo-small.svg"
+import PerceiveIcon from "../../assets/images/logo-small.svg";
 
 //
 import LogoSm from "../../assets/images/logo-small.svg";
@@ -70,6 +70,7 @@ const SidebarBottom = [
     title: "User management",
     href: "/users",
     icon: LogoutIcon,
+    adminOnly: true,
   },
   // {
   //   title: "Billing",
@@ -322,7 +323,6 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
 
   const [collapseOpen, setIsCollapseOpen] = useState(false);
 
-
   return (
     <>
       {/* old one */}
@@ -482,18 +482,21 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
       {/* new one */}
       <div className={`flex mr-[66px] sidebar fixed top-0 left-0 z-10`}>
         <div
-          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${open ? "pl-3" : "pl-1 pb-[54px]"
-            } duration-300  flex flex-col justify-between h-[100vh] z-10 pb-[20%]`}
+          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
+            open ? "pl-3" : "pl-1 pb-[54px]"
+          } duration-300  flex flex-col justify-between h-[100vh] z-10 pb-[20%]`}
         >
-
           <div className="z-10">
             <div className="py-1 px-1 container">
               <Link to="/">
-                <img src={open ? PerceiveLogo : PerceiveIcon} alt="PerceiveNow logo" className="h-[32px]" />
+                <img
+                  src={open ? PerceiveLogo : PerceiveIcon}
+                  alt="PerceiveNow logo"
+                  className="h-[32px]"
+                />
               </Link>
             </div>
           </div>
-
 
           <Joyride
             steps={steps}
@@ -559,41 +562,49 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                   e.stopPropagation();
                   setIsCollapseOpen((prev) => !prev);
                 }}
-                className="flex items-center gap-x-[65px]">
-                {open && <> <span className="text-base">Settings</span>
-
-                  <svg
-
-                    className={classNames(
-                      "w-[12px] h-[12px] mt-[3px] transition-transform duration-500",
-                      collapseOpen && "rotate-180"
-                    )}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={3}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </>
-                }
+                className="flex items-center gap-x-[65px]"
+              >
+                {open && (
+                  <>
+                    {" "}
+                    <span className="text-base">Settings</span>
+                    <svg
+                      className={classNames(
+                        "w-[12px] h-[12px] mt-[3px] transition-transform duration-500",
+                        collapseOpen && "rotate-180",
+                      )}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </>
+                )}
               </div>
-
             </div>
 
             <div
-              className={`transition-all duration-500 ${collapseOpen && open ? "max-h-screen overflow-hidden" : "max-h-0 overflow-hidden"}`}
+              className={`transition-all duration-500 ${
+                collapseOpen && open ? "max-h-screen overflow-hidden" : "max-h-0 overflow-hidden"
+              }`}
             >
-              {collapseOpen && open &&
-                SidebarBottom.map((s, idx) => (
-                  <div
-                    key={idx * 29}
-                  >
+              {collapseOpen &&
+                open &&
+                SidebarBottom.filter((s) => {
+                  // Filter options dynamically based on user role
+                  if (s.adminOnly) {
+                    return userDetail?.job_position === "Admin";
+                  }
+                  return true; // Show non-restricted options
+                }).map((s, idx) => (
+                  <div key={idx * 29}>
                     {s.href ? (
                       <Link
                         to={s.href}
@@ -601,14 +612,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                           "py-1 rounded flex items-center pl-5 gap-1 text-sm text-secondary-800",
                         )}
                       >
-                        {/* <ToolTip title={s.title} placement="right"> */}
                         <div className="text-base">{s.title}</div>
-                        {/* </ToolTip> */}
                       </Link>
                     ) : (
                       <button
                         type="button"
-                        onClick={handleLogout}
+                        onClick={s.title === "Logout" ? handleLogout : undefined}
                         className={classNames(
                           "py-1 rounded flex items-center pl-5 gap-1 text-sm text-secondary-800",
                         )}
@@ -621,8 +630,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                       </button>
                     )}
                   </div>
-                ))
-              }
+                ))}
             </div>
           </div>
         </div>
