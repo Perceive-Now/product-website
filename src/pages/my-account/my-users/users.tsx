@@ -21,6 +21,8 @@ import Loading from "src/components/reusable/loading";
 interface OrganizationUser {
   id: number;
   full_name?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
   email: string;
   role: string;
   job_position?: string;
@@ -34,7 +36,8 @@ const Users = () => {
   const [users, setUsers] = useState<OrganizationUser[]>([
     {
       id: 1,
-      full_name: "John Doe",
+      first_name: "John",
+      last_name: "Doe",
       email: "hello@xyz.com",
       role: "Admin",
     },
@@ -43,7 +46,7 @@ const Users = () => {
   const [loading, setLoading] = useState(false);
 
   const filteredUsers = users?.filter((user) =>
-    (user?.full_name || "").toLowerCase().includes(searchQuery.toLowerCase()),
+    (user?.first_name || "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const fetchOrganizationUsers = async () => {
@@ -53,13 +56,45 @@ const Users = () => {
       const result = await res.json();
 
       if (res.status === 200) {
-        console.log(result);
         setUsers(result);
       } else {
-        console.log("Error fetching organization users");
+        toast.error("Error fetching organization users");
       }
     } catch (error) {
-      toast.error("Error fetching organization users", {
+      toast.error("Error fetching organization users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveUser = async (userId: number) => {
+    if (!session?.user_id) return;
+
+    const confirmRemove = window.confirm(
+      "Are you sure you want to remove this user from the organization?",
+    );
+
+    if (!confirmRemove) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${NEW_BACKEND_URL}/team/remove-user?admin_id=${session?.user_id}&user_id=${userId}`,
+        { method: "DELETE" },
+      );
+
+      if (response.status === 200) {
+        toast.success("User removed successfully", {
+          position: "top-right",
+        });
+        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+      } else {
+        toast.error("Failed to remove user", {
+          position: "top-right",
+        });
+      }
+    } catch (error) {
+      toast.error("Error removing user", {
         position: "top-right",
       });
     } finally {
@@ -71,40 +106,25 @@ const Users = () => {
     fetchOrganizationUsers();
   }, []);
 
-  // Menu items for actions
-  const menuItems = [
-    {
-      label: "Pin",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("Pin clicked"),
-    },
-    {
-      label: "Delete",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("Delete clicked"),
-    },
-    {
-      label: "Share",
-      icon: <EditIcon className="h-2 w-2" />,
-      action: () => console.log("Share clicked"),
-    },
-  ];
-
   const columns = useMemo<ColumnDef<OrganizationUser>[]>(
     () => [
       {
         header: "Name",
-        accessorKey: "full_name",
+        accessorKey: "first_name",
         minSize: 200,
-        cell: ({ row }) => (
-          <span className="line-clamp-1">
-            {row.original.full_name
-              ? row.original.full_name.length > 20
-                ? row.original.full_name.substring(0, 20) + "..."
-                : row.original.full_name
-              : "N/A"}
-          </span>
-        ),
+        cell: ({ row }) => {
+          const { first_name, last_name } = row.original;
+          const displayName =
+            first_name && last_name
+              ? `${first_name} ${last_name}`
+              : first_name || last_name || "N/A";
+
+          return (
+            <span className="line-clamp-1">
+              {displayName.length > 20 ? displayName.substring(0, 20) + "..." : displayName}
+            </span>
+          );
+        },
       },
       {
         header: "Email",
@@ -118,29 +138,28 @@ const Users = () => {
         minSize: 200,
         cell: ({ row }) => <span className="capitalize">{row.original.role}</span>,
       },
-      // {
-      //   header: "Job Position",
-      //   accessorKey: "job_position",
-      //   minSize: 200,
-      //   cell: ({ row }) => <span className="capitalize">{row.original.job_position || "N/A"}</span>,
-      // },
       {
         header: "Invitation Status",
         accessorKey: "is_accepted",
         minSize: 200,
         cell: ({ row }) => (
-          <span>{row.original.is_accepted ? "Accepted Invitation" : "Pending"}</span>
+          <span className={`${session?.user_id === row.original.id ? "hidden" : ""}`}>
+            {row.original.is_accepted ? "Accepted Invitation" : "Pending"}
+          </span>
         ),
       },
       {
-        header: " ",
-        minSize: 80,
-        cell: () => (
-          // Commenting out the menu icon
-          // <TableDropdown
-          //   menuItems={menuItems}
-          // />
-          <></>
+        header: "Remove Member",
+        minSize: 200,
+        cell: ({ row }) => (
+          <button
+            className={`text-red-600 hover:underline ${
+              session?.user_id === row.original.id ? "hidden" : ""
+            }`}
+            onClick={() => handleRemoveUser(row.original.id)}
+          >
+            Remove
+          </button>
         ),
       },
     ],
