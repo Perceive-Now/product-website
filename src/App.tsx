@@ -99,6 +99,7 @@ import InviteProfileSetup from "./pages/authentication/invite/profile-setup";
 import InviteReviewConfirmation from "./pages/authentication/invite/review-confirmation";
 import VerifyInviteToken from "./pages/authentication/invite/verify-token";
 import InviteAuthLayout from "./layouts/invitation/layout";
+import AiAgent from "./pages/product/ai-agent";
 // import MadLibEditor from "./test";
 
 /**
@@ -271,6 +272,9 @@ function App() {
 
             {/* VC-report */}
             <Route path="/vc-product" element={<VCProduct />} />
+
+            {/* Ai-Agent */}
+            <Route path="/ai-agent" element={<AiAgent />} />
 
             {/*Graph */}
             <Route path="/analytics" element={<IPFullReport />} />
