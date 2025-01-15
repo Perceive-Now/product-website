@@ -17,6 +17,7 @@ const OrganizationInviteSetting = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchUserDetails = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${NEW_BACKEND_URL}/user/details/${session?.user_id}`, {
         headers: {
@@ -25,6 +26,7 @@ const OrganizationInviteSetting = () => {
         },
       });
       const result = await res.json();
+      console.log(result);
       const companies = await getCompanies();
       const userCompany = companies.find(
         (company) => company.id === result?.user_details?.company_id,
