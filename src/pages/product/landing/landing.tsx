@@ -309,12 +309,12 @@ export default function Landing() {
                     <RightArrow className="ml-1"/>
                   </div>
                 </Link>
-                <Link to="/vc-product">
+                {/* <Link to="/vc-product">
                   <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]  rounded-[32px] py-1 px-2 text-lg font-nunito text-white font-bold">
                     Explore Agents
                     <RightArrow className="ml-1"/>
                   </div>
-                </Link>
+                </Link> */}
                 {/* <Link to="/start-conversation">
                   <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]   rounded-[32px] py-1 px-2  text-lg font-nunito text-white font-bold">
                     KnowNow Chat
