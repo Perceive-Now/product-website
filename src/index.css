@@ -398,6 +398,10 @@ input {
   margin: 20px 0;
 }
 
+.custom-padding{
+  padding-bottom: 100px;
+}
+
 .markdownWrapper table {
   width: 100%;
   border-collapse: collapse;
