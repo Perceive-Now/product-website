@@ -244,6 +244,32 @@ const Reports = () => {
     window.open(fileUrl, "_blank");
   };
 
+  const ReportView = ({
+    row
+  }: {
+    row: any
+  }) => {
+
+
+    return (
+      <Tooltip
+        isCustomPanel={true}
+        right="0px"
+        trigger={<div
+          className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-900 text-white rounded-full font-semibold cursor-pointer"
+        >{row.original.report_url?.count || 0}</div>}
+        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
+      >
+        <ReactTable
+          columnsData={reportColumns}
+          rowsData={row.original.report_url}
+          size="small"
+          noTopBorder
+        />
+      </Tooltip>
+    );
+  };
+
   const RowActions = ({
     row,
     openFileHandler,
@@ -298,6 +324,35 @@ const Reports = () => {
   };
 
   const columnHelper = createColumnHelper<any>();
+
+  const reportColumns = useMemo<ColumnDef<any>[]>(
+    () => [
+      {
+        header: "Filename",
+        accessorKey: "filename",
+        // minSize: 400,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.filename}</p>,
+      },
+      {
+        header: "Date Modified",
+        accessorKey: "date_modified",
+        // minSize: 400,
+        cell: (item) => <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>,
+      },
+      {
+        header: "Download",
+        accessorKey: "download",
+        // minSize: 400,
+        cell: (item) => <div
+          className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-900 text-white rounded-md font-semibold cursor-pointer"
+          onClick={() => {
+            openFileHandler(item.row.original.url)
+          }}
+        >
+          <DownloadIcon />
+        </div>,
+      },], [])
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       {
@@ -386,6 +441,15 @@ const Reports = () => {
       //     />
       //   ),
       // },
+      columnHelper.display({
+        id: "Reports",
+        header: "Reports",
+        cell: ({ row }) => (
+          <ReportView
+            row={row}
+          />
+        ),
+      }),
       columnHelper.display({
         id: "actions",
         minSize: 100,
