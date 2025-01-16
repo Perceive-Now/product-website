@@ -77,10 +77,10 @@ const AdminDashboard = () => {
         if (response.ok) {
           localStorage.setItem("isAuthenticated", "true");
           const data = await response.json();
-          const transformedUserIds = data.user_ids.map((userId: any, index: number) => ({
+          const transformedUserIds = data.users_info.map((userId: any, index: number) => ({
             id: index + 1,
-            user_id: userId,
-            user_name: userId,
+            user_id: userId.user_id,
+            user_name: `${userId.first_name} ${userId.last_name}`,
           }));
           setUsers(transformedUserIds);
           setPasswordEntered(true);
@@ -139,7 +139,7 @@ const AdminDashboard = () => {
                 <path className="fil2" d="M0 0h2048v2048H0z" />
               </g>
             </svg>
-            <p className="line-clamp-1">{item.row.original.user_id}</p>
+            <p className="line-clamp-1">{item.row.original.user_name}</p>
           </div>
         ),
       },

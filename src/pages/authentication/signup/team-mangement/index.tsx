@@ -4,9 +4,10 @@ import Button from "src/components/reusable/button";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { getUserProfile } from "src/utils/api/userProfile";
-import { useAppSelector } from "src/hooks/redux";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { NEW_BACKEND_URL } from "../env";
 import { roles } from "../../invite/profile-setup/_constants/roles";
+import { addTeamMember } from "src/stores/auth";
 
 const mockApiCall = async (data: { email: string; role: string }) => {
   return new Promise((resolve) => {
@@ -19,12 +20,15 @@ const mockApiCall = async (data: { email: string; role: string }) => {
 
 const TeamManagementScreen = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("User");
   const [note, setNote] = useState("");
   const [teamMembers, setTeamMembers] = useState<{ email: string; role: string }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const team = useAppSelector((state) => state.auth.team);
   const session = useAppSelector((state) => state.sessionDetail.session);
 
   useEffect(() => {
@@ -100,6 +104,8 @@ const TeamManagementScreen = () => {
           position: "top-right",
         });
         setTeamMembers([...teamMembers, { email, role }]);
+        setEmail("");
+        dispatch(addTeamMember(email));
       } else {
         toast.error("Failed to add team member. Please try again.", {
           position: "top-right",
@@ -185,14 +191,14 @@ const TeamManagementScreen = () => {
           <p className="text-[#4F4F4F] mb-2">Your team</p>
           {teamMembers.length > 0 ? (
             <div className="border-gray-200">
-              {teamMembers.map((member, index) => (
+              {team?.map((member, index) => (
                 <div
                   key={index}
                   className="flex gap-x-1 justify-between items-center bg-[#F5F7FF66] p-2 my-2 rounded-md"
                 >
                   <div className="flex items-center gap-4">
-                    <p className="text-[16px] font-semibold text-[#373D3F]">{member.role}</p>
-                    <p className="text-[16px] text-[#4F4F4F]">{member.email}</p>
+                    <p className="text-[16px] font-semibold text-[#373D3F]">{member || "User"}</p>
+                    <p className="text-[16px] text-[#4F4F4F]">{member}</p>
                     <span className="text-[#373D3F] text-xs bg-[#E8EAF2] p-1 rounded-md">
                       Pending
                     </span>
@@ -216,7 +222,7 @@ const TeamManagementScreen = () => {
           <div className="flex space-x-[16px]">
             <Button
               rounded="full"
-              type="danger"
+              type="gray"
               classname="w-[120px]"
               handleClick={() => navigate("/signup/profile")}
             >

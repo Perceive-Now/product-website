@@ -26,6 +26,7 @@ interface AuthState {
   user?: IUserProfile;
   token?: string;
   invitedUser?: { token?: string }; // Added invitedUser state
+  team?: string[];
 }
 
 //
@@ -51,7 +52,10 @@ interface IRefreshResponse {
 const initialState: AuthState = {
   token: undefined,
   user: undefined,
-  invitedUser: undefined, // Initialize invitedUser state
+  invitedUser: {
+    token: localStorage.getItem("invitedUserToken") || undefined, // Load from localStorage
+  },
+  team: [],
 };
 
 //
@@ -314,9 +318,36 @@ export const AuthSlice = createSlice({
         state.invitedUser = {};
       }
       state.invitedUser.token = action.payload; // Set invitedUser's token
+
+      // Persist the token in localStorage
+      if (action.payload) {
+        localStorage.setItem("invitedUserToken", action.payload);
+      } else {
+        localStorage.removeItem("invitedUserToken");
+      }
     },
     removeInvitedUser: (state) => {
       state.invitedUser = undefined; // Clear invitedUser state
+
+      // Remove the token from localStorage
+      localStorage.removeItem("invitedUserToken");
+    },
+
+    // Add a team member
+    addTeamMember: (state, action: PayloadAction<string>) => {
+      if (!state.team) {
+        state.team = [];
+      }
+      if (!state.team.includes(action.payload)) {
+        state.team.push(action.payload); // Add the new team member
+      }
+    },
+
+    // Remove a team member
+    removeTeamMember: (state, action: PayloadAction<string>) => {
+      if (state.team) {
+        state.team = state.team.filter((member) => member !== action.payload); // Remove the specified member
+      }
     },
   },
 
@@ -355,6 +386,13 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { setUser, setAuthToken, removeUser, setInvitedUserToken, removeInvitedUser } =
-  AuthSlice.actions;
+export const {
+  setUser,
+  setAuthToken,
+  removeUser,
+  setInvitedUserToken,
+  removeInvitedUser,
+  addTeamMember,
+  removeTeamMember,
+} = AuthSlice.actions;
 export default AuthSlice.reducer;

@@ -5,7 +5,7 @@ interface VSChat {
   query: string;
   answer?: string;
   extract?: string;
-  extractObject?:any;
+  extractObject?: any;
   options?: string[];
   hasbutton?: boolean;
   hasselected?: boolean;
@@ -156,6 +156,39 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
   }
 });
 
+export const addActivityComment = async (userId: string, comment: string, project_id: string) => {
+  try {
+    const body = {
+      "user_id": userId,
+      "project_id": project_id.toString(),
+      "comment": comment,
+      "date_and_time": new Date()
+    }
+    const response = await fetch(
+      "https://templateuserrequirements.azurewebsites.net/comments/",
+      {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json", },
+        body: JSON.stringify(body)
+      },
+    );
+    if (response.ok) {
+      const data = await response.json();
+      console.log("ActivityLog", data)
+      return true
+    }
+    else {
+      return true
+      // setreports([])
+      // setTotalReports(0)
+    }
+  } catch (err) {
+    return true
+    console.error(err);
+  }
+};
+
+
 export const VSProductSlice = createSlice({
   name: "vs-product",
   initialState,
@@ -183,9 +216,9 @@ export const VSProductSlice = createSlice({
       const { answer } = action.payload;
       state.chats[state.chats.length - 1].answer = answer;
     },
-    updateButtonSelection: (state, action: PayloadAction<{  hasselected: boolean }>) => {
+    updateButtonSelection: (state, action: PayloadAction<{ hasselected: boolean }>) => {
       const { hasselected } = action.payload;
-      if(state.chats.length > 0) state.chats[state.chats.length - 1].hasselected = hasselected;
+      if (state.chats.length > 0) state.chats[state.chats.length - 1].hasselected = hasselected;
     },
     resetChats: (state) => {
       console.log("resettt");
@@ -208,10 +241,10 @@ export const VSProductSlice = createSlice({
         diligenceLevelCovered?: string[];
         pitchdeckSummary?: any;
         searchQueries?: any;
-        reportGenerations? :any;
+        reportGenerations?: any;
       }>,
     ) => {
-      const { diligenceLevelCovered, pitchdeckSummary, searchQueries ,reportGenerations} = action.payload;
+      const { diligenceLevelCovered, pitchdeckSummary, searchQueries, reportGenerations } = action.payload;
       if (diligenceLevelCovered) {
         state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
       }
@@ -225,7 +258,7 @@ export const VSProductSlice = createSlice({
       if (searchQueries) {
         state.pitchdeck_data.search_queries = searchQueries;
       }
-      if(reportGenerations){
+      if (reportGenerations) {
         state.pitchdeck_data.report_generations = JSON.stringify(reportGenerations);
       }
     },
@@ -239,7 +272,7 @@ export const VSProductSlice = createSlice({
         if (Step == 2) {
           console.log("step2", response);
           state.chats[state.chats.length - 1].extract = response;
-        } 
+        }
         // else if(Step == 4){
         //   const option = [];
         //   const prevanswer = state.chats[state.chats.length - 1].answer || ""
@@ -253,21 +286,21 @@ export const VSProductSlice = createSlice({
         //   state.chats[state.chats.length - 1].query = response;
         //   state.chats.push({ query: "",  answer: "" ,options:option});
         // }
-          else if (Step == 4) {
-            if (DataSources) state.DataSources = DataSources;
-            console.log("data sources",DataSources);
-            state.chats[state.chats.length - 1].query = response;
-            state.chats.push({ query: "",  answer: "" ,options:["Continue"]});
-          } else if (Step == 5 && typeof response === 'object') {
-            console.log("step 6 response", response);
-            state.ReportTemplate = response;
-            state.chats[
-              state.chats.length - 1
-            ].query = `Almost there! 🚀 The final stencil of your report is ready in the right pane. Fine-tune them to match your vision before submission.\n
+        else if (Step == 4) {
+          if (DataSources) state.DataSources = DataSources;
+          console.log("data sources", DataSources);
+          state.chats[state.chats.length - 1].query = response;
+          state.chats.push({ query: "", answer: "", options: ["Continue"] });
+        } else if (Step == 5 && typeof response === 'object') {
+          console.log("step 6 response", response);
+          state.ReportTemplate = response;
+          state.chats[
+            state.chats.length - 1
+          ].query = `Almost there! 🚀 The final stencil of your report is ready in the right pane. Fine-tune them to match your vision before submission.\n
   Ready to proceed? Confirm now to generate your report
   `;
           // state.chats.push({ query: "If everything looks good. Please confirm to generate report.",  answer: "" });
-          state.chats.push({ query: "",  answer: "" ,options:["Submit"]});
+          state.chats.push({ query: "", answer: "", options: ["Submit"] });
         } else if (response.includes("//")) {
           const options: string[] =
             response
@@ -344,3 +377,5 @@ export const {
   setCompanyName,
   updatePitchdeckData,
 } = VSProductSlice.actions;
+
+

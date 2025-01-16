@@ -5,6 +5,7 @@ import Button from "src/components/reusable/button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getCompanies, getUserProfile } from "src/utils/api/userProfile";
 import Loading from "src/components/reusable/loading";
+import { useAppSelector } from "src/hooks/redux";
 
 type ExpandedSections = {
   organizationSettings: boolean;
@@ -25,6 +26,8 @@ const ReviewConfirmationScreen = () => {
   const [user, setUser] = useState<any | null>(null);
   const [company, setCompany] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const team = useAppSelector((state) => state.auth.team);
 
   const toggleSection = (section: keyof ExpandedSections) => {
     setExpanded((prev) => ({
@@ -173,7 +176,28 @@ const ReviewConfirmationScreen = () => {
             </div>
             {expanded.teamMembers && (
               <div className="mt-3 border-t border-gray-200 pt-2">
-                <p className="text-gray-400">No team members added yet.</p>
+                {team?.map((member, index) => (
+                  <div
+                    key={index}
+                    className="flex gap-x-1 justify-between items-center bg-[#F5F7FF66] p-2 my-2 rounded-md"
+                  >
+                    <div className="flex items-center gap-4">
+                      <p className="text-[16px] font-semibold text-[#373D3F] bg-gray-200 p-1 rounded-md">
+                        {"User"}
+                      </p>
+                      <p className="text-[16px] text-[#4F4F4F]">{member}</p>
+                      <span className="text-[#373D3F] text-xs bg-[#E8EAF2] p-1 rounded-md">
+                        Pending
+                      </span>
+                    </div>
+                    {/* <p
+                      className="text-xs text-[#373D3F] cursor-pointer"
+                      onClick={() => setTeamMembers(teamMembers.filter((_, i) => i !== index))}
+                    >
+                      Cancel
+                    </p> */}
+                  </div>
+                ))}
               </div>
             )}
           </div>

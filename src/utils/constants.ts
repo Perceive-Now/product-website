@@ -294,3 +294,12 @@ export const Countries = [
   "Zambia",
   "Zimbabwe",
 ];
+
+
+export const ACTIVITY_COMMENT: Record<string, string> = {
+  PROJECT_ADDED: "New Project Added",
+  REQUIREMENT_ADDED: "New Requirement Added",
+  REPORT_ADDED: "New Report Added",
+  REPORT_DELETE: "Report Deleted",
+  PROJECT_DELETE: "Project Deleted"
+}

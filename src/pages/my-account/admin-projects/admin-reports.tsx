@@ -26,6 +26,7 @@ import DownloadIcon from "src/components/icons/common/download-icon";
 import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import AddIcon from "src/components/icons/common/add-icon";
+import { formatDate } from "src/utils/helpers";
 /**
  *
  */
@@ -464,9 +465,7 @@ const AdminReports = () => {
                                 <>
                                   <Disclosure.Button className="group flex w-full items-center justify-between">
                                     <span className="text-base font-semibold text-black">
-                                      {report?.date && report.date !== "2025-01-03"
-                                        ? report.date
-                                        : "3 Jan 2025"}
+                                      {formatDate(report.date_modified)}
                                     </span>
                                     {open ? (
                                       <ArrowUp className="size-2" />

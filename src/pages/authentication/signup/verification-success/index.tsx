@@ -1,14 +1,24 @@
 import Button from "src/components/reusable/button";
 import perceiveNowImage from "../../../../assets/images/pn.svg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAppSelector } from "src/hooks/redux";
+import { useEffect } from "react";
 
 const VerificationSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const userInvited = useAppSelector((state) => state.auth.invitedUser);
 
   // get the state from navigate(, {state: {}})
   const invitedData = location.state?.invitedData;
-  console.log(invitedData)
+  console.log(invitedData);
+
+  useEffect(() => {
+    if (userInvited?.token) {
+      // redirect the user to the /invite-link/${token} but using window
+      window.location.href = `/invite-link/${userInvited.token}`;
+    }
+  }, [userInvited]);
 
   return (
     <div className="flex justify-center min-h-screen bg-gradient-to-b from-white to-[#F7F5FF] p-2">
@@ -20,9 +30,15 @@ const VerificationSuccess = () => {
           You'll be guided through a few simple steps to personalize your experience.
         </p>
         <div className="mt-3">
-          <Button type="primary" rounded="full" handleClick={() => navigate("/signup/organization-setting", {
-            state: { invitedData }
-          })}>
+          <Button
+            type="primary"
+            rounded="full"
+            handleClick={() =>
+              navigate("/signup/organization-setting", {
+                state: { invitedData },
+              })
+            }
+          >
             <span className="font-light text-[15px]">Let&apos;s get started</span>
           </Button>
         </div>

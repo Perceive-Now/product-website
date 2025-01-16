@@ -20,6 +20,7 @@ import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 import { useNavigate, useParams } from "react-router-dom";
+import { formatDate } from "src/utils/helpers";
 /**
  *
  */
@@ -120,7 +121,7 @@ const AdmimProjects = () => {
         header: "Date Modified",
         accessorKey: "date_modified",
         // minSize: 200,
-        cell: (item) => <span>18 Dec 2024</span>,
+        cell: (item) => <span>{formatDate(item.row.original.date_modified)}</span>,
       },
       // columnHelper.display({
       //   id: "actions",

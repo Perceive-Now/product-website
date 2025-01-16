@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { NEW_BACKEND_URL } from "../../signup/env";
 import { AppConfig } from "src/config/app.config";
 import { getCompanies, updateUserProfile } from "src/utils/api/userProfile";
+import Loading from "src/components/reusable/loading";
 
 const schema = yup.object({
   fullName: yup.string().required("Full name is required"),
@@ -30,6 +31,7 @@ const InviteProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const session = useAppSelector((state) => state.sessionDetail.session);
   const user = useAppSelector((state) => state.auth.user);
+  const [loading, setLoading] = useState(true);
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState({
@@ -54,6 +56,7 @@ const InviteProfileSetup: React.FC = () => {
   });
 
   const fetchUserDetails = async () => {
+    setLoading(true);
     try {
       const res = await fetch(`${NEW_BACKEND_URL}/user/details/${session?.user_id}`, {
         headers: {
@@ -74,11 +77,14 @@ const InviteProfileSetup: React.FC = () => {
         role: data?.user_details?.role || "",
       });
       reset({
-        fullName: user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : "",
+        fullName:
+          user?.first_name && user?.last_name ? `${user?.first_name} ${user?.last_name}` : "",
         country: user?.country || "",
       });
     } catch (error) {
       console.error("Failed to fetch user details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,116 +164,129 @@ const InviteProfileSetup: React.FC = () => {
 
   return (
     <SignUpLayout currentStep={1} completedSteps={[0]}>
-      <div className="pt-5 px-8 h-screen">
-        <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
-        <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
-          {/* Profile Image Upload */}
-          <div className="flex flex-col gap-y-1">
-            <p className="text-sm font-medium text-gray-700">Profile image</p>
-            <div className="relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group">
-              <img
-                src={imagePreview || profileAvatarSVG}
-                alt="Profile Avatar"
-                className={`object-cover ${
-                  imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"
-                }`}
-              />
-              <div className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
-                <label htmlFor="profileImage">
-                  <img src={profileEditSVG} alt="Edit Profile" />
-                </label>
-              </div>
-            </div>
-            <input
-              id="profileImage"
-              type="file"
-              className="hidden"
-              onChange={handleImageUpload}
-              accept="image/*"
-            />
-          </div>
-
-          {/* Full Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Full name</label>
-            <Controller
-              name="fullName"
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  placeholder="Full name"
-                  className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
+      {loading ? (
+        <Loading width="50px" height="50px" isLoading={loading} />
+      ) : (
+        <div className="pt-5 px-8 h-screen">
+          <h1 className="text-[19px] font-semibold text-[#373D3F] mb-4">Profile Setup</h1>
+          <form className="space-y-4 max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
+            {/* Profile Image Upload */}
+            <div className="flex flex-col gap-y-1">
+              <p className="text-sm font-medium text-gray-700">Profile image</p>
+              <div className="relative w-[80px] h-[80px] rounded-full bg-gray-300 flex items-center justify-center group">
+                <img
+                  src={imagePreview || profileAvatarSVG}
+                  alt="Profile Avatar"
+                  className={`object-cover ${
+                    imagePreview ? "w-full h-full rounded-full" : "w-[30px] h-[30px]"
+                  }`}
                 />
+                <div className="absolute bottom-0 right-0 bg-gray-300 rounded-full p-1">
+                  <label htmlFor="profileImage">
+                    <img src={profileEditSVG} alt="Edit Profile" />
+                  </label>
+                </div>
+              </div>
+              <input
+                id="profileImage"
+                type="file"
+                className="hidden"
+                onChange={handleImageUpload}
+                accept="image/*"
+              />
+            </div>
+
+            {/* Full Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Full name</label>
+              <Controller
+                name="fullName"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    placeholder="Full name"
+                    className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
+                  />
+                )}
+              />
+              {errors.fullName && (
+                <p className="text-xs text-danger-500 mt-1">{errors.fullName.message}</p>
               )}
-            />
-            {errors.fullName && (
-              <p className="text-xs text-danger-500 mt-1">{errors.fullName.message}</p>
-            )}
-          </div>
+            </div>
 
-          {/* Email (Disabled) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
-              value={userDetails.email}
-              disabled
-            />
-          </div>
+            {/* Email (Disabled) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
+                value={userDetails.email}
+                disabled
+              />
+            </div>
 
-          {/* Role (Disabled) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
-            <input
-              type="text"
-              className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
-              value={userDetails.role}
-              disabled
-            />
-          </div>
+            {/* Role (Disabled) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Role</label>
+              <input
+                type="text"
+                className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
+                value={userDetails.role}
+                disabled
+              />
+            </div>
 
-          {/* Country Selection */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Country</label>
-            <Controller
-              name="country"
-              control={control}
-              render={({ field }) => (
-                <select
-                  {...field}
-                  className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
-                >
-                  <option value="" disabled>
-                    Select country
-                  </option>
-                  {Countries.map((country) => (
-                    <option key={country} value={country}>
-                      {country}
+            {/* Country Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Country</label>
+              <Controller
+                name="country"
+                control={control}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className="mt-1 w-full px-3 py-[10px] border rounded-lg border-gray-300"
+                  >
+                    <option value="" disabled>
+                      Select country
                     </option>
-                  ))}
-                </select>
+                    {Countries.map((country) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+              {errors.country && (
+                <p className="text-xs text-danger-500 mt-1">{errors.country.message}</p>
               )}
-            />
-            {errors.country && (
-              <p className="text-xs text-danger-500 mt-1">{errors.country.message}</p>
-            )}
-          </div>
+            </div>
 
-          {/* Buttons */}
-          <div className="flex gap-x-4">
-            <Button
-              htmlType="submit"
-              rounded="full"
-              classname="w-[120px] bg-primary-600 text-white p-2"
-            >
-              Next
-            </Button>
-          </div>
-        </form>
-      </div>
+            {/* Buttons */}
+            <div className="flex gap-x-2 mt-3">
+              <Button
+                htmlType="submit"
+                rounded="full"
+                classname="w-[120px] bg-primary-600 text-white p-2"
+                type="secondary"
+                handleClick={() => navigate("/invite/organization-setting")}
+              >
+                Back
+              </Button>
+              <Button
+                htmlType="submit"
+                rounded="full"
+                classname="w-[120px] bg-primary-600 text-white p-2"
+              >
+                Next
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
     </SignUpLayout>
   );
 };

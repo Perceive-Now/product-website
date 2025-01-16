@@ -21,6 +21,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import classNames from "classnames";
 import SelectBox from "./selectBox";
 import axios from "axios";
+import { ACTIVITY_COMMENT } from "src/utils/constants";
+import { addActivityComment } from "src/stores/vs-product";
 /**
  *
  */
@@ -256,8 +258,6 @@ const QuickReports = () => {
     name: "additional",
   });
 
-  console.log("customReportErrors",customReportErrors)
-
   const requirementQuestions = useWatch({
     control: requirementControl,
     name: "questions",
@@ -270,6 +270,8 @@ const QuickReports = () => {
       setDisabled(true);
     }
   }, [location.state]);
+
+
 
   const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
@@ -298,6 +300,8 @@ const QuickReports = () => {
         const data = await response.json();
         // id = data.project_id;
         setProjectId(data.project_id);
+        const activityReponse = await addActivityComment(userId as string
+          , ACTIVITY_COMMENT.PROJECT_ADDED, data.project_id);
         setStep(2);
       } else {
         toast.error("Unable to submit report");
@@ -363,6 +367,7 @@ const QuickReports = () => {
       );
 
       if (response.status === 200) {
+        await addActivityComment(userId as string, ACTIVITY_COMMENT.REQUIREMENT_ADDED, projectId as string)
         if (uploadedFiles.length === 0) {
           setStep(4)
           return
@@ -383,7 +388,9 @@ const QuickReports = () => {
           );
 
           if (fileUploadResponse.ok) {
+
             setStep(4);
+
           } else {
             toast.error("Unable to submit report");
           }

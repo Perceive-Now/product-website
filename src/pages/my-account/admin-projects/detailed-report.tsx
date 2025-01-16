@@ -9,6 +9,8 @@ import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import DownloadIcon from "src/components/icons/common/download-icon";
 import IconFile from "src/components/icons/side-bar/icon-file";
+import { addActivityComment } from "src/stores/vs-product";
+import { ACTIVITY_COMMENT } from "src/utils/constants";
 // import JSZip from "jszip";
 // import { saveAs } from 'file-saver';
 
@@ -121,7 +123,9 @@ const DetailedReport = () => {
         },
       );
 
+
       if (response.ok) {
+        const activityResponse = await addActivityComment(user_id as string, ACTIVITY_COMMENT.REPORT_ADDED, project_id as string)
         navigate(`/admin`);
       } else {
         toast.error("Unable to submit report");
@@ -244,7 +248,7 @@ const DetailedReport = () => {
         <div className="p-1 pl-0">
           <h6 className="text-lg font-semibold ml-0">
             {" "}
-            Admin Report management 
+            Admin Report management
             {/* &gt; {itemData?.report_name} */}
           </h6>
           <div className="flex justify-start items-center pt-3 pl-1">
@@ -292,9 +296,8 @@ const DetailedReport = () => {
               {/* File Upload Box */}
               <h6 className="font-semibold text-base font-nunito">Add Report File</h6>
               <div
-                className={`border border-appGray-600 rounded-lg h-[280px] flex justify-center items-center cursor-pointer p-10 ${
-                  dragging ? "bg-gray-200" : ""
-                }`}
+                className={`border border-appGray-600 rounded-lg h-[280px] flex justify-center items-center cursor-pointer p-10 ${dragging ? "bg-gray-200" : ""
+                  }`}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragging(true);
