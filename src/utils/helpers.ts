@@ -19,9 +19,9 @@ export const formatNumber = (number: number, options?: IFormatNumberOptions) => 
     maximumFractionDigits: maxFraction,
     ...(options?.isCurrency
       ? {
-          style: "currency",
-          currency: "USD",
-        }
+        style: "currency",
+        currency: "USD",
+      }
       : {}),
   }).format(number);
 };
@@ -142,4 +142,16 @@ export function formatDate(dateString: string) {
 
   // Convert to local timezone
   return date.toLocaleString("en-GB", options);
+}
+
+
+export function formatReportDate(datetime: string) {
+  const year = datetime.substring(0, 4);
+  const month = datetime.substring(4, 6);
+  const day = datetime.substring(6, 8);
+  const hours = datetime.substring(8, 10);
+  const minutes = datetime.substring(10, 12);
+  const seconds = datetime.substring(12, 14);
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
