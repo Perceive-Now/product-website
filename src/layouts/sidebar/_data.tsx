@@ -29,12 +29,12 @@ const sidebarItems: ISidebarListItem[] = [
     icon: Home,
     to: "/",
   },
-  {
-    title: "AI Agents",
-    key: "new-report",
-    icon: NewReport,
-    to: "/vc-product",
-  },
+  // {
+  //   title: "AI Agents",
+  //   key: "new-report",
+  //   icon: NewReport,
+  //   to: "/vc-product",
+  // },
   {
     title: "Project Hub",
     key: "reportManagement",
