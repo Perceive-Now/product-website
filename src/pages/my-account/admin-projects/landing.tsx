@@ -253,7 +253,7 @@ const AdminDashboard = () => {
             size="medium"
             noTopBorder
           />
-          <div className="flex items-center justify-end mb-10">
+          <div className="flex items-center justify-end mb-10 custom-padding">
             <Pagination
               page={pagination.pageIndex + 1}
               total={Math.ceil(users.length / pagination.pageSize)}

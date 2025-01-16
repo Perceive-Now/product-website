@@ -222,35 +222,6 @@ const MyProjects = () => {
     );
   };
 
-
-  const formatDate = (isoDate: string): string => {
-    const date = new Date(isoDate);
-
-    const options: Intl.DateTimeFormatOptions = {
-      month: "2-digit",
-      day: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    };
-
-    // Format the date and time separately
-    const formattedDate = date.toLocaleDateString("en-US", options).replace(/\//g, "-");
-
-    return `${formattedDate} `;
-  };
-
-  interface ExampleComponentProps {
-    item: {
-      row: {
-        original: {
-          date_modified: string;
-        };
-      };
-    };
-  }
-
   const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
