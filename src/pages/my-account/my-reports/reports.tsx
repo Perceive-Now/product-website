@@ -335,6 +335,12 @@ const Reports = () => {
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
       },
       {
+        header: "Date Modified",
+        accessorKey: "date_modified",
+        // minSize: 200,
+        cell: (item) => <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>,
+      },
+      {
         header: "Status",
         accessorKey: "status",
         // minSize: 200,
