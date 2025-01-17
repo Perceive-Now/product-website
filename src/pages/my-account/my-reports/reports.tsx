@@ -120,6 +120,7 @@ const Reports = () => {
             date_modified: urlObj.datetime ? formatReportDate(urlObj.datetime) : item.date_modified,
             report_complete_status: item.report_complete_status,
             report_size: item.report_size,
+            filename: urlObj.filename || "-"
           })) : item
         );
         setTotalReports(data.total_reports);
@@ -323,21 +324,39 @@ const Reports = () => {
     () => [
       {
         id: "select-col",
-        header: ({ table }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={table.getIsAllRowsSelected()}
-              // indeterminate={table.getIsSomeRowsSelected()}
-              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
-            />
-          </div>
-        ),
+        header: ({ table }) => {
+          const selectableRows = table.getRowModel().rows.filter(
+            (row) => row.original.report_complete_status
+          );
+
+          // Check if all selectable rows are selected
+          const areAllSelectableRowsSelected =
+            selectableRows.length > 0 && selectableRows.every((row) => row.getIsSelected());
+
+          return (
+            <div className="pl-1 pt-1">
+              <CheckboxInput
+                className="border-white"
+                checked={areAllSelectableRowsSelected}
+                // indeterminate={
+                //   areSomeSelectableRowsSelected && !areAllSelectableRowsSelected
+                // }
+                onChange={() => {
+                  const shouldSelectAll = !areAllSelectableRowsSelected;
+                  selectableRows.forEach((row) => {
+                    row.toggleSelected(shouldSelectAll);
+                  });
+                }}
+              />
+            </div>
+          )
+        },
         cell: ({ row }) => (
           <div className="pl-1 pt-1">
             <CheckboxInput
               className="border-white"
               checked={row.getIsSelected()}
+              disabled={!row.original.report_complete_status}
               onChange={row.getToggleSelectedHandler()}
             />
           </div>
@@ -348,6 +367,12 @@ const Reports = () => {
         accessorKey: "report_name",
         // minSize: 400,
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
+      },
+      {
+        header: "File Name",
+        accessorKey: "report_name",
+        // minSize: 400,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.filename || "-"}</p>,
       },
       {
         header: "Type",
