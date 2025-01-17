@@ -18,7 +18,7 @@ import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
-// import JSZip from "jszip";
+import JSZip from "jszip";
 import IconFile from "src/components/icons/side-bar/icon-file";
 import { useParams } from "react-router-dom";
 import { Tab } from "@headlessui/react";
@@ -154,24 +154,24 @@ const Reports = () => {
     setRowSelection({});
   };
 
-  const handleBulkDownload = () => {
-    selectedRows.forEach((selectedIndex: any, index: number) => {
-      const selectedReport: any = reports[selectedIndex];
+  // const handleBulkDownload = () => {
+  //   selectedRows.forEach((selectedIndex: any, index: number) => {
+  //     const selectedReport: any = reports[selectedIndex];
 
-      if (selectedReport && selectedReport.file_data && selectedReport.file_data.file1) {
-        const fileUrl = selectedReport.file_data.file1;
+  //     if (selectedReport && selectedReport.file_data && selectedReport.file_data.file1) {
+  //       const fileUrl = selectedReport.file_data.file1;
 
-        const link = document.createElement("a");
-        link.href = fileUrl;
-        link.download = fileUrl.split("/").pop();
-        console.log("downloading file:", link.download);
+  //       const link = document.createElement("a");
+  //       link.href = fileUrl;
+  //       link.download = fileUrl.split("/").pop();
+  //       console.log("downloading file:", link.download);
 
-        setTimeout(() => {
-          link.click();
-        }, index * 100);
-      }
-    });
-  };
+  //       setTimeout(() => {
+  //         link.click();
+  //       }, index * 100);
+  //     }
+  //   });
+  // };
 
   // const handleBulkDownload = () => {
   //   console.log("ppppppppppppp")
@@ -196,43 +196,48 @@ const Reports = () => {
   //   });
   // };
 
-  // const handleBulkDownload = () => {
-  //   const zip = new JSZip();
+  const handleBulkDownload = () => {
+    const zip = new JSZip();
 
-  //   selectedRows.forEach((selectedIndex: any, index: number) => {
-  //     const selectedReport: any = reports[selectedIndex];
+    let count = 0;
+    selectedRows.forEach((selectedIndex: any, index: number) => {
+      const selectedReport: any = reports[selectedIndex];
+      if (selectedReport && selectedReport.report_url) {
+        const file = selectedReport.report_url;
 
-  //     if (selectedReport && selectedReport.report_url) {
-  //       const file = selectedReport.report_url;
+        // Get the file name (either from file object or URL)
+        const fileName = file.name || file.split("/").pop();
 
-  //       // Get the file name (either from file object or URL)
-  //       const fileName = file.name || file.split("/").pop();
+        // If the file is a Blob (binary data), add it to the zip
+        if (file instanceof Blob) {
+          zip.file(fileName, file);
+        } else if (typeof file === "string") {
+          // If the file is a URL or path, fetch it and add as a Blob
+          fetch(file, { mode: "no-cors" })
+            .then((response) => response.blob())
+            .then((blob) => {
+              count++
+              zip.file(fileName, blob);
+              console.log("SLDKLSKDLKSD", count)
+              if (count === selectedRows.length) {
+                zip.generateAsync({ type: "blob" }).then((content) => {
+                  const link = document.createElement("a");
+                  link.href = URL.createObjectURL(content);
+                  link.download = "reports.zip";
+                  link.click();
+                });
+              }
+            })
+            .catch((error) => {
+              console.error("Failed to fetch file:", error);
+            });
+        }
+      }
+    });
 
-  //       // If the file is a Blob (binary data), add it to the zip
-  //       if (file instanceof Blob) {
-  //         zip.file(fileName, file);
-  //       } else if (typeof file === "string") {
-  //         // If the file is a URL or path, fetch it and add as a Blob
-  //         fetch(file)
-  //           .then((response) => response.blob())
-  //           .then((blob) => {
-  //             zip.file(fileName, blob);
-  //           })
-  //           .catch((error) => {
-  //             console.error("Failed to fetch file:", error);
-  //           });
-  //       }
-  //     }
-  //   });
+    // Generate the ZIP file and trigger the download
 
-  //   // Generate the ZIP file and trigger the download
-  //   zip.generateAsync({ type: "blob" }).then((content) => {
-  //     const link = document.createElement("a");
-  //     link.href = URL.createObjectURL(content);
-  //     link.download = "reports.zip";
-  //     link.click();
-  //   });
-  // };
+  };
 
   const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
