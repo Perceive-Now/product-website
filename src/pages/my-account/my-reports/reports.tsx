@@ -112,7 +112,7 @@ const Reports = () => {
 
 
         const reportRecords = data.reports.flatMap((item: any) =>
-          item.report_url.map((urlObj: any) => ({
+          item.report_url ? item.report_url.map((urlObj: any) => ({
             ...item,
             report_id: item.report_id,
             report_name: item.report_name,
@@ -120,7 +120,7 @@ const Reports = () => {
             date_modified: urlObj.datetime ? formatReportDate(urlObj.datetime) : item.date_modified,
             report_complete_status: item.report_complete_status,
             report_size: item.report_size,
-          }))
+          })) : item
         );
         setTotalReports(data.total_reports);
         setreports(reportRecords);
