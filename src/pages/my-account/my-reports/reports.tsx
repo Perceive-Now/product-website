@@ -117,9 +117,9 @@ const Reports = () => {
             report_id: item.report_id,
             report_name: item.report_name,
             report_url: urlObj.url || urlObj,
+            report_size: urlObj.size || 0,
             date_modified: urlObj.datetime ? formatReportDate(urlObj.datetime) : item.date_modified,
             report_complete_status: item.report_complete_status,
-            report_size: item.report_size,
             filename: urlObj.filename || "-"
           })) : item
         );
@@ -399,7 +399,7 @@ const Reports = () => {
         accessorKey: "size",
         cell: (item) => {
           const reportSizeStr = item.row.original.report_size;
-          const bytes = parseInt(reportSizeStr.replace(" bytes", ""), 10);
+          const bytes = parseInt(reportSizeStr, 10);
           const mb = bytes / 1024 / 1024;
           return <span>{mb.toFixed(2)} MB</span>;
         },

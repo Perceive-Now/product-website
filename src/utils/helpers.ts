@@ -146,12 +146,20 @@ export function formatDate(dateString: string) {
 
 
 export function formatReportDate(datetime: string) {
-  const year = datetime.substring(0, 4);
-  const month = datetime.substring(4, 6);
-  const day = datetime.substring(6, 8);
-  const hours = datetime.substring(8, 10);
-  const minutes = datetime.substring(10, 12);
-  const seconds = datetime.substring(12, 14);
+  const [year, month, day, hour, minute, second] = datetime.split('-').map(Number);
 
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  // Create a Date object
+  const date = new Date(year, month - 1, day, hour, minute, second);
+
+  const options: any = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // Use 12-hour format with AM/PM
+  };
+
+  // Convert to local timezone
+  return date.toLocaleString("en-GB", options);
 }
