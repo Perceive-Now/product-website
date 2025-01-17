@@ -28,7 +28,7 @@ import { Disclosure } from "@headlessui/react";
 import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
-import { formatDate } from "src/utils/helpers";
+import { formatDate, formatReportDate } from "src/utils/helpers";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 /**
@@ -108,8 +108,22 @@ const Reports = () => {
       );
       if (response.ok) {
         const data = await response.json();
+
+
+
+        const reportRecords = data.reports.flatMap((item: any) =>
+          item.report_url.map((urlObj: any) => ({
+            ...item,
+            report_id: item.report_id,
+            report_name: item.report_name,
+            report_url: urlObj.url || urlObj,
+            date_modified: urlObj.datetime ? formatReportDate(urlObj.datetime) : item.date_modified,
+            report_complete_status: item.report_complete_status,
+            report_size: item.report_size,
+          }))
+        );
         setTotalReports(data.total_reports);
-        setreports(data.reports);
+        setreports(reportRecords);
         console.log("Total reports---------", data.reports[0]);
       }
       else {
@@ -258,7 +272,7 @@ const Reports = () => {
     };
 
     const handleShareReport = () => {
-      setShareLink(row.original.report_url[0]);
+      setShareLink(row.original.report_url);
       setModal(true);
     };
 
@@ -298,6 +312,8 @@ const Reports = () => {
   };
 
   const columnHelper = createColumnHelper<any>();
+
+
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       {
@@ -333,6 +349,12 @@ const Reports = () => {
         accessorKey: "type",
         // minSize: 200,
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
+      },
+      {
+        header: "Date Modified",
+        accessorKey: "date_modified",
+        // minSize: 200,
+        cell: (item) => <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>,
       },
       {
         header: "Status",

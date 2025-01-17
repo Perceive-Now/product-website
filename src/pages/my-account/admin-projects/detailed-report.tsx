@@ -11,6 +11,7 @@ import DownloadIcon from "src/components/icons/common/download-icon";
 import IconFile from "src/components/icons/side-bar/icon-file";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
+import TrashIcon from "src/components/icons/common/trash";
 // import JSZip from "jszip";
 // import { saveAs } from 'file-saver';
 
@@ -48,6 +49,7 @@ const DetailedReport = () => {
   const user_id = urlParams.get("user_id");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [uploadedFile, setUploadedFile] = useState<any | null>(null);
   const [dragging, setDragging] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -77,7 +79,8 @@ const DetailedReport = () => {
       if (isInvalidType || isInvalidSize) {
         toast.error("Invalid file uploaded.");
       } else {
-        setUploadedFile(file);
+        const fileList = Array.from(files).map((file: any) => file.name);
+        setUploadedFiles((prevFiles) => [...prevFiles, ...fileList]);
       }
     } else {
       toast.error("Please upload only one file.");
@@ -86,31 +89,42 @@ const DetailedReport = () => {
 
   const handleFileChange = (e: any) => {
     const files = e.target.files;
-    if (files && files.length === 1) {
-      const file = files[0];
-      const isInvalidType = !allowedTypes.includes(file.type);
-      const isInvalidSize = file.size > 200 * 1024 * 1024;
-      if (isInvalidType || isInvalidSize) {
+
+    if (files) {
+      const fileList = Array.from(files);
+      const invalidFiles = fileList.filter((file: any) => {
+        const isInvalidType = !allowedTypes.includes(file.type);
+        const isInvalidSize = file.size > 200 * 1024 * 1024;
+        if (isInvalidType || isInvalidSize) {
+          return true;
+        }
+        return false;
+      });
+
+      if (invalidFiles.length > 0) {
         toast.error("Invalid file uploaded.");
       } else {
-        setUploadedFile(file);
+        setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
       }
     } else {
       toast.error("Please upload only one file.");
     }
+    e.target.value = null
   };
 
   const handleSubmit = async () => {
     setLoading(true);
 
-    if (!uploadedFile) {
+    if (!uploadedFiles.length) {
       toast.error("Upload a file to submit");
       setLoading(false);
       return;
     }
 
     const formData = new FormData();
-    formData.append("files", uploadedFile);
+    uploadedFiles.forEach((file: File) => {
+      formData.append("files", file);
+    });
 
     try {
       const response: any = await fetch(
@@ -148,6 +162,12 @@ const DetailedReport = () => {
   const handleBrowseClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
+    }
+  };
+
+  const handleDelete = (index: number, type: "url" | "file") => {
+    if (type === "file") {
+      setUploadedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     }
   };
 
@@ -306,25 +326,17 @@ const DetailedReport = () => {
                 onDrop={handleDrop}
                 onClick={handleBrowseClick}
               >
-                {uploadedFile ? (
-                  <div className="flex flex-col items-center">
-                    <IconFile />
-                    <p className="text-center text-base font-bold font-nunito">
-                      {uploadedFile.name}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center text-lg">
-                    <UploadIcon />
-                    <p className="text-center text-base font-bold font-nunito mt-3">
-                      Drag and Drop files to upload
-                    </p>
-                    <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                    <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
-                      Browse
-                    </p>
-                  </div>
-                )}
+
+                <div className="flex flex-col items-center text-lg">
+                  <UploadIcon />
+                  <p className="text-center text-base font-bold font-nunito mt-3">
+                    Drag and Drop files to upload
+                  </p>
+                  <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                  <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
+                    Browse
+                  </p>
+                </div>
               </div>
 
               {/* Hidden File Input */}
@@ -348,6 +360,36 @@ const DetailedReport = () => {
                       </li>
                     ))}
                   </ul>
+                </div>
+              </div>
+            </div>
+            <div className="w-1/2 px-3 flex flex-col">
+              <div className="h-[70%] pr-[25%]">
+                <div className="border border-appGray-600 rounded-lg h-full flex flex-col px-2 pt-2 pb-[20px]">
+                  <div className="rounded-lg p-2 flex-1">
+                    <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
+                    {uploadedFiles.length > 0 ? (
+                      <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
+                        {uploadedFiles.map((file, index) => (
+                          <div key={index}>
+                            {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-nunito">{file.name}</p>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                width={25}
+                                onClick={() => handleDelete(index, "file")}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                        No file uploaded yet.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
