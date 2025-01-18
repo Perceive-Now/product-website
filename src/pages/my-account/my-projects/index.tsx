@@ -26,6 +26,7 @@ import { formatDate } from "src/utils/helpers";
 import ToolTip from "src/components/reusable/tool-tip";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
+import toast from "react-hot-toast";
 /**
  *
  */
@@ -165,6 +166,49 @@ const MyProjects = () => {
     [],
   );
 
+  const downloadReportHandler = useCallback(async (projectid: number) => {
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/reports/zip/${userId}/${projectid}`,
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        },
+      );
+      toast.success("Downloading Reports");
+
+      if (response.ok) {
+        // Read the response as an ArrayBuffer
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Convert the ArrayBuffer to a Blob
+        const blob = new Blob([arrayBuffer]);
+
+        // Create a URL for the Blob
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Create an anchor element to trigger download
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = "report.zip";
+
+        // Append the anchor to the body (necessary for Firefox)
+        document.body.appendChild(link);
+
+        // Trigger the download
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  },
+    [],
+  );
+
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
   };
@@ -190,8 +234,11 @@ const MyProjects = () => {
       setModal(true);
     };
 
-    const handleDownload = () => {
-      openFileHandler(row.original.file_data.file1);
+    const handleDownload = (event: React.MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      // openFileHandler(row.original.file_data.file1);
+      downloadReportHandler(row.original.project_id)
     };
 
     return (
@@ -202,11 +249,11 @@ const MyProjects = () => {
         panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
       >
         <ul id="dropdown">
-          {/* <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+          <li className="mb-2 cursor-pointer" onClick={handleDownload}>
             <div className="flex items-center">
               <DownloadIcon className="mr-2" /> Download
             </div>
-          </li> */}
+          </li>
           <li className="cursor-pointer" onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Project
@@ -225,28 +272,28 @@ const MyProjects = () => {
   const columnHelper = createColumnHelper<any>();
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      {
-        id: "select-col",
-        header: ({ table }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={table.getIsAllRowsSelected()}
-              // indeterminate={table.getIsSomeRowsSelected()}
-              onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
-            />
-          </div>
-        ),
-        cell: ({ row }) => (
-          <div className="pl-1 pt-1" onClick={(e) => e.stopPropagation()}>
-            <CheckboxInput
-              className="border-white"
-              checked={row.getIsSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          </div>
-        ),
-      },
+      // {
+      //   id: "select-col",
+      //   header: ({ table }) => (
+      //     <div className="pl-1 pt-1">
+      //       <CheckboxInput
+      //         className="border-white"
+      //         checked={table.getIsAllRowsSelected()}
+      //         // indeterminate={table.getIsSomeRowsSelected()}
+      //         onChange={table.getToggleAllRowsSelectedHandler()} // or getToggleAllPageRowsSelectedHandler
+      //       />
+      //     </div>
+      //   ),
+      //   cell: ({ row }) => (
+      //     <div className="pl-1 pt-1" onClick={(e) => e.stopPropagation()}>
+      //       <CheckboxInput
+      //         className="border-white"
+      //         checked={row.getIsSelected()}
+      //         onChange={row.getToggleSelectedHandler()}
+      //       />
+      //     </div>
+      //   ),
+      // },
       {
         header: "Project",
         accessorKey: "report_name",

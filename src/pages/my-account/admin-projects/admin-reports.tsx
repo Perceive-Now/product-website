@@ -52,8 +52,8 @@ const AdminReports = () => {
   const filteredReports =
     reports.length > 0
       ? reports.filter((report: any) =>
-          report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
+        report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
       : [];
 
   useEffect(() => {
@@ -236,6 +236,12 @@ const AdminReports = () => {
         cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
       },
       {
+        header: "Date Modified",
+        accessorKey: "date_modified",
+        // minSize: 200,
+        cell: (item) => <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>,
+      },
+      {
         header: "Status",
         accessorKey: "status",
         // minSize: 200,
@@ -271,7 +277,7 @@ const AdminReports = () => {
         id: "actions",
         // minSize: 100,
         cell: (item) => (
-           <div
+          <div
             className="inline-flex items-center justify-center gap-2 py-1 px-2 bg-primary-900 text-white rounded-md font-semibold cursor-pointer"
             onClick={() => {
               navigate(
@@ -279,12 +285,12 @@ const AdminReports = () => {
               );
             }}
           >
-            <AddIcon/>
+            <AddIcon />
           </div>
         ),
       }),
 
-      
+
       // columnHelper.display({
       //   id: "actions",
       //   cell: (item) => (
@@ -355,8 +361,7 @@ const AdminReports = () => {
           <Tab.List className="flex w-[15%] h-[45px]">
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-t border-b border-appGray-600 ${selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -364,8 +369,7 @@ const AdminReports = () => {
             </Tab>
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-2 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
-                  selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-2 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -415,9 +419,9 @@ const AdminReports = () => {
                     </Button>
                   </div>
                 )} */}
-                
-          {/* {selectedTabIndex === 0 && ( */}
-            {/* <div className="ml-auto">
+
+                {/* {selectedTabIndex === 0 && ( */}
+                {/* <div className="ml-auto">
               <Button
                 type="primary"
                 handleClick={() => {
@@ -429,7 +433,7 @@ const AdminReports = () => {
                 <div className="flex items-center gap-1">+ Add Report</div>
               </Button>
             </div> */}
-          {/* )} */}
+                {/* )} */}
               </div>
               <ReactTable
                 columnsData={columns}
@@ -483,14 +487,14 @@ const AdminReports = () => {
                                       </label>
                                       <div className="ml-3 mt-1">
                                         {Array.isArray(report?.question) &&
-                                        report?.question.length > 0
+                                          report?.question.length > 0
                                           ? report?.question.map(
-                                              (question: string, index: number) => (
-                                                <div key={index}>
-                                                  {index + 1}. {question}
-                                                </div>
-                                              ),
-                                            )
+                                            (question: string, index: number) => (
+                                              <div key={index}>
+                                                {index + 1}. {question}
+                                              </div>
+                                            ),
+                                          )
                                           : "No questions available"}
                                       </div>
                                     </div>

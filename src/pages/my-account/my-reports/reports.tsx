@@ -123,7 +123,7 @@ const Reports = () => {
             filename: urlObj.filename || "-"
           })) : item
         );
-        setTotalReports(data.total_reports);
+        setTotalReports(reportRecords.length || 0);
         setreports(reportRecords);
         console.log("Total reports---------", data.reports[0]);
       }
@@ -300,11 +300,11 @@ const Reports = () => {
                 <DownloadIcon className="mr-2" /> Download
               </div>
             </li> : null}
-          <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
+          {/* <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Report
             </div>
-          </li>
+          </li> */}
           {row.original.report_url ?
             <li className="cursor-pointer" onClick={handleShareReport}>
               <div className="flex items-center">
@@ -544,7 +544,7 @@ const Reports = () => {
                         Download
                       </div>
                     </Button>
-                    <Button
+                    {/* <Button
                       type="gray"
                       classname="flex items-center gap-1"
                       handleClick={handleBulkDelete}
@@ -553,7 +553,7 @@ const Reports = () => {
                         <TrashIcon />
                         Delete
                       </div>
-                    </Button>
+                    </Button> */}
                   </div>
                 )}
               </div>
