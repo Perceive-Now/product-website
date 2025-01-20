@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Pagination from "src/components/reusable/pagination";
 import EditIcon from "src/components/icons/miscs/Edit";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
-import { formatDate } from "src/utils/helpers";
+import { arrayBufferDownload, formatDate } from "src/utils/helpers";
 import ToolTip from "src/components/reusable/tool-tip";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
@@ -178,29 +178,7 @@ const MyProjects = () => {
       toast.success("Downloading Reports");
 
       if (response.ok) {
-        // Read the response as an ArrayBuffer
-        const arrayBuffer = await response.arrayBuffer();
-
-        // Convert the ArrayBuffer to a Blob
-        const blob = new Blob([arrayBuffer]);
-
-        // Create a URL for the Blob
-        const blobUrl = URL.createObjectURL(blob);
-
-        // Create an anchor element to trigger download
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = "report.zip";
-
-        // Append the anchor to the body (necessary for Firefox)
-        document.body.appendChild(link);
-
-        // Trigger the download
-        link.click();
-
-        // Clean up
-        document.body.removeChild(link);
-        URL.revokeObjectURL(blobUrl);
+        arrayBufferDownload(response)
       }
     } catch (err) {
       console.error(err);
@@ -208,6 +186,7 @@ const MyProjects = () => {
   },
     [],
   );
+
 
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
