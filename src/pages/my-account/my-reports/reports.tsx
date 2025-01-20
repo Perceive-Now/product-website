@@ -28,9 +28,10 @@ import { Disclosure } from "@headlessui/react";
 import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
-import { formatDate, formatReportDate } from "src/utils/helpers";
+import { arrayBufferDownload, formatDate, formatReportDate } from "src/utils/helpers";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
+import toast from "react-hot-toast";
 /**
  *
  */
@@ -197,48 +198,64 @@ const Reports = () => {
   //   });
   // };
 
-  const handleBulkDownload = () => {
-    const zip = new JSZip();
+  const handleBulkDownload = async () => {
+    const reportName = reports[((selectedRows as any)[0] as number)]?.report_name
+    const obj: Record<string, string> = {}
 
-    let count = 0;
-    selectedRows.forEach((selectedIndex: any, index: number) => {
+    selectedRows.forEach((selectedIndex: any, index) => {
       const selectedReport: any = reports[selectedIndex];
       if (selectedReport && selectedReport.report_url) {
         const file = selectedReport.report_url;
+        if (file) {
+          let fileName = file.split("/").pop() || "unknown_file";
 
-        // Get the file name (either from file object or URL)
-        const fileName = file.name || file.split("/").pop();
+          // Ensure unique file names
+          if (obj[fileName]) {
+            const uniqueSuffix = `_${index}`;
+            const fileParts = fileName.split(".");
+            if (fileParts.length > 1) {
+              const extension = fileParts.pop();
+              fileName = `${fileParts.join(".")}${uniqueSuffix}.${extension}`;
+            } else {
+              fileName += uniqueSuffix;
+            }
+          }
 
-        // If the file is a Blob (binary data), add it to the zip
-        if (file instanceof Blob) {
-          zip.file(fileName, file);
-        } else if (typeof file === "string") {
-          // If the file is a URL or path, fetch it and add as a Blob
-          fetch(file, { mode: "no-cors" })
-            .then((response) => response.blob())
-            .then((blob) => {
-              count++
-              zip.file(fileName, blob);
-              console.log("SLDKLSKDLKSD", count)
-              if (count === selectedRows.length) {
-                zip.generateAsync({ type: "blob" }).then((content) => {
-                  const link = document.createElement("a");
-                  link.href = URL.createObjectURL(content);
-                  link.download = "reports.zip";
-                  link.click();
-                });
-              }
-            })
-            .catch((error) => {
-              console.error("Failed to fetch file:", error);
-            });
+          obj[fileName] = file;
         }
       }
-    });
+      return null
+    })
 
-    // Generate the ZIP file and trigger the download
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/reports/zip/custom`,
+        {
+          method: "POST",
+          headers: { Accept: "application/json", 'Content-Type': 'application/json' },
+          body: JSON.stringify({
 
-  };
+            [reportName]: obj
+
+
+          })
+        },
+      );
+      toast.success("Downloading Reports");
+
+      if (response.ok) {
+        arrayBufferDownload(response)
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+
+  // Generate the ZIP file and trigger the download
+
+
 
   const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
@@ -287,33 +304,34 @@ const Reports = () => {
     };
 
     return (
-      <Tooltip
-        isCustomPanel={true}
-        right="0px"
-        trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
-        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
-      >
-        <ul id="dropdown">
-          {row.original.report_url ?
-            <li className="mb-2 cursor-pointer" onClick={handleDownload}>
-              <div className="flex items-center">
-                <DownloadIcon className="mr-2" /> Download
-              </div>
-            </li> : null}
-          {/* <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
+      row.original.report_url ?
+        <Tooltip
+          isCustomPanel={true}
+          right="0px"
+          trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
+          panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
+        >
+          <ul id="dropdown">
+            {row.original.report_url ?
+              <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+                <div className="flex items-center">
+                  <DownloadIcon className="mr-2" /> Download
+                </div>
+              </li> : null}
+            {/* <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Report
             </div>
           </li> */}
-          {row.original.report_url ?
-            <li className="cursor-pointer" onClick={handleShareReport}>
-              <div className="flex items-center">
-                <ShareIcon className="mr-2" /> Share
-              </div>
-            </li>
-            : null}
-        </ul>
-      </Tooltip>
+            {row.original.report_url ?
+              <li className="cursor-pointer" onClick={handleShareReport}>
+                <div className="flex items-center">
+                  <ShareIcon className="mr-2" /> Share
+                </div>
+              </li>
+              : null}
+          </ul>
+        </Tooltip> : null
     );
   };
 

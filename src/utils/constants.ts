@@ -297,9 +297,13 @@ export const Countries = [
 
 
 export const ACTIVITY_COMMENT: Record<string, string> = {
-  PROJECT_ADDED: "New Project Created",
+  PROJECT_ADDED: "New Project is created with name",
   REQUIREMENT_ADDED: "New Requirement Are Added",
+  REQUIREMENT_UPDATED: "Requirements are updated",
   REPORT_ADDED: "New Report is Ready",
   REPORT_DELETE: "Report Deleted",
   PROJECT_DELETE: "Project Deleted"
 }
+
+// New Project is created with name "Project Name"
+// Requements are updated

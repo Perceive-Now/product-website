@@ -163,3 +163,29 @@ export function formatReportDate(datetime: string) {
   // Convert to local timezone
   return date.toLocaleString("en-GB", options);
 }
+
+export const arrayBufferDownload = async (response: any) => {
+  const arrayBuffer = await response.arrayBuffer();
+
+  // Convert the ArrayBuffer to a Blob
+  const blob = new Blob([arrayBuffer]);
+
+  // Create a URL for the Blob
+  const blobUrl = URL.createObjectURL(blob);
+
+  // Create an anchor element to trigger download
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = "report.zip";
+
+  // Append the anchor to the body (necessary for Firefox)
+  document.body.appendChild(link);
+
+  // Trigger the download
+  link.click();
+
+  // Clean up
+  document.body.removeChild(link);
+  URL.revokeObjectURL(blobUrl);
+
+}

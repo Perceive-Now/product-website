@@ -301,7 +301,7 @@ const QuickReports = () => {
         // id = data.project_id;
         setProjectId(data.project_id);
         const activityReponse = await addActivityComment(userId as string
-          , ACTIVITY_COMMENT.PROJECT_ADDED, data.project_id);
+          , `${ACTIVITY_COMMENT.PROJECT_ADDED} "${values.projectName}"`, data.project_id);
         setStep(2);
       } else {
         toast.error("Unable to submit report");
@@ -367,7 +367,7 @@ const QuickReports = () => {
       );
 
       if (response.status === 200) {
-        await addActivityComment(userId as string, ACTIVITY_COMMENT.REQUIREMENT_ADDED, projectId as string)
+        await addActivityComment(userId as string, disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED, projectId as string)
         if (uploadedFiles.length === 0) {
           setStep(4)
           return
