@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "src/hooks/redux";
 import { NEW_BACKEND_URL } from "../env";
 import { roles } from "../../invite/profile-setup/_constants/roles";
 import { addTeamMember } from "src/stores/auth";
+import EmailChipInput from "src/components/reusable/input/EmailInput";
 
 const mockApiCall = async (data: { email: string; role: string }) => {
   return new Promise((resolve) => {
@@ -48,77 +49,104 @@ const TeamManagementScreen = () => {
     return emailRegex.test(email);
   };
 
+  const [error, setError] = useState("")
+
   const handleInvite = async () => {
-    if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address.", {
-        position: "top-right",
-      });
-      return;
-    }
 
-    if (note.length > 200) {
-      toast.error("The note cannot exceed 200 characters.", {
-        position: "top-right",
-      });
-      return;
-    }
 
-    // Check if the email already exists in the team members list
-    const isDuplicate = teamMembers.some((member) => member.email === email);
-    if (isDuplicate) {
-      toast.error("This email is already in your team.", {
-        position: "top-right",
-      });
-      return;
-    }
 
+    if (error) {
+      return
+    }
+    if (!emails.length && !inputValue) {
+      setError("Please enter email")
+      return
+    }
     setIsSubmitting(true);
 
     try {
-      // Mock API call
       const user_id = session?.user_id;
-      if (!user_id)
-        return toast.error("Failed to add team member. Please try again.", {
+      if (!user_id) {
+        toast.error("Failed to add team members. Please try again.", {
           position: "top-right",
         });
+        return;
+      }
 
-      const data = {
-        email,
-        role: "User",
-        permissions: ["read"],
-      };
+      setIsSubmitting(true);
 
-      console.log(`${NEW_BACKEND_URL}/team/invite?user_id=${user_id}`);
-      const res = await fetch(`${NEW_BACKEND_URL}/team/invite?user_id=${user_id}`, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+      const finalEmailList = emails;
+      if (inputValue) {
+        finalEmailList.push(inputValue)
+      }
+
+      // Map each email to a promise for API call
+      const emailPromises = finalEmailList.map((email) => {
+        const data = {
+          email,
+          role: "User",
+          permissions: ["read"],
+        };
+
+        return fetch(`${NEW_BACKEND_URL}/team/invite?user_id=${user_id}`, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+          .then(async (res) => {
+            if (res.status === 200) {
+              toast.success(`Invitation sent to ${email}.`, {
+                position: "top-right",
+              });
+              return { success: true, email };
+            } else {
+              throw new Error(`Failed to send invite to ${email}`);
+            }
+          })
+          .catch((error) => {
+            toast.error(`Failed to add team member ${email}. Please try again.`, {
+              position: "top-right",
+            });
+            return { success: false, email };
+          });
       });
-      const result = await res.json();
 
-      if (res.status === 200) {
-        toast.success(`Invitation sent to ${email}.`, {
-          position: "top-right",
-        });
-        setTeamMembers([...teamMembers, { email, role }]);
-        setEmail("");
-        dispatch(addTeamMember(email));
-      } else {
-        toast.error("Failed to add team member. Please try again.", {
-          position: "top-right",
+      // Wait for all promises to resolve
+      const results = await Promise.all(emailPromises);
+
+      // Process successful invitations
+      const successfulInvites = results.filter((result) => result.success);
+      if (successfulInvites.length > 0) {
+        setEmails([])
+        setInputValue("")
+        setTeamMembers((prev) =>
+          prev.concat(successfulInvites.map((invite) => ({ email: invite.email, role: "User" })))
+        );
+        successfulInvites.forEach((invite) => {
+          dispatch(addTeamMember(invite.email));
         });
       }
+
+      // Optional: Handle overall success/failure
+      const failedInvites = results.filter((result) => !result.success);
+      if (failedInvites.length > 0) {
+        console.error("Failed invites:", failedInvites);
+      }
     } catch (error) {
-      toast.error("Failed to add team member. Please try again.", {
+      console.error("Error inviting emails:", error);
+      toast.error("Failed to add team members. Please try again.", {
         position: "top-right",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const [emails, setEmails] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
 
   return (
     <SignUpLayout currentStep={2} completedSteps={[0, 1]}>
@@ -130,18 +158,13 @@ const TeamManagementScreen = () => {
         <div className="space-y-[16px]">
           <p className="text-[#4F4F4F]">Let’s invite some team members.</p>
           <div className="bg-[#F5F7FF66] p-3 rounded-xl max-w-[90%]">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="w-full">
               <div>
                 <label htmlFor="email" className="text-[16px] text-[#4F4F4F] block mb-2">
                   Who would you like to invite to join your team?
                 </label>
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full flex-1 h-[48px] border-[1px] border-[#87888C] rounded-lg px-[12px] text-[16px] bg-[#FCFCFC] text-[#4F4F4F] outline-none"
-                />
+                <EmailChipInput emails={emails} setEmails={setEmails} setError={setError} teamMembers={teamMembers.map((mem) => mem.email)} inputValue={inputValue} setInputValue={setInputValue} />
+                <p className="text-red-500 text-sm mt-2">{error}</p>
               </div>
               {/* <div>
                 <label htmlFor="role" className="text-[16px] text-[#4F4F4F] block mb-2">
@@ -162,7 +185,7 @@ const TeamManagementScreen = () => {
                 </select>
               </div> */}
             </div>
-            <div className="mt-2">
+            {/* <div className="mt-2">
               <label htmlFor="note" className="text-[16px] text-[#4F4F4F] block mb-2">
                 Would you like to include a personalized message in the invitation? (Optional)
               </label>
@@ -173,7 +196,7 @@ const TeamManagementScreen = () => {
                 className="w-[60%] h-[120px] border-[1px] border-[#87888C] rounded-lg px-[12px] py-[8px] text-[16px] bg-[#FCFCFC] text-[#4F4F4F] outline-none"
                 maxLength={200}
               />
-            </div>
+            </div> */}
             <Button
               rounded="full"
               classname="w-[120px] mt-2"
