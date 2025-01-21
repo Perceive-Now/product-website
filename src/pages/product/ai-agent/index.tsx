@@ -30,6 +30,7 @@ import {
 } from "src/stores/vs-product";
 import StepBar from "./stepBar";
 import { useNavigate } from "react-router-dom";
+import ReportCustomization from "./ReportCustomization";
 const AiAgent = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -124,8 +125,8 @@ const AiAgent = () => {
               setDelayLoading(true);
               dispatch(
                 setVSChats({
-                  query: `Let’s create something amazing! 🚀  
-I’m here to turn the startup’s info into a powerful, data-driven report just for you.`,
+                  query: `Let’s create something amazing! 🚀
+                        What is the primary objective for this report?`,
                   answer: "",
                 }),
               );
@@ -136,8 +137,14 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               dispatch(
                 setVSChats({
                   query:
-                    "Thank you for providing the startup name. Please select the current stage of your startup from the options below.",
-                  answer: companyName,
+                    "Based on what we’ve gathered so far, here are some sample data sources I’ll tap into for the report. Feel free to add any additional sources you'd like.",
+                  answer: "",
+                }),
+              );
+
+              dispatch(
+                setVSChats({
+                  query: "If everything looks good. Please confirm.",
                 }),
               );
             }, 2500);
@@ -146,8 +153,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
               dispatch(
                 setVSChats({
                   query: "",
-                  answer: "",
-                  options: ["Pre Revenue", "Post Revenue"],
+                  answer: companyName,
+                  options: ["Everything looks good!", "Not quite"],
                   hasbutton: true,
                 }),
               );
@@ -540,11 +547,11 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
       <div className="px-0 md:px-3 w-full mx-auto h-full">
         <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">
-            <div className="relative flex-none">
+            {/* <div className="relative flex-none">
               <div className="absolute left-[-25px] md:left-[-40px] lg:left-[-45px] top-2 w-[10px]">
                 <StepBar />
               </div>
-            </div>
+            </div> */}
 
             {chats && chats.length <= 0 ? (
               <div className="flex flex-row justify-between flex-auto">
@@ -615,11 +622,14 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
           </div>
 
           {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
-          {Step == 4 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
-          {Step == 5 && ReportTemplate && Object.keys(ReportTemplate).length > 0 && (
-            <TemplateReport />
-          )}
-          {Step == 3 && <InitialScreening />}
+          <div>
+            <ReportCustomization />
+            {Step == 4 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
+            {Step == 5 && ReportTemplate && Object.keys(ReportTemplate).length > 0 && (
+              <TemplateReport />
+            )}
+            {Step == 3 && <InitialScreening />}
+          </div>
         </div>
       </div>
     </>
