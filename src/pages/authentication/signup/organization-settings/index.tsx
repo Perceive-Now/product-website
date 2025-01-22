@@ -10,6 +10,9 @@ import { getCompanies, getUserProfile, updateUserProfile } from "src/utils/api/u
 import toast from "react-hot-toast";
 import industries from "./option";
 import Loading from "src/components/reusable/loading";
+import axios from "axios";
+import { NEW_BACKEND_URL } from "../env";
+import { useAppSelector } from "src/hooks/redux";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -38,6 +41,8 @@ const OrganizationSettings = () => {
   const [company, setCompany] = useState<any | null>("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const session = useAppSelector((state) => state.sessionDetail.session);
 
   const {
     register,
@@ -113,6 +118,25 @@ const OrganizationSettings = () => {
       };
 
       const result = await updateUserProfile(value);
+      const company = await getCompanies().then((companies) => {
+        return companies.find((company) => company.name === data.organizationName);
+      });
+
+      const organizationValues = {
+        company_name: data.organizationName,
+        company_id: company?.id,
+        preference: data.industry === "Other" ? data.otherIndustry : data.industry,
+      };
+
+      const organizationUpdateResult = await axios.post(
+        `${NEW_BACKEND_URL}/user/${session?.user_id}/company`,
+        organizationValues,
+      );
+
+      if (organizationUpdateResult.status === 200) {
+        console.log("Organization Settings Saved Successfully!");
+      }
+
       if (result.status === 200) {
         toast.success("Organization Settings Saved Successfully!", {
           position: "top-right",
@@ -133,11 +157,7 @@ const OrganizationSettings = () => {
   return (
     <SignUpLayout invitedData={invitedData} currentStep={0} completedSteps={[]}>
       {loading ? (
-        <Loading 
-          width="50px"
-          height="50px"
-          isLoading={loading}
-        />
+        <Loading width="50px" height="50px" isLoading={loading} />
       ) : (
         <div className="pt-5 px-8">
           <h1 className="text-[19px] font-semibold text-[#373D3F]">Organization Settings</h1>
