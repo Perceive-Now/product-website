@@ -234,7 +234,7 @@ const QuickReports = () => {
   };
 
   const customReportFormResolver = yup.object().shape({
-    additional: yup.string().trim().required("Special Request is required"),
+    // additional: yup.string().trim().required("Special Request is required"),
   });
 
   const {

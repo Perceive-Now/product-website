@@ -16,9 +16,9 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
       const index = updatedSelectedValues.indexOf(value);
 
       if (index > -1) {
-        updatedSelectedValues.splice(index, 1); 
+        updatedSelectedValues.splice(index, 1);
       } else {
-        updatedSelectedValues.push(value); 
+        updatedSelectedValues.push(value);
       }
 
       setSelectedValue(updatedSelectedValues);
@@ -41,7 +41,8 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
           ? selectedValue instanceof Array && selectedValue.includes(option)
           : selectedValue === option;
 
-        const isDisabled = !isFirstItem && !multiple;
+        // const isDisabled = !isFirstItem && !multiple;
+        const isDisabled = false
 
         return (
           <div
@@ -57,11 +58,11 @@ const SelectBox: React.FC<SelectBoxProps> = ({ options, onChangeValue, multiple 
               ${isFirstItem ? 'rounded-l-md border' : ''}
               ${isLastItem ? 'rounded-r-md border-t border-r border-b' : ''}
               ${!(isFirstItem || isLastItem) ? 'border-r border-t border-b' : ''}
-              ${!isDisabled ? 'hover:bg-primary-800 hover:text-white hover:border-primary-800' : '' }
+              ${!isDisabled ? 'hover:bg-primary-800 hover:text-white hover:border-primary-800' : ''}
               ${isDisabled ? '!bg-customDisableGray-100 cursor-not-allowed' : 'pt-3 cursor-pointer'}
             `}
           >
-           {!isFirstItem && !multiple && <div className='flex items-center justify-center text-center'><img src="https://cdna.iconscout.com/img/crown-gold.0b35b6a.svg" width="25" alt="crown" /></div>} 
+            {/* {!isFirstItem && !multiple && <div className='flex items-center justify-center text-center'><img src="https://cdna.iconscout.com/img/crown-gold.0b35b6a.svg" width="25" alt="crown" /></div>}  */}
             <div className="text-center text-base">
               {mainText}
             </div>
