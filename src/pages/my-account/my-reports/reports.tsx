@@ -752,13 +752,13 @@ const Reports = () => {
                                                     openFileHandler(fileUrl);
                                                   }}
                                                 >
-                                                  <IconFile className="cursor-pointer" />
+                                                  <IconFile className="cursor-pointer h-[60px] w-[60px]" />
                                                 </div>
-                                                <div className="w-full">
+                                                {/* <div className="w-full">
                                                   <p className="text-[12px] text-wrap font-nunito">
                                                     {fileUrl}
                                                   </p>{" "}
-                                                </div>
+                                                </div> */}
                                               </div>
                                             );
                                           })}
