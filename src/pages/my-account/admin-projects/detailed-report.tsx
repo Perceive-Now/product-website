@@ -12,6 +12,7 @@ import IconFile from "src/components/icons/side-bar/icon-file";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import TrashIcon from "src/components/icons/common/trash";
+import classNames from "classnames";
 // import JSZip from "jszip";
 // import { saveAs } from 'file-saver';
 
@@ -113,8 +114,15 @@ const DetailedReport = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
 
+    if (!highlights.trim()) {
+      if (highlightRef.current) {
+        highlightRef.current.focus()
+      }
+      setHighlightError("Report Highlights is mandatory")
+      return
+    }
+    setLoading(true);
     if (!uploadedFiles.length) {
       toast.error("Upload a file to submit");
       setLoading(false);
@@ -128,7 +136,7 @@ const DetailedReport = () => {
 
     try {
       const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-report-files/${user_id}/${project_id}/${report_id}`,
+        `https://templateuserrequirements.azurewebsites.net/upload-report-files/${user_id}/${project_id}/${report_id}?request_body=${highlights}`,
         // {itemData.report_id}`,
         {
           method: "POST",
@@ -261,6 +269,10 @@ const DetailedReport = () => {
   //       toast.error("No files available to download");
   //     }
   //   };
+
+  const highlightRef = useRef<any>(null)
+  const [highlights, setHighlights] = useState("")
+  const [highlightError, setHighlightError] = useState("")
 
   return (
     <div className="space-y-[20px] w-full z-10">
@@ -486,6 +498,35 @@ const DetailedReport = () => {
               </div>
             </div> */}
 
+          </div>
+          <div className="mt-5">
+            <h6 className="font-semibold mb-1 text-base font-nunito">
+              Report Highlights{" "}
+              <span className="text-red-500 ml-0">*</span>
+            </h6>
+            <input
+              // ref={inputRef}
+              id="highlights"
+              type="text"
+              className={classNames(
+                "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                highlightError
+                  ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                  : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+              )}
+              ref={highlightRef}
+              placeholder="Report Highlights"
+              value={highlights}
+              onChange={(e) => {
+                setHighlights(e.target.value)
+                setHighlightError("")
+              }}
+            />
+            {highlightError && (
+              <div className="mt-1 text-s text-danger-500">
+                {highlightError}
+              </div>
+            )}
           </div>
           <div className="max-w-[120px] mt-5 mb-5">
             <button
