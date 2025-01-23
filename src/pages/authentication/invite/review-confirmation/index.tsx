@@ -143,7 +143,7 @@ const InviteReviewConfirmation = () => {
             <Button
               rounded="full"
               classname="w-[120px]"
-              handleClick={() => navigate("/signup/finish")}
+              handleClick={() => navigate("/invite/finish")}
             >
               Confirm
             </Button>

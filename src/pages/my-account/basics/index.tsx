@@ -14,6 +14,9 @@ import EditIcon from "../../../components/icons/miscs/Edit";
 import { updateUserProfile } from "../../../utils/api/userProfile";
 import { setUser } from "../../../stores/auth";
 import Button from "src/components/reusable/button";
+import axios from "axios";
+import { AppConfig } from "src/config/app.config";
+import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
 type IModal = "profile" | "password";
 
 /**
@@ -22,9 +25,26 @@ type IModal = "profile" | "password";
 const Basics = () => {
   const dispatch = useAppDispatch();
   const UserDetail = useAppSelector((state) => state.auth.user);
+  const session = useAppSelector((state) => state.sessionDetail.session);
   const [modal, setModal] = useState<IModal | null>(null);
   const [modalType, setModalType] = useState<any>();
   const [photo, setPhoto] = useState<any>();
+
+  const fetchUserDetails = async (userId: number) => {
+    try {
+      const response = await axios.get(`${NEW_BACKEND_URL}/user/details/${userId}`, {
+        headers: {
+          Accept: "application/json",
+          "secret-code": `${AppConfig.ORGANIZATION_SECRET}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching user details", error);
+      return null;
+    }
+  };
 
   const [formData, setFormData] = useState({
     fullName: UserDetail?.full_name || "",
@@ -41,6 +61,17 @@ const Basics = () => {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    fetchUserDetails(session?.user_id as number).then((data) => {
+      if (data?.user_details) {
+        setFormData({
+          ...formData,
+          role: data?.user_details?.role || "",
+        });
+      }
+    });
+  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -282,7 +313,7 @@ const Basics = () => {
               onChange={handleChange}
               placeholder="Organization"
               required
-              className="mt-1 p-[14px] w-full rounded-lg"
+              className="mt-1 p-[14px] w-full rounded-lg capitalize"
             />
           </div>
 

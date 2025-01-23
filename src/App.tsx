@@ -99,6 +99,7 @@ import InviteProfileSetup from "./pages/authentication/invite/profile-setup";
 import InviteReviewConfirmation from "./pages/authentication/invite/review-confirmation";
 import VerifyInviteToken from "./pages/authentication/invite/verify-token";
 import InviteAuthLayout from "./layouts/invitation/layout";
+import InviteFinish from "./pages/authentication/invite/success";
 // import MadLibEditor from "./test";
 
 /**
@@ -288,6 +289,7 @@ function App() {
           <Route path="/invite/organization-setting" element={<OrganizationInviteSetting />} />
           <Route path="/invite/profile" element={<InviteProfileSetup />} />
           <Route path="/invite/review" element={<InviteReviewConfirmation />} />
+          <Route path="/invite/finish" element={<InviteFinish />} />
         </Route>
 
         <Route path="/invite-link/:token" element={<VerifyInviteToken />} />

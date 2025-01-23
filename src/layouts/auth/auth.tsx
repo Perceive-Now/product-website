@@ -9,6 +9,9 @@ import { getCurrentSession, getUserDetails } from "../../stores/auth";
 //
 import { getSessionDetails } from "../../stores/session";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
+import { AppConfig } from "src/config/app.config";
 
 interface PathPersistRefProps {
   path: string | null;
@@ -27,9 +30,27 @@ export default function AuthLayout() {
 
   const { user } = useAppSelector((state) => state.auth);
   const authStore = useAppSelector((state) => state.auth);
+  const session = useAppSelector((state) => state.sessionDetail);
 
   const [isLoading, setIsLoading] = useState(true);
   const [checking, setChecking] = useState(true);
+
+  //
+  const fetchUserDetails = async (userId: number) => {
+    try {
+      const response = await axios.get(`${NEW_BACKEND_URL}/user/details/${userId}`, {
+        headers: {
+          Accept: "application/json",
+          "secret-code": `${AppConfig.ORGANIZATION_SECRET}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching user details", error);
+      return null;
+    }
+  };
 
   //
   const getSession = useCallback(async () => {
@@ -68,7 +89,16 @@ export default function AuthLayout() {
     if (user) {
       setChecking(false);
 
-      const { first_name, job_position, about_me } = user;
+      const {
+        first_name,
+        last_name,
+        job_position,
+        about_me,
+        company_name,
+        username,
+        email,
+        registration_completed,
+      } = user;
 
       // List of allowed paths during signup flow
       const signupFlowPaths = [
@@ -94,9 +124,28 @@ export default function AuthLayout() {
 
         navigate("/signup/success");
       }
+
+      if (
+        registration_completed &&
+        !first_name &&
+        !last_name &&
+        !job_position &&
+        !about_me &&
+        company_name
+      ) {
+        navigate("/invite/success");
+      }
+
+      fetchUserDetails(session.session?.user_id as number).then((data) => {
+        if (data?.user_details) {
+          if (data.user_details.role === "User" && signupFlowPaths.includes(location.pathname)) {
+            navigate("/");
+          }
+        }
+      });
     }
   }, [navigate, user, location.pathname]);
-  
+
   // Do not show the content initially
   if (isLoading || checking) return <PageLoading />;
 
