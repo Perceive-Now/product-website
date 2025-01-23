@@ -283,7 +283,7 @@ export default function SignupPage() {
                   target="_blank"
                   className="text-inherit underline"
                   rel="noreferrer noopener"
-                  href={`${WEBSITE_URL}/privacy-policy`}
+                  href={`https://perceivenow.ai/privacy-policy`}
                 >
                   Privacy Policy
                 </a>{" "}
@@ -292,7 +292,7 @@ export default function SignupPage() {
                   target="_blank"
                   className="text-inherit underline"
                   rel="noreferrer noopener"
-                  href={`${WEBSITE_URL}/terms`}
+                  href={`https://perceivenow.ai/terms`}
                 >
                   Terms of Use
                 </a>
