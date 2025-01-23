@@ -19,7 +19,7 @@ export default function Popover(props: PropsWithChildren<ITooltipProps>) {
         <>
           <RawPopover.Panel
             className={classNames(
-              "absolute z-20 bg-white border border-gray-300 shadow-lg right-0 max-w-lg cursor-default",
+              `absolute z-20 bg-white border border-gray-300 shadow-lg ${props.right? `right-[${props.right}]`:'right-0'} max-w-lg cursor-default`,
               props.panelClassName,
             )}
           >
@@ -50,4 +50,5 @@ interface ITooltipProps {
   trigger: ReactElement;
   isCustomPanel?: boolean;
   panelClassName?: string;
+  right?: string;
 }

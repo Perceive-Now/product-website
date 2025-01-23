@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import axios from "axios";
 
@@ -7,6 +7,7 @@ import axios from "axios";
 import AddQuery from "../../../components/@know-now/add-query";
 import ChatQuery from "../../../components/@know-now/chat-question";
 import QueryAnswer from "../../../components/@know-now/query-answer";
+import debounce from "lodash.debounce";
 
 //
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -40,7 +41,11 @@ import { setUpdateQuery } from "src/stores/know-now";
  */
 function KnowNowIP() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
+  const { question } = location.state || { question: "" };
+
   const [searchParams] = useSearchParams();
 
   const queryStatus = searchParams.get("status");
@@ -61,6 +66,13 @@ function KnowNowIP() {
   const [query, setQuery] = useState("");
   const [chatIndex, setChatIndex] = useState<number | null>(null);
 
+  //
+  useEffect(() => {
+    if (question) {
+      setQuery(question);
+    }
+  }, [question]);
+  //
   useEffect(() => {
     if (queryStatus) {
       setIsSaved(true);
@@ -71,31 +83,33 @@ function KnowNowIP() {
   useEffect(() => {
     if (
       (id && isSaved) ||
-      location.pathname === "/know-now/market-intelligence" ||
-      location.pathname === "/know-now/ip-analysis"
+      location.pathname === "/know-now/market-intelligence/" ||
+      location.pathname === "/know-now/ip-analysis/"
     ) {
       dispatch(getIPChat([{ user_id: userId || "", service_name: "ip" }]));
+      navigate(`/know-now/ip-analysis`);
     }
-    if (id && isSaved) {
-      dispatch(
-        getIPChatById({
-          user_id: userId || "",
-          conversation_id: id,
-        }),
-      )
-        .unwrap()
-        .then((res) => {
-          if (!res.success) {
-            toast.error("Unable to fetch Conversations");
-            navigate("/start-conversation");
-          }
-        })
-        .catch(() => {
-          toast.error("Something went wrong");
-          navigate("/start-conversation");
-        });
-      setIsSaved(false);
-    }
+
+    // if (id && isSaved) {
+    //   dispatch(
+    //     getIPChatById({
+    //       user_id: userId || "",
+    //       conversation_id: Number(id),
+    //     }),
+    //   )
+    //     .unwrap()
+    //     .then((res) => {
+    //       if (!res.success) {
+    //         toast.error("Unable to fetch Conversations");
+    //         navigate("/start-conversation");
+    //       }
+    //     })
+    //     .catch(() => {
+    //       toast.error("Something went wrong");
+    //       navigate("/start-conversation");
+    //     });
+    //   setIsSaved(false);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id, isSaved, userId]);
 
@@ -107,15 +121,16 @@ function KnowNowIP() {
       setIsloading(true);
 
       //
-      const conversationId = id !== undefined ? id : generateKnowId();
+      const conversationId = id !== undefined ? Number(id) : generateKnowId();
 
       //
       if (id === undefined) {
         dispatch(generateNewId({ id: conversationId }));
         dispatch(
           setChatIPIds({
-            title: conversationId,
-            chat_id: conversationId,
+            title: '',
+            thread_id: conversationId,
+            favorite: false
           }),
         );
         navigate(`/know-now/ip-analysis/${conversationId}`);
@@ -129,18 +144,24 @@ function KnowNowIP() {
             user_id: userId || "",
             role: "human",
             service_name: "ip",
-            title: conversationId,
+            title: "",
             content: query || updateQuery,
           },
         ]),
       );
 
       //
+      // const queries = {
+      //   query: query || updateQuery,
+      //   user_id: userId,
+      //   conversation_id: conversationId,
+      // };
+
       const queries = {
-        query: query || updateQuery,
         user_id: userId,
-        conversation_id: conversationId,
-      };
+        thread_id: `${conversationId}`,
+        user_query: query || updateQuery
+      }
 
       //
       if (editIndex !== null) {
@@ -155,8 +176,8 @@ function KnowNowIP() {
       setQuery("");
       try {
         const res = await axios.post(
-          `${AppConfig.KNOW_NOW_IP_API}/message/conversation/query`,
-          queries,
+          `https://pn-backend-ccd0ardeguh8fwbk.eastus-01.azurewebsites.net/ask-chatbot/?user_id=${queries.user_id}&thread_id=${queries.thread_id}&user_query=${queries.user_query}`,
+          // queries,
           {
             headers: {
               "Content-Type": "application/json",
@@ -166,30 +187,12 @@ function KnowNowIP() {
           },
         );
 
-        //
-        const answer = res.data;
-        await dispatch(
-          saveIPChat([
-            {
-              conversation_id: conversationId,
-              user_id: userId || "",
-              role: "ai",
-              service_name: "ip",
-              title: conversationId,
-              content: answer,
-            },
-          ]),
-        )
-          .unwrap()
-          .then((res) => {
-            if (res.success) {
-              // toast.success("Saved Successfully")
-            } else {
-              toast.error("Unable to save conversation ");
-            }
-          });
+        const answer = res.data.answer;
+        if(answer) setIsloading(false);
+        else navigate(`/know-now/ip-analysis`);
 
-        if (editIndex !== null) {
+        const debouncedUpdate = debounce((answer) => {
+          if (editIndex !== null) {
           dispatch(
             editQueryAndUpdateAnswer({
               index: editIndex,
@@ -200,10 +203,58 @@ function KnowNowIP() {
         } else {
           dispatch(updateChatAnswer({ index: chats.length, answer }));
         }
+        });
+         
+      let currentText = "";
+      for (let i = 0; i < answer.length; i += 12) {
+      currentText += answer.slice(i, i + 12);
+      debouncedUpdate(currentText);
+
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+       
+
+        
+      //save convo
+        // await dispatch(
+        //   saveIPChat([
+        //     {
+        //       conversation_id: conversationId,
+        //       user_id: userId || "",
+        //       role: "ai",
+        //       service_name: "ip",
+        //       title: "",
+        //       content: answer,
+        //     },
+        //   ]),
+        // )
+        //   .unwrap()
+        //   .then((res) => {
+        //     if (res.success) {
+        //       // toast.success("Saved Successfully")
+        //     } else {
+        //       toast.error("Unable to save conversation ");
+        //     }
+        //   });
+
+        //update answer
+        // if (editIndex !== null) {
+        //   dispatch(
+        //     editQueryAndUpdateAnswer({
+        //       index: editIndex,
+        //       newQuery: updateQuery,
+        //       newAnswer: answer,
+        //     }),
+        //   );
+        // } else {
+        //   dispatch(updateChatAnswer({ index: chats.length, answer }));
+        // }
+
         setIsloading(false);
         setChatIndex(null);
-        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
-        navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
+        // navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
+        // navigate(`/know-now/ip-analysis/${conversationId}?status=true`);
       } catch (error: any) {
         const errorMsg = error.response?.statusText;
         setIsloading(false);
@@ -237,13 +288,14 @@ function KnowNowIP() {
     }
   };
 
+  
   //
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
 
   return (
-    <div className="px-3 pb-0 xl:w-[960px] mx-auto">
+    <div className="md:h-[calc(100vh-160px)] px-3 pb-0 xl:w-[960px] mx-auto">
       <div className="w-full h-full relative">
         <div
           ref={chatRef}
@@ -256,7 +308,7 @@ function KnowNowIP() {
           ) : (
             <>
               {id === undefined ? (
-                <KnowNowdefault />
+                  <KnowNowdefault setQuery={setQuery} question={query} />
               ) : (
                 <div className="space-y-6 w-full">
                   {((chats && chats) || []).map((chat, idx) => (
@@ -269,7 +321,9 @@ function KnowNowIP() {
                         isloadingCompleted={chatIndex === idx && isLoading}
                       />
                       <QueryAnswer
+                        ido={`chat-[${idx}]`}                        
                         answer={chat.answer}
+                        scrollToItem={()=>{console.log("");}}
                         isLoading={isLoading && loadingIndex === idx}
                         error={chat.error}
                         updateQuery={onSendQuery}

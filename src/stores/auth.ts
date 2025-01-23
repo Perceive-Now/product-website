@@ -10,6 +10,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axios";
 import { IUserProfile } from "../utils/api/userProfile";
 import { AppConfig } from "../config/app.config";
+import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
 
 /**
  * Interfaces
@@ -18,11 +19,14 @@ interface IResponse<T = any> {
   success: boolean;
   message: string;
   data?: T;
+  detail?: string;
 }
 
 interface AuthState {
   user?: IUserProfile;
   token?: string;
+  invitedUser?: { token?: string }; // Added invitedUser state
+  team?: string[];
 }
 
 //
@@ -48,11 +52,14 @@ interface IRefreshResponse {
 const initialState: AuthState = {
   token: undefined,
   user: undefined,
+  invitedUser: {
+    token: localStorage.getItem("invitedUserToken") || undefined, // Load from localStorage
+  },
+  team: [],
 };
 
 //
 const API_URL = AppConfig.API_URL;
-
 const authCode = AppConfig.Auth_CODE;
 
 export const signUpUser = createAsyncThunk(
@@ -84,6 +91,45 @@ export const signUpUser = createAsyncThunk(
     } catch (error: any) {
       const errorMessage = error.response?.data?.error ?? error.message;
 
+      return {
+        success: false,
+        message: errorMessage,
+      };
+    }
+  },
+);
+
+export const newSignupUser = createAsyncThunk(
+  "signupUser",
+  async (payload: ISignupParams): Promise<IResponse> => {
+    try {
+      const { data } = await axios.post(`${NEW_BACKEND_URL}/register`, payload);
+
+      if (data?.value?.token) {
+        //
+        jsCookie.set("pn_refresh", data?.value?.token);
+        jsCookie.set("session_id", data?.value?.session_id);
+        sessionStorage.setItem("pn_access", data?.value?.token);
+        jsCookie.set("user_id", data?.value?.user?.id);
+        // sessionStorage.setItem("pn_access", data.token);
+
+        //
+        return {
+          success: true,
+          message: "Successfull",
+          data: { token: data?.value?.token },
+        };
+      }
+
+      return {
+        success: true,
+        message: "Successfull",
+        data: {
+          message: data?.value?.message,
+        },
+      };
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.detail || error.message;
       return {
         success: false,
         message: errorMessage,
@@ -267,6 +313,42 @@ export const AuthSlice = createSlice({
     removeUser: (state) => {
       state.user = undefined;
     },
+    setInvitedUserToken: (state, action: PayloadAction<string | undefined>) => {
+      if (!state.invitedUser) {
+        state.invitedUser = {};
+      }
+      state.invitedUser.token = action.payload; // Set invitedUser's token
+
+      // Persist the token in localStorage
+      if (action.payload) {
+        localStorage.setItem("invitedUserToken", action.payload);
+      } else {
+        localStorage.removeItem("invitedUserToken");
+      }
+    },
+    removeInvitedUser: (state) => {
+      state.invitedUser = undefined; // Clear invitedUser state
+
+      // Remove the token from localStorage
+      localStorage.removeItem("invitedUserToken");
+    },
+
+    // Add a team member
+    addTeamMember: (state, action: PayloadAction<string>) => {
+      if (!state.team) {
+        state.team = [];
+      }
+      if (!state.team.includes(action.payload)) {
+        state.team.push(action.payload); // Add the new team member
+      }
+    },
+
+    // Remove a team member
+    removeTeamMember: (state, action: PayloadAction<string>) => {
+      if (state.team) {
+        state.team = state.team.filter((member) => member !== action.payload); // Remove the specified member
+      }
+    },
   },
 
   /**
@@ -304,5 +386,13 @@ export const AuthSlice = createSlice({
   },
 });
 
-export const { setUser, setAuthToken, removeUser } = AuthSlice.actions;
+export const {
+  setUser,
+  setAuthToken,
+  removeUser,
+  setInvitedUserToken,
+  removeInvitedUser,
+  addTeamMember,
+  removeTeamMember,
+} = AuthSlice.actions;
 export default AuthSlice.reducer;

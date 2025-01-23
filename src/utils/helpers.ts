@@ -19,9 +19,9 @@ export const formatNumber = (number: number, options?: IFormatNumberOptions) => 
     maximumFractionDigits: maxFraction,
     ...(options?.isCurrency
       ? {
-          style: "currency",
-          currency: "USD",
-        }
+        style: "currency",
+        currency: "USD",
+      }
       : {}),
   }).format(number);
 };
@@ -106,6 +106,86 @@ export function convertToBase64String(profile_photo?: string): string | undefine
 }
 
 export function generateKnowId() {
+  const maxDigits = 8
+  const maxValue = 10 ** maxDigits - 1;
+  const uniqueInt = Math.floor(Math.random() * (maxValue + 1));
+
+  return uniqueInt;
+}
+
+export function generateKnowIdstring() {
   const newUuid = uuidv4();
   return newUuid;
+}
+
+export function getRandomErrorMessage() {
+  const messages = [
+    "I’m sorry, I didn’t quite catch that. Could you please select one of the available options to help me assist you better?",
+    "Apologies, I couldn’t process that input. Please choose from the provided options so we can continue smoothly."
+  ];
+
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+
+  // Options for formatting the date and time
+  const options: any = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // Use 12-hour format with AM/PM
+  };
+
+  // Convert to local timezone
+  return date.toLocaleString("en-GB", options);
+}
+
+
+export function formatReportDate(datetime: string) {
+  const [year, month, day, hour, minute, second] = datetime.split('-').map(Number);
+
+  // Create a Date object
+  const date = new Date(year, month - 1, day, hour, minute, second);
+
+  const options: any = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // Use 12-hour format with AM/PM
+  };
+
+  // Convert to local timezone
+  return date.toLocaleString("en-GB", options);
+}
+
+export const arrayBufferDownload = async (response: any) => {
+  const arrayBuffer = await response.arrayBuffer();
+
+  // Convert the ArrayBuffer to a Blob
+  const blob = new Blob([arrayBuffer]);
+
+  // Create a URL for the Blob
+  const blobUrl = URL.createObjectURL(blob);
+
+  // Create an anchor element to trigger download
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.download = "report.zip";
+
+  // Append the anchor to the body (necessary for Firefox)
+  document.body.appendChild(link);
+
+  // Trigger the download
+  link.click();
+
+  // Clean up
+  document.body.removeChild(link);
+  URL.revokeObjectURL(blobUrl);
+
 }

@@ -162,6 +162,8 @@ const UserProfile = () => {
 
   return (
     <>
+    <div>
+    <div className="flex flex-col items-center justify-center h-screen">
       <h6 className="text-2xl font-bold text-primary-900">Profile</h6>
       <div className="w-full">
         <div className="flex flex-col w-[900px] items-center justify-center">
@@ -237,6 +239,7 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+      </div>
       {/* ----------------Modal--------------- */}
       {UserDetail && (
         <ProfileModal
@@ -248,6 +251,7 @@ const UserProfile = () => {
         />
       )}
       <ChangePasswordModal open={modal === "password"} onClose={() => setModal(null)} />
+      </div>
     </>
   );
 };

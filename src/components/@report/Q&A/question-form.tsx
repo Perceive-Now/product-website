@@ -12,8 +12,6 @@ import MadlibEdit from "./madlib-edit";
 import DiagnosticPlatform from "./madlin-an";
 
 //
-// import EditIcon from "src/components/icons/miscs/Edit";
-// import ToolTip from "src/components/reusable/tool-tip";
 
 interface Props {
   onContinue: any;
@@ -60,11 +58,58 @@ export default function QuestionAnswerForm({
     }
   }, [exampleAnswer, resetForm]);
 
-  useEffect(() => {
-    if (checkAnswer.length <= 0) {
-      setUpdatedAnswer("");
-    }
-  }, [checkAnswer.length]);
+  // useEffect(() => {
+  //   if (resetForm) {
+  //     setUpdatedAnswer("")
+  //   }
+  // }, [resetForm])
+
+  // ------------------------------------Previous Code -------------------------------------------
+
+  // const [madlibAnswer, setMadlibAnswer] = useState("");
+  // const [edit, setEdit] = useState(false);
+
+  // const formResolver = yup.object().shape({
+  //   answer: yup.string().trim().required("Please provide your answer"),
+  // });
+
+  // const {
+  //   register,
+  //   formState: { errors },
+  //   handleSubmit,
+  //   setValue,
+  //   reset,
+  //   watch
+  // } = useForm({
+  //   defaultValues: {
+  //     answer: updatedAnswer,
+  //   },
+  //   resolver: yupResolver(formResolver),
+  //   mode: "onBlur",
+  // });
+
+  // const watchAnswer = watch('answer');
+
+  // useEffect(() => {
+  //   setUpdatedAnswer(answer || "");
+  //   setValue("answer", answer || "");
+  // }, [answer, exampleAnswer, setValue]);
+
+  //
+  // const onEdit = useCallback((answer: string) => {
+  //   setEdit(!edit);
+  //   setMadlibAnswer(answer);
+  //   setValue("answer", answer); // Update the form value
+  // }, [edit, setValue])
+
+  // useEffect(() => {
+  //   if (resetForm) {
+  //     reset();
+  //     setResetForm(false);
+  //   }
+  // });
+
+  //--------------------------------------Previous Code ---------------------------------------------
 
   const useExample = useCallback(() => {
     setUpdatedAnswer(exampleAnswer);
@@ -183,8 +228,6 @@ export default function QuestionAnswerForm({
               </div>
             </div>
           </form> :
-         
-
       } */}
       {/* --------------------------------------Previous Code ------------------------------ */}
     </div>

@@ -3,7 +3,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
+import classNames from "classnames";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 //
 import Label from "../reusable/label";
 import Modal from "../reusable/modal";
@@ -47,6 +49,8 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
     value: userDetail?.country || "",
   });
 
+  const [phoneNumber, setPhoneNumber] = useState(userDetail?.phone_number || "");
+
   const formInitialValue: IProfile = {
     username: userDetail?.username || "",
     first_name: userDetail?.first_name || "",
@@ -86,7 +90,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         first_name: value.first_name,
         last_name: value.last_name,
         username: value.username,
-        phone_number: value.phone_number,
+        phone_number: phoneNumber,
         topics_of_interest: value.topics_of_interest,
         country: country?.value,
         profile_photo: photo,
@@ -127,7 +131,7 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
         toast.error(error.message);
       }
     },
-    [country?.value, dispatch, onClose, photo, userDetail],
+    [country?.value, phoneNumber,dispatch, onClose, photo, userDetail],
   );
 
   return (
@@ -211,13 +215,29 @@ const ProfileModal = ({ open, onClose, userDetail, modalType, photo }: Props) =>
               <div className="col-span-1">
                 <Label className="font-semibold text-secondary-800">Phone number</Label>
                 <div className="mt-0.5">
-                  <PhoneNumberInput
+                  {/* <PhoneNumberInput
                     register={register("phone_number")}
                     value={userDetail?.phone_number}
                     placeholder="Phone number"
                     error={errors.phone_number}
-                  />
+                  /> */}
+                  <PhoneInput
+                  countrySelectorStyleProps={{
+                    buttonStyle: { height: "40px" },
+                  }}
+                  className={classNames(
+                    "w-full rounded-lg placeholder:text-sm border",
+                    errors.phone_number
+                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                      : "rounded-lg  bg-gray-100 border border-gray-600 focus:ring-0 focus:border-primary-500 w-full ",
+                  )}
+                  placeholder="Phone number"
+                  onChange={(value)=>{setPhoneNumber(value)}}
+                  value={phoneNumber}
+                
+                />
                 </div>
+                {errors.phone_number && <div className="mt-1 text-xs text-danger-500">{errors.phone_number.message}</div>}
               </div>
               <div className="col-span-1">
                 <Label required className="font-semibold text-secondary-800">

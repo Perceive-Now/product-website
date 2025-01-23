@@ -1,54 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classNames from "classnames";
-
 import {
+  useReactTable,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  PaginationState,
 } from "@tanstack/react-table";
-
-import type { ColumnDef } from "@tanstack/react-table";
 import { InfoIcon } from "../../icons";
 import TableSortIcon from "../../icons/table-sort";
+import type { ColumnDef } from "@tanstack/react-table";
 
-/*
- *
- **/
 export default function ReactTable(props: IReactTable) {
-  const [rowSelection, setRowSelection] = useState({});
+  const {
+    rowSelection = {},
+    onRowSelectionChange,
+    size = "medium",
+    errorMessage = "No data Available",
+    striped = true,
+    columnsData,
+    rowsData,
+    noTopBorder,
+    getRowProps = () => ({}),
+  } = props;
 
-  //
-  const size = props.size ?? "medium";
-  const errorMessage = props.errorMesssage ?? "No data Available";
-  const isStripeed = props.striped ?? true;
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  //
   const table = useReactTable({
-    data: props.rowsData ?? [],
-    columns: props.columnsData ?? [],
-    state: { rowSelection },
-    onRowSelectionChange: setRowSelection,
+    data: rowsData ?? [],
+    columns: columnsData ?? [],
+    state: { rowSelection, pagination },
+    onRowSelectionChange: onRowSelectionChange ?? (() => null),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    manualPagination: true,
+    onPaginationChange: setPagination,
+    // manualPagination: false,
     getSortedRowModel: getSortedRowModel(),
     debugTable: process.env.NODE_ENV === "development",
   });
 
-  //
   return (
-    <div className="mt-1 w-full overflow-x-auto">
-      <table className="w-full rounded-lg overflow-hidden">
-        <thead className="bg-primary-900 rounded-t-lg">
+    <div className="mt-1 w-full">
+      <table className="w-full rounded-lg">
+        <thead className="bg-appGray-100 rounded-t-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
                   colSpan={header.colSpan}
-                  className="py-1 px-1 text-left text-white font-semibold text-base"
+                  className="py-1 px-1 text-left text-secondary-800 font-semibold text-base"
                   {...{
                     style: {
                       minWidth: header.column.columnDef.minSize,
@@ -63,10 +68,10 @@ export default function ReactTable(props: IReactTable) {
                     {header.column.getCanSort() && (
                       <button
                         type="button"
-                        className="ml-"
+                        className="ml-1"
                         onClick={header.column.getToggleSortingHandler()}
                       >
-                        <TableSortIcon className="text-white" />
+                        <TableSortIcon className="text-secondary-800" />
                       </button>
                     )}
                   </div>
@@ -85,7 +90,7 @@ export default function ReactTable(props: IReactTable) {
                   "py-2": size === "medium",
                   "py-4": size === "large",
                 })}
-                colSpan={props.columnsData?.length}
+                colSpan={columnsData?.length}
               >
                 <span className="flex flex-col justify-center items-center mt-4">
                   <InfoIcon width={48} height={48} className="mb-2" />
@@ -98,9 +103,10 @@ export default function ReactTable(props: IReactTable) {
               <tr
                 key={row.id}
                 className={classNames("text-gray-800 hover:bg-gray-200", {
-                  "bg-gray-100": isStripeed && index % 2 === 1,
-                  "border-t-[1px] border-t-gray-300": !props.noTopBorder,
+                  "bg-gray-100": striped && index % 2 === 1,
+                  "border-t-[1px] border-t-gray-300": !noTopBorder,
                 })}
+                {...getRowProps(row)} 
               >
                 {row.getVisibleCells().map((cell) => (
                   <td
@@ -119,18 +125,76 @@ export default function ReactTable(props: IReactTable) {
           )}
         </tbody>
       </table>
+      {/* {rowsData.length > 10 && (
+        <>
+          <div className="h-2" />
+          <div className="flex justify-end items-center gap-2">
+            <div className="flex gap-2 mr-[35%]" >
+            <button
+              className="border rounded p-1"
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            <button
+              className="border rounded p-1"
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button></div>
+            <span className="flex items-center gap-1">
+              <div>Page</div>
+              <strong>
+                {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getPageCount().toLocaleString()}
+              </strong>
+            </span>
+           
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
+              className="border border-appGray-600"
+            >
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
+          </div>
+         
+        </>
+      )} */}
     </div>
   );
 }
 
-//
 interface IReactTable {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columnsData?: ColumnDef<any>[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getRowProps?: any;
   rowsData?: any;
   size?: "small" | "medium" | "large";
   striped?: boolean;
   noTopBorder?: boolean;
-  errorMesssage?: string;
+  errorMessage?: string;
+  rowSelection?: any;
+  onRowSelectionChange?: (selection: any) => void;
 }

@@ -21,7 +21,7 @@ const ChatSidebar = () => {
   //
   const { chatIPIds, isFetching } = useAppSelector((state) => state.KnowNowIP);
   const { chatMarketIds, marketChatLoading } = useAppSelector((state) => state.KnownowMarket);
-
+  console.log("chatMarketIds",chatMarketIds);
   //
   useEffect(() => {
     if (location.pathname.includes("/know-now/market-intelligence")) {
@@ -34,10 +34,11 @@ const ChatSidebar = () => {
     // setChats([]);
   }, [chatIPIds, chatMarketIds, location]);
 
+  console.log("chats knownow",chats);
   return (
     <div className="px-1 space-y-2">
-      <Link to={"/know-now/market-intelligence"}>
-        <Button htmlType="button" classname="text-sm" size="small" rounded="small">
+      <Link to={"/start-conversation"}>
+        <Button htmlType="button" classname="text-xs" size="xs" rounded="small">
           Start new conversation
         </Button>
       </Link>

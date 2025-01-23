@@ -8,6 +8,7 @@ import Stepper from "../../../../components/reusable/Stepper";
 import { WelcomePage } from "../../../../components/@signup-complete";
 import { useAppSelector } from "../../../../hooks/redux";
 import { useNavigate } from "react-router-dom";
+import SignUpLayout from "../_components/layout";
 
 const UserDetails = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -50,21 +51,21 @@ const UserDetails = () => {
   ];
 
   return (
-    <div className="w-[927px] mx-auto p-5">
-      <div className="sticky top-0 bg-white pt-2 mb-6 z-10 ">
-        <div className="w-[428px] border-b border-appGray-400 mx-auto pb-2">
-          <Stepper steps={steps} activeStep={activeStep} />
-        </div>
+    <SignUpLayout
+      currentStep={0}
+      completedSteps={[0]}
+    >
+      <div className="w-[927px] mx-auto p-5">
+        {steps.map((step, idx) => (
+          <div
+            key={idx}
+            className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
+          >
+            {step.component}
+          </div>
+        ))}
       </div>
-      {steps.map((step, idx) => (
-        <div
-          key={idx}
-          className={classNames(activeStep !== step.value && "hidden", "px-1 h-full w-full")}
-        >
-          {step.component}
-        </div>
-      ))}
-    </div>
+    </SignUpLayout>
   );
 };
 

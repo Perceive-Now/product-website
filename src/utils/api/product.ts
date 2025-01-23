@@ -19,6 +19,27 @@ export async function getBillingHistory() {
   return response.data.status;
 }
 
+// export const createPitchDeckSummary = (slides: { slide: number; text: string[] }[]): string => {
+//   const summary = slides
+//     .flatMap(slide => slide.text.map(text => text.replace(/\n/g, ' ')))
+//     .join(" ");
+
+//   return `Here is my pitch deck: ${summary}`;
+// };
+
+export const createPitchDeckSummary = (slides: { slide: number; text: string[] }[]): string => {
+  const summary = slides
+    .map(slide => 
+      slide.text
+        .map(text => text.replace(/"/g, '').replace(/\n/g, ',')) // Remove quotation marks and replace newlines with commas
+        .join(" ") // Join the cleaned text of each slide
+    )
+    .join(" "); // Join all slides' texts into one string
+
+  return `Here is my pitch deck: ${summary}`;
+};
+
+
 interface IPaymentResponse {
   status: IPayment[];
 }

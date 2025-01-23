@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import jsCookie from "js-cookie";
 import axios from "axios";
@@ -11,13 +11,16 @@ import QuestionAnswerForm from "./question-form";
 import {
   QAPages,
   addToSkippedQuestionList,
+  getMadlibAnswers,
   incrementStep,
   setCurrentPageId,
   setCurrentQuestionId,
   setGenerateAnswerSuccess,
   updateQuestionAnswer,
   updateQuestionList,
+  updateResponse,
 } from "src/stores/Q&A";
+import { NewQAList } from "src/pages/product/report-q&a/_new-question";
 
 // import { getUserChats, IAnswer } from "src/utils/api/chat";
 
@@ -44,106 +47,110 @@ interface Props {
  *
  */
 const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
-  const dispatch = useAppDispatch();
-
-  // const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [resetForm, setResetForm] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [prevCase, setPrevCase] = useState("");
-  // const [userChats, setUserChats] = useState<IAnswer[]>();
-
-  // const user_id = jsCookie.get("user_id") ?? "";
-
-  const chatRef = useRef<HTMLInputElement>(null);
-
   const userId = jsCookie.get("user_id");
 
+  const dispatch = useAppDispatch();
+
   //
-  const { currentQuestionId, skippedQuestionList } = useAppSelector((state) => state.QA);
-  const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+  const [loading, setLoading] = useState(false);
+  const [resetForm, setResetForm] = useState(false);
 
-  // useEffect(() => {
-  //   if (requirementGatheringId) {
-  //     getUserChats(user_id, requirementGatheringId)
-  //       .then((data) => {
-  //         setUserChats(data as any);
-  //         setLoading(false);
-  //       })
-  //       .catch(() => {
-  //         toast.error("Something went wrong");
-  //         setLoading(false);
-  //       });
-  //   }
-  // }, [requirementGatheringId, user_id]);
+  //
+  const chatRef = useRef<HTMLInputElement>(null);
 
-  // const hasQuestion = userChats?.some(answer => String(answer.questionId) === String(question.questionId)) ?? false;
+  const filterQuestion = NewQAList.filter((q) => q.questionId === question.questionId)[0] || null;
+
+  useEffect(() => {
+    dispatch(getMadlibAnswers());
+  }, [dispatch]);
+
+  //
+  const { currentQuestionId, skippedQuestionList, isResponseGood, madlibAnswers } = useAppSelector(
+    (state) => state.QA,
+  );
+  const { requirementGatheringId } = useAppSelector((state) => state.usecases);
+
+  const hasMatchingItems =
+    madlibAnswers?.some((m) => Number(m.questionId) === Number(question.questionId)) ?? false;
 
   //
   const onContinue = useCallback(
     async (value: { answer: string }) => {
       setLoading(true);
-      setPrevCase(question.usecase);
 
+      // ******************************************************************************
+      //*****------------------ previous report endpoint  -----------------------******
+      // setPrevCase(question.usecase);
       // const filterUsecases = quickPromptUseCase.filter((q) => usecases.includes(q));
       // console.log(filterUsecases)
 
+      // const res = await axios.post(
+      //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
+      //     value.answer,
+      //   )}&userID=${userId}&requirement_gathering_id=${Number(
+      //     requirementGatheringId,
+      //   )}&QuestionID=${question.questionId}`,
+      // );
+      // ------------------- previous report endpoint  ----------------------
+      // ******************************************************************************
+
       try {
-        // ---------------- previous report endpoint  ---------------------------
-        // const res = await axios.post(
-        //   `${BASE_PN_REPORT_URL}/generate/?answer=${encodeURIComponent(
-        //     value.answer,
-        //   )}&userID=${userId}&requirement_gathering_id=${Number(
-        //     requirementGatheringId,
-        //   )}&QuestionID=${question.questionId}`,
-        // );
-        // ---------------- previous report endpoint  ----------------------------
+        !hasMatchingItems && isResponseGood
+          ? await axios.post("https://templateuserrequirements.azurewebsites.net/create-items/", {
+              questionId: String(question.questionId),
+              question: String(question.question),
+              answer: value.answer,
+              usecase: question.usecase,
+              userId: String(userId),
+              requirementId: String(requirementGatheringId),
+            })
+          : await axios.put(
+              `https://templateuserrequirements.azurewebsites.net/update-items/?userId=${String(
+                userId,
+              )}&requirementId=${String(requirementGatheringId)}&questionId=${String(
+                question.questionId,
+              )}&usecaseId=${question.usecase}`,
+              {
+                question: String(filterQuestion.question),
+                answer: value.answer,
+              },
+            );
 
-        const res = await axios.post(
-          "https://templateuserrequirements.azurewebsites.net/create-items/",
-          {
-            questionId: String(question.questionId),
-            question: String(question.question),
-            answer: value.answer,
-            usecase: question.usecase,
-            userId: String(userId),
-            requirementId: String(requirementGatheringId),
-          },
-        );
+        const check =
+          question.questionId === 1 || question.questionId === 2
+            ? ("" as any)
+            : await axios.post(
+                "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
+                {
+                  text: `question:${filterQuestion.question} answer:${value.answer}`,
+                },
+              );
 
-        // hasQuestion ?
-        // ) :
-        //   await axios.put(
-        //     `https://templateuserrequirements.azurewebsites.net/update-items/?userId=${String(userId)}&requirementId=${String(requirementGatheringId)}&questionId=${String(question.questionId)}&usecaseId=${question.usecase}`,
-        //     {
-        //       question: String(question.question),
-        //       answer: value.answer,
-        //     },
-        //   );
+        const responseText = check?.data?.response?.Response || "";
+        const badMarker = "@@bad@@";
+        const badResponse = responseText.includes(badMarker);
+        const indexOfBadMarker = responseText.indexOf(badMarker);
 
-        // const res = {
-        //   data: {
-        //     question: "",
-        //     status: ""
-        //   }
-        // }
+        const newQuestion = responseText.substring(indexOfBadMarker + badMarker.length).trim();
+        const updateQuestion = newQuestion.replace(/[[\]]/g, "").trim();
 
-        const new_question = res.data.question;
         setLoading(false);
-        setResetForm(true);
         scrollToTop();
 
-        if (res.data.status === "false") {
-          toast.error("Give a more detailed answer");
+        if (badResponse) {
+          dispatch(updateResponse(false));
+          // toast.error("Give a more detailed answer");
           dispatch(
             updateQuestionList({
               questionId: currentQuestionId,
-              question: new_question,
+              question: updateQuestion,
             }),
           );
           dispatch(setGenerateAnswerSuccess(false));
-          return;
+          // return;
         } else {
+          setResetForm(true);
+          dispatch(updateResponse(true));
           dispatch(
             updateQuestionAnswer({
               questionId: currentQuestionId,
@@ -157,16 +164,6 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               (questionId) => currentQuestionId === questionId.questionId,
             ) + 1;
 
-          // const nextUsecase = questionWithUsecase[nextQuestionIndex].useCase;
-          // const check = filterUsecase.some((q) => q === nextUsecase);
-
-          // console.log(check);
-          // console.log(nextUsecase)
-          // if (check) {
-          //   navigate('/interaction-method')
-          // } else {
-          // }
-
           if (nextQuestionIndex === questionWithUsecase.length) {
             dispatch(setCurrentPageId(QAPages.Review));
             dispatch(incrementStep());
@@ -178,12 +175,15 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
       } catch (e: any) {
         scrollToTop();
         setLoading(false);
-        toast.error("Server error");
+        toast.error(e.response.data.detail || "Server error");
       }
     },
     [
       currentQuestionId,
       dispatch,
+      filterQuestion.question,
+      hasMatchingItems,
+      isResponseGood,
       question.question,
       question.questionId,
       question.usecase,
@@ -193,8 +193,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
     ],
   );
 
-  //
+  //Skip button
   const onSkip = useCallback(() => {
+    dispatch(updateResponse(true));
     dispatch(
       addToSkippedQuestionList({
         question: question.question,

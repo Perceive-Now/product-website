@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jsCookie from "js-cookie";
 import { AppConfig } from "src/config/app.config";
+import { IAnswer } from "src/utils/api/chat";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -95,6 +96,8 @@ export interface IQAState {
     exampleAnswer: string;
   }[];
   updatedQAList: IAnswers[];
+  isResponseGood: boolean;
+  madlibAnswers: IAnswer[] | null;
 }
 
 export interface IAnswers {
@@ -129,6 +132,8 @@ export const initialState: IQAState = {
   generateAnswerError: false,
   generateAnswerSuccess: false,
   updatedQAList: [],
+  isResponseGood: true,
+  madlibAnswers: null,
 };
 
 export const generateQuestionAnswer = createAsyncThunk<
@@ -189,6 +194,42 @@ export const getUpdatedAnswer = createAsyncThunk(
     }
   },
 );
+
+export const getMadlibAnswers = createAsyncThunk(
+  "getUpdatedAnswer",
+  async (): Promise<IResponse> => {
+    const user_id = jsCookie.get("user_id") ?? "";
+    const requirementGatheringId = jsCookie.get("requirement_gathering_id");
+    try {
+      const response = await axios.get(
+        `https://templateuserrequirements.azurewebsites.net/get-items?userId=${String(
+          user_id,
+        )}&requirementId=${String(requirementGatheringId)}`,
+      );
+      return {
+        success: true,
+        message: "Successfully fetched Q&A",
+        data: response.data.items,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Unable to fetch Q&A",
+      };
+    }
+  },
+);
+
+// export async function getUserChats(user_id: string, requirement_gathering_id: string) {
+//   const response = await axios.get<IData>(
+//     `https://templateuserrequirements.azurewebsites.net/get-items?userId=${String(
+//       user_id,
+//     )}&requirementId=${String(requirement_gathering_id)}`,
+//     // `${BASE_PN_REPORT_URL}/get-answers/?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
+//   );
+
+//   return response.data?.items;
+// }
 
 export const QuestionAnswerSlice = createSlice({
   name: "q&a",
@@ -258,6 +299,10 @@ export const QuestionAnswerSlice = createSlice({
       state.skippedQuestionList = [...state.skippedQuestionList, action.payload];
     },
     // -----------------------------------------------------------------------
+    updateResponse: (state, action: PayloadAction<boolean>) => {
+      state.isResponseGood = action.payload;
+    },
+    // -----------------------------------------------------------------------
     removeFromSkippedQuestionList: (state, action: PayloadAction<IQuestionAnswer>) => {
       // Remove the question from skippedQuestionList
       state.skippedQuestionList = state.skippedQuestionList.filter(
@@ -310,9 +355,13 @@ export const QuestionAnswerSlice = createSlice({
       state.generateAnswerSuccess = false;
       state.message = "Unable to generate answers" ?? action.error.message;
     });
-    builder.addCase(getUpdatedAnswer.fulfilled, (state, action) => {
+    // builder.addCase(getUpdatedAnswer.fulfilled, (state, action) => {
+    //   const payloadData = action.payload.data;
+    //   state.updatedQAList = payloadData;
+    // });
+    builder.addCase(getMadlibAnswers.fulfilled, (state, action) => {
       const payloadData = action.payload.data;
-      state.updatedQAList = payloadData;
+      state.madlibAnswers = payloadData;
     });
   },
 });
@@ -337,6 +386,7 @@ export const {
   setGenerateAnswerSuccess,
   questionWithUseCases,
   updateQuestionAnswer,
+  updateResponse,
 } = QuestionAnswerSlice.actions;
 
 export default QuestionAnswerSlice.reducer;

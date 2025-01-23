@@ -177,9 +177,9 @@ export default function LoginPage() {
               </div>
             )}
           </fieldset>
-          {/* <div className="text-sm text-primary-500 font-bold mt-0.5">
-            <Link to="/forgot-password">Forgot password?</Link>
-          </div> */}
+          <div className="text-sm font-bold mt-0.5">
+            <Link to="/forgot-password" className="text-[#442873]">Forgot password?</Link>
+          </div>
         </div>
 
         <div className="flex justify-center w-full mt-3">
@@ -188,7 +188,8 @@ export default function LoginPage() {
             htmlType="submit"
             disabled={isSubmitting || isGoogleSubmitting}
             loading={isSubmitting}
-            type="auth"
+            type="primary"
+            rounded="full"
           >
             Sign In
           </Button>
@@ -199,7 +200,7 @@ export default function LoginPage() {
 
           <Link
             to={"/signup"}
-            className={classNames("ml-2 font-bold text-primary-500", {
+            className={classNames("ml-2 font-bold text-[#442873]", {
               "cursor-not-allowed opacity-50": isSubmitting || isGoogleSubmitting,
             })}
             aria-disabled={isSubmitting}
@@ -208,13 +209,13 @@ export default function LoginPage() {
           </Link>
         </p>
         <hr className="mt-4 mb-4 border-gray-300" />
-        <GoogleAuth
+        {/* <GoogleAuth
           type="signin"
           isAgree={true}
           title="Sign in with Google"
           isSubmitting={isGoogleSubmitting}
           setIsSubmitting={setIsGoogleSubmitting}
-        />
+        /> */}
       </form>
     </div>
   );

@@ -1,26 +1,60 @@
 import { Link } from "react-router-dom";
-
+import SideBarToggleIcon from "src/components/icons/side-bar/toggle";
+import ToolTip from "src/components/reusable/tool-tip";
+import { useAppSelector } from "src/hooks/redux";
+import classNames from "classnames";
+import { useEffect, useState } from "react";
 const KnowNowRightSideBar = () => {
+  const { keywords } = useAppSelector((state) => state.KnownowMarket);
+  const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    // Function to check and set sidebar state based on screen size
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 700;
+      if (isMobile) {
+        setOpen(false);
+      } else {
+        setOpen(true); 
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+
   return (
-    <div className="w-[300px] shrink-0 ml-2">
-      <div className="border-l">
-        <div className="bg-appGray-200 py-1 px-1 rounded-t">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
+    <div
+      className={classNames(
+        "shrink-0 ml-2 h-full flex flex-col",
+        open ? "max-w-full md:w-[300px] mr-0" : "w-[60px] duration-300 overflow-hidden",
+      )}
+    >
+      {/* <div className="w-[300px] shrink-0 ml-2"> */}
+      <div className="bg-appGray-200 py-1 px-1 rounded-t flex-0">
+        <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+          <button
+            type="button"
+            className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+            onClick={() => setOpen(!open)}
           >
-            <path
-              d="M8.0535 2.71992L13.3335 7.99992L8.0535 13.2799L7.1135 12.3333L10.7802 8.66658H1.3335V7.33325H10.7802L7.1135 3.66659L8.0535 2.71992ZM13.3335 7.99992V14.6666H14.6668V1.33325H13.3335V7.99992Z"
-              fill="#442873"
-            />
-          </svg>
-        </div>
+            <SideBarToggleIcon className={classNames(open ? "" : "rotate-180")} />
+          </button>
+        </ToolTip>
+      </div>
+      <div
+        className={classNames( "flex-auto flex flex-col", open ? "border-l min-w-[300px]" : "border-l min-w-[300px] opacity-0")}
+      >
         <div className="p-2.5">
-          <p className="text-sm">Based on the current conversation we found following data:</p>
-          <div className="flex justify-end items-center">
+          <p className="text-sm mb-2.5">
+            Based on the current conversation we found following data:
+          </p>
+          {/* <div className="flex justify-end items-center">
             <span className="text-sm">Refresh</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,34 +68,55 @@ const KnowNowRightSideBar = () => {
                 fill="#442873"
               />
             </svg>
-          </div>
-          <div className="border rounded mt-2">
-            <div className="py-1 bg-primary-900 text-white text-center rounded-t text-sm">
-              Keywords from conversation
+          </div> */}
+
+          {keywords.length > 0 ? (
+            <div className="border border-primary-50 rounded mt-1">
+              <div className="py-[12px] bg-primary-900 text-white text-center rounded-t text-sm font-medium">
+                Keywords from conversation
+              </div>
+              <div className="bg-appGray-100 flex justify-center flex-wrap px-1 pt-1 pb-2 gap-1 font-medium text-sm">
+                {keywords.map((keyword, index) => (
+                  <div
+                    key={index}
+                    className="p-1 rounded-lg border border-primary-50 cursor-pointer hover:bg-white"
+                  >
+                    {keyword}
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-appGray-100 flex justify-center flex-wrap py-2 gap-2">
-              {/* <div className='p-1 rounded-lg text-sm border'>sensor tech</div>
-            <div className='p-1 rounded-lg text-sm border'>pressure</div>
-            <div className='p-1 rounded-lg text-sm border'>wearable sensor</div> */}
+          ) : (
+            <div className="mt-5 mb-10 flex justify-center">
+             No Data Found         
             </div>
-          </div>
-          <div className="border rounded mt-2">
-            <div className="py-1 bg-primary-900 text-white text-center rounded-t text-sm">
+          )}
+          {/* <div className="border border-primary-50 rounded mt-3">
+            <div className="py-[12px] bg-primary-900 text-white text-center rounded-t text-sm font-medium">
               Stats based on keywords
             </div>
-            <div className="bg-appGray-100 justify-center grid grid-cols-2 p-2 gap-2">
-              {/* <div className='p-1 rounded-lg text-xs border bg-white text-center'>
-              260 Patents granted
+            <div className="bg-appGray-100 justify-center grid grid-cols-2 px-1 pt-1 pb-2 gap-1">
+              <div className="p-1 rounded-lg text-xs text-center bg-white cursor-pointer">
+                260 Patents granted
+              </div>
+              <div className="p-1 rounded-lg text-xs text-center bg-white cursor-pointer">
+                108 Inventors found
+              </div>
+              <div className="p-1 rounded-lg text-xs text-center bg-white cursor-pointer">
+                34 Companies working
+              </div>
+              <div className="p-1 rounded-lg text-xs text-center bg-white cursor-pointer">
+                $26 Millions invested
+              </div>
             </div>
-            <div className='p-1 rounded-lg text-xs border text-center bg-white'>108 Inventors found</div>
-            <div className='p-1 rounded-lg text-xs border text-center bg-white'>34 Companies working</div>
-            <div className='p-1 rounded-lg text-xs border text-center bg-white'>$26 Millions invested</div> */}
-            </div>
-          </div>
-          <p className="text-sm mt-2 mb-1">You can also generate a full report.</p>
+          </div> */}
+          
+        </div>
+        <div className="px-2.5 pt-2.5 mt-auto -mb-[70px]">
+          <p className="text-sm mb-1">You can also generate a full report. </p>
           <Link
             to="/new-report"
-            className="text-white text-sm bg-primary-900 inline-block px-2 py-1 rounded-lg relative"
+            className="text-white text-base bg-primary-900 inline-block px-2 py-1 rounded-lg relative"
           >
             Get started
           </Link>

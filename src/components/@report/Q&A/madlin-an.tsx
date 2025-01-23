@@ -79,6 +79,9 @@ const DiagnosticPlatform = ({
         setHasInput(false);
         setUpdatedAnswer("");
         setError("Please provide an answer");
+        if (answer.length <= 1) {
+          setUpdatedAnswer("");
+        }
       } else {
         // updatedAnswerRef.current = updatedText;
         setHasInput(true);
@@ -96,67 +99,71 @@ const DiagnosticPlatform = ({
   //
   const handleContinue = useCallback(
     (type: IType) => {
-      const content = contentRef.current?.innerHTML || "";
-      if (content.trim().length <= 0) {
-        setError("Please provide an answer");
-      }
-      let combinedText = content.replace(
-        /<input[^>]*placeholder="([^"]*)"[^>]*value="([^"]*)"[^>]*>/g,
-        (match, placeholder, value) => {
-          return `[${value || placeholder}]`;
-        },
-      );
+      if (contentRef.current) {
+        const content = contentRef.current?.innerHTML.trim();
+        if (content.length <= 0) {
+          setError("Please provide an answer");
+        }
+        let combinedText = content.replace(
+          /<input[^>]*placeholder="([^"]*)"[^>]*value="([^"]*)"[^>]*>/g,
+          (match, placeholder, value) => {
+            return `[${value || placeholder}]`;
+          },
+        );
 
-      // Clean up any remaining HTML tags, if needed
-      combinedText = combinedText.replace(/<\/?[^>]+>/g, "");
+        // Clean up any remaining HTML tags, if needed
+        combinedText = combinedText.replace(/<\/?[^>]+>/g, "");
 
-      if (type === "continue") {
-        onContinue({ answer: combinedText });
-        if (resetForm) {
-          if (contentRef.current) {
-            contentRef.current.innerHTML = "";
+        if (type === "continue") {
+          if (error === null) {
+            onContinue({ answer: combinedText });
+            if (isLoading) {
+              setResetInputs(true);
+            }
           }
-          setResetForm(false);
         }
       }
     },
-    [onContinue, resetForm, setResetForm],
+    [error, isLoading, onContinue],
   );
 
   // update editable content inside it
   const createEditableContentHTML = (text: string) => {
-    if (text.length > 0) {
-      const content = text || " ";
-      return content?.split(/(\[[^\]]+\])/g).map((part, index) => {
-        if (part?.startsWith("[") && part.endsWith("]")) {
-          const placeholder = part?.substring(1, part?.length - 1);
-          const inputWidth = Math.max(placeholder?.length);
-          return (
-            <input
-              key={`input-${index}-${placeholder}`}
-              className="focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[600px] 2xl:max-w-[920px]"
-              placeholder={placeholder}
-              style={{ minWidth: inputWidth, whiteSpace: "normal", wordBreak: "break-all" }}
-              value={resetInputs ? "" : userInputs[placeholder] || ""}
-              onChange={(e) => handleInputChange(placeholder, e.target.value)}
-            />
-          );
-        } else {
-          const textParts = part?.split("\n");
-          return (
-            <span key={`input-${index * 566}`}>
-              {textParts?.map((text, idx) => (
-                <React.Fragment key={idx * 200}>
-                  {idx > 0 && <br />}
-                  <span className="inline" dangerouslySetInnerHTML={{ __html: text }} />
-                </React.Fragment>
-              ))}
-            </span>
-          );
-        }
-      });
-    }
+    const content = text ? text : " ";
+    return content?.split(/(\[[^\]]+\])/g).map((part, index) => {
+      if (part?.startsWith("[") && part.endsWith("]")) {
+        const placeholder = part?.substring(1, part?.length - 1);
+        const inputWidth = Math.max(placeholder?.length);
+
+        return (
+          <input
+            key={`${placeholder}-${index}`}
+            className="focus:outline-none bg-transparent inline overflow-x-auto text-secondary-800 shrink-0 border-appGray-400 placeholder:text-gray-500/60 border-b max-w-[700px] 2xl:max-w-[920px]"
+            placeholder={placeholder}
+            style={{ minWidth: inputWidth, whiteSpace: "normal", wordBreak: "break-all" }}
+            value={resetInputs ? "" : userInputs[placeholder] || ""}
+            onChange={(e) => handleInputChange(placeholder, e.target.value)}
+          />
+        );
+      } else {
+        const textParts = part?.split("\n");
+        return (
+          <span key={index}>
+            {(textParts || [])?.map((text, idx) => (
+              <React.Fragment key={idx}>
+                {idx > 0 && <br />}
+                <span className="inline" dangerouslySetInnerHTML={{ __html: text || "" }} />
+              </React.Fragment>
+            ))}
+          </span>
+        );
+      }
+    });
   };
+
+  useEffect(() => {
+    contentRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -202,7 +209,7 @@ const DiagnosticPlatform = ({
             loading={isLoading}
             handleClick={() => handleContinue("continue")}
             rounded={"medium"}
-            disabled={answer.length <= 0}
+            disabled={error !== null || !answer || isLoading}
           >
             Save & Continue
           </Button>

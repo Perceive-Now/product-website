@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 
 import { questionList } from "src/pages/product/report-q&a/_question";
-import { generateKnowId } from "src/utils/helpers";
+import { generateKnowIdstring } from "src/utils/helpers";
+
 import Button from "../reusable/button";
 
 const MarketAnalysisSections = [
@@ -94,6 +94,7 @@ const GenerateMarketReport = () => {
         });
         setComplete(true);
         // console.log(res);
+        // console.log(res);
         toast.success(`Report for section ${section[sectionIndex]} is complete`);
         setReportData((prevData) => ({
           ...prevData,
@@ -104,7 +105,7 @@ const GenerateMarketReport = () => {
         // Call onLiveChat for the next section
         onLiveChat(file_name, case_id, sectionIndex + 1);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         setIsGenerating(false);
       }
     },
@@ -113,7 +114,7 @@ const GenerateMarketReport = () => {
 
   const onGenerateReport = useCallback(async () => {
     setIsLoading(true);
-    const filename = generateKnowId();
+    const filename = generateKnowIdstring();
     setFileName(filename);
     try {
       const res = await axios.post("https://report.api.perceivenow.ai/create_file_usecase", {
@@ -125,10 +126,10 @@ const GenerateMarketReport = () => {
         onLiveChat(filename, "1", 0); // Start processing sections from index 0
       }
       setIsLoading(false);
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
     }
   }, [marketAnalysisQA, onLiveChat]);
 

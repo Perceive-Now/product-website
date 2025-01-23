@@ -16,7 +16,7 @@ import { AppConfig } from "src/config/app.config";
 
 //
 interface IChat {
-  message_id: string;
+  message_id: number;
   query: string;
   answer: string;
   response_time?: string;
@@ -26,7 +26,7 @@ interface IChat {
 
 interface IKnowNow {
   chats: IChat[];
-  knownow_id?: string;
+  knownow_id?: number;
   chatIPIds: IChats[];
   isFetching: boolean;
 }
@@ -154,7 +154,7 @@ export const KnownowIPSlice = createSlice({
 
     addQuestion: (state, action: PayloadAction<string>) => {
       const query = action.payload || "";
-      const newChat: IChat = { query, answer: "", message_id: "" };
+      const newChat: IChat = { query, answer: "", message_id: 0 };
       if (state.chats) {
         state.chats.push(newChat);
         // Initialize if undefined
@@ -208,13 +208,16 @@ export const KnownowIPSlice = createSlice({
 
     // -------------------------------------------------------------------------------------------------------
 
-    generateNewId: (state, action: PayloadAction<{ id: string }>) => {
+    generateNewId: (state, action: PayloadAction<{ id: number }>) => {
       state.knownow_id = action.payload.id;
     },
 
     // -------------------------------------------------------------------------------------------------------
 
-    setChatIPIds: (state, action: PayloadAction<{ title: string; chat_id: string }>) => {
+    setChatIPIds: (
+      state,
+      action: PayloadAction<{ title: string; thread_id: number; favorite: boolean }>,
+    ) => {
       if (!state.chatIPIds) {
         state.chatIPIds = []; // Initialize if undefined
       }
@@ -222,14 +225,15 @@ export const KnownowIPSlice = createSlice({
     },
 
     //
-    setRemoveIPConversation: (state, action: PayloadAction<string>) => {
+    setRemoveIPConversation: (state, action: PayloadAction<number>) => {
       const conversationId = action.payload;
-      state.chatIPIds = state.chatIPIds.filter((c) => c.chat_id !== conversationId);
+      state.chatIPIds = state.chatIPIds.filter((c) => c.thread_id !== conversationId);
     },
 
     // -------------------------------------------------------------------------------------------------------
 
     resetChats: (state) => {
+      console.log("ooo");
       state.chats = [];
     },
 
@@ -245,7 +249,7 @@ export const KnownowIPSlice = createSlice({
 
     // -------------------------------------------------------------------------------------------------------
 
-    udateChatResponse: (state, action: PayloadAction<{ message_id: string; liked: boolean }>) => {
+    udateChatResponse: (state, action: PayloadAction<{ message_id: number; liked: boolean }>) => {
       const { message_id, liked } = action.payload;
       state.chats = state.chats.map((c) => (c.message_id === message_id ? { ...c, liked } : c));
     },

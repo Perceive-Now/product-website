@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { QAPages, setCurrentPageId, setCurrentQuestionId } from "src/stores/Q&A";
 // import { AppConfig } from "src/config/app.config";
 import { NewQAList } from "src/pages/product/report-q&a/_new-question";
+import axios from "axios";
 
 // interface IPaymentIntent {
 //   payment_intent_id: string;
@@ -35,6 +36,7 @@ export default function IPReview() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const { user } = useAppSelector((state) => state.auth);
   const sessionDetail = useAppSelector((state) => state.sessionDetail.session?.session_data);
   const { currentPageId } = useAppSelector((state) => state.QA);
 

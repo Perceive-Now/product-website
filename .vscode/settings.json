@@ -4,6 +4,9 @@
     ".vscode{,/**}"
   ],
   "cSpell.words": [
-    "queryclient"
+    "queryclient",
+    "madlib",
+    "usecase",
+    "usecases"
   ]
 }

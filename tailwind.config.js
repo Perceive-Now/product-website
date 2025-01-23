@@ -2,6 +2,10 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  safelist: [
+    // Add the classes you want to preserve
+    'bg-customDisableGray-100',
+  ],
   theme: {
     screens: {
       sm: "428px",
@@ -35,6 +39,7 @@ module.exports = {
     fontFamily: {
       helvetica: ["Helvetica", "Arial", "sans-serif"],
       mulish: ["Mulish", "sans-serif"],
+      nunito: ["Nunito", "sans-serif"],
     },
     extend: {
       colors: {
@@ -88,6 +93,9 @@ module.exports = {
         heroDark: {
           900: "#120824",
         },
+        customDisableGray:{
+          100:'#EBEBE4',
+        },
       },
       ringWidth: {
         0.5: "0.5px",
@@ -110,6 +118,8 @@ module.exports = {
       boxShadow: {
         // 'custom': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         "page-content": "0px 0px 12px 0px rgba(36, 39, 43, 0.08)",
+        "inputBox": '2px 3px 3px 0 rgba(0, 0, 0, 0.17), -1px -1px 1px 0 rgba(0, 0, 0, 0.05)',
+        "hoverbox": "7px 9px 14px 0 rgba(0, 0, 0, 0.25)",
       },
     },
   },

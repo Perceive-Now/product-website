@@ -1,5 +1,5 @@
 export interface IKnowNowIPConversation {
-  conversation_id: string;
+  conversation_id: number;
   user_id: string;
   role: "ai" | "human";
   service_name: string;
@@ -32,10 +32,11 @@ export interface IKnowIP {
 
 export interface IKnowIPGetChat {
   user_id: string;
-  conversation_id: string;
+  conversation_id: number;
 }
 
 export interface IChats {
-  chat_id: string;
+  thread_id: number;
   title: string;
+  favorite: boolean;
 }
