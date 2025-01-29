@@ -1,21 +1,23 @@
 import { useState } from "react";
-import SentIcon from "../icons/common/send";
+import SentIcon from "../../../components/icons/common/send";
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import { LoaderIcon } from "react-hot-toast";
-import { CrossIcon } from "../icons";
+import { CrossIcon } from "../../../components/icons";
 import { useAppSelector } from "src/hooks/redux";
-import IconFile from "../icons/side-bar/icon-file";
+import IconFile from "../../../components/icons/side-bar/icon-file";
 interface Props {
   sendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
   setanswer: (query: string) => void;
   //   isLoading: boolean;
   query: string;
   answer: string;
+  uploadStatus?: boolean;
+  setFile: (file: File) => void;
 }
 
-const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
-  const { uploadStatus } = useAppSelector((state) => state.VSProduct);
+const AddQueryAgent = ({ query, answer, uploadStatus, setFile, sendQuery, setanswer }: Props) => {
+  //   const {  } = useAppSelector((state) => state.VSProduct);
   const textareaRef = useRef<any>(null);
   const fileInputRef = useRef<any>(null);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
@@ -52,6 +54,7 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
 
       setError(null);
       setAttachedFile(file);
+      setFile(file);
       event.target.value = "";
     }
   };
@@ -147,4 +150,4 @@ const AddQuery = ({ query, answer, sendQuery, setanswer }: Props) => {
   );
 };
 
-export default AddQuery;
+export default AddQueryAgent;
