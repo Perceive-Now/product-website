@@ -132,32 +132,89 @@ const AiAgent = () => {
     }
   }, [dispatch, query]);
 
-  const handleSendQuery = useCallback(async () => {
+  const { companyName } = useAppSelector((state) => state.VSProduct);
+
+  const handleSendQuery = useCallback(async (query: string, answer: string, file?: File, button?: boolean) => {
     console.log(answer, "answer");
     setIsloading(true);
     try {
-      if (attachedFile) {
-        const formData = new FormData();
+      const newQueryIndex = generateKnowId();
+      if (file) {
+        setanswer("");
+        setFile("true");
+        const firstQuery = {
+          id: newQueryIndex,
+          query: "Great! Let me deep dive into the file.",
+          answer: file.name,
+        };
+        setTimeout(() => {
+          dispatch(setVSChats(firstQuery));
+          dispatch(setCurrentStep(1));
+        }, 1000);
 
-        formData.append("file", attachedFile);
-        const res = await axios.post(
-          "https://templateuserrequirements.azurewebsites.net/extract-ppt-data",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              accept: "application/json",
-            },
-          },
-        );
-        setSlideData(res?.data?.slides_data);
-        setanswer(res?.data?.slides_data);
+        const fileResponse = await dispatch(extractFileData(file)).unwrap();
+        console.log("file ress", fileResponse);
+        if (fileResponse) {
+          // const res = await dispatch(
+          //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
+          // ).unwrap();
+          try {
+            const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
+            const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
+            const extractObject = JSON.parse(cleanValue);
+            dispatch(
+              setVSChats({
+                query: "",
+                answer: "",
+                extract: cleanedSummary,
+                extractObject,
+              }),
+            );
+            dispatch(setCurrentStep(2));
+
+            dispatch(
+              setVSChats({
+                query: `Here’s the summary of key details from ${companyName}’s pitch deck. Edit as needed or confirm if it looks good.`,
+                answer: "",
+              }),
+            );
+            dispatch(
+              setVSChats({
+                query: "",
+                answer: "",
+                options: ["Edit Summary", "Looks good"],
+                hasbutton: true,
+              }),
+            );
+            setUploadStatus(false)
+          } catch (error) {
+            dispatch(
+              setVSChats({
+                query: "Error generating extract summary. Please upload file again",
+                answer: "",
+              }),
+            );
+            setFile("false");
+          }
+        } else {
+          dispatch(
+            setVSChats({
+              query: "Error generating extract summary. Please upload file again",
+              answer: "",
+            }),
+          );
+          setFile("false");
+        }
+
+        // setanswer(res?.data?.slides_data);
       }
-      const response = await fetchResponse(answer);
-      if (response?.response?.includes("upload the pitch deck")) {
-        setUploadStatus(true);
+      else {
+        const response = await fetchResponse(answer);
+        if (response?.response?.includes("upload the pitch deck")) {
+          setUploadStatus(true);
+        }
+        dispatch(setVSChats({ query: response?.response, answer: answer }));
       }
-      dispatch(setVSChats({ query: response?.response, answer: answer }));
       // dispatch(setVSChats({ query: response?.response, answer: query }));
     } catch (error) {
       console.error("Error fetching API response:", error);
