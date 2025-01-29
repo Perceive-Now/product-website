@@ -90,9 +90,8 @@ const InviteReviewConfirmation = () => {
 
           {/* Organization Settings - Expandable */}
           <div
-            className={`cursor-pointer bg-[#F5F7FF66] rounded-md p-2 ${
-              expanded.organizationSettings && "bg-[#F5F7FF66]"
-            }`}
+            className={`cursor-pointer bg-[#F5F7FF66] rounded-md p-2 ${expanded.organizationSettings && "bg-[#F5F7FF66]"
+              }`}
           >
             <div
               className="flex items-center justify-between"
@@ -102,9 +101,8 @@ const InviteReviewConfirmation = () => {
               <img
                 src={inputArrow}
                 alt="toggle-arrow"
-                className={`w-4 h-4 transform transition-transform ${
-                  expanded.organizationSettings ? "rotate-180" : "rotate-0"
-                }`}
+                className={`w-4 h-4 transform transition-transform ${expanded.organizationSettings ? "rotate-180" : "rotate-0"
+                  }`}
               />
             </div>
             {expanded.organizationSettings && (
@@ -143,7 +141,7 @@ const InviteReviewConfirmation = () => {
             <Button
               rounded="full"
               classname="w-[120px]"
-              handleClick={() => navigate("/invite/finish")}
+              handleClick={() => navigate("/signup/finish")}
             >
               Confirm
             </Button>
