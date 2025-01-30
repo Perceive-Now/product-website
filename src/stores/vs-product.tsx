@@ -51,7 +51,7 @@ const initialState: VSProduct = {
   uploadStatus: false,
 };
 
-const formatJsonResponse = (inputString: string): any => {
+export const formatJsonResponse = (inputString: string): any => {
   try {
     const data = JSON.parse(inputString);
     console.log("data 1", data);

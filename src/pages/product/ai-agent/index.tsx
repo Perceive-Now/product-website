@@ -33,13 +33,11 @@ import { useNavigate } from "react-router-dom";
 import ReportCustomization from "./ReportCustomization";
 import axios from "axios";
 import AddQueryAgent from "./add-query";
+import { sendAiAgentQuery } from "./action";
 const AiAgent = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // const userId = "tes1234567";
   let thread_id = generateKnowIdstring();
-  // let companyName = "";
-  // const thread_id = "c8d3d805-de26-4545-af52-c43fc68f057e";
   const { Step } = useAppSelector((state) => state.VSProduct);
   const firstRun = useRef(true);
   const userId = jsCookie.get("user_id");
@@ -47,7 +45,6 @@ const AiAgent = () => {
   const { DataSources } = useAppSelector((state) => state.VSProduct);
   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
 
-  // console.log("SidescreenOptions screen index", SidescreenOptions);
 
   const [query, setQuery] = useState("");
   const [companyStage, setcompanyStage] = useState("");
@@ -65,7 +62,6 @@ const AiAgent = () => {
   const { chats } = useAppSelector((state) => state.VSProduct);
   // let { companyName } = useAppSelector((state) => state.VSProduct);
   const chatOptions = chats[chats.length - 1]?.options;
-  console.log("chattsss", chats, chatOptions);
 
   useEffect(() => {
     scrollToBottom();
@@ -137,8 +133,8 @@ const AiAgent = () => {
   const handleSendQuery = useCallback(async (query: string, answer: string, file?: File, button?: boolean) => {
     console.log(answer, "answer");
     setIsloading(true);
+    const newQueryIndex = generateKnowId();
     try {
-      const newQueryIndex = generateKnowId();
       if (file) {
         setanswer("");
         setFile("true");
@@ -205,15 +201,82 @@ const AiAgent = () => {
           );
           setFile("false");
         }
-
-        // setanswer(res?.data?.slides_data);
       }
       else {
-        const response = await fetchResponse(answer);
-        if (response?.response?.includes("upload the pitch deck")) {
+        if (answer === "Go Home") {
+          dispatch(resetChats());
+          thread_id = generateKnowIdstring();
+          firstRun.current = true;
+          setFile("false");
+          navigate("/", {
+            replace: true,
+          });
+          return;
+        }
+        if (answer === "Start another report") {
+          dispatch(resetChats());
+          thread_id = generateKnowIdstring();
+          firstRun.current = true;
+          setFile("false");
+          return;
+        }
+        const ai_query = {
+          user_input: answer,
+          // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
+          user_id: userId || "",
+          thread_id: thread_id,
+          button: button,
+        };
+        const queries = { id: newQueryIndex, query: "", answer: answer };
+
+        // 
+        if (button) {
+          if (answer !== "Edit Summary") dispatch(updateButtonSelection({ hasselected: true }));
+          dispatch(setprevres({ answer: answer }));
+          if (answer === "Looks good") {
+            //** Fifth Converstaion **//
+            ai_query.user_input = "skip";
+            await dispatch(sendAiAgentQuery({ ...ai_query, sendPitchData: true })).unwrap();
+            //**     **//
+          } else if (answer === "Edit Summary") {
+            setModalOpen(true);
+            return;
+          } else if (Step == 3 && answer == "Continue") {
+            ai_query.user_input = "skip";
+            await dispatch(sendQuery(ai_query)).unwrap();
+          } else if (Step == 5 && answer == "Submit") {
+            dispatch(resetChats());
+            thread_id = generateKnowIdstring();
+            firstRun.current = true;
+            setFile("false");
+            setFinalMessage(true);
+            return;
+            // dispatch(
+            //   updateChatQuery({
+            //     query: `Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`,
+            //   }),
+            // );
+
+            // dispatch(
+            //   setVSChats({
+            //     query: "",
+            //     answer: "",
+            //     options: ["Start another report", "Go Home"],
+            //     hasbutton: true,
+            //   }),
+            // );
+          } else await dispatch(sendQuery(ai_query)).unwrap();
+
+          // dispatch(setprevres({answer:answer}));
+          // await dispatch(sendQuery(ai_query)).unwrap();
+        }
+        // 
+        const { data } = await dispatch(sendAiAgentQuery(ai_query)).unwrap();
+        console.log("EPOEPORPEORPOERPE", data)
+        if (data?.response?.includes("upload the pitch deck") || data?.response?.includes(" upload your pitch deck")) {
           setUploadStatus(true);
         }
-        dispatch(setVSChats({ query: response?.response, answer: answer }));
+        dispatch(setVSChats({ query: data?.response, answer: answer }));
       }
       // dispatch(setVSChats({ query: response?.response, answer: query }));
     } catch (error) {
