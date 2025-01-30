@@ -189,3 +189,15 @@ export const arrayBufferDownload = async (response: any) => {
   URL.revokeObjectURL(blobUrl);
 
 }
+
+export function processResponse(response: string) {
+  // Extract options inside @@ delimiters
+  const options = response.match(/@@(.*?)@@/g)?.map(option => option.replace(/@@/g, '').trim()) || [];
+
+  // Remove extracted options from the response text
+  const remainingText = response.replace(/@@(.*?)@@/g, '').trim();
+
+  console.log("SPODPWOEPOWPEOPWO", options, remainingText)
+
+  return { options, remainingText };
+}

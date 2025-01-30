@@ -14,7 +14,7 @@ import { Switch } from "@headlessui/react";
 import debounce from "lodash.debounce";
 import { AppConfig } from "src/config/app.config";
 import DotLoader from "src/components/reusable/dot-loader";
-import { generateKnowId, generateKnowIdstring, getRandomErrorMessage } from "src/utils/helpers";
+import { generateKnowId, generateKnowIdstring, getRandomErrorMessage, processResponse } from "src/utils/helpers";
 import ExtractInfo from "src/components/@vc-product/extractInfo";
 import { sendQuery, extractFileData } from "src/stores/vs-product";
 
@@ -37,7 +37,7 @@ import { sendAiAgentQuery } from "./action";
 const AiAgent = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  let thread_id = generateKnowIdstring();
+  const [thread_id, setthread_id] = useState(generateKnowIdstring())
   const { Step } = useAppSelector((state) => state.VSProduct);
   const firstRun = useRef(true);
   const userId = jsCookie.get("user_id");
@@ -69,7 +69,7 @@ const AiAgent = () => {
 
   useEffect(() => {
     dispatch(resetChats());
-    thread_id = generateKnowIdstring();
+    setthread_id(generateKnowIdstring());
     firstRun.current = true;
     // setFile("false");
   }, []);
@@ -131,10 +131,10 @@ const AiAgent = () => {
   const { companyName } = useAppSelector((state) => state.VSProduct);
 
   const handleSendQuery = useCallback(async (query: string, answer: string, file?: File, button?: boolean) => {
-    console.log(answer, "answer");
     setIsloading(true);
     const newQueryIndex = generateKnowId();
     try {
+      setanswer("");
       if (file) {
         setanswer("");
         setFile("true");
@@ -205,7 +205,7 @@ const AiAgent = () => {
       else {
         if (answer === "Go Home") {
           dispatch(resetChats());
-          thread_id = generateKnowIdstring();
+          setthread_id(generateKnowIdstring())
           firstRun.current = true;
           setFile("false");
           navigate("/", {
@@ -215,7 +215,7 @@ const AiAgent = () => {
         }
         if (answer === "Start another report") {
           dispatch(resetChats());
-          thread_id = generateKnowIdstring();
+          setthread_id(generateKnowIdstring())
           firstRun.current = true;
           setFile("false");
           return;
@@ -236,7 +236,20 @@ const AiAgent = () => {
           if (answer === "Looks good") {
             //** Fifth Converstaion **//
             ai_query.user_input = "skip";
-            await dispatch(sendAiAgentQuery({ ...ai_query, sendPitchData: true })).unwrap();
+            const { data } = await dispatch(sendAiAgentQuery({ ...ai_query, sendPitchData: true })).unwrap();
+            if (data?.response?.includes("upload the pitch deck") || data?.response?.includes(" upload your pitch deck")) {
+              setUploadStatus(true);
+            }
+            const { options, remainingText } = processResponse(data.response)
+            dispatch(
+              setVSChats({
+                query: remainingText,
+                answer: "",
+                options: options || [],
+                hasbutton: !!options?.length,
+              }),
+            );
+            // dispatch(setVSChats({ query: data?.response, answer: answer }));
             //**     **//
           } else if (answer === "Edit Summary") {
             setModalOpen(true);
@@ -246,7 +259,7 @@ const AiAgent = () => {
             await dispatch(sendQuery(ai_query)).unwrap();
           } else if (Step == 5 && answer == "Submit") {
             dispatch(resetChats());
-            thread_id = generateKnowIdstring();
+            setthread_id(generateKnowIdstring())
             firstRun.current = true;
             setFile("false");
             setFinalMessage(true);
@@ -271,12 +284,36 @@ const AiAgent = () => {
           // await dispatch(sendQuery(ai_query)).unwrap();
         }
         // 
-        const { data } = await dispatch(sendAiAgentQuery(ai_query)).unwrap();
-        console.log("EPOEPORPEORPOERPE", data)
-        if (data?.response?.includes("upload the pitch deck") || data?.response?.includes(" upload your pitch deck")) {
-          setUploadStatus(true);
+        else {
+          dispatch(
+            setVSChats({
+              query: "",
+              answer: answer,
+              hasbutton: false,
+            }),
+          );
+          const { data } = await dispatch(sendAiAgentQuery(ai_query)).unwrap();
+          if (data?.response?.includes("upload the pitch deck") || data?.response?.includes(" upload your pitch deck")) {
+            setUploadStatus(true);
+          }
+          const { options, remainingText } = processResponse(data.response)
+          dispatch(
+            setVSChats({
+              query: remainingText,
+              answer: "",
+
+              hasbutton: false
+            }),
+          );
+          dispatch(
+            setVSChats({
+              query: "",
+              answer: "",
+              options: options || [],
+              hasbutton: !!options?.length,
+            }),
+          );
         }
-        dispatch(setVSChats({ query: data?.response, answer: answer }));
       }
       // dispatch(setVSChats({ query: response?.response, answer: query }));
     } catch (error) {

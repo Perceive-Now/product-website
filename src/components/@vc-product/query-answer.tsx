@@ -18,7 +18,7 @@ interface Props {
   ido: string;
   hasbutton: boolean;
   hasselected: boolean;
-  onSendQuery: (query: string, answer: string, file?: File,button?:boolean) => void;
+  onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
 }
 
 
@@ -34,7 +34,9 @@ const QueryAnswer = ({
   onSendQuery,
   hasselected
 }:
-Props) => {
+  Props) => {
+
+  console.log("Toptions", options)
 
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
@@ -43,7 +45,7 @@ Props) => {
 
   const userId = jsCookie.get("user_id");
 
-  if (answer === "" && (options === undefined || options?.length === 0 )) return <></>;
+  if (answer === "" && (options === undefined || options?.length === 0)) return <></>;
 
 
   return (
@@ -76,18 +78,17 @@ Props) => {
                     // dispatch(setprevres({ answer: stage }));
 
                     // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
-                    if(options.length === 1 || options.includes("Edit Summary"))
-                      onSendQuery(query, stage,undefined,true);
-                    else{
+                    if (options.length === 1 || options.includes("Edit Summary"))
+                      onSendQuery(query, stage, undefined, true);
+                    else {
                       setanswer(stage);
                       dispatch(setprevres({ answer: stage }));
                     }
                   }}
                   // disabled={stage !== "Edit Summary" ? hasselected : false}
-                  disabled = {hasselected}
-                  className={`${
-                    answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
-                  } cursor-pointer text-sm rounded-lg py-1 px-2 border border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
+                  disabled={hasselected}
+                  className={`${answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
+                    } cursor-pointer text-sm rounded-lg py-1 px-2 border border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
                 >
                   {stage}
                 </button>
