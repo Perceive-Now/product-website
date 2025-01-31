@@ -38,7 +38,7 @@ const AiAgent = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [thread_id, setthread_id] = useState(generateKnowIdstring())
-  const { Step } = useAppSelector((state) => state.VSProduct);
+  const { Step, pitchdeck_data } = useAppSelector((state) => state.VSProduct);
   const firstRun = useRef(true);
   const userId = jsCookie.get("user_id");
   const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
@@ -130,10 +130,17 @@ const AiAgent = () => {
 
   const { companyName } = useAppSelector((state) => state.VSProduct);
 
+  const [jsonResponse, setJsonResponse] = useState<any>(null)
+  const [websites, setWebsited] = useState([])
+
+  const [dataSources, setDataSources] = useState<any>(null)
+
   const handleSendQuery = useCallback(async (query: string, answer: string, file?: File, button?: boolean) => {
     setIsloading(true);
     const newQueryIndex = generateKnowId();
     try {
+      setJsonResponse(null)
+      setDataSources(null)
       setanswer("");
       if (file) {
         setanswer("");
@@ -292,11 +299,19 @@ const AiAgent = () => {
               hasbutton: false,
             }),
           );
-          const { data } = await dispatch(sendAiAgentQuery(ai_query)).unwrap();
+          const { data } = await dispatch(sendAiAgentQuery({ ...ai_query, sendPitchData: !!Object.keys(dataSources || {}).length })).unwrap();
           if (data?.response?.includes("upload the pitch deck") || data?.response?.includes(" upload your pitch deck")) {
             setUploadStatus(true);
           }
           const { options, remainingText } = processResponse(data.response)
+          const json_response = data.json_response
+          if (data.response?.toLowerCase().includes("data source suggestions")) {
+            setDataSources(JSON.parse(json_response))
+          }
+          else {
+
+            setJsonResponse(json_response)
+          }
           dispatch(
             setVSChats({
               query: remainingText,
@@ -323,6 +338,7 @@ const AiAgent = () => {
       setIsloading(false);
     }
   }, [dispatch, query, answer]);
+
 
   return (
     <>
@@ -411,9 +427,9 @@ const AiAgent = () => {
           {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
           <div>
             {/* <ReportCustomization /> */}
-            {Step == 4 && DataSources && Object.keys(DataSources).length > 0 && <SourcesData />}
-            {Step == 5 && ReportTemplate && Object.keys(ReportTemplate).length > 0 && (
-              <TemplateReport />
+            {dataSources && Object.keys(dataSources) && <SourcesData dataSource={dataSources} />}
+            {jsonResponse && Object.keys(jsonResponse).length > 0 && (
+              <TemplateReport reportSummary={jsonResponse} />
             )}
             {Step == 3 && <InitialScreening />}
           </div>
