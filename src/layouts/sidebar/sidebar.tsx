@@ -1,5 +1,5 @@
 import { useState, useRef, FunctionComponent, useCallback, useEffect, Fragment } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import PerceiveLogo from "../../assets/images/logo.svg";
 import PerceiveIcon from "../../assets/images/logo-small.svg";
@@ -220,12 +220,21 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
 
   const { pathname } = useLocation();
 
+  const [searchParams] = useSearchParams()
+
+
   const userDetail = useAppSelector((state) => state.auth.user);
   const runTour = useAppSelector((state) => state.dashboard.startTour);
 
   // const startTour = () => {
   //   setRunTour(true);
   // };
+
+  useEffect(()=>{
+    if(searchParams.get("side") === "false"){
+      setOpen(false)
+    }
+  },[searchParams])
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

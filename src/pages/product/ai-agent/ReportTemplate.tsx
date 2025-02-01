@@ -95,30 +95,32 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between m-0">
+        <div className="flex flex-col md:flex-row justify-between m-0 mb-2">
+          <div className="flex  ">
           <span className="text-xs sm:text-sm md:text-base">
             <div className="bg-appGray-100 p-1 rounded-md w-fit">Summary</div>
           </span>
           <span
             ref={summaryRef}
-            className={`mt-1 sm:mt-0 sm:ml-4 text-gray-700 text-justify tracking-tighter text-sm ${isExpanded ? "" : "line-clamp-2"
+            className={`mt-1 sm:mt-0 sm:ml-2 text-gray-700 text-justify tracking-tighter text-sm ${isExpanded ? "" : "line-clamp-2"
               }`}
           >
             {summary}
           </span>
+          </div>
           {showArrow && (
             <button onClick={toggleExpand} className="text-primary-900 ml-2 h-3">
               {isExpanded ? <ArrowUp /> : <ArrowDown />}
             </button>
           )}
         </div>
-        <div className="flex flex-col md:flex-row justify-between m-0">
+        <div className="flex">
           <span className="text-xs sm:text-sm md:text-base">
             <div className="bg-appGray-100 p-1 rounded-md w-fit">Body</div>
           </span>
           <span
             ref={summaryRef}
-            className={`mt-1 sm:mt-0 sm:ml-4 text-gray-700 text-justify tracking-tighter text-sm ${isExpanded ? "" : "line-clamp-2"
+            className={`mt-1 sm:mt-0 sm:ml-2 text-gray-700 text-justify tracking-tighter text-sm ${isExpanded ? "" : "line-clamp-2"
               }`}
           >
             {body}
