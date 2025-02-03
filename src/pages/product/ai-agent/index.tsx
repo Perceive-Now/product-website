@@ -40,6 +40,9 @@ import axios from "axios";
 import AddQueryAgent from "./add-query";
 import { sendAiAgentQuery } from "./action";
 const AiAgent = () => {
+  const params = new URLSearchParams(window.location.search);
+  const agent = params.get("agent");
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [thread_id, setthread_id] = useState(generateKnowIdstring());
@@ -100,7 +103,7 @@ const AiAgent = () => {
           userId: String(userId), // Convert userId to string
           threadId,
           industry: "AI",
-          agent: "Startup Diligence Agent",
+          agent: agent || "Startup Diligence Agent",
           useCase: "AI",
           step: 0,
           data: { user_input: userInput },

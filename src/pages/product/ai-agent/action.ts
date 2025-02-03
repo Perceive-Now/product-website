@@ -6,7 +6,7 @@ import { formatJsonResponse } from "src/stores/vs-product";
 export const sendAiAgentQuery = createAsyncThunk(
     "sendQuery",
     async (
-        { user_input, user_id, thread_id, sendPitchData }: { user_input: string; user_id: string; thread_id: string, sendPitchData?: boolean },
+        { agentName, user_input, user_id, thread_id, sendPitchData }: { agentName?: string; user_input: string; user_id: string; thread_id: string, sendPitchData?: boolean },
         { getState },
     ): Promise<any> => {
         console.log("ThreadId", thread_id)
@@ -17,7 +17,7 @@ export const sendAiAgentQuery = createAsyncThunk(
             userId: String(user_id), // Convert userId to string
             threadId: thread_id,
             industry: "AI",
-            agent: "Startup Diligence Agent",
+            agent: agentName || "Startup Diligence Agent",
             useCase: "AI",
             step: 0,
             data: { user_input: sendPitchData ? JSON.stringify(pitchdeckData) : user_input },

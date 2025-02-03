@@ -101,6 +101,7 @@ import VerifyInviteToken from "./pages/authentication/invite/verify-token";
 import InviteAuthLayout from "./layouts/invitation/layout";
 import InviteFinish from "./pages/authentication/invite/success";
 import AiAgent from "./pages/product/ai-agent";
+import AgentLanding from "./pages/product/ai-agent/landing/homepage";
 // import MadLibEditor from "./test";
 
 /**
@@ -276,6 +277,7 @@ function App() {
 
             {/* Ai-Agent */}
             <Route path="/ai-agent" element={<AiAgent />} />
+            <Route path="/ai-agent/landing" element={<AgentLanding />} />
 
             {/*Graph */}
             <Route path="/analytics" element={<IPFullReport />} />
