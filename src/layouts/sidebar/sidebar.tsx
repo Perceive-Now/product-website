@@ -8,6 +8,9 @@ import PerceiveIcon from "../../assets/images/logo-small.svg";
 import LogoSm from "../../assets/images/logo-small.svg";
 import Logo from "../../assets/images/logo.svg";
 
+import sidebarBackground from "src/assets/images/sidebar-background.png";
+import collapsibleSvg from "./_assets/collapsible.svg"
+
 import classNames from "classnames";
 
 //
@@ -494,6 +497,11 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
             open ? "pl-3" : "pl-1 pb-[54px]"
           } duration-300  flex flex-col justify-between h-[100vh] z-10 pb-[20%]`}
+          style={{
+            backgroundImage: `url(${sidebarBackground})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
           <div className="z-10">
             <div className="py-1 px-1 container">
@@ -533,10 +541,10 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
               <button
                 type="button"
-                className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+                className="h-5 w-5 rounded-full flex justify-center items-center"
                 onClick={() => setOpen(!open)}
               >
-                <RoundedArrowIcon className={classNames(open ? "" : "rotate-180")} />
+                <img src={collapsibleSvg} alt="collapsible" className={classNames(open ? "rotate-180" : "")} />
               </button>
             </ToolTip>
 
@@ -548,7 +556,11 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                   "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
                 )}
               >
-                <item.icon />
+                <div style={{
+                  filter: "grayscale(1)",
+                }}>
+                  <item.icon />
+                </div>
                 {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
               </Link>
             ))}

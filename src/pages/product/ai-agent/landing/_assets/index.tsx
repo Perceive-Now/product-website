@@ -4,7 +4,7 @@ import financeStrategyImage from "./finance-strategy.png";
 import fundRaisingImage from "./fund-raising.png";
 import legalAndComplianceImage from "./legal-and-compliance.png";
 import marketStrategyImage from "./market-strategy.png";
-import marketingAndSalesImage from "./marketing-and-sales.png";
+import marketingAndSalesImage from "./marketing-sales.png";
 import portfolioSupportImage from "./portfolio-support.png";
 import productEngineeringImage from "./product-engineering.png";
 import reportOnAnythingImage from "./report-on-anything.png";
