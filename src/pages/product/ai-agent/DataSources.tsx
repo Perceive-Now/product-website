@@ -9,12 +9,12 @@ interface Props {
   dataSource: any;
 }
 const SourcesData: React.FC<Props> = (props) => {
-  const { dataSource } = props
+  const { dataSource } = props;
   const { DataSources } = useAppSelector((state) => state.VSProduct);
   const dispatch = useAppDispatch();
 
   console.log("Data Sources  -----", dataSource);
-  const dataSourceKeys = Object.keys(dataSource);
+  const dataSourceKeys = Object.keys(dataSource || {}).filter((key) => dataSource[key]?.length);
 
   const [activeTab, setActiveTab] = useState<string>(dataSourceKeys[0] || "");
   const [items, setItems] = useState<{ [key: string]: string[] }>(dataSource);
@@ -55,12 +55,17 @@ const SourcesData: React.FC<Props> = (props) => {
 
   return (
     <div
-      className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${open
-        ? "flex-[0_0_100%] sm:flex-[0_0_75%] lg:flex-[0_0_460px] max-w-full lg:max-w-[460px]"
-        : "flex-[0_0_100%] sm:flex-[0_0_215px] max-w-full sm:max-w-[215px]"
-        }`}
+      className={`border border-gray-300 rounded-lg w-full mb-[70px] overflow-y-auto ${
+        open
+          ? "flex-[0_0_100%] sm:flex-[0_0_75%] lg:flex-[0_0_460px] max-w-full lg:max-w-[460px]"
+          : "flex-[0_0_100%] sm:flex-[0_0_215px] max-w-full sm:max-w-[215px]"
+      }`}
     >
-      <div className={`p-2 lg:p-4 ${open ? "w-full h-full" : "w-full h-auto"} bg-opacity-50 rounded-lg`}>
+      <div
+        className={`p-2 lg:p-4 ${
+          open ? "w-full h-full" : "w-full h-auto"
+        } bg-opacity-50 rounded-lg`}
+      >
         <div className="flex items-center">
           <div onClick={() => setOpen(!open)} className="cursor-pointer">
             <LayoutIcon />
@@ -69,13 +74,16 @@ const SourcesData: React.FC<Props> = (props) => {
             <h2 className="text-lg font-semibold">Data Sources</h2>
             {open && (
               <>
-                <h4 className="mb-4 text-sm sm:text-base">Customize sections to suit your needs.</h4>
+                <h4 className="mb-4 text-sm sm:text-base">
+                  Customize sections to suit your needs.
+                </h4>
                 <div className="text-xs sm:text-sm">
                   {dataSourceKeys.map((tab) => (
                     <button
                       key={tab}
-                      className={`p-1 text-xs sm:text-sm rounded-lg ${activeTab === tab ? "bg-appGray-200" : ""
-                        }`}
+                      className={`p-1 text-xs sm:text-sm rounded-lg ${
+                        activeTab === tab ? "bg-appGray-200" : ""
+                      }`}
                       onClick={() => setActiveTab(tab)}
                     >
                       {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -123,8 +131,9 @@ const SourcesData: React.FC<Props> = (props) => {
                 />
               )}
               <button
-                className={`flex items-center justify-start text-primary-900 ${isInputVisible ? "hidden" : ""
-                  }`}
+                className={`flex items-center justify-start text-primary-900 ${
+                  isInputVisible ? "hidden" : ""
+                }`}
                 onClick={() => setIsInputVisible(!isInputVisible)}
               >
                 {!isInputVisible && (
@@ -139,7 +148,6 @@ const SourcesData: React.FC<Props> = (props) => {
         )}
       </div>
     </div>
-
   );
 };
 

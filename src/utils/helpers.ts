@@ -189,15 +189,26 @@ export const arrayBufferDownload = async (response: any) => {
   URL.revokeObjectURL(blobUrl);
 
 }
-
 export function processResponse(response: string) {
   // Extract options inside @@ delimiters and clean them up
-  const options = response.match(/@@(.*?)@@/g)?.map(option => 
-    option.replace(/@@/g, '').trim().replace(/^[\d.-]+\s*/, '') // Remove leading numbers, dots, or dashes
+  const options = response.match(/@@(.*?)@@/gs)?.flatMap(match =>
+    match.replace(/@@/g, '').trim().split("\n").map(option => 
+      option.trim().replace(/^[\d.-]+\s*/, '') // Remove leading numbers, dots, or dashes
+    ).filter(option => option) // Remove empty options
   ) || [];
 
-  // Remove extracted options along with their prefixes (dashes or numbers) from the response text
-  const remainingText = response.replace(/\d*\.*-?\s*@@(.*?)@@/g, '').trim();
+  // Remove extracted options along with the @@ delimiters from the response text
+  let remainingText = response.replace(/@@(.*?)@@/gs, '').trim();
+
+  // Remove ?[ and ]? while keeping the text inside
+  remainingText = remainingText.replace(/\?\[(.*?)\]\?/g, '$1').trim();
+
+  // Remove entire string enclosed in @?[ ]@
+  remainingText = remainingText.replace(/@\?\[.*?\]@/gs, '').trim();
 
   return { options, remainingText };
 }
+
+
+
+
