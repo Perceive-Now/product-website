@@ -191,13 +191,13 @@ export const arrayBufferDownload = async (response: any) => {
 }
 
 export function processResponse(response: string) {
-  // Extract options inside @@ delimiters
-  const options = response.match(/@@(.*?)@@/g)?.map(option => option.replace(/@@/g, '').trim()) || [];
+  // Extract options inside @@ delimiters and clean them up
+  const options = response.match(/@@(.*?)@@/g)?.map(option => 
+    option.replace(/@@/g, '').trim().replace(/^[\d.-]+\s*/, '') // Remove leading numbers, dots, or dashes
+  ) || [];
 
-  // Remove extracted options from the response text
-  const remainingText = response.replace(/@@(.*?)@@/g, '').trim();
-
-  console.log("SPODPWOEPOWPEOPWO", options, remainingText)
+  // Remove extracted options along with their prefixes (dashes or numbers) from the response text
+  const remainingText = response.replace(/\d*\.*-?\s*@@(.*?)@@/g, '').trim();
 
   return { options, remainingText };
 }

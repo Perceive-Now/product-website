@@ -328,7 +328,7 @@ const AiAgent = () => {
               setDataSources(JSON.parse(json_response));
               setSearchParams({ side: "false" });
             } else {
-              if(Object.keys(json_response||{}).length){
+              if (Object.keys(json_response || {}).length) {
                 setSearchParams({ side: "false" });
               }
               setJsonResponse(json_response);
