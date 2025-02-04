@@ -65,7 +65,7 @@ const UserPlan = () => {
             />
           ))}
         </div>
-        <div className="flex flex-col gap-y-4 border">
+        <div className="flex flex-col gap-y-4 border mt-3">
           <AgentTable />
           <ReportCustomizationTable />
           <ReportContentCustomizationTable />
@@ -76,18 +76,13 @@ const UserPlan = () => {
 
         <div className="flex mt-3 gap-x-2">
           <PrimaryButton
-            onClick={() => navigate("/authentication/signup/user-info")}
+            onClick={() => navigate("/signup/profile")}
             text="Back"
             icon={<RightArrow className="rotate-180 mr-1" />}
             variant="secondary"
             className="flex-row-reverse"
           />
-          <PrimaryButton
-            onClick={handleNext}
-            text="Next"
-            icon={<RightArrow  />}
-            variant="primary"
-          />
+          <PrimaryButton onClick={handleNext} text="Next" icon={<RightArrow />} variant="primary" />
         </div>
       </div>
     </SignUpLayout>
