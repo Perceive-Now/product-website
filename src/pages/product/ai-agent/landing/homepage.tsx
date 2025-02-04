@@ -41,6 +41,7 @@ const agents = [
     bgClass: "from-pink-200 to-red-100",
     className: "col-span-6 row-span-1",
     backgroundImage: startupDilligenceImage,
+    agentLink: "startup-diligence-agent",
   },
   {
     agentName: "Fundraising Strategy Agent",
@@ -51,6 +52,7 @@ const agents = [
     bgClass: "from-blue-200 to-blue-100",
     className: "col-span-1 row-span-1",
     backgroundImage: fundRaisingImage,
+    agentLink: "fundraising-strategy-agent",
   },
   {
     agentName: "Report on Anything Agent",
@@ -61,6 +63,7 @@ const agents = [
     bgClass: "from-purple-200 to-pink-100",
     className: "col-span-1 row-span-1",
     backgroundImage: reportOnAnythingImage,
+    agentLink: "report-on-anything-agent",
   },
   {
     agentName: "Market Strategy Agent",
@@ -71,6 +74,7 @@ const agents = [
     bgClass: "from-teal-200 to-blue-100",
     className: "col-span-1 row-span-1",
     backgroundImage: marketStrategyImage,
+    agentLink: "market-strategy-agent",
   },
   {
     agentName: "Portfolio Support Agent",
@@ -81,6 +85,7 @@ const agents = [
     bgClass: "from-pink-200 to-purple-100",
     className: "col-span-1 row-span-1",
     backgroundImage: portfolioSupportImage,
+    agentLink: "portfolio-support-agent",
   },
   {
     agentName: "Technology & R&D Agent",
@@ -91,6 +96,7 @@ const agents = [
     bgClass: "from-yellow-200 to-green-100",
     className: "col-span-2 row-span-1",
     backgroundImage: technologyAndRndImage,
+    agentLink: "technology-agent",
   },
   {
     agentName: "Product & Engineering Agent",
@@ -101,6 +107,7 @@ const agents = [
     bgClass: "from-red-200 to-pink-100",
     className: "col-span-1 row-span-1",
     backgroundImage: productEngineeringImage,
+    agentLink: "product-engineering-agent",
   },
   {
     agentName: "Corporate Venture Capital Agent",
@@ -110,6 +117,7 @@ const agents = [
     bgClass: "from-blue-200 to-purple-100",
     className: "col-span-1 row-span-1",
     backgroundImage: corporateVentureImage,
+    agentLink: "corporate-venture-capital-agent",
   },
   {
     agentName: "Finance & Strategy Agent",
@@ -120,6 +128,7 @@ const agents = [
     bgClass: "from-pink-200 to-red-100",
     className: "col-span-1 row-span-1",
     backgroundImage: financeStrategyImage,
+    agentLink: "finance-strategy-agent",
   },
   {
     agentName: "Marketing & Sales Agent",
@@ -129,6 +138,7 @@ const agents = [
     bgClass: "from-purple-200 to-blue-100",
     className: "col-span-1 row-span-1",
     backgroundImage: marketingAndSalesImage,
+    agentLink: "marketing-sales-agent",
   },
   {
     agentName: "Legal & Compliance Agent",
@@ -139,6 +149,7 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "col-span-1 row-span-1",
     backgroundImage: legalAndComplianceImage,
+    agentLink: "legal-compliance-agent",
   },
 ];
 

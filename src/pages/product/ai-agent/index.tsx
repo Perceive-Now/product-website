@@ -39,6 +39,22 @@ import ReportCustomization from "./ReportCustomization";
 import axios from "axios";
 import AddQueryAgent from "./add-query";
 import { sendAiAgentQuery } from "./action";
+
+const AgentName: Record<string, string> = {
+  "startup-diligence-agent": "Startup Diligence Agent",
+  "fundraising-strategy-agent": "Fundraising Strategy Agent",
+  "report-on-anything-agent": "Report on Anything Agent",
+  "market-strategy-agent": "Market Strategy Agent",
+  "portfolio-support-agent": "Portfolio Support Agent",
+  "technology-agent": "Technology & R&D Agent",
+  "product-engineering-agent": "Product & Engineering Agent",
+  "corporate-venture-capital-agent": "Corporate Venture Capital Agent",
+  "finance-strategy-agent": "Finance & Strategy Agent",
+  "marketing-sales-agent": "Marketing & Sales Agent",
+  "legal-compliance-agent": "Legal & Compliance Agent",
+  "": "Startup Diligence Agent",
+};
+
 const AiAgent = () => {
   const params = new URLSearchParams(window.location.search);
   const agent = params.get("agent");
@@ -140,6 +156,7 @@ const AiAgent = () => {
   const [jsonResponse, setJsonResponse] = useState<any>(null);
   const [websites, setWebsited] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  console.log("SLDKLSKDLKSLD", searchParams.get("agent"));
 
   const [dataSources, setDataSources] = useState<any>(null);
 
@@ -252,7 +269,11 @@ const AiAgent = () => {
               //** Fifth Converstaion **//
               ai_query.user_input = "skip";
               const { data } = await dispatch(
-                sendAiAgentQuery({ agentName: agent!, ...ai_query, sendPitchData: true }),
+                sendAiAgentQuery({
+                  agentName: AgentName[agent || ""],
+                  ...ai_query,
+                  sendPitchData: true,
+                }),
               ).unwrap();
               if (
                 data?.response?.includes("upload the pitch deck") ||
@@ -314,7 +335,7 @@ const AiAgent = () => {
             );
             const { data } = await dispatch(
               sendAiAgentQuery({
-                agentName: agent!,
+                agentName: AgentName[agent || ""],
                 ...ai_query,
                 sendPitchData: !!Object.keys(dataSources || {}).length,
               }),
@@ -330,10 +351,10 @@ const AiAgent = () => {
 
             if (data.response?.toLowerCase().includes("data source suggestions")) {
               setDataSources(JSON.parse(json_response));
-              setSearchParams({ side: "false" });
+              setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
             } else {
               if (Object.keys(json_response || {}).length) {
-                setSearchParams({ side: "false" });
+                setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
               }
               setJsonResponse(json_response);
             }
