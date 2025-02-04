@@ -14,9 +14,18 @@ interface Props {
   answer: string;
   uploadStatus?: boolean;
   setFile: (file: File) => void;
+  fileRequired?: boolean;
 }
 
-const AddQueryAgent = ({ query, answer, uploadStatus, setFile, sendQuery, setanswer }: Props) => {
+const AddQueryAgent = ({
+  query,
+  answer,
+  uploadStatus,
+  fileRequired,
+  setFile,
+  sendQuery,
+  setanswer,
+}: Props) => {
   //   const {  } = useAppSelector((state) => state.VSProduct);
   const textareaRef = useRef<any>(null);
   const fileInputRef = useRef<any>(null);
@@ -76,13 +85,13 @@ const AddQueryAgent = ({ query, answer, uploadStatus, setFile, sendQuery, setans
     }
   };
 
-   const handleDrop = (e:any) => {
+  const handleDrop = (e: any) => {
     e.preventDefault();
-    if(!uploadStatus){
-      return
+    if (!uploadStatus) {
+      return;
     }
     const droppedFile = e.dataTransfer.files[0];
-     if (droppedFile) {
+    if (droppedFile) {
       const validTypes = [
         "application/pdf",
         "application/vnd.ms-powerpoint",
@@ -109,30 +118,30 @@ const AddQueryAgent = ({ query, answer, uploadStatus, setFile, sendQuery, setans
       setFile(droppedFile);
       e.target.value = "";
     }
-   
   };
 
-  
-
   // Prevent the default behavior when dragging over the drop area
-  const handleDragOver = (e:any) => {
-     if(!uploadStatus){
-      return
+  const handleDragOver = (e: any) => {
+    if (!uploadStatus) {
+      return;
     }
     e.preventDefault();
   };
 
   return (
-    <div className="flex flex-col w-full mb-[80px]" >
-      <div onDrop={handleDrop}
-        onDragOver={handleDragOver} className="w-full flex flex-col rounded-lg border border-gray-200 shadow-inputBox overflow-hidden bg-white relative mb-[0px]">
+    <div className="flex flex-col w-full mb-[80px]">
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        className="w-full flex flex-col rounded-lg border border-gray-200 shadow-inputBox overflow-hidden bg-white relative mb-[0px]"
+      >
         <div className="flex items-center p-1">
           <textarea
             ref={textareaRef}
             onChange={(e) => {
               setanswer(e.target.value);
             }}
-            disabled={uploadStatus}
+            disabled={fileRequired && uploadStatus}
             value={answer}
             onKeyDown={handleKeyDown}
             className={classNames(
@@ -143,7 +152,7 @@ const AddQueryAgent = ({ query, answer, uploadStatus, setFile, sendQuery, setans
           />
         </div>
 
-        <div className="bg-appGray-100 rounded-b-lg p-2 flex items-center"  >
+        <div className="bg-appGray-100 rounded-b-lg p-2 flex items-center">
           {uploadStatus ? (
             <>
               <button className="inline-flex gitems-center" onClick={handleAttachClick}>

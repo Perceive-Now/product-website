@@ -192,7 +192,7 @@ export const arrayBufferDownload = async (response: any) => {
 export function processResponse(response: string) {
   // Extract options inside @@ delimiters and clean them up
   const options = response.match(/@@(.*?)@@/gs)?.flatMap(match =>
-    match.replace(/@@/g, '').trim().split("\n").map(option => 
+    match.replace(/@@/g, '').trim().split("\n").map(option =>
       option.trim().replace(/^[\d.-]+\s*/, '') // Remove leading numbers, dots, or dashes
     ).filter(option => option) // Remove empty options
   ) || [];
@@ -200,14 +200,18 @@ export function processResponse(response: string) {
   // Remove extracted options along with the @@ delimiters from the response text
   let remainingText = response.replace(/@@(.*?)@@/gs, '').trim();
 
-  // Remove ?[ and ]? while keeping the text inside
-  remainingText = remainingText.replace(/\?\[(.*?)\]\?/g, '$1').trim();
-
-  // Remove entire string enclosed in @?[ ]@
+  // Remove text inside @?[ ... ]@ completely
   remainingText = remainingText.replace(/@\?\[.*?\]@/gs, '').trim();
+
+  // Remove ?[ ... ]? brackets but keep the text inside
+  remainingText = remainingText.replace(/\?\[(.*?)\]\?/gs, '$1').trim();
+
+  // Remove lines starting with numbers followed by a period (e.g., "1. Text")
+  remainingText = remainingText.replace(/^\d+\.\s.*$/gm, '').trim();
 
   return { options, remainingText };
 }
+
 
 
 

@@ -156,7 +156,6 @@ const AiAgent = () => {
   const [jsonResponse, setJsonResponse] = useState<any>(null);
   const [websites, setWebsited] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log("SLDKLSKDLKSLD", searchParams.get("agent"));
 
   const [dataSources, setDataSources] = useState<any>(null);
 
@@ -263,8 +262,12 @@ const AiAgent = () => {
 
           //
           if (button) {
+            debugger;
             if (answer !== "Edit Summary") dispatch(updateButtonSelection({ hasselected: true }));
             dispatch(setprevres({ answer: answer }));
+            if (answer === "End Conversation") {
+              ai_query.user_input === "chat_ended";
+            }
             if (answer === "Looks good") {
               //** Fifth Converstaion **//
               ai_query.user_input = "skip";
@@ -349,11 +352,14 @@ const AiAgent = () => {
             const { options, remainingText } = processResponse(data.response);
             const json_response = data.json_response;
 
+            let convoOptions: string[] = [];
+
             if (data.response?.toLowerCase().includes("data source suggestions")) {
               setDataSources(JSON.parse(json_response));
               setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
             } else {
               if (Object.keys(json_response || {}).length) {
+                convoOptions = ["Still Editing", "End Conversation"];
                 setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
               }
               setJsonResponse(json_response);
@@ -366,12 +372,13 @@ const AiAgent = () => {
                 hasbutton: false,
               }),
             );
+            const userOptions = options?.length ? options : convoOptions.length ? convoOptions : [];
             dispatch(
               setVSChats({
                 query: "",
                 answer: "",
-                options: options || [],
-                hasbutton: !!options?.length,
+                options: userOptions,
+                hasbutton: !!userOptions?.length,
               }),
             );
           }
@@ -466,6 +473,7 @@ const AiAgent = () => {
                 // sendQuery={() => {
                 //   fetchResponse(query);
                 // }}
+                fileRequired={!agent || agent === "startup-diligence-agent"}
                 sendQuery={handleSendQuery}
               />
             </div>
