@@ -12,6 +12,7 @@ import { useAppSelector } from "src/hooks/redux";
 import { Countries } from "src/utils/constants";
 import { roles } from "./_constants/roles";
 import Loading from "src/components/reusable/loading";
+import RightArrow from "src/components/icons/common/right-arrow";
 
 type FormValues = {
   fullName: string;
@@ -205,7 +206,7 @@ const ProfileSetup: React.FC = () => {
                     {...field}
                     type="text"
                     placeholder="Full name"
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                    className={`mt-1 w-full px-3 py-[10px] border-[1px] rounded-full ${
                       errors.fullName ? "border-red-500" : "border-gray-300"
                     }`}
                   />
@@ -223,7 +224,7 @@ const ProfileSetup: React.FC = () => {
                 render={({ field }) => (
                   <select
                     {...field}
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                    className={`mt-1 w-full px-3 py-[10px] border-[1px] rounded-full ${
                       errors.role ? "border-red-500" : "border-gray-300"
                     }`}
                   >
@@ -252,7 +253,7 @@ const ProfileSetup: React.FC = () => {
                     <input
                       {...field}
                       placeholder="Provide additional details for your role"
-                      className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                      className={`mt-1 w-full px-3 py-[10px] border-[1px] rounded-full ${
                         errors.otherRole ? "border-red-500" : "border-gray-300"
                       }`}
                     />
@@ -273,7 +274,7 @@ const ProfileSetup: React.FC = () => {
                 render={({ field }) => (
                   <select
                     {...field}
-                    className={`mt-1 w-full px-3 py-[10px] border rounded-lg ${
+                    className={`mt-1 w-full px-3 py-[10px] border-[1px] rounded-full ${
                       errors.country ? "border-red-500" : "border-gray-300"
                     }`}
                   >
@@ -293,7 +294,7 @@ const ProfileSetup: React.FC = () => {
 
             {/* Buttons */}
             <div className="flex gap-x-4">
-              <Button
+              {/* <Button
                 htmlType="button"
                 classname="w-[120px]"
                 type="secondary"
@@ -309,7 +310,23 @@ const ProfileSetup: React.FC = () => {
                 loading={isSubmitting}
               >
                 Next
-              </Button>
+              </Button> */}
+              <button
+                type="button"
+                onClick={() => navigate("/signup/organization-setting")}
+                className="flex items-center justify-evenly border-4  border-[#442873] rounded-[32px] py-1 px-2 text-lg"
+              >
+                <RightArrow className="mr-1 rotate-180" />
+                Back
+              </button>
+
+              <button
+                type="submit"
+                className="flex items-center justify-evenly border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white"
+              >
+                Next
+                <RightArrow className="ml-1" />
+              </button>
             </div>
           </form>
         </div>
