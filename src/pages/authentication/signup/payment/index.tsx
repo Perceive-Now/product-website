@@ -6,6 +6,8 @@ import BankTransferForm from "./_forms/bank-transfer";
 import WireTransfer from "./_forms/wire-transfer";
 import Button from "src/components/reusable/button";
 import { useNavigate } from "react-router-dom";
+import RightArrow from "src/components/icons/common/right-arrow";
+import PrimaryButton from "src/components/reusable/button/primary-button";
 
 type FieldExpanded = {
   paymentMethod: boolean;
@@ -156,7 +158,7 @@ const PaymentScreen = () => {
         {/* Buttons */}
         <div className="flex justify-start space-x-[16px]">
           <div className="flex flex-row gap-x-1 mt-3">
-            <div>
+            {/* <div>
               <Button
                 type="secondary"
                 classname="w-[120px] bg-primary-600 text-white p-2 rounded-full"
@@ -175,7 +177,22 @@ const PaymentScreen = () => {
               >
                 <span className="font-normal">Next</span>
               </Button>
-            </div>
+            </div> */}
+
+            <PrimaryButton
+              onClick={() => navigate("/signup/team")}
+              text="Back"
+              variant="secondary"
+              className="flex-row-reverse"
+              icon={<RightArrow className="mr-1 rotate-180" />}
+            />
+
+            <PrimaryButton
+              onClick={() => navigate("/signup/team")}
+              text="Next"
+              variant="primary"
+              icon={<RightArrow className="ml-1" />}
+            />
           </div>
         </div>
       </div>
