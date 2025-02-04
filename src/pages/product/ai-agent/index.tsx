@@ -252,7 +252,7 @@ const AiAgent = () => {
               //** Fifth Converstaion **//
               ai_query.user_input = "skip";
               const { data } = await dispatch(
-                sendAiAgentQuery({ ...ai_query, sendPitchData: true }),
+                sendAiAgentQuery({ agentName: agent!, ...ai_query, sendPitchData: true }),
               ).unwrap();
               if (
                 data?.response?.includes("upload the pitch deck") ||
@@ -314,6 +314,7 @@ const AiAgent = () => {
             );
             const { data } = await dispatch(
               sendAiAgentQuery({
+                agentName: agent!,
                 ...ai_query,
                 sendPitchData: !!Object.keys(dataSources || {}).length,
               }),
