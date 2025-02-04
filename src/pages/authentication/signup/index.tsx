@@ -27,6 +27,8 @@ import quotes from "./_constants/quote";
 import backgroundImage from "./_assets/background.png";
 import pnCloveSvg from "src/assets/images/pn_clove.svg";
 import { setSession } from "src/stores/session";
+import RightArrow from "src/components/icons/common/right-arrow";
+import companyPartner from "./_assets/company-partner.png"
 
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
@@ -169,18 +171,21 @@ export default function SignupPage() {
   }, []);
 
   return (
-    <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-center items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
-      <form onSubmit={handleSubmit(handleLogin)} className="">
-        <div className="w-full p-1 md:p-0 md:w-[400px]">
-          <img
+    <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-between items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
+      <form
+        onSubmit={handleSubmit(handleLogin)}
+        className="flex flex-col flex-[1] justify-center items-center"
+      >
+        <div className="w-full p-1 md:p-0 md:w-[500px]">
+          {/* <img
             src={perceiveNowImage}
             alt="Welcome to Perceive Now"
             className="w-[3rem] h-[3rem] mb-1"
-          />
-          <h1 className="text-2xl font-semibold text-[#373D3F] text-left">
-            Enter your email to sign up.
+          /> */}
+          <h1 className="text-5xl font-semibold text-[#373D3F] text-left">
+            Get Started With Perceive Now
           </h1>
-          <p className="text-left text-[#373D3F] mt-2 mb-1">
+          {/* <p className="text-left text-[#373D3F] mt-2 mb-1">
             <span>Already have an account?</span>
             <Link
               to={"/login"}
@@ -191,16 +196,16 @@ export default function SignupPage() {
             >
               Sign In
             </Link>
-          </p>
-          <div>
+          </p> */}
+          <div className="mt-3">
             <fieldset>
-              <div className="mt-0.5 rounded-md shadow-sm">
+              <div className="mt-0.5 rounded-full shadow-sm">
                 <input
                   id="email"
                   {...register("email")}
                   type="text"
                   className={classNames(
-                    "appearance-none block w-full px-2 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                    "appearance-none block w-full px-2 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
                     errors.email
                       ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                       : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -244,13 +249,13 @@ export default function SignupPage() {
             )}
           </fieldset> */}
             <fieldset className="mt-2">
-              <div className="mt-0.5 rounded-md shadow-sm relative">
+              <div className="mt-0.5 rounded-full shadow-sm relative">
                 <input
                   id="password"
                   {...register("password")}
                   type={isPasswordVisible ? "text" : "password"}
                   className={classNames(
-                    "appearance-none block w-full pl-2 pr-7 py-[10px] border-1 rounded-md placeholder:text-gray-400 focus:ring-0.5",
+                    "appearance-none block w-full pl-2 pr-7 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
                     errors.password
                       ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                       : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -273,11 +278,11 @@ export default function SignupPage() {
               )}
             </fieldset>
           </div>
-          <div className="my-2 flex">
+          <div className="my-3 flex">
             <fieldset>
               <CheckboxInput onChange={() => setAgreeTerms(!agreeTerms)} />
 
-              <label className="ml-2 text-[15px] text-[#373D3F] font-medium" htmlFor="agree">
+              <label className="ml-2 text-[15px] text-[#373D3F]" htmlFor="agree">
                 By continuing, I agree to Perceive Now&apos;s{" "}
                 <a
                   target="_blank"
@@ -301,7 +306,7 @@ export default function SignupPage() {
           </div>
 
           <div className="flex justify-end w-full mt-2">
-            <Button
+            {/* <Button
               classname="w-[160px]"
               rounded="full"
               htmlType="submit"
@@ -310,7 +315,14 @@ export default function SignupPage() {
               type="primary"
             >
               <span className="font-[400]">Continue</span>
-            </Button>
+            </Button> */}
+            <button
+              type="submit"
+              className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white"
+            >
+              Continue
+              <RightArrow className="ml-1" />
+            </button>
           </div>
           {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
 
@@ -341,6 +353,30 @@ export default function SignupPage() {
         </p>
       </label> */}
       </form>
+      <div
+        className="flex flex-[0.8] flex-col"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          height: "100%",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="flex flex-col justify-center h-full gap-2 text-gray-700 p-4">
+          <div className="font-bold text-lg">{quotes[currentQuoteIndex]}</div>
+
+          <div className="flex flex-col">
+            <p className="italic">Dr. Vinitha TU</p>
+            <p className="italic">Founder</p>
+            <p className="italic">Perceive Now</p>
+          </div>
+        </div>
+
+        <div>
+          <img src={companyPartner} alt="Perceive Now" className="w-full h-auto" />
+        </div>
+      </div>
     </div>
   );
 }
