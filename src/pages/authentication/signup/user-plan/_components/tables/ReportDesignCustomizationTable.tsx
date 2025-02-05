@@ -1,3 +1,5 @@
+import { ReportDesignIcon } from "../../_assets/table-icons";
+
 const ReportCustomizationTable = () => {
   const customizations = [
     {
@@ -20,7 +22,10 @@ const ReportCustomizationTable = () => {
   return (
     <div className="overflow-x-auto mt-8 border">
       <div className="p-2">
-        <h2 className="text-3xl font-semibold my-2">Report Design Customization</h2>
+        <div className="flex gap-1 mb-1">
+          <h2 className="text-3xl font-semibold my-2">Report Design Customization</h2>
+          <ReportDesignIcon />
+        </div>
         <p className="text-base text-gray-800 mb-1">
           Personalize your reports with flexible design options
         </p>

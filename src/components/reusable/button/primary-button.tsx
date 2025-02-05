@@ -1,18 +1,23 @@
 import React from "react";
+import { LoadingIcon } from "src/components/icons";
 
 interface PrimaryButtonProps {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon?: React.ReactNode;
   className?: string;
+  loading?: boolean;
+  type?: "button" | "submit" | "reset"; // Define button types
   variant?: "primary" | "secondary"; // Define button variants
 }
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
+  type,
   text,
   onClick,
   icon,
   className,
+  loading = false,
   variant = "primary",
 }) => {
   // Define base styles
@@ -26,11 +31,11 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       className={`${baseStyles} ${variantStyles[variant]} ${className}`}
     >
-      {text}
+      {!loading ? text: <LoadingIcon className="animate-spin text-black" />}
       {icon && <span className="ml-1">{icon}</span>}
     </button>
   );

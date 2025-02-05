@@ -149,7 +149,7 @@ const TeamManagementScreen = () => {
   const [inputValue, setInputValue] = useState<string>("");
 
   return (
-    <SignUpLayout currentStep={2} completedSteps={[0, 1]}>
+    <SignUpLayout currentStep={3} completedSteps={[0, 1, 2]}>
       <div className="max-w-[1000px] p-7 space-y-[40px]">
         {/* Title */}
         <h1 className="text-[20px] font-semibold text-[#373D3F]">Team Management</h1>

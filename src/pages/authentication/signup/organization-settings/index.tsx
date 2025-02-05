@@ -14,6 +14,7 @@ import axios from "axios";
 import { NEW_BACKEND_URL } from "../env";
 import { useAppSelector } from "src/hooks/redux";
 import RightArrow from "src/components/icons/common/right-arrow";
+import PrimaryButton from "src/components/reusable/button/primary-button";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -267,13 +268,20 @@ const OrganizationSettings = () => {
               >
                 <span className="font-normal">Next</span>
               </Button> */}
-              <button
+              <PrimaryButton
+                type="submit"
+                text="Next"
+                icon={<RightArrow />}
+                variant="primary"
+                loading={isSubmitting || formSubmitting}
+              />
+              {/* <button
                 type="submit"
                 className="flex w-[150px] items-center justify-evenly border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white"
               >
                 Next
                 <RightArrow className="ml-1" />
-              </button>
+              </button> */}
             </div>
           </form>
         </div>

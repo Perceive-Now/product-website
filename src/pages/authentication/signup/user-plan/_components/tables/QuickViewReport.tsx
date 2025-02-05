@@ -1,3 +1,5 @@
+import { QuickViewIcon } from "../../_assets/table-icons";
+
 const QuickViewReports = () => {
   const customizations = [
     {
@@ -15,20 +17,23 @@ const QuickViewReports = () => {
       name: "Investor-Centric Insights",
       description:
         "Tailored content focusing on key metrics, growth areas, and actionable recommendations for investment success.",
-      plans: [true, true, true],
+      plans: [false, true, true],
     },
     {
       name: "Stakeholder-Specific Reports",
       description:
         "Provide tailored summaries for different stakeholders, ensuring relevance and clarity for diverse audiences.",
-      plans: [true, true, true],
+      plans: [false, false, true],
     },
   ];
 
   return (
     <div className="overflow-x-auto mt-8 border">
       <div className="p-2">
-        <h2 className="text-3xl font-semibold my-2">Quick View Reports</h2>
+        <div className="flex gap-1 mb-1">
+          <h2 className="text-3xl font-semibold my-2">Quick-View Reports</h2>
+          <QuickViewIcon />
+        </div>
         {/* <p className="text-base text-gray-800 mb-1">
           Tailor your reports with customizable tones, visuals, and formats to match your specific
           needs.
