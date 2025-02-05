@@ -1,3 +1,5 @@
+import { ReportContentIcon } from "../../_assets/table-icons";
+
 const ReportContentCustomizationTable = () => {
   const customizations = [
     {
@@ -30,7 +32,10 @@ const ReportContentCustomizationTable = () => {
   return (
     <div className="overflow-x-auto mt-8 border">
       <div className="p-2">
-        <h2 className="text-3xl font-semibold my-2">Report Content Customization</h2>
+        <div className="flex gap-1 mb-1">
+          <h2 className="text-3xl font-semibold my-2">Report Content Customization</h2>
+          <ReportContentIcon />
+        </div>
         <p className="text-base text-gray-800 mb-1">
           Tailor your reports with customizable tones, visuals, and formats to match your specific
           needs.

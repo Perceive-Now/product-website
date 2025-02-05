@@ -1,48 +1,58 @@
+import { KnowNowIcon } from "../../_assets/table-icons";
+
 const KnowNowChat = () => {
   const customizations = [
     {
-      name: "Basic Responses",
-      description: "Delivers straightforward answers to direct questions.",
-      plans: [true, true, true],
-    },
-    {
-      name: "Analytical Insights",
-      description: "Provides core insights through targeted analytics.",
-      plans: [true, true, true],
-    },
-    {
-      name: "Visual Data Representation",
-      description: "Offers engaging visuals, graphs, trend forecasts, and more.",
-      plans: [true, true, true],
-    },
-    {
-      name: "Interactive Analysis",
-      description: "Combines advanced visuals with interactive, data-driven insights.",
-      plans: [true, true, true],
-    },
-    {
-      name: "Comprehensive Analytics",
+      name: "Hyper-specialized for Market and Patent Insights",
       description:
-        "Supplies in-depth analysis with interactive tools for strategic decision-making.",
+        "AI tool that specializes in delivering insights from market and patent datasets.",
       plans: [true, true, true],
     },
     {
-      name: "Real-time Web Search",
-      description:
-        "Access the latest information online, ensuring your analyses are always current.",
+      name: "Delivers Strategic Recommendations",
+      description: "Provides actionable suggestions based on in-depth analysis.",
       plans: [true, true, true],
+    },
+    {
+      name: "Interactive Visual-First Insights",
+      description:
+        "Presents insights through interactive, visual dashboards for easy understanding.",
+      plans: [false, true, true],
+    },
+    {
+      name: "Predictive Scenario Modeling",
+      description: "Simulates and predicts outcomes based on data analysis.",
+      plans: [false, true, true],
+    },
+    {
+      name: "Fine-tuned for Key Industries",
+      description: "Optimized insights for industries like healthcare, aerospace, and technology.",
+      plans: [false, false, true],
+    },
+    {
+      name: "Streamlined for team collaboration",
+      description: "Designed for team-wide use, making collaboration seamless.",
+      plans: [false, false, true],
+    },
+    {
+      name: "Context-aware Responses",
+      description: "AI adapts its answers to your specific business context and needs.",
+      plans: [false, false, true],
     },
     {
       name: "Predictive Modeling",
-      description: "Forecast future market behaviors, aiding in proactive strategy development.",
-      plans: [true, true, true],
+      description: "Models forecast trends and opportunities with high accuracy.",
+      plans: [false, false, true],
     },
   ];
 
   return (
     <div className="overflow-x-auto mt-8 border">
       <div className="p-2">
-        <h2 className="text-3xl font-semibold my-2">KnowNow Chat</h2>
+        <div className="flex gap-1 mb-1">
+          <h2 className="text-3xl font-semibold my-2">KnowNow Chat</h2>
+          <KnowNowIcon />
+        </div>
         <p className="text-base text-gray-800 mb-1">
           Expert AI chat assistant for IP and market analysis.
         </p>

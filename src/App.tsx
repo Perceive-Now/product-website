@@ -196,6 +196,8 @@ function App() {
         <Route path="/share/know-now/market-intelligence/:id" element={<ShareKnowNowPage />} />
         <Route path="/share/know-now/ip-analysis/:id" element={<ShareKnowNowPage />} />
 
+        <Route path="/signup/plan" element={<UserPlan />} />
+
         {/* Authentication Route */}
         <Route element={<AuthLayout />}>
           <Route path="/user-registration" element={<UserDetails />} />

@@ -1,3 +1,5 @@
+import { ExplainableIcon } from "../../_assets/table-icons";
+
 const ExplainableAI = () => {
   const customizations = [
     {
@@ -13,32 +15,35 @@ const ExplainableAI = () => {
     {
       name: "Logical Breakdown Layers",
       description: "Multi-step insights that describe the reasoning behind conclusions.",
-      plans: [true, true, true],
+      plans: [false, true, true],
     },
     {
       name: "Editable Data & Metrics",
       description:
         "Flexibility to add, modify, or adjust data points and metrics to align with specific needs.",
-      plans: [true, true, true],
+      plans: [false, true, true],
     },
     {
       name: "Advanced Multi-Layered Insights",
       description:
         "Comprehensive explanations that provide depth and context for complex data interactions.",
-      plans: [true, true, true],
+      plans: [false, false, true],
     },
     {
       name: "Forecasting Transparency",
       description:
         "Clear methodologies behind predictions, ensuring reliability in forward-looking analytics.",
-      plans: [true, true, true],
+      plans: [false, false, true],
     },
   ];
 
   return (
     <div className="overflow-x-auto mt-8 border">
       <div className="p-2">
-        <h2 className="text-3xl font-semibold my-2">Explainable AI</h2>
+        <div className="flex gap-1 mb-1">
+          <h2 className="text-3xl font-semibold my-2">Explainable AI</h2>
+          <ExplainableIcon />
+        </div>
         <p className="text-base text-gray-800 mb-1">
           Understandable explanations of AI-driven outcomes, for transparency and trust.
         </p>

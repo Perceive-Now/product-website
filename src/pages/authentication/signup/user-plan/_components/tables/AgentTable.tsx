@@ -1,4 +1,8 @@
-const AgentTable = () => {
+import PlansTable from "./PlansTable";
+
+import { AgentIcon } from "../../_assets/table-icons";
+
+const AgentTable = ({ currentPlan = "Launch" }: { currentPlan: string }) => {
   const features = [
     {
       name: "Startup Diligence Agent",
@@ -69,9 +73,13 @@ const AgentTable = () => {
   ];
 
   return (
-    <div className="overflow-x-auto mt-8 border">
+    <div className="overflow-x-auto border">
+      <PlansTable currentPlan={currentPlan} />
       <div className="p-2">
-        <h2 className="text-3xl font-semibold my-2">Agents</h2>
+        <div className="flex gap-1 mb-1">
+          <h2 className="text-3xl font-semibold my-2">Agents</h2>
+          <AgentIcon />
+        </div>
         <p className="text-base text-gray-800 mb-1">
           Our AI-powered agents act as your team of specialized experts, delivering in-depth
           analysis, personalized strategies, and automated reports. Make informed decisions and
