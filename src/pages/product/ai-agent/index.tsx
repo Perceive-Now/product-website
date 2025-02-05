@@ -396,13 +396,17 @@ const AiAgent = () => {
                 setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
               } else {
                 if (data.response?.toLowerCase().includes("24-48 hours")) {
-                  convoOptions = ["Still Editing", "End Conversation"];
+                  convoOptions = ["End Conversation"];
                   setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
                 }
                 setJsonResponse(json_response);
               }
             } catch (error) {
-              console.log(error);
+              if (data.response?.toLowerCase().includes("24-48 hours")) {
+                convoOptions = ["End Conversation"];
+                setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+              }
+              setJsonResponse(json_response);
             }
 
             dispatch(
