@@ -32,7 +32,6 @@ const AddQueryAgent = ({
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const handleAttachClick = () => {
-    console.log("clicked attacj", attachedFile);
     fileInputRef.current?.click();
   };
 
@@ -153,7 +152,7 @@ const AddQueryAgent = ({
         </div>
 
         <div className="bg-appGray-100 rounded-b-lg p-2 flex items-center">
-          {uploadStatus ? (
+          {uploadStatus || !fileRequired ? (
             <>
               <button className="inline-flex gitems-center" onClick={handleAttachClick}>
                 <IconFile /> <span className="mr-2 ml-1 relative">Attach</span>
