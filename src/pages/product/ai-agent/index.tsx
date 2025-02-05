@@ -225,33 +225,34 @@ const AiAgent = () => {
             //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
             // ).unwrap();
             try {
-              const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
-              const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
-              const extractObject = JSON.parse(cleanValue);
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  extract: cleanedSummary,
-                  extractObject,
-                }),
-              );
-              dispatch(setCurrentStep(2));
+              handleSendQuery("", "Looks good");
+              // const cleanedSummary = fileResponse.replace(/[{}"']/g, "").trim();
+              // const cleanValue = fileResponse.replace(/\*\*/g, "").trim();
+              // const extractObject = JSON.parse(cleanValue);
+              // dispatch(
+              //   setVSChats({
+              //     query: "",
+              //     answer: "",
+              //     extract: cleanedSummary,
+              //     extractObject,
+              //   }),
+              // );
+              // dispatch(setCurrentStep(2));
 
-              dispatch(
-                setVSChats({
-                  query: `Here’s the summary of key details from ${companyName}’s pitch deck. Edit as needed or confirm if it looks good.`,
-                  answer: "",
-                }),
-              );
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: "",
-                  options: ["Edit Summary", "Looks good"],
-                  hasbutton: true,
-                }),
-              );
+              // dispatch(
+              //   setVSChats({
+              //     query: `Here’s the summary of key details from ${companyName}’s pitch deck. Edit as needed or confirm if it looks good.`,
+              //     answer: "",
+              //   }),
+              // );
+              // dispatch(
+              //   setVSChats({
+              //     query: "",
+              //     answer: "",
+              //     options: ["Edit Summary", "Looks good"],
+              //     hasbutton: true,
+              //   }),
+              // );
               setUploadStatus(false);
             } catch (error) {
               dispatch(
@@ -366,66 +367,99 @@ const AiAgent = () => {
           }
           //
           else {
-            dispatch(
-              setVSChats({
-                query: "",
-                answer: answer,
-                hasbutton: false,
-              }),
-            );
-            const { data } = await dispatch(
-              sendAiAgentQuery({
-                agentName: AgentName[agent || ""],
-                ...ai_query,
-                // sendPitchData: !!Object.keys(dataSources || {}).length,
-              }),
-            ).unwrap();
-            if (
-              data?.response?.includes("upload the pitch deck") ||
-              data?.response?.includes(" upload your pitch deck")
-            ) {
-              setUploadStatus(true);
-            }
-            const { options, remainingText } = processResponse(data.response);
-            const json_response = data.json_response;
+            if (answer === "Looks good") {
+              //** Fifth Converstaion **//
+              ai_query.user_input = "skip";
+              const { data } = await dispatch(
+                sendAiAgentQuery({
+                  agentName: AgentName[agent || ""],
+                  ...ai_query,
+                  sendPitchData: true,
+                }),
+              ).unwrap();
+              if (
+                data?.response?.includes("upload the pitch deck") ||
+                data?.response?.includes(" upload your pitch deck")
+              ) {
+                setUploadStatus(true);
+              }
+              const { options, remainingText } = processResponse(data.response);
+              dispatch(
+                setVSChats({
+                  query: remainingText,
+                  answer: "",
+                  options: options || [],
+                  hasbutton: !!options?.length,
+                }),
+              );
+              // dispatch(setVSChats({ query: data?.response, answer: answer }));
+              //**     **//
+            } else {
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: answer,
+                  hasbutton: false,
+                }),
+              );
+              const { data } = await dispatch(
+                sendAiAgentQuery({
+                  agentName: AgentName[agent || ""],
+                  ...ai_query,
+                  // sendPitchData: !!Object.keys(dataSources || {}).length,
+                }),
+              ).unwrap();
+              if (
+                data?.response?.includes("upload the pitch deck") ||
+                data?.response?.includes(" upload your pitch deck")
+              ) {
+                setUploadStatus(true);
+              }
+              const { options, remainingText } = processResponse(data.response);
+              const json_response = data.json_response;
 
-            let convoOptions: string[] = [];
-            try {
-              if (Object.keys(JSON.parse(json_response) || {}).includes("Website")) {
-                setDataSources(JSON.parse(json_response));
-                setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
-              } else {
+              let convoOptions: string[] = [];
+              try {
+                if (Object.keys(JSON.parse(json_response) || {}).includes("Website")) {
+                  setDataSources(JSON.parse(json_response));
+                  setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                } else {
+                  if (data.response?.toLowerCase().includes("24-48 hours")) {
+                    convoOptions = ["End Conversation"];
+                    setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                  }
+                  setJsonResponse(json_response);
+                }
+              } catch (error) {
                 if (data.response?.toLowerCase().includes("24-48 hours")) {
                   convoOptions = ["End Conversation"];
                   setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
                 }
                 setJsonResponse(json_response);
               }
-            } catch (error) {
-              if (data.response?.toLowerCase().includes("24-48 hours")) {
-                convoOptions = ["End Conversation"];
-                setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
-              }
-              setJsonResponse(json_response);
+
+              dispatch(
+                setVSChats({
+                  query: remainingText,
+                  answer: "",
+
+                  hasbutton: false,
+                }),
+              );
+              const userOptions = options?.length
+                ? options
+                : convoOptions.length
+                ? convoOptions
+                : [];
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: "",
+                  options: userOptions,
+                  hasbutton: !!userOptions?.length,
+                }),
+              );
             }
-
-            dispatch(
-              setVSChats({
-                query: remainingText,
-                answer: "",
-
-                hasbutton: false,
-              }),
-            );
-            const userOptions = options?.length ? options : convoOptions.length ? convoOptions : [];
-            dispatch(
-              setVSChats({
-                query: "",
-                answer: "",
-                options: userOptions,
-                hasbutton: !!userOptions?.length,
-              }),
-            );
           }
         }
         // dispatch(setVSChats({ query: response?.response, answer: query }));
