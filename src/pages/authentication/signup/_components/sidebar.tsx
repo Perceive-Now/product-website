@@ -43,7 +43,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedD
   const steps = pathname.includes("/invite/") ? invitedSteps : sidebarSteps;
 
   return (
-    <div className="max-w-[300px] bg-[#F5F7FF] min-h-screen p-3 flex flex-col gap-y-2 items-start">
+    <div className="max-w-[300px] bg-[#FFA300] min-h-screen p-3 flex flex-col gap-y-2 items-start">
       {/* Logo at the top */}
       <div className="pt-7">
         <img src={perceiveNowImage} alt="Perceive Now" className="w-20 mx-auto" />

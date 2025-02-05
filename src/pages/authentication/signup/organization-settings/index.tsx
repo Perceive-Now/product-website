@@ -13,6 +13,7 @@ import Loading from "src/components/reusable/loading";
 import axios from "axios";
 import { NEW_BACKEND_URL } from "../env";
 import { useAppSelector } from "src/hooks/redux";
+import RightArrow from "src/components/icons/common/right-arrow";
 
 type OrganizationDetails = {
   organizationName: string;
@@ -176,7 +177,7 @@ const OrganizationSettings = () => {
                 type="text"
                 {...register("organizationName")}
                 className={classNames(
-                  "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
+                  "mt-1 block w-full px-3 py-[13px] bg-gray-100 border-[1px] rounded-full focus:outline-none focus:ring-2",
                   errors.organizationName
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-primary-500",
@@ -198,7 +199,7 @@ const OrganizationSettings = () => {
                 {...register("industry")}
                 onChange={handleIndustryChange}
                 className={classNames(
-                  "mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2",
+                  "mt-1 block w-full px-3 py-[13px] bg-gray-100 border-[1px] rounded-full focus:outline-none focus:ring-2",
                   errors.industry
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-primary-500",
@@ -227,7 +228,7 @@ const OrganizationSettings = () => {
                     id="otherIndustry"
                     type="text"
                     {...register("otherIndustry")}
-                    className="mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2"
+                    className="mt-1 block w-full px-3 py-[13px] bg-gray-100 border-[1px] rounded-full focus:outline-none focus:ring-2"
                     placeholder="Enter industry"
                   />
                 </div>
@@ -237,7 +238,7 @@ const OrganizationSettings = () => {
                 <div>
                   <label
                     htmlFor="otherIndustry"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-medium text-gray-700 mt-3"
                   >
                     Please specify:
                   </label>
@@ -245,7 +246,7 @@ const OrganizationSettings = () => {
                     id="otherIndustry"
                     type="text"
                     {...register("otherIndustry")}
-                    className="mt-1 block w-full px-3 py-[13px] bg-gray-100 border rounded-lg focus:outline-none focus:ring-2"
+                    className="mt-1 block w-full px-3 py-[13px] bg-gray-100 border-[1px] rounded-full focus:outline-none focus:ring-2"
                     placeholder="Enter industry"
                   />
                 </div>
@@ -257,7 +258,7 @@ const OrganizationSettings = () => {
             </div>
 
             <div className="flex justify-start">
-              <Button
+              {/* <Button
                 htmlType="submit"
                 loading={isSubmitting || formSubmitting}
                 disabled={isSubmitting || formSubmitting}
@@ -265,7 +266,14 @@ const OrganizationSettings = () => {
                 classname="w-[120px] bg-primary-600 text-white p-2"
               >
                 <span className="font-normal">Next</span>
-              </Button>
+              </Button> */}
+              <button
+                type="submit"
+                className="flex w-[150px] items-center justify-evenly border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white"
+              >
+                Next
+                <RightArrow className="ml-1" />
+              </button>
             </div>
           </form>
         </div>

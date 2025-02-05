@@ -83,7 +83,7 @@ import GenerateMarketReport from "./components/@report-generate/market-report-ge
 import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
 import OrganizationSettings from "./pages/authentication/signup/organization-settings";
 import ProfileSetup from "./pages/authentication/signup/profile-setup";
-import UserPlan from "./pages/authentication/signup/user-plan";
+import UserPlan from "./pages/authentication/signup/user-plan/index";
 import PaymentScreen from "./pages/authentication/signup/payment";
 import TeamMangementScreen from "./pages/authentication/signup/team-mangement";
 import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-confirmation";

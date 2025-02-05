@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getCompanies, getUserProfile } from "src/utils/api/userProfile";
 import Loading from "src/components/reusable/loading";
 import { useAppSelector } from "src/hooks/redux";
+import PrimaryButton from "src/components/reusable/button/primary-button";
+import RightArrow from "src/components/icons/common/right-arrow";
 
 type ExpandedSections = {
   organizationSettings: boolean;
@@ -57,9 +59,7 @@ const ReviewConfirmationScreen = () => {
   return (
     <SignUpLayout invitedData={invitedData} currentStep={5} completedSteps={[0, 1, 2, 3, 4]}>
       {loading ? (
-        <Loading width="50px" height="50px" 
-          isLoading={loading}
-        />
+        <Loading width="50px" height="50px" isLoading={loading} />
       ) : (
         <div className="max-w-[800px] p-7 space-y-[40px]">
           {/* Title */}
@@ -204,7 +204,7 @@ const ReviewConfirmationScreen = () => {
 
           {/* Navigation Buttons */}
           <div className="flex justify-start space-x-[16px] mt-8">
-            <Button
+            {/* <Button
               rounded="full"
               type="secondary"
               classname="w-[120px]"
@@ -224,7 +224,25 @@ const ReviewConfirmationScreen = () => {
               handleClick={() => navigate("/signup/finish")}
             >
               Confirm
-            </Button>
+            </Button> */}
+            <PrimaryButton
+              onClick={() => {
+                if (invitedData) {
+                  navigate("/signup/profile", { state: { invitedData } });
+                } else {
+                  navigate("/signup/team");
+                }
+              }}
+              text="Back"
+              className="flex-row-reverse"
+              icon={<RightArrow className="rotate-180 mr-1" />}
+              variant="secondary"
+            />
+            <PrimaryButton
+              onClick={() => navigate("/signup/finish")}
+              text="Next"
+              icon={<RightArrow />}
+            />
           </div>
         </div>
       )}
