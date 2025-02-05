@@ -17,6 +17,7 @@ import pnCloveSvg from "src/assets/images/pn_clove.svg";
 import backgroundImage from "../_assets/background.png";
 import mailboxSvg from "./_assets/mailbox.svg";
 import paperPlaneSvg from "./_assets/paper-plane.svg";
+import { Link } from "react-router-dom";
 
 interface IConfirmEmail {
   verification_code: string;
@@ -104,6 +105,12 @@ const VerificationConfirm = () => {
             An email with a confirmation link has been sent to you. Check your inbox and complete
             your signup
           </p>
+        </div>
+
+        <div className="flex items-end gap-x-2 mt-10 text-sm">
+          <img src={pnCloveSvg} alt="Perceive Now" className="w-[2rem]" />
+          Didn&apos;t receive the email? <br />
+          Check your spam folder or try resending
         </div>
         {/* <div className="text-center w-full">
         <p className="text-secondary-800 ">drake@example.com</p>

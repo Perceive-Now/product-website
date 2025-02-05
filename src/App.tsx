@@ -102,6 +102,9 @@ import InviteAuthLayout from "./layouts/invitation/layout";
 import InviteFinish from "./pages/authentication/invite/success";
 import AiAgent from "./pages/product/ai-agent";
 import AgentLanding from "./pages/product/ai-agent/landing/homepage";
+import AgentAdminDashboard from "./pages/my-account/admin-agent-reports";
+import AgentReports from "./pages/my-account/admin-agent-reports/agent-reports";
+import AgentRequirements from "./pages/my-account/admin-agent-reports/agent-reports-requirements";
 // import MadLibEditor from "./test";
 
 /**
@@ -196,8 +199,6 @@ function App() {
         <Route path="/share/know-now/market-intelligence/:id" element={<ShareKnowNowPage />} />
         <Route path="/share/know-now/ip-analysis/:id" element={<ShareKnowNowPage />} />
 
-        <Route path="/signup/plan" element={<UserPlan />} />
-
         {/* Authentication Route */}
         <Route element={<AuthLayout />}>
           <Route path="/user-registration" element={<UserDetails />} />
@@ -232,6 +233,10 @@ function App() {
             <Route path="/users" element={<MyUsers />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
+
+            <Route path="/agent-admin" element={<AgentAdminDashboard />} />
+            <Route path="/agent-admin-reports/:id" element={<AgentReports />} />
+            <Route path="/agent-reports/:id" element={<AgentRequirements />} />
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
