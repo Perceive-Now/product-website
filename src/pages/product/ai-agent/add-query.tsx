@@ -86,7 +86,7 @@ const AddQueryAgent = ({
 
   const handleDrop = (e: any) => {
     e.preventDefault();
-    if (!uploadStatus) {
+    if (!uploadStatus && fileRequired) {
       return;
     }
     const droppedFile = e.dataTransfer.files[0];
@@ -121,7 +121,7 @@ const AddQueryAgent = ({
 
   // Prevent the default behavior when dragging over the drop area
   const handleDragOver = (e: any) => {
-    if (!uploadStatus) {
+    if (!uploadStatus && fileRequired) {
       return;
     }
     e.preventDefault();
