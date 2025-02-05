@@ -377,7 +377,7 @@ const AiAgent = () => {
               sendAiAgentQuery({
                 agentName: AgentName[agent || ""],
                 ...ai_query,
-                sendPitchData: !!Object.keys(dataSources || {}).length,
+                // sendPitchData: !!Object.keys(dataSources || {}).length,
               }),
             ).unwrap();
             if (
