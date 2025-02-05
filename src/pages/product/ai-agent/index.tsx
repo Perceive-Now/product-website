@@ -395,7 +395,7 @@ const AiAgent = () => {
               setDataSources(JSON.parse(json_response));
               setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
             } else {
-              if (Object.keys(json_response || {}).length) {
+              if (data.response?.toLowerCase().includes("24-48 hours")) {
                 convoOptions = ["Still Editing", "End Conversation"];
                 setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
               }
