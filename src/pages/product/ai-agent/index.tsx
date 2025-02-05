@@ -390,17 +390,21 @@ const AiAgent = () => {
             const json_response = data.json_response;
 
             let convoOptions: string[] = [];
-
-            if (data.response?.toLowerCase().includes("data source suggestions")) {
-              setDataSources(JSON.parse(json_response));
-              setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
-            } else {
-              if (data.response?.toLowerCase().includes("24-48 hours")) {
-                convoOptions = ["Still Editing", "End Conversation"];
+            try {
+              if (Object.keys(JSON.parse(json_response) || {}).includes("Website")) {
+                setDataSources(JSON.parse(json_response));
                 setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+              } else {
+                if (data.response?.toLowerCase().includes("24-48 hours")) {
+                  convoOptions = ["Still Editing", "End Conversation"];
+                  setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                }
+                setJsonResponse(json_response);
               }
-              setJsonResponse(json_response);
+            } catch (error) {
+              console.log(error);
             }
+
             dispatch(
               setVSChats({
                 query: remainingText,
