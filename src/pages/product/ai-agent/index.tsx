@@ -91,9 +91,43 @@ const AiAgent = () => {
   }, [chats]);
 
   useEffect(() => {
-    dispatch(resetChats());
-    setthread_id(generateKnowIdstring());
-    firstRun.current = true;
+    setIsloading(true);
+    const fun = async () => {
+      try {
+        dispatch(resetChats());
+        const id = generateKnowIdstring();
+        setthread_id(id);
+        firstRun.current = true;
+        const ai_query = {
+          user_input: "",
+          // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
+          user_id: userId || "",
+          thread_id: id,
+        };
+        const { data } = await dispatch(
+          sendAiAgentQuery({
+            agentName: AgentName[agent || ""],
+            ...ai_query,
+          }),
+        ).unwrap();
+
+        const { options, remainingText } = processResponse(data.response);
+        dispatch(
+          setVSChats({
+            query: remainingText,
+            answer: "",
+            options: options || [],
+            hasbutton: !!options?.length,
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setQuery(""); // Clear input field
+        setIsloading(false);
+      }
+    };
+    fun();
     // setFile("false");
   }, []);
 
@@ -158,6 +192,10 @@ const AiAgent = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [dataSources, setDataSources] = useState<any>(null);
+
+  // useEffect(() => {
+  //   handleSendQuery("", "hello");
+  // }, []);
 
   const handleSendQuery = useCallback(
     async (query: string, answer: string, file?: File, button?: boolean) => {
@@ -404,7 +442,7 @@ const AiAgent = () => {
               </div>
             </div> */}
 
-            {chats && chats.length <= 0 ? (
+            {/* {chats && chats.length <= 0 ? (
               <div className="flex flex-row justify-between flex-auto">
                 <ReportDefault
                   finalMessage={finalMessage}
@@ -413,54 +451,55 @@ const AiAgent = () => {
                   }}
                 />
               </div>
-            ) : (
-              <div className="flex flex-row flex-auto justify-center">
-                <div
-                  ref={chatRef}
-                  className="bg-white rounded-lg p-3 w-full max-h-[calc(100vh-244px)] overflow-y-auto pn_scroller shadow-[0_4px_4px_0] shadow-[#000]/[0.06]"
-                >
-                  <div className="">
-                    {chats.map((chat, idx) => (
-                      <>
-                        <QueryAnswer
-                          ido={`chat-[${idx}]`}
-                          query={chat.query}
-                          answer={chat.answer || ""}
-                          isLoading={isLoading}
-                          setanswer={setanswer}
-                          message_id={chat.id || 0}
-                          options={chat.options}
-                          hasselected={chat.hasselected || false}
-                          hasbutton={chat.hasbutton || false}
-                          onSendQuery={handleSendQuery}
-                        />
-                        <ChatQuery query={chat.query} />
+            ) : ( */}
+            <div className="flex flex-row flex-auto justify-center">
+              <div
+                ref={chatRef}
+                className="bg-white rounded-lg p-3 w-full max-h-[calc(100vh-244px)] overflow-y-auto pn_scroller shadow-[0_4px_4px_0] shadow-[#000]/[0.06]"
+              >
+                <div className="">
+                  {chats.map((chat, idx) => (
+                    <>
+                      <QueryAnswer
+                        ido={`chat-[${idx}]`}
+                        query={chat.query}
+                        answer={chat.answer || ""}
+                        isLoading={isLoading}
+                        setanswer={setanswer}
+                        message_id={chat.id || 0}
+                        options={chat.options}
+                        hasselected={chat.hasselected || false}
+                        hasbutton={chat.hasbutton || false}
+                        onSendQuery={handleSendQuery}
+                      />
+                      <ChatQuery query={chat.query} />
+                      {isLoading}
 
-                        {chat.extract && (
-                          <ExtractInfo
-                            onSendQuery={handleSendQuery}
-                            modalOpen={modalOpen}
-                            setModalOpen={setModalOpen}
-                            info={chat.extract}
-                            obj={chat.extractObject}
-                          />
-                        )}
-                      </>
-                    ))}
-                    {delayLoading && (
-                      <div className="flex items-center justify-center p-5 h-full">
-                        <DotLoader />
-                      </div>
-                    )}
-                    {isLoading && (
-                      <div className="flex items-center justify-center p-5 h-full">
-                        <DotLoader />
-                      </div>
-                    )}
-                  </div>
+                      {chat.extract && (
+                        <ExtractInfo
+                          onSendQuery={handleSendQuery}
+                          modalOpen={modalOpen}
+                          setModalOpen={setModalOpen}
+                          info={chat.extract}
+                          obj={chat.extractObject}
+                        />
+                      )}
+                    </>
+                  ))}
+                  {delayLoading && (
+                    <div className="flex items-center justify-center p-5 h-full">
+                      <DotLoader />
+                    </div>
+                  )}
+                  {isLoading && (
+                    <div className="flex items-center justify-center p-5 h-full">
+                      <DotLoader />
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
+            {/* )} */}
 
             <div className="flex items-center justify-center mt-auto">
               <AddQueryAgent
