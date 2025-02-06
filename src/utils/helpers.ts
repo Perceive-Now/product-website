@@ -206,8 +206,8 @@ export function processResponse(response: string) {
   // Remove ?[ ... ]? brackets but keep the text inside
   remainingText = remainingText.replace(/\?\[(.*?)\]\?/gs, '$1').trim();
 
-  // Remove lines starting with numbers followed by a period (e.g., "1. Text")
-  remainingText = remainingText.replace(/^\d+\.\s.*$/gm, '').trim();
+  // // Remove lines starting with numbers followed by a period (e.g., "1. Text")
+  // remainingText = remainingText.replace(/^\d+\.\s.*$/gm, '').trim();
 
   return { options, remainingText };
 }
