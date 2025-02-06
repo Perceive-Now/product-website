@@ -29,6 +29,7 @@ import pnCloveSvg from "src/assets/images/pn_clove.svg";
 import { setSession } from "src/stores/session";
 import RightArrow from "src/components/icons/common/right-arrow";
 import companyPartner from "./_assets/company-partner.png";
+import PrimaryButton from "src/components/reusable/button/primary-button";
 
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
@@ -316,13 +317,19 @@ export default function SignupPage() {
             >
               <span className="font-[400]">Continue</span>
             </Button> */}
-            <button
+            {/* <button
               type="submit"
               className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white"
             >
               Continue
               <RightArrow className="ml-1" />
-            </button>
+            </button> */}
+            <PrimaryButton
+              type="submit"
+              loading={isSubmitting}
+              text="Continue"
+              icon={<RightArrow className="ml-1" />}
+            />
           </div>
 
           <div className="flex items-end gap-x-2 mt-5">

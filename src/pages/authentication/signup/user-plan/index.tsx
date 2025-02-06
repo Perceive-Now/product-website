@@ -18,7 +18,7 @@ import PlansTable from "./_components/tables/PlansTable";
 
 const UserPlan = () => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = React.useState("Launch");
+  const [selectedPlan, setSelectedPlan] = React.useState("Ascend");
   const [loading, setLoading] = React.useState(false);
 
   const plans = [
@@ -90,7 +90,7 @@ const UserPlan = () => {
               designedFor={plan.designedFor}
               description={plan.description}
               selected={selectedPlan === plan.title}
-              onSelect={() => setSelectedPlan(plan.title)}
+              onSelect={() => console.log("plan")}
             />
           ))}
         </div>

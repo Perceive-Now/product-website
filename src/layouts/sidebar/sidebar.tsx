@@ -8,7 +8,7 @@ import PerceiveIcon from "../../assets/images/logo-small.svg";
 import LogoSm from "../../assets/images/logo-small.svg";
 import Logo from "../../assets/images/logo.svg";
 
-import sidebarBackground from "src/assets/images/sidebar-background.png";
+import sidebarBackground from "src/assets/images/sidebar-background.webp";
 import collapsibleSvg from "./_assets/collapsible.svg"
 
 import classNames from "classnames";
@@ -544,7 +544,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 className="h-5 w-5 rounded-full flex justify-center items-center"
                 onClick={() => setOpen(!open)}
               >
-                <img src={collapsibleSvg} alt="collapsible" className={classNames(open ? "rotate-180" : "")} />
+                <img src={collapsibleSvg} alt="collapsible" className={classNames(!open ? "rotate-180" : "")} />
               </button>
             </ToolTip>
 

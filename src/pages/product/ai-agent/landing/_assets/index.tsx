@@ -1,14 +1,14 @@
-import startupDilligenceImage from "./startup-dilligence.png";
-import corporateVentureImage from "./corporate-venture.png";
-import financeStrategyImage from "./finance-strategy.png";
-import fundRaisingImage from "./fund-raising.png";
-import legalAndComplianceImage from "./legal-and-compliance.png";
-import marketStrategyImage from "./market-strategy.png";
-import marketingAndSalesImage from "./marketing-sales.png";
-import portfolioSupportImage from "./portfolio-support.png";
-import productEngineeringImage from "./product-engineering.png";
-import reportOnAnythingImage from "./report-on-anything.png";
-import technologyAndRndImage from "./technology-and-rnd.png";
+import startupDilligenceImage from "./startup-dilligence.webp";
+import corporateVentureImage from "./corporate-venture.webp";
+import financeStrategyImage from "./finance-strategy.webp";
+import fundRaisingImage from "./fund-raising.webp";
+import legalAndComplianceImage from "./legal-and-compliance.webp";
+import marketStrategyImage from "./market-strategy.webp";
+import marketingAndSalesImage from "./marketing-sales.webp";
+import portfolioSupportImage from "./portfolio-support.webp";
+import productEngineeringImage from "./product-engineering.webp";
+import reportOnAnythingImage from "./report-on-anything.webp";
+import technologyAndRndImage from "./technology-and-rnd.webp";
 
 export {
   startupDilligenceImage,

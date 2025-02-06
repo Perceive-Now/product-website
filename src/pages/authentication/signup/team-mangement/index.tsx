@@ -266,7 +266,7 @@ const TeamManagementScreen = () => {
               Next
             </Button> */}
             <PrimaryButton
-              onClick={() => navigate("/signup/profile")}
+              onClick={() => navigate("/signup/plan")}
               className="flex-row-reverse"
               variant="secondary"
               text="Back"

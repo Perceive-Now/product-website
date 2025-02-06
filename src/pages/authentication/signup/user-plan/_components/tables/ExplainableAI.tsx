@@ -1,5 +1,7 @@
 import { ExplainableIcon } from "../../_assets/table-icons";
 
+import checkIconSvg from "../../_assets/check-icon.svg";
+
 const ExplainableAI = () => {
   const customizations = [
     {
@@ -58,7 +60,7 @@ const ExplainableAI = () => {
               </td>
               {customization.plans.map((available, planIndex) => (
                 <td key={planIndex} className="border border-gray-200 px-4 py-2 text-center">
-                  {available ? "✓" : "-"}
+                  {available ? <img src={checkIconSvg} alt="check" className="mx-auto" /> : "-"}
                 </td>
               ))}
             </tr>

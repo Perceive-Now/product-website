@@ -56,7 +56,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedD
             <div key={step.label} className="flex items-center gap-x-1 my-[4px]">
               {/* Step Indicator */}
               <div
-                className={`w-[1.1rem] h-[1.1rem] flex items-center justify-center rounded-full ${
+                className={`w-[1.25rem] h-[1.25rem] flex items-center justify-center rounded-full ${
                   completedSteps.includes(index)
                     ? "bg-[#533F73]" // Completed step
                     : index === currentStep
