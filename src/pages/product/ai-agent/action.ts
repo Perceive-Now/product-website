@@ -21,7 +21,7 @@ export const sendAiAgentQuery = createAsyncThunk(
             useCase: "AI",
             step: 0,
             data: { user_input: sendPitchData ? JSON.stringify(pitchdeckData) : user_input },
-            file_upload_status
+            file_upload_status : file_upload_status ? file_upload_status : false
         }
         const response: any = await axios.post(
             "https://templateuserrequirements.azurewebsites.net/process-step",
