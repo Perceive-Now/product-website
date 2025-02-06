@@ -12,35 +12,35 @@ const AgentReports = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [reports] = useState([
     {
-      project_name: "Project 1",
+      project_name: "Thread 1",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 2",
+      project_name: "Thread 2",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 3",
+      project_name: "Thread 3",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 4",
+      project_name: "Thread 4",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 5",
+      project_name: "Thread 5",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 6",
+      project_name: "Thread 6",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 7",
+      project_name: "Thread 7",
       date_modified: "2021-10-10",
     },
     {
-      project_name: "Project 8",
+      project_name: "Thread 8",
       date_modified: "2021-10-10",
     },
   ]); // Placeholder for reports
@@ -55,7 +55,7 @@ const AgentReports = () => {
 
   const columns = [
     {
-      header: "Project",
+      header: "Thread",
       accessorKey: "report_name",
       cell: (item: any) => (
         <p className="line-clamp-1" onClick={() => navigate("/agent-reports/1")}>
@@ -68,6 +68,22 @@ const AgentReports = () => {
       accessorKey: "date_modified",
       cell: (item: any) => <span>{item.row.original.date_modified}</span>, // Placeholder for date format
     },
+    {
+      header: "Add Report",
+      // accessorKey: "actions",
+      cell: (item: any) => (
+        <div className="flex items-center gap-1">
+          <button
+            className="bg-primary-900 px-1 rounded-md text-white"
+            onClick={() => {
+              navigate("/upload-agent-report")
+            }}
+          >
+            +
+          </button>
+        </div>
+      ),
+    }
   ];
 
   return (

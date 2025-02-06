@@ -24,7 +24,7 @@ import { AppConfig } from "src/config/app.config";
 // images
 import perceiveNowImage from "../../../assets/images/pn.svg";
 import quotes from "./_constants/quote";
-import backgroundImage from "./_assets/background.png";
+import backgroundImage from "./_assets/background.webp";
 import pnCloveSvg from "src/assets/images/pn_clove.svg";
 import { setSession } from "src/stores/session";
 import RightArrow from "src/components/icons/common/right-arrow";

@@ -105,6 +105,9 @@ import AgentLanding from "./pages/product/ai-agent/landing/homepage";
 import AgentAdminDashboard from "./pages/my-account/admin-agent-reports";
 import AgentReports from "./pages/my-account/admin-agent-reports/agent-reports";
 import AgentRequirements from "./pages/my-account/admin-agent-reports/agent-reports-requirements";
+import MyAgentReport from "./pages/my-account/my-agent-reports";
+import MyAgentReportManagement from "./pages/my-account/my-agent-reports/my-reports";
+import UploadAgentReport from "./pages/my-account/admin-agent-reports/upload-report";
 // import MadLibEditor from "./test";
 
 /**
@@ -233,6 +236,11 @@ function App() {
             <Route path="/users" element={<MyUsers />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
+
+            {/* agent reports  */}
+            <Route path="/my-agent-reports" element={<MyAgentReport />} />
+            <Route path="/my-agent-reports/:id" element={<MyAgentReportManagement />} />
+            <Route path="/upload-agent-report" element={<UploadAgentReport />} />
 
             <Route path="/agent-admin" element={<AgentAdminDashboard />} />
             <Route path="/agent-admin-reports/:id" element={<AgentReports />} />
