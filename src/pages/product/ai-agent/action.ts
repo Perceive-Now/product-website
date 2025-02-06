@@ -6,7 +6,7 @@ import { formatJsonResponse } from "src/stores/vs-product";
 export const sendAiAgentQuery = createAsyncThunk(
     "sendQuery",
     async (
-        { agentName, user_input, user_id, thread_id, sendPitchData }: { agentName?: string; user_input: string; user_id: string; thread_id: string, sendPitchData?: boolean },
+        { agentName, user_input, user_id, thread_id, sendPitchData,file_upload_status }: { agentName?: string; user_input: string; user_id: string; thread_id: string, sendPitchData?: boolean,file_upload_status?:boolean },
         { getState },
     ): Promise<any> => {
         console.log("ThreadId", thread_id)
@@ -21,6 +21,7 @@ export const sendAiAgentQuery = createAsyncThunk(
             useCase: "AI",
             step: 0,
             data: { user_input: sendPitchData ? JSON.stringify(pitchdeckData) : user_input },
+            file_upload_status
         }
         const response: any = await axios.post(
             "https://templateuserrequirements.azurewebsites.net/process-step",
