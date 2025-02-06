@@ -28,7 +28,7 @@ import backgroundImage from "./_assets/background.png";
 import pnCloveSvg from "src/assets/images/pn_clove.svg";
 import { setSession } from "src/stores/session";
 import RightArrow from "src/components/icons/common/right-arrow";
-import companyPartner from "./_assets/company-partner.png"
+import companyPartner from "./_assets/company-partner.png";
 
 const WEBSITE_URL = AppConfig.WEBSITE_URL;
 
@@ -171,10 +171,10 @@ export default function SignupPage() {
   }, []);
 
   return (
-    <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-between items-center px-2 bg-gradient-to-b from-white to-[#F7F5FF]">
+    <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-between items-center px-2">
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="flex flex-col flex-[1] justify-center items-center"
+        className="flex flex-col flex-[1] justify-between items-center"
       >
         <div className="w-full p-1 md:p-0 md:w-[500px]">
           {/* <img
@@ -323,6 +323,14 @@ export default function SignupPage() {
               Continue
               <RightArrow className="ml-1" />
             </button>
+          </div>
+
+          <div className="flex items-end gap-x-2 mt-5">
+            <img src={pnCloveSvg} alt="Perceive Now" className="w-[2rem]" />
+            Already have an account?
+            <Link to="/login" className="text-inherit">
+              Sign In
+            </Link>
           </div>
           {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
 
