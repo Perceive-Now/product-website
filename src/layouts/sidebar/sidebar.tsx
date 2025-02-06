@@ -9,7 +9,7 @@ import LogoSm from "../../assets/images/logo-small.svg";
 import Logo from "../../assets/images/logo.svg";
 
 import sidebarBackground from "src/assets/images/sidebar-background.webp";
-import collapsibleSvg from "./_assets/collapsible.svg"
+import collapsibleSvg from "./_assets/collapsible.svg";
 
 import classNames from "classnames";
 
@@ -223,8 +223,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
 
   const { pathname } = useLocation();
 
-  const [searchParams] = useSearchParams()
-
+  const [searchParams] = useSearchParams();
 
   const userDetail = useAppSelector((state) => state.auth.user);
   const runTour = useAppSelector((state) => state.dashboard.startTour);
@@ -233,11 +232,11 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   //   setRunTour(true);
   // };
 
-  useEffect(()=>{
-    if(searchParams.get("side") === "false"){
-      setOpen(false)
+  useEffect(() => {
+    if (searchParams.get("side") === "false") {
+      setOpen(false);
     }
-  },[searchParams])
+  }, [searchParams]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -544,26 +543,56 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 className="h-5 w-5 rounded-full flex justify-center items-center"
                 onClick={() => setOpen(!open)}
               >
-                <img src={collapsibleSvg} alt="collapsible" className={classNames(!open ? "rotate-180" : "")} />
+                <img
+                  src={collapsibleSvg}
+                  alt="collapsible"
+                  className={classNames(!open ? "rotate-180" : "")}
+                />
               </button>
             </ToolTip>
 
-            {sidebarItems.map((item) => (
-              <Link
-                to={item.to || "/"}
-                key={item.key}
-                className={classNames(
-                  "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
-                )}
-              >
-                <div style={{
-                  filter: "grayscale(1)",
-                }}>
-                  <item.icon />
+            {sidebarItems.map((item) =>
+              !item.children ? (
+                <Link
+                  to={item.to || "/"}
+                  key={item.key}
+                  className={classNames(
+                    "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                  )}
+                >
+                  <div
+                    style={{
+                      filter: "grayscale(1)",
+                    }}
+                  >
+                    <item.icon />
+                  </div>
+
+                  {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
+                </Link>
+              ) : (
+                <div
+                  key={item.key}
+                  className={classNames(
+                    "rounded flex items-center gap-1 text-sm text-secondary-800",
+                  )}
+                  onClick={() => {
+                    updateActiveGroup(item.key);
+                  }}
+                >
+                  <div className="flex items-center">
+                    <div className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center">
+                      <item.icon />
+                    </div>
+                    <span className=" text-sm">{item.title}</span>
+                  </div>
+                  <div className="">
+                    {!expandedGroups.includes(item.key) && <ChevronUp className="w-2 h-2" />}
+                    {expandedGroups.includes(item.key) && <ChevronDown className="w-2 h-2" />}
+                  </div>
                 </div>
-                {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
-              </Link>
-            ))}
+              ),
+            )}
           </div>
 
           <div className="space-y-0 text-nowrap">

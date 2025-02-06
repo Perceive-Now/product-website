@@ -223,7 +223,7 @@ const AgentRequirements = () => {
                                     {open ? <AddIcon /> : <AddIcon />}
                                   </Disclosure.Button>
                                   <Disclosure.Panel className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
-                                    <div className="w-full mt-4">
+                                    {/* <div className="w-full mt-4">
                                       <label className="block text-base font-semibold">
                                         Questions:
                                       </label>
@@ -261,6 +261,54 @@ const AgentRequirements = () => {
                                           No file uploaded
                                         </p>
                                       )}
+                                    </div> */}
+                                    <div>
+                                      <div className="w-full mt-4 underline text-lg">
+                                        Conversation ID: {new Date().getTime()}
+                                      </div>
+
+                                      {/* use case, industry, agent name */}
+                                      <div className="w-full mt-4">
+                                        <ul>
+                                          <li>Use Case: Health Care and Insurance</li>
+                                          <li>Industry: HealthCare</li>
+                                          <li>Agent Name: Startup dilligence</li>
+                                        </ul>
+                                      </div>
+
+                                      {/* data sources  */}
+                                      <div className="w-full mt-4">
+                                        <label
+                                          htmlFor="fullName"
+                                          className="block text-base font-semibold"
+                                        >
+                                          Data Sources:
+                                        </label>
+                                        <div className="ml-3 mt-1">
+                                          {["source1", "source2", "source3"].map(
+                                            (source, index) => (
+                                              <div key={index}>{source}</div>
+                                            ),
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      {/* report template  */}
+                                      <div className="w-full mt-4">
+                                        <label
+                                          htmlFor="fullName"
+                                          className="block text-base font-semibold"
+                                        >
+                                          Report Template:
+                                        </label>
+                                        <div className="ml-3 mt-1">
+                                          {["Intro", "Body", "Conclusion"].map(
+                                            (template, index) => (
+                                              <div key={index}>{template}</div>
+                                            ),
+                                          )}
+                                        </div>
+                                      </div>
                                     </div>
                                   </Disclosure.Panel>
                                 </>

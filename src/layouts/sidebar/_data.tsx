@@ -36,11 +36,17 @@ const sidebarItems: ISidebarListItem[] = [
     to: "/ai-agent/landing",
   },
   {
+    title: "My AI Agent Reports",
+    key: "reportManagement",
+    icon: NewReportIcon,
+    to: "/my-agent-reports",
+  },
+  {
     title: "Project Hub",
     key: "reportManagement",
-    classname:"mb-1",
+    classname: "mb-1",
     icon: NewReportIcon,
-    to:"/my-projects"
+    to: "/my-projects",
   },
   // {
   //   title: "Know Now",
@@ -111,7 +117,7 @@ const sidebarItems: ISidebarListItem[] = [
 
 export interface ISidebarItem {
   title: string;
-  key: string,
+  key: string;
   icon: ReactElement;
   to: string;
 }
@@ -121,7 +127,7 @@ export interface ISidebarListItem {
   key: string;
   icon?: any;
   to?: string;
-  classname?:string;
+  classname?: string;
   children?: ISidebarListItem[];
   subList?: ISidebarListItem[];
 }
