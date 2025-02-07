@@ -21,6 +21,7 @@ import ReportsSidebarIcon from "src/assets/sidebar/report";
 import KnowNowIcon from "src/assets/sidebar/knowNowIcon";
 import Home from "src/components/icons/sidenav/home";
 import NewReport from "src/components/icons/sidenav/newreport";
+import AiAgentReportIcon from "./_assets/paper-icon";
 
 const sidebarItems: ISidebarListItem[] = [
   {
@@ -38,7 +39,7 @@ const sidebarItems: ISidebarListItem[] = [
   {
     title: "My AI Agent Reports",
     key: "reportManagement",
-    icon: NewReport,
+    icon: AiAgentReportIcon,
     to: "/my-agent-reports",
   },
   {
