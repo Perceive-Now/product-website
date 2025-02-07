@@ -20,7 +20,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
   return (
     <Link to={`/ai-agent?agent=${agent.agentLink}`}>
       <div
-        className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow ${agent.className} cu`}
+        className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow ${agent.className} ${agent.agentName === "Finance & Strategy Agent" && "h-full"} cu`}
       >
         <div
           className={`flex flex-1 bg-gradient-to-br ${agent.bgClass} p-6 h-full`}
@@ -28,6 +28,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
             backgroundImage: `url(${agent.backgroundImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            opacity: agent.agentName === "Marketing & Sales Agent" ? 0.9 : 1,
             // opacity: agent.agentName === "Marketing & Sales Agent" ? 0.9 : 1,
           }}
         >
