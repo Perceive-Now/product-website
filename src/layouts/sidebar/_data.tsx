@@ -38,7 +38,7 @@ const sidebarItems: ISidebarListItem[] = [
   {
     title: "My AI Agent Reports",
     key: "reportManagement",
-    icon: NewReportIcon,
+    icon: NewReport,
     to: "/my-agent-reports",
   },
   {

@@ -30,13 +30,12 @@ const Finish = () => {
   return (
     <div className="flex justify-between min-h-screen bg-gradient-to-b from-white to-[#F7F5FF]">
       <div className="flex flex-col mx-auto gap-y-2 flex-[1] max-w-[550px] mt-[30vh] 2xl:mt-[20vh]">
-        <h2 className="text-5xl mb-4 font-semibold text-[#373D3F] text-left">
-          You’re Ready to Elevate Your Decisions! 🚀
+        <h2 className="text-4xl mb-4 font-semibold text-[#373D3F] text-left">
+          You’re In.
+          <br /> Now, Let’s Get to Work. 🚀
         </h2>
         <p className="text-left text-[#373D3F] font-normal">
-          Great job setting everything up! Your account is ready, and the power to make confident,
-          data-driven decisions is now at your fingertips. Start exploring tailored insights,
-          smarter tools, and endless opportunities.
+          Your setup is complete. Discover our solutions.
         </p>
         <div className="flex justify-end mt-3">
           {/* <Button
@@ -56,7 +55,7 @@ const Finish = () => {
                 replace: true,
               });
             }}
-            text="Make it happen"
+            text="Get Started"
             icon={<RightArrow />}
             variant="primary"
           />

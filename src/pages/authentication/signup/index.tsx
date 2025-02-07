@@ -64,6 +64,7 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [isFading, setIsFading] = useState(false);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -165,28 +166,35 @@ export default function SignupPage() {
 
   useEffect(() => {
     const quoteInterval = setInterval(() => {
-      setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
-    }, 5000);
+      setIsFading(true);
+
+      setTimeout(() => {
+        setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
+        setIsFading(false);
+      }, 500); // Duration should match the transition timing in Tailwind
+    }, 6000);
 
     return () => clearInterval(quoteInterval);
   }, []);
 
   return (
-    <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-between items-center px-2">
-      <form
-        onSubmit={handleSubmit(handleLogin)}
-        className="flex flex-col flex-[1] justify-between items-center"
-      >
-        <div className="w-full p-1 md:p-0 md:w-[500px]">
-          {/* <img
+    <>
+      <div className="flex h-screen lg:h-[calc(100vh-100px)] justify-between items-center px-2">
+        <form
+          onSubmit={handleSubmit(handleLogin)}
+          className="flex flex-col flex-[1] justify-center items-center bg-gray-100 h-full"
+        >
+          <div className="w-full p-1 md:p-0 md:w-[500px] flex flex-col justify-evenly flex-[1]">
+            {/* <img
             src={perceiveNowImage}
             alt="Welcome to Perceive Now"
             className="w-[3rem] h-[3rem] mb-1"
           /> */}
-          <h1 className="text-5xl font-semibold text-[#373D3F] text-left">
-            Get Started With Perceive Now
-          </h1>
-          {/* <p className="text-left text-[#373D3F] mt-2 mb-1">
+            <div>
+              <h1 className="text-5xl font-semibold text-[#373D3F] text-left">
+                Get Started <br /> With Perceive Now
+              </h1>
+              {/* <p className="text-left text-[#373D3F] mt-2 mb-1">
             <span>Already have an account?</span>
             <Link
               to={"/login"}
@@ -198,29 +206,29 @@ export default function SignupPage() {
               Sign In
             </Link>
           </p> */}
-          <div className="mt-3">
-            <fieldset>
-              <div className="mt-0.5 rounded-full shadow-sm">
-                <input
-                  id="email"
-                  {...register("email")}
-                  type="text"
-                  className={classNames(
-                    "appearance-none block w-full px-2 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
-                    errors.email
-                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+              <div className="mt-3">
+                <fieldset>
+                  <div className="mt-0.5 rounded-full shadow-sm">
+                    <input
+                      id="email"
+                      {...register("email")}
+                      type="text"
+                      className={classNames(
+                        "appearance-none block w-full px-2 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
+                        errors.email
+                          ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                      placeholder="Email*"
+                    />
+                  </div>
+
+                  {errors.email?.message && (
+                    <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
                   )}
-                  placeholder="Email*"
-                />
-              </div>
+                </fieldset>
 
-              {errors.email?.message && (
-                <div className="mt-1 text-xs text-danger-500">{errors.email?.message}</div>
-              )}
-            </fieldset>
-
-            {/* <fieldset className="mt-2">
+                {/* <fieldset className="mt-2">
             <div className="mt-0.5 rounded-md shadow-sm relative">
               <input
                 id="password"
@@ -249,65 +257,65 @@ export default function SignupPage() {
               <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
             )}
           </fieldset> */}
-            <fieldset className="mt-2">
-              <div className="mt-0.5 rounded-full shadow-sm relative">
-                <input
-                  id="password"
-                  {...register("password")}
-                  type={isPasswordVisible ? "text" : "password"}
-                  className={classNames(
-                    "appearance-none block w-full pl-2 pr-7 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
-                    errors.password
-                      ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
-                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                  )}
-                  placeholder="Password"
-                />
+                <fieldset className="mt-2">
+                  <div className="mt-0.5 rounded-full shadow-sm relative">
+                    <input
+                      id="password"
+                      {...register("password")}
+                      type={isPasswordVisible ? "text" : "password"}
+                      className={classNames(
+                        "appearance-none block w-full pl-2 pr-7 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
+                        errors.password
+                          ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                      placeholder="Password"
+                    />
 
-                {passwordValue && (
-                  <div
-                    className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
-                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  >
-                    {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
+                    {passwordValue && (
+                      <div
+                        className="absolute top-0 right-2 h-full flex items-center text-gray-600 cursor-pointer"
+                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                      >
+                        {isPasswordVisible ? <EyeClosedIcon /> : <EyeIcon />}
+                      </div>
+                    )}
                   </div>
-                )}
+
+                  {errors.password?.message && (
+                    <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
+                  )}
+                </fieldset>
+              </div>
+              <div className="my-3 flex">
+                <fieldset>
+                  <CheckboxInput onChange={() => setAgreeTerms(!agreeTerms)} />
+
+                  <label className="ml-2 text-[15px] text-[#373D3F]" htmlFor="agree">
+                    By continuing, I agree to Perceive Now&apos;s{" "}
+                    <a
+                      target="_blank"
+                      className="text-inherit underline"
+                      rel="noreferrer noopener"
+                      href={`https://perceivenow.ai/privacy-policy`}
+                    >
+                      Privacy Policy <br />
+                    </a>{" "}
+                    &{" "}
+                    <a
+                      target="_blank"
+                      className="text-inherit underline"
+                      rel="noreferrer noopener"
+                      href={`https://perceivenow.ai/terms`}
+                    >
+                      Terms of Use
+                    </a>
+                  </label>
+                </fieldset>
               </div>
 
-              {errors.password?.message && (
-                <div className="mt-1 text-xs text-danger-500">{errors.password?.message}</div>
-              )}
-            </fieldset>
-          </div>
-          <div className="my-3 flex">
-            <fieldset>
-              <CheckboxInput onChange={() => setAgreeTerms(!agreeTerms)} />
-
-              <label className="ml-2 text-[15px] text-[#373D3F]" htmlFor="agree">
-                By continuing, I agree to Perceive Now&apos;s{" "}
-                <a
-                  target="_blank"
-                  className="text-inherit underline"
-                  rel="noreferrer noopener"
-                  href={`https://perceivenow.ai/privacy-policy`}
-                >
-                  Privacy Policy
-                </a>{" "}
-                and{" "}
-                <a
-                  target="_blank"
-                  className="text-inherit underline"
-                  rel="noreferrer noopener"
-                  href={`https://perceivenow.ai/terms`}
-                >
-                  Terms of Use
-                </a>
-              </label>
-            </fieldset>
-          </div>
-
-          <div className="flex justify-end w-full mt-2">
-            {/* <Button
+              <div className="flex justify-end w-full mt-2">
+                {/* <Button
               classname="w-[160px]"
               rounded="full"
               htmlType="submit"
@@ -317,39 +325,39 @@ export default function SignupPage() {
             >
               <span className="font-[400]">Continue</span>
             </Button> */}
-            {/* <button
+                {/* <button
               type="submit"
               className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white"
             >
               Continue
               <RightArrow className="ml-1" />
             </button> */}
-            <PrimaryButton
-              type="submit"
-              loading={isSubmitting}
-              text="Continue"
-              icon={<RightArrow className="ml-1" />}
-            />
-          </div>
+                <PrimaryButton
+                  type="submit"
+                  loading={isSubmitting}
+                  text="Continue"
+                  icon={<RightArrow className="ml-1" />}
+                />
+              </div>
+            </div>
+            <div className="flex items-end gap-x-2 mt-5">
+              <img src={pnCloveSvg} alt="Perceive Now" className="w-[2rem]" />
+              Already have an account?
+              <Link to="/login" className="text-inherit">
+                Sign In
+              </Link>
+            </div>
+            {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
 
-          <div className="flex items-end gap-x-2 mt-5">
-            <img src={pnCloveSvg} alt="Perceive Now" className="w-[2rem]" />
-            Already have an account?
-            <Link to="/login" className="text-inherit">
-              Sign In
-            </Link>
-          </div>
-          {/* <hr className="mt-4 mb-4 border-gray-300" /> */}
-
-          {/* <GoogleAuth
+            {/* <GoogleAuth
           type="signup"
           isAgree={isAgree}
           title="Sign up with Google"
           isSubmitting={isGoogleSubmitting}
           setIsSubmitting={setIsGoogleSubmitting}
         /> */}
-        </div>
-        {/* <label className="mt-2.5 flex items-center justify-center gap-1">
+          </div>
+          {/* <label className="mt-2.5 flex items-center justify-center gap-1">
         <CheckboxInput
           onChange={() => setIsAgree(!isAgree)}
           style={{
@@ -367,32 +375,39 @@ export default function SignupPage() {
           </a>
         </p>
       </label> */}
-      </form>
-      <div
-        className="flex flex-[0.8] flex-col"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          height: "100%",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="flex flex-col justify-center h-full gap-2 text-gray-700 p-4">
-          <div className="font-bold text-lg">{quotes[currentQuoteIndex]}</div>
+        </form>
+        <div
+          className="flex flex-[0.8] flex-col"
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            height: "100%",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="flex flex-col justify-center h-full gap-2 text-gray-700 p-4">
+            <div
+              className={`text-lg font-semibold transition-opacity duration-500 ${
+                isFading ? "opacity-0" : "opacity-100"
+              }`}
+            >
+              {quotes[currentQuoteIndex]}
+            </div>
 
-          <div className="flex flex-col">
-            <p className="italic">Dr. Vinitha TU</p>
-            <p className="italic">Founder</p>
-            <p className="italic">Perceive Now</p>
+            <div className="flex flex-col">
+              <p className="italic">Dr. Vinitha TU</p>
+              <p className="italic">Founder</p>
+              <p className="italic">Perceive Now</p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center pb-5">
+            <img src={companyPartner} alt="Perceive Now" className="w-[80%]" />
           </div>
         </div>
-
-        <div>
-          <img src={companyPartner} alt="Perceive Now" className="w-full h-auto" />
-        </div>
       </div>
-    </div>
+    </>
   );
 }
 
