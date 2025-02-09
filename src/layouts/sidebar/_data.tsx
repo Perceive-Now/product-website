@@ -22,6 +22,7 @@ import KnowNowIcon from "src/assets/sidebar/knowNowIcon";
 import Home from "src/components/icons/sidenav/home";
 import NewReport from "src/components/icons/sidenav/newreport";
 import AiAgentReportIcon from "./_assets/paper-icon";
+import StackFolders from "./_assets/stacked-folders";
 
 const sidebarItems: ISidebarListItem[] = [
   {
@@ -35,18 +36,20 @@ const sidebarItems: ISidebarListItem[] = [
     key: "new-report",
     icon: NewReport,
     to: "/ai-agent/landing",
-  },
-  {
-    title: "My AI Agent Reports",
-    key: "reportManagement",
-    icon: AiAgentReportIcon,
-    to: "/my-agent-reports",
+    children: [
+      {
+        title: "My AI Agent Reports",
+        key: "reportManagement",
+        icon: AiAgentReportIcon,
+        to: "/my-agent-reports",
+      },
+    ],
   },
   {
     title: "Project Hub",
     key: "reportManagement",
-    classname: "mb-1",
-    icon: NewReportIcon,
+    // classname: "mb-1",
+    icon: StackFolders,
     to: "/my-projects",
   },
   // {

@@ -50,7 +50,7 @@ const agents = [
       "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
     icon: fundRaisingIcon,
     bgClass: "from-blue-200 to-blue-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[550px]",
     backgroundImage: fundRaisingImage,
     agentLink: "fundraising-strategy-agent",
   },
@@ -61,7 +61,7 @@ const agents = [
       "Generate tailored, data-rich reports for any business need, quickly and accurately.",
     icon: reportOnAnythingIcon,
     bgClass: "from-purple-200 to-pink-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-full",
     backgroundImage: reportOnAnythingImage,
     agentLink: "report-on-anything-agent",
   },
@@ -72,7 +72,7 @@ const agents = [
       "Analyze trends and develop strategies to unlock market potential and drive growth.",
     icon: marketStrategyIcon,
     bgClass: "from-teal-200 to-blue-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[550px]",
     backgroundImage: marketStrategyImage,
     agentLink: "market-strategy-agent",
   },
@@ -83,7 +83,7 @@ const agents = [
       "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
     icon: portfolioSupportIcon,
     bgClass: "from-pink-200 to-purple-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[550px]",
     backgroundImage: portfolioSupportImage,
     agentLink: "portfolio-support-agent",
   },
@@ -105,7 +105,7 @@ const agents = [
       "Accelerate product development and engineering with process optimization and market alignment.",
     icon: productEngineeringIcon,
     bgClass: "from-red-200 to-pink-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[420px]",
     backgroundImage: productEngineeringImage,
     agentLink: "product-engineering-agent",
   },
@@ -115,7 +115,7 @@ const agents = [
     description: "Identify and manage promising startup investments to maximize venture success.",
     icon: corporateVentureIcon,
     bgClass: "from-blue-200 to-purple-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[420px]",
     backgroundImage: corporateVentureImage,
     agentLink: "corporate-venture-capital-agent",
   },
@@ -136,7 +136,7 @@ const agents = [
     description: "Boost revenue by crafting impactful campaigns and closing deals with precision.",
     icon: marketingAndSalesIcon,
     bgClass: "from-purple-200 to-blue-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[450px]",
     backgroundImage: marketingAndSalesImage,
     agentLink: "marketing-sales-agent",
   },
@@ -147,7 +147,7 @@ const agents = [
       "Navigate legal and regulatory challenges to ensure compliance and mitigate risks.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
-    className: "col-span-1 row-span-1",
+    className: "col-span-1 row-span-1 h-[450px]",
     backgroundImage: legalAndComplianceImage,
     agentLink: "legal-compliance-agent",
   },
@@ -165,40 +165,43 @@ export default function AgentsGrid() {
         needs to get started!
       </p>
 
-      {/* startup dilligence to technology and rnd */}
-      <div className="flex gap-2">
-        <div>
-          <AgentCard agent={agents[0]} />
-          <div className="flex gap-2 mt-2">
-            <AgentCard agent={agents[3]} />
+      <div className="max-w-[1500px]">
+        {/* startup dilligence to technology and rnd */}
+        <div className="flex gap-2">
+          <div>
+            <AgentCard agent={agents[0]} />
+            <div className="flex gap-2 mt-2">
+              <AgentCard agent={agents[3]} />
 
-            <AgentCard agent={agents[4]} />
+              <AgentCard agent={agents[4]} />
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="flex gap-2 mb-2">
+              <AgentCard agent={agents[1]} />
+              <AgentCard agent={agents[2]} />
+            </div>
+
+            <AgentCard agent={agents[5]} />
           </div>
         </div>
 
-        <div>
-          <div className="flex gap-2 mb-2">
-            <AgentCard agent={agents[1]} />
-            <AgentCard agent={agents[2]} />
-          </div>
+        <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
+          <div className="col-span-2">
+            <div className="grid grid-cols-2 gap-2">
+              <AgentCard agent={agents[6]} />
+              <AgentCard agent={agents[7]} />
+            </div>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <AgentCard agent={agents[9]} />
 
-          <AgentCard agent={agents[5]} />
-        </div>
-      </div>
-
-      <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
-        <div className="col-span-2">
-          <div className="grid grid-cols-2 gap-2">
-            <AgentCard agent={agents[6]} />
-            <AgentCard agent={agents[7]} />
+              <AgentCard agent={agents[10]} />
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            <AgentCard agent={agents[9]} />
-            <AgentCard agent={agents[10]} />
+          <div className="col-span-1 h-full">
+            <AgentCard agent={agents[8]} />
           </div>
-        </div>
-        <div className="col-span-1 h-full">
-          <AgentCard agent={agents[8]} />
         </div>
       </div>
     </div>

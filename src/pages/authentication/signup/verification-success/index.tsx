@@ -17,6 +17,7 @@ const VerificationSuccess = () => {
   // Array of testimonial images
   const testimonials = [testimonialOne, testimonialSecond, testimonialThird];
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
 
   // get the state from navigate(, {state: {}})
   const invitedData = location.state?.invitedData;
@@ -32,8 +33,12 @@ const VerificationSuccess = () => {
   // Change image every 7 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-    }, 5000);
+      setIsFading(true); // Start fade out
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+        setIsFading(false); // Start fade in
+      }, 500); // Halfway through the interval, change the image
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);
@@ -74,8 +79,13 @@ const VerificationSuccess = () => {
         </div>
       </div>
 
+      {/* Image with fade animation */}
       <div className="flex-[1.5] hidden lg:flex justify-center items-center">
-        <img src={testimonials[currentIndex]} alt="welcome" className="" />
+        <img
+          src={testimonials[currentIndex]}
+          alt="welcome"
+          className={`transition-opacity duration-500 ${isFading ? "opacity-0" : "opacity-100"}`}
+        />
       </div>
     </div>
   );

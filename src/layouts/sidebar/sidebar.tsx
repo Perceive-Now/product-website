@@ -493,14 +493,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
       {/* new one */}
       <div className={`flex mr-[66px] sidebar fixed top-0 left-0 z-10`}>
         <div
-          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
+          className={`bg-[#FFA301] ${open ? "w-[250px]" : "w-[56px]"} items-start ${
             open ? "pl-3" : "pl-1 pb-[54px]"
           } duration-300  flex flex-col justify-between h-[100vh] z-10 pb-[20%]`}
-          style={{
-            backgroundImage: `url(${sidebarBackground})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          // style={{
+          //   backgroundColor: "#FFA301",
+          // }}
         >
           <div className="z-10">
             <div className="py-1 px-1 container">
@@ -571,25 +569,59 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                   {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
                 </Link>
               ) : (
-                <div
-                  key={item.key}
-                  className={classNames(
-                    "rounded flex items-center gap-1 text-sm text-secondary-800",
-                  )}
-                  onClick={() => {
-                    updateActiveGroup(item.key);
-                  }}
-                >
-                  <div className="flex items-center">
-                    <div className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center">
-                      <item.icon />
+                // dropdown links
+                <div key={item.key}>
+                  <div
+                    className={`flex items-center gap-x-1 my-1 rounded-lg cursor-pointer text-sm`}
+                  >
+                    <div className="flex items-center">
+                      <div
+                        className="h-5 w-5 rounded-full flex justify-center items-center"
+                        style={{
+                          filter: "grayscale(1)",
+                        }}
+                      >
+                        {item.icon && <item.icon className="text-primary-900" />}
+                      </div>
+                      <Link to={item.to || "/"} className="text-sm text-inherit">
+                        <span className="text-sm">{item.title}</span>
+                      </Link>
                     </div>
-                    <span className=" text-sm">{item.title}</span>
+                    <div className="">
+                      {expandedGroups.includes(item.key) && (
+                        <ChevronUp
+                          className="w-2 h-2"
+                          onClick={() => updateActiveGroup(item.key)}
+                        />
+                      )}
+                      {!expandedGroups.includes(item.key) && (
+                        <ChevronDown
+                          className="w-2 h-2"
+                          onClick={() => updateActiveGroup(item.key)}
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="">
-                    {!expandedGroups.includes(item.key) && <ChevronUp className="w-2 h-2" />}
-                    {expandedGroups.includes(item.key) && <ChevronDown className="w-2 h-2" />}
-                  </div>
+
+                  {expandedGroups.includes(item.key) && (
+                    <div className="space-y-1">
+                      {item.children?.map((child, jndex) => (
+                        <div key={jndex} className="">
+                          {!child.children && (
+                            <NavLinkItem
+                              open={open}
+                              key={`main-content-${jndex}`}
+                              value={child.key}
+                              icon={child.icon}
+                              title={child.title}
+                              to={child.to}
+                              classname="text-sm"
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ),
             )}
