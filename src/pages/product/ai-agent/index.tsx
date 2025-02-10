@@ -168,7 +168,7 @@ const AiAgent = () => {
     if (fileResponse) {
       setIsloading(true);
       try {
-        handleSendQuery("", "Looks good");
+        handleSendQuery("", "Looks good", undefined, undefined, true);
         setUploadStatus(false);
       } catch (error) {
         handleFileUploadError();
@@ -270,14 +270,14 @@ const AiAgent = () => {
                 break;
 
               case "Looks good":
-                ai_query.user_input = "skip";
+                ai_query.user_input = "Looks good";
                 setIsloading(true);
                 try {
                   const { data } = await dispatch(
                     sendAiAgentQuery({
                       agentName: AgentName[agent || ""],
                       ...ai_query,
-                      sendPitchData: true,
+                      sendPitchData: shouldSentPitch ? true : false,
                       // file_upload_status: true,
                     }),
                   ).unwrap();
@@ -316,7 +316,7 @@ const AiAgent = () => {
           else {
             if (answer === "Looks good") {
               //** Fifth Converstaion **//
-              ai_query.user_input = "skip";
+              ai_query.user_input = "Looks good";
               const { data } = await dispatch(
                 sendAiAgentQuery({
                   agentName: AgentName[agent || ""],
@@ -459,6 +459,7 @@ const AiAgent = () => {
                 <div className="">
                   {chats.map((chat, idx) => (
                     <>
+                      {chat.options?.length ? <ChatQuery query={chat.query} /> : null}
                       <QueryAnswer
                         ido={`chat-[${idx}]`}
                         query={chat.query}
@@ -471,7 +472,6 @@ const AiAgent = () => {
                         hasbutton={chat.hasbutton || false}
                         onSendQuery={handleSendQuery}
                       />
-
                       {isLoading}
 
                       {chat.extract ? (
@@ -483,9 +483,9 @@ const AiAgent = () => {
                           query={chat.query}
                           obj={chat.extractObject}
                         />
-                      ) : (
+                      ) : !chat.options?.length ? (
                         <ChatQuery query={chat.query} />
-                      )}
+                      ) : null}
                     </>
                   ))}
                   {delayLoading && (
@@ -522,8 +522,10 @@ const AiAgent = () => {
           {/* {Step === 4 && SidescreenOptions && SidescreenOptions.length > 0 && <InitialScreening />} */}
           <div>
             {/* <ReportCustomization /> */}
-            {dataSources && Object.keys(dataSources) && <SourcesData dataSource={dataSources} />}
-            {jsonType === "Final_report" && Object.keys(jsonResponse).length > 0 && (
+            {dataSources && Object.keys(dataSources || {}) && (
+              <SourcesData dataSource={dataSources} />
+            )}
+            {jsonType === "Final_report" && Object.keys(jsonResponse || {}).length > 0 && (
               <TemplateReport reportSummary={jsonResponse.sections} />
             )}
             {Step == 3 && <InitialScreening />}
