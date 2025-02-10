@@ -65,14 +65,9 @@ const AiAgent = () => {
   const { Step, pitchdeck_data } = useAppSelector((state) => state.VSProduct);
   const firstRun = useRef(true);
   const userId = jsCookie.get("user_id");
-  const { SidescreenOptions } = useAppSelector((state) => state.VSProduct);
-  const { DataSources } = useAppSelector((state) => state.VSProduct);
-  const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
 
   const [query, setQuery] = useState("");
-  const [companyStage, setcompanyStage] = useState("");
   const [uploadStatus, setUploadStatus] = useState(false);
-  const [slideData, setSlideData] = useState<any>(null);
   const [answer, setanswer] = useState<string>("");
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const [isfile, setFile] = useState<string>("");
@@ -140,51 +135,85 @@ const AiAgent = () => {
     }
   };
 
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
-
-  const fetchResponse = async (userInput: string) => {
-    const threadId = generateKnowIdstring();
-    try {
-      const response = await axios.post(
-        "https://templateuserrequirements.azurewebsites.net/process-step",
-        {
-          userId: String(userId), // Convert userId to string
-          threadId,
-          industry: "AI",
-          agent: agent || "Startup Diligence Agent",
-          useCase: "AI",
-          step: 0,
-          data: { user_input: userInput },
-        },
-      );
-      return response.data || "No response received.";
-    } catch (error) {
-      console.error("Error fetching API response:", error);
-      return "An error occurred while processing your request. Please try again.";
-    }
-  };
-
-  const { companyName } = useAppSelector((state) => state.VSProduct);
-
   const [jsonResponse, setJsonResponse] = useState<any>(null);
-  const [websites, setWebsited] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const [jsonType, setJsonType] = useState<string>("");
 
   const [dataSources, setDataSources] = useState<any>(null);
 
-  const [showSummary, setShowSummary] = useState(false);
+  const updateVsChat = (payload: { query: string; answer: string }) => {
+    dispatch(setVSChats(payload));
+  };
 
-  const [fileResponse, setFileResponse] = useState<any>(null);
+  const handleFileSubmitQuery = async (file: File) => {
+    const errorUploadingFile = "Error generating extract summary. Please upload file again";
+    const newQueryIndex = generateKnowId();
+    const firstQuery = {
+      id: newQueryIndex,
+      query: "Great! Let me deep dive into the file.",
+      answer: file.name,
+    };
+    const handleFileUploadError = () => {
+      updateVsChat({
+        query: errorUploadingFile,
+        answer: "",
+      });
+    };
+    setTimeout(() => {
+      dispatch(setVSChats(firstQuery));
+      dispatch(setCurrentStep(1));
+    }, 1000);
+    const fileResponse = await dispatch(extractFileData(file)).unwrap();
+    if (fileResponse) {
+      setIsloading(true);
+      try {
+        handleSendQuery("", "Looks good");
+        setUploadStatus(false);
+      } catch (error) {
+        handleFileUploadError();
+      }
+    } else {
+      setIsloading(false);
+      handleFileUploadError();
+    }
+  };
 
-  console.log("SLKDLSKDLKSLKD", fileResponse);
+  const checkIfFileUpload = (response: string) => {
+    if (
+      response?.includes("upload the pitch deck") ||
+      response?.includes(" upload your pitch deck")
+    ) {
+      setUploadStatus(true);
+    } else {
+      setUploadStatus(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   handleSendQuery("", "hello");
-  // }, []);
-
-  console.log("LOAIDNGGG", isLoading);
+  const processStatusMain = (data: any) => {
+    const cleanedSummary = data.json_response?.replace(/[{}"']/g, "").trim();
+    const cleanValue = data.json_response.replace(/\*\*/g, "").trim();
+    const extractObject = JSON.parse(cleanValue);
+    const { options, remainingText } = processResponse(data.response);
+    dispatch(
+      setVSChats({
+        query: remainingText,
+        answer: "",
+        extract: cleanedSummary,
+        extractObject,
+        options: options || [],
+        hasbutton: !!options?.length,
+      }),
+    );
+    dispatch(
+      setVSChats({
+        query: "",
+        answer: "",
+        options: ["Edit Summary", "Looks good"],
+        hasbutton: true,
+      }),
+    );
+  };
 
   const handleSendQuery = useCallback(
     async (
@@ -201,49 +230,7 @@ const AiAgent = () => {
         setDataSources(null);
         setanswer("");
         if (file) {
-          setanswer("");
-          setFile("true");
-          const firstQuery = {
-            id: newQueryIndex,
-            query: "Great! Let me deep dive into the file.",
-            answer: file.name,
-          };
-          setTimeout(() => {
-            dispatch(setVSChats(firstQuery));
-            dispatch(setCurrentStep(1));
-          }, 1000);
-
-          const fileResponse = await dispatch(extractFileData(file)).unwrap();
-          console.log("file ress", fileResponse);
-          if (fileResponse) {
-            setFileResponse(fileResponse);
-            setIsloading(true);
-            // const res = await dispatch(
-            //   sendQuery({ user_input: fileResponse, user_id: userId || "", thread_id: thread_id }),
-            // ).unwrap();
-            try {
-              handleSendQuery("", "Looks good");
-
-              setUploadStatus(false);
-            } catch (error) {
-              dispatch(
-                setVSChats({
-                  query: "Error generating extract summary. Please upload file again",
-                  answer: "",
-                }),
-              );
-              setFile("false");
-            }
-          } else {
-            setIsloading(false);
-            dispatch(
-              setVSChats({
-                query: "Error generating extract summary. Please upload file again",
-                answer: "",
-              }),
-            );
-            setFile("false");
-          }
+          handleFileSubmitQuery(file);
         } else {
           if (answer === "Go Home") {
             dispatch(resetChats());
@@ -269,80 +256,62 @@ const AiAgent = () => {
             thread_id: thread_id,
             button: button,
           };
-          const queries = { id: newQueryIndex, query: "", answer: answer };
 
           //
           if (button) {
-            if (answer !== "Edit Summary") dispatch(updateButtonSelection({ hasselected: true }));
-            dispatch(setprevres({ answer: answer }));
-            if (answer === "End Conversation") {
-              ai_query.user_input === "chat_ended";
+            if (answer !== "Edit Summary") {
+              dispatch(updateButtonSelection({ hasselected: true }));
             }
-            if (answer === "Looks good") {
-              //** Fifth Converstaion **//
-              ai_query.user_input = "skip";
-              const { data } = await dispatch(
-                sendAiAgentQuery({
-                  agentName: AgentName[agent || ""],
-                  ...ai_query,
-                  sendPitchData: true,
-                  file_upload_status: true,
-                }),
-              ).unwrap();
-              if (
-                data?.response?.includes("upload the pitch deck") ||
-                data?.response?.includes(" upload your pitch deck")
-              ) {
-                setIsloading(false);
-                setUploadStatus(true);
-              }
-              setShowSummary(data.status_main);
-              const { options, remainingText } = processResponse(data.response);
-              dispatch(
-                setVSChats({
-                  query: remainingText,
-                  answer: "",
-                  options: options || [],
-                  hasbutton: !!options?.length,
-                }),
-              );
-              if (data) {
-                setIsloading(false);
-              }
-              // dispatch(setVSChats({ query: data?.response, answer: answer }));
-              //**     **//
-            } else if (answer === "Edit Summary") {
-              setModalOpen(true);
-              return;
-            } else if (Step == 3 && answer == "Continue") {
-              ai_query.user_input = "skip";
-              await dispatch(sendQuery(ai_query)).unwrap();
-            } else if (Step == 5 && answer == "Submit") {
-              dispatch(resetChats());
-              setthread_id(generateKnowIdstring());
-              firstRun.current = true;
-              setFile("false");
-              setFinalMessage(true);
-              return;
-              // dispatch(
-              //   updateChatQuery({
-              //     query: `Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`,
-              //   }),
-              // );
+            dispatch(setprevres({ answer }));
 
-              // dispatch(
-              //   setVSChats({
-              //     query: "",
-              //     answer: "",
-              //     options: ["Start another report", "Go Home"],
-              //     hasbutton: true,
-              //   }),
-              // );
-            } else await dispatch(sendQuery(ai_query)).unwrap();
+            switch (answer) {
+              case "End Conversation":
+                ai_query.user_input = "chat_ended";
+                break;
 
-            // dispatch(setprevres({answer:answer}));
-            // await dispatch(sendQuery(ai_query)).unwrap();
+              case "Looks good":
+                ai_query.user_input = "skip";
+                setIsloading(true);
+                try {
+                  const { data } = await dispatch(
+                    sendAiAgentQuery({
+                      agentName: AgentName[agent || ""],
+                      ...ai_query,
+                      sendPitchData: true,
+                      // file_upload_status: true,
+                    }),
+                  ).unwrap();
+
+                  if (
+                    data?.response?.includes("upload the pitch deck") ||
+                    data?.response?.includes("upload your pitch deck")
+                  ) {
+                    setUploadStatus(true);
+                  }
+
+                  const { options, remainingText } = processResponse(data.response);
+                  dispatch(
+                    setVSChats({
+                      query: remainingText,
+                      answer: "",
+                      options: options || [],
+                      hasbutton: !!options?.length,
+                    }),
+                  );
+                } finally {
+                  setIsloading(false);
+                }
+                break;
+
+              case "Edit Summary":
+                setModalOpen(true);
+                return;
+
+              default:
+                break;
+            }
           }
+
           //
           else {
             if (answer === "Looks good") {
@@ -359,29 +328,10 @@ const AiAgent = () => {
               if (data) {
                 setIsloading(false);
               }
-              if (
-                data?.response?.includes("upload the pitch deck") ||
-                data?.response?.includes(" upload your pitch deck")
-              ) {
-                setUploadStatus(true);
-              }
-              setShowSummary(data.status_main);
+              checkIfFileUpload(data?.response);
 
               if (data.status_main) {
-                const cleanedSummary = data.json_response?.replace(/[{}"']/g, "").trim();
-                const cleanValue = data.json_response.replace(/\*\*/g, "").trim();
-                const extractObject = JSON.parse(cleanValue);
-                const { options, remainingText } = processResponse(data.response);
-                dispatch(
-                  setVSChats({
-                    query: remainingText,
-                    answer: "",
-                    extract: cleanedSummary,
-                    extractObject,
-                    options: options || [],
-                    hasbutton: !!options?.length,
-                  }),
-                );
+                processStatusMain(data);
               } else {
                 const { options, remainingText } = processResponse(data.response);
                 dispatch(
@@ -415,35 +365,15 @@ const AiAgent = () => {
                 setIsloading(false);
               }
               if (data.status_main) {
-                const cleanedSummary = data.json_response?.replace(/[{}"']/g, "").trim();
-                const cleanValue = data.json_response.replace(/\*\*/g, "").trim();
-                const extractObject = JSON.parse(cleanValue);
-                const { options, remainingText } = processResponse(data.response);
-                dispatch(
-                  setVSChats({
-                    query: remainingText,
-                    answer: "",
-                    extract: cleanedSummary,
-                    extractObject,
-                    options: options || [],
-                    hasbutton: !!options?.length,
-                  }),
-                );
+                processStatusMain(data);
               } else {
-                if (
-                  data?.response?.includes("upload the pitch deck") ||
-                  data?.response?.includes(" upload your pitch deck")
-                ) {
-                  setUploadStatus(true);
-                }
+                checkIfFileUpload(data?.response);
                 const { options, remainingText } = processResponse(data.response);
                 const json_response = data.json_response;
 
-                setShowSummary(data.status_main);
-
                 let convoOptions: string[] = [];
                 try {
-                  if (Object.keys(JSON.parse(json_response) || {}).includes("Website")) {
+                  if (data.type_json === "Data_sources") {
                     setDataSources(JSON.parse(json_response));
                     setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
                   } else {
@@ -451,6 +381,7 @@ const AiAgent = () => {
                       convoOptions = ["End Conversation"];
                       setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
                     }
+                    setJsonType(data.type_json);
                     setJsonResponse(json_response);
                   }
                 } catch (error) {
@@ -458,6 +389,7 @@ const AiAgent = () => {
                     convoOptions = ["End Conversation"];
                     setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
                   }
+                  setJsonType(data.type_json);
                   setJsonResponse(json_response);
                 }
 
@@ -591,7 +523,7 @@ const AiAgent = () => {
           <div>
             {/* <ReportCustomization /> */}
             {dataSources && Object.keys(dataSources) && <SourcesData dataSource={dataSources} />}
-            {jsonResponse && Object.keys(jsonResponse).length > 0 && (
+            {jsonType === "Final_report" && Object.keys(jsonResponse).length > 0 && (
               <TemplateReport reportSummary={jsonResponse.sections} />
             )}
             {Step == 3 && <InitialScreening />}
