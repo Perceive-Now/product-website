@@ -267,6 +267,37 @@ const AiAgent = () => {
             switch (answer) {
               case "End Conversation":
                 ai_query.user_input = "chat_ended";
+                try {
+                  const { data } = await dispatch(
+                    sendAiAgentQuery({
+                      agentName: AgentName[agent || ""],
+                      ...ai_query,
+                      sendPitchData: shouldSentPitch ? true : false,
+                      // file_upload_status: true,
+                    }),
+                  ).unwrap();
+                  let convoOptions: string[] = [];
+                  const { options, remainingText } = processResponse(data.response);
+                  if (data.response?.toLowerCase().includes("24-48 hours")) {
+                    convoOptions = ["End Conversation"];
+                    setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                  }
+                  const userOptions = options?.length
+                    ? options
+                    : convoOptions.length
+                    ? convoOptions
+                    : [];
+                  dispatch(
+                    setVSChats({
+                      query: remainingText,
+                      answer: "",
+                      options: userOptions,
+                      hasbutton: !!userOptions?.length,
+                    }),
+                  );
+                } finally {
+                  setIsloading(false);
+                }
                 break;
 
               case "Looks good":
