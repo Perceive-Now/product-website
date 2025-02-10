@@ -581,26 +581,32 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                           filter: "grayscale(1)",
                         }}
                       >
-                        {item.icon && <item.icon className="text-primary-900" />}
+                        {item.icon && open ? (
+                          <item.icon className="text-primary-900" />
+                        ) : (
+                          <Link to={item.to || "/"}><item.icon className="text-primary-900" /></Link>
+                        )}
                       </div>
                       <Link to={item.to || "/"} className="text-sm text-inherit">
-                        <span className="text-sm">{item.title}</span>
+                        {open && <span className="text-sm">{item.title}</span>}
                       </Link>
                     </div>
-                    <div className="">
-                      {expandedGroups.includes(item.key) && (
-                        <ChevronUp
-                          className="w-2 h-2"
-                          onClick={() => updateActiveGroup(item.key)}
-                        />
-                      )}
-                      {!expandedGroups.includes(item.key) && (
-                        <ChevronDown
-                          className="w-2 h-2"
-                          onClick={() => updateActiveGroup(item.key)}
-                        />
-                      )}
-                    </div>
+                    {open && (
+                      <div className="">
+                        {expandedGroups.includes(item.key) && (
+                          <ChevronUp
+                            className="w-2 h-2"
+                            onClick={() => updateActiveGroup(item.key)}
+                          />
+                        )}
+                        {!expandedGroups.includes(item.key) && (
+                          <ChevronDown
+                            className="w-2 h-2"
+                            onClick={() => updateActiveGroup(item.key)}
+                          />
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {expandedGroups.includes(item.key) && (
