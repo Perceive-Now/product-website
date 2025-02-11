@@ -130,7 +130,7 @@ export default function LoginPage() {
                 {...register("username")}
                 type="text"
                 className={classNames(
-                  "appearance-none block w-full px-2 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
+                  "appearance-none block w-full px-2 py-[10px] border-[1px] border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
                   errors.username
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -152,7 +152,7 @@ export default function LoginPage() {
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
-                  "appearance-none block w-full pl-2 pr-7 py-[10px] border-[1px] italic border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
+                  "appearance-none block w-full pl-2 pr-7 py-[10px] border-[1px] border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
                   errors.password
                     ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",

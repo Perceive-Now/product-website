@@ -274,9 +274,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   // const titles = pathname?.split("/").slice(1);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    sidebarItems.map((itm) => itm.key),
-  );
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
 
   const updateActiveGroup = (group: string) => {
     if (expandedGroups.includes(group)) {
@@ -544,7 +542,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 <img
                   src={collapsibleSvg}
                   alt="collapsible"
-                  className={classNames(!open ? "rotate-180" : "")}
+                  className={classNames(!open ? "rotate-180" : "absolute right-[100px]")}
                 />
               </button>
             </ToolTip>
@@ -584,7 +582,9 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                         {item.icon && open ? (
                           <item.icon className="text-primary-900" />
                         ) : (
-                          <Link to={item.to || "/"}><item.icon className="text-primary-900" /></Link>
+                          <Link to={item.to || "/"}>
+                            <item.icon className="text-primary-900" />
+                          </Link>
                         )}
                       </div>
                       <Link to={item.to || "/"} className="text-sm text-inherit">
@@ -611,21 +611,24 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
 
                   {expandedGroups.includes(item.key) && (
                     <div className="space-y-1">
-                      {item.children?.map((child, jndex) => (
-                        <div key={jndex} className="">
-                          {!child.children && (
-                            <NavLinkItem
-                              open={open}
-                              key={`main-content-${jndex}`}
-                              value={child.key}
-                              icon={child.icon}
-                              title={child.title}
-                              to={child.to}
-                              classname="text-sm"
-                            />
-                          )}
-                        </div>
-                      ))}
+                      {
+                        // keep it closed by default
+                        item.children?.map((child, jndex) => (
+                          <div key={jndex} className="">
+                            {!child.children && (
+                              <NavLinkItem
+                                open={open}
+                                key={`main-content-${jndex}`}
+                                value={child.key}
+                                icon={child.icon}
+                                title={child.title}
+                                to={child.to}
+                                classname="text-sm"
+                              />
+                            )}
+                          </div>
+                        ))
+                      }
                     </div>
                   )}
                 </div>
