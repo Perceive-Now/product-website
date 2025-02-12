@@ -9,6 +9,8 @@ interface VSChat {
   options?: string[];
   hasbutton?: boolean;
   hasselected?: boolean;
+  isFile?: boolean;
+  file?: File;
 }
 
 interface VSProduct {
@@ -159,35 +161,30 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
 export const addActivityComment = async (userId: string, comment: string, project_id: string) => {
   try {
     const body = {
-      "user_id": userId,
-      "project_id": project_id.toString(),
-      "comment": comment,
-      "date_and_time": new Date()
-    }
-    const response = await fetch(
-      "https://templateuserrequirements.azurewebsites.net/comments/",
-      {
-        method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json", },
-        body: JSON.stringify(body)
-      },
-    );
+      user_id: userId,
+      project_id: project_id.toString(),
+      comment: comment,
+      date_and_time: new Date(),
+    };
+    const response = await fetch("https://templateuserrequirements.azurewebsites.net/comments/", {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
     if (response.ok) {
       const data = await response.json();
-      console.log("ActivityLog", data)
-      return true
-    }
-    else {
-      return true
+      console.log("ActivityLog", data);
+      return true;
+    } else {
+      return true;
       // setreports([])
       // setTotalReports(0)
     }
   } catch (err) {
-    return true
+    return true;
     console.error(err);
   }
 };
-
 
 export const VSProductSlice = createSlice({
   name: "vs-product",
@@ -244,7 +241,8 @@ export const VSProductSlice = createSlice({
         reportGenerations?: any;
       }>,
     ) => {
-      const { diligenceLevelCovered, pitchdeckSummary, searchQueries, reportGenerations } = action.payload;
+      const { diligenceLevelCovered, pitchdeckSummary, searchQueries, reportGenerations } =
+        action.payload;
       if (diligenceLevelCovered) {
         state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
       }
@@ -277,11 +275,11 @@ export const VSProductSlice = createSlice({
         //   const option = [];
         //   const prevanswer = state.chats[state.chats.length - 1].answer || ""
         //   if (
-        //     prevanswer.trim().toLowerCase() == "continue" || 
+        //     prevanswer.trim().toLowerCase() == "continue" ||
         //     prevanswer.trim().toLowerCase() == "proceed"
         //   ) {
         //     option.push("Continue to answer questions");
-        //   }          
+        //   }
         //   option.push("Skip and proceed to step 5");
         //   state.chats[state.chats.length - 1].query = response;
         //   state.chats.push({ query: "",  answer: "" ,options:option});
@@ -291,7 +289,7 @@ export const VSProductSlice = createSlice({
           console.log("data sources", DataSources);
           state.chats[state.chats.length - 1].query = response;
           state.chats.push({ query: "", answer: "", options: ["Continue"] });
-        } else if (Step == 5 && typeof response === 'object') {
+        } else if (Step == 5 && typeof response === "object") {
           console.log("step 6 response", response);
           state.ReportTemplate = response;
           state.chats[
@@ -377,5 +375,3 @@ export const {
   setCompanyName,
   updatePitchdeckData,
 } = VSProductSlice.actions;
-
-

@@ -7,6 +7,7 @@ import { useLocation, useParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import UserIcon from "../reusable/userIcon";
 import { setprevres } from "src/stores/vs-product";
+import UploadedFileItem from "./UploadedFile";
 
 interface Props {
   isLoading: boolean;
@@ -19,10 +20,8 @@ interface Props {
   hasbutton: boolean;
   hasselected: boolean;
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
+  file?: File;
 }
-
-
-
 
 type IFeedback = "good" | "bad";
 
@@ -32,21 +31,18 @@ const QueryAnswer = ({
   options,
   setanswer,
   onSendQuery,
-  hasselected
-}:
-  Props) => {
-
-  console.log("Toptions", options)
+  hasselected,
+  file,
+}: Props) => {
+  console.log("Toptions", options);
 
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
   const { Step } = useAppSelector((state) => state.VSProduct);
 
-
   const userId = jsCookie.get("user_id");
 
   if (answer === "" && (options === undefined || options?.length === 0)) return <></>;
-
 
   return (
     <>
@@ -87,8 +83,9 @@ const QueryAnswer = ({
                   }}
                   // disabled={stage !== "Edit Summary" ? hasselected : false}
                   disabled={hasselected}
-                  className={`${answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
-                    } cursor-pointer text-sm rounded-lg py-1 px-2 border border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
+                  className={`${
+                    answer === stage ? "bg-foundationOrange-100 border-secondary-500" : ""
+                  } cursor-pointer text-sm rounded-lg py-1 px-2 border border-secondary-500 hover:bg-foundationOrange-100 text-secondary-800`}
                 >
                   {stage}
                 </button>
@@ -96,13 +93,14 @@ const QueryAnswer = ({
             })()
           ) : (
             <div
-              className={`rounded-2xl rounded-br-none flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
+              className={`rounded-2xl rounded-br-none whitespace-pre-line flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
             >
+              {file ? <UploadedFileItem file={file} /> : answer}
               {/* <div
                 className={`text-secondary-800 text-justify `}
                 dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
               /> */}
-              {answer}
+              {/* {answer} */}
             </div>
           )}
         </>

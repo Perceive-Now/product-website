@@ -153,6 +153,8 @@ const AiAgent = () => {
       id: newQueryIndex,
       query: "Great! Let me deep dive into the file.",
       answer: file.name,
+      isFile: true,
+      file,
     };
     const handleFileUploadError = () => {
       updateVsChat({
@@ -502,6 +504,7 @@ const AiAgent = () => {
                         hasselected={chat.hasselected || false}
                         hasbutton={chat.hasbutton || false}
                         onSendQuery={handleSendQuery}
+                        file={chat.file}
                       />
                       {isLoading}
 
