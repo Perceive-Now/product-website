@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, { useState, useRef, useCallback, useEffect, useSyncExternalStore } from "react";
 import AddQuery from "src/components/@vc-product/add-query";
 import InitialScreening from "./InitialScreening";
 import ReportDefault from "./default";
@@ -39,6 +39,7 @@ import ReportCustomization from "./ReportCustomization";
 import axios from "axios";
 import AddQueryAgent from "./add-query";
 import { sendAiAgentQuery } from "./action";
+import LoadingUI from "./LoadingUi";
 
 const AgentName: Record<string, string> = {
   "startup-diligence-agent": "Startup Diligence Agent",
@@ -146,6 +147,9 @@ const AiAgent = () => {
     dispatch(setVSChats(payload));
   };
 
+  const [uploadingfile, setUplaodingFile] = useState(false);
+  const [analysingfile, setAnalysingFile] = useState(false);
+
   const handleFileSubmitQuery = async (file: File) => {
     const errorUploadingFile = "Error generating extract summary. Please upload file again";
     const newQueryIndex = generateKnowId();
@@ -166,10 +170,13 @@ const AiAgent = () => {
       dispatch(setVSChats(firstQuery));
       dispatch(setCurrentStep(1));
     }, 1000);
+    setUplaodingFile(true);
     const fileResponse = await dispatch(extractFileData(file)).unwrap();
     if (fileResponse) {
+      setUplaodingFile(false);
       setIsloading(true);
       try {
+        setAnalysingFile(true);
         handleSendQuery("", "Looks good", undefined, undefined, true);
         setUploadStatus(false);
       } catch (error) {
@@ -177,6 +184,7 @@ const AiAgent = () => {
       }
     } else {
       setIsloading(false);
+      setUplaodingFile(true);
       handleFileUploadError();
     }
   };
@@ -333,6 +341,7 @@ const AiAgent = () => {
                   );
                 } finally {
                   setIsloading(false);
+                  setAnalysingFile(false);
                 }
                 break;
 
@@ -360,6 +369,7 @@ const AiAgent = () => {
               ).unwrap();
               if (data) {
                 setIsloading(false);
+                setAnalysingFile(false);
               }
               checkIfFileUpload(data?.response);
 
@@ -527,10 +537,14 @@ const AiAgent = () => {
                       <DotLoader />
                     </div>
                   )}
-                  {isLoading && (
-                    <div className="flex items-center justify-center p-5 h-full">
-                      <DotLoader />
-                    </div>
+                  {uploadingfile || analysingfile ? (
+                    <LoadingUI uploadingFile={uploadingfile} analyzing={analysingfile} />
+                  ) : (
+                    isLoading && (
+                      <div className="flex items-center justify-center p-5 h-full">
+                        <DotLoader />
+                      </div>
+                    )
                   )}
                 </div>
               </div>
