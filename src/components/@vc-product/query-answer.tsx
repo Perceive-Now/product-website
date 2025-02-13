@@ -8,6 +8,8 @@ import jsCookie from "js-cookie";
 import UserIcon from "../reusable/userIcon";
 import { setprevres } from "src/stores/vs-product";
 import UploadedFileItem from "./UploadedFile";
+import { Dialog } from "@headlessui/react";
+import Button from "../reusable/button";
 
 interface Props {
   isLoading: boolean;
@@ -42,7 +44,13 @@ const QueryAnswer = ({
 
   const userId = jsCookie.get("user_id");
 
-  if (answer === "" && (options === undefined || options?.length === 0)) return <></>;
+  const [showSubmit, setShowSubmit] = useState(false);
+
+  const closeSubmit = () => {
+    setShowSubmit(false);
+  };
+
+  // if (answer === "" && (options === undefined || options?.length === 0)) return <></>;
 
   return (
     <>
@@ -74,7 +82,9 @@ const QueryAnswer = ({
                     // dispatch(setprevres({ answer: stage }));
 
                     // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
-                    if (options.length === 1 || options.includes("Edit Summary"))
+                    if (options.length === 1 && options.includes("Submit")) {
+                      setShowSubmit(true);
+                    } else if (options.length === 1 || options.includes("Edit Summary"))
                       onSendQuery(query, stage, undefined, true);
                     else {
                       setanswer(stage);
@@ -113,6 +123,38 @@ const QueryAnswer = ({
           />
         </div>
       </div>
+      <Dialog
+        open={showSubmit}
+        onClose={() => {
+          undefined;
+        }}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="relative bg-white w-full max-w-[400px] min-w-[400px] p-5 rounded-xl shadow-[7px_9px_14px_0] shadow-[#000]/[0.25]">
+            <p className="text-lg font-bold mb-4">{"Ready to submit?"}</p>
+            <p>
+              {"If needed, review your requirements again. Edits won’t be possible once submitted."}
+            </p>
+            <div className="flex gap-2 mt-4">
+              <Button type="gray" handleClick={closeSubmit}>
+                Go Back
+              </Button>
+              <Button
+                type="primary"
+                handleClick={() => {
+                  onSendQuery("", "End Conversation", undefined, true);
+                  closeSubmit();
+                }}
+              >
+                Confirm Submission
+              </Button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
       {/* )} */}
     </>
   );

@@ -25,7 +25,9 @@ const ReportDefault: React.FC<Props> = ({ finalMessage, setFinalMessage }) => {
        through two main sections: Know Now and Industry Reports. 
        Ready?`
       : finalMessage
-      ? `🎉 Your report will be ready in 24–48 hours. We’ll email you the download link once it’s complete.`
+      ? `Your Report is on the Way!
+      We've collected all the details, and your custom report is now being built. 
+      It will be thoroughly vetted and delivered within 24–48 hours.`
       : `Let’s create something amazing! 🚀
 
          What is the primary objective for this report?
@@ -52,10 +54,11 @@ const ReportDefault: React.FC<Props> = ({ finalMessage, setFinalMessage }) => {
           </div>
         </div> */}
         <div
-          // onClick={handleClick}
-          className={`rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100 w-full sm:w-fit`}
+          className={`cursor-unset rounded-2xl rounded-bl-none flex items-center justify-center px-4 py-2 gap-2 relative cursor-pointer bg-appGray-100 w-full sm:w-fit`}
         >
-          <div className={`text-[15px] sm:text-base leading-[1.5] sm:leading-tight`}>
+          <div
+            className={`text-[15px] sm:text-base leading-[1.6] sm:leading-[1.5] text-gray-700 font-medium whitespace-pre-wrap`}
+          >
             {defaultPrompt.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {line.trim()}
@@ -64,8 +67,9 @@ const ReportDefault: React.FC<Props> = ({ finalMessage, setFinalMessage }) => {
             ))}
           </div>
         </div>
+
         {pathname === "/" && (
-          <div className="flex justify-end w-full mt-4">
+          <div className="flex justify-end w-full mt-4 gap-4">
             <button
               onClick={() => {
                 dispatch(setStartTour(true));
@@ -87,18 +91,18 @@ const ReportDefault: React.FC<Props> = ({ finalMessage, setFinalMessage }) => {
         {finalMessage && (
           <div className="flex justify-center w-full mt-4">
             <button
-              onClick={setFinalMessage}
+              onClick={() => navigate("/")}
               className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
               hover:bg-secondary-500 hover:text-white transition-colors duration-200"
             >
-              Start another report
+              Home
             </button>
             <button
-              onClick={() => navigate("/")}
-              className="px-4 py-2 border border-appGray-200 rounded-xl 
+              onClick={() => navigate("/ai-agent/landing")}
+              className="mr-2 px-4 py-2 border border-appGray-200 rounded-xl 
               hover:bg-secondary-500 hover:text-white transition-colors duration-200"
             >
-              Go Home
+              Explore Agents
             </button>
           </div>
         )}

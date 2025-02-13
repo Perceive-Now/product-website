@@ -149,6 +149,7 @@ const AiAgent = () => {
 
   const [uploadingfile, setUplaodingFile] = useState(false);
   const [analysingfile, setAnalysingFile] = useState(false);
+  const [chatEnded, setChatEnded] = useState(false);
 
   const handleFileSubmitQuery = async (file: File) => {
     const errorUploadingFile = "Error generating extract summary. Please upload file again";
@@ -277,6 +278,7 @@ const AiAgent = () => {
             switch (answer) {
               case "End Conversation":
                 ai_query.user_input = "chat_ended";
+                setChatEnded(true);
                 try {
                   const { data } = await dispatch(
                     sendAiAgentQuery({
@@ -350,6 +352,38 @@ const AiAgent = () => {
                 return;
 
               default:
+                ai_query.user_input = answer;
+                setIsloading(true);
+                try {
+                  const { data } = await dispatch(
+                    sendAiAgentQuery({
+                      agentName: AgentName[agent || ""],
+                      ...ai_query,
+                      sendPitchData: shouldSentPitch ? true : false,
+                      // file_upload_status: true,
+                    }),
+                  ).unwrap();
+
+                  if (
+                    data?.response?.includes("upload the pitch deck") ||
+                    data?.response?.includes("upload your pitch deck")
+                  ) {
+                    setUploadStatus(true);
+                  }
+
+                  const { options, remainingText } = processResponse(data.response);
+                  dispatch(
+                    setVSChats({
+                      query: remainingText,
+                      answer: "",
+                      options: options || [],
+                      hasbutton: !!options?.length,
+                    }),
+                  );
+                } finally {
+                  setIsloading(false);
+                  setAnalysingFile(false);
+                }
                 break;
             }
           }
@@ -457,6 +491,25 @@ const AiAgent = () => {
                     hasbutton: !!userOptions?.length,
                   }),
                 );
+                if (data.type_json === "Data_sources") {
+                  dispatch(
+                    setVSChats({
+                      query: "",
+                      answer: "",
+                      options: ["Next Step"],
+                      hasbutton: true,
+                    }),
+                  );
+                } else if (data.type_json === "Final_report") {
+                  dispatch(
+                    setVSChats({
+                      query: "",
+                      answer: "",
+                      options: ["Submit"],
+                      hasbutton: true,
+                    }),
+                  );
+                }
               }
             }
           }
@@ -484,72 +537,72 @@ const AiAgent = () => {
               </div>
             </div> */}
 
-            {/* {chats && chats.length <= 0 ? (
+            {chatEnded ? (
               <div className="flex flex-row justify-between flex-auto">
                 <ReportDefault
-                  finalMessage={finalMessage}
+                  finalMessage={chatEnded}
                   setFinalMessage={() => {
-                    setFinalMessage(false);
+                    setChatEnded(false);
                   }}
                 />
               </div>
-            ) : ( */}
-            <div className="flex flex-row flex-auto justify-center">
-              <div
-                ref={chatRef}
-                className="bg-white rounded-lg p-3 w-full max-h-[calc(100vh-244px)] overflow-y-auto pn_scroller shadow-[0_4px_4px_0] shadow-[#000]/[0.06]"
-              >
-                <div className="">
-                  {chats.map((chat, idx) => (
-                    <>
-                      {chat.options?.length ? <ChatQuery query={chat.query} /> : null}
-                      <QueryAnswer
-                        ido={`chat-[${idx}]`}
-                        query={chat.query}
-                        answer={chat.answer || ""}
-                        isLoading={isLoading}
-                        setanswer={setanswer}
-                        message_id={chat.id || 0}
-                        options={chat.options}
-                        hasselected={chat.hasselected || false}
-                        hasbutton={chat.hasbutton || false}
-                        onSendQuery={handleSendQuery}
-                        file={chat.file}
-                      />
-                      {isLoading}
-
-                      {chat.extract ? (
-                        <ExtractInfo
-                          onSendQuery={handleSendQuery}
-                          modalOpen={modalOpen}
-                          setModalOpen={setModalOpen}
-                          info={chat.extract}
+            ) : (
+              <div className="flex flex-row flex-auto justify-center">
+                <div
+                  ref={chatRef}
+                  className="bg-white rounded-lg p-3 w-full max-h-[calc(100vh-244px)] overflow-y-auto pn_scroller shadow-[0_4px_4px_0] shadow-[#000]/[0.06]"
+                >
+                  <div className="">
+                    {chats.map((chat, idx) => (
+                      <>
+                        {chat.options?.length ? <ChatQuery query={chat.query} /> : null}
+                        <QueryAnswer
+                          ido={`chat-[${idx}]`}
                           query={chat.query}
-                          obj={chat.extractObject}
+                          answer={chat.answer || ""}
+                          isLoading={isLoading}
+                          setanswer={setanswer}
+                          message_id={chat.id || 0}
+                          options={chat.options}
+                          hasselected={chat.hasselected || false}
+                          hasbutton={chat.hasbutton || false}
+                          onSendQuery={handleSendQuery}
+                          file={chat.file}
                         />
-                      ) : !chat.options?.length ? (
-                        <ChatQuery query={chat.query} />
-                      ) : null}
-                    </>
-                  ))}
-                  {delayLoading && (
-                    <div className="flex items-center justify-center p-5 h-full">
-                      <DotLoader />
-                    </div>
-                  )}
-                  {uploadingfile || analysingfile ? (
-                    <LoadingUI uploadingFile={uploadingfile} analyzing={analysingfile} />
-                  ) : (
-                    isLoading && (
+                        {isLoading}
+
+                        {chat.extract ? (
+                          <ExtractInfo
+                            onSendQuery={handleSendQuery}
+                            modalOpen={modalOpen}
+                            setModalOpen={setModalOpen}
+                            info={chat.extract}
+                            query={chat.query}
+                            obj={chat.extractObject}
+                          />
+                        ) : !chat.options?.length ? (
+                          <ChatQuery query={chat.query} />
+                        ) : null}
+                      </>
+                    ))}
+                    {delayLoading && (
                       <div className="flex items-center justify-center p-5 h-full">
                         <DotLoader />
                       </div>
-                    )
-                  )}
+                    )}
+                    {uploadingfile || analysingfile ? (
+                      <LoadingUI uploadingFile={uploadingfile} analyzing={analysingfile} />
+                    ) : (
+                      isLoading && (
+                        <div className="flex items-center justify-center p-5 h-full">
+                          <DotLoader />
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* )} */}
+            )}
 
             <div className="flex items-center justify-center mt-auto">
               <AddQueryAgent
