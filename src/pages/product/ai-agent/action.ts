@@ -15,7 +15,7 @@ export const sendAiAgentQuery = createAsyncThunk(
 
         const bodyData = {
             userId: String(user_id), // Convert userId to string
-            threadId: thread_id,
+            threadId: String(thread_id),
             industry: "AI",
             agent: agentName || "Startup Diligence Agent",
             useCase: "AI",

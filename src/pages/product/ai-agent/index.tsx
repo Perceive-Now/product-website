@@ -105,14 +105,12 @@ const AiAgent = () => {
 
         // Call API 
         const createThreadResponse: any = await axios.post(
-          "https://templateuserrequirements.azurewebsites.net/agents/threads/create",
-          threadCreateBodyData,
+          `https://templateuserrequirements.azurewebsites.net/agents/threads/create/?user_id=${userId || ""}&thread_name=${uuidv4()}&use_case=AI&industry=AI&agent_name=${AgentName[agent || ""] || "Startup Diligence Agent"}'`,
           { headers: { "Content-Type": "application/json" }, responseType: "stream" }
         );
 
-        setthread_id(createThreadResponse.thread_id || generateKnowIdstring())
+        setthread_id(createThreadResponse.data.thread_id || generateKnowIdstring())
 
-        // console.log('Response:' + JSON.stringify(createThreadResponse));
 
         // const id = generateKnowIdstring();
         // setthread_id(id);
@@ -121,7 +119,7 @@ const AiAgent = () => {
           user_input: "",
           // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
           user_id: userId || "",
-          thread_id: createThreadResponse.thread_id || generateKnowIdstring(),
+          thread_id: createThreadResponse.data.thread_id || generateKnowIdstring(),
         };
         const { data } = await dispatch(
           sendAiAgentQuery({
