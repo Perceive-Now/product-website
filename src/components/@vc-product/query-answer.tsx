@@ -36,8 +36,11 @@ const QueryAnswer = ({
   hasselected,
   file,
 }: Props) => {
-  console.log("Toptions", options);
+  console.log("options", options);
 
+  console.log("File: " + file);
+  console.log("Answer: " + answer);
+  
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
   const { Step } = useAppSelector((state) => state.VSProduct);
@@ -101,27 +104,36 @@ const QueryAnswer = ({
                 </button>
               ));
             })()
-          ) : (
-            <div
-              className={`rounded-2xl rounded-br-none whitespace-pre-line flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
-            >
-              {file ? <UploadedFileItem file={file} /> : answer}
-              {/* <div
-                className={`text-secondary-800 text-justify `}
-                dangerouslySetInnerHTML={{ __html: sanitizedAnswer }}
-              /> */}
-              {/* {answer} */}
-            </div>
+          ) : (   
+            file !== undefined ? (
+              <UploadedFileItem file={file} />
+            ) :
+            answer && (
+              <div
+                className={`rounded-2xl rounded-br-none whitespace-pre-line flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
+              >
+                {answer}
+                
+              </div>
+
+            )
           )}
         </>
         {/* )} */}
-        <div className="pt-3 shrink-0">
-          <UserIcon
-            first_name={userDetail?.first_name || ""}
-            last_name={userDetail?.last_name || ""}
-            profile_photo={userDetail?.profile_photo}
-          />
-        </div>
+
+        <>
+        {
+          answer  && (
+            <div className="pt-3 shrink-0">
+              <UserIcon
+                first_name={userDetail?.first_name || ""}
+                last_name={userDetail?.last_name || ""}
+                profile_photo={userDetail?.profile_photo}
+              />
+            </div>
+          )
+        }
+        </>
       </div>
       <Dialog
         open={showSubmit}
