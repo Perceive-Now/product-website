@@ -40,6 +40,7 @@ import axios from "axios";
 import AddQueryAgent from "./add-query";
 import { sendAiAgentQuery } from "./action";
 import LoadingUI from "./LoadingUi";
+import { v4 as uuidv4 } from 'uuid';
 
 const AgentName: Record<string, string> = {
   "startup-diligence-agent": "Startup Diligence Agent",
@@ -62,7 +63,7 @@ const AiAgent = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [thread_id, setthread_id] = useState(generateKnowIdstring());
+  const [thread_id, setthread_id] = useState("");
   const { Step, pitchdeck_data } = useAppSelector((state) => state.VSProduct);
   const firstRun = useRef(true);
   const userId = jsCookie.get("user_id");
@@ -86,19 +87,41 @@ const AiAgent = () => {
     scrollToBottom();
   }, [chats]);
 
-  useEffect(() => {
+  useEffect(() => {    
     setIsloading(true);
     const fun = async () => {
       try {
         dispatch(resetChats());
-        const id = generateKnowIdstring();
-        setthread_id(id);
+        
+        // Create agent thread
+        const threadCreateBodyData = {
+          user_id: userId || "",
+          thread_name: uuidv4(),
+          use_case: "AI",
+          industry: "AI",
+          agent_name: AgentName[agent || ""] || "Startup Diligence Agent",
+        }
+        console.log({"Thread Data" : threadCreateBodyData});
+
+        // Call API 
+        const createThreadResponse: any = await axios.post(
+          "https://templateuserrequirements.azurewebsites.net/agents/threads/create",
+          threadCreateBodyData,
+          { headers: { "Content-Type": "application/json" }, responseType: "stream" }
+        );
+
+        setthread_id(createThreadResponse.thread_id || generateKnowIdstring())
+
+        // console.log('Response:' + JSON.stringify(createThreadResponse));
+
+        // const id = generateKnowIdstring();
+        // setthread_id(id);
         firstRun.current = true;
         const ai_query = {
           user_input: "",
           // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
           user_id: userId || "",
-          thread_id: id,
+          thread_id: createThreadResponse.thread_id || generateKnowIdstring(),
         };
         const { data } = await dispatch(
           sendAiAgentQuery({
