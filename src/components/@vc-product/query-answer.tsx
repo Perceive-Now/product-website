@@ -23,6 +23,7 @@ interface Props {
   hasselected: boolean;
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
   file?: File;
+  disabled?: boolean;
 }
 
 type IFeedback = "good" | "bad";
@@ -35,12 +36,8 @@ const QueryAnswer = ({
   onSendQuery,
   hasselected,
   file,
+  disabled,
 }: Props) => {
-  console.log("options", options);
-
-  console.log("File: " + file);
-  console.log("Answer: " + answer);
-  
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
   const { Step } = useAppSelector((state) => state.VSProduct);
@@ -52,6 +49,8 @@ const QueryAnswer = ({
   const closeSubmit = () => {
     setShowSubmit(false);
   };
+
+  const [directSubmit, setDirectSubmit] = useState(false);
 
   // if (answer === "" && (options === undefined || options?.length === 0)) return <></>;
 
@@ -87,10 +86,13 @@ const QueryAnswer = ({
                     // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
                     if (options.length === 1 && options.includes("Submit")) {
                       setShowSubmit(true);
-                    } else if (options.length === 1 || options.includes("Edit Summary"))
+                      setDirectSubmit(true);
+                    } else if (options.length === 1 || options.includes("Edit Summary")) {
                       onSendQuery(query, stage, undefined, true);
-                    else {
+                      setDirectSubmit(true);
+                    } else {
                       setanswer(stage);
+                      setDirectSubmit(false);
                       dispatch(setprevres({ answer: stage }));
                     }
                   }}
@@ -104,26 +106,24 @@ const QueryAnswer = ({
                 </button>
               ));
             })()
-          ) : (   
-            file !== undefined ? (
+          ) : file !== undefined ? (
+            <div className="bg-foundationOrange-100 border-secondary-500 p-2 rounded-2xl rounded-br-none">
               <UploadedFileItem file={file} />
-            ) :
+            </div>
+          ) : (
             answer && (
               <div
                 className={`rounded-2xl rounded-br-none whitespace-pre-line flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
               >
                 {answer}
-                
               </div>
-
             )
           )}
         </>
         {/* )} */}
 
         <>
-        {
-          answer  && (
+          {directSubmit || (!options?.length && answer) ? (
             <div className="pt-3 shrink-0">
               <UserIcon
                 first_name={userDetail?.first_name || ""}
@@ -131,8 +131,7 @@ const QueryAnswer = ({
                 profile_photo={userDetail?.profile_photo}
               />
             </div>
-          )
-        }
+          ) : null}
         </>
       </div>
       <Dialog

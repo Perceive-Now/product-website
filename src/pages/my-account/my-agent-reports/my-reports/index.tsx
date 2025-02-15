@@ -32,6 +32,8 @@ import { arrayBufferDownload, formatDate, formatReportDate } from "src/utils/hel
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import toast from "react-hot-toast";
+import ReportConversation from "./ReportConversation";
+import { fetchAgentThreadDetails } from "../agent-report.action";
 /**
  *
  */
@@ -215,14 +217,12 @@ const MyAgentReportManagement = () => {
   const handleBulkDownload = async () => {
     // const reportName = reports[(selectedRows as any)[0] as number]?.report_name;
     // const obj: Record<string, string> = {};
-
     // selectedRows.forEach((selectedIndex: any, index) => {
     //   const selectedReport: any = reports[selectedIndex];
     //   if (selectedReport && selectedReport.report_url) {
     //     const file = selectedReport.report_url;
     //     if (file) {
     //       let fileName = file.split("/").pop() || "unknown_file";
-
     //       // Ensure unique file names
     //       if (obj[fileName]) {
     //         const uniqueSuffix = `_${index}`;
@@ -234,13 +234,11 @@ const MyAgentReportManagement = () => {
     //           fileName += uniqueSuffix;
     //         }
     //       }
-
     //       obj[fileName] = file;
     //     }
     //   }
     //   return null;
     // });
-
     // try {
     //   const response = await fetch(
     //     `https://templateuserrequirements.azurewebsites.net/reports/zip/custom`,
@@ -253,7 +251,6 @@ const MyAgentReportManagement = () => {
     //     },
     //   );
     //   toast.success("Downloading Reports");
-
     //   if (response.ok) {
     //     arrayBufferDownload(response);
     //   }
@@ -439,10 +436,25 @@ const MyAgentReportManagement = () => {
     [],
   );
 
+  const [reportList, setReportList] = useState<{ loading: boolean; reports: any }>({
+    loading: true,
+    reports: [],
+  });
+
+  const { reports: agentReports, loading: agentReportLoading } = reportList;
+
+  useEffect(() => {
+    setReportList({
+      reports: [],
+      loading: true,
+    });
+    fetchAgentThreadDetails(id || "", userId || "", setReportList);
+  }, []);
+
   return (
     <div className="space-y-[20px] w-full z-10 pb-[7%]">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">AI Agent Reports &gt; ABC-XYZ{project_name}</h6>
+        <h6 className="text-lg font-semibold ml-0">AI Agent Reports</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/my-agent-reports">
             <p className="mr-4 text-secondary-800 flex items-center">
@@ -472,15 +484,6 @@ const MyAgentReportManagement = () => {
               }
             >
               Requirements
-            </Tab>
-            <Tab
-              className={({ selected }) =>
-                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${
-                  selected ? "text-white bg-primary-900" : "text-black"
-                }`
-              }
-            >
-              Activity log
             </Tab>
           </Tab.List>
         </div>
@@ -553,279 +556,7 @@ const MyAgentReportManagement = () => {
               </div>
             </Tab.Panel>
             <Tab.Panel>
-              {/* <div className="mt-5 w-full z-10">
-                {reports.length > 0 ? (
-                  <div className="flex space-x-4">
-                    
-                    <div className="w-full space-y-4">
-                      <div className="w-full flex gap-15">
-                        <label htmlFor="fullName" className="block text-lg font-semibold">
-                          Report Name :{" "}
-                          <span className="font-normal">{reports[0]?.report_name}</span>
-                        </label>
-                        <label htmlFor="fullName" className="block text-lg font-semibold">
-                          Primary Objective :{" "}
-                          <span className="font-normal">{reports[0]?.usecase}</span>
-                        </label>
-                      </div>
-
-                      <div className="h-screen w-full mb-10">
-                        <div className="mx-1 w-full divide-y divide-gray-300 bg-white shadow-lg rounded-lg">
-                          {reports.map((report, index) => (
-                            <Disclosure as="div" className="p-3" key={index}>
-                              {({ open }) => (
-                                <>
-                                  <Disclosure.Button className="group flex w-full items-center justify-between">
-                                    <span className="text-base font-semibold text-black">
-                                      {formatDate(report.date_modified)}
-                                    </span>
-                                    {open ? (
-                                      <ArrowUp className="size-2" />
-                                    ) : (
-                                      <ArrowDown className="size-2" />
-                                    )}
-                                  </Disclosure.Button>
-                                  <Disclosure.Panel className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
-                                    <div className="w-full mt-4">
-                                      <label
-                                        htmlFor="fullName"
-                                        className="block text-base font-semibold"
-                                      >
-                                        Questions:
-                                      </label>
-                                      <div className="ml-3 mt-1">
-                                        {Array.isArray(report?.question) &&
-                                        report?.question.length > 0
-                                          ? report?.question.map(
-                                              (question: string, index: number) => (
-                                                <div key={index}>
-                                                  {index + 1}. {question}
-                                                </div>
-                                              ),
-                                            )
-                                          : "No questions available"}
-                                      </div>
-                                    </div>
-                                    <div className="flex justify-between my-2">
-                                      <div className="flex flex-col w-1/2">
-                                        <div className="mt-1">
-                                          <label
-                                            htmlFor="fullName"
-                                            className="block text-base font-semibold"
-                                          >
-                                            Report Customization:
-                                          </label>
-                                          <ul className="list-disc pl-5">
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Report Tone:
-                                              </span>
-                                              <span className="font-normal">
-                                                {report?.report_tone || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                No. of charts/Tables:
-                                              </span>
-                                              <span className="font-normal">
-                                                {report?.no_of_charts || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Visual Style:
-                                              </span>
-                                              <span className="font-normal">
-                                                {report?.visual_style || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Citations:
-                                              </span>
-                                              <span className="font-normal">
-                                                {report?.citations || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Format:
-                                              </span>
-                                              <span className="font-normal">
-                                                {report?.format && report?.format.length > 0
-                                                  ? report?.format.join(", ")
-                                                  : "No formats available"}
-                                              </span>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      </div>
-
-                                      <div className="flex flex-col w-1/2">
-                                        <div className="mt-1 ml-2">
-                                          <h6 className="font-semibold mb-1 text-base font-nunito">
-                                            Added Websites
-                                          </h6>
-
-                                          {report?.websites && report?.websites.length > 0 ? (
-                                            <div className="p-1">
-                                              {report?.websites.map((url: any, index: number) => (
-                                                <div key={index}>
-                                                  <div className="flex justify-between items-center">
-                                                    <a
-                                                      href={url}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                      className="text-sm font-nunito cursor-pointer text-blue-600"
-                                                    >
-                                                      {url}
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              ))}
-                                            </div>
-                                          ) : (
-                                            <p className="">No websites added.</p>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </Disclosure.Panel>
-                                </>
-                              )}
-                            </Disclosure>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="text-center mt-[10%] font-semibold">
-                      <div className="py-2">
-                        No requirements have been added yet. Please click below to add the
-                        requirements.
-                      </div>
-                      <Button
-                        type="primary"
-                        handleClick={() => {
-                          navigate(`/quick-reports/${id}?project=${project_name}`, {
-                            state: reports[0],
-                          });
-                        }}
-                      >
-                        <div className="flex items-center gap-1">Add Requirements</div>
-                      </Button>
-                    </div>
-                  </>
-                )}
-              </div> */}
-              <div className="mt-5 w-full z-10">
-                {reports.map((report, index) => (
-                  <div
-                    className="w-full divide-y my-4 font-semibold divide-gray-300 bg-white shadow-lg rounded-lg"
-                    key={index}
-                  >
-                    <Disclosure as="div" className="p-3">
-                      {({ open }) => (
-                        <>
-                          <Disclosure.Button className="group flex w-full items-center justify-between">
-                            <span className="text-base font-semibold text-black">
-                              {new Date(report.date_modified).toLocaleString("en-US", {
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric",
-                                hour: "numeric",
-                                minute: "numeric",
-                                second: "numeric",
-                              })}
-                            </span>
-                            {open ? (
-                              <ArrowUp className="size-2" />
-                            ) : (
-                              <ArrowDown className="size-2" />
-                            )}
-                          </Disclosure.Button>
-
-                          <Disclosure.Panel className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
-                            <div className="w-full mt-4 underline text-lg">Conversation ID: {report.report_id}</div>
-
-                            {/* use case, industry, agent name */}
-                            <div className="w-full mt-4">
-                              <ul>
-                                <li>Use Case: Health Care and Insurance</li>
-                                <li>Industry: HealthCare</li>
-                                <li>Agent Name: Startup dilligence</li>
-                              </ul>
-                            </div>
-
-                            {/* data sources  */}
-                            <div className="w-full mt-4">
-                              <label htmlFor="fullName" className="block text-base font-semibold">
-                                Data Sources:
-                              </label>
-                              <div className="ml-3 mt-1">
-                                {["source1", "source2", "source3"].map((source, index) => (
-                                  <div key={index}>{source}</div>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* report template  */}
-                            <div className="w-full mt-4">
-                              <label htmlFor="fullName" className="block text-base font-semibold">
-                                Report Template:
-                              </label>
-                              <div className="ml-3 mt-1">
-                                {["Intro", "Body", "Conclusion"].map((template, index) => (
-                                  <div key={index}>{template}</div>
-                                ))}
-                              </div>
-                            </div>
-                          </Disclosure.Panel>
-                        </>
-                      )}
-                    </Disclosure>
-                    {/* <div className="p-3 flex justify-between items-center">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                          <IconFile />
-                          <p className="text-lg font-semibold">{report.report_name}</p>
-                        </div>
-                        <p className="text-base font-semibold">
-                          {formatDate(report.date_modified)}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <Button
-                          type="gray"
-                          handleClick={() => {
-                            openFileHandler(report.report_url);
-                          }}
-                        >
-                          <div className="flex items-center gap-1">
-                            <DownloadIcon />
-                            Download
-                          </div>
-                        </Button>
-                        <Button
-                          type="gray"
-                          handleClick={() => {
-                            //   handleDelete(report.report_id);
-                            console.log("hello");
-                          }}
-                        >
-                          <div className="flex items-center gap-1">
-                            <TrashIcon />
-                            Delete
-                          </div>
-                        </Button>
-                      </div>
-                    </div> */}
-                  </div>
-                ))}
-              </div>
+              <ReportConversation loading={agentReportLoading} reports={agentReports} />
             </Tab.Panel>
 
             <Tab.Panel>

@@ -39,6 +39,19 @@ const MyAgentReport = () => {
   const columnHelper = createColumnHelper();
   const columns = [
     {
+      header: "Id",
+      accessorKey: "id",
+      minSize: 200,
+      cell: (item: any) => (
+        <p
+          className="line-clamp-1"
+          onClick={() => navigate(`/my-agent-reports/${item.row.original.id}`)}
+        >
+          {item.row.original.id}
+        </p>
+      ),
+    },
+    {
       header: "Agent Name",
       accessorKey: "agent_name",
       minSize: 200,
