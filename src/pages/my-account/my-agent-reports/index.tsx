@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ReactTable from "../../../components/reusable/ReactTable";
 import TableSearch from "../../../components/reusable/table-search";
@@ -13,14 +13,18 @@ import EditIcon from "src/components/icons/miscs/Edit";
 import ShareModal from "src/components/reusable/share-modal";
 import DeleteConfirmationModal from "src/components/modal/delete-confirmation";
 import ToolTip from "src/components/reusable/tool-tip";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, PaginationState } from "@tanstack/react-table";
+import jsCookie from "js-cookie";
+import { fetchAgentReports } from "./agent-report.action";
+import { formatDate } from "src/utils/helpers";
 
 const MyAgentReport = () => {
   const navigate = useNavigate();
+
+  const userId = jsCookie.get("user_id");
+
   const [searchQuery, setSearchQuery] = useState("");
   const [modal, setModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(0);
   const [rowSelection, setRowSelection] = useState({});
   const [shareLink, setShareLink] = useState("");
   const [reports, setReports] = useState(
@@ -35,47 +39,60 @@ const MyAgentReport = () => {
   const columnHelper = createColumnHelper();
   const columns = [
     {
-      header: "Reports",
-      accessorKey: "report_name",
+      header: "Agent Name",
+      accessorKey: "agent_name",
       minSize: 200,
       cell: (item: any) => (
-        <p className="line-clamp-1" onClick={() => navigate("/my-agent-reports/1")}>
-          {item.row.original.report_name}
+        <p
+          className="line-clamp-1"
+          onClick={() => navigate(`/my-agent-reports/${item.row.original.id}`)}
+        >
+          {item.row.original.agent_name}
         </p>
       ),
     },
     {
       header: "Date Modified",
-      accessorKey: "date_modified",
+      accessorKey: "created_at",
       minSize: 200,
-      cell: (item: any) => <span>{item.row.original.date_modified}</span>,
+      cell: (item: any) => <span>{formatDate(item.row.original.created_at)}</span>,
     },
-    columnHelper.display({
-      id: "actions",
-      minSize: 200,
-      cell: ({ row }) => (
-        <Tooltip
-          right="3px"
-          isCustomPanel={true}
-          trigger={<VerticalThreeDots className="cursor-pointer" />}
-          panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px]"
-        >
-          <ul id="dropdown">
-            <li className="mb-2 cursor-pointer">
-              <div className="flex items-center">
-                <DownloadIcon className="mr-2" /> Download
-              </div>
-            </li>
-            <li className="cursor-pointer">
-              <div className="flex items-center">
-                <TrashIcon className="mr-2" /> Delete Project
-              </div>
-            </li>
-          </ul>
-        </Tooltip>
-      ),
-    }),
   ];
+
+  const [reportList, setReportList] = useState<{ loading: boolean; reports: any[] }>({
+    loading: true,
+    reports: [],
+  });
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const filteredReports =
+    reportList.reports.length > 0
+      ? reportList.reports
+          .sort((a: any, b: any) => {
+            const dateA = +new Date(a.created_at);
+            const dateB = +new Date(b.created_at);
+            return dateB - dateA; // Descending order
+          })
+          .filter((report: any) =>
+            report.agent_name?.toLowerCase()?.includes(searchQuery.toLowerCase()),
+          )
+          .slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+          )
+      : [];
+
+  useEffect(() => {
+    setReportList({
+      reports: [],
+      loading: true,
+    });
+    fetchAgentReports(userId || "", setReportList);
+  }, []);
 
   return (
     <div className="space-y-[20px] w-full z-10 pb-[7%]">
@@ -93,30 +110,28 @@ const MyAgentReport = () => {
         <div className="w-[300px]">
           <TableSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         </div>
-        {selectedRows.length > 0 && (
-          <div className="ml-auto flex gap-3">
-            <Button type="gray">
-              <div className="flex items-center gap-1">
-                <DownloadIcon /> Download
-              </div>
-            </Button>
-            <Button>
-              <div className="flex items-center gap-2">
-                <TrashIcon />
-              </div>
-            </Button>
-          </div>
-        )}
       </div>
-      <ReactTable
-        columnsData={columns}
-        rowsData={reports}
-        size="medium"
-        rowSelection={rowSelection}
-      />
-      <Pagination page={1} total={1} />
-      <ShareModal open={modal} path={shareLink} handleClose={() => setModal(false)} />
-      {/* <DeleteConfirmationModal open={deleteModal} handleClose={() => setDeleteModal(false)} /> */}
+      {reportList.loading ? (
+        <div className="flex justify-center items-center">
+          <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
+        </div>
+      ) : (
+        <>
+          <ReactTable
+            columnsData={columns}
+            rowsData={filteredReports}
+            size="medium"
+            rowSelection={rowSelection}
+          />
+          <div className=" flex items-center justify-end">
+            <Pagination
+              page={pagination.pageIndex + 1}
+              total={Math.ceil(reportList.reports.length / pagination.pageSize)}
+              onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
