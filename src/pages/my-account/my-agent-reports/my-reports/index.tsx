@@ -47,60 +47,60 @@ const MyAgentReportManagement = () => {
   const urlParams = new URLSearchParams(location.search);
   const project_name = urlParams.get("project");
   const [reports, setreports] = useState<any[]>([
-    {
-      report_id: 1,
-      report_name: "Report 1",
-      report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/1",
-      report_size: 0,
-      date_modified: "2021-08-12",
-      report_complete_status: 1,
-      filename: "report1.pdf",
-    },
-    {
-      report_id: 2,
-      report_name: "Report 2",
-      report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/2",
-      report_size: 0,
-      date_modified: "2021-08-12",
-      report_complete_status: 1,
-      filename: "report2.pdf",
-    },
-    {
-      report_id: 3,
-      report_name: "Report 3",
-      report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/3",
-      report_size: 0,
-      date_modified: "2021-08-12",
-      report_complete_status: 1,
-      filename: "report3.pdf",
-    },
-    {
-      report_id: 4,
-      report_name: "Report 4",
-      report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/4",
-      report_size: 0,
-      date_modified: "2021-08-12",
-      report_complete_status: 1,
-      filename: "report4.pdf",
-    },
-    {
-      report_id: 5,
-      report_name: "Report 5",
-      report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/5",
-      report_size: 0,
-      date_modified: "2021-08-12",
-      report_complete_status: 1,
-      filename: "report5.pdf",
-    },
-    {
-      report_id: 6,
-      report_name: "Report 6",
-      report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/6",
-      report_size: 0,
-      date_modified: "2021-08-12",
-      report_complete_status: 1,
-      filename: "report6.pdf",
-    },
+    // {
+    //   report_id: 1,
+    //   report_name: "Report 1",
+    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/1",
+    //   report_size: 0,
+    //   date_modified: "2021-08-12",
+    //   report_complete_status: 1,
+    //   filename: "report1.pdf",
+    // },
+    // {
+    //   report_id: 2,
+    //   report_name: "Report 2",
+    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/2",
+    //   report_size: 0,
+    //   date_modified: "2021-08-12",
+    //   report_complete_status: 1,
+    //   filename: "report2.pdf",
+    // },
+    // {
+    //   report_id: 3,
+    //   report_name: "Report 3",
+    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/3",
+    //   report_size: 0,
+    //   date_modified: "2021-08-12",
+    //   report_complete_status: 1,
+    //   filename: "report3.pdf",
+    // },
+    // {
+    //   report_id: 4,
+    //   report_name: "Report 4",
+    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/4",
+    //   report_size: 0,
+    //   date_modified: "2021-08-12",
+    //   report_complete_status: 1,
+    //   filename: "report4.pdf",
+    // },
+    // {
+    //   report_id: 5,
+    //   report_name: "Report 5",
+    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/5",
+    //   report_size: 0,
+    //   date_modified: "2021-08-12",
+    //   report_complete_status: 1,
+    //   filename: "report5.pdf",
+    // },
+    // {
+    //   report_id: 6,
+    //   report_name: "Report 6",
+    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/6",
+    //   report_size: 0,
+    //   date_modified: "2021-08-12",
+    //   report_complete_status: 1,
+    //   filename: "report6.pdf",
+    // },
   ]);
 
   const [totalReports, setTotalReports] = useState(0);
@@ -478,7 +478,7 @@ const MyAgentReportManagement = () => {
             </Tab>
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
+                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${
                   selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }

@@ -34,14 +34,14 @@ import AgentCard from "./_components/AgentCard";
 const agents = [
   {
     agentName: "Startup Diligence Agent",
-    title: "Startup Diligence Agent",
+    title: "Company Diligence Agent",
     description:
       "Evaluate startups to uncover risks, validate potential, and guide informed investment decisions.",
     icon: startupDilligenceIcon,
     bgClass: "from-pink-200 to-red-100",
     className: "col-span-6 row-span-1",
     backgroundImage: startupDilligenceImage,
-    agentLink: "startup-diligence-agent",
+    agentLink: "company-diligence-agent",
   },
   {
     agentName: "Fundraising Strategy Agent",

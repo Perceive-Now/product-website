@@ -1,4 +1,5 @@
 import React from "react";
+import IconFile from "../icons/side-bar/icon-file";
 
 const UploadedFileItem = ({ file }: { file: File }) => {
   const getFileTypeIcon = (extension: string) => {
@@ -28,7 +29,7 @@ const UploadedFileItem = ({ file }: { file: File }) => {
       default:
         return (
           <div className="h-6 w-6 bg-gray-500 rounded text-white flex items-center justify-center">
-            📁
+            📄
           </div>
         );
     }

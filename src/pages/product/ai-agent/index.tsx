@@ -43,7 +43,7 @@ import LoadingUI from "./LoadingUi";
 import { v4 as uuidv4 } from "uuid";
 
 const AgentName: Record<string, string> = {
-  "startup-diligence-agent": "Startup Diligence Agent",
+  "company-diligence-agent": "Startup Diligence Agent",
   "fundraising-strategy-agent": "Fundraising Strategy Agent",
   "report-on-anything-agent": "Report on Anything Agent",
   "market-strategy-agent": "Market Strategy Agent",
@@ -355,6 +355,28 @@ const AiAgent = () => {
                   ) {
                     setUploadStatus(true);
                   }
+                  let convoOptions: string[] = [];
+                  const json_response = data.json_response;
+                  try {
+                    if (data.type_json === "Data_sources") {
+                      setDataSources(JSON.parse(json_response));
+                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                    } else {
+                      if (data.response?.toLowerCase().includes("24-48 hours")) {
+                        convoOptions = ["End Conversation"];
+                        setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                      }
+                      setJsonType(data.type_json);
+                      setJsonResponse(json_response);
+                    }
+                  } catch (error) {
+                    if (data.response?.toLowerCase().includes("24-48 hours")) {
+                      convoOptions = ["End Conversation"];
+                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                    }
+                    setJsonType(data.type_json);
+                    setJsonResponse(json_response);
+                  }
 
                   const { options, remainingText } = processResponse(data.response);
                   dispatch(
@@ -365,6 +387,25 @@ const AiAgent = () => {
                       hasbutton: !!options?.length,
                     }),
                   );
+                  if (data.type_json === "Data_sources") {
+                    dispatch(
+                      setVSChats({
+                        query: "",
+                        answer: "",
+                        options: ["Next Step"],
+                        hasbutton: true,
+                      }),
+                    );
+                  } else if (data.type_json === "Final_report") {
+                    dispatch(
+                      setVSChats({
+                        query: "",
+                        answer: "",
+                        options: ["Submit"],
+                        hasbutton: true,
+                      }),
+                    );
+                  }
                 } finally {
                   setIsloading(false);
                   setAnalysingFile(false);
@@ -680,7 +721,7 @@ const AiAgent = () => {
                 // sendQuery={() => {
                 //   fetchResponse(query);
                 // }}
-                fileRequired={!agent || agent === "startup-diligence-agent"}
+                fileRequired={!agent || agent === "company-diligence-agent"}
                 sendQuery={handleSendQuery}
               />
             </div>
