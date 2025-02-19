@@ -449,6 +449,9 @@ const MyAgentReportManagement = () => {
       loading: true,
     });
     fetchAgentThreadDetails(id || "", userId || "", setReportList);
+
+
+    console.log("Agent Reportss", agentReports);
   }, []);
 
   return (

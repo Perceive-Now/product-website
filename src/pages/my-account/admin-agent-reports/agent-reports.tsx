@@ -9,8 +9,8 @@ import ShareModal from "src/components/reusable/share-modal";
 
 const AgentReports = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  console.log(id);
+  const { userid } = useParams();
+  console.log(userid);
   const [searchQuery, setSearchQuery] = useState("");
   const [reports] = useState([
     {
@@ -58,7 +58,7 @@ const AgentReports = () => {
   const fetchThreads = async () => {
     try {
       const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/threads/${id}`,
+        `https://templateuserrequirements.azurewebsites.net/threads/${userid}`,
         {
           method: "GET",
           headers: { Accept: "application/json" },
@@ -88,14 +88,22 @@ const AgentReports = () => {
 
   const columns = [
     {
-      header: "Thread",
-      accessorKey: "report_name",
-      cell: (item: any) => (
-        <p className="line-clamp-1" onClick={() => navigate("/agent-reports/1")}>
-          {item.row.original.thread_name}
-        </p>
-      ),
+      header: "Thread ID",
+      accessorKey: "thread_id",
+      cell: (item: any) => <p onClick={() => navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)}>{item.row.original.id}</p>,
     },
+    // {
+    //   header: "Thread",
+    //   accessorKey: "report_name",
+    //   cell: (item: any) => (
+    //     <p
+    //       className="line-clamp-1"
+    //       onClick={() => navigate(`/agent-reports/${item.row.original.id}`)}
+    //     >
+    //       {item.row.original.thread_name}
+    //     </p>
+    //   ),
+    // },
     {
       header: "Agent Name",
       accessorKey: "agent_name",
@@ -105,9 +113,7 @@ const AgentReports = () => {
       header: "Date Created",
       accessorKey: "date_created",
       cell: (item: any) => (
-        <span>
-          {new Date(item.row.original.created_at).toLocaleDateString("en-US")}
-        </span>
+        <span>{new Date(item.row.original.created_at).toLocaleDateString("en-US")}</span>
       ), // Placeholder for date format
     },
     {

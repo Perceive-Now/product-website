@@ -533,7 +533,11 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           />
 
           <div className="space-y-1 mb-auto text-nowrap">
-            <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+            <ToolTip
+              title={open ? "Close Sidebar" : "Open Sidebar"}
+              placement="right"
+              tooltipClose={open}
+            >
               <button
                 type="button"
                 className="h-5 w-5 rounded-full flex justify-center items-center"
@@ -542,7 +546,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 <img
                   src={collapsibleSvg}
                   alt="collapsible"
-                  className={classNames(!open ? "rotate-180" : "absolute right-[100px]")}
+                  className={classNames(!open ? "rotate-180" : "")}
                 />
               </button>
             </ToolTip>

@@ -243,8 +243,8 @@ function App() {
             <Route path="/upload-agent-report" element={<UploadAgentReport />} />
 
             <Route path="/agent-admin" element={<AgentAdminDashboard />} />
-            <Route path="/agent-admin-reports/:id" element={<AgentReports />} />
-            <Route path="/agent-reports/:id" element={<AgentRequirements />} />
+            <Route path="/agent-admin-reports/:userid" element={<AgentReports />} />
+            <Route path="/agent-reports/:threadid/:userid" element={<AgentRequirements />} />
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />

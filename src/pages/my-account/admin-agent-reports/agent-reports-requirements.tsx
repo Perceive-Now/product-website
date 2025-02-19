@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ReactTable from "../../../components/reusable/ReactTable";
 import { Tab } from "@headlessui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import TableSearch from "../../../components/reusable/table-search";
 import { LoadingIcon } from "src/components/icons";
@@ -9,6 +9,7 @@ import ShareModal from "src/components/reusable/share-modal";
 import { Disclosure } from "@headlessui/react";
 import AddIcon from "src/components/icons/common/add-icon";
 import IconFile from "src/components/icons/side-bar/icon-file";
+import ReportConversation from "../my-agent-reports/my-reports/ReportConversation";
 
 interface Report {
   report_name: string;
@@ -35,6 +36,7 @@ interface Thread {
 
 const AgentRequirements = () => {
   const navigate = useNavigate();
+  const { threadid, userid } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [reports] = useState<Report[]>([
     // Sample report data
@@ -59,6 +61,9 @@ const AgentRequirements = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0); // Default tab index
   const [threads, setThreads] = useState<Thread[]>([]); // State for fetched threads
   const [loadingThreads, setLoadingThreads] = useState(false); // Loading state for threads
+
+  const [reportConversation, setReportConversation] = useState<any>({}); // Placeholder for report conversation
+  const [reportConversationLoading, setReportConversationLoading] = useState(false); // Placeholder for report conversation loading
 
   const filteredReports = reports; // Placeholder for filtered reports
 
@@ -123,18 +128,32 @@ const AgentRequirements = () => {
     }
   };
 
+  const fetchConversation = async (threadId: string, userId: string) => {
+    setReportConversationLoading(true);
+    try {
+      const res = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/threads/${threadId}/${userId}`,
+      );
+      const data = await res.json();
+      setReportConversation(data);
+    } catch (err) {
+      console.error("Error fetching conversation:", err);
+    } finally {
+      setReportConversationLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (selectedTabIndex === 1) {
-      // Requirements tab
-      fetchThreads();
+      fetchConversation(threadid as string, userid as string);
     }
-  }, [selectedTabIndex]);
+  }, [selectedTabIndex, threadid, userid]);
 
   return (
     <div className="space-y-[20px] w-full z-10">
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">
-          Settings &gt; Admin Agent Report management &gt; Project Name
+          Settings &gt; Admin Agent Report management &gt; {threadid}
         </h6>
         <div className="flex justify-start items-center pt-3 pl-1">
           <p className="mr-4 text-secondary-800 flex items-center" onClick={() => navigate(-1)}>
@@ -193,41 +212,12 @@ const AgentRequirements = () => {
               />
             </Tab.Panel>
             <Tab.Panel>
-              {loadingThreads ? (
-                <div className="flex justify-center items-center">
-                  <LoadingIcon fontSize={40} className="animate-spin text-primary-900" />
-                </div>
-              ) : (
-                <div className="mt-5 mb-5 w-full z-10">
-                  {threads.length > 0 ? (
-                    threads.map((thread, index) => (
-                      <Disclosure as="div" key={index}>
-                        {({ open }) => (
-                          <div className="bg-white shadow p-3 border-b">
-                            <Disclosure.Button className="group flex w-full items-center justify-between">
-                              <span className="text-base font-semibold text-black">
-                                {thread.thread_name}
-                              </span>
-                              {open ? <AddIcon /> : <AddIcon />}
-                            </Disclosure.Button>
-                            <Disclosure.Panel className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
-                              <div className="flex flex-col gap-2">
-                                <p>Use Case: {thread.use_case}</p>
-                                <p>Industry: {thread.industry}</p>
-                                <p>Agent Name: {thread.agent_name}</p>
-                                <p>Created At: {new Date(thread.created_at).toLocaleString()}</p>
-                                <p>Updated At: {new Date(thread.updated_at).toLocaleString()}</p>
-                              </div>
-                            </Disclosure.Panel>
-                          </div>
-                        )}
-                      </Disclosure>
-                    ))
-                  ) : (
-                    <p>No requirements found.</p>
-                  )}
-                </div>
-              )}
+              <div className="mt-5 mb-5 w-full z-10">
+                <ReportConversation
+                  loading={reportConversationLoading}
+                  reports={reportConversation}
+                />
+              </div>
             </Tab.Panel>
           </Tab.Panels>
         )}
