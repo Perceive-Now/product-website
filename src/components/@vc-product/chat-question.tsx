@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import IconButton from "../reusable/icon-button";
 import UserIcon from "../reusable/userIcon";
@@ -30,9 +30,16 @@ interface Props {
   editIndex?: any;
   setQuery?: any;
   isloadingCompleted?: boolean;
+  shouldStream?: boolean;
 }
 
-const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props) => {
+const ChatQuery = ({
+  query,
+  updateQuery,
+  editIndex,
+  isloadingCompleted,
+  shouldStream = true,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const userDetail = useAppSelector((state) => state.auth.user);
@@ -81,6 +88,30 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
     return words.length > 50;
   }
 
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    if (!query) return;
+
+    let index = 0;
+    let currentText = "";
+    if (shouldStream) {
+      const interval = setInterval(() => {
+        if (index < query.length) {
+          currentText += query[index];
+          setDisplayedText(currentText);
+          index++;
+        } else {
+          clearInterval(interval);
+        }
+      }, 10); // Adjust delay as needed
+
+      return () => clearInterval(interval);
+    } else {
+      setDisplayedText(query);
+    }
+  }, [query]); // Only trigger when `answer` updates
+
   if (!query) return <></>;
 
   return (
@@ -95,16 +126,13 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
           className={`text-secondary-800 text-justify ${showMore ? "" : ""}`}
           dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
         /> */}
-          <Markdown
-                      className="markdownWrapper text-secondary-800 text-justify text-align"
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[
-                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
-                      ]}
-                    >
-                      {query}
-                    </Markdown>
-
+        <Markdown
+          className="markdownWrapper text-secondary-800 text-justify text-align"
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[[rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]]}
+        >
+          {displayedText}
+        </Markdown>
       </div>
     </div>
   );

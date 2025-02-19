@@ -41,7 +41,7 @@ const ReportConversation = (props: Props) => {
             file={chat.file}
           />
         )}
-        <ChatQuery query={remainingTextAnswer} />
+        <ChatQuery query={remainingTextAnswer} shouldStream={false} />
         {optionAnswer?.length ? (
           <QueryAnswer
             ido={`chat-[${idx}]`}
