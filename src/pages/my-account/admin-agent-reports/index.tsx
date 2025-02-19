@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ReactTable from "../../../components/reusable/ReactTable";
 import { ColumnDef } from "@tanstack/react-table";
 import Pagination from "src/components/reusable/pagination";
@@ -24,6 +24,45 @@ const AgentAdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
 
+  const fetchUsers = useCallback(async (password: string) => {
+    console.log("Fetching users with password:", password);
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=${password}`,
+        {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        },
+      );
+
+      if (response.ok) {
+        localStorage.setItem("isAuthenticated", "true");
+        const data = await response.json();
+        const transformedUserIds = data.users_info.map((userId: any, index: number) => ({
+          id: index + 1,
+          user_id: userId.user_id,
+          user_name: `${userId.first_name} ${userId.last_name}`,
+        }));
+        setUsers(transformedUserIds);
+        localStorage.setItem("adminKey", password);
+      } else {
+        setPasswordError("Incorrect password. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      setPasswordError("An error occurred while fetching users.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Automatically fetch users when component mounts
+  useEffect(() => {
+    const password = localStorage.getItem("adminKey") || "gautam_Hero"; // Retrieve password from localStorage or set a default
+    fetchUsers(password);
+  }, [fetchUsers]);
+
   const filteredUser = users; // Placeholder for filtered users
 
   const columns = [
@@ -31,7 +70,8 @@ const AgentAdminDashboard = () => {
       header: "Users",
       accessorKey: "user_name",
       cell: (item: any) => (
-        <div className="flex items-center" onClick={() => navigate("/agent-admin-reports/1")}>
+        <div className="flex items-center" onClick={() => navigate(`/agent-admin-reports/${item.row.original.user_id}`)}>
+          {/* Your SVG and User Name Here */}
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 2048 2048">
             <g>
               <path
@@ -64,7 +104,6 @@ const AgentAdminDashboard = () => {
           Total User<span className="ml-3">{users.length}</span>
         </div>
         <div className="w-[300px]">
-          {/* Placeholder for search input */}
           <input
             type="text"
             className="block w-full pl-2 pr-7 py-[10px] bg-gray-100 border-1 rounded-md"
