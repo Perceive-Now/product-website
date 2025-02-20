@@ -108,6 +108,7 @@ import AgentRequirements from "./pages/my-account/admin-agent-reports/agent-repo
 import MyAgentReport from "./pages/my-account/my-agent-reports";
 import MyAgentReportManagement from "./pages/my-account/my-agent-reports/my-reports";
 import UploadAgentReport from "./pages/my-account/admin-agent-reports/upload-report";
+import TaskType from "./pages/my-account/admin-agent-reports/task-type";
 // import MadLibEditor from "./test";
 
 /**
@@ -240,17 +241,21 @@ function App() {
             {/* agent reports  */}
             <Route path="/my-agent-reports" element={<MyAgentReport />} />
             <Route path="/my-agent-reports/:id" element={<MyAgentReportManagement />} />
-            <Route path="/upload-agent-report" element={<UploadAgentReport />} />
 
-            <Route path="/agent-admin" element={<AgentAdminDashboard />} />
-            <Route path="/agent-admin-reports/:userid" element={<AgentReports />} />
-            <Route path="/agent-reports/:threadid/:userid" element={<AgentRequirements />} />
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
             <Route path="/admin-reports/:id" element={<AdminReports />} />
             <Route path="/upload-report/:id" element={<AdminUploadReport />} />
             <Route path="/detailed-report" element={<DetailedReport />} />
+
+            <Route path="/agent-admin" element={<AgentAdminDashboard />} />
+            <Route path="/agent-admin-reports/:userid" element={<AgentReports />} />
+            <Route path="/agent-reports/:threadid/:userid" element={<AgentRequirements />} />
+            <Route
+              path="/agent-admin/upload-agent-report/:threadid/:userid"
+              element={<UploadAgentReport />}
+            />
 
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>

@@ -38,7 +38,8 @@ const AgentRequirements = () => {
   const navigate = useNavigate();
   const { threadid, userid } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
-  const [reports] = useState<Report[]>([
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const [reports, setReports] = useState<Report[]>([
     // Sample report data
     {
       report_name: "Report 1",
@@ -65,16 +66,25 @@ const AgentRequirements = () => {
   const [reportConversation, setReportConversation] = useState<any>({}); // Placeholder for report conversation
   const [reportConversationLoading, setReportConversationLoading] = useState(false); // Placeholder for report conversation loading
 
-  const filteredReports = reports; // Placeholder for filtered reports
+  const filteredReports = reports.filter(
+    (report) =>
+      report.report_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      report.report_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      report.date_modified.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (report.report_complete_status ? "Completed" : "Pending")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      report.report_size.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const columns = [
     {
-      header: "Report",
+      header: "Report Name",
       accessorKey: "report_name",
       cell: (item: any) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
     },
     {
-      header: "Type",
+      header: "File Type",
       accessorKey: "report_type",
       cell: (item: any) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
     },
@@ -85,7 +95,7 @@ const AgentRequirements = () => {
     },
     {
       header: "Status",
-      accessorKey: "status",
+      accessorKey: "report_complete_status",
       cell: (item: any) => (
         <span>{item.row.original.report_complete_status ? "Completed" : "Pending"}</span>
       ),
@@ -99,32 +109,56 @@ const AgentRequirements = () => {
         return <span>{mb.toFixed(2)} MB</span>;
       },
     },
+    {
+      header: "Download",
+      // accessorKey: "file_data",
+      cell: (item: any) => (
+        <a
+          href={item.row.original.file_data.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 underline"
+        >
+          Download
+        </a>
+      ),
+    },
   ];
 
   // Fetch threads when the "Requirements" tab is selected
-  const fetchThreads = async () => {
-    setLoadingThreads(true);
+  const fetchReports = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
-        "https://templateuserrequirements.azurewebsites.net/threads/153",
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
+        `https://templateuserrequirements.azurewebsites.net/agents/reportcheck/${userid}/${threadid}`,
       );
-
       if (response.ok) {
         const data = await response.json();
-        setThreads(data);
+        console.log("Reports fetched:", data);
+
+        if (data.report_completed && Array.isArray(data.report_info)) {
+          setReports(
+            data.report_info.map((report: any) => ({
+              report_name: report.filename, // Use filename for report name
+              report_type: report.filename.split(".").pop(), // Extract file type
+              date_modified: report.datetime, // Assign datetime
+              report_complete_status: data.report_completed,
+              report_size: `${report.size} bytes`, // Keep size in bytes
+              question: [],
+              file_data: { url: report.url }, // Store file URL
+              usecase: "N/A", // Placeholder
+            })),
+          );
+        } else {
+          setReports([]); // No reports available
+        }
       } else {
-        console.error("Failed to fetch threads");
-        setThreads([]);
+        console.error("Failed to fetch reports");
       }
     } catch (err) {
-      console.error("Error fetching threads:", err);
-      setThreads([]);
+      console.error("Error fetching reports:", err);
     } finally {
-      setLoadingThreads(false);
+      setLoading(false);
     }
   };
 
@@ -144,8 +178,15 @@ const AgentRequirements = () => {
   };
 
   useEffect(() => {
+    if (selectedTabIndex === 0) {
+      fetchReports();
+    }
     if (selectedTabIndex === 1) {
       fetchConversation(threadid as string, userid as string);
+    }
+
+    if (!isAuthenticated) {
+      navigate("/admin");
     }
   }, [selectedTabIndex, threadid, userid]);
 
