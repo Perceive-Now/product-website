@@ -84,13 +84,27 @@ const AgentReports = () => {
     fetchThreads();
   }, []);
 
-  const filteredReports = threads; // Placeholder for filtered reports
+  const filteredReports = threads.filter(
+    (thread) =>
+      thread.agent_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      thread.thread_id?.toString().includes(searchQuery) ||
+      thread.date_created?.includes(searchQuery) ||
+      thread.date_modified?.includes(searchQuery),
+  );
 
   const columns = [
     {
       header: "Thread ID",
-      accessorKey: "thread_id",
-      cell: (item: any) => <p onClick={() => navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)}>{item.row.original.id}</p>,
+      accessorKey: "id",
+      cell: (item: any) => (
+        <p
+          onClick={() =>
+            navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)
+          }
+        >
+          {item.row.original.id}
+        </p>
+      ),
     },
     // {
     //   header: "Thread",
@@ -111,14 +125,14 @@ const AgentReports = () => {
     },
     {
       header: "Date Created",
-      accessorKey: "date_created",
+      accessorKey: "created_at",
       cell: (item: any) => (
         <span>{new Date(item.row.original.created_at).toLocaleDateString("en-US")}</span>
       ), // Placeholder for date format
     },
     {
       header: "Date Modified",
-      accessorKey: "date_modified",
+      accessorKey: "updated_at",
       cell: (item: any) => (
         <span>
           {new Date(item.row.original.updated_at).toLocaleTimeString("en-US", {

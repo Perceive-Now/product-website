@@ -24,53 +24,58 @@ const AgentAdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
 
-  const fetchUsers = useCallback(async (password: string) => {
-    console.log("Fetching users with password:", password);
+  const fetchUsers = async () => {
+    setLoading(true);
+    setPasswordError("");
+
     try {
-      setLoading(true);
       const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=${password}`,
+        "https://templateuserrequirements.azurewebsites.net/agents/unique-users",
         {
           method: "GET",
-          headers: { Accept: "application/json" },
+          headers: {
+            Accept: "application/json",
+            Authorization: "Basic " + btoa("admin:securepass"), // Basic Auth
+          },
         },
       );
 
       if (response.ok) {
-        localStorage.setItem("isAuthenticated", "true");
         const data = await response.json();
-        const transformedUserIds = data.users_info.map((userId: any, index: number) => ({
-          id: index + 1,
-          user_id: userId.user_id,
-          user_name: `${userId.first_name} ${userId.last_name}`,
+        const formattedUsers = data.map((user: any) => ({
+          user_id: user.user_id,
+          user_name: `${user.first_name} ${user.last_name}`.trim(),
         }));
-        setUsers(transformedUserIds);
-        localStorage.setItem("adminKey", password);
+        setUsers(formattedUsers);
       } else {
-        setPasswordError("Incorrect password. Please try again.");
+        setPasswordError("Failed to fetch users.");
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error fetching users:", error);
       setPasswordError("An error occurred while fetching users.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   // Automatically fetch users when component mounts
   useEffect(() => {
-    const password = localStorage.getItem("adminKey") || "gautam_Hero"; // Retrieve password from localStorage or set a default
-    fetchUsers(password);
-  }, [fetchUsers]);
+    fetchUsers();
+  }, []);
 
-  const filteredUser = users; // Placeholder for filtered users
+  const filteredUsers = users.filter((user) =>
+    user.user_name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const columns = [
     {
       header: "Users",
       accessorKey: "user_name",
       cell: (item: any) => (
-        <div className="flex items-center" onClick={() => navigate(`/agent-admin-reports/${item.row.original.user_id}`)}>
+        <div
+          className="flex items-center"
+          onClick={() => navigate(`/agent-admin-reports/${item.row.original.user_id}`)}
+        >
           {/* Your SVG and User Name Here */}
           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 2048 2048">
             <g>
@@ -119,7 +124,7 @@ const AgentAdminDashboard = () => {
         </div>
       ) : (
         <>
-          <ReactTable columnsData={columns} rowsData={filteredUser} size="medium" noTopBorder />
+          <ReactTable columnsData={columns} rowsData={filteredUsers} size="medium" noTopBorder />
           <div className="flex items-center justify-end mb-10 custom-padding">
             <Pagination
               page={1} // Placeholder for current page
