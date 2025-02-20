@@ -88,30 +88,6 @@ const ChatQuery = ({
     return words.length > 50;
   }
 
-  const [displayedText, setDisplayedText] = useState("");
-
-  useEffect(() => {
-    if (!query) return;
-
-    let index = 0;
-    let currentText = "";
-    if (shouldStream) {
-      const interval = setInterval(() => {
-        if (index < query.length) {
-          currentText += query[index];
-          setDisplayedText(currentText);
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 10); // Adjust delay as needed
-
-      return () => clearInterval(interval);
-    } else {
-      setDisplayedText(query);
-    }
-  }, [query]); // Only trigger when `answer` updates
-
   if (!query) return <></>;
 
   return (
@@ -131,7 +107,7 @@ const ChatQuery = ({
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[[rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]]}
         >
-          {displayedText}
+          {query}
         </Markdown>
       </div>
     </div>
