@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const TaskType = () => {
+const TaskType = ({ onSelect }: { onSelect: (type: string) => void }) => {
   const navigate = useNavigate();
 
   const handleSelection = (type: string) => {
     if (type === "projectHub") {
-      navigate("/admin"); // Redirect to Project Hub
+      onSelect("projectHub");
     } else if (type === "aiAgent") {
-      navigate("/agent-admin"); // Redirect to AI Agent
+      navigate("/agent-admin");
     }
   };
 

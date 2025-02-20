@@ -109,6 +109,7 @@ import MyAgentReport from "./pages/my-account/my-agent-reports";
 import MyAgentReportManagement from "./pages/my-account/my-agent-reports/my-reports";
 import UploadAgentReport from "./pages/my-account/admin-agent-reports/upload-report";
 import TaskType from "./pages/my-account/admin-agent-reports/task-type";
+import AdminMain from "./pages/my-account/admin-projects/admin-main";
 // import MadLibEditor from "./test";
 
 /**
@@ -243,7 +244,7 @@ function App() {
             <Route path="/my-agent-reports/:id" element={<MyAgentReportManagement />} />
 
 
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={<AdminMain />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
             <Route path="/admin-reports/:id" element={<AdminReports />} />
             <Route path="/upload-report/:id" element={<AdminUploadReport />} />
