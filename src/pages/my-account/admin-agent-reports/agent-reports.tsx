@@ -151,7 +151,9 @@ const AgentReports = () => {
           <button
             className="bg-primary-900 px-1 rounded-md text-white"
             onClick={() => {
-              navigate("/upload-agent-report");
+              navigate(
+                `/agent-admin/upload-agent-report/${item.row.original.id}/${item.row.original.user_id}`,
+              );
             }}
           >
             +

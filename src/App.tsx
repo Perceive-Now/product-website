@@ -240,11 +240,12 @@ function App() {
             {/* agent reports  */}
             <Route path="/my-agent-reports" element={<MyAgentReport />} />
             <Route path="/my-agent-reports/:id" element={<MyAgentReportManagement />} />
-            <Route path="/upload-agent-report" element={<UploadAgentReport />} />
+            
 
             <Route path="/agent-admin" element={<AgentAdminDashboard />} />
             <Route path="/agent-admin-reports/:userid" element={<AgentReports />} />
             <Route path="/agent-reports/:threadid/:userid" element={<AgentRequirements />} />
+            <Route path="/agent-admin/upload-agent-report/:threadid/:userid" element={<UploadAgentReport />} />
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
