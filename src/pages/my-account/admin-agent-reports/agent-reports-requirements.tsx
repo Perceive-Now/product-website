@@ -38,6 +38,7 @@ const AgentRequirements = () => {
   const navigate = useNavigate();
   const { threadid, userid } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const [reports, setReports] = useState<Report[]>([
     // Sample report data
     {
@@ -182,6 +183,10 @@ const AgentRequirements = () => {
     }
     if (selectedTabIndex === 1) {
       fetchConversation(threadid as string, userid as string);
+    }
+
+    if (!isAuthenticated) {
+      navigate("/admin");
     }
   }, [selectedTabIndex, threadid, userid]);
 

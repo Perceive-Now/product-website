@@ -34,6 +34,7 @@ import { ACTIVITY_COMMENT } from "src/utils/constants";
 import toast from "react-hot-toast";
 import ReportConversation from "./ReportConversation";
 import { fetchAgentThreadDetails } from "../agent-report.action";
+import Loading from "src/components/reusable/loading";
 /**
  *
  */
@@ -46,62 +47,7 @@ const MyAgentReportManagement = () => {
   const { tab } = location.state || 0;
   const urlParams = new URLSearchParams(location.search);
   const project_name = urlParams.get("project");
-  const [reports, setreports] = useState<any[]>([
-    // {
-    //   report_id: 1,
-    //   report_name: "Report 1",
-    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/1",
-    //   report_size: 0,
-    //   date_modified: "2021-08-12",
-    //   report_complete_status: 1,
-    //   filename: "report1.pdf",
-    // },
-    // {
-    //   report_id: 2,
-    //   report_name: "Report 2",
-    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/2",
-    //   report_size: 0,
-    //   date_modified: "2021-08-12",
-    //   report_complete_status: 1,
-    //   filename: "report2.pdf",
-    // },
-    // {
-    //   report_id: 3,
-    //   report_name: "Report 3",
-    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/3",
-    //   report_size: 0,
-    //   date_modified: "2021-08-12",
-    //   report_complete_status: 1,
-    //   filename: "report3.pdf",
-    // },
-    // {
-    //   report_id: 4,
-    //   report_name: "Report 4",
-    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/4",
-    //   report_size: 0,
-    //   date_modified: "2021-08-12",
-    //   report_complete_status: 1,
-    //   filename: "report4.pdf",
-    // },
-    // {
-    //   report_id: 5,
-    //   report_name: "Report 5",
-    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/5",
-    //   report_size: 0,
-    //   date_modified: "2021-08-12",
-    //   report_complete_status: 1,
-    //   filename: "report5.pdf",
-    // },
-    // {
-    //   report_id: 6,
-    //   report_name: "Report 6",
-    //   report_url: "https://templateuserrequirements.azurewebsites.net/reports/1/1/6",
-    //   report_size: 0,
-    //   date_modified: "2021-08-12",
-    //   report_complete_status: 1,
-    //   filename: "report6.pdf",
-    // },
-  ]);
+  const [reports, setreports] = useState<any[]>([]);
 
   const [totalReports, setTotalReports] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -120,17 +66,28 @@ const MyAgentReportManagement = () => {
     pageSize: 10,
   });
 
-  const filteredReports =
-    reports.length > 0
-      ? reports
-          .filter((report: any) =>
-            report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
-          )
-          .slice(
-            pagination.pageIndex * pagination.pageSize,
-            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
-          )
-      : [];
+  const filteredReports = useMemo(() => {
+    return reports.filter((report) =>
+      report.filename.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [reports, searchQuery]);
+
+  const fetchReports = async (theadId: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/agents/reportcheck/${userId}/${theadId}`,
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setreports(data?.report_info || []);
+      }
+    } catch {
+      console.error("Error fetching uploaded files.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchActivityLog = async () => {
     try {
@@ -156,6 +113,7 @@ const MyAgentReportManagement = () => {
   };
 
   const fetchHistoryData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
         `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
@@ -338,100 +296,104 @@ const MyAgentReportManagement = () => {
       </Tooltip>
     ) : null;
   };
+  const getFileType = (url: any) => {
+    const parts = url.split(".");
+    return parts.length > 1 ? parts.pop() : ""; // Returns the last part as the file type
+  };
 
   const columnHelper = createColumnHelper<any>();
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
-      {
-        id: "select-col",
-        header: ({ table }) => {
-          const selectableRows = table
-            .getRowModel()
-            .rows.filter((row) => row.original.report_complete_status);
+      // {
+      //   id: "select-col",
+      //   header: ({ table }) => {
+      //     const selectableRows = table
+      //       .getRowModel()
+      //       .rows.filter((row) => row.original.report_complete_status);
 
-          // Check if all selectable rows are selected
-          const areAllSelectableRowsSelected =
-            selectableRows.length > 0 && selectableRows.every((row) => row.getIsSelected());
+      //     // Check if all selectable rows are selected
+      //     const areAllSelectableRowsSelected =
+      //       selectableRows.length > 0 && selectableRows.every((row) => row.getIsSelected());
 
-          return (
-            <div className="pl-1 pt-1">
-              <CheckboxInput
-                className="border-white"
-                checked={areAllSelectableRowsSelected}
-                // indeterminate={
-                //   areSomeSelectableRowsSelected && !areAllSelectableRowsSelected
-                // }
-                onChange={() => {
-                  const shouldSelectAll = !areAllSelectableRowsSelected;
-                  selectableRows.forEach((row) => {
-                    row.toggleSelected(shouldSelectAll);
-                  });
-                }}
-              />
-            </div>
-          );
-        },
-        cell: ({ row }) => (
-          <div className="pl-1 pt-1">
-            <CheckboxInput
-              className="border-white"
-              checked={row.getIsSelected()}
-              disabled={!row.original.report_complete_status}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          </div>
-        ),
-      },
+      //     return (
+      //       <div className="pl-1 pt-1">
+      //         <CheckboxInput
+      //           className="border-white"
+      //           checked={areAllSelectableRowsSelected}
+      //           // indeterminate={
+      //           //   areSomeSelectableRowsSelected && !areAllSelectableRowsSelected
+      //           // }
+      //           onChange={() => {
+      //             const shouldSelectAll = !areAllSelectableRowsSelected;
+      //             selectableRows.forEach((row) => {
+      //               row.toggleSelected(shouldSelectAll);
+      //             });
+      //           }}
+      //         />
+      //       </div>
+      //     );
+      //   },
+      //   cell: ({ row }) => (
+      //     <div className="pl-1 pt-1">
+      //       <CheckboxInput
+      //         className="border-white"
+      //         checked={row.getIsSelected()}
+      //         disabled={!row.original.report_complete_status}
+      //         onChange={row.getToggleSelectedHandler()}
+      //       />
+      //     </div>
+      //   ),
+      // },
       {
         header: "Report",
-        accessorKey: "report_name",
+        accessorKey: "filename",
         // minSize: 400,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.report_name}</p>,
+        cell: (item) => <p className="line-clamp-1">{item.row.original.filename}</p>,
       },
-      {
-        header: "File Name",
-        accessorKey: "report_name",
-        // minSize: 400,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.filename || "-"}</p>,
-      },
+      // {
+      //   header: "File Name",
+      //   accessorKey: "report_name",
+      //   // minSize: 400,
+      //   cell: (item) => <p className="line-clamp-1">{item.row.original.filename || "-"}</p>,
+      // },
       {
         header: "Type",
-        accessorKey: "type",
+        accessorKey: "url",
         // minSize: 200,
-        cell: (item) => <p className="line-clamp-1">{item.row.original.report_type}</p>,
+        cell: (item) => <p className="line-clamp-1">{getFileType(item.row.original.url)}</p>,
       },
       {
         header: "Date Modified",
-        accessorKey: "date_modified",
+        accessorKey: "datetime",
         // minSize: 200,
-        cell: (item) => (
-          <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>
-        ),
+        cell: (item) => <p className="line-clamp-1">{item.row.original.datetime}</p>,
       },
       {
         header: "Status",
         accessorKey: "status",
         // minSize: 200,
-        cell: (item) => (
-          <span>{item.row.original.report_complete_status ? "Completed" : "Pending"}</span>
-        ),
+        cell: (item) => <span>Completed</span>,
       },
       {
         header: "Size",
         accessorKey: "size",
         cell: (item) => {
-          const reportSizeStr = item.row.original.report_size;
+          const reportSizeStr = item.row.original.size;
           const bytes = parseInt(reportSizeStr, 10);
           const mb = bytes / 1024 / 1024;
           return <span>{mb.toFixed(2)} MB</span>;
         },
       },
-      columnHelper.display({
-        id: "actions",
-        minSize: 100,
-        cell: ({ row }) => <RowActions row={row} openFileHandler={openFileHandler} />,
-      }),
+      {
+        header: "Actions",
+        // accessorKey: "actions",
+        cell: (item: any) => (
+          <a href={item.row.original.url} target="_blank" rel="noopener noreferrer">
+            Download
+          </a>
+        ),
+      },
     ],
     [],
   );
@@ -449,7 +411,7 @@ const MyAgentReportManagement = () => {
       loading: true,
     });
     fetchAgentThreadDetails(id || "", userId || "", setReportList);
-
+    fetchReports(id || "");
 
     console.log("Agent Reportss", agentReports);
   }, []);
@@ -496,40 +458,43 @@ const MyAgentReportManagement = () => {
           </div>
         ) : (
           <Tab.Panels>
-            <Tab.Panel>
-              <div className="flex items-center gap-1">
-                <p className="font-bold text-base">
-                  Total Reports<span className="ml-3">{totalReports}</span>
-                </p>
-              </div>
-              <div className="flex items-center gap-1 w-full">
-                <div className="w-[300px] mt-2 mb-2">
-                  <TableSearch
-                    searchQuery={searchQuery}
-                    setSearchQuery={(search: string) => {
-                      setSearchQuery(search);
-                      setPagination({
-                        ...pagination,
-                        pageIndex: 0,
-                      });
-                    }}
-                  />
+            {loading ? (
+              <Loading width="100px" height="100px" isLoading={loading} />
+            ) : (
+              <Tab.Panel>
+                <div className="flex items-center gap-1">
+                  <p className="font-bold text-base">
+                    Total Reports<span className="ml-3">{totalReports}</span>
+                  </p>
                 </div>
-                {selectedRows.length > 0 && (
-                  <div className="ml-auto flex gap-3">
-                    {/* <Button type="gray" handleClick={onShare}>
+                <div className="flex items-center gap-1 w-full">
+                  <div className="w-[300px] mt-2 mb-2">
+                    <TableSearch
+                      searchQuery={searchQuery}
+                      setSearchQuery={(search: string) => {
+                        setSearchQuery(search);
+                        setPagination({
+                          ...pagination,
+                          pageIndex: 0,
+                        });
+                      }}
+                    />
+                  </div>
+                  {selectedRows.length > 0 && (
+                    <div className="ml-auto flex gap-3">
+                      {/* <Button type="gray" handleClick={onShare}>
               <div className="flex items-center gap-1">
                 <ShareIcon />
                 Share
               </div>
             </Button> */}
-                    <Button type="gray" handleClick={handleBulkDownload}>
-                      <div className="flex items-center gap-1">
-                        <DownloadIcon />
-                        Download
-                      </div>
-                    </Button>
-                    {/* <Button
+                      <Button type="gray" handleClick={handleBulkDownload}>
+                        <div className="flex items-center gap-1">
+                          <DownloadIcon />
+                          Download
+                        </div>
+                      </Button>
+                      {/* <Button
                       type="gray"
                       classname="flex items-center gap-1"
                       handleClick={handleBulkDelete}
@@ -539,25 +504,26 @@ const MyAgentReportManagement = () => {
                         Delete
                       </div>
                     </Button> */}
-                  </div>
-                )}
-              </div>
-              <ReactTable
-                columnsData={columns}
-                rowsData={filteredReports}
-                size="medium"
-                noTopBorder
-                rowSelection={rowSelection}
-                onRowSelectionChange={handleRowSelectionChange}
-              />
-              <div className=" flex items-center justify-end mt-2.5">
-                <Pagination
-                  page={pagination.pageIndex + 1}
-                  total={Math.ceil(reports.length / pagination.pageSize)}
-                  onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
+                    </div>
+                  )}
+                </div>
+                <ReactTable
+                  columnsData={columns}
+                  rowsData={filteredReports}
+                  size="medium"
+                  noTopBorder
+                  rowSelection={rowSelection}
+                  onRowSelectionChange={handleRowSelectionChange}
                 />
-              </div>
-            </Tab.Panel>
+                <div className=" flex items-center justify-end mt-2.5">
+                  <Pagination
+                    page={pagination.pageIndex + 1}
+                    total={Math.ceil(reports.length / pagination.pageSize)}
+                    onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
+                  />
+                </div>
+              </Tab.Panel>
+            )}
             <Tab.Panel>
               <ReportConversation loading={agentReportLoading} reports={agentReports} />
             </Tab.Panel>

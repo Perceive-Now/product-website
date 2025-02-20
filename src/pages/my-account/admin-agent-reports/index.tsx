@@ -23,6 +23,7 @@ const AgentAdminDashboard = () => {
   ]);
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -61,6 +62,10 @@ const AgentAdminDashboard = () => {
   // Automatically fetch users when component mounts
   useEffect(() => {
     fetchUsers();
+
+    if (!isAuthenticated) {
+      navigate("/admin");
+    }
   }, []);
 
   const filteredUsers = users.filter((user) =>

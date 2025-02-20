@@ -11,6 +11,7 @@ const UploadAgentReport = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState<any>([]);
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   const fetchUploadedFiles = async () => {
     try {
@@ -32,6 +33,10 @@ const UploadAgentReport = () => {
   // Fetch previously uploaded files
   useEffect(() => {
     fetchUploadedFiles();
+
+    if (!isAuthenticated) {
+      navigate("/admin");
+    }
   }, [userid, threadid]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

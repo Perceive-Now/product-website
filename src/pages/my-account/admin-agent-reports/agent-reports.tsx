@@ -12,6 +12,8 @@ const AgentReports = () => {
   const { userid } = useParams();
   console.log(userid);
   const [searchQuery, setSearchQuery] = useState("");
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+
   const [reports] = useState([
     {
       project_name: "Thread 1",
@@ -82,6 +84,10 @@ const AgentReports = () => {
 
   useEffect(() => {
     fetchThreads();
+
+    if (!isAuthenticated) {
+      navigate("/admin");
+    }
   }, []);
 
   const filteredReports = threads.filter(
