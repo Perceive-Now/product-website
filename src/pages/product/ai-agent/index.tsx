@@ -226,9 +226,9 @@ const AiAgent = () => {
   };
 
   const processStatusMain = (data: any) => {
-    const cleanedSummary = data.json_response?.replace(/^"|"$/g, "");
-    const cleanValue = data.json_response.replace(/'/g, '"');
-    const extractObject = JSON.parse(cleanValue);
+    const cleanedSummary = data.json_response;
+    // const cleanValue = data.json_response?.replace(/'/g, '"');
+    const extractObject = data.json_response;
     const { options, remainingText } = processResponse(data.response);
     dispatch(
       setVSChats({
