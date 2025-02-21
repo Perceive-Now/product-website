@@ -226,8 +226,8 @@ const AiAgent = () => {
   };
 
   const processStatusMain = (data: any) => {
-    const cleanedSummary = data.json_response?.replace(/[{}"']/g, "").trim();
-    const cleanValue = data.json_response.replace(/\*\*/g, "").trim();
+    const cleanedSummary = data.json_response?.replace(/^"|"$/g, "");
+    const cleanValue = data.json_response.replace(/'/g, '"');
     const extractObject = JSON.parse(cleanValue);
     const { options, remainingText } = processResponse(data.response);
     dispatch(
