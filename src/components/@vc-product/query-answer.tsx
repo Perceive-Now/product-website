@@ -3,7 +3,7 @@ import sanitizeHtml from "sanitize-html";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import jsCookie from "js-cookie";
 import UserIcon from "../reusable/userIcon";
 import { setprevres } from "src/stores/vs-product";
@@ -41,6 +41,8 @@ const QueryAnswer = ({
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
   const { Step } = useAppSelector((state) => state.VSProduct);
+
+  const navigate = useNavigate();
 
   const userId = jsCookie.get("user_id");
 
@@ -157,6 +159,7 @@ const QueryAnswer = ({
                 type="primary"
                 handleClick={() => {
                   onSendQuery("", "End Conversation", undefined, true);
+                  navigate("/ai-agent-customization");
                   closeSubmit();
                 }}
               >

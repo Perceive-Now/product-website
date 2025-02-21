@@ -110,6 +110,7 @@ import MyAgentReportManagement from "./pages/my-account/my-agent-reports/my-repo
 import UploadAgentReport from "./pages/my-account/admin-agent-reports/upload-report";
 import TaskType from "./pages/my-account/admin-agent-reports/task-type";
 import AdminMain from "./pages/my-account/admin-projects/admin-main";
+import AIReportCustomization from "./pages/product/ai-agent/ai-report-custom";
 // import MadLibEditor from "./test";
 
 /**
@@ -243,7 +244,6 @@ function App() {
             <Route path="/my-agent-reports" element={<MyAgentReport />} />
             <Route path="/my-agent-reports/:id" element={<MyAgentReportManagement />} />
 
-
             <Route path="/admin" element={<AdminMain />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
             <Route path="/admin-reports/:id" element={<AdminReports />} />
@@ -298,6 +298,7 @@ function App() {
 
             {/* Ai-Agent */}
             <Route path="/ai-agent" element={<AiAgent />} />
+            <Route path="/ai-agent-customization" element={<AIReportCustomization />} />
             <Route path="/ai-agent/landing" element={<AgentLanding />} />
 
             {/*Graph */}
