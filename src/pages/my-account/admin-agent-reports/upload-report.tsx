@@ -3,6 +3,16 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { UploadIcon } from "src/components/icons";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 
+const listContent = [
+  "PDF (.pdf) - Portable Document Format",
+  "Microsoft Excel (.xls, .xlsx)",
+  "Microsoft Word (.docx)",
+  "Text Files (.txt)",
+  "PowerPoint (.ppt,.pptx)",
+  "OpenDocument Text (.odt)",
+  "Keynote (.key)",
+];
+
 const UploadAgentReport = () => {
   const { userid, threadid } = useParams(); // Get params from URL
   const navigate = useNavigate();
@@ -87,7 +97,9 @@ const UploadAgentReport = () => {
     <div className="space-y-[20px] w-full z-10">
       <div>
         <div className="p-1 pl-0">
-          <h6 className="text-lg font-semibold ml-0">Settings &gt; Admin Agent Report management &gt; Upload File</h6>
+          <h6 className="text-lg font-semibold ml-0">
+            Settings &gt; Admin Agent Report management &gt; Upload File
+          </h6>
           <div className="flex justify-start items-center pt-3 pl-1">
             <Link to={`/agent-admin-reports/${userid}`}>
               <p className="mr-4 text-secondary-800 flex items-center">
@@ -116,7 +128,7 @@ const UploadAgentReport = () => {
                 </span>
                 <input
                   type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.rtf"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.ppt,.pptx,.odt,.key"
                   className="hidden"
                   onChange={handleFileChange}
                 />
@@ -159,6 +171,20 @@ const UploadAgentReport = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Supported Files and URLs */}
+        <div className="mt-4 flex justify-between">
+          <div>
+            <p className="text-lg font-semibold font-nunito">Supported file types (up to 200mb)</p>
+            <ul className="list-disc pl-[20px]">
+              {listContent.map((content) => (
+                <li key={content} className="text-xs">
+                  {content}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 

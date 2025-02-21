@@ -109,7 +109,7 @@ const AiAgent = () => {
             userId || ""
           }&thread_name=${uuidv4()}&use_case=AI&industry=AI&agent_name=${
             AgentName[agent || ""] || "Startup Diligence Agent"
-          }'`,
+          }`,
           { headers: { "Content-Type": "application/json" }, responseType: "stream" },
         );
 
