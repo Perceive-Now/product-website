@@ -128,13 +128,33 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
           Edit Extract
         </div>
 
-        <Markdown
-          className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[[rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]]}
-        >
-          {formatInfoString(query)}
-        </Markdown>
+        {/* <>
+          {obj && Array.isArray(obj) ? (
+            obj?.map(([title, content]: any, index: any) => (
+              <div key={index} className="mb-4">
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="whitespace-pre-line">{content}</p>
+              </div>
+            ))
+          ) : typeof obj === "object" && obj !== null ? (
+            Object.values(obj)?.map(([title, content]: any, index: any) => (
+              <div key={index} className="mb-4">
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="whitespace-pre-line">{content}</p>
+              </div>
+            ))
+          ) : (
+            <Markdown
+              className="markdownWrapper text-secondary-800 text-justify relative bottom-0 duration-500 delay-500  stream-answer text-align"
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[
+                [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
+              ]}
+            >
+              {formatInfoString(query)}
+            </Markdown>
+          )}
+        </> */}
 
         {Object.entries(formData).map(([key, value]) => {
           if (Array.isArray(value) && !value.every((item) => typeof item === "string")) {
