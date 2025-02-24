@@ -54,7 +54,7 @@ const AgentHead = (props: Props) => {
         <div className=" text-white flex items-center justify-center rounded-full">
           <img src={AgentIcon} alt="" />
         </div>
-        <h1 className="text-base text-gray-800">{agentName}</h1>
+        <h1 className="text-base text-gray-800"> {agentName === "Startup Diligence Agent" ? "Company Diligence Agent" : agentName}</h1>
       </div>
 
       {/* Right Section: Profile Image */}
