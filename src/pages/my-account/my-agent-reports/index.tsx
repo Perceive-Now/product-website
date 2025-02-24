@@ -94,9 +94,9 @@ const MyAgentReport = () => {
             return dateB - dateA; // Descending order
           })
           .filter(
-            (report: any) => report.agent_name?.toLowerCase()?.includes(searchQuery.toLowerCase()),
-            //  &&
-            //   report.is_complete === true,
+            (report: any) =>
+              report.agent_name?.toLowerCase()?.includes(searchQuery.toLowerCase()) &&
+              report.is_complete === true,
           )
           .slice(
             pagination.pageIndex * pagination.pageSize,
