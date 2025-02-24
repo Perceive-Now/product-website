@@ -41,6 +41,7 @@ import AddQueryAgent from "./add-query";
 import { sendAiAgentQuery } from "./action";
 import LoadingUI from "./LoadingUi";
 import { v4 as uuidv4 } from "uuid";
+import AgentHead from "./AgentHead";
 
 const AgentName: Record<string, string> = {
   "company-diligence-agent": "Startup Diligence Agent",
@@ -417,7 +418,7 @@ const AiAgent = () => {
                 return;
 
               default:
-                ai_query.user_input = answer;
+                ai_query.user_input = answer === "Next Step" ? "proceed further" : answer;
                 setIsloading(true);
                 try {
                   const { data } = await dispatch(
@@ -636,6 +637,7 @@ const AiAgent = () => {
   return (
     <>
       <div className="px-0 md:px-3 w-full mx-auto h-full">
+        <AgentHead agentName={AgentName[agent || ""] || "Startup Diligence Agent"} />
         <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">
             {/* <div className="relative flex-none">

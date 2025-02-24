@@ -39,14 +39,17 @@ const MyAgentReport = () => {
   const columnHelper = createColumnHelper();
   const columns = [
     {
-      header: "Id",
-      accessorKey: "id",
+      header: "Thread Name",
+      accessorKey: "Thread Name",
       minSize: 200,
       cell: (item: any) => (
         <p
           className="line-clamp-1"
           onClick={() => navigate(`/my-agent-reports/${item.row.original.id}`)}
         >
+          {`${item.row.original.agent_name?.split(" ").join("")}-${
+            item.row.original.thread_name?.split("-")[0]
+          }`}
           {item.row.original.id}
         </p>
       ),
@@ -90,8 +93,10 @@ const MyAgentReport = () => {
             const dateB = +new Date(b.created_at);
             return dateB - dateA; // Descending order
           })
-          .filter((report: any) =>
-            report.agent_name?.toLowerCase()?.includes(searchQuery.toLowerCase()),
+          .filter(
+            (report: any) => report.agent_name?.toLowerCase()?.includes(searchQuery.toLowerCase()),
+            //  &&
+            //   report.is_complete === true,
           )
           .slice(
             pagination.pageIndex * pagination.pageSize,
@@ -139,7 +144,7 @@ const MyAgentReport = () => {
           <div className=" flex items-center justify-end">
             <Pagination
               page={pagination.pageIndex + 1}
-              total={Math.ceil(reportList.reports.length / pagination.pageSize)}
+              total={Math.ceil(filteredReports.length / pagination.pageSize)}
               onChange={(pageNo) => setPagination({ ...pagination, pageIndex: pageNo - 1 })}
             />
           </div>
