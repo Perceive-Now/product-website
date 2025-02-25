@@ -10,6 +10,10 @@ import ProductEngineering from "../../../assets/images/icons/Product&Engineering
 import MarketingSales from "../../../assets/images/icons/Marketing&Sales.svg";
 import FinanceStrategy from "../../../assets/images/icons/Finance&Strategy.svg";
 import Legal from "../../../assets/images/icons/Legal.svg";
+import ProfileLogo from '../../../assets/images/profileperson.svg';
+import OrganizationLogo from '../../../assets/images/organization.svg';
+import TeamLogo from '../../../assets/images/team.svg';
+import LogoutLogo from '../../../assets/images/logout.svg';
 
 import Org from "../../../assets/images/organization-settings.svg";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
@@ -102,13 +106,14 @@ const AgentHead = (props: Props) => {
           profile_photo={userDetail?.profile_photo}
         />
         {open && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-[1]">
+          <div className="absolute right-0 mt-2 w-[210px] bg-white rounded-lg shadow-lg border z-[1]">
             <ul className="">
               <li
                 className="flex items-center  p-2 hover:bg-gray-100 rounded cursor-pointer"
                 onClick={() => navigate("/profile")}
               >
                 {/* <FiUser className="text-gray-600" /> */}
+                <img src={ProfileLogo}/>
                 <span>My profile</span>
               </li>
               <li
@@ -116,7 +121,7 @@ const AgentHead = (props: Props) => {
                 onClick={() => navigate("/users")}
               >
                 {/* <BsBuilding className="text-gray-600" /> */}
-                <img />
+                <img src={OrganizationLogo}/>
                 <span>Organization</span>
               </li>
               <li
@@ -124,15 +129,17 @@ const AgentHead = (props: Props) => {
                 onClick={() => navigate("/users")}
               >
                 {/* <FiUsers className="text-gray-600" /> */}
+                <img src={TeamLogo}/>
                 <span>Team</span>
               </li>
               <hr />
               <li
-                className="flex items-center gap-1  p-2 hover:bg-gray-100 rounded cursor-pointer text-red-500"
+                className="flex items-center gap-1  p-2 hover:bg-gray-100 rounded cursor-pointer text-black ml-[2px]"
                 onClick={handleLogout}
               >
                 {/* <FiLogOut /> */}
-                <LogoutIcon />
+                {/* <LogoutIcon /> */}
+                <img src={LogoutLogo} />
                 <span>Log out</span>
               </li>
             </ul>

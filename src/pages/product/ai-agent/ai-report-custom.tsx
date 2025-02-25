@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import RightArrow from "src/components/icons/common/right-arrow";
 
 const reportToneOptions = [
   { label: "In-Depth Report", value: "In-Depth Report", showTextBox: false },
@@ -126,21 +127,33 @@ const AIReportCustomization = () => {
   return (
     <div className="space-y-[20px] w-full max-w-[998px] z-10 pb-[7%]">
       <div className="p-1 pl-0">
-        <h6 className="text-lg font-semibold ml-0">AI Agent Reports !</h6>
-        <div className="flex justify-start items-center pt-3 pl-1">
+        {/* <h6 className="text-lg font-semibold ml-0">Report Customization</h6> */}
+        <div className="text-start text-black mt-2 text-[16px] leading-[19.2px] font-normal">
+          <p>Customize your report to match your needs.</p>
+          <p>
+            <span className="text-[#FFA300] font-medium">Choose</span> the format, level of detail,
+            and key insights to get the most relevant results!
+          </p>
+        </div>
+        {/* <div className="flex justify-start items-center pt-3 pl-1">
           <Link to="/">
             <p className="mr-4 text-secondary-800 flex items-center">
               <ArrowLeftIcon className="mr-1" /> Back
             </p>
           </Link>
-        </div>
+        </div> */}
         <div className="border border-[#757575CC] border-solid p-2 mt-4 rounded-lg">
           <p>Report Customization</p>
           <div className="grid grid-cols-3 gap-x-3 gap-y-4 mt-2">
             <div className="flex flex-col w-full max-w-[306px]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Report Depth</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full max-w-[114px]">
+                <div className="flex flex-col w-full">
                   {reportToneOptions.map((item) => (
                     <>
                       <label key={item.value} className="flex items-center space-x-2">
@@ -161,24 +174,29 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${item.label}`}
                           value={customInput["tone"]?.[item.value] || ""}
                           onChange={(e) => handleInputChange(e, "tone", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
 
             <div className="flex flex-col w-full max-w-[328px]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Report Format</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full max-w-[114px]">
+                <div className="flex flex-col w-full">
                   {reportFormatOptions.map((reportFormat) => (
                     <>
                       <label key={reportFormat.value} className="flex items-center space-x-2">
@@ -203,24 +221,29 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${reportFormat.label}`}
                           value={customInput["reportFormat"]?.[reportFormat.value] || ""}
                           onChange={(e) => handleInputChange(e, "reportFormat", reportFormat.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
 
             <div className="flex flex-col w-full max-w-[306px]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Visual Style</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full max-w-[114px]">
+                <div className="flex flex-col w-full">
                   {visualStyleOptions.map((item) => (
                     <>
                       <label key={item.value} className="flex items-center space-x-2">
@@ -241,25 +264,30 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${item.label}`}
                           value={customInput["visualStyle"]?.[item.value] || ""}
                           onChange={(e) => handleInputChange(e, "visualStyle", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-4 mt-2">
-            <div className="flex flex-col w-full max-w-[306px]">
+          <div className="flex w-full gap-x-3 gap-y-4 mt-2">
+            <div className="flex flex-col w-[50%] max-w-[50%]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Number of Charts/Tables</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full max-w-[114px]">
+                <div className="flex flex-col w-full">
                   {chartsOptions.map((item) => (
                     <>
                       <label key={item.value} className="flex items-center space-x-2">
@@ -279,24 +307,29 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${item.label}`}
                           value={customInput["charts"]?.[item.value] || ""}
                           onChange={(e) => handleInputChange(e, "charts", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
 
-            <div className="flex flex-col w-full max-w-[306px]">
+            <div className="flex flex-col w-[50%] max-w-[50%]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Citations</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full max-w-[114px]">
+                <div className="flex flex-col w-full">
                   {citationsOptions.map((item) => (
                     <>
                       <label key={item.value} className="flex items-center space-x-2">
@@ -317,23 +350,28 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${item.label}`}
                           value={customInput["citations"]?.[item.value] || ""}
                           onChange={(e) => handleInputChange(e, "citations", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
           <div className="flex w-full gap-x-3 gap-y-4 mt-2">
             <div className="flex flex-col w-[50%] max-w-[50%]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Audience Focus</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <p className="bg-[#F5F7FF] pt-1 pl-2 text-start text-base">For Enterprises</p>
               <div className="bg-[#F5F7FF] flex w-full gap-x-4 p-2 rounded-b-lg">
                 <div className="flex flex-col w-[50%]">
@@ -359,17 +397,17 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${item.label}`}
                           value={customInput["audienceFocusOne"]?.[item.value] || ""}
                           onChange={(e) => handleInputChange(e, "audienceFocusOne", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-[50%] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-[50%] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
               {/* <p className="bg-[#F5F7FF] pt-1 pl-2 text-start text-base">For Investors & Financial Institutions</p>
               <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
@@ -409,6 +447,11 @@ const AIReportCustomization = () => {
 
             <div className="flex flex-col w-[50%] max-w-[50%]">
               <div className="bg-[#FFB531] rounded-t-lg text-center">Audience Focus</div>
+              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
+                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
+                  Data-focused, emphasizing metrics and insights
+                </p>
+              </div>
               <p className="bg-[#F5F7FF] pt-1 pl-2 text-start text-base">
                 For Investors & Financial Institutions
               </p>
@@ -436,21 +479,41 @@ const AIReportCustomization = () => {
                           placeholder={`Enter custom text for ${item.label}`}
                           value={customInput["audienceFocusTwo"]?.[item.value] || ""}
                           onChange={(e) => handleInputChange(e, "audienceFocusTwo", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
                         />
                       ) : null}
                     </>
                   ))}
                 </div>
-                <div className="bg-[#E8EAF2] w-[50%] rounded-[4px] pl-1">
+                {/* <div className="bg-[#E8EAF2] w-[50%] rounded-[4px] pl-1">
                   <p className="text-[15px] font-normal color-[#373D3F]">
                     Data-focused, emphasizing metrics and insights
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex gap-3 mt-4">
+        <Link to="/vc-product">
+          <div className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
+            Submit
+            <RightArrow className="ml-1" />
+          </div>
+        </Link>
+        {/* <Link to="/vc-product">
+                        <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]  rounded-[32px] py-1 px-2 text-lg font-nunito text-white font-bold">
+                          Explore Agents
+                          <RightArrow className="ml-1"/>
+                        </div>
+                      </Link> */}
+        {/* <Link to="/start-conversation">
+                        <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]   rounded-[32px] py-1 px-2  text-lg font-nunito text-white font-bold">
+                          KnowNow Chat
+                          <RightArrow className="ml-1"/>
+                        </div>
+                      </Link> */}
       </div>
     </div>
   );
