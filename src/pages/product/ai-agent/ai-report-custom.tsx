@@ -496,7 +496,7 @@ const AIReportCustomization = () => {
         </div>
       </div>
       <div className="flex gap-3 mt-4">
-        <Link to="/vc-product">
+        <Link to="/">
           <div className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
             Submit
             <RightArrow className="ml-1" />
