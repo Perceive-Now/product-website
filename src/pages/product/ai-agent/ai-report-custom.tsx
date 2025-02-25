@@ -84,14 +84,44 @@ const AIReportCustomization = () => {
   const [audienceFocusOne, setAudienceFocusOne] = useState("C-Suite Executives");
   const [audienceFocusTwo, setAudienceFocusTwo] = useState("General Partners (GPs)");
 
-  const [customInput, setCustomInput] = useState<Record<string, string>>({});
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
+    reportToneOptions: [],
+    reportFormatOptions: [],
+    visualStyleOptions: [],
+    chartsOptions: [],
+    citationsOptions: [],
+    audienceFocusOneOptions: [],
+    audienceFocusTwoOptions: [],
+  });
 
-  const handleInputChange = (e: any, key: string) => {
-    setCustomInput({
-      ...customInput,
-      [key]: e.target.value,
+  const [customInput, setCustomInput] = useState<Record<string, Record<string, string>>>({});
+
+  const handleCheckboxChange = (category: string, value: string) => {
+    setSelectedOptions((prev) => {
+      const currentSelections = prev[category] || [];
+      const isSelected = currentSelections.includes(value);
+
+      return {
+        ...prev,
+        [category]: isSelected
+          ? currentSelections.filter((item) => item !== value) // Remove if already selected
+          : [...currentSelections, value], // Add if not selected
+      };
     });
   };
+
+  const handleInputChange = (e: any, key: string, field: string) => {
+    console.log("customInput.key", customInput[key]);
+    setCustomInput({
+      ...customInput,
+      [key]: {
+        ...(customInput[key] || {}),
+        [field]: e.target.value,
+      },
+    });
+  };
+
+  console.log("SLDKLSDKLSKDL", customInput);
 
   return (
     <div className="space-y-[20px] w-full max-w-[998px] z-10 pb-[7%]">
@@ -118,18 +148,19 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="tone"
                           value={item.value}
-                          checked={tone === item.value}
-                          onChange={() => setTone(item.value)}
+                          checked={selectedOptions["reportToneOptions"]?.includes(item.value)}
+                          onChange={() => handleCheckboxChange("reportToneOptions", item.value)}
                           className="form-radio text-base font-normal"
                         />
                         <span>{item.label}</span>
                       </label>
-                      {tone === item.value && item.showTextBox ? (
+                      {selectedOptions["reportToneOptions"].includes(item.value) &&
+                      item.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["tone"] || ""}
-                          onChange={(e) => handleInputChange(e, "tone")}
+                          value={customInput["tone"]?.[item.value] || ""}
+                          onChange={(e) => handleInputChange(e, "tone", item.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
@@ -155,18 +186,23 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="format"
                           value={reportFormat.value}
-                          checked={format === reportFormat.value}
-                          onChange={() => setFormat(reportFormat.value)}
+                          checked={selectedOptions["reportFormatOptions"]?.includes(
+                            reportFormat.value,
+                          )}
+                          onChange={() =>
+                            handleCheckboxChange("reportFormatOptions", reportFormat.value)
+                          }
                           className="form-radio text-base font-normal"
                         />
                         <span>{reportFormat.label}</span>
                       </label>
-                      {format === reportFormat.value && reportFormat.showTextBox ? (
+                      {selectedOptions["reportFormatOptions"].includes(reportFormat.value) &&
+                      reportFormat.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${reportFormat.label}`}
-                          value={customInput["reportFormat"] || ""}
-                          onChange={(e) => handleInputChange(e, "reportFormat")}
+                          value={customInput["reportFormat"]?.[reportFormat.value] || ""}
+                          onChange={(e) => handleInputChange(e, "reportFormat", reportFormat.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
@@ -192,18 +228,19 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="visualStyle"
                           value={item.value}
-                          checked={visualStyle === item.value}
-                          onChange={() => setVisualStyle(item.value)}
+                          checked={selectedOptions["visualStyleOptions"]?.includes(item.value)}
+                          onChange={() => handleCheckboxChange("visualStyleOptions", item.value)}
                           className="form-radio text-base font-normal"
                         />
                         <span>{item.label}</span>
                       </label>
-                      {visualStyle === item.value && item.showTextBox ? (
+                      {selectedOptions["visualStyleOptions"].includes(item.value) &&
+                      item.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["visualStyle"] || ""}
-                          onChange={(e) => handleInputChange(e, "visualStyle")}
+                          value={customInput["visualStyle"]?.[item.value] || ""}
+                          onChange={(e) => handleInputChange(e, "visualStyle", item.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
@@ -230,18 +267,18 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="charts"
                           value={item.value}
-                          checked={charts === item.value}
-                          onChange={() => setCharts(item.value)}
+                          checked={selectedOptions["chartsOptions"]?.includes(item.value)}
+                          onChange={() => handleCheckboxChange("chartsOptions", item.value)}
                           className="form-radio text-base font-normal"
                         />
                         <span>{item.label}</span>
                       </label>
-                      {charts === item.value && item.showTextBox ? (
+                      {selectedOptions["chartsOptions"].includes(item.value) && item.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["charts"] || ""}
-                          onChange={(e) => handleInputChange(e, "charts")}
+                          value={customInput["charts"]?.[item.value] || ""}
+                          onChange={(e) => handleInputChange(e, "charts", item.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
@@ -267,18 +304,19 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="citations"
                           value={item.value}
-                          checked={citations === item.value}
-                          onChange={() => setCitations(item.value)}
+                          checked={selectedOptions["citationsOptions"]?.includes(item.value)}
+                          onChange={() => handleCheckboxChange("citationsOptions", item.value)}
                           className="form-radio text-base font-normal"
                         />
                         <span>{item.label}</span>
                       </label>
-                      {citations === item.value && item.showTextBox ? (
+                      {selectedOptions["citationsOptions"].includes(item.value) &&
+                      item.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["citations"] || ""}
-                          onChange={(e) => handleInputChange(e, "citations")}
+                          value={customInput["citations"]?.[item.value] || ""}
+                          onChange={(e) => handleInputChange(e, "citations", item.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
@@ -306,18 +344,21 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="audienceFocusOne"
                           value={item.value}
-                          checked={audienceFocusOne === item.value}
-                          onChange={() => setAudienceFocusOne(item.value)}
+                          checked={selectedOptions["audienceFocusOneOptions"]?.includes(item.value)}
+                          onChange={() =>
+                            handleCheckboxChange("audienceFocusOneOptions", item.value)
+                          }
                           className="form-radio text-base font-normal"
                         />
                         <span>{item.label}</span>
                       </label>
-                      {audienceFocusOne === item.value && item.showTextBox ? (
+                      {selectedOptions["audienceFocusOneOptions"].includes(item.value) &&
+                      item.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["audienceFocusOne"] || ""}
-                          onChange={(e) => handleInputChange(e, "audienceFocusOne")}
+                          value={customInput["audienceFocusOne"]?.[item.value] || ""}
+                          onChange={(e) => handleInputChange(e, "audienceFocusOne", item.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
@@ -380,18 +421,21 @@ const AIReportCustomization = () => {
                           type="checkbox"
                           name="audienceFocusTwo"
                           value={item.value}
-                          checked={audienceFocusTwo === item.value}
-                          onChange={() => setAudienceFocusTwo(item.value)}
+                          checked={selectedOptions["audienceFocusTwoOptions"]?.includes(item.value)}
+                          onChange={() =>
+                            handleCheckboxChange("audienceFocusTwoOptions", item.value)
+                          }
                           className="form-radio text-base font-normal"
                         />
                         <span>{item.label}</span>
                       </label>
-                      {audienceFocusTwo === item.value && item.showTextBox ? (
+                      {selectedOptions["audienceFocusTwoOptions"].includes(item.value) &&
+                      item.showTextBox ? (
                         <input
                           type="text"
                           placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["audienceFocusTwo"] || ""}
-                          onChange={(e) => handleInputChange(e, "audienceFocusTwo")}
+                          value={customInput["audienceFocusTwo"]?.[item.value] || ""}
+                          onChange={(e) => handleInputChange(e, "audienceFocusTwo", item.value)}
                           className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
                         />
                       ) : null}
