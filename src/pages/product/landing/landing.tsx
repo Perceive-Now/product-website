@@ -12,11 +12,11 @@ import PN from "../../../assets/images/pn.svg";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setStartTour, setFinishTour } from "src/stores/dashboard";
 import RightArrow from "src/components/icons/common/right-arrow";
-import handClock from "../../../components/icons/home-images/handclock.svg";
-import targetPaper from "../../../components/icons/home-images/targetPaper.svg";
-import bulbIcon from '../../../components/icons/home-images/bulbicon.svg';
-import aimDart from '../../../components/icons/home-images/aimdart.svg';
-import bulbMagni from '../../../components/icons/home-images/bulbmagni.svg';
+import handClock from "../../../components/icons/home-images/48hourDelivery.svg";
+import targetPaper from "../../../components/icons/home-images/ContextRichness.svg";
+import bulbIcon from '../../../components/icons/home-images/HyperTailored.svg';
+import aimDart from '../../../components/icons/home-images/AI.svg';
+import bulbMagni from '../../../components/icons/home-images/ZeroHaul.svg';
 
 import pnLogo from "../../../assets/images/pn.svg";
 
@@ -269,7 +269,7 @@ export default function Landing() {
               {/* <div className="h-16 w-16 rounded-full flex mb-2">  
                 <img className="h-10 w-10" src={PN} alt="Pn" />
               </div> */}
-              <h1 className="text-3xl font-semibold mb-3 font-nunito">
+              <h1 className="text-[36px] font-semibold mb-3 font-nunito">
                 See the Future, Shape the Present.
               </h1>
               <p className="text-base leading-relaxed mb-4 font-nunito font-normal">
@@ -299,7 +299,7 @@ export default function Landing() {
                 </div>
                 <div className="flex items-center gap-1">
                   <img src={aimDart} alt="arrow-down" className="w-4 h-4" />
-                  <p className="text-xs font-light font-nunito">Complete AI Transparency</p>
+                  <p className="text-xs font-light font-nunito">AI transparency and Explainability</p>
                 </div>
               </div>
               <div className="flex gap-2 mt-4">
