@@ -683,6 +683,7 @@ const AiAgent = () => {
                           hasbutton={chat.hasbutton || false}
                           onSendQuery={handleSendQuery}
                           file={chat.file}
+                          threadId={thread_id}
                         />
                         {isLoading}
 

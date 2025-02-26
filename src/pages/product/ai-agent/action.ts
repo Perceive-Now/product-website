@@ -53,7 +53,7 @@ export const sendAiAgentQuery = createAsyncThunk(
 );
 
 export const endChatThread = createAsyncThunk(
-  "sendQuery",
+  "chatEnded",
   async (
     {
       user_id,
@@ -69,5 +69,17 @@ export const endChatThread = createAsyncThunk(
       {},
       { headers: { "Content-Type": "application/json" }, responseType: "stream" },
     );
+  },
+);
+
+export const submitCustomizeReport = createAsyncThunk(
+  "submitCustomizeReport",
+  async (payload: any, { getState }): Promise<any> => {
+    const response: any = await axios.post(
+      `https://templateuserrequirements.azurewebsites.net/api/threads/report-config`,
+      payload,
+      { headers: { "Content-Type": "application/json" }, responseType: "stream" },
+    );
+    return response;
   },
 );

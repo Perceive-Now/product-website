@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import RightArrow from "src/components/icons/common/right-arrow";
+import { useAppDispatch } from "src/hooks/redux";
+import { submitCustomizeReport } from "./action";
+import { LoadingIcon } from "src/components/icons";
 
 const reportToneOptions = [
   { label: "In-Depth Report", value: "In-Depth Report", showTextBox: false },
@@ -77,6 +80,11 @@ const audienceFocusTwoOptions = [
 ];
 
 const AIReportCustomization = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+
   const [format, setFormat] = useState("PDF Report");
   const [tone, setTone] = useState("In-Depth Report");
   const [visualStyle, setVisualStyle] = useState("Simple");
@@ -122,7 +130,60 @@ const AIReportCustomization = () => {
     });
   };
 
-  console.log("SLDKLSDKLSKDL", customInput);
+  const [submitting, setSubmitting] = useState(false);
+
+  const submitFinalReport = async () => {
+    if (submitting) {
+      return;
+    }
+    setSubmitting(true);
+    const dataToSend = {
+      user_id: searchParams.get("user_id"),
+      thread_id: searchParams.get("thread_id"),
+      config: {
+        report_depth: {
+          selected: selectedOptions.reportToneOptions,
+          other: customInput["tone"]?.["Other"],
+        },
+        report_format: {
+          selected: selectedOptions.reportFormatOptions,
+          other: customInput["reportFormat"]?.["Other"],
+        },
+        visual_style: {
+          selected: selectedOptions.visualStyleOptions,
+          other: customInput["visualStyle"]?.["Other"],
+        },
+        number_of_charts: {
+          selected: selectedOptions.chartsOptions,
+          other: customInput["charts"]?.["Other"],
+        },
+        citations: {
+          selected: selectedOptions.citationsOptions,
+          other: customInput["citations"]?.["Other"],
+        },
+        audience_focus: {
+          enterprise: {
+            selected: selectedOptions.audienceFocusOneOptions,
+            other: customInput["audienceFocusOne"]?.["Other"],
+          },
+          investors: {
+            selected: selectedOptions.audienceFocusTwoOptions,
+            other: customInput["audienceFocusTwo"]?.["Other"],
+          },
+        },
+      },
+    };
+    try {
+      const resp = await dispatch(submitCustomizeReport(dataToSend)).unwrap();
+      if (resp) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log("error");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="space-y-[20px] w-full max-w-[998px] z-10 pb-[7%]">
@@ -496,12 +557,16 @@ const AIReportCustomization = () => {
         </div>
       </div>
       <div className="flex gap-3 mt-4">
-        <Link to="/">
-          <div className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
-            Submit
-            <RightArrow className="ml-1" />
-          </div>
-        </Link>
+        {/* <Link to="/"> */}
+        <div
+          className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold"
+          onClick={submitFinalReport}
+        >
+          {!submitting ? "Submit" : <LoadingIcon className="animate-spin text-black" />}
+
+          <RightArrow className="ml-1" />
+        </div>
+        {/* </Link> */}
         {/* <Link to="/vc-product">
                         <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]  rounded-[32px] py-1 px-2 text-lg font-nunito text-white font-bold">
                           Explore Agents

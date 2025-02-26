@@ -24,6 +24,7 @@ interface Props {
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
   file?: File;
   disabled?: boolean;
+  threadId?: string;
 }
 
 type IFeedback = "good" | "bad";
@@ -37,6 +38,7 @@ const QueryAnswer = ({
   hasselected,
   file,
   disabled,
+  threadId,
 }: Props) => {
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
@@ -159,7 +161,7 @@ const QueryAnswer = ({
                 type="primary"
                 handleClick={() => {
                   onSendQuery("", "End Conversation", undefined, true);
-                  navigate("/ai-agent-customization");
+                  navigate(`/ai-agent-customization?thread_id=${threadId}&user_id=${userId}`);
                   closeSubmit();
                 }}
               >
