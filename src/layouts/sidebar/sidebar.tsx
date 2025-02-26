@@ -31,6 +31,7 @@ import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-j
 import { setCurrentStep } from "src/stores/vs-product";
 import { setStartTour, setFinishTour } from "src/stores/dashboard";
 import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
+import DraftReports from "./DraftReports";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
@@ -638,6 +639,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 </div>
               ),
             )}
+            <DraftReports />
           </div>
 
           <div className="space-y-0 text-nowrap">

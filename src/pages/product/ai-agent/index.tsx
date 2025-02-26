@@ -21,7 +21,7 @@ import {
   processResponse,
 } from "src/utils/helpers";
 import ExtractInfo from "./extractInfo";
-import { sendQuery, extractFileData } from "src/stores/vs-product";
+import { sendQuery, extractFileData, updatePitchdeckData } from "src/stores/vs-product";
 
 import {
   setVSChats,
@@ -42,6 +42,7 @@ import { endChatThread, sendAiAgentQuery } from "./action";
 import LoadingUI from "./LoadingUi";
 import { v4 as uuidv4 } from "uuid";
 import AgentHead from "./AgentHead";
+import { fetchAgentThreadDetails } from "src/pages/my-account/my-agent-reports/agent-report.action";
 
 const AgentName: Record<string, string> = {
   "company-diligence-agent": "Startup Diligence Agent",
@@ -87,70 +88,129 @@ const AiAgent = () => {
   useEffect(() => {
     scrollToBottom();
   }, [chats]);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const threadId = searchParams.get("threadId");
   useEffect(() => {
     setIsloading(true);
-    const fun = async () => {
-      try {
-        dispatch(resetChats());
 
-        // Create agent thread
-        const threadCreateBodyData = {
-          user_id: userId || "",
-          thread_name: uuidv4(),
-          use_case: "AI",
-          industry: "AI",
-          agent_name: AgentName[agent || ""] || "Startup Diligence Agent",
-        };
-        console.log({ "Thread Data": threadCreateBodyData });
-
-        // Call API
-        const createThreadResponse: any = await axios.post(
-          `https://templateuserrequirements.azurewebsites.net/agents/threads/create/?user_id=${
-            userId || ""
-          }&thread_name=${uuidv4()}&use_case=AI&industry=AI&agent_name=${
-            AgentName[agent || ""] || "Startup Diligence Agent"
-          }`,
-          { headers: { "Content-Type": "application/json" }, responseType: "stream" },
-        );
-
-        setthread_id(createThreadResponse.data.thread_id || generateKnowIdstring());
-
-        // const id = generateKnowIdstring();
-        // setthread_id(id);
-        firstRun.current = true;
-        const ai_query = {
-          user_input: "",
-          // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
-          user_id: userId || "",
-          thread_id: createThreadResponse.data.thread_id || generateKnowIdstring(),
-        };
-        const { data } = await dispatch(
-          sendAiAgentQuery({
-            agentName: AgentName[agent || ""],
-            ...ai_query,
-          }),
-        ).unwrap();
-
-        const { options, remainingText } = processResponse(data.response);
-        dispatch(
-          setVSChats({
-            query: remainingText,
-            answer: "",
-            options: options || [],
-            hasbutton: !!options?.length,
-          }),
-        );
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setQuery(""); // Clear input field
+    if (threadId) {
+      dispatch(resetChats());
+      setthread_id(threadId);
+      fetchAgentThreadDetails(threadId || "", userId || "", (response) => {
         setIsloading(false);
-      }
-    };
-    fun();
+        response.reports?.conversations?.map((report: any) => {
+          const { options, remainingText } = processResponse(report.user_message || "");
+          const { options: optionAnswer, remainingText: remainingTextAnswer } = processResponse(
+            report.assistant_message || "",
+          );
+
+          if (remainingText) {
+            if (remainingText.includes("pitchdeck_summary")) {
+              dispatch(
+                setVSChats({
+                  query: report.user_message,
+                  answer: "",
+                  extract: report.user_message,
+                  extractObject: report.json_report,
+                  options: options || [],
+                  hasbutton: !!options?.length,
+                }),
+              );
+              dispatch(updatePitchdeckData({ pitchdeckSummary: remainingText }));
+            } else {
+              dispatch(
+                setVSChats({
+                  query: "",
+                  answer: remainingText,
+                  options: [],
+                  hasbutton: false,
+                }),
+              );
+            }
+          }
+          if (remainingTextAnswer) {
+            dispatch(
+              setVSChats({
+                query: remainingTextAnswer,
+                answer: "",
+                options: optionAnswer,
+                hasbutton: !!optionAnswer.length || false,
+              }),
+            );
+          }
+          // dispatch(
+          //   setVSChats({
+          //     query: remainingText,
+          //     answer: "",
+          //     options: options || [],
+          //     hasbutton: !!options?.length,
+          //   }),
+          // );
+        });
+      });
+    } else {
+      const fun = async () => {
+        try {
+          dispatch(resetChats());
+
+          // Create agent thread
+          const threadCreateBodyData = {
+            user_id: userId || "",
+            thread_name: uuidv4(),
+            use_case: "AI",
+            industry: "AI",
+            agent_name: AgentName[agent || ""] || "Startup Diligence Agent",
+          };
+          console.log({ "Thread Data": threadCreateBodyData });
+
+          // Call API
+          const createThreadResponse: any = await axios.post(
+            `https://templateuserrequirements.azurewebsites.net/agents/threads/create/?user_id=${
+              userId || ""
+            }&thread_name=${uuidv4()}&use_case=AI&industry=AI&agent_name=${
+              AgentName[agent || ""] || "Startup Diligence Agent"
+            }`,
+            { headers: { "Content-Type": "application/json" }, responseType: "stream" },
+          );
+
+          setthread_id(createThreadResponse.data.thread_id || generateKnowIdstring());
+
+          // const id = generateKnowIdstring();
+          // setthread_id(id);
+          firstRun.current = true;
+          const ai_query = {
+            user_input: "",
+            // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
+            user_id: userId || "",
+            thread_id: createThreadResponse.data.thread_id || generateKnowIdstring(),
+          };
+          const { data } = await dispatch(
+            sendAiAgentQuery({
+              agentName: AgentName[agent || ""],
+              ...ai_query,
+            }),
+          ).unwrap();
+
+          const { options, remainingText } = processResponse(data.response);
+          dispatch(
+            setVSChats({
+              query: remainingText,
+              answer: "",
+              options: options || [],
+              hasbutton: !!options?.length,
+            }),
+          );
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setQuery(""); // Clear input field
+          setIsloading(false);
+        }
+      };
+      fun();
+    }
     // setFile("false");
-  }, []);
+  }, [threadId]);
 
   const scrollToBottom = () => {
     if (chatRef.current) {
@@ -162,7 +222,6 @@ const AiAgent = () => {
   };
 
   const [jsonResponse, setJsonResponse] = useState<any>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const [jsonType, setJsonType] = useState<string>("");
 

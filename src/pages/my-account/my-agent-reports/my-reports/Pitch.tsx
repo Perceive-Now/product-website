@@ -18,12 +18,14 @@ const PitchDeck = ({ user_message }: { user_message: string }) => {
             </div>
           ))
         : typeof pitchdeck_summary === "object" && pitchdeck_summary !== null
-        ? Object.values(pitchdeck_summary)?.map(([title, content]: any, index: any) => (
-            <div key={index} className="mb-4">
-              <h3 className="text-lg font-semibold">{title}</h3>
-              <p className="whitespace-pre-line">{content}</p>
-            </div>
-          ))
+        ? Object.values(pitchdeck_summary)?.map(([title, content]: any, index: any) =>
+            typeof title === "object" ? null : (
+              <div key={index} className="mb-4">
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="whitespace-pre-line">{content}</p>
+              </div>
+            ),
+          )
         : null}
     </div>
   );
