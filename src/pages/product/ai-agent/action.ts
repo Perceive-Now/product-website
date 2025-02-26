@@ -4,39 +4,70 @@ import { RootState } from "src/store";
 import { formatJsonResponse } from "src/stores/vs-product";
 
 export const sendAiAgentQuery = createAsyncThunk(
-    "sendQuery",
-    async (
-        { agentName, user_input, user_id, thread_id, sendPitchData,file_upload_status }: { agentName?: string; user_input: string; user_id: string; thread_id: string, sendPitchData?: boolean,file_upload_status?:boolean },
-        { getState },
-    ): Promise<any> => {
-        console.log("ThreadId", thread_id)
-        const state = getState() as RootState;
-        const pitchdeckData = state.VSProduct.pitchdeck_data;
-
-        const bodyData = {
-            userId: String(user_id), // Convert userId to string
-            threadId: String(thread_id),
-            industry: "AI",
-            agent: agentName || "Startup Diligence Agent",
-            useCase: "AI",
-            step: 0,
-            data: { user_input: sendPitchData ? JSON.stringify(pitchdeckData) : user_input },
-            file_upload_status : file_upload_status ? file_upload_status : false
-        }
-        const response: any = await axios.post(
-            "https://templateuserrequirements.azurewebsites.net/process-step",
-            bodyData,
-            { headers: { "Content-Type": "application/json" }, responseType: "stream" }
-
-        );
-        if (sendPitchData) {
-            return response
-
-        }
-        else {
-            return response
-        }
-
-        return;
+  "sendQuery",
+  async (
+    {
+      agentName,
+      user_input,
+      user_id,
+      thread_id,
+      sendPitchData,
+      file_upload_status,
+    }: {
+      agentName?: string;
+      user_input: string;
+      user_id: string;
+      thread_id: string;
+      sendPitchData?: boolean;
+      file_upload_status?: boolean;
     },
+    { getState },
+  ): Promise<any> => {
+    console.log("ThreadId", thread_id);
+    const state = getState() as RootState;
+    const pitchdeckData = state.VSProduct.pitchdeck_data;
+
+    const bodyData = {
+      userId: String(user_id), // Convert userId to string
+      threadId: String(thread_id),
+      industry: "AI",
+      agent: agentName || "Startup Diligence Agent",
+      useCase: "AI",
+      step: 0,
+      data: { user_input: sendPitchData ? JSON.stringify(pitchdeckData) : user_input },
+      file_upload_status: file_upload_status ? file_upload_status : false,
+    };
+    const response: any = await axios.post(
+      "https://templateuserrequirements.azurewebsites.net/process-step",
+      bodyData,
+      { headers: { "Content-Type": "application/json" }, responseType: "stream" },
+    );
+    if (sendPitchData) {
+      return response;
+    } else {
+      return response;
+    }
+
+    return;
+  },
+);
+
+export const endChatThread = createAsyncThunk(
+  "sendQuery",
+  async (
+    {
+      user_id,
+      thread_id,
+    }: {
+      user_id: string;
+      thread_id: string;
+    },
+    { getState },
+  ): Promise<any> => {
+    const response: any = await axios.patch(
+      `https://templateuserrequirements.azurewebsites.net/update_thread_complete/?user_id=${user_id}&thread_id=${thread_id}`,
+      {},
+      { headers: { "Content-Type": "application/json" }, responseType: "stream" },
+    );
+  },
 );

@@ -38,7 +38,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import ReportCustomization from "./ReportCustomization";
 import axios from "axios";
 import AddQueryAgent from "./add-query";
-import { sendAiAgentQuery } from "./action";
+import { endChatThread, sendAiAgentQuery } from "./action";
 import LoadingUI from "./LoadingUi";
 import { v4 as uuidv4 } from "uuid";
 import AgentHead from "./AgentHead";
@@ -313,6 +313,12 @@ const AiAgent = () => {
                       // file_upload_status: true,
                     }),
                   ).unwrap();
+                  dispatch(
+                    endChatThread({
+                      thread_id: thread_id,
+                      user_id: userId || "",
+                    }),
+                  );
                   let convoOptions: string[] = [];
                   const { options, remainingText } = processResponse(data.response);
                   if (data.response?.toLowerCase().includes("24-48 hours")) {
