@@ -29,7 +29,7 @@ interface Props {
 }
 
 const agentIcons: Record<string, string> = {
-  "Startup Diligence Agent": CompanyDiligence,
+  "Company Diligence Agent": CompanyDiligence,
   "Fundraising Strategy Agent": FundraisingStrategy,
   "Report on Anything Agent": ReportonAnything,
   "Market Strategy Agent": MarketingStrategy,
