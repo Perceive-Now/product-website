@@ -639,7 +639,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 </div>
               ),
             )}
-            <DraftReports />
+            <DraftReports
+              open={open}
+              setOpen={() => {
+                setOpen(true);
+              }}
+            />
           </div>
 
           <div className="space-y-0 text-nowrap">
@@ -692,7 +697,6 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 collapseOpen && open ? "max-h-screen overflow-hidden" : "max-h-0 overflow-hidden"
               }`}
             >
-
               {collapseOpen &&
                 open &&
                 SidebarBottom.filter((s) => {

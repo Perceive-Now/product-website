@@ -7,6 +7,8 @@ import Tooltip from "src/components/reusable/popover";
 import classNames from "classnames";
 import { DustbinIcon, ShareIcon, VerticalThreeDots } from "src/components/icons";
 import EditIcon from "src/components/icons/miscs/Edit";
+import IconFile from "src/components/icons/side-bar/icon-file";
+import SvgDocumentIcon from "./_assets/paper-icon";
 
 const reverseAgentMapping: Record<string, string> = {
   "Startup Diligence Agent": "company-diligence-agent",
@@ -24,7 +26,14 @@ const reverseAgentMapping: Record<string, string> = {
   "": "Startup Diligence Agent",
 };
 
-const DraftReports = () => {
+interface Props {
+  open: boolean;
+  setOpen: () => void;
+}
+
+const DraftReports = (props: Props) => {
+  const { open, setOpen } = props;
+
   const userId = jsCookie.get("user_id");
   const [reportList, setReportList] = useState<{ loading: boolean; reports: any[] }>({
     loading: true,
@@ -51,16 +60,37 @@ const DraftReports = () => {
   }, []);
   return (
     <div className="min-h-screen">
-      <p>Report Draft</p>
-      <div>
+      <div
+        className={classNames(
+          "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+        )}
+      >
+        <div
+          style={{
+            filter: "grayscale(1)",
+          }}
+        >
+          <SvgDocumentIcon />
+        </div>
+        {open && <span className=" text-secondary-800 text-base">{"Report Draft"}</span>}
+      </div>
+      <div className="max-h-[300px] overflow-y-auto pn_scroller">
         {filteredReports?.map((report, index) => (
-          <div className="flex items-center gap-1 w-full min-w-[200px] justify-between" key={report.thread_name}>
+          <div
+            className={`transition-all flex items-center gap-1 w-full ${
+              open ? "min-w-[200px]" : ""
+            } justify-between group`}
+            key={report.thread_name}
+          >
             <Link
+              onClick={setOpen}
               to={`/ai-agent?agent=${
                 reverseAgentMapping[report.agent_name] || "company-diligence-agent"
               }&threadId=${report.id}`}
               key={report.key}
-              className={classNames("py-1 px-1 rounded text-sm text-secondary-800")}
+              className={classNames(
+                "py-1 px-1 rounded text-sm text-secondary-800 flex items-center gap-1",
+              )}
             >
               <div
                 key={index}
@@ -68,55 +98,59 @@ const DraftReports = () => {
                   filter: "grayscale(1)",
                 }}
               >
-                {`$${report.thread_name?.split("-")[0]}`}
+                <IconFile />
               </div>
+              {open && (
+                <span className=" text-secondary-800 text-base">
+                  {`$${report.thread_name?.split("-")[0]}`}
+                </span>
+              )}
             </Link>
-            <Tooltip
-              isCustomPanel={true}
-              right="0px"
-              trigger={
-                <VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />
-              }
-              panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] left-0"
-            >
-              <ul id="dropdown">
-                <li
-                  className="mb-2 cursor-pointer"
-                  onClick={() => {
-                    undefined;
-                  }}
-                >
-                  <div className="flex items-center">
-                    <ShareIcon className="mr-2" /> Continue
-                  </div>
-                </li>
-                <li
-                  className="mb-2 cursor-pointer"
-                  onClick={() => {
-                    undefined;
-                  }}
-                >
-                  <div className="flex items-center">
-                    <EditIcon className="mr-2" /> Rename
-                  </div>
-                </li>
-                <li
-                  className="mb-2 cursor-pointer"
-                  onClick={() => {
-                    undefined;
-                  }}
-                >
-                  <div className="flex items-center">
-                    <DustbinIcon className="mr-2" /> Delete
-                  </div>
-                </li>
-                {/* <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
-                      <div className="flex items-center">
-                        <TrashIcon className="mr-2" /> Delete Report
-                      </div>
-                    </li> */}
-              </ul>
-            </Tooltip>
+
+            {/* Three dots - Show on hover */}
+            <div className={`relative hidden ${open ? "group-hover:block" : ""}`}>
+              <Tooltip
+                isCustomPanel={true}
+                right="0px"
+                trigger={
+                  <VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />
+                }
+                panelClassName={`rounded-lg py-2 px-3 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
+              >
+                <ul id="dropdown">
+                  <li
+                    className="mb-2 cursor-pointer"
+                    onClick={() => {
+                      undefined;
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <ShareIcon className="mr-2" /> Continue
+                    </div>
+                  </li>
+                  <li
+                    className="mb-2 cursor-pointer"
+                    onClick={() => {
+                      undefined;
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <EditIcon className="mr-2" /> Rename
+                    </div>
+                  </li>
+                  <li
+                    className="mb-2 cursor-pointer"
+                    onClick={() => {
+                      undefined;
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <DustbinIcon className="mr-2" /> Delete
+                    </div>
+                  </li>
+                </ul>
+              </Tooltip>
+            </div>
           </div>
         ))}
       </div>
