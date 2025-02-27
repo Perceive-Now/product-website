@@ -31,6 +31,17 @@ const DraftReports = () => {
     reports: [],
   });
 
+  const filteredReports =
+    reportList.reports.length > 0
+      ? reportList.reports
+          .sort((a: any, b: any) => {
+            const dateA = +new Date(a.created_at);
+            const dateB = +new Date(b.created_at);
+            return dateB - dateA; // Descending order
+          })
+          .filter((report: any) => report.is_complete === false)
+      : [];
+
   useEffect(() => {
     setReportList({
       reports: [],
@@ -42,7 +53,7 @@ const DraftReports = () => {
     <div>
       <p>Report Draft</p>
       <div>
-        {reportList.reports?.map((report, index) => (
+        {filteredReports?.map((report, index) => (
           <div className="flex items-center gap-1 w-100" key={report.thread_name}>
             <Link
               to={`/ai-agent?agent=${
