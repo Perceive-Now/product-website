@@ -307,7 +307,7 @@ export default function Landing() {
                 </div>
               </div>
               <div className="flex gap-2 mt-4">
-                <Link to="/my-projects">
+                <Link to="/ai-agent/landing">
                   <div className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
                     Get Started
                     <RightArrow className="ml-1" />
