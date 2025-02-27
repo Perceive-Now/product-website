@@ -17,6 +17,7 @@ import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import jsCookie from "js-cookie";
 import { fetchAgentReports } from "./agent-report.action";
 import { formatDate } from "src/utils/helpers";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
 
 const MyAgentReport = () => {
   const navigate = useNavigate();
@@ -114,6 +115,7 @@ const MyAgentReport = () => {
 
   return (
     <div className="space-y-[20px] w-full z-10 pb-[7%]">
+      <AgentHead agentName="" />
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">AI Agent Reports</h6>
         <div className="flex justify-start items-center pt-3 pl-1">

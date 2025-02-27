@@ -28,6 +28,7 @@ import {
   technologyAndRndIcon,
 } from "./_assets/icons";
 import AgentCard from "./_components/AgentCard";
+import AgentHead from "../AgentHead";
 
 // Custom SVG Icons (replace these with your own SVGs)
 
@@ -155,7 +156,8 @@ const agents = [
 
 export default function AgentsGrid() {
   return (
-    <div className="px-4 pt-15 pb-12">
+    <div className="px-4 pt-2 pb-12">
+      <AgentHead agentName="" />
       <h1 className="text-4xl font-bold mb-4">Agents</h1>
       <p className="text-lg mb-2">
         Explore our AI agents, each tailored to assist with specific tasks.

@@ -14,11 +14,12 @@ import { setStartTour, setFinishTour } from "src/stores/dashboard";
 import RightArrow from "src/components/icons/common/right-arrow";
 import handClock from "../../../components/icons/home-images/48hourDelivery.svg";
 import targetPaper from "../../../components/icons/home-images/ContextRichness.svg";
-import bulbIcon from '../../../components/icons/home-images/HyperTailored.svg';
-import aimDart from '../../../components/icons/home-images/AI.svg';
-import bulbMagni from '../../../components/icons/home-images/ZeroHaul.svg';
+import bulbIcon from "../../../components/icons/home-images/HyperTailored.svg";
+import aimDart from "../../../components/icons/home-images/AI.svg";
+import bulbMagni from "../../../components/icons/home-images/ZeroHaul.svg";
 
 import pnLogo from "../../../assets/images/pn.svg";
+import AgentHead from "../ai-agent/AgentHead";
 
 const stepsList = [
   {
@@ -222,6 +223,7 @@ export default function Landing() {
     // </div>
     <>
       <div className="w-full">
+        <AgentHead agentName="" />
         <nav className="w-full text-white px-6">
           <div className="flex justify-between items-center">
             {/* <Link to="/" className="text-[18px] font-semibold text-black">
@@ -299,14 +301,16 @@ export default function Landing() {
                 </div>
                 <div className="flex items-center gap-1">
                   <img src={aimDart} alt="arrow-down" className="w-4 h-4" />
-                  <p className="text-xs font-light font-nunito">AI transparency and Explainability</p>
+                  <p className="text-xs font-light font-nunito">
+                    AI transparency and Explainability
+                  </p>
                 </div>
               </div>
               <div className="flex gap-2 mt-4">
                 <Link to="/my-projects">
                   <div className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
                     Get Started
-                    <RightArrow className="ml-1"/>
+                    <RightArrow className="ml-1" />
                   </div>
                 </Link>
                 {/* <Link to="/vc-product">

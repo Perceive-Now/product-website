@@ -23,6 +23,7 @@ import SelectBox from "./selectBox";
 import axios from "axios";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import { addActivityComment } from "src/stores/vs-product";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
 /**
  *
  */
@@ -417,6 +418,7 @@ const QuickReports = () => {
 
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
+      <AgentHead agentName="" />
       <div>
         {id ? (
           <div className="p-1 pl-0">

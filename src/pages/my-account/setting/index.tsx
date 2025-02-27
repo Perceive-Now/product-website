@@ -10,6 +10,7 @@ import { getBillingHistory } from "../../../utils/api/product";
 //
 import Loading from "../../../components/reusable/loading";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
 
 /**
  *
@@ -122,6 +123,7 @@ const Setting = () => {
       </div> */}
 
       <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+      <AgentHead agentName="" />
         <div className="p-1">
           <h6 className="text-lg font-semibold ml-0">Settings &gt; Billing</h6>
           <div className="flex justify-start items-center pt-3 pl-1">

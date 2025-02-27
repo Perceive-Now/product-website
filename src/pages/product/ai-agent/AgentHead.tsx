@@ -10,10 +10,10 @@ import ProductEngineering from "../../../assets/images/icons/Product&Engineering
 import MarketingSales from "../../../assets/images/icons/Marketing&Sales.svg";
 import FinanceStrategy from "../../../assets/images/icons/Finance&Strategy.svg";
 import Legal from "../../../assets/images/icons/Legal.svg";
-import ProfileLogo from '../../../assets/images/profileperson.svg';
-import OrganizationLogo from '../../../assets/images/organization.svg';
-import TeamLogo from '../../../assets/images/team.svg';
-import LogoutLogo from '../../../assets/images/logout.svg';
+import ProfileLogo from "../../../assets/images/profileperson.svg";
+import OrganizationLogo from "../../../assets/images/organization.svg";
+import TeamLogo from "../../../assets/images/team.svg";
+import LogoutLogo from "../../../assets/images/logout.svg";
 
 import Org from "../../../assets/images/organization-settings.svg";
 import { useAppDispatch, useAppSelector } from "src/hooks/redux";
@@ -39,11 +39,10 @@ const agentIcons: Record<string, string> = {
   "Product & Engineering Agent": ProductEngineering,
   "Finance & Strategy Agent": FinanceStrategy,
   "Marketing & Sales Agent": MarketingSales,
-  "Legal & Compliance Agent": Legal
+  "Legal & Compliance Agent": Legal,
 };
 
 const AgentHead = (props: Props) => {
-
   const { agentName } = props;
 
   const navigate = useNavigate();
@@ -66,8 +65,6 @@ const AgentHead = (props: Props) => {
     setIsLoggingOut(false);
   };
 
-  
-
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: any) {
@@ -79,24 +76,22 @@ const AgentHead = (props: Props) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  
   const iconSrc = agentIcons[agentName] || "/icons/default-agent.png";
   console.log(agentIcons[agentName]);
   console.log();
-  
-  const displayName = agentName === "Startup Diligence Agent" ? "Company Diligence Agent" : agentName;
+
+  const displayName =
+    agentName === "Startup Diligence Agent" ? "Company Diligence Agent" : agentName;
 
   return (
     <div className="flex items-center justify-between mt-2 mb-2 rounded-lg">
       {/* Left Section: Icon and Name */}
       <div className="flex items-center gap-1">
-      <div className="text-white flex items-center justify-center rounded-full">
-          <img src={iconSrc} alt={displayName} className="w-4 h-4" />
+        <div className="text-white flex items-center justify-center rounded-full">
+          {agentName && <img src={iconSrc} alt={displayName} className="w-4 h-4" />}
         </div>
         <h1 className="text-base text-gray-800">{displayName}</h1>
       </div>
-
-      
 
       {/* Right Section: Profile Image */}
       <div className="relative" onClick={() => setOpen((prev) => !prev)} ref={menuRef}>
@@ -113,7 +108,7 @@ const AgentHead = (props: Props) => {
                 onClick={() => navigate("/profile")}
               >
                 {/* <FiUser className="text-gray-600" /> */}
-                <img src={ProfileLogo}/>
+                <img src={ProfileLogo} />
                 <span>My profile</span>
               </li>
               <li
@@ -121,7 +116,7 @@ const AgentHead = (props: Props) => {
                 onClick={() => navigate("/users")}
               >
                 {/* <BsBuilding className="text-gray-600" /> */}
-                <img src={OrganizationLogo}/>
+                <img src={OrganizationLogo} />
                 <span>Organization</span>
               </li>
               <li
@@ -129,7 +124,7 @@ const AgentHead = (props: Props) => {
                 onClick={() => navigate("/users")}
               >
                 {/* <FiUsers className="text-gray-600" /> */}
-                <img src={TeamLogo}/>
+                <img src={TeamLogo} />
                 <span>Team</span>
               </li>
               <hr />

@@ -27,6 +27,7 @@ import ToolTip from "src/components/reusable/tool-tip";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import toast from "react-hot-toast";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
 /**
  *
  */
@@ -338,6 +339,7 @@ const MyProjects = () => {
 
   return (
     <div className="space-y-[20px] w-full z-10 pb-[7%]">
+      <AgentHead agentName="" />
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Project Hub</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
