@@ -1,97 +1,176 @@
 import React, { useState } from "react";
-
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import RightArrow from "src/components/icons/common/right-arrow";
 import { useAppDispatch } from "src/hooks/redux";
 import { submitCustomizeReport } from "./action";
 import { LoadingIcon } from "src/components/icons";
 
-const reportToneOptions = [
-  { label: "In-Depth Report", value: "In-Depth Report", showTextBox: false },
-  { label: "Quick Overall Summary", value: "Quick Overall Summary", showTextBox: false },
-  { label: "Quick Sub-Topic Summaries", value: "Quick Sub-Topic Summaries", showTextBox: true },
-  { label: "Other", value: "Other", showTextBox: true },
-];
+import customizationIcon from "./_assets/customization-icon.svg";
+import PrimaryButton from "src/components/reusable/button/primary-button";
 
-const reportFormatOptions = [
-  { label: "PDF Report", value: "PDF Report", showTextBox: false },
-  { label: "Presentation Deck", value: "Presentation Deck", showTextBox: false },
-  { label: "Word Document", value: "Word Document", showTextBox: false },
-  {
-    label: "Spreadsheet Summary",
-    value: "Spreadsheet Summary",
-    showTextBox: false,
-  },
-  {
-    label: "Other",
-    value: "Other",
-    showTextBox: true,
-  },
-];
+// Define the structure for options
+interface Option {
+  label: string;
+  value: string;
+  showTextBox: boolean;
+}
 
-const visualStyleOptions = [
-  { label: "Simple", value: "Simple", showTextBox: false },
-  { label: "Annotated", value: "Annotated", showTextBox: false },
-  { label: "Extensive", value: "Extensive", showTextBox: false },
-  { label: "Other", value: "Other", showTextBox: true },
-];
-const chartsOptions = [
-  { label: "Minimal", value: "Minimal", showTextBox: false },
-  { label: "Moderate", value: "Moderate", showTextBox: false },
-  { label: "Extensive", value: "Extensive", showTextBox: false },
-  { label: "Other", value: "Other", showTextBox: true },
-];
+// Define options
+const options = {
+  reportToneOptions: [
+    { label: "In-Depth Report", value: "In-Depth Report", showTextBox: false },
+    { label: "Quick Overall Summary", value: "Quick Overall Summary", showTextBox: false },
+    { label: "Quick Sub-Topic Summaries", value: "Quick Sub-Topic Summaries", showTextBox: true },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+  reportFormatOptions: [
+    { label: "PDF Report", value: "PDF Report", showTextBox: false },
+    { label: "Presentation Deck", value: "Presentation Deck", showTextBox: false },
+    { label: "Word Document", value: "Word Document", showTextBox: false },
+    { label: "Spreadsheet Summary", value: "Spreadsheet Summary", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+  visualStyleOptions: [
+    { label: "Simple", value: "Simple", showTextBox: false },
+    { label: "Annotated", value: "Annotated", showTextBox: false },
+    { label: "Extensive", value: "Extensive", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+  chartsOptions: [
+    { label: "Minimal", value: "Minimal", showTextBox: false },
+    { label: "Moderate", value: "Moderate", showTextBox: false },
+    { label: "Extensive", value: "Extensive", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+  citationsOptions: [
+    { label: "Inline Links", value: "Inline Links", showTextBox: false },
+    { label: "Endnotes", value: "Endnotes", showTextBox: false },
+    { label: "No Citations", value: "No Citations", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+  audienceFocusOneOptions: [
+    { label: "C-Suite Executives", value: "C-Suite Executives", showTextBox: false },
+    {
+      label: "Business Development Teams",
+      value: "Business Development Teams",
+      showTextBox: false,
+    },
+    { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
+    { label: "Operations Teams", value: "Operations Teams", showTextBox: false },
+    { label: "Finance Teams", value: "Finance Teams", showTextBox: false },
+    {
+      label: "Regulatory & Compliance Teams",
+      value: "Regulatory & Compliance Teams",
+      showTextBox: false,
+    },
+    { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
+    { label: "Product Management Teams", value: "Product Management Teams", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+  audienceFocusTwoOptions: [
+    { label: "General Partners (GPs)", value: "General Partners (GPs)", showTextBox: false },
+    { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
+    { label: "Portfolio Managers", value: "Portfolio Managers", showTextBox: false },
+    { label: "M&A Teams", value: "M&A Teams", showTextBox: false },
+    { label: "Risk & Compliance Teams", value: "Risk & Compliance Teams", showTextBox: false },
+    { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
+    { label: "Managing Directors", value: "Managing Directors", showTextBox: false },
+    { label: "Deal Sourcing Teams", value: "Deal Sourcing Teams", showTextBox: false },
+    { label: "Fund Managers", value: "Fund Managers", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+};
 
-const citationsOptions = [
-  { label: "Inline Links", value: "Inline Links", showTextBox: false },
-  { label: "Endnotes", value: "Endnotes", showTextBox: false },
-  { label: "No Citations", value: "No Citations", showTextBox: false },
-  { label: "Other", value: "Other", showTextBox: true },
-];
+// Reusable component for rendering checkbox groups
+interface CheckboxGroupProps {
+  options: Option[];
+  selectedOptions: string[];
+  onChange: (value: string) => void;
+  customInput: Record<string, string>;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>, field: string) => void;
+}
 
-const audienceFocusOneOptions = [
-  { label: "C-Suite Executives", value: "C-Suite Executives", showTextBox: false },
-  { label: "Business Development Teams", value: "Business Development Teams", showTextBox: false },
-  { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
-  { label: "Operations Teams", value: "Operations Teams", showTextBox: false },
-  { label: "Finance Teams", value: "Finance Teams", showTextBox: false },
-  {
-    label: "Regulatory & Compliance Teams",
-    value: "Regulatory & Compliance Teams",
-    showTextBox: false,
-  },
-  { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
-  { label: "Product Management Teams", value: "Product Management Teams", showTextBox: false },
-  { label: "Other", value: "Other", showTextBox: true },
-];
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
+  options,
+  selectedOptions,
+  onChange,
+  customInput,
+  onInputChange,
+}) => (
+  <div className="flex gap-x-4 p-2 rounded-b-lg w-full">
+    <div className="grid grid-cols-2 gap-2 w-full">
+      {options.map((item) => (
+        <div key={item.value} className="">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              value={item.value}
+              checked={selectedOptions.includes(item.value)}
+              onChange={() => onChange(item.value)}
+              className="form-radio text-base font-normal"
+            />
+            <span className="font-light">{item.label}</span>
+          </label>
+          {selectedOptions.includes(item.value) && item.showTextBox && (
+            <input
+              type="text"
+              placeholder={`Enter custom text for ${item.label}`}
+              value={customInput[item.value] || ""}
+              onChange={(e) => onInputChange(e, item.value)}
+              className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
-const audienceFocusTwoOptions = [
-  { label: "General Partners (GPs)", value: "General Partners (GPs)", showTextBox: false },
-  { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
-  { label: "Portfolio Managers", value: "Portfolio Managers", showTextBox: false },
-  { label: "M&A Teams", value: "M&A Teams", showTextBox: false },
-  { label: "Risk & Compliance Teams", value: "Risk & Compliance Teams", showTextBox: false },
-  { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
-  { label: "Managing Directors", value: "Managing Directors", showTextBox: false },
-  { label: "Deal Sourcing Teams", value: "Deal Sourcing Teams", showTextBox: false },
-  { label: "Fund Managers", value: "Fund Managers", showTextBox: false },
-  { label: "Other", value: "Other", showTextBox: true },
-];
+const RoundedCheckboxGroup: React.FC<CheckboxGroupProps> = ({
+  options,
+  selectedOptions,
+  onChange,
+  customInput,
+  onInputChange,
+}) => (
+  <div className="flex gap-x-4 p-2 rounded-b-lg">
+    <div className="flex flex-wrap gap-2 w-full">
+      {options.map((item) => (
+        <div key={item.value} className="my-1">
+          <label
+            className={`flex rounded-full border w-fit ${
+              selectedOptions.includes(item.value) ? "border-[#442873]" : "border-[#9FA0A6]"
+            } items-center space-x-1 pr-2 cursor-pointer hover:opacity-70`}
+          >
+            <input
+              type="radio"
+              value={item.value}
+              // toggle
+              checked={selectedOptions.includes(item.value)}
+              onChange={() => onChange(item.value)}
+              className="form-radio text-base font-normal ml-1"
+            />
+            <span className="font-light">{item.label}</span>
+          </label>
+          {selectedOptions.includes(item.value) && item.showTextBox && (
+            <input
+              type="text"
+              placeholder={`Enter custom text for ${item.label}`}
+              value={customInput[item.value] || ""}
+              onChange={(e) => onInputChange(e, item.value)}
+              className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
-const AIReportCustomization = () => {
+const AIReportCustomization: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
-
-  const [format, setFormat] = useState("PDF Report");
-  const [tone, setTone] = useState("In-Depth Report");
-  const [visualStyle, setVisualStyle] = useState("Simple");
-  const [charts, setCharts] = useState("Minimal");
-  const [citations, setCitations] = useState("Inline Links");
-  const [audienceFocusOne, setAudienceFocusOne] = useState("C-Suite Executives");
-  const [audienceFocusTwo, setAudienceFocusTwo] = useState("General Partners (GPs)");
 
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
     reportToneOptions: [],
@@ -103,39 +182,40 @@ const AIReportCustomization = () => {
     audienceFocusTwoOptions: [],
   });
 
-  const [customInput, setCustomInput] = useState<Record<string, Record<string, string>>>({});
+  const [reportName, setReportName] = useState("");
+  const [customInput, setCustomInput] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [currentTab, setCurrentTab] = useState("reportToneOptions");
 
   const handleCheckboxChange = (category: string, value: string) => {
     setSelectedOptions((prev) => {
       const currentSelections = prev[category] || [];
       const isSelected = currentSelections.includes(value);
-
       return {
         ...prev,
         [category]: isSelected
-          ? currentSelections.filter((item) => item !== value) // Remove if already selected
-          : [...currentSelections, value], // Add if not selected
+          ? currentSelections.filter((item) => item !== value)
+          : [...currentSelections, value],
       };
     });
   };
 
-  const handleInputChange = (e: any, key: string, field: string) => {
-    console.log("customInput.key", customInput[key]);
+  const handleRadioChange = (category: string, value: string) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [category]: prev[category].includes(value) ? [] : [value], // Only one value at a time
+    }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setCustomInput({
       ...customInput,
-      [key]: {
-        ...(customInput[key] || {}),
-        [field]: e.target.value,
-      },
+      [field]: e.target.value,
     });
   };
 
-  const [submitting, setSubmitting] = useState(false);
-
   const submitFinalReport = async () => {
-    if (submitting) {
-      return;
-    }
+    if (submitting) return;
     setSubmitting(true);
     const dataToSend = {
       user_id: searchParams.get("user_id"),
@@ -143,52 +223,49 @@ const AIReportCustomization = () => {
       config: {
         report_depth: {
           selected: selectedOptions.reportToneOptions,
-          other: customInput["tone"]?.["Other"],
+          other: customInput["Other"],
         },
         report_format: {
           selected: selectedOptions.reportFormatOptions,
-          other: customInput["reportFormat"]?.["Other"],
+          other: customInput["Other"],
         },
         visual_style: {
           selected: selectedOptions.visualStyleOptions,
-          other: customInput["visualStyle"]?.["Other"],
+          other: customInput["Other"],
         },
         number_of_charts: {
           selected: selectedOptions.chartsOptions,
-          other: customInput["charts"]?.["Other"],
+          other: customInput["Other"],
         },
         citations: {
           selected: selectedOptions.citationsOptions,
-          other: customInput["citations"]?.["Other"],
+          other: customInput["Other"],
         },
         audience_focus: {
           enterprise: {
             selected: selectedOptions.audienceFocusOneOptions,
-            other: customInput["audienceFocusOne"]?.["Other"],
+            other: customInput["Other"],
           },
           investors: {
             selected: selectedOptions.audienceFocusTwoOptions,
-            other: customInput["audienceFocusTwo"]?.["Other"],
+            other: customInput["Other"],
           },
         },
       },
     };
     try {
       const resp = await dispatch(submitCustomizeReport(dataToSend)).unwrap();
-      if (resp) {
-        navigate("/");
-      }
+      if (resp) navigate("/ai-agent-final");
     } catch (error) {
-      console.log("error");
+      console.error("Error submitting report: ", error);
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="space-y-[20px] w-full max-w-[998px] z-10 pb-[7%]">
+    <div className="space-y-[20px] w-full max-w-[998px] bg-[#FFFFFF] z-10 pb-[7%]">
       <div className="p-1 pl-0">
-        {/* <h6 className="text-lg font-semibold ml-0">Report Customization</h6> */}
         <div className="text-start text-black mt-2 text-[16px] leading-[19.2px] font-normal">
           <p>Customize your report to match your needs.</p>
           <p>
@@ -196,389 +273,185 @@ const AIReportCustomization = () => {
             and key insights to get the most relevant results!
           </p>
         </div>
-        {/* <div className="flex justify-start items-center pt-3 pl-1">
-          <Link to="/">
-            <p className="mr-4 text-secondary-800 flex items-center">
-              <ArrowLeftIcon className="mr-1" /> Back
-            </p>
-          </Link>
-        </div> */}
-        <div className="border border-[#757575CC] border-solid p-2 mt-4 rounded-lg">
-          <p>Report Customization</p>
-          <div className="grid grid-cols-3 gap-x-3 gap-y-4 mt-2">
-            <div className="flex flex-col w-full max-w-[306px]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Report Depth</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
-              </div>
-              <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full">
-                  {reportToneOptions.map((item) => (
-                    <>
-                      <label key={item.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="tone"
-                          value={item.value}
-                          checked={selectedOptions["reportToneOptions"]?.includes(item.value)}
-                          onChange={() => handleCheckboxChange("reportToneOptions", item.value)}
-                          className="form-radio text-base font-normal"
-                        />
-                        <span>{item.label}</span>
-                      </label>
-                      {selectedOptions["reportToneOptions"].includes(item.value) &&
-                      item.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["tone"]?.[item.value] || ""}
-                          onChange={(e) => handleInputChange(e, "tone", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
-              </div>
-            </div>
 
-            <div className="flex flex-col w-full max-w-[328px]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Report Format</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
-              </div>
-              <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full">
-                  {reportFormatOptions.map((reportFormat) => (
-                    <>
-                      <label key={reportFormat.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="format"
-                          value={reportFormat.value}
-                          checked={selectedOptions["reportFormatOptions"]?.includes(
-                            reportFormat.value,
-                          )}
-                          onChange={() =>
-                            handleCheckboxChange("reportFormatOptions", reportFormat.value)
-                          }
-                          className="form-radio text-base font-normal"
-                        />
-                        <span>{reportFormat.label}</span>
-                      </label>
-                      {selectedOptions["reportFormatOptions"].includes(reportFormat.value) &&
-                      reportFormat.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${reportFormat.label}`}
-                          value={customInput["reportFormat"]?.[reportFormat.value] || ""}
-                          onChange={(e) => handleInputChange(e, "reportFormat", reportFormat.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
-              </div>
-            </div>
+        <div className="mb-2 mt-4">
+          <h2 className="text-black text-base mb-1">Report name</h2>
 
-            <div className="flex flex-col w-full max-w-[306px]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Visual Style</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
-              </div>
-              <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full">
-                  {visualStyleOptions.map((item) => (
-                    <>
-                      <label key={item.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="visualStyle"
-                          value={item.value}
-                          checked={selectedOptions["visualStyleOptions"]?.includes(item.value)}
-                          onChange={() => handleCheckboxChange("visualStyleOptions", item.value)}
-                          className="form-radio text-base font-normal"
-                        />
-                        <span>{item.label}</span>
-                      </label>
-                      {selectedOptions["visualStyleOptions"].includes(item.value) &&
-                      item.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["visualStyle"]?.[item.value] || ""}
-                          onChange={(e) => handleInputChange(e, "visualStyle", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
-              </div>
-            </div>
+          <div className="max-w-md rounded-lg shadow-xl border">
+            <input
+              className="w-full p-2 outline-none rounded-lg text-sm"
+              placeholder="Type your report name"
+              value={reportName}
+              onChange={(e) => setReportName(e.target.value)}
+            />
           </div>
-          <div className="flex w-full gap-x-3 gap-y-4 mt-2">
-            <div className="flex flex-col w-[50%] max-w-[50%]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Number of Charts/Tables</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
-              </div>
-              <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full">
-                  {chartsOptions.map((item) => (
-                    <>
-                      <label key={item.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="charts"
-                          value={item.value}
-                          checked={selectedOptions["chartsOptions"]?.includes(item.value)}
-                          onChange={() => handleCheckboxChange("chartsOptions", item.value)}
-                          className="form-radio text-base font-normal"
-                        />
-                        <span>{item.label}</span>
-                      </label>
-                      {selectedOptions["chartsOptions"].includes(item.value) && item.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["charts"]?.[item.value] || ""}
-                          onChange={(e) => handleInputChange(e, "charts", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
-              </div>
-            </div>
+        </div>
 
-            <div className="flex flex-col w-[50%] max-w-[50%]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Citations</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
+        <div className=" bg-white shadow-lg mt-4 rounded-lg">
+          <div className="flex">
+            <div className="flex-[0.9] p-2 pr-10 border-r">
+              <div className="flex items-center gap-x-2 mb-4">
+                <img src={customizationIcon} alt="Customization Icon" />
+                Customization options
               </div>
-              <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full">
-                  {citationsOptions.map((item) => (
-                    <>
-                      <label key={item.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="citations"
-                          value={item.value}
-                          checked={selectedOptions["citationsOptions"]?.includes(item.value)}
-                          onChange={() => handleCheckboxChange("citationsOptions", item.value)}
-                          className="form-radio text-base font-normal"
-                        />
-                        <span>{item.label}</span>
-                      </label>
-                      {selectedOptions["citationsOptions"].includes(item.value) &&
-                      item.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["citations"]?.[item.value] || ""}
-                          onChange={(e) => handleInputChange(e, "citations", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "reportToneOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("reportToneOptions")}
+              >
+                <input type="radio" checked={currentTab === "reportToneOptions"} />
+                Report Depth
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "reportFormatOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("reportFormatOptions")}
+              >
+                <input type="radio" checked={currentTab === "reportFormatOptions"} />
+                Report Format
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "visualStyleOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("visualStyleOptions")}
+              >
+                <input type="radio" checked={currentTab === "visualStyleOptions"} />
+                Visual Style
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "chartsOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("chartsOptions")}
+              >
+                <input type="radio" checked={currentTab === "chartsOptions"} />
+                Number of charts/tables
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "citationsOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("citationsOptions")}
+              >
+                <input type="radio" checked={currentTab === "citationsOptions"} />
+                Citations
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "audienceFocus" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("audienceFocus")}
+              >
+                <input type="radio" checked={currentTab === "audienceFocus"} />
+                Audience Focus
               </div>
             </div>
-          </div>
-          <div className="flex w-full gap-x-3 gap-y-4 mt-2">
-            <div className="flex flex-col w-[50%] max-w-[50%]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Audience Focus</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
-              </div>
-              <p className="bg-[#F5F7FF] pt-1 pl-2 text-start text-base">For Enterprises</p>
-              <div className="bg-[#F5F7FF] flex w-full gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-[50%]">
-                  {audienceFocusOneOptions.map((item) => (
-                    <>
-                      <label key={item.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="audienceFocusOne"
-                          value={item.value}
-                          checked={selectedOptions["audienceFocusOneOptions"]?.includes(item.value)}
-                          onChange={() =>
-                            handleCheckboxChange("audienceFocusOneOptions", item.value)
-                          }
-                          className="form-radio text-base font-normal"
-                        />
-                        <span>{item.label}</span>
-                      </label>
-                      {selectedOptions["audienceFocusOneOptions"].includes(item.value) &&
-                      item.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["audienceFocusOne"]?.[item.value] || ""}
-                          onChange={(e) => handleInputChange(e, "audienceFocusOne", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-[50%] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
-              </div>
-              {/* <p className="bg-[#F5F7FF] pt-1 pl-2 text-start text-base">For Investors & Financial Institutions</p>
-              <div className="bg-[#F5F7FF] flex gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-full max-w-[114px]">
-                  {[
-                    "General Partners (GPs)",
-                    "Investment Analysts",
-                    "Portfolio Managers",
-                    "M&A Teams",
-                    "Risk & Compliance Teams",
-                    "Venture Partners",
-                    "Managing Directors",
-                    "Deal Sourcing Teams",
-                    "Fund Managers",
-                    "Other ",
-                  ].map((item) => (
-                    <label key={item} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        name="audienceFocusTwo"
-                        value={item}
-                        checked={audienceFocusTwo === item}
-                        onChange={() => setAudienceFocusTwo(item)}
-                        className="form-radio text-base font-normal"
+            <div className="flex-[2] pl-3">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-4 mt-2">
+                {currentTab === "reportToneOptions" && (
+                  <div className="flex flex-col w-[300px]">
+                    <div className="">Report Depth</div>
+                    <RoundedCheckboxGroup
+                      options={options.reportToneOptions}
+                      selectedOptions={selectedOptions.reportToneOptions}
+                      onChange={(value) => handleRadioChange("reportToneOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                    />
+                  </div>
+                )}
+                {currentTab === "reportFormatOptions" && (
+                  <div className="flex flex-col w-[500px]">
+                    <div className="">Report Format</div>
+                    <CheckboxGroup
+                      options={options.reportFormatOptions}
+                      selectedOptions={selectedOptions.reportFormatOptions}
+                      onChange={(value) => handleCheckboxChange("reportFormatOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                    />
+                  </div>
+                )}
+                {currentTab === "visualStyleOptions" && (
+                  <div className="flex flex-col w-full">
+                    <div className="">Visual Style</div>
+                    <RoundedCheckboxGroup
+                      options={options.visualStyleOptions}
+                      selectedOptions={selectedOptions.visualStyleOptions}
+                      onChange={(value) => handleRadioChange("visualStyleOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                    />
+                  </div>
+                )}
+                {currentTab === "chartsOptions" && (
+                  <div className="flex flex-col w-full max-w-[306px]">
+                    <div className="">Number of Charts</div>
+                    <RoundedCheckboxGroup
+                      options={options.chartsOptions}
+                      selectedOptions={selectedOptions.chartsOptions}
+                      onChange={(value) => handleRadioChange("chartsOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                    />
+                  </div>
+                )}
+                {currentTab === "citationsOptions" && (
+                  <div className="flex flex-col w-full max-w-[306px]">
+                    <div className="">Citations</div>
+                    <RoundedCheckboxGroup
+                      options={options.citationsOptions}
+                      selectedOptions={selectedOptions.citationsOptions}
+                      onChange={(value) => handleRadioChange("citationsOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                    />
+                  </div>
+                )}
+                {currentTab === "audienceFocus" && (
+                  <div className="flex flex-col">
+                    <div className="flex flex-col w-[600px]">
+                      <div className="">Audience Focus</div>
+                      <p className="mt-2">For enterprises</p>
+                      <CheckboxGroup
+                        options={options.audienceFocusOneOptions}
+                        selectedOptions={selectedOptions.audienceFocusOneOptions}
+                        onChange={(value) => handleCheckboxChange("audienceFocusOneOptions", value)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
                       />
-                      <span>{item}</span>
-                    </label>
-                  ))}
-                </div>
-                <div className="bg-[#E8EAF2] w-full max-w-[140px] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div>
-              </div> */}
-            </div>
 
-            <div className="flex flex-col w-[50%] max-w-[50%]">
-              <div className="bg-[#FFB531] rounded-t-lg text-center">Audience Focus</div>
-              <div className="bg-[#E8EAF2] w-full text-start rounded-[4px] pl-1">
-                <p className="text-[15px] py-1 font-normal color-[#373D3F]">
-                  Data-focused, emphasizing metrics and insights
-                </p>
-              </div>
-              <p className="bg-[#F5F7FF] pt-1 pl-2 text-start text-base">
-                For Investors & Financial Institutions
-              </p>
-              <div className="bg-[#F5F7FF] flex w-full gap-x-4 p-2 rounded-b-lg">
-                <div className="flex flex-col w-[50%]">
-                  {audienceFocusTwoOptions.map((item) => (
-                    <>
-                      <label key={item.value} className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="audienceFocusTwo"
-                          value={item.value}
-                          checked={selectedOptions["audienceFocusTwoOptions"]?.includes(item.value)}
-                          onChange={() =>
-                            handleCheckboxChange("audienceFocusTwoOptions", item.value)
+                      <div className="flex flex-col mt-4">
+                        <p className="mt-2">For Investors & Financial Insitutions</p>
+                        <CheckboxGroup
+                          options={options.audienceFocusTwoOptions}
+                          selectedOptions={selectedOptions.audienceFocusTwoOptions}
+                          onChange={(value) =>
+                            handleCheckboxChange("audienceFocusTwoOptions", value)
                           }
-                          className="form-radio text-base font-normal"
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
                         />
-                        <span>{item.label}</span>
-                      </label>
-                      {selectedOptions["audienceFocusTwoOptions"].includes(item.value) &&
-                      item.showTextBox ? (
-                        <input
-                          type="text"
-                          placeholder={`Enter custom text for ${item.label}`}
-                          value={customInput["audienceFocusTwo"]?.[item.value] || ""}
-                          onChange={(e) => handleInputChange(e, "audienceFocusTwo", item.value)}
-                          className="border border-neutral-500 rounded px-1 py-0.5 my-1 bg-transparent w-full text-sm"
-                        />
-                      ) : null}
-                    </>
-                  ))}
-                </div>
-                {/* <div className="bg-[#E8EAF2] w-[50%] rounded-[4px] pl-1">
-                  <p className="text-[15px] font-normal color-[#373D3F]">
-                    Data-focused, emphasizing metrics and insights
-                  </p>
-                </div> */}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="flex gap-3 mt-4">
-        {/* <Link to="/"> */}
         <div
-          className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold"
+          className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500 border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold"
           onClick={submitFinalReport}
         >
           {!submitting ? "Submit" : <LoadingIcon className="animate-spin text-black" />}
-
           <RightArrow className="ml-1" />
         </div>
-        {/* </Link> */}
-        {/* <Link to="/vc-product">
-                        <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]  rounded-[32px] py-1 px-2 text-lg font-nunito text-white font-bold">
-                          Explore Agents
-                          <RightArrow className="ml-1"/>
-                        </div>
-                      </Link> */}
-        {/* <Link to="/start-conversation">
-                        <div className="flex items-center justify-center border-4 bg-secondary-500 border-[#442873]   rounded-[32px] py-1 px-2  text-lg font-nunito text-white font-bold">
-                          KnowNow Chat
-                          <RightArrow className="ml-1"/>
-                        </div>
-                      </Link> */}
       </div>
     </div>
   );

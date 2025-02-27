@@ -251,8 +251,6 @@ function App() {
             <Route path="/upload-report/:id" element={<AdminUploadReport />} />
             <Route path="/detailed-report" element={<DetailedReport />} />
 
-            <Route path="/final/ai-agent" element={<FinalReportPage />} />
-
             <Route path="/agent-admin" element={<AgentAdminDashboard />} />
             <Route path="/agent-admin-reports/:userid" element={<AgentReports />} />
             <Route path="/agent-reports/:threadid/:userid" element={<AgentRequirements />} />
@@ -302,6 +300,7 @@ function App() {
             {/* Ai-Agent */}
             <Route path="/ai-agent" element={<AiAgent />} />
             <Route path="/ai-agent-customization" element={<AIReportCustomization />} />
+            <Route path="/ai-agent-final" element={<FinalReportPage />} />
             <Route path="/ai-agent/landing" element={<AgentLanding />} />
 
             {/*Graph */}

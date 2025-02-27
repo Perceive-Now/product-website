@@ -5,9 +5,13 @@ import pnCloveSvg from "src/assets/images/pn_clove.svg";
 import backgroundImage from "./_assets/background.jpeg";
 import giftBoxSvg from "./_assets/gift-box.svg";
 import tooltips from "./_data/tooltip"; // Import the tooltips array
+import { useNavigate } from "react-router-dom";
 
 const ReportSection = () => {
-  const [currentTip, setCurrentTip] = useState(tooltips[Math.floor(Math.random() * tooltips.length)]);
+  const navigate = useNavigate();
+  const [currentTip, setCurrentTip] = useState(
+    tooltips[Math.floor(Math.random() * tooltips.length)],
+  );
   const [fade, setFade] = useState(false);
 
   useEffect(() => {
@@ -34,7 +38,7 @@ const ReportSection = () => {
             Your report will be ready within 24 to 48 hours.
           </p>
           <div className="mt-7 w-full flex justify-end">
-            <PrimaryButton text="Go to Home" icon={<RightArrow />} />
+            <PrimaryButton text="Go to Home" icon={<RightArrow />} onClick={() => navigate("/")} />
           </div>
         </div>
 
@@ -49,7 +53,11 @@ const ReportSection = () => {
         <img src={backgroundImage} alt="background" className="object-cover w-full h-full" />
         <div className="absolute top-0 left-0 right-0 m-auto">
           <img src={giftBoxSvg} alt="giftbox" className="w-[300px] h-[300px] scale-125 m-auto" />
-          <p className={`absolute text-sm top-[180px] left-[220px] font-bold m-auto w-[200px] h-[200px] text-[#442873] transition-opacity duration-500 ${fade ? 'opacity-0' : 'opacity-100'}`}>
+          <p
+            className={`absolute text-sm top-[180px] left-[220px] font-bold m-auto w-[200px] h-[200px] text-[#442873] transition-opacity duration-500 ${
+              fade ? "opacity-0" : "opacity-100"
+            }`}
+          >
             {currentTip}
           </p>
         </div>
