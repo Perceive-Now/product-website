@@ -45,7 +45,7 @@ import AgentHead from "./AgentHead";
 import { fetchAgentThreadDetails } from "src/pages/my-account/my-agent-reports/agent-report.action";
 
 const AgentName: Record<string, string> = {
-  "company-diligence-agent": "Startup Diligence Agent",
+  "company-diligence-agent": "Company Diligence Agent",
   "fundraising-strategy-agent": "Fundraising Strategy Agent",
   "report-on-anything-agent": "Report on Anything Agent",
   "market-strategy-agent": "Market Strategy Agent",
@@ -56,7 +56,7 @@ const AgentName: Record<string, string> = {
   "finance-strategy-agent": "Finance & Strategy Agent",
   "marketing-sales-agent": "Marketing & Sales Agent",
   "legal-compliance-agent": "Legal & Compliance Agent",
-  "": "Startup Diligence Agent",
+  "": "Company Diligence Agent",
 };
 
 const AiAgent = () => {
@@ -159,7 +159,7 @@ const AiAgent = () => {
             thread_name: uuidv4(),
             use_case: "AI",
             industry: "AI",
-            agent_name: AgentName[agent || ""] || "Startup Diligence Agent",
+            agent_name: AgentName[agent || ""] || "Company Diligence Agent",
           };
           console.log({ "Thread Data": threadCreateBodyData });
 
@@ -168,7 +168,7 @@ const AiAgent = () => {
             `https://templateuserrequirements.azurewebsites.net/agents/threads/create/?user_id=${
               userId || ""
             }&thread_name=${uuidv4()}&use_case=AI&industry=AI&agent_name=${
-              AgentName[agent || ""] || "Startup Diligence Agent"
+              AgentName[agent || ""] || "Company Diligence Agent"
             }`,
             { headers: { "Content-Type": "application/json" }, responseType: "stream" },
           );
@@ -702,7 +702,7 @@ const AiAgent = () => {
   return (
     <>
       <div className="px-0 md:px-3 w-full mx-auto h-full">
-        <AgentHead agentName={AgentName[agent || ""] || "Startup Diligence Agent"} />
+        <AgentHead agentName={AgentName[agent || ""] || "Company Diligence Agent"} />
         <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">
             {/* <div className="relative flex-none">
