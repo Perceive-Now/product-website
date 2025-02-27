@@ -2,7 +2,7 @@ import { PaginationState } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { fetchAgentReports } from "src/pages/my-account/my-agent-reports/agent-report.action";
 import jsCookie from "js-cookie";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Tooltip from "src/components/reusable/popover";
 import classNames from "classnames";
 import { DustbinIcon, ShareIcon, VerticalThreeDots } from "src/components/icons";
@@ -34,6 +34,10 @@ interface Props {
 const DraftReports = (props: Props) => {
   const { open, setOpen } = props;
 
+  const [searchParams] = useSearchParams();
+
+  const threadId = searchParams.get("threadId");
+
   const userId = jsCookie.get("user_id");
   const [reportList, setReportList] = useState<{ loading: boolean; reports: any[] }>({
     loading: true,
@@ -53,11 +57,11 @@ const DraftReports = (props: Props) => {
 
   useEffect(() => {
     setReportList({
-      reports: [],
+      ...reportList,
       loading: true,
     });
     fetchAgentReports(userId || "", setReportList);
-  }, []);
+  }, [threadId]);
   return (
     <div className="min-h-screen">
       <div

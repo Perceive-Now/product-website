@@ -173,7 +173,12 @@ const AiAgent = () => {
             { headers: { "Content-Type": "application/json" }, responseType: "stream" },
           );
 
-          setthread_id(createThreadResponse.data.thread_id || generateKnowIdstring());
+          const newTthreadRef = createThreadResponse.data.thread_id || generateKnowIdstring();
+
+          const newParams = new URLSearchParams(searchParams);
+          newParams.set("threadId", newTthreadRef); // Add or update the search param
+          setSearchParams(newParams);
+          setthread_id(newTthreadRef);
 
           // const id = generateKnowIdstring();
           // setthread_id(id);
