@@ -84,7 +84,7 @@ const DraftReports = (props: Props) => {
           {filteredReports?.map((report, index) => (
             <div
               className={`transition-all flex items-center gap-1 w-full ${
-                open ? "min-w-[200px]" : ""
+                open ? "min-w-[200px] hover:bg-[#FFE2B0] transition-all ease-in-out duration-100 rounded-[8px]" : ""
               } justify-between group`}
               key={report.thread_name}
             >
@@ -121,7 +121,7 @@ const DraftReports = (props: Props) => {
                   trigger={
                     <VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />
                   }
-                  panelClassName={`rounded-lg py-2 px-3 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
+                  panelClassName={`rounded-lg pt-2 px-2 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
                 >
                   <ul id="dropdown">
                     <li
@@ -130,8 +130,9 @@ const DraftReports = (props: Props) => {
                         undefined;
                       }}
                     >
-                      <div className="flex items-center">
-                        <ShareIcon className="mr-2" /> Continue
+                      <div className="flex items-center gap-x-1">
+                        <ShareIcon />
+                         Continue
                       </div>
                     </li>
                     <li
@@ -140,8 +141,8 @@ const DraftReports = (props: Props) => {
                         undefined;
                       }}
                     >
-                      <div className="flex items-center">
-                        <EditIcon className="mr-2" /> Rename
+                      <div className="flex items-center gap-x-1">
+                        <EditIcon /> Rename
                       </div>
                     </li>
                     <li
@@ -150,8 +151,8 @@ const DraftReports = (props: Props) => {
                         undefined;
                       }}
                     >
-                      <div className="flex items-center">
-                        <DustbinIcon className="mr-2" /> Delete
+                      <div className="flex items-center gap-x-1">
+                        <DustbinIcon /> Delete
                       </div>
                     </li>
                   </ul>
