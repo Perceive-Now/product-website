@@ -62,6 +62,76 @@ const DraftReports = (props: Props) => {
     });
     fetchAgentReports(userId || "", setReportList);
   }, [threadId]);
+
+  const handleRenameReport = async (reportId: string) => {
+    const reportName = prompt("Enter new report name");
+
+    // validate report name
+    if (!reportName) {
+      alert("Report name cannot be empty");
+      return;
+    }
+
+    if (reportName?.length > 50) {
+      alert("Report name cannot be more than 50 characters");
+      return;
+    }
+
+    if (reportName) {
+      const res = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${userId}/${threadId}?thread_name=${reportName}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (res.status === 200) {
+        alert("Report renamed successfully");
+
+        setReportList({
+          ...reportList,
+          reports: reportList.reports.map((report) =>
+            report.id === reportId ? { ...report, thread_name: reportName } : report,
+          ),
+        });
+      }
+    }
+  };
+
+  const handleDeleteReport = async (reportId: string) => {
+    // eslint-disable-next-line no-restricted-globals
+    const confirmDelete = confirm("Are you sure you want to delete this report?");
+    if (confirmDelete) {
+      // await deleteReport(reportId);
+      const data = {
+        user_id: userId,
+        thread_id: reportId.toString(),
+      };
+
+      const res = await fetch(`https://templateuserrequirements.azurewebsites.net/threads/delete`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 200) {
+        alert("Report deleted successfully");
+
+        setReportList({
+          ...reportList,
+          reports: reportList.reports.filter((report) => report.id !== reportId),
+        });
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <div
@@ -84,7 +154,9 @@ const DraftReports = (props: Props) => {
           {filteredReports?.map((report, index) => (
             <div
               className={`transition-all flex items-center gap-1 w-full ${
-                open ? "min-w-[200px] hover:bg-[#FFE2B0] transition-all ease-in-out duration-100 rounded-[8px]" : ""
+                open
+                  ? "min-w-[200px] hover:bg-[#FFE2B0] transition-all ease-in-out duration-100 rounded-[8px]"
+                  : ""
               } justify-between group`}
               key={report.thread_name}
             >
@@ -132,7 +204,7 @@ const DraftReports = (props: Props) => {
                     >
                       <div className="flex items-center gap-x-1">
                         <ShareIcon />
-                         Continue
+                        Continue
                       </div>
                     </li>
                     <li
@@ -141,7 +213,10 @@ const DraftReports = (props: Props) => {
                         undefined;
                       }}
                     >
-                      <div className="flex items-center gap-x-1">
+                      <div
+                        className="flex items-center gap-x-1"
+                        onClick={() => handleRenameReport(report.id)}
+                      >
                         <EditIcon /> Rename
                       </div>
                     </li>
@@ -151,7 +226,10 @@ const DraftReports = (props: Props) => {
                         undefined;
                       }}
                     >
-                      <div className="flex items-center gap-x-1">
+                      <div
+                        className="flex items-center gap-x-1"
+                        onClick={() => handleDeleteReport(report.id)}
+                      >
                         <DustbinIcon /> Delete
                       </div>
                     </li>
