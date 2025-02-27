@@ -692,6 +692,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 collapseOpen && open ? "max-h-screen overflow-hidden" : "max-h-0 overflow-hidden"
               }`}
             >
+
               {collapseOpen &&
                 open &&
                 SidebarBottom.filter((s) => {

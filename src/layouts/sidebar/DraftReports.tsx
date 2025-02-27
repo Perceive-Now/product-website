@@ -50,11 +50,11 @@ const DraftReports = () => {
     fetchAgentReports(userId || "", setReportList);
   }, []);
   return (
-    <div>
+    <div className="min-h-screen">
       <p>Report Draft</p>
       <div>
         {filteredReports?.map((report, index) => (
-          <div className="flex items-center gap-1 w-100" key={report.thread_name}>
+          <div className="flex items-center gap-1 w-full min-w-[200px] justify-between" key={report.thread_name}>
             <Link
               to={`/ai-agent?agent=${
                 reverseAgentMapping[report.agent_name] || "company-diligence-agent"
