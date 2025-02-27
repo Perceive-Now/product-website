@@ -257,7 +257,9 @@ const AiAgent = () => {
       });
     };
     setTimeout(() => {
-      dispatch(setVSChats(firstQuery));
+      if (!agent || agent === "company-diligence-agent") {
+        dispatch(setVSChats(firstQuery));
+      }
       dispatch(setCurrentStep(1));
     }, 1000);
     setUplaodingFile(true);

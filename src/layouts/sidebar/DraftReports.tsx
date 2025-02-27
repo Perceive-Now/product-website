@@ -2,13 +2,16 @@ import { PaginationState } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { fetchAgentReports } from "src/pages/my-account/my-agent-reports/agent-report.action";
 import jsCookie from "js-cookie";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Tooltip from "src/components/reusable/popover";
 import classNames from "classnames";
-import { DustbinIcon, ShareIcon, VerticalThreeDots } from "src/components/icons";
+import { DustbinIcon, LoadingIcon, ShareIcon, VerticalThreeDots } from "src/components/icons";
 import EditIcon from "src/components/icons/miscs/Edit";
 import IconFile from "src/components/icons/side-bar/icon-file";
 import SvgDocumentIcon from "./_assets/paper-icon";
+import { Dialog } from "@headlessui/react";
+import Button from "src/components/reusable/button";
+import Loading from "src/components/reusable/loading";
 
 const reverseAgentMapping: Record<string, string> = {
   "Startup Diligence Agent": "company-diligence-agent",
@@ -33,8 +36,25 @@ interface Props {
 
 const DraftReports = (props: Props) => {
   const { open, setOpen } = props;
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
+
+  const [selectedThread, setSelectedThread] = useState({
+    threadId: "",
+    type: "",
+    open: false,
+  });
+
+  const [submittingAction, setSubmittingAction] = useState(false);
+
+  const closeThread = () => {
+    setSelectedThread({
+      threadId: "",
+      type: "",
+      open: false,
+    });
+  };
 
   const threadId = searchParams.get("threadId");
 
@@ -63,15 +83,9 @@ const DraftReports = (props: Props) => {
     fetchAgentReports(userId || "", setReportList);
   }, [threadId]);
 
-  const handleRenameReport = async (reportId: string) => {
-    const reportName = prompt("Enter new report name");
+  const [reportName, setReportName] = useState("");
 
-    // validate report name
-    if (!reportName) {
-      alert("Report name cannot be empty");
-      return;
-    }
-
+  const handleRenameReport = async () => {
     if (reportName?.length > 50) {
       alert("Report name cannot be more than 50 characters");
       return;
@@ -79,7 +93,7 @@ const DraftReports = (props: Props) => {
 
     if (reportName) {
       const res = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${userId}/${threadId}?thread_name=${reportName}`,
+        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${userId}/${selectedThread.threadId}?thread_name=${reportName}`,
         {
           method: "PUT",
           headers: {
@@ -90,157 +104,239 @@ const DraftReports = (props: Props) => {
       );
 
       if (res.status === 200) {
-        alert("Report renamed successfully");
-
         setReportList({
           ...reportList,
           reports: reportList.reports.map((report) =>
-            report.id === reportId ? { ...report, thread_name: reportName } : report,
+            report.id === selectedThread.threadId ? { ...report, thread_name: reportName } : report,
           ),
         });
+        closeThread();
+        setReportName("");
+        setSubmittingAction(false);
+      } else {
+        setSubmittingAction(false);
       }
     }
   };
 
-  const handleDeleteReport = async (reportId: string) => {
+  const handleDeleteReport = async () => {
+    setSubmittingAction(true);
     // eslint-disable-next-line no-restricted-globals
-    const confirmDelete = confirm("Are you sure you want to delete this report?");
-    if (confirmDelete) {
-      // await deleteReport(reportId);
-      const data = {
-        user_id: userId,
-        thread_id: reportId.toString(),
-      };
+    // await deleteReport(reportId);
+    const data = {
+      user_id: userId,
+      thread_id: selectedThread.threadId.toString(),
+    };
 
-      const res = await fetch(`https://templateuserrequirements.azurewebsites.net/threads/delete`, {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    const res = await fetch(`https://templateuserrequirements.azurewebsites.net/threads/delete`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-      if (res.status === 200) {
-        alert("Report deleted successfully");
-
-        setReportList({
-          ...reportList,
-          reports: reportList.reports.filter((report) => report.id !== reportId),
-        });
+    if (res.status === 200) {
+      setSubmittingAction(false);
+      if (threadId?.toString() === selectedThread.threadId?.toString()) {
+        navigate("/");
       }
+      setReportList({
+        ...reportList,
+        reports: reportList.reports.filter((report) => report.id !== selectedThread.threadId),
+      });
+      closeThread();
+    } else {
+      setSubmittingAction(false);
     }
   };
 
   return (
-    <div className="min-h-screen">
-      <div
-        onClick={setOpen}
-        className={classNames(
-          "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
-        )}
-      >
+    <>
+      <div className="min-h-screen">
         <div
-          style={{
-            filter: "grayscale(1)",
-          }}
+          onClick={setOpen}
+          className={classNames(
+            "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+          )}
         >
-          <SvgDocumentIcon />
+          <div
+            style={{
+              filter: "grayscale(1)",
+            }}
+          >
+            <SvgDocumentIcon />
+          </div>
+          {open && <span className=" text-secondary-800 text-base">{"Report Draft"}</span>}
         </div>
-        {open && <span className=" text-secondary-800 text-base">{"Report Draft"}</span>}
-      </div>
-      {open ? (
-        <div className="max-h-[300px] overflow-y-auto pn_scroller">
-          {filteredReports?.map((report, index) => (
-            <div
-              className={`transition-all flex items-center gap-1 w-full ${
-                open
-                  ? "min-w-[200px] hover:bg-[#FFE2B0] transition-all ease-in-out duration-100 rounded-[8px]"
-                  : ""
-              } justify-between group`}
-              key={report.thread_name}
-            >
-              <Link
-                onClick={setOpen}
-                to={`/ai-agent?agent=${
-                  reverseAgentMapping[report.agent_name] || "company-diligence-agent"
-                }&threadId=${report.id}`}
-                key={report.key}
-                className={classNames(
-                  "py-1 px-1 rounded text-sm text-secondary-800 flex items-center gap-1",
-                )}
+        {open ? (
+          <div className="max-h-[300px] overflow-y-auto pn_scroller">
+            {filteredReports?.map((report, index) => (
+              <div
+                className={`transition-all flex items-center gap-1 w-full ${
+                  open
+                    ? "min-w-[200px] hover:bg-[#FFE2B0] transition-all ease-in-out duration-100 rounded-[8px]"
+                    : ""
+                } justify-between group`}
+                key={report.thread_name}
               >
-                {/* <div
-                key={index}
-                style={{
-                  filter: "grayscale(1)",
-                }}
-              >
-                <IconFile />
-              </div> */}
-                {open && (
-                  <span className=" text-secondary-800 text-base">
-                    {`$${report.thread_name?.split("-")[0]}`}
-                  </span>
-                )}
-              </Link>
-
-              {/* Three dots - Show on hover */}
-              <div className={`relative hidden ${open ? "group-hover:block" : ""}`}>
-                <Tooltip
-                  isCustomPanel={true}
-                  right="0px"
-                  trigger={
-                    <VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />
-                  }
-                  panelClassName={`rounded-lg pt-2 px-2 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
+                <Link
+                  onClick={setOpen}
+                  to={`/ai-agent?agent=${
+                    reverseAgentMapping[report.agent_name] || "company-diligence-agent"
+                  }&threadId=${report.id}`}
+                  key={report.key}
+                  className={classNames(
+                    "py-1 px-1 rounded text-sm text-secondary-800 flex items-center gap-1",
+                  )}
                 >
-                  <ul id="dropdown">
-                    <li
-                      className="mb-2 cursor-pointer"
-                      onClick={() => {
-                        undefined;
-                      }}
-                    >
-                      <div className="flex items-center gap-x-1">
-                        <ShareIcon />
-                        Continue
-                      </div>
-                    </li>
-                    <li
-                      className="mb-2 cursor-pointer"
-                      onClick={() => {
-                        undefined;
-                      }}
-                    >
-                      <div
-                        className="flex items-center gap-x-1"
-                        onClick={() => handleRenameReport(report.id)}
+                  {open && (
+                    <span className=" text-secondary-800 text-base">
+                      {`$${report.thread_name?.split("-")[0]}`}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Three dots - Show on hover */}
+                <div className={`relative hidden ${open ? "group-hover:block" : ""}`}>
+                  <Tooltip
+                    isCustomPanel={true}
+                    right="0px"
+                    trigger={
+                      <VerticalThreeDots
+                        data-dropdown-toggle="dropdown"
+                        className="cursor-pointer"
+                      />
+                    }
+                    panelClassName={`rounded-lg pt-2 px-2 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
+                  >
+                    <ul id="dropdown">
+                      <li
+                        className="mb-2 cursor-pointer"
+                        onClick={() => {
+                          undefined;
+                        }}
                       >
-                        <EditIcon /> Rename
-                      </div>
-                    </li>
-                    <li
-                      className="mb-2 cursor-pointer"
-                      onClick={() => {
-                        undefined;
-                      }}
-                    >
-                      <div
-                        className="flex items-center gap-x-1"
-                        onClick={() => handleDeleteReport(report.id)}
+                        <div
+                          className="flex items-center gap-x-1"
+                          onClick={() => {
+                            navigate(
+                              `/ai-agent?agent=${
+                                reverseAgentMapping[report.agent_name] || "company-diligence-agent"
+                              }&threadId=${report.id}`,
+                            );
+                          }}
+                        >
+                          <ShareIcon />
+                          Continue
+                        </div>
+                      </li>
+                      <li
+                        className="mb-2 cursor-pointer"
+                        onClick={() => {
+                          undefined;
+                        }}
                       >
-                        <DustbinIcon /> Delete
-                      </div>
-                    </li>
-                  </ul>
-                </Tooltip>
+                        <div
+                          className="flex items-center gap-x-1"
+                          onClick={() => {
+                            setSelectedThread({
+                              open: true,
+                              threadId: report.id,
+                              type: "rename",
+                            });
+                          }}
+                        >
+                          <EditIcon /> Rename
+                        </div>
+                      </li>
+                      <li
+                        className="mb-2 cursor-pointer"
+                        onClick={() => {
+                          undefined;
+                        }}
+                      >
+                        <div
+                          className="flex items-center gap-x-1"
+                          onClick={() => {
+                            setSelectedThread({
+                              open: true,
+                              threadId: report.id,
+                              type: "delete",
+                            });
+                          }}
+                        >
+                          <DustbinIcon /> Delete
+                        </div>
+                      </li>
+                    </ul>
+                  </Tooltip>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        ) : null}
+      </div>
+      <Dialog open={selectedThread.open} onClose={closeThread} className="relative z-50">
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="relative bg-white w-full max-w-[400px] min-w-[400px] p-5 rounded-xl shadow-[7px_9px_14px_0] shadow-[#000]/[0.25]">
+            {selectedThread.type === "delete" ? (
+              <>
+                <p className="text-lg font-bold mb-4">{"Delete Report?"}</p>
+                <p>Are you sure you want to delete this report?</p>
+                <div className="flex gap-2 mt-4">
+                  <Button type="gray" handleClick={closeThread} disabled={submittingAction}>
+                    Go Back
+                  </Button>
+                  <Button
+                    type="primary"
+                    handleClick={handleDeleteReport}
+                    disabled={submittingAction}
+                  >
+                    {submittingAction ? (
+                      <LoadingIcon className="text-white animate-spin text-black" />
+                    ) : (
+                      "Delete"
+                    )}
+                  </Button>
+                </div>
+              </>
+            ) : selectedThread.type === "rename" ? (
+              <>
+                <p className="text-lg font-bold mb-4">{"Rename Report"}</p>
+                <input
+                  type="text"
+                  placeholder={`Thread name`}
+                  value={reportName}
+                  onChange={(e) => setReportName(e.target.value)}
+                  // className="border border-gray-300 p-1 rounded-xs flex-auto placeholder:text-appGray-600 focus:outline-none focus:outline-none focus:ring-2 text-sm w-full"
+                  className="mt-1 block w-full px-2 py-[13px] border-gray-300 border-[1px]  focus:outline-none focus:ring-2"
+                />
+                <div className="flex gap-2 mt-4">
+                  <Button type="gray" handleClick={closeThread} disabled={submittingAction}>
+                    Go Back
+                  </Button>
+                  <Button
+                    type="primary"
+                    handleClick={handleRenameReport}
+                    disabled={submittingAction || !reportName.trim()}
+                  >
+                    {submittingAction ? (
+                      <LoadingIcon className="text-white animate-spin text-black" />
+                    ) : (
+                      "Update"
+                    )}
+                  </Button>
+                </div>
+              </>
+            ) : null}
+          </Dialog.Panel>
         </div>
-      ) : null}
-    </div>
+      </Dialog>
+    </>
   );
 };
 
