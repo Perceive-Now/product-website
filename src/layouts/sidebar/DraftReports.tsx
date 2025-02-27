@@ -61,6 +61,7 @@ const DraftReports = (props: Props) => {
   return (
     <div className="min-h-screen">
       <div
+        onClick={setOpen}
         className={classNames(
           "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
         )}
@@ -74,86 +75,88 @@ const DraftReports = (props: Props) => {
         </div>
         {open && <span className=" text-secondary-800 text-base">{"Report Draft"}</span>}
       </div>
-      <div className="max-h-[300px] overflow-y-auto pn_scroller">
-        {filteredReports?.map((report, index) => (
-          <div
-            className={`transition-all flex items-center gap-1 w-full ${
-              open ? "min-w-[200px]" : ""
-            } justify-between group`}
-            key={report.thread_name}
-          >
-            <Link
-              onClick={setOpen}
-              to={`/ai-agent?agent=${
-                reverseAgentMapping[report.agent_name] || "company-diligence-agent"
-              }&threadId=${report.id}`}
-              key={report.key}
-              className={classNames(
-                "py-1 px-1 rounded text-sm text-secondary-800 flex items-center gap-1",
-              )}
+      {open ? (
+        <div className="max-h-[300px] overflow-y-auto pn_scroller">
+          {filteredReports?.map((report, index) => (
+            <div
+              className={`transition-all flex items-center gap-1 w-full ${
+                open ? "min-w-[200px]" : ""
+              } justify-between group`}
+              key={report.thread_name}
             >
-              <div
+              <Link
+                onClick={setOpen}
+                to={`/ai-agent?agent=${
+                  reverseAgentMapping[report.agent_name] || "company-diligence-agent"
+                }&threadId=${report.id}`}
+                key={report.key}
+                className={classNames(
+                  "py-1 px-1 rounded text-sm text-secondary-800 flex items-center gap-1",
+                )}
+              >
+                {/* <div
                 key={index}
                 style={{
                   filter: "grayscale(1)",
                 }}
               >
                 <IconFile />
-              </div>
-              {open && (
-                <span className=" text-secondary-800 text-base">
-                  {`$${report.thread_name?.split("-")[0]}`}
-                </span>
-              )}
-            </Link>
+              </div> */}
+                {open && (
+                  <span className=" text-secondary-800 text-base">
+                    {`$${report.thread_name?.split("-")[0]}`}
+                  </span>
+                )}
+              </Link>
 
-            {/* Three dots - Show on hover */}
-            <div className={`relative hidden ${open ? "group-hover:block" : ""}`}>
-              <Tooltip
-                isCustomPanel={true}
-                right="0px"
-                trigger={
-                  <VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />
-                }
-                panelClassName={`rounded-lg py-2 px-3 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
-              >
-                <ul id="dropdown">
-                  <li
-                    className="mb-2 cursor-pointer"
-                    onClick={() => {
-                      undefined;
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <ShareIcon className="mr-2" /> Continue
-                    </div>
-                  </li>
-                  <li
-                    className="mb-2 cursor-pointer"
-                    onClick={() => {
-                      undefined;
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <EditIcon className="mr-2" /> Rename
-                    </div>
-                  </li>
-                  <li
-                    className="mb-2 cursor-pointer"
-                    onClick={() => {
-                      undefined;
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <DustbinIcon className="mr-2" /> Delete
-                    </div>
-                  </li>
-                </ul>
-              </Tooltip>
+              {/* Three dots - Show on hover */}
+              <div className={`relative hidden ${open ? "group-hover:block" : ""}`}>
+                <Tooltip
+                  isCustomPanel={true}
+                  right="0px"
+                  trigger={
+                    <VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />
+                  }
+                  panelClassName={`rounded-lg py-2 px-3 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
+                >
+                  <ul id="dropdown">
+                    <li
+                      className="mb-2 cursor-pointer"
+                      onClick={() => {
+                        undefined;
+                      }}
+                    >
+                      <div className="flex items-center">
+                        <ShareIcon className="mr-2" /> Continue
+                      </div>
+                    </li>
+                    <li
+                      className="mb-2 cursor-pointer"
+                      onClick={() => {
+                        undefined;
+                      }}
+                    >
+                      <div className="flex items-center">
+                        <EditIcon className="mr-2" /> Rename
+                      </div>
+                    </li>
+                    <li
+                      className="mb-2 cursor-pointer"
+                      onClick={() => {
+                        undefined;
+                      }}
+                    >
+                      <div className="flex items-center">
+                        <DustbinIcon className="mr-2" /> Delete
+                      </div>
+                    </li>
+                  </ul>
+                </Tooltip>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };
