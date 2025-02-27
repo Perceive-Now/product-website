@@ -90,6 +90,12 @@ const AiAgent = () => {
   }, [chats]);
   const [searchParams, setSearchParams] = useSearchParams();
   const threadId = searchParams.get("threadId");
+
+  const updateUrlParam = (newKey: string, newValue: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set(newKey, newValue); // Add or update the search param
+    setSearchParams(newParams);
+  };
   useEffect(() => {
     setIsloading(true);
 
@@ -389,7 +395,7 @@ const AiAgent = () => {
                   const { options, remainingText } = processResponse(data.response);
                   if (data.response?.toLowerCase().includes("24-48 hours")) {
                     convoOptions = ["End Conversation"];
-                    setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                    updateUrlParam("side", "false");
                   }
                   const userOptions = options?.length
                     ? options
@@ -433,11 +439,11 @@ const AiAgent = () => {
                   try {
                     if (data.type_json === "Data_sources") {
                       setDataSources(JSON.parse(json_response));
-                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                      updateUrlParam("side", "false");
                     } else {
                       if (data.response?.toLowerCase().includes("24-48 hours")) {
                         convoOptions = ["End Conversation"];
-                        setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                        updateUrlParam("side", "false");
                       }
                       setJsonType(data.type_json);
                       setJsonResponse(json_response);
@@ -445,7 +451,7 @@ const AiAgent = () => {
                   } catch (error) {
                     if (data.response?.toLowerCase().includes("24-48 hours")) {
                       convoOptions = ["End Conversation"];
-                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                      updateUrlParam("side", "false");
                     }
                     setJsonType(data.type_json);
                     setJsonResponse(json_response);
@@ -516,11 +522,11 @@ const AiAgent = () => {
                   try {
                     if (data.type_json === "Data_sources") {
                       setDataSources(JSON.parse(json_response));
-                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                      updateUrlParam("side", "false");
                     } else {
                       if (data.response?.toLowerCase().includes("24-48 hours")) {
                         convoOptions = ["End Conversation"];
-                        setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                        updateUrlParam("side", "false");
                       }
                       setJsonType(data.type_json);
                       setJsonResponse(json_response);
@@ -528,7 +534,7 @@ const AiAgent = () => {
                   } catch (error) {
                     if (data.response?.toLowerCase().includes("24-48 hours")) {
                       convoOptions = ["End Conversation"];
-                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                      updateUrlParam("side", "false");
                     }
                     setJsonType(data.type_json);
                     setJsonResponse(json_response);
@@ -632,11 +638,11 @@ const AiAgent = () => {
                 try {
                   if (data.type_json === "Data_sources") {
                     setDataSources(JSON.parse(json_response));
-                    setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                    updateUrlParam("side", "false");
                   } else {
                     if (data.response?.toLowerCase().includes("24-48 hours")) {
                       convoOptions = ["End Conversation"];
-                      setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                      updateUrlParam("side", "false");
                     }
                     setJsonType(data.type_json);
                     setJsonResponse(json_response);
@@ -644,7 +650,7 @@ const AiAgent = () => {
                 } catch (error) {
                   if (data.response?.toLowerCase().includes("24-48 hours")) {
                     convoOptions = ["End Conversation"];
-                    setSearchParams({ ...(agent ? { agent } : {}), side: "false" });
+                    updateUrlParam("side", "false");
                   }
                   setJsonType(data.type_json);
                   setJsonResponse(json_response);
