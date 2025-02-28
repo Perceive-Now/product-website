@@ -534,6 +534,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           />
 
           <div className="space-y-1 mb-auto text-nowrap">
+          <div className="inline-flex">
             <ToolTip
               title={open ? "Close Sidebar" : "Open Sidebar"}
               placement="right"
@@ -541,7 +542,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             >
               <button
                 type="button"
-                className="h-5 w-5 rounded-full flex justify-center items-center"
+                className={`h-5 w-5 rounded-full flex justify-center items-center ${open ? "mr-11" : ""}`}
                 onClick={() => setOpen(!open)}
               >
                 <img
@@ -551,6 +552,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 />
               </button>
             </ToolTip>
+            </div>
 
             {sidebarItems.map((item) =>
               !item.children ? (

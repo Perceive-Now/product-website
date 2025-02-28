@@ -222,7 +222,7 @@ export default function Landing() {
     //   </div> */}
     // </div>
     <>
-      <div className="w-full">
+      <div className=" flex flex-col w-full">
         <AgentHead agentName="" />
         <nav className="w-full text-white px-6">
           <div className="flex justify-between items-center">
@@ -265,7 +265,7 @@ export default function Landing() {
           </div>
         </nav>
 
-        <div className="h-screen px-3 w-full mx-auto flex flex-col justify-center items-center">
+        <div className="flex-1 px-3 w-full mx-auto flex flex-col justify-center items-center">
           <div className="flex items-center justify-between w-full max-w-2xl 2xl:max-w-3xl px-6">
             <div className="flex flex-col ml-6 w-full">
               {/* <div className="h-16 w-16 rounded-full flex mb-2">  
