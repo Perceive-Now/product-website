@@ -31,6 +31,7 @@ interface DraggableItemProps {
   handleDelete: (item: string) => void;
   moveItem: (fromIndex: number, toIndex: number) => void;
   indentLevel?: number;
+  disabled?: boolean;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
@@ -42,6 +43,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   handleDelete,
   moveItem,
   indentLevel = 0,
+  disabled,
 }) => {
   const [{ isDragging }, ref] = useDrag({
     type: ItemType.ITEM,
@@ -77,12 +79,13 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
 
   return (
     <div
-      ref={(node) => ref(drop(node))}
-      className={`flex max-w-full items-start mb-2 transition-transform duration-200 ease-in-out cursor-grab ${isDragging ? "scale-105 bg-gray-100 shadow-lg" : "bg-transparent"
-        }`}
+      ref={(node) => (disabled ? null : ref(drop(node)))}
+      className={`flex max-w-full items-start mb-2 transition-transform duration-200 ease-in-out ${
+        disabled ? "" : "cursor-grab"
+      } ${isDragging ? "scale-105 bg-gray-100 shadow-lg" : "bg-transparent"}`}
       style={{ marginLeft: indentLevel * 33 }}
     >
-      <img src={DragIconTwo} className="pb-10" alt="Drag" />
+      {disabled ? null : <img src={DragIconTwo} className="pb-10" alt="Drag" />}
       <div className="flex flex-col w-full py-2 border border-gray-300 rounded-lg p-2">
         <div className="flex items-center justify-between mb-1">
           <span className="bg-appGray-200 p-1 rounded-md mr-1 text-xs sm:text-sm md:text-base">
@@ -90,23 +93,26 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
           </span>
           <span className="text-sm sm:text-base lg:text-lg">{keyName}</span>
           <div className="flex-grow" />
-          <button className="text-red-500" onClick={() => handleDelete(tag)}>
-            <img src={TrashIconTwo} alt="Delete" className="w-3 h-3 sm:w-3 sm:h-3" />
-          </button>
+          {disabled ? null : (
+            <button className="text-red-500" onClick={() => handleDelete(tag)}>
+              <img src={TrashIconTwo} alt="Delete" className="w-3 h-3 sm:w-3 sm:h-3" />
+            </button>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row justify-between m-0 mb-2">
           <div className="flex  ">
-          <span className="text-xs sm:text-sm md:text-base">
-            <div className="bg-appGray-100 p-1 rounded-md w-fit">Summary</div>
-          </span>
-          <span
-            ref={summaryRef}
-            className={`mt-1 sm:mt-0 sm:ml-2 text-gray-700 text-justify tracking-tighter text-sm ${isExpanded ? "" : "line-clamp-2"
+            <span className="text-xs sm:text-sm md:text-base">
+              <div className="bg-appGray-100 p-1 rounded-md w-fit">Summary</div>
+            </span>
+            <span
+              ref={summaryRef}
+              className={`mt-1 sm:mt-0 sm:ml-2 text-gray-700 text-justify tracking-tighter text-sm ${
+                isExpanded ? "" : "line-clamp-2"
               }`}
-          >
-            {summary}
-          </span>
+            >
+              {summary}
+            </span>
           </div>
           {showArrow && (
             <button onClick={toggleExpand} className="text-primary-900 ml-2 h-3">
@@ -120,8 +126,9 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
           </span>
           <span
             ref={summaryRef}
-            className={`mt-1 sm:mt-0 sm:ml-2 text-gray-700 text-justify tracking-tighter text-sm ${isExpanded ? "" : "line-clamp-2"
-              }`}
+            className={`mt-1 sm:mt-0 sm:ml-2 text-gray-700 text-justify tracking-tighter text-sm ${
+              isExpanded ? "" : "line-clamp-2"
+            }`}
           >
             {body}
           </span>
@@ -133,11 +140,11 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
 
 interface Props {
   reportSummary: any;
+  disabled?: boolean;
 }
 
 const TemplateReport: React.FC<Props> = (props) => {
-
-  const { reportSummary } = props
+  const { reportSummary, disabled } = props;
   // const ReportTemplate: Record<string, ReportItem> = {
   //   "1": {
   //     title: "Executive Summary",
@@ -264,7 +271,7 @@ const TemplateReport: React.FC<Props> = (props) => {
   //   },
   // };
   const { ReportTemplate } = useAppSelector((state) => state.VSProduct);
-  console.log("report---------", ReportTemplate)
+  console.log("report---------", ReportTemplate);
   const dispatch = useAppDispatch();
   const [reportItems, setReportItems] = useState(reportSummary);
   const [open, setOpen] = useState(true);
@@ -272,12 +279,9 @@ const TemplateReport: React.FC<Props> = (props) => {
   const [newItemSummary, setNewItemSummary] = useState("");
   const [isInputVisible, setIsInputVisible] = useState(false);
 
-
-
-
   useEffect(() => {
     dispatch(updatePitchdeckData({ reportGenerations: { ...reportItems } }));
-    console.log("reporrtt", reportItems)
+    console.log("reporrtt", reportItems);
   }, [reportItems]);
 
   const handleDelete = (itemKey: string) => {
@@ -309,7 +313,11 @@ const TemplateReport: React.FC<Props> = (props) => {
     if (newItemTitle.trim() && newItemSummary.trim()) {
       setReportItems((prevItems: any) => ({
         ...prevItems,
-        [Object.keys(reportItems).length + 1]: { title: newItemTitle, summary: newItemSummary, subsections: {} },
+        [Object.keys(reportItems).length + 1]: {
+          title: newItemTitle,
+          summary: newItemSummary,
+          subsections: {},
+        },
       }));
       setNewItemTitle("");
       setNewItemSummary("");
@@ -325,7 +333,7 @@ const TemplateReport: React.FC<Props> = (props) => {
   };
 
   const renderItems = (items: Record<string, ReportItem>, indentLevel = 0) => {
-    console.log("inseide con-----------", reportItems)
+    console.log("inseide con-----------", reportItems);
     return Object.entries(items || {}).map(([key, item], index) => (
       <React.Fragment key={key}>
         <DraggableItem
@@ -337,6 +345,7 @@ const TemplateReport: React.FC<Props> = (props) => {
           handleDelete={handleDelete}
           moveItem={moveItem}
           indentLevel={indentLevel}
+          disabled={disabled}
         />
         {item.subsections && renderItems(item.subsections, indentLevel + 1)}
       </React.Fragment>
@@ -346,21 +355,23 @@ const TemplateReport: React.FC<Props> = (props) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className={`border border-gray-300 rounded-lg w-full mb-[70px] p-2 h-[90vh] ${open ? "flex-[0_0_500px] max-w-full lg:max-w-[460px]" : "max-w-full sm:max-w-[300px] h-fit"
-          }`}
+        className={`border border-gray-300 rounded-lg w-full mb-[70px] p-2 h-[90vh] ${
+          open
+            ? "flex-[0_0_500px] max-w-full lg:max-w-[460px]"
+            : "max-w-full sm:max-w-[300px] h-fit"
+        }`}
       >
         <div
-          className={`px-1 py-1 ${open ? "w-full h-full" : "w-full h-auto"
-            } bg-opacity-50 rounded-lg`}
+          className={`px-1 py-1 ${
+            open ? "w-full h-full" : "w-full h-auto"
+          } bg-opacity-50 rounded-lg`}
         >
           <div className="flex flex-col gap-y-2">
-
             <div className="ml-2 flex items-start gap-x-2">
               <div onClick={() => setOpen(!open)} className="cursor-pointer">
                 <LayoutIcon />
               </div>
               <div>
-
                 <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
                 {open && <h4 className="mb-4">Customize sections to suit your needs.</h4>}
               </div>
@@ -390,17 +401,22 @@ const TemplateReport: React.FC<Props> = (props) => {
                         value={newItemSummary}
                         onChange={(e) => setNewItemSummary(e.target.value)}
                       />
-                      <button onClick={handleAdd} className="self-end mt-2 text-primary-900 text-md">
+                      <button
+                        onClick={handleAdd}
+                        className="self-end mt-2 text-primary-900 text-md"
+                      >
                         <AddIcon /> Add Section
                       </button>
                     </div>
-
                   </>
-                ) : (
+                ) : disabled ? null : (
                   <div className="flex justify-between items-center py-1 border border-gray-300 rounded-lg mb-2 p-1 ml-3">
                     <button
-                      className={`flex items-center justify-start text-primary-900 ${isInputVisible ? 'hidden' : ''}`}
-                      onClick={() => setIsInputVisible(true)}                >
+                      className={`flex items-center justify-start text-primary-900 ${
+                        isInputVisible ? "hidden" : ""
+                      }`}
+                      onClick={() => setIsInputVisible(true)}
+                    >
                       {!isInputVisible && (
                         <>
                           <AddIcon color="#442873" size={25} />

@@ -4,6 +4,7 @@ import RightArrow from "src/components/icons/common/right-arrow";
 import { useAppDispatch } from "src/hooks/redux";
 import { submitCustomizeReport } from "./action";
 import { LoadingIcon } from "src/components/icons";
+import jsCookie from "js-cookie";
 
 import customizationIcon from "./_assets/customization-icon.svg";
 import PrimaryButton from "src/components/reusable/button/primary-button";
@@ -181,11 +182,42 @@ const AIReportCustomization: React.FC = () => {
     audienceFocusOneOptions: [],
     audienceFocusTwoOptions: [],
   });
+  const userId = jsCookie.get("user_id");
 
   const [reportName, setReportName] = useState("");
+  const [reportNameError, setReportNameError] = useState("");
   const [customInput, setCustomInput] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [currentTab, setCurrentTab] = useState("reportToneOptions");
+
+  const handleRenameReport = async () => {
+    if (reportNameError) {
+      return;
+    }
+    if (reportName?.length > 50) {
+      alert("Report name cannot be more than 50 characters");
+      return;
+    }
+
+    if (reportName) {
+      const res = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${userId}/${searchParams.get(
+          "thread_id",
+        )}?thread_name=${reportName}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (res.status === 200) {
+        setReportName("");
+      }
+    }
+  };
 
   const handleCheckboxChange = (category: string, value: string) => {
     setSelectedOptions((prev) => {
@@ -216,7 +248,15 @@ const AIReportCustomization: React.FC = () => {
 
   const submitFinalReport = async () => {
     if (submitting) return;
+    if (!reportName) {
+      setReportNameError("Report name is mandatory");
+      return;
+    }
+    if (reportNameError) {
+      return;
+    }
     setSubmitting(true);
+    handleRenameReport();
     const dataToSend = {
       user_id: searchParams.get("user_id"),
       thread_id: searchParams.get("thread_id"),
@@ -282,9 +322,17 @@ const AIReportCustomization: React.FC = () => {
               className="w-full p-2 outline-none rounded-lg text-sm"
               placeholder="Type your report name"
               value={reportName}
-              onChange={(e) => setReportName(e.target.value)}
+              onChange={(e) => {
+                setReportName(e.target.value);
+                if (e.target.value.length > 50) {
+                  setReportNameError("Report name cannot be more than 50 characters");
+                } else {
+                  setReportNameError("");
+                }
+              }}
             />
           </div>
+          {reportNameError && <div className="text-xs text-danger-500">{reportNameError}</div>}
         </div>
 
         <div className=" bg-white shadow-lg mt-4 rounded-lg">

@@ -22,6 +22,18 @@ const ReportConversation = (props: Props) => {
     const { options: optionAnswer, remainingText: remainingTextAnswer } = processResponse(
       chat.assistant_message || "",
     );
+
+    const jsonReportKeys = Object.keys(chat?.json_report || {});
+
+    console.log("jsonReportKeysjsonReportKeys", jsonReportKeys);
+
+    const json_report =
+      jsonReportKeys && jsonReportKeys?.[0]?.toLowerCase() === "sections" ? chat.json_report : {};
+
+    console.log("json_report", json_report);
+
+    const dataSources = chat.json_datasources || {};
+
     return (
       <>
         {remainingText.includes("pitchdeck_summary") ? (
@@ -41,7 +53,12 @@ const ReportConversation = (props: Props) => {
             file={chat.file}
           />
         )}
-        <ChatQuery query={remainingTextAnswer} shouldStream={false} />
+        <ChatQuery
+          query={remainingTextAnswer}
+          shouldStream={false}
+          json_report={json_report}
+          dataSource={dataSources}
+        />
         {optionAnswer?.length ? (
           <QueryAnswer
             ido={`chat-[${idx}]`}

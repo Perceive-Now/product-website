@@ -84,8 +84,12 @@ const DraftReports = (props: Props) => {
   }, [threadId]);
 
   const [reportName, setReportName] = useState("");
+  const [reportNameError, setReportNameError] = useState("");
 
   const handleRenameReport = async () => {
+    if (reportNameError) {
+      return;
+    }
     if (reportName?.length > 50) {
       alert("Report name cannot be more than 50 characters");
       return;
@@ -311,10 +315,20 @@ const DraftReports = (props: Props) => {
                   type="text"
                   placeholder={`Thread name`}
                   value={reportName}
-                  onChange={(e) => setReportName(e.target.value)}
+                  onChange={(e) => {
+                    setReportName(e.target.value);
+                    if (e.target.value.length > 50) {
+                      setReportNameError("Report name cannot be more than 50 characters");
+                    } else {
+                      setReportNameError("");
+                    }
+                  }}
                   // className="border border-gray-300 p-1 rounded-xs flex-auto placeholder:text-appGray-600 focus:outline-none focus:outline-none focus:ring-2 text-sm w-full"
                   className="mt-1 block w-full px-2 py-[13px] border-gray-300 border-[1px]  focus:outline-none focus:ring-2"
                 />
+                {reportNameError && (
+                  <div className="text-xs text-danger-500">{reportNameError}</div>
+                )}
                 <div className="flex gap-2 mt-4">
                   <Button type="gray" handleClick={closeThread} disabled={submittingAction}>
                     Go Back
