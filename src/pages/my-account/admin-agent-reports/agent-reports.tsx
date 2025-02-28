@@ -10,52 +10,17 @@ import ShareModal from "src/components/reusable/share-modal";
 const AgentReports = () => {
   const navigate = useNavigate();
   const { userid } = useParams();
-  console.log(userid);
   const [searchQuery, setSearchQuery] = useState("");
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
-  const [reports] = useState([
-    {
-      project_name: "Thread 1",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 2",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 3",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 4",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 5",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 6",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 7",
-      date_modified: "2021-10-10",
-    },
-    {
-      project_name: "Thread 8",
-      date_modified: "2021-10-10",
-    },
-  ]); // Placeholder for reports
-  const [loading] = useState(false); // Placeholder for loading
+  const [threads, setThreads] = useState<any[]>([]);
+  const [loadingThreads, setLoadingThreads] = useState(true);
   const [modal, setModal] = useState(false);
-  const [pagination] = useState({
+  
+  const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 8,
   });
-  const [threads, setThreads] = useState<any[]>([]);
-  const [loadingThreads, setLoadingThreads] = useState(true);
 
   const fetchThreads = async () => {
     try {
@@ -96,6 +61,11 @@ const AgentReports = () => {
       thread.thread_id?.toString().includes(searchQuery) ||
       thread.date_created?.includes(searchQuery) ||
       thread.date_modified?.includes(searchQuery),
+  ).reverse();
+
+  const paginatedReports = filteredReports.slice(
+    pagination.pageIndex * pagination.pageSize,
+    (pagination.pageIndex + 1) * pagination.pageSize
   );
 
   const columns = [
@@ -112,18 +82,6 @@ const AgentReports = () => {
         </p>
       ),
     },
-    // {
-    //   header: "Thread",
-    //   accessorKey: "report_name",
-    //   cell: (item: any) => (
-    //     <p
-    //       className="line-clamp-1"
-    //       onClick={() => navigate(`/agent-reports/${item.row.original.id}`)}
-    //     >
-    //       {item.row.original.thread_name}
-    //     </p>
-    //   ),
-    // },
     {
       header: "Agent Name",
       accessorKey: "agent_name",
@@ -134,24 +92,23 @@ const AgentReports = () => {
       accessorKey: "created_at",
       cell: (item: any) => (
         <span>{new Date(item.row.original.created_at).toLocaleDateString("en-US")}</span>
-      ), // Placeholder for date format
+      ),
     },
     {
       header: "Date Modified",
       accessorKey: "updated_at",
       cell: (item: any) => (
         <span>
-          {new Date(item.row.original.updated_at).toLocaleTimeString("en-US", {
+          {new Date(item.row.original.updated_at).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
           })}
         </span>
-      ), // Placeholder for date format
+      ),
     },
     {
       header: "Add Report",
-      // accessorKey: "actions",
       cell: (item: any) => (
         <div className="flex items-center gap-1">
           <button
@@ -184,7 +141,7 @@ const AgentReports = () => {
       </div>
       <div className="flex items-center gap-1 justify-between ">
         <div className="font-bold text-base">
-          Total Projects<span className="ml-3">{reports.length}</span>
+          Total Threads<span className="ml-3">{filteredReports.length}</span>
         </div>
         <div className="w-[300px]">
           <TableSearch
@@ -199,14 +156,12 @@ const AgentReports = () => {
         </div>
       ) : (
         <>
-          <ReactTable columnsData={columns} rowsData={filteredReports} size="medium" noTopBorder />
+          <ReactTable columnsData={columns} rowsData={paginatedReports} size="medium" noTopBorder />
           <div className="flex items-center justify-end mb-10">
             <Pagination
               page={pagination.pageIndex + 1}
-              total={Math.ceil(reports.length / pagination.pageSize)}
-              onChange={() => {
-                console.log("Pagination clicked");
-              }}
+              total={Math.ceil(filteredReports.length / pagination.pageSize)}
+              onChange={(page) => setPagination((prev) => ({ ...prev, pageIndex: page - 1 }))}
             />
           </div>
         </>
