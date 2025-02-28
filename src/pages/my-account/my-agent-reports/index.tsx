@@ -41,17 +41,16 @@ const MyAgentReport = () => {
   const columns = [
     {
       header: "Thread Name",
-      accessorKey: "Thread Name",
+      accessorKey: "thread_name",
       minSize: 200,
       cell: (item: any) => (
         <p
           className="line-clamp-1"
           onClick={() => navigate(`/my-agent-reports/${item.row.original.id}`)}
         >
-          {`${item.row.original.agent_name?.split(" ").join("")}-${
+          {`${
             item.row.original.thread_name?.split("-")[0]
           }`}
-          {item.row.original.id}
         </p>
       ),
     },

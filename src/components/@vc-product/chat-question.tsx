@@ -136,7 +136,7 @@ const ChatQuery = ({
               className={`translate-x-0 inline-block w-[12px] h-[12px] transform bg-appGray-500 rounded-full`}
             />
           </Switch>
-          Show Data
+          {Object.keys(dataSource || {}).length ? "Data Sources" : "Report Template"}
         </div>
       ) : null}
       <Modal open={modalOpen} handleOnClose={handleModalClose}>
@@ -153,7 +153,7 @@ const ChatQuery = ({
                 className={`translate-x-2 inline-block w-2 h-2 transform bg-white rounded-full`}
               />
             </Switch>
-            Show Data
+            {Object.keys(dataSource || {}).length ? "Data Sources" : "Report Template"}
           </div>
           {Object.keys(dataSource || {}).length ? (
             <SourcesData dataSource={dataSource} disabled />
