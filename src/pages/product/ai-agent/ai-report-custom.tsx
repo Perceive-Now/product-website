@@ -87,8 +87,9 @@ interface CheckboxGroupProps {
   options: Option[];
   selectedOptions: string[];
   onChange: (value: string) => void;
-  customInput: Record<string, string>;
-  onInputChange: (e: React.ChangeEvent<HTMLInputElement>, field: string) => void;
+  customInput: Record<string, Record<string, string>>;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>, field: string, key: string) => void;
+  optionKey: string;
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
@@ -97,6 +98,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   onChange,
   customInput,
   onInputChange,
+  optionKey,
 }) => (
   <div className="flex gap-x-4 p-2 rounded-b-lg w-full">
     <div className="grid grid-cols-2 gap-2 w-full">
@@ -116,8 +118,8 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
             <input
               type="text"
               placeholder={`Enter custom text for ${item.label}`}
-              value={customInput[item.value] || ""}
-              onChange={(e) => onInputChange(e, item.value)}
+              value={customInput?.[optionKey]?.[item.value] || ""}
+              onChange={(e) => onInputChange(e, item.value, optionKey)}
               className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
             />
           )}
@@ -133,6 +135,7 @@ const RoundedCheckboxGroup: React.FC<CheckboxGroupProps> = ({
   onChange,
   customInput,
   onInputChange,
+  optionKey,
 }) => (
   <div className="flex gap-x-4 p-2 rounded-b-lg">
     <div className="flex flex-wrap gap-2 w-full">
@@ -157,8 +160,8 @@ const RoundedCheckboxGroup: React.FC<CheckboxGroupProps> = ({
             <input
               type="text"
               placeholder={`Enter custom text for ${item.label}`}
-              value={customInput[item.value] || ""}
-              onChange={(e) => onInputChange(e, item.value)}
+              value={customInput?.[optionKey]?.[item.value] || ""}
+              onChange={(e) => onInputChange(e, item.value, optionKey)}
               className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
             />
           )}
@@ -186,7 +189,7 @@ const AIReportCustomization: React.FC = () => {
 
   const [reportName, setReportName] = useState("");
   const [reportNameError, setReportNameError] = useState("");
-  const [customInput, setCustomInput] = useState<Record<string, string>>({});
+  const [customInput, setCustomInput] = useState<Record<string, Record<string, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [currentTab, setCurrentTab] = useState("reportToneOptions");
 
@@ -239,10 +242,17 @@ const AIReportCustomization: React.FC = () => {
     }));
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string,
+    optionKey: string,
+  ) => {
     setCustomInput({
       ...customInput,
-      [field]: e.target.value,
+      [optionKey]: {
+        ...(customInput[optionKey] || {}),
+        [field]: e.target.value,
+      },
     });
   };
 
@@ -263,32 +273,35 @@ const AIReportCustomization: React.FC = () => {
       config: {
         report_depth: {
           selected: selectedOptions.reportToneOptions,
-          other: customInput["Other"],
+          other:
+            customInput?.["reportToneOptions"]?.["Other"] ||
+            customInput?.["Quick Sub-Topic Summaries"]?.["Other"] ||
+            "",
         },
         report_format: {
           selected: selectedOptions.reportFormatOptions,
-          other: customInput["Other"],
+          other: customInput?.["reportFormatOptions"]?.["Other"] || "",
         },
         visual_style: {
           selected: selectedOptions.visualStyleOptions,
-          other: customInput["Other"],
+          other: customInput?.["visualStyleOptions"]?.["Other"] || "",
         },
         number_of_charts: {
           selected: selectedOptions.chartsOptions,
-          other: customInput["Other"],
+          other: customInput?.["chartsOptions"]?.["Other"] || "",
         },
         citations: {
           selected: selectedOptions.citationsOptions,
-          other: customInput["Other"],
+          other: customInput?.["citationsOptions"]?.["Other"] || "",
         },
         audience_focus: {
           enterprise: {
             selected: selectedOptions.audienceFocusOneOptions,
-            other: customInput["Other"],
+            other: customInput?.["audienceFocusOneOptions"]?.["Other"] || "",
           },
           investors: {
             selected: selectedOptions.audienceFocusTwoOptions,
-            other: customInput["Other"],
+            other: customInput?.["audienceFocusTwoOptions"]?.["Other"] || "",
           },
         },
       },
@@ -408,6 +421,7 @@ const AIReportCustomization: React.FC = () => {
                       onChange={(value) => handleRadioChange("reportToneOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
+                      optionKey="reportToneOptions"
                     />
                   </div>
                 )}
@@ -420,6 +434,7 @@ const AIReportCustomization: React.FC = () => {
                       onChange={(value) => handleCheckboxChange("reportFormatOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
+                      optionKey="reportFormatOptions"
                     />
                   </div>
                 )}
@@ -432,6 +447,7 @@ const AIReportCustomization: React.FC = () => {
                       onChange={(value) => handleRadioChange("visualStyleOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
+                      optionKey="visualStyleOptions"
                     />
                   </div>
                 )}
@@ -444,6 +460,7 @@ const AIReportCustomization: React.FC = () => {
                       onChange={(value) => handleRadioChange("chartsOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
+                      optionKey="chartsOptions"
                     />
                   </div>
                 )}
@@ -456,6 +473,7 @@ const AIReportCustomization: React.FC = () => {
                       onChange={(value) => handleRadioChange("citationsOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
+                      optionKey="citationsOptions"
                     />
                   </div>
                 )}
@@ -470,6 +488,7 @@ const AIReportCustomization: React.FC = () => {
                         onChange={(value) => handleCheckboxChange("audienceFocusOneOptions", value)}
                         customInput={customInput}
                         onInputChange={handleInputChange}
+                        optionKey="audienceFocusOneOptions"
                       />
 
                       <div className="flex flex-col mt-4">
@@ -482,6 +501,7 @@ const AIReportCustomization: React.FC = () => {
                           }
                           customInput={customInput}
                           onInputChange={handleInputChange}
+                          optionKey="audienceFocusTwoOptions"
                         />
                       </div>
                     </div>

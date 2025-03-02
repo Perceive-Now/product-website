@@ -104,55 +104,61 @@ const AiAgent = () => {
       setthread_id(threadId);
       fetchAgentThreadDetails(threadId || "", userId || "", (response) => {
         setIsloading(false);
-        response.reports?.conversations?.map((report: any) => {
-          const { options, remainingText } = processResponse(report.user_message || "");
-          const { options: optionAnswer, remainingText: remainingTextAnswer } = processResponse(
-            report.assistant_message || "",
-          );
+        response.reports?.conversations
+          ?.sort((a: any, b: any) => {
+            const dateA = a.id;
+            const dateB = b.id;
+            return dateA - dateB; // Descending order
+          })
+          ?.map((report: any) => {
+            const { options, remainingText } = processResponse(report.user_message || "");
+            const { options: optionAnswer, remainingText: remainingTextAnswer } = processResponse(
+              report.assistant_message || "",
+            );
 
-          if (remainingText) {
-            if (remainingText.includes("pitchdeck_summary")) {
+            if (remainingText) {
+              if (remainingText.includes("pitchdeck_summary")) {
+                dispatch(
+                  setVSChats({
+                    query: report.user_message,
+                    answer: "",
+                    extract: report.user_message,
+                    extractObject: report.json_report,
+                    options: options || [],
+                    hasbutton: !!options?.length,
+                  }),
+                );
+                dispatch(updatePitchdeckData({ pitchdeckSummary: remainingText }));
+              } else {
+                dispatch(
+                  setVSChats({
+                    query: "",
+                    answer: remainingText,
+                    options: [],
+                    hasbutton: false,
+                  }),
+                );
+              }
+            }
+            if (remainingTextAnswer) {
               dispatch(
                 setVSChats({
-                  query: report.user_message,
+                  query: remainingTextAnswer,
                   answer: "",
-                  extract: report.user_message,
-                  extractObject: report.json_report,
-                  options: options || [],
-                  hasbutton: !!options?.length,
-                }),
-              );
-              dispatch(updatePitchdeckData({ pitchdeckSummary: remainingText }));
-            } else {
-              dispatch(
-                setVSChats({
-                  query: "",
-                  answer: remainingText,
-                  options: [],
-                  hasbutton: false,
+                  options: optionAnswer,
+                  hasbutton: !!optionAnswer.length || false,
                 }),
               );
             }
-          }
-          if (remainingTextAnswer) {
-            dispatch(
-              setVSChats({
-                query: remainingTextAnswer,
-                answer: "",
-                options: optionAnswer,
-                hasbutton: !!optionAnswer.length || false,
-              }),
-            );
-          }
-          // dispatch(
-          //   setVSChats({
-          //     query: remainingText,
-          //     answer: "",
-          //     options: options || [],
-          //     hasbutton: !!options?.length,
-          //   }),
-          // );
-        });
+            // dispatch(
+            //   setVSChats({
+            //     query: remainingText,
+            //     answer: "",
+            //     options: options || [],
+            //     hasbutton: !!options?.length,
+            //   }),
+            // );
+          });
       });
     } else {
       const fun = async () => {

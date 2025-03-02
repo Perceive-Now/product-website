@@ -36,6 +36,7 @@ import ReportConversation from "./ReportConversation";
 import { fetchAgentThreadDetails } from "../agent-report.action";
 import Loading from "src/components/reusable/loading";
 import AgentHead from "src/pages/product/ai-agent/AgentHead";
+import ReportCustomizationThread from "./ReportCustomization";
 /**
  *
  */
@@ -528,6 +529,7 @@ const MyAgentReportManagement = () => {
             )}
             <Tab.Panel>
               <ReportConversation loading={agentReportLoading} reports={agentReports} />
+              <ReportCustomizationThread />
             </Tab.Panel>
 
             <Tab.Panel>

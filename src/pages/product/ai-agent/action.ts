@@ -83,3 +83,35 @@ export const submitCustomizeReport = createAsyncThunk(
     return response;
   },
 );
+
+export const fetchCustomizeReport = async (
+  thread_id: string,
+  userId: string,
+  callback: (value: { customReport: any; loading: boolean }) => void,
+) => {
+  try {
+    const response = await fetch(
+      `https://templateuserrequirements.azurewebsites.net/api/threads/${thread_id}/report-config?user_id=${userId}`,
+      {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      },
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      callback({
+        customReport: data || {},
+        loading: false,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    callback({
+      customReport: {},
+      loading: false,
+    });
+  } finally {
+    // setLoading(false);
+  }
+};
