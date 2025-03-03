@@ -171,13 +171,19 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
+                  <br />
                 </>
-              ) : (
-                <p>
-                  <span className="font-bold">{key}:</span> {value}
-                </p>
-              )}
-              <br />
+              ) : Array.isArray(value) ||
+                typeof value === "string" ||
+                typeof value === "number" ||
+                typeof value === "boolean" ? (
+                <>
+                  <p>
+                    <span className="font-bold">{key}:</span> {value}
+                  </p>
+                  <br />
+                </>
+              ) : null}
             </div>
           );
         })}
@@ -241,62 +247,69 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
                   </div>
                 ) : (
                   <>
-                    {value.map((item: any) => (
-                      <>
-                        {typeof item === "object" ? (
-                          <>
-                            <div className="font-bold text-sm text-start mt-1 mb-1">{key}:</div>
-                            {Object.entries(item).map(
-                              ([itemKey, itemValue]: any, itemIndex: number) => (
+                    {Array.isArray(value) &&
+                      value.map(
+                        (item: any) =>
+                          item && (
+                            <>
+                              {typeof item === "object" ? (
                                 <>
-                                  <div key={key} className="flex items-center mb-1">
-                                    <label className="font-bold text-sm mr-2 text-nowrap">
-                                      {itemKey}:
-                                    </label>
-                                    <input
-                                      type="text"
-                                      value={itemValue}
-                                      onChange={(e) => {
-                                        // handleChange(key, e.target.value, 0);
-                                        if (
-                                          Array.isArray(formData[key]) &&
-                                          itemIndex !== undefined
-                                        ) {
-                                          const updatedArray: any = JSON.parse(
-                                            JSON.stringify(formData[key]),
-                                          );
-                                          updatedArray[0][itemKey] = e.target.value;
-                                          console.log("UPDATEDVALUESS", updatedArray);
-                                          setFormData({
-                                            ...formData,
-                                            [key]: updatedArray,
-                                          });
-                                          setChangedData({
-                                            ...changedData,
-                                            [key]: updatedArray,
-                                          });
-                                        }
-                                      }}
-                                      className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
-                                    />
+                                  <div className="font-bold text-sm text-start mt-1 mb-1">
+                                    {key}:
                                   </div>
+                                  {Object.entries(item).map(
+                                    ([itemKey, itemValue]: any, itemIndex: number) => (
+                                      <>
+                                        <div key={key} className="flex items-center mb-1">
+                                          <label className="font-bold text-sm mr-2 text-nowrap">
+                                            {itemKey}:
+                                          </label>
+                                          <input
+                                            type="text"
+                                            value={itemValue}
+                                            onChange={(e) => {
+                                              // handleChange(key, e.target.value, 0);
+                                              if (
+                                                Array.isArray(formData[key]) &&
+                                                itemIndex !== undefined
+                                              ) {
+                                                const updatedArray: any = JSON.parse(
+                                                  JSON.stringify(formData[key]),
+                                                );
+                                                updatedArray[0][itemKey] = e.target.value;
+                                                setFormData({
+                                                  ...formData,
+                                                  [key]: updatedArray,
+                                                });
+                                                setChangedData({
+                                                  ...changedData,
+                                                  [key]: updatedArray,
+                                                });
+                                              }
+                                            }}
+                                            className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                                          />
+                                        </div>
+                                      </>
+                                    ),
+                                  )}
                                 </>
-                              ),
-                            )}
-                          </>
-                        ) : (
-                          <div key={key} className="flex items-center mb-1">
-                            <label className="font-bold text-sm mr-2 text-nowrap">{key}:</label>
-                            <input
-                              type="text"
-                              value={item}
-                              onChange={(e) => handleChange(key, e.target.value, 0)}
-                              className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
-                            />
-                          </div>
-                        )}
-                      </>
-                    ))}
+                              ) : (
+                                <div key={key} className="flex items-center mb-1">
+                                  <label className="font-bold text-sm mr-2 text-nowrap">
+                                    {key}:
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={item}
+                                    onChange={(e) => handleChange(key, e.target.value, 0)}
+                                    className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                                  />
+                                </div>
+                              )}
+                            </>
+                          ),
+                      )}
                   </>
                 )}
               </>
