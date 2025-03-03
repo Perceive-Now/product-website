@@ -49,12 +49,26 @@ const ReportSection = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col flex-[1.2] min-h-screen rounded-xl relative bg-red-50">
+      <div className="flex flex-col flex-[1.2] min-h-screen rounded-xl bg-red-50 relative">
         <img src={backgroundImage} alt="background" className="object-cover w-full h-full" />
         <div className="absolute top-0 left-0 right-0 m-auto">
-          <img src={giftBoxSvg} alt="giftbox" className="w-[300px] h-[300px] scale-125 m-auto" />
-          <p
-            className={`absolute text-sm top-[180px] left-[220px] font-bold m-auto w-[200px] h-[200px] text-[#442873] transition-opacity duration-500 ${
+          <img
+            src={giftBoxSvg}
+            alt="giftbox"
+            className="w-[300px] h-[300px] scale-125 m-auto relative"
+          />
+          {/* <p
+            className={`absolute text-sm top-[180px] left-[230px] font-bold m-auto w-[200px] h-[200px] text-[#442873] transition-opacity duration-500 ${
+              fade ? "opacity-0" : "opacity-100"
+            }`}
+          > */}
+          {/* <p
+            className={`absolute text-sm left-0 right-0 top-[60%] font-bold pl-[35px] mx-auto w-[210px] h-[200px] text-[#442873] transition-opacity duration-500 ${
+              fade ? "opacity-0" : "opacity-100"
+            }`}
+          > */}
+           <p
+            className={`absolute text-sm left-[45px] right-0 top-[60%] font-bold mx-auto w-[210px] h-[200px] text-[#442873] transition-opacity duration-500 ${
               fade ? "opacity-0" : "opacity-100"
             }`}
           >
