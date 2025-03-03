@@ -37,7 +37,7 @@ const agents = [
     agentName: "Startup Diligence Agent",
     title: "Company Diligence Agent",
     description:
-      "Evaluate startups to uncover risks, validate potential, and guide informed investment decisions.",
+      "Evaluate company to uncover risks, validate potential, and guide informed investment decisions.",
     icon: startupDilligenceIcon,
     bgClass: "from-pink-200 to-red-100",
     className: "col-span-6 row-span-1",
