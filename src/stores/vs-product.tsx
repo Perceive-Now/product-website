@@ -351,7 +351,7 @@ export const VSProductSlice = createSlice({
     });
     builder.addCase(extractFileData.fulfilled, (state, action) => {
       state.pitchdeck_data = {
-        "Company/Startup Name": state.companyName,
+        // "Company/Startup Name": state.companyName,
         pitchdeck_summary: action.payload,
         "diligence level_covered": state.SidescreenOptions,
         search_queries: {},
