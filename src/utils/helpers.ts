@@ -225,5 +225,5 @@ export function generateReportName(dateString: any) {
   const hours = String(date.getHours()).padStart(2, "0"); // 15
   const minutes = String(date.getMinutes()).padStart(2, "0"); // 23
 
-  return `${day}${month}-${hours}:${minutes}`;
+  return `${month}${day}-${hours}:${minutes}`;
 }
