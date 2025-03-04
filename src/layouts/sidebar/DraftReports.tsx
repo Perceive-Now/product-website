@@ -12,6 +12,7 @@ import SvgDocumentIcon from "./_assets/paper-icon";
 import { Dialog } from "@headlessui/react";
 import Button from "src/components/reusable/button";
 import Loading from "src/components/reusable/loading";
+import { generateReportName } from "src/utils/helpers";
 
 const reverseAgentMapping: Record<string, string> = {
   "Startup Diligence Agent": "company-diligence-agent",
@@ -197,7 +198,7 @@ const DraftReports = (props: Props) => {
                 >
                   {open && (
                     <span className=" text-secondary-800 text-base">
-                      {`${report.thread_name?.split("-")[0]}`}
+                      {`${report.agent_name.slice(0, 3)}-${generateReportName(report.created_at)}`}
                     </span>
                   )}
                 </Link>

@@ -216,3 +216,14 @@ export function processResponse(response: string) {
 
   return { options, remainingText };
 }
+
+export function generateReportName(dateString: any) {
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, "0"); // 04
+  const month = date.toLocaleString("en-US", { month: "short" }); // Mar
+  const hours = String(date.getHours()).padStart(2, "0"); // 15
+  const minutes = String(date.getMinutes()).padStart(2, "0"); // 23
+
+  return `${day}${month}-${hours}:${minutes}`;
+}

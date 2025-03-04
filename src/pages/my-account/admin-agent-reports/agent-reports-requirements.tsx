@@ -10,6 +10,7 @@ import { Disclosure } from "@headlessui/react";
 import AddIcon from "src/components/icons/common/add-icon";
 import IconFile from "src/components/icons/side-bar/icon-file";
 import ReportConversation from "../my-agent-reports/my-reports/ReportConversation";
+import ReportCustomizationThread from "../my-agent-reports/my-reports/ReportCustomization";
 
 interface Report {
   report_name: string;
@@ -258,6 +259,7 @@ const AgentRequirements = () => {
                   loading={reportConversationLoading}
                   reports={reportConversation}
                 />
+                <ReportCustomizationThread />
               </div>
             </Tab.Panel>
           </Tab.Panels>

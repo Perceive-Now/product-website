@@ -12,6 +12,7 @@ const Chip = ({ label }: { label: string }) => (
 
 const ReportCustomizationThread = () => {
   const { id } = useParams();
+  const { threadid } = useParams();
   const userId = jsCookie.get("user_id");
 
   const [reportList, setReportList] = useState<{ loading: boolean; customReport: any }>({
@@ -25,7 +26,7 @@ const ReportCustomizationThread = () => {
       customReport: {},
       loading: true,
     });
-    fetchCustomizeReport(id || "", userId || "", setReportList);
+    fetchCustomizeReport(id || threadid || "", userId || "", setReportList);
   }, []);
   return (
     <div className="mt-2 px-0 md:px-3 w-full mx-auto  max-w-2xl mx-auto p-3 bg-white shadow-lg rounded-lg">
