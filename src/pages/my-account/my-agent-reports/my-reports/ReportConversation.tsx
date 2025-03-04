@@ -89,9 +89,15 @@ const ReportConversation = (props: Props) => {
                   <DotLoader />
                 </div>
               ) : null}
-              {reports?.conversations?.map((chat: any, idx: number) => (
-                <>{renderChat(chat, idx)}</>
-              ))}
+              {reports?.conversations
+                ?.sort((a: any, b: any) => {
+                  const dateA = a.id;
+                  const dateB = b.id;
+                  return dateA - dateB; // Descending order
+                })
+                ?.map((chat: any, idx: number) => (
+                  <>{renderChat(chat, idx)}</>
+                ))}
             </div>
           </div>
         </div>

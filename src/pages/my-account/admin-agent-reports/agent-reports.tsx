@@ -16,7 +16,7 @@ const AgentReports = () => {
   const [threads, setThreads] = useState<any[]>([]);
   const [loadingThreads, setLoadingThreads] = useState(true);
   const [modal, setModal] = useState(false);
-  
+
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 8,
@@ -55,17 +55,19 @@ const AgentReports = () => {
     }
   }, []);
 
-  const filteredReports = threads.filter(
-    (thread) =>
-      thread.agent_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      thread.thread_id?.toString().includes(searchQuery) ||
-      thread.date_created?.includes(searchQuery) ||
-      thread.date_modified?.includes(searchQuery),
-  ).reverse();
+  const filteredReports = threads
+    .filter(
+      (thread) =>
+        thread.agent_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        thread.thread_id?.toString().includes(searchQuery) ||
+        thread.date_created?.includes(searchQuery) ||
+        thread.date_modified?.includes(searchQuery),
+    )
+    .reverse();
 
   const paginatedReports = filteredReports.slice(
     pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
+    (pagination.pageIndex + 1) * pagination.pageSize,
   );
 
   const columns = [
@@ -74,31 +76,53 @@ const AgentReports = () => {
       accessorKey: "id",
       cell: (item: any) => (
         <p
+          className="cursor-pointer"
           onClick={() =>
             navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)
           }
         >
-          {item.row.original.id}
+          {item.row.original?.is_complete ? item.row.original.thread_name : item.row.original.id}
         </p>
       ),
     },
     {
       header: "Agent Name",
       accessorKey: "agent_name",
-      cell: (item: any) => <span>{item.row.original.agent_name}</span>,
+      cell: (item: any) => (
+        <span
+          className="cursor-pointer"
+          onClick={() =>
+            navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)
+          }
+        >
+          {item.row.original.agent_name}
+        </span>
+      ),
     },
     {
       header: "Date Created",
       accessorKey: "created_at",
       cell: (item: any) => (
-        <span>{new Date(item.row.original.created_at).toLocaleDateString("en-US")}</span>
+        <span
+          className="cursor-pointer"
+          onClick={() =>
+            navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)
+          }
+        >
+          {new Date(item.row.original.created_at).toLocaleDateString("en-US")}
+        </span>
       ),
     },
     {
       header: "Date Modified",
       accessorKey: "updated_at",
       cell: (item: any) => (
-        <span>
+        <span
+          className="cursor-pointer"
+          onClick={() =>
+            navigate(`/agent-reports/${item.row.original.id}/${item.row.original.user_id}`)
+          }
+        >
           {new Date(item.row.original.updated_at).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",

@@ -259,7 +259,7 @@ const AIReportCustomization: React.FC = () => {
   const submitFinalReport = async () => {
     if (submitting) return;
     if (!reportName) {
-      setReportNameError("Report name is mandatory");
+      setReportNameError("Report name is mandatory*");
       return;
     }
     if (reportNameError) {
@@ -345,7 +345,7 @@ const AIReportCustomization: React.FC = () => {
               }}
             />
           </div>
-          {reportNameError && <div className="text-xs text-danger-500">{reportNameError}</div>}
+          {reportNameError && <div className="text-s text-danger-500">{reportNameError}</div>}
         </div>
 
         <div className=" bg-white shadow-lg mt-4 rounded-lg">
