@@ -198,7 +198,9 @@ const DraftReports = (props: Props) => {
                 >
                   {open && (
                     <span className=" text-secondary-800 text-base">
-                      {`${report.agent_name.slice(0, 3)}-${generateReportName(report.created_at)}`}
+                      {`${report.agent_name.split(" ")[0]}-${generateReportName(
+                        report.created_at,
+                      )}`}
                     </span>
                   )}
                 </Link>
