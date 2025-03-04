@@ -198,7 +198,9 @@ const DraftReports = (props: Props) => {
                 >
                   {open && (
                     <span className=" text-secondary-800 text-base">
-                      {`${report.thread_name?.split("-")[0]}`}
+                      {`${report.agent_name.split(" ")[0]}-${generateReportName(
+                        report.created_at,
+                      )}`}
                     </span>
                   )}
                 </Link>
