@@ -7,7 +7,7 @@ const PitchDeck = ({ user_message }: { user_message: string }) => {
   const { pitchdeck_summary } = parsedData;
   console.log("pitchdeck_summary", pitchdeck_summary);
 
-  return (
+  return pitchdeck_summary?.pages ? null : (
     <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
       {/* <h2 className="text-xl font-bold mb-4">Pitch Deck Summary</h2> */}
       {Array.isArray(pitchdeck_summary)

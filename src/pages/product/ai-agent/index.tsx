@@ -499,6 +499,7 @@ const AiAgent = () => {
 
               case "Edit Summary":
                 setModalOpen(true);
+                setIsloading(false);
                 return;
 
               default:

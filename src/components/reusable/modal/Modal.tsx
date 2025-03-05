@@ -38,7 +38,7 @@ export const Modal: FunctionComponent<PropsWithChildren<Props>> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel>{children}</Dialog.Panel>
+                <Dialog.Panel className="w-full max-w-[95vw]">{children}</Dialog.Panel>
               </Transition.Child>
             </div>
           </div>

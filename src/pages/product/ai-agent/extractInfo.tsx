@@ -236,10 +236,10 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
                       {value.map((item, index) => (
                         <li key={index} className="mt-1">
                           <input
-                            type="text"
+                            // type="text"
                             value={item}
                             onChange={(e) => handleChange(key, e.target.value, index)}
-                            className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                            className="w-[100%]  border border-neutral-500 rounded px-1 py-0.5 bg-transparent text-sm"
                           />
                         </li>
                       ))}
@@ -287,7 +287,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
                                                 });
                                               }
                                             }}
-                                            className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                                            className="w-[90%] border border-neutral-500 rounded px-1 py-0.5 bg-transparent text-sm"
                                           />
                                         </div>
                                       </>
@@ -303,7 +303,7 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
                                     type="text"
                                     value={item}
                                     onChange={(e) => handleChange(key, e.target.value, 0)}
-                                    className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-full text-sm"
+                                    className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent w-[90%] text-sm"
                                   />
                                 </div>
                               )}
