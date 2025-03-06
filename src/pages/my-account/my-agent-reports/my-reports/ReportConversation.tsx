@@ -19,6 +19,7 @@ const ReportConversation = (props: Props) => {
 
   const renderChat = (chat: any, idx: number) => {
     const { options, remainingText } = processResponse(chat.user_message || "");
+    const filename_url = chat?.filename_url;
     const { options: optionAnswer, remainingText: remainingTextAnswer } = processResponse(
       chat.assistant_message || "",
     );
@@ -37,7 +38,7 @@ const ReportConversation = (props: Props) => {
     return (
       <>
         {remainingText.includes("pitchdeck_summary") ? (
-          <PitchDeck user_message={remainingText} />
+          <PitchDeck user_message={remainingText} filename_url={filename_url} />
         ) : (
           <QueryAnswer
             ido={`chat-[${idx}]`}

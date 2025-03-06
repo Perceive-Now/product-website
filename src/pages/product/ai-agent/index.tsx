@@ -285,7 +285,8 @@ const AiAgent = () => {
       dispatch(setCurrentStep(1));
     }, 1000);
     setUplaodingFile(true);
-    const fileResponse = await dispatch(extractFileData(file)).unwrap();
+    const pptResp = await dispatch(extractFileData(file)).unwrap();
+    const fileResponse = pptResp?.fileData;
     const dynaminc = await dispatch(
       dynamicThreadName({
         fileData: fileResponse,

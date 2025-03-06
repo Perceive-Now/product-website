@@ -24,6 +24,7 @@ interface VSProduct {
   ReportTemplate?: any;
   pitchdeck_data: any;
   uploadStatus: boolean;
+  fileData?: any;
 }
 
 const initialState: VSProduct = {
@@ -156,7 +157,10 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
     console.log("extracted successfully", data.slides_data);
 
     // console.log("ppppppppppppp",JSON.parse(data.slides_))
-    return data.slides_data;
+    return {
+      slideData: data.slides_data,
+      fileData: data.file_details,
+    };
   }
 });
 
@@ -389,10 +393,11 @@ export const VSProductSlice = createSlice({
     builder.addCase(extractFileData.fulfilled, (state, action) => {
       state.pitchdeck_data = {
         // "Company/Startup Name": state.companyName,
-        pitchdeck_summary: action.payload,
+        pitchdeck_summary: action.payload?.slideData,
         "diligence level_covered": state.SidescreenOptions,
         search_queries: {},
       };
+      state.fileData = action.payload?.fileData;
     });
   },
 });

@@ -26,7 +26,7 @@ export const sendAiAgentQuery = createAsyncThunk(
     console.log("ThreadId", thread_id);
     const state = getState() as RootState;
     const pitchdeckData = state.VSProduct.pitchdeck_data;
-
+    const fileData = state.VSProduct?.fileData;
     const bodyData = {
       userId: String(user_id), // Convert userId to string
       threadId: String(thread_id),
@@ -36,6 +36,7 @@ export const sendAiAgentQuery = createAsyncThunk(
       step: 0,
       data: { user_input: sendPitchData ? JSON.stringify(pitchdeckData) : user_input },
       file_upload_status: file_upload_status ? file_upload_status : false,
+      ...(sendPitchData ? { file_upload_url: fileData } : {}),
     };
     const response: any = await axios.post(
       "https://templateuserrequirements.azurewebsites.net/process-step",
