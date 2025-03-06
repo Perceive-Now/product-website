@@ -21,7 +21,12 @@ import {
   processResponse,
 } from "src/utils/helpers";
 import ExtractInfo from "./extractInfo";
-import { sendQuery, extractFileData, updatePitchdeckData } from "src/stores/vs-product";
+import {
+  sendQuery,
+  extractFileData,
+  updatePitchdeckData,
+  dynamicThreadName,
+} from "src/stores/vs-product";
 
 import {
   setVSChats,
@@ -43,6 +48,9 @@ import LoadingUI from "./LoadingUi";
 import { v4 as uuidv4 } from "uuid";
 import AgentHead from "./AgentHead";
 import { fetchAgentThreadDetails } from "src/pages/my-account/my-agent-reports/agent-report.action";
+import { useListing } from "src/layouts/sidebar/DraftProvider";
+import { Link } from "react-router-dom";
+import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 
 const AgentName: Record<string, string> = {
   "company-diligence-agent": "Company Diligence Agent",
@@ -62,6 +70,8 @@ const AgentName: Record<string, string> = {
 const AiAgent = () => {
   const params = new URLSearchParams(window.location.search);
   const agent = params.get("agent");
+
+  const { fetchListing } = useListing();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -276,6 +286,16 @@ const AiAgent = () => {
     }, 1000);
     setUplaodingFile(true);
     const fileResponse = await dispatch(extractFileData(file)).unwrap();
+    const dynaminc = await dispatch(
+      dynamicThreadName({
+        fileData: fileResponse,
+        userId: userId || "",
+        threadId: thread_id,
+      }),
+    ).unwrap();
+    if (dynaminc) {
+      fetchListing && fetchListing();
+    }
     if (fileResponse) {
       setUplaodingFile(false);
       setIsloading(true);
@@ -722,6 +742,14 @@ const AiAgent = () => {
   return (
     <>
       <div className="px-0 md:px-3 w-full mx-auto h-full">
+        <div className="flex justify-start items-center mt-3">
+          <Link to="/ai-agent/landing">
+            <p className="mr-4 text-secondary-800 flex items-center">
+              <ArrowLeftIcon className="mr-1" />
+              Back
+            </p>
+          </Link>
+        </div>
         <AgentHead agentName={AgentName[agent || ""] || "Company Diligence Agent"} />
         <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">

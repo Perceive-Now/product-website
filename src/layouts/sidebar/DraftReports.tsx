@@ -13,6 +13,7 @@ import { Dialog } from "@headlessui/react";
 import Button from "src/components/reusable/button";
 import Loading from "src/components/reusable/loading";
 import { generateReportName } from "src/utils/helpers";
+import { useListing } from "./DraftProvider";
 
 const reverseAgentMapping: Record<string, string> = {
   "Startup Diligence Agent": "company-diligence-agent",
@@ -37,6 +38,8 @@ interface Props {
 
 const DraftReports = (props: Props) => {
   const { open, setOpen } = props;
+
+  const { records, setRecords } = useListing();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -60,29 +63,29 @@ const DraftReports = (props: Props) => {
   const threadId = searchParams.get("threadId");
 
   const userId = jsCookie.get("user_id");
-  const [reportList, setReportList] = useState<{ loading: boolean; reports: any[] }>({
-    loading: true,
-    reports: [],
-  });
+  // const [reportList, setReportList] = useState<{ loading: boolean; reports: any[] }>({
+  //   loading: true,
+  //   reports: [],
+  // });
 
-  const filteredReports =
-    reportList.reports.length > 0
-      ? reportList.reports
-          .sort((a: any, b: any) => {
-            const dateA = +new Date(a.created_at);
-            const dateB = +new Date(b.created_at);
-            return dateB - dateA; // Descending order
-          })
-          .filter((report: any) => report.is_complete === false)
-      : [];
+  // const filteredReports =
+  //   reportList.reports.length > 0
+  //     ? reportList.reports
+  //         .sort((a: any, b: any) => {
+  //           const dateA = +new Date(a.created_at);
+  //           const dateB = +new Date(b.created_at);
+  //           return dateB - dateA; // Descending order
+  //         })
+  //         .filter((report: any) => report.is_complete === false)
+  //     : [];
 
-  useEffect(() => {
-    setReportList({
-      ...reportList,
-      loading: true,
-    });
-    fetchAgentReports(userId || "", setReportList);
-  }, [threadId]);
+  // useEffect(() => {
+  //   setReportList({
+  //     ...reportList,
+  //     loading: true,
+  //   });
+  //   fetchAgentReports(userId || "", setReportList);
+  // }, [threadId]);
 
   const [reportName, setReportName] = useState("");
   const [reportNameError, setReportNameError] = useState("");
@@ -109,9 +112,9 @@ const DraftReports = (props: Props) => {
       );
 
       if (res.status === 200) {
-        setReportList({
-          ...reportList,
-          reports: reportList.reports.map((report) =>
+        setRecords({
+          loading: false,
+          reports: records?.map((report: any) =>
             report.id === selectedThread.threadId ? { ...report, thread_name: reportName } : report,
           ),
         });
@@ -147,9 +150,9 @@ const DraftReports = (props: Props) => {
       if (threadId?.toString() === selectedThread.threadId?.toString()) {
         navigate("/");
       }
-      setReportList({
-        ...reportList,
-        reports: reportList.reports.filter((report) => report.id !== selectedThread.threadId),
+      setRecords({
+        loading: false,
+        reports: records?.filter((report: any) => report.id !== selectedThread.threadId),
       });
       closeThread();
     } else {
@@ -177,7 +180,7 @@ const DraftReports = (props: Props) => {
         </div>
         {open ? (
           <div className="max-h-[300px] overflow-y-auto pn_scroller">
-            {filteredReports?.map((report, index) => (
+            {records?.map((report: any) => (
               <div
                 className={`transition-all flex items-center gap-1 w-full ${
                   open
@@ -198,7 +201,9 @@ const DraftReports = (props: Props) => {
                 >
                   {open && (
                     <span className=" text-secondary-800 text-base">
-                      {`${report.thread_name?.split("-")[0]}`}
+                      {report.thread_name?.split("-")[0]?.length > 18
+                        ? `${report.thread_name?.split("-")[0]?.substring(0, 18)}...`
+                        : report.thread_name?.split("-")[0]}
                     </span>
                   )}
                 </Link>

@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
+import jsCookie from "js-cookie";
 interface VSChat {
   id?: number;
   query: string;
@@ -140,9 +141,10 @@ export const sendQuery = createAsyncThunk(
 export const extractFileData = createAsyncThunk("extractFileData", async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
+  const userId = jsCookie.get("user_id");
 
   const response = await fetch(
-    "https://templateuserrequirements.azurewebsites.net/extract-ppt-data",
+    `https://templateuserrequirements.azurewebsites.net/extract-ppt-data?user_id=${userId}`,
     {
       method: "POST",
       headers: { Accept: "application/json" },
@@ -157,6 +159,41 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
     return data.slides_data;
   }
 });
+
+export const dynamicThreadName = createAsyncThunk(
+  "dynamicThreadName",
+  async (values: { fileData: string; userId: string; threadId: string }) => {
+    const dataToSend = {
+      data: JSON.stringify(values.fileData),
+    };
+
+    const response = await fetch(
+      "https://templateuserrequirements.azurewebsites.net/dynamic_thread",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      },
+    );
+    if (response.ok) {
+      const data = await response.json();
+      const res = await fetch(
+        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${values.userId}/${values.threadId}?thread_name=${data}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      return res;
+    }
+  },
+);
 
 export const addActivityComment = async (userId: string, comment: string, project_id: string) => {
   try {
