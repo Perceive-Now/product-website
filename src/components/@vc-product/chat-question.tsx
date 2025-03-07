@@ -139,7 +139,7 @@ const ChatQuery = ({
           {Object.keys(dataSource || {}).length ? "Data Sources" : "Report Template"}
         </div>
       ) : null}
-      <Modal open={modalOpen} handleOnClose={handleModalClose}>
+      <Modal width="mx-auto" open={modalOpen} handleOnClose={handleModalClose}>
         <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg h-[90vh] overflow-y-auto pn_scroller">
           <div className="font-bold text-md text-end">
             <Switch
