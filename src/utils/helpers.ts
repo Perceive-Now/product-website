@@ -118,6 +118,10 @@ export function generateKnowIdstring() {
   return newUuid;
 }
 
+export function generateAgentThreadName(agentName: string) {
+  return `Untitled-${agentName.split(" ")?.[0]}_${+new Date()}`;
+}
+
 export function getRandomErrorMessage() {
   const messages = [
     "I’m sorry, I didn’t quite catch that. Could you please select one of the available options to help me assist you better?",

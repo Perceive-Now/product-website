@@ -44,26 +44,28 @@ const PitchFile = ({ filename_url }: { filename_url: any }) => {
   const fileExtension = getFileExtension(original_filename);
 
   return (
-    <div className="bg-foundationOrange-100 border-secondary-500 p-2 rounded-2xl rounded-br-none mt-2">
-      <div className="flex items-center justify-between ">
-        <div className="flex items-center">
-          {getFileTypeIcon(fileExtension)}
-          <div className="ml-4">
-            <p className="text-sm font-medium text-gray-800">{original_filename}</p>
-            <p className="text-xs text-gray-500">{fileExtension}</p>
+    <div className="flex flex-wrap items-center justify-end gap-2 mt-2">
+      <div className="bg-foundationOrange-100 border-secondary-500 p-2 rounded-2xl rounded-br-none mt-2">
+        <div className="flex items-center justify-between ">
+          <div className="flex items-center">
+            {getFileTypeIcon(fileExtension)}
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-800">{original_filename}</p>
+              <p className="text-xs text-gray-500">{fileExtension}</p>
+            </div>
           </div>
+          <button
+            onClick={() => {
+              const link = document.createElement("a");
+              link.href = file_url;
+              link.download = original_filename;
+              link.click();
+            }}
+            className="text-blue-600 hover:underline text-sm font-medium ml-4"
+          >
+            Download
+          </button>
         </div>
-        <button
-          onClick={() => {
-            const link = document.createElement("a");
-            link.href = file_url;
-            link.download = original_filename;
-            link.click();
-          }}
-          className="text-blue-600 hover:underline text-sm font-medium ml-4"
-        >
-          Download
-        </button>
       </div>
     </div>
   );

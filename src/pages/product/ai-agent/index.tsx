@@ -15,6 +15,7 @@ import debounce from "lodash.debounce";
 import { AppConfig } from "src/config/app.config";
 import DotLoader from "src/components/reusable/dot-loader";
 import {
+  generateAgentThreadName,
   generateKnowId,
   generateKnowIdstring,
   getRandomErrorMessage,
@@ -178,7 +179,7 @@ const AiAgent = () => {
           // Create agent thread
           const threadCreateBodyData = {
             user_id: userId || "",
-            thread_name: uuidv4(),
+            thread_name: generateAgentThreadName(AgentName[agent || ""]),
             use_case: "AI",
             industry: "AI",
             agent_name: AgentName[agent || ""] || "Company Diligence Agent",
@@ -189,13 +190,16 @@ const AiAgent = () => {
           const createThreadResponse: any = await axios.post(
             `https://templateuserrequirements.azurewebsites.net/agents/threads/create/?user_id=${
               userId || ""
-            }&thread_name=${uuidv4()}&use_case=AI&industry=AI&agent_name=${
+            }&thread_name=${generateAgentThreadName(
+              AgentName[agent || ""],
+            )}&use_case=AI&industry=AI&agent_name=${
               AgentName[agent || ""] || "Company Diligence Agent"
             }`,
             { headers: { "Content-Type": "application/json" }, responseType: "stream" },
           );
 
-          const newTthreadRef = createThreadResponse.data.thread_id || generateKnowIdstring();
+          const newTthreadRef =
+            createThreadResponse.data.thread_id || generateAgentThreadName(AgentName[agent || ""]);
 
           const newParams = new URLSearchParams(searchParams);
           newParams.set("threadId", newTthreadRef); // Add or update the search param
@@ -209,7 +213,9 @@ const AiAgent = () => {
             user_input: "",
             // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
             user_id: userId || "",
-            thread_id: createThreadResponse.data.thread_id || generateKnowIdstring(),
+            thread_id:
+              createThreadResponse.data.thread_id ||
+              generateAgentThreadName(AgentName[agent || ""]),
           };
           const { data } = await dispatch(
             sendAiAgentQuery({
@@ -369,7 +375,7 @@ const AiAgent = () => {
         } else {
           if (answer === "Go Home") {
             dispatch(resetChats());
-            setthread_id(generateKnowIdstring());
+            setthread_id(generateAgentThreadName(AgentName[agent || ""]));
             firstRun.current = true;
             setFile("false");
             navigate("/", {
@@ -379,7 +385,7 @@ const AiAgent = () => {
           }
           if (answer === "Start another report") {
             dispatch(resetChats());
-            setthread_id(generateKnowIdstring());
+            setthread_id(generateAgentThreadName(AgentName[agent || ""]));
             firstRun.current = true;
             setFile("false");
             return;

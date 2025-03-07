@@ -156,10 +156,14 @@ const ChatQuery = ({
             {Object.keys(dataSource || {}).length ? "Data Sources" : "Report Template"}
           </div>
           {Object.keys(dataSource || {}).length ? (
-            <SourcesData dataSource={dataSource} disabled />
+            <div className="mx-auto justify-center flex">
+              <SourcesData dataSource={dataSource} disabled />
+            </div>
           ) : null}
           {Object.keys(json_report || {}).length ? (
-            <TemplateReport reportSummary={json_report.sections} disabled />
+            <div className="mx-auto justify-center flex">
+              <TemplateReport reportSummary={json_report.sections} disabled />
+            </div>
           ) : null}
         </div>
       </Modal>

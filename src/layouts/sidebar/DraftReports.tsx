@@ -201,9 +201,9 @@ const DraftReports = (props: Props) => {
                 >
                   {open && (
                     <span className=" text-secondary-800 text-base">
-                      {report.thread_name?.split("-")[0]?.length > 18
-                        ? `${report.thread_name?.split("-")[0]?.substring(0, 18)}...`
-                        : report.thread_name?.split("-")[0]}
+                      {report.thread_name?.split("_")[0]?.length > 15
+                        ? `${report.thread_name?.split("_")[0]?.substring(0, 15)}...`
+                        : report.thread_name?.split("_")[0]}
                     </span>
                   )}
                 </Link>
