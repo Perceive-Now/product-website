@@ -328,7 +328,9 @@ const AIReportCustomization: React.FC = () => {
         </div>
 
         <div className="mb-2 mt-4">
-          <h2 className="text-black text-base mb-1">Report name</h2>
+          <h2 className="text-black text-base mb-1">
+            Report name <span className="text-red-500 ml-0">*</span>
+          </h2>
 
           <div className="max-w-md rounded-lg shadow-xl border">
             <input

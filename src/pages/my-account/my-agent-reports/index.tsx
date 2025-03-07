@@ -48,9 +48,7 @@ const MyAgentReport = () => {
           className="line-clamp-1"
           onClick={() => navigate(`/my-agent-reports/${item.row.original.id}`)}
         >
-          {`${
-            item.row.original.thread_name?.split("-")[0]
-          }`}
+          {`${item.row.original.thread_name?.split("_")[0]}`}
         </p>
       ),
     },

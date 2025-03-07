@@ -58,6 +58,7 @@ const PitchFile = ({ filename_url }: { filename_url: any }) => {
             onClick={() => {
               const link = document.createElement("a");
               link.href = file_url;
+              link.target = "_blank";
               link.download = original_filename;
               link.click();
             }}
