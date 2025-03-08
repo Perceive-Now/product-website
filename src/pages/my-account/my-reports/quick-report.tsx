@@ -103,7 +103,7 @@ const QuickReports = () => {
     }
   };
 
-  const AnimatedPlaceholder = ({ className, onClick }: { className: any, onClick: () => void }) => {
+  const AnimatedPlaceholder = ({ className, onClick }: { className: any; onClick: () => void }) => {
     return (
       <div className={classNames(className, "wrapper")} onClick={onClick}>
         <div className="words">
@@ -121,8 +121,37 @@ const QuickReports = () => {
     e.preventDefault();
     setDragging(false);
     const files = e.dataTransfer.files;
-    const fileList = Array.from(files).map((file: any) => file.name);
-    setUploadedFiles((prevFiles) => [...prevFiles, ...fileList]);
+    if (files) {
+      const fileList = Array.from(files);
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const invalidFiles = fileList.filter((file: any) => {
+        const isInvalidType = !allowedTypes.includes(file.type);
+        const isInvalidSize = file.size > 200 * 1024 * 1024;
+        if (isInvalidType || isInvalidSize) {
+          return true;
+        }
+        return false;
+      });
+
+      if (invalidFiles.length > 0) {
+        toast.error("Invalid file uploaded.");
+      } else {
+        setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+      }
+    }
+    // const fileList = Array.from(files).map((file: any) => file.name);
+    // setUploadedFiles((prevFiles) => [...prevFiles, ...fileList]);
   };
 
   const handlePasteURL = () => {
@@ -211,7 +240,6 @@ const QuickReports = () => {
           .required("Question is required"),
       )
       .min(3, "Array must contain at least 3 non-empty strings"), // Minimum 3 valid items
-
   });
 
   const {
@@ -245,7 +273,7 @@ const QuickReports = () => {
     getValues: customReportValues,
     control: customReportControl,
     setValue: setCustomReportValue,
-    setFocus
+    setFocus,
   } = useForm({
     defaultValues: customReportInitialValue,
     resolver: yupResolver(customReportFormResolver),
@@ -271,8 +299,6 @@ const QuickReports = () => {
       setDisabled(true);
     }
   }, [location.state]);
-
-
 
   const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
@@ -301,8 +327,11 @@ const QuickReports = () => {
         const data = await response.json();
         // id = data.project_id;
         setProjectId(data.project_id);
-        const activityReponse = await addActivityComment(userId as string
-          , `${ACTIVITY_COMMENT.PROJECT_ADDED} "${values.projectName}"`, data.project_id);
+        const activityReponse = await addActivityComment(
+          userId as string,
+          `${ACTIVITY_COMMENT.PROJECT_ADDED} "${values.projectName}"`,
+          data.project_id,
+        );
         setStep(2);
       } else {
         toast.error("Unable to submit report");
@@ -355,11 +384,10 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
-    const dataPayload: Record<string, string[]> = {}
+    const dataPayload: Record<string, string[]> = {};
     dataPayload.websites = pastedURLs;
     dataPayload.question = values.questions;
-    dataPayload.format = customReport.format
-
+    dataPayload.format = customReport.format;
 
     try {
       const response: any = await axios.post(
@@ -368,10 +396,14 @@ const QuickReports = () => {
       );
 
       if (response.status === 200) {
-        await addActivityComment(userId as string, disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED, projectId as string)
+        await addActivityComment(
+          userId as string,
+          disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED,
+          projectId as string,
+        );
         if (uploadedFiles.length === 0) {
-          setStep(4)
-          return
+          setStep(4);
+          return;
         }
         const formData = new FormData();
 
@@ -389,9 +421,7 @@ const QuickReports = () => {
           );
 
           if (fileUploadResponse.ok) {
-
             setStep(4);
-
           } else {
             toast.error("Unable to submit report");
           }
@@ -580,8 +610,9 @@ const QuickReports = () => {
                     Upload Resources for Your Report
                   </h6>
                   <div
-                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${dragging ? "bg-gray-200" : ""
-                      }`}
+                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                      dragging ? "bg-gray-200" : ""
+                    }`}
                     onDragOver={(e) => {
                       e.preventDefault();
                       setDragging(true);
@@ -710,8 +741,9 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? "mr-5" : ""
-                          }`}
+                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
+                          requirementQuestions.length > 3 ? "mr-5" : ""
+                        }`}
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
@@ -798,7 +830,7 @@ const QuickReports = () => {
           <div className="p-3 w-[50%]">
             <form onSubmit={handleSubmitForm(handleSubmitProject)}>
               <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
-                Name your project
+                Name your project <span className="text-red-500 ml-0">*</span>
               </label>
               <input
                 type="text"
@@ -905,9 +937,8 @@ const QuickReports = () => {
               </div>
               <div className="mt-5">
                 <h6 className="font-semibold mb-1 text-base font-nunito">
-                  Have any special requests? Let us know what you need, and we’ll tailor the report to
-                  fit your goals!{" "}
-                  <span className="text-red-500 ml-0">*</span>
+                  Have any special requests? Let us know what you need, and we’ll tailor the report
+                  to fit your goals!
                 </h6>
                 <div
                   className="relative w-full overflow-hidden bg-white"
@@ -934,7 +965,10 @@ const QuickReports = () => {
                     </div>
                   )}
                   {additionalSummary === "" && (
-                    <AnimatedPlaceholder className="absolute top-1 left-2 pt-1 bg-transparent" onClick={() => setFocus("additional")} />
+                    <AnimatedPlaceholder
+                      className="absolute top-1 left-2 pt-1 bg-transparent"
+                      onClick={() => setFocus("additional")}
+                    />
                   )}
                 </div>
               </div>
