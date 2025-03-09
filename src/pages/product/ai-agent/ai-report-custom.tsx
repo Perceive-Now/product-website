@@ -20,67 +20,164 @@ interface Option {
 
 // Define options
 const options = {
-  reportToneOptions: [
-    { label: "In-Depth Report", value: "In-Depth Report", showTextBox: false },
-    { label: "Quick Overall Summary", value: "Quick Overall Summary", showTextBox: false },
-    { label: "Quick Sub-Topic Summaries", value: "Quick Sub-Topic Summaries", showTextBox: true },
-    { label: "Other", value: "Other", showTextBox: true },
+  reportScopeOptions: [
+    { label: "Detailed Analysis", value: "Detailed Analysis", showTextBox: false },
+    { label: "High-Level Summary", value: "High-Level Summary", showTextBox: false },
+    { label: "Custom", value: "Custom", showTextBox: false },
   ],
   reportFormatOptions: [
-    { label: "PDF Report", value: "PDF Report", showTextBox: false },
-    { label: "Presentation Deck", value: "Presentation Deck", showTextBox: false },
+    { label: "PDF", value: "PDF", showTextBox: false },
     { label: "Word Document", value: "Word Document", showTextBox: false },
-    { label: "Spreadsheet Summary", value: "Spreadsheet Summary", showTextBox: false },
-    { label: "Other", value: "Other", showTextBox: true },
+    { label: "Presentation Deck (PPTX)", value: "Presentation Deck (PPTX)", showTextBox: false },
+    {
+      label: "Spreadsheet Summary (CSV/Excel)",
+      value: "Spreadsheet Summary (CSV/Excel)",
+      showTextBox: false,
+    },
+    { label: "Interactive Web Report", value: "Interactive Web Report", showTextBox: false },
+    { label: "API Export", value: "API Export", showTextBox: false },
   ],
   visualStyleOptions: [
-    { label: "Simple", value: "Simple", showTextBox: false },
-    { label: "Annotated", value: "Annotated", showTextBox: false },
-    { label: "Extensive", value: "Extensive", showTextBox: false },
-    { label: "Other", value: "Other", showTextBox: true },
+    { label: "Minimal Text, More Data", value: "Minimal Text, More Data", showTextBox: false },
+    {
+      label: "Balanced Mix of Visuals & Text",
+      value: "Balanced Mix of Visuals & Text",
+      showTextBox: false,
+    },
+    {
+      label: "Extensive Annotations & Explanations",
+      value: "Extensive Annotations & Explanations",
+      showTextBox: false,
+    },
+    { label: "Infographic-Heavy", value: "Infographic-Heavy", showTextBox: false },
   ],
   chartsOptions: [
-    { label: "Minimal", value: "Minimal", showTextBox: false },
-    { label: "Moderate", value: "Moderate", showTextBox: false },
-    { label: "Extensive", value: "Extensive", showTextBox: false },
-    { label: "Other", value: "Other", showTextBox: true },
+    {
+      label: "Minimal (1-2 charts/tables)",
+      value: "Minimal (1-2 charts/tables)",
+      showTextBox: false,
+    },
+    {
+      label: "Moderate (4-6 charts/tables)",
+      value: "Moderate (4-6 charts/tables)",
+      showTextBox: false,
+    },
+    {
+      label: "Extensive (8+ charts/tables)",
+      value: "Extensive (8+ charts/tables)",
+      showTextBox: false,
+    },
+    { label: "Dashboard Integration", value: "Dashboard Integration", showTextBox: false },
   ],
   citationsOptions: [
-    { label: "Inline Links", value: "Inline Links", showTextBox: false },
-    { label: "Endnotes", value: "Endnotes", showTextBox: false },
-    { label: "No Citations", value: "No Citations", showTextBox: false },
-    { label: "Other", value: "Other", showTextBox: true },
+    { label: "Hyperlinked Sources", value: "Hyperlinked Sources", showTextBox: false },
+    {
+      label: "Endnotes & References Section",
+      value: "Endnotes & References Section",
+      showTextBox: false,
+    },
+    { label: "Footnotes on Each Page", value: "Footnotes on Each Page", showTextBox: false },
+    { label: "No Citations Needed", value: "No Citations Needed", showTextBox: false },
+    {
+      label: "Detailed Methodology Section",
+      value: "Detailed Methodology Section",
+      showTextBox: false,
+    },
+    { label: "Custom Citation Style", value: "Custom Citation Style", showTextBox: false },
   ],
   audienceFocusOneOptions: [
     { label: "C-Suite Executives", value: "C-Suite Executives", showTextBox: false },
+    { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
+    { label: "Finance Teams", value: "Finance Teams", showTextBox: false },
+    { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
     {
       label: "Business Development Teams",
       value: "Business Development Teams",
       showTextBox: false,
     },
-    { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
     { label: "Operations Teams", value: "Operations Teams", showTextBox: false },
-    { label: "Finance Teams", value: "Finance Teams", showTextBox: false },
     {
       label: "Regulatory & Compliance Teams",
       value: "Regulatory & Compliance Teams",
       showTextBox: false,
     },
-    { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
     { label: "Product Management Teams", value: "Product Management Teams", showTextBox: false },
     { label: "Other", value: "Other", showTextBox: true },
   ],
   audienceFocusTwoOptions: [
     { label: "General Partners (GPs)", value: "General Partners (GPs)", showTextBox: false },
-    { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
     { label: "Portfolio Managers", value: "Portfolio Managers", showTextBox: false },
-    { label: "M&A Teams", value: "M&A Teams", showTextBox: false },
     { label: "Risk & Compliance Teams", value: "Risk & Compliance Teams", showTextBox: false },
-    { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
     { label: "Managing Directors", value: "Managing Directors", showTextBox: false },
-    { label: "Deal Sourcing Teams", value: "Deal Sourcing Teams", showTextBox: false },
     { label: "Fund Managers", value: "Fund Managers", showTextBox: false },
+    { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
+    { label: "M&A Teams", value: "M&A Teams", showTextBox: false },
+    { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
+    { label: "Deal Sourcing Teams", value: "Deal Sourcing Teams", showTextBox: false },
     { label: "Other", value: "Other", showTextBox: true },
+  ],
+  reportToneOptions: [
+    { label: "Formal & Professional", value: "Formal & Professional", showTextBox: false },
+    { label: "Concise & Executive-Level", value: "Concise & Executive-Level", showTextBox: false },
+    { label: "Data-Driven & Analytical", value: "Data-Driven & Analytical", showTextBox: false },
+    {
+      label: "Persuasive & Investor-Focused",
+      value: "Persuasive & Investor-Focused",
+      showTextBox: false,
+    },
+    { label: "Neutral & Objective", value: "Neutral & Objective", showTextBox: false },
+    { label: "Custom", value: "Custom", showTextBox: false },
+  ],
+  collaborationOptions: [
+    { label: "No collaboration needed", value: "No collaboration needed", showTextBox: false },
+    {
+      label: "Live Google Docs/Notion Collaboration",
+      value: "Live Google Docs/Notion Collaboration",
+      showTextBox: false,
+    },
+    {
+      label: "Editable Spreadsheets & Databases",
+      value: "Editable Spreadsheets & Databases",
+      showTextBox: false,
+    },
+  ],
+  explainabilityOptions: [
+    {
+      label: "Source Citations for Every Claim",
+      value: "Source Citations for Every Claim",
+      showTextBox: false,
+    },
+    {
+      label: "Logical Breakdown of Insights",
+      value: "Logical Breakdown of Insights",
+      showTextBox: false,
+    },
+    {
+      label: "Multi-Layered Explainability",
+      value: "Multi-Layered Explainability",
+      showTextBox: false,
+    },
+    {
+      label: "Confidence Levels & Uncertainty Markers",
+      value: "Confidence Levels & Uncertainty Markers",
+      showTextBox: false,
+    },
+    {
+      label: "Confidence Intervals for Predictions",
+      value: "Confidence Intervals for Predictions",
+      showTextBox: false,
+    },
+    {
+      label: "Standard Deviation & Variance Reporting",
+      value: "Standard Deviation & Variance Reporting",
+      showTextBox: false,
+    },
+    { label: "Comparative Analysis View", value: "Comparative Analysis View", showTextBox: false },
+    {
+      label: "Probability-Based Risk Scoring",
+      value: "Probability-Based Risk Scoring",
+      showTextBox: false,
+    },
   ],
 };
 
@@ -179,13 +276,16 @@ const AIReportCustomization: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
-    reportToneOptions: [],
+    reportScopeOptions: [],
     reportFormatOptions: [],
     visualStyleOptions: [],
     chartsOptions: [],
     citationsOptions: [],
     audienceFocusOneOptions: [],
     audienceFocusTwoOptions: [],
+    reportToneOptions: [],
+    collaborationOptions: [],
+    explainabilityOptions: [],
   });
   const userId = jsCookie.get("user_id");
 
@@ -193,7 +293,7 @@ const AIReportCustomization: React.FC = () => {
   const [reportNameError, setReportNameError] = useState("");
   const [customInput, setCustomInput] = useState<Record<string, Record<string, string>>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [currentTab, setCurrentTab] = useState("reportToneOptions");
+  const [currentTab, setCurrentTab] = useState("reportScopeOptions");
 
   const handleRenameReport = async () => {
     if (reportNameError) {
@@ -274,9 +374,9 @@ const AIReportCustomization: React.FC = () => {
       thread_id: searchParams.get("thread_id"),
       config: {
         report_depth: {
-          selected: selectedOptions.reportToneOptions,
+          selected: selectedOptions.reportScopeOptions,
           other:
-            customInput?.["reportToneOptions"]?.["Other"] ||
+            customInput?.["reportScopeOptions"]?.["Other"] ||
             customInput?.["Quick Sub-Topic Summaries"]?.["Other"] ||
             "",
         },
@@ -296,6 +396,18 @@ const AIReportCustomization: React.FC = () => {
           selected: selectedOptions.citationsOptions,
           other: customInput?.["citationsOptions"]?.["Other"] || "",
         },
+        report_tone: {
+          selected: selectedOptions.reportToneOptions,
+          other: customInput?.["reportToneOptions"]?.["Other"] || "",
+        },
+        collaboration_needs: {
+          selected: selectedOptions.collaborationOptions,
+          other: customInput?.["collaborationOptions"]?.["Other"] || "",
+        },
+        explainability: {
+          selected: selectedOptions.explainabilityOptions,
+          other: customInput?.["explainabilityOptions"]?.["Other"] || "",
+        },
         audience_focus: {
           enterprise: {
             selected: selectedOptions.audienceFocusOneOptions,
@@ -308,6 +420,7 @@ const AIReportCustomization: React.FC = () => {
         },
       },
     };
+    console.log("dataToSend", dataToSend);
     try {
       const resp = await dispatch(submitCustomizeReport(dataToSend)).unwrap();
       if (resp) navigate("/ai-agent-final");
@@ -393,12 +506,12 @@ const AIReportCustomization: React.FC = () => {
               </div>
               <div
                 className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
-                  currentTab === "reportToneOptions" && "bg-[#F5F7FF]"
+                  currentTab === "reportScopeOptions" && "bg-[#F5F7FF]"
                 }`}
-                onClick={() => setCurrentTab("reportToneOptions")}
+                onClick={() => setCurrentTab("reportScopeOptions")}
               >
-                <input type="radio" checked={currentTab === "reportToneOptions"} />
-                Report Depth
+                <input type="radio" checked={currentTab === "reportScopeOptions"} />
+                Report Scope
               </div>
               <div
                 className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -416,7 +529,7 @@ const AIReportCustomization: React.FC = () => {
                 onClick={() => setCurrentTab("visualStyleOptions")}
               >
                 <input type="radio" checked={currentTab === "visualStyleOptions"} />
-                Visual Style
+                Visual Emphasis
               </div>
               <div
                 className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -425,7 +538,7 @@ const AIReportCustomization: React.FC = () => {
                 onClick={() => setCurrentTab("chartsOptions")}
               >
                 <input type="radio" checked={currentTab === "chartsOptions"} />
-                Number of charts/tables
+                Data Presentation
               </div>
               <div
                 className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -434,7 +547,7 @@ const AIReportCustomization: React.FC = () => {
                 onClick={() => setCurrentTab("citationsOptions")}
               >
                 <input type="radio" checked={currentTab === "citationsOptions"} />
-                Citations
+                Citations & References
               </div>
               <div
                 className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -443,21 +556,48 @@ const AIReportCustomization: React.FC = () => {
                 onClick={() => setCurrentTab("audienceFocus")}
               >
                 <input type="radio" checked={currentTab === "audienceFocus"} />
-                Audience Focus
+                Target Audience
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "reportToneOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("reportToneOptions")}
+              >
+                <input type="radio" checked={currentTab === "reportToneOptions"} />
+                Tone of the Report
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "collaborationOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("collaborationOptions")}
+              >
+                <input type="radio" checked={currentTab === "collaborationOptions"} />
+                Collaboration Needs
+              </div>
+              <div
+                className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+                  currentTab === "explainabilityOptions" && "bg-[#F5F7FF]"
+                }`}
+                onClick={() => setCurrentTab("explainabilityOptions")}
+              >
+                <input type="radio" checked={currentTab === "explainabilityOptions"} />
+                Explainability & Transparency
               </div>
             </div>
             <div className="flex-[2] pl-3">
               <div className="grid grid-cols-2 gap-x-3 gap-y-4 mt-2">
-                {currentTab === "reportToneOptions" && (
+                {currentTab === "reportScopeOptions" && (
                   <div className="flex flex-col w-[300px]">
-                    <div className="">Report Depth</div>
-                    <RoundedCheckboxGroup
-                      options={options.reportToneOptions}
-                      selectedOptions={selectedOptions.reportToneOptions}
-                      onChange={(value) => handleRadioChange("reportToneOptions", value)}
+                    <div className="">Report Scope</div>
+                    <CheckboxGroup
+                      options={options.reportScopeOptions}
+                      selectedOptions={selectedOptions.reportScopeOptions}
+                      onChange={(value) => handleCheckboxChange("reportScopeOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
-                      optionKey="reportToneOptions"
+                      optionKey="reportScopeOptions"
                     />
                   </div>
                 )}
@@ -476,11 +616,11 @@ const AIReportCustomization: React.FC = () => {
                 )}
                 {currentTab === "visualStyleOptions" && (
                   <div className="flex flex-col w-full">
-                    <div className="">Visual Style</div>
-                    <RoundedCheckboxGroup
+                    <div className="">Visual Emphasis</div>
+                    <CheckboxGroup
                       options={options.visualStyleOptions}
                       selectedOptions={selectedOptions.visualStyleOptions}
-                      onChange={(value) => handleRadioChange("visualStyleOptions", value)}
+                      onChange={(value) => handleCheckboxChange("visualStyleOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
                       optionKey="visualStyleOptions"
@@ -489,11 +629,11 @@ const AIReportCustomization: React.FC = () => {
                 )}
                 {currentTab === "chartsOptions" && (
                   <div className="flex flex-col w-full max-w-[306px]">
-                    <div className="">Number of Charts</div>
-                    <RoundedCheckboxGroup
+                    <div className="">Data Presentation</div>
+                    <CheckboxGroup
                       options={options.chartsOptions}
                       selectedOptions={selectedOptions.chartsOptions}
-                      onChange={(value) => handleRadioChange("chartsOptions", value)}
+                      onChange={(value) => handleCheckboxChange("chartsOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
                       optionKey="chartsOptions"
@@ -502,11 +642,11 @@ const AIReportCustomization: React.FC = () => {
                 )}
                 {currentTab === "citationsOptions" && (
                   <div className="flex flex-col w-full max-w-[306px]">
-                    <div className="">Citations</div>
-                    <RoundedCheckboxGroup
+                    <div className="">Citations & References</div>
+                    <CheckboxGroup
                       options={options.citationsOptions}
                       selectedOptions={selectedOptions.citationsOptions}
-                      onChange={(value) => handleRadioChange("citationsOptions", value)}
+                      onChange={(value) => handleCheckboxChange("citationsOptions", value)}
                       customInput={customInput}
                       onInputChange={handleInputChange}
                       optionKey="citationsOptions"
@@ -516,7 +656,7 @@ const AIReportCustomization: React.FC = () => {
                 {currentTab === "audienceFocus" && (
                   <div className="flex flex-col">
                     <div className="flex flex-col w-[600px]">
-                      <div className="">Audience Focus</div>
+                      <div className="">Target Audience</div>
                       <p className="mt-2">For enterprises</p>
                       <CheckboxGroup
                         options={options.audienceFocusOneOptions}
@@ -541,6 +681,45 @@ const AIReportCustomization: React.FC = () => {
                         />
                       </div>
                     </div>
+                  </div>
+                )}
+                {currentTab === "reportToneOptions" && (
+                  <div className="flex flex-col w-full max-w-[306px]">
+                    <div className="">Tone of the Report</div>
+                    <CheckboxGroup
+                      options={options.reportToneOptions}
+                      selectedOptions={selectedOptions.reportToneOptions}
+                      onChange={(value) => handleCheckboxChange("reportToneOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                      optionKey="reportToneOptions"
+                    />
+                  </div>
+                )}
+                {currentTab === "collaborationOptions" && (
+                  <div className="flex flex-col w-full max-w-[306px]">
+                    <div className="">Collaboration Needs</div>
+                    <CheckboxGroup
+                      options={options.collaborationOptions}
+                      selectedOptions={selectedOptions.collaborationOptions}
+                      onChange={(value) => handleCheckboxChange("collaborationOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                      optionKey="collaborationOptions"
+                    />
+                  </div>
+                )}
+                {currentTab === "explainabilityOptions" && (
+                  <div className="flex flex-col w-full max-w-[306px]">
+                    <div className="">Explainability & Transparency</div>
+                    <CheckboxGroup
+                      options={options.explainabilityOptions}
+                      selectedOptions={selectedOptions.explainabilityOptions}
+                      onChange={(value) => handleCheckboxChange("explainabilityOptions", value)}
+                      customInput={customInput}
+                      onInputChange={handleInputChange}
+                      optionKey="explainabilityOptions"
+                    />
                   </div>
                 )}
               </div>
