@@ -24,6 +24,7 @@ import axios from "axios";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import { addActivityComment } from "src/stores/vs-product";
 import AgentHead from "src/pages/product/ai-agent/AgentHead";
+import CustmizationForm from "src/pages/product/ai-agent/CustmizationForm";
 /**
  *
  */
@@ -117,6 +118,11 @@ const QuickReports = () => {
     );
   };
 
+  const changeHighlight = () => {
+    setHighlight(true);
+    setTimeout(() => setHighlight(false), 1500);
+  };
+
   const handleDrop = (e: any) => {
     e.preventDefault();
     setDragging(false);
@@ -148,6 +154,7 @@ const QuickReports = () => {
         toast.error("Invalid file uploaded.");
       } else {
         setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        changeHighlight();
       }
     }
     // const fileList = Array.from(files).map((file: any) => file.name);
@@ -190,6 +197,7 @@ const QuickReports = () => {
         toast.error("Invalid file uploaded.");
       } else {
         setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        changeHighlight();
       }
     }
   };
@@ -445,6 +453,23 @@ const QuickReports = () => {
 
     // console.log("formData------", formData);
   };
+
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
+    reportScopeOptions: [],
+    reportFormatOptions: [],
+    visualStyleOptions: [],
+    chartsOptions: [],
+    citationsOptions: [],
+    audienceFocusOneOptions: [],
+    audienceFocusTwoOptions: [],
+    reportToneOptions: [],
+    collaborationOptions: [],
+    explainabilityOptions: [],
+  });
+
+  const [customInput, setCustomInput] = useState<Record<string, Record<string, string>>>({});
+
+  const [highlight, setHighlight] = useState(false);
 
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
@@ -723,7 +748,13 @@ const QuickReports = () => {
                   </div>
                   <div className="flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
-                    <div className="border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]">
+                    <div
+                      className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px] ${
+                        highlight
+                          ? "bg-green-200 border-green-500 shadow-lg"
+                          : "bg-white border-gray-300"
+                      }`}
+                    >
                       <div className="rounded-lg p-2 flex-1">
                         {uploadedFiles.length > 0 ? (
                           <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
@@ -877,8 +908,13 @@ const QuickReports = () => {
           <div className="p-3 w-full">
             <form onSubmit={handleSubmitCustomReport(handleFinalSubmitProject)}>
               <h6 className="text-lg font-semibold ml-0 mb-3">Report Customization</h6>
-
-              <div className="mb-2">
+              <CustmizationForm
+                selectedOptions={selectedOptions}
+                setSelectedOptions={setSelectedOptions}
+                customInput={customInput}
+                setCustomInput={setCustomInput}
+              />
+              {/* <div className="mb-2">
                 <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
                 <SelectBox
                   options={[
@@ -949,7 +985,7 @@ const QuickReports = () => {
                     handleReportChange("format", value);
                   }}
                 />
-              </div>
+              </div> */}
               <div className="mt-5">
                 <h6 className="font-semibold mb-1 text-base font-nunito">
                   Have any special requests? Let us know what you need, and we’ll tailor the report
