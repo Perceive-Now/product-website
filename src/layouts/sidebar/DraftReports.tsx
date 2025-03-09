@@ -176,7 +176,7 @@ const DraftReports = (props: Props) => {
           >
             <SvgDocumentIcon />
           </div>
-          {open && <span className=" text-secondary-800 text-base">{"Report Draft"}</span>}
+          {open && <span className=" text-secondary-800 text-base">{"Report Drafts"}</span>}
         </div>
         {open ? (
           <div className="max-h-[300px] overflow-y-auto pn_scroller">

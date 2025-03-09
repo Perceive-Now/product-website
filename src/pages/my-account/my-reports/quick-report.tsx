@@ -28,7 +28,7 @@ import AgentHead from "src/pages/product/ai-agent/AgentHead";
  *
  */
 
-const Texts = [
+export const Texts = [
   "",
   "single page summaries",
   "stakeholder specific reports",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import RightArrow from "src/components/icons/common/right-arrow";
 import { useAppDispatch } from "src/hooks/redux";
@@ -8,6 +8,8 @@ import jsCookie from "js-cookie";
 
 import customizationIcon from "./_assets/customization-icon.svg";
 import PrimaryButton from "src/components/reusable/button/primary-button";
+import classNames from "classnames";
+import { Texts } from "src/pages/my-account/my-reports/quick-report";
 
 // Define the structure for options
 interface Option {
@@ -316,6 +318,38 @@ const AIReportCustomization: React.FC = () => {
     }
   };
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleInputFromAnimated = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const AnimatedPlaceholder = ({
+    className,
+    onClick = () => {
+      undefined;
+    },
+  }: {
+    className: any;
+    onClick?: () => void;
+  }) => {
+    return (
+      <div className={classNames(className, "wrapper")} onClick={onClick}>
+        <div className="words">
+          {Texts.map((text, idx) => (
+            <span key={idx * 499} className="text-secondary-800">
+              {text}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const [additionalSummary, setadditionalSummary] = useState("");
+
   return (
     <div className="space-y-[20px] w-full max-w-[998px] bg-[#FFFFFF] z-10 pb-[7%]">
       <div className="p-1 pl-0">
@@ -511,6 +545,35 @@ const AIReportCustomization: React.FC = () => {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+        <div className="mt-5">
+          <h6 className="font-semibold mb-1 text-base font-nunito">
+            Have any special requests? Let us know what you need, and we’ll tailor the report to fit
+            your goals!
+          </h6>
+          <div
+            className="relative w-full overflow-hidden bg-white"
+            aria-disabled
+            onClick={handleInputFromAnimated}
+          >
+            <input
+              // ref={inputRef}
+              id="specialRequests"
+              type="text"
+              className={classNames(
+                "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+              )}
+              placeholder=""
+              value={additionalSummary}
+              onChange={(e) => {
+                setadditionalSummary(e.target.value);
+              }}
+            />
+            {additionalSummary === "" && (
+              <AnimatedPlaceholder className="absolute top-1 left-2 pt-1 bg-transparent" />
+            )}
           </div>
         </div>
       </div>
