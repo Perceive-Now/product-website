@@ -14,19 +14,18 @@ import {
   technologyAndRndImage,
 } from "./_assets";
 
-import {
-  startupDilligenceIcon,
-  corporateVentureIcon,
-  financeAndStrategyIcon,
-  fundRaisingIcon,
-  legalAndComplianceIcon,
-  marketStrategyIcon,
-  marketingAndSalesIcon,
-  portfolioSupportIcon,
-  productEngineeringIcon,
-  reportOnAnythingIcon,
-  technologyAndRndIcon,
-} from "./_assets/icons";
+import startupDilligenceIcon from "./_assets/AgentLanding-Icons/Company.svg";
+import corporateVentureIcon from "./_assets/AgentLanding-Icons/Corporate.svg";
+import financeAndStrategyIcon from "./_assets/AgentLanding-Icons/Finance.svg";
+import fundRaisingIcon from "./_assets/AgentLanding-Icons/Fundraising.svg";
+import legalAndComplianceIcon from "./_assets/AgentLanding-Icons/Legal.svg";
+import marketStrategyIcon from "./_assets/AgentLanding-Icons/MarketStrategy.svg";
+import marketingAndSalesIcon from "./_assets/AgentLanding-Icons/Marketing.svg";
+import portfolioSupportIcon from "./_assets/AgentLanding-Icons/portfolio.svg";
+import productEngineeringIcon from "./_assets/AgentLanding-Icons/Product.svg";
+import reportOnAnythingIcon from "./_assets/AgentLanding-Icons/ReportAnything.svg";
+import technologyAndRndIcon from "./_assets/AgentLanding-Icons/Technology.svg";
+
 import AgentCard from "./_components/AgentCard";
 import AgentHead from "../AgentHead";
 

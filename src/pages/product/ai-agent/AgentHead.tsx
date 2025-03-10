@@ -87,8 +87,25 @@ const AgentHead = (props: Props) => {
     <div className="flex items-center justify-between mt-2 mb-2 rounded-lg">
       {/* Left Section: Icon and Name */}
       <div className="flex items-center gap-1">
-        <div className="text-white flex items-center justify-center rounded-full">
-          {agentName && <img src={iconSrc} alt={displayName} className="w-4 h-4" />}
+        <div className="text-white flex items-center justify-center rounded-full w-4 h-4">
+          {agentName && (
+            <div
+              className="rounded-full w-full h-full flex items-center justify-center"
+              style={{
+                background: "rgb(68, 40, 115)",
+              }}
+            >
+              <img
+                src={iconSrc}
+                alt={displayName}
+                className="w-3 h-3 p-[2px]"
+                // style={{
+                //   filter:
+                //     "brightness(0) saturate(100%) invert(22%) sepia(16%) saturate(3004%) hue-rotate(225deg) brightness(92%) contrast(104%)",
+                // }}
+              />
+            </div>
+          )}
         </div>
         <h1 className="text-base text-gray-800">{displayName}</h1>
       </div>
