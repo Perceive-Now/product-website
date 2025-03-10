@@ -53,7 +53,7 @@ const Reports = () => {
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
   const [shareLink, setShareLink] = useState("");
-  const [activityLog, setActivityLog] = useState<{ comment: string, date_and_time: string }[]>([]);
+  const [activityLog, setActivityLog] = useState<{ comment: string; date_and_time: string }[]>([]);
   const [selectedTabIndex, setSelectedTabIndex] = useState(tab);
   const selectedRows = Object.keys(rowSelection).filter((rowId) => rowSelection[rowId]);
 
@@ -65,13 +65,13 @@ const Reports = () => {
   const filteredReports =
     reports.length > 0
       ? reports
-        .filter((report: any) =>
-          report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
-        .slice(
-          pagination.pageIndex * pagination.pageSize,
-          pagination.pageIndex * pagination.pageSize + pagination.pageSize,
-        )
+          .filter((report: any) =>
+            report.report_name.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+          .slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+          )
       : [];
 
   const fetchActivityLog = async () => {
@@ -85,15 +85,14 @@ const Reports = () => {
       );
       if (response.ok) {
         const data = await response.json();
-        setActivityLog(data)
-      }
-      else {
-        setActivityLog([])
+        setActivityLog(data);
+      } else {
+        setActivityLog([]);
         // setreports([])
         // setTotalReports(0)
       }
     } catch (err) {
-      setActivityLog([])
+      setActivityLog([]);
       console.error(err);
     }
   };
@@ -110,27 +109,28 @@ const Reports = () => {
       if (response.ok) {
         const data = await response.json();
 
-
-
         const reportRecords = data.reports.flatMap((item: any) =>
-          item.report_url ? item.report_url.map((urlObj: any) => ({
-            ...item,
-            report_id: item.report_id,
-            report_name: item.report_name,
-            report_url: urlObj.url || urlObj,
-            report_size: urlObj.size || 0,
-            date_modified: urlObj.datetime ? formatReportDate(urlObj.datetime) : item.date_modified,
-            report_complete_status: item.report_complete_status,
-            filename: urlObj.filename || "-"
-          })) : item
+          item.report_url
+            ? item.report_url.map((urlObj: any) => ({
+                ...item,
+                report_id: item.report_id,
+                report_name: item.report_name,
+                report_url: urlObj.url || urlObj,
+                report_size: urlObj.size || 0,
+                date_modified: urlObj.datetime
+                  ? formatReportDate(urlObj.datetime)
+                  : item.date_modified,
+                report_complete_status: item.report_complete_status,
+                filename: urlObj.filename || "-",
+              }))
+            : item,
         );
         setTotalReports(reportRecords.length || 0);
         setreports(reportRecords);
         console.log("Total reports---------", data.reports[0]);
-      }
-      else {
-        setreports([])
-        setTotalReports(0)
+      } else {
+        setreports([]);
+        setTotalReports(0);
       }
     } catch (err) {
       console.error(err);
@@ -141,7 +141,7 @@ const Reports = () => {
 
   useEffect(() => {
     fetchHistoryData();
-    fetchActivityLog()
+    fetchActivityLog();
   }, []);
 
   const handleRowSelectionChange = (selection: any) => {
@@ -199,8 +199,8 @@ const Reports = () => {
   // };
 
   const handleBulkDownload = async () => {
-    const reportName = reports[((selectedRows as any)[0] as number)]?.report_name
-    const obj: Record<string, string> = {}
+    const reportName = reports[(selectedRows as any)[0] as number]?.report_name;
+    const obj: Record<string, string> = {};
 
     selectedRows.forEach((selectedIndex: any, index) => {
       const selectedReport: any = reports[selectedIndex];
@@ -224,38 +224,31 @@ const Reports = () => {
           obj[fileName] = file;
         }
       }
-      return null
-    })
+      return null;
+    });
 
     try {
       const response = await fetch(
         `https://templateuserrequirements.azurewebsites.net/reports/zip/custom`,
         {
           method: "POST",
-          headers: { Accept: "application/json", 'Content-Type': 'application/json' },
+          headers: { Accept: "application/json", "Content-Type": "application/json" },
           body: JSON.stringify({
-
-            [reportName]: obj
-
-
-          })
+            [reportName]: obj,
+          }),
         },
       );
       toast.success("Downloading Reports");
 
       if (response.ok) {
-        arrayBufferDownload(response)
+        arrayBufferDownload(response);
       }
     } catch (err) {
       console.error(err);
     }
-  }
-
-
+  };
 
   // Generate the ZIP file and trigger the download
-
-
 
   const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
@@ -269,13 +262,13 @@ const Reports = () => {
 
       if (response.ok) {
         // setreports((prevReports) => prevReports.filter((_, i) => i !== index));
-        addActivityComment(userId as string, ACTIVITY_COMMENT.REPORT_DELETE, id as string)
+        addActivityComment(userId as string, ACTIVITY_COMMENT.REPORT_DELETE, id as string);
         fetchHistoryData();
       }
     } catch (err) {
       console.error(err);
     }
-  }, [])
+  }, []);
 
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
@@ -303,49 +296,48 @@ const Reports = () => {
       openFileHandler(row.original.report_url);
     };
 
-    return (
-      row.original.report_url ?
-        <Tooltip
-          isCustomPanel={true}
-          right="0px"
-          trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
-          panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
-        >
-          <ul id="dropdown">
-            {row.original.report_url ?
-              <li className="mb-2 cursor-pointer" onClick={handleDownload}>
-                <div className="flex items-center">
-                  <DownloadIcon className="mr-2" /> Download
-                </div>
-              </li> : null}
-            {/* <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
+    return row.original.report_url ? (
+      <Tooltip
+        isCustomPanel={true}
+        right="0px"
+        trigger={<VerticalThreeDots data-dropdown-toggle="dropdown" className="cursor-pointer" />}
+        panelClassName="rounded-lg py-2 px-3 text-gray-700 min-w-[200px] right-0"
+      >
+        <ul id="dropdown">
+          {row.original.report_url ? (
+            <li className="mb-2 cursor-pointer" onClick={handleDownload}>
+              <div className="flex items-center">
+                <DownloadIcon className="mr-2" /> Download
+              </div>
+            </li>
+          ) : null}
+          {/* <li className={`${row.original.report_url ? "mb-2" : ""} cursor-pointer`} onClick={handleDelete}>
             <div className="flex items-center">
               <TrashIcon className="mr-2" /> Delete Report
             </div>
           </li> */}
-            {row.original.report_url ?
-              <li className="cursor-pointer" onClick={handleShareReport}>
-                <div className="flex items-center">
-                  <ShareIcon className="mr-2" /> Share
-                </div>
-              </li>
-              : null}
-          </ul>
-        </Tooltip> : null
-    );
+          {row.original.report_url ? (
+            <li className="cursor-pointer" onClick={handleShareReport}>
+              <div className="flex items-center">
+                <ShareIcon className="mr-2" /> Share
+              </div>
+            </li>
+          ) : null}
+        </ul>
+      </Tooltip>
+    ) : null;
   };
 
   const columnHelper = createColumnHelper<any>();
-
 
   const columns = useMemo<ColumnDef<any>[]>(
     () => [
       {
         id: "select-col",
         header: ({ table }) => {
-          const selectableRows = table.getRowModel().rows.filter(
-            (row) => row.original.report_complete_status
-          );
+          const selectableRows = table
+            .getRowModel()
+            .rows.filter((row) => row.original.report_complete_status);
 
           // Check if all selectable rows are selected
           const areAllSelectableRowsSelected =
@@ -367,7 +359,7 @@ const Reports = () => {
                 }}
               />
             </div>
-          )
+          );
         },
         cell: ({ row }) => (
           <div className="pl-1 pt-1">
@@ -402,7 +394,9 @@ const Reports = () => {
         header: "Date Modified",
         accessorKey: "date_modified",
         // minSize: 200,
-        cell: (item) => <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>,
+        cell: (item) => (
+          <p className="line-clamp-1">{formatDate(item.row.original.date_modified)}</p>
+        ),
       },
       {
         header: "Status",
@@ -453,12 +447,7 @@ const Reports = () => {
       columnHelper.display({
         id: "actions",
         minSize: 100,
-        cell: ({ row }) => (
-          <RowActions
-            row={row}
-            openFileHandler={openFileHandler}
-          />
-        ),
+        cell: ({ row }) => <RowActions row={row} openFileHandler={openFileHandler} />,
       }),
     ],
     [],
@@ -482,7 +471,8 @@ const Reports = () => {
           <Tab.List className="flex w-[15%] h-[45px]">
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-r border-t border-b border-appGray-600 ${selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-r border-t border-b border-appGray-600 ${
+                  selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -490,7 +480,8 @@ const Reports = () => {
             </Tab>
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-2 focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
+                  selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -498,7 +489,8 @@ const Reports = () => {
             </Tab>
             <Tab
               className={({ selected }) =>
-                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${selected ? "text-white bg-primary-900" : "text-black"
+                `w-full text-base px-3 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 whitespace-nowrap ${
+                  selected ? "text-white bg-primary-900" : "text-black"
                 }`
               }
             >
@@ -634,14 +626,14 @@ const Reports = () => {
                                       </label>
                                       <div className="ml-3 mt-1">
                                         {Array.isArray(report?.question) &&
-                                          report?.question.length > 0
+                                        report?.question.length > 0
                                           ? report?.question.map(
-                                            (question: string, index: number) => (
-                                              <div key={index}>
-                                                {index + 1}. {question}
-                                              </div>
-                                            ),
-                                          )
+                                              (question: string, index: number) => (
+                                                <div key={index}>
+                                                  {index + 1}. {question}
+                                                </div>
+                                              ),
+                                            )
                                           : "No questions available"}
                                       </div>
                                     </div>

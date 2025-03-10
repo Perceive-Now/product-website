@@ -386,9 +386,9 @@ const CustmizationForm = (props: Props) => {
           </div>
         </div>
         <div className="flex-[2] pl-3">
-          <div className="grid grid-cols-2 gap-x-3 gap-y-4 mt-2">
+          <div className="grid grid-cols-1 gap-x-3 gap-y-4 mt-2">
             {currentTab === "reportScopeOptions" && (
-              <div className="flex flex-col w-[300px]">
+              <div className="flex flex-col w-full">
                 <div className="">Report Scope</div>
                 <CheckboxGroup
                   options={options.reportScopeOptions}
@@ -401,7 +401,7 @@ const CustmizationForm = (props: Props) => {
               </div>
             )}
             {currentTab === "reportFormatOptions" && (
-              <div className="flex flex-col w-[500px]">
+              <div className="flex flex-col w-full">
                 <div className="">Report Format</div>
                 <CheckboxGroup
                   options={options.reportFormatOptions}
@@ -427,7 +427,7 @@ const CustmizationForm = (props: Props) => {
               </div>
             )}
             {currentTab === "chartsOptions" && (
-              <div className="flex flex-col w-full max-w-[306px]">
+              <div className="flex flex-col w-full ">
                 <div className="">Data Presentation</div>
                 <CheckboxGroup
                   options={options.chartsOptions}
@@ -440,7 +440,7 @@ const CustmizationForm = (props: Props) => {
               </div>
             )}
             {currentTab === "citationsOptions" && (
-              <div className="flex flex-col w-full max-w-[306px]">
+              <div className="flex flex-col w-full ">
                 <div className="">Citations & References</div>
                 <CheckboxGroup
                   options={options.citationsOptions}
@@ -454,7 +454,7 @@ const CustmizationForm = (props: Props) => {
             )}
             {currentTab === "audienceFocus" && (
               <div className="flex flex-col">
-                <div className="flex flex-col w-[600px]">
+                <div className="flex flex-col w-full">
                   <div className="">Target Audience</div>
                   <p className="mt-2">For enterprises</p>
                   <CheckboxGroup
@@ -481,7 +481,7 @@ const CustmizationForm = (props: Props) => {
               </div>
             )}
             {currentTab === "reportToneOptions" && (
-              <div className="flex flex-col w-full max-w-[306px]">
+              <div className="flex flex-col w-full ">
                 <div className="">Tone of the Report</div>
                 <CheckboxGroup
                   options={options.reportToneOptions}
@@ -494,7 +494,7 @@ const CustmizationForm = (props: Props) => {
               </div>
             )}
             {currentTab === "collaborationOptions" && (
-              <div className="flex flex-col w-full max-w-[306px]">
+              <div className="flex flex-col w-full ">
                 <div className="">Collaboration Needs</div>
                 <CheckboxGroup
                   options={options.collaborationOptions}
@@ -507,7 +507,7 @@ const CustmizationForm = (props: Props) => {
               </div>
             )}
             {currentTab === "explainabilityOptions" && (
-              <div className="flex flex-col w-full max-w-[306px]">
+              <div className="flex flex-col w-full ">
                 <div className="">Explainability & Transparency</div>
                 <CheckboxGroup
                   options={options.explainabilityOptions}

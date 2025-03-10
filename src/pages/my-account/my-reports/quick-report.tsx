@@ -25,6 +25,7 @@ import { ACTIVITY_COMMENT } from "src/utils/constants";
 import { addActivityComment } from "src/stores/vs-product";
 import AgentHead from "src/pages/product/ai-agent/AgentHead";
 import CustmizationForm from "src/pages/product/ai-agent/CustmizationForm";
+import DotLoader from "src/components/reusable/dot-loader";
 /**
  *
  */
@@ -153,7 +154,9 @@ const QuickReports = () => {
       if (invalidFiles.length > 0) {
         toast.error("Invalid file uploaded.");
       } else {
-        setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        setTimeout(() => {
+          setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        }, 1500);
         changeHighlight();
       }
     }
@@ -196,7 +199,9 @@ const QuickReports = () => {
       if (invalidFiles.length > 0) {
         toast.error("Invalid file uploaded.");
       } else {
-        setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        setTimeout(() => {
+          setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        }, 1500);
         changeHighlight();
       }
     }
@@ -749,11 +754,7 @@ const QuickReports = () => {
                   <div className="flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
                     <div
-                      className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px] ${
-                        highlight
-                          ? "bg-green-200 border-green-500 shadow-lg"
-                          : "bg-white border-gray-300"
-                      }`}
+                      className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
                     >
                       <div className="rounded-lg p-2 flex-1">
                         {uploadedFiles.length > 0 ? (
@@ -771,6 +772,12 @@ const QuickReports = () => {
                                 </div>
                               </div>
                             ))}
+                            {/* {highlight ? ( */}
+                            {/* ) : null} */}
+                          </div>
+                        ) : highlight ? (
+                          <div className="flex items-center justify-center p-5 h-full">
+                            <DotLoader />
                           </div>
                         ) : (
                           <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
