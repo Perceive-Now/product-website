@@ -35,7 +35,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
         >
           <div className="flex flex-1 flex-col justify-between gap-3 items-stretch rounded-lg h-full">
             <div className="flex flex-col">
-              <img src={agent.icon} alt={agent.title} className="w-10 h-10 mb-2" />
+              <img src={agent.icon} alt={agent.title} className="w-15 h-15 mb-2" />
               <div
                 className="bg-white p-[5px] w-fit rounded-[5px] backdrop-blur-sm"
                 style={{ fontFamily: "serif" }}
