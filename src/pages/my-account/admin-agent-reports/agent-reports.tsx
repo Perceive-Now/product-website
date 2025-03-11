@@ -6,6 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import TableSearch from "../../../components/reusable/table-search";
 import ShareModal from "src/components/reusable/share-modal";
+import { API_PROD_URL } from "src/utils/axios";
 
 const AgentReports = () => {
   const navigate = useNavigate();
@@ -24,13 +25,10 @@ const AgentReports = () => {
 
   const fetchThreads = async () => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/threads/${userid}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/threads/${userid}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
 
       if (response.ok) {
         const data = await response.json();

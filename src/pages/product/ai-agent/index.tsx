@@ -52,6 +52,7 @@ import { fetchAgentThreadDetails } from "src/pages/my-account/my-agent-reports/a
 import { useListing } from "src/layouts/sidebar/DraftProvider";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import { API_PROD_URL } from "src/utils/axios";
 
 const AgentName: Record<string, string> = {
   "company-diligence-agent": "Company Diligence Agent",
@@ -188,7 +189,7 @@ const AiAgent = () => {
 
           // Call API
           const createThreadResponse: any = await axios.post(
-            `https://templateuserrequirements.azurewebsites.net/agents/threads/create/?user_id=${
+            `${API_PROD_URL}/agents/threads/create/?user_id=${
               userId || ""
             }&thread_name=${generateAgentThreadName(
               AgentName[agent || ""],

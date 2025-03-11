@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import jsCookie from "js-cookie";
+import { API_PROD_URL } from "src/utils/axios";
 interface VSChat {
   id?: number;
   query: string;
@@ -144,14 +145,11 @@ export const extractFileData = createAsyncThunk("extractFileData", async (file: 
   formData.append("file", file);
   const userId = jsCookie.get("user_id");
 
-  const response = await fetch(
-    `https://templateuserrequirements.azurewebsites.net/extract-ppt-data?user_id=${userId}`,
-    {
-      method: "POST",
-      headers: { Accept: "application/json" },
-      body: formData,
-    },
-  );
+  const response = await fetch(`${API_PROD_URL}/extract-ppt-data?user_id=${userId}`, {
+    method: "POST",
+    headers: { Accept: "application/json" },
+    body: formData,
+  });
   const data = await response.json();
   if (data.message === "Text extracted successfully") {
     console.log("extracted successfully", data.slides_data);
@@ -171,21 +169,18 @@ export const dynamicThreadName = createAsyncThunk(
       data: JSON.stringify(values.fileData),
     };
 
-    const response = await fetch(
-      "https://templateuserrequirements.azurewebsites.net/dynamic_thread",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
+    const response = await fetch(`${API_PROD_URL}/dynamic_thread`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(dataToSend),
+    });
     if (response.ok) {
       const data = await response.json();
       const res = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${values.userId}/${values.threadId}?thread_name=${data}`,
+        `${API_PROD_URL}/agents/rename_thread/${values.userId}/${values.threadId}?thread_name=${data}`,
         {
           method: "PUT",
           headers: {

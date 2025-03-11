@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "src/store";
 import { formatJsonResponse } from "src/stores/vs-product";
+import { API_PROD_URL } from "src/utils/axios";
 
 export const sendAiAgentQuery = createAsyncThunk(
   "sendQuery",
@@ -38,11 +39,10 @@ export const sendAiAgentQuery = createAsyncThunk(
       file_upload_status: file_upload_status ? file_upload_status : false,
       ...(sendPitchData ? { file_upload_url: fileData } : {}),
     };
-    const response: any = await axios.post(
-      "https://templateuserrequirements.azurewebsites.net/process-step",
-      bodyData,
-      { headers: { "Content-Type": "application/json" }, responseType: "stream" },
-    );
+    const response: any = await axios.post(`${API_PROD_URL}/process-step`, bodyData, {
+      headers: { "Content-Type": "application/json" },
+      responseType: "stream",
+    });
     if (sendPitchData) {
       return response;
     } else {
@@ -66,7 +66,7 @@ export const endChatThread = createAsyncThunk(
     { getState },
   ): Promise<any> => {
     const response: any = await axios.patch(
-      `https://templateuserrequirements.azurewebsites.net/update_thread_complete/?user_id=${user_id}&thread_id=${thread_id}`,
+      `${API_PROD_URL}/update_thread_complete/?user_id=${user_id}&thread_id=${thread_id}`,
       {},
       { headers: { "Content-Type": "application/json" }, responseType: "stream" },
     );
@@ -76,11 +76,10 @@ export const endChatThread = createAsyncThunk(
 export const submitCustomizeReport = createAsyncThunk(
   "submitCustomizeReport",
   async (payload: any, { getState }): Promise<any> => {
-    const response: any = await axios.post(
-      `https://templateuserrequirements.azurewebsites.net/api/threads/report-config`,
-      payload,
-      { headers: { "Content-Type": "application/json" }, responseType: "stream" },
-    );
+    const response: any = await axios.post(`${API_PROD_URL}/api/threads/report-config`, payload, {
+      headers: { "Content-Type": "application/json" },
+      responseType: "stream",
+    });
     return response;
   },
 );
@@ -92,7 +91,7 @@ export const fetchCustomizeReport = async (
 ) => {
   try {
     const response = await fetch(
-      `https://templateuserrequirements.azurewebsites.net/api/threads/${thread_id}/report-config?user_id=${userId}`,
+      `${API_PROD_URL}/api/threads/${thread_id}/report-config?user_id=${userId}`,
       {
         method: "GET",
         headers: { Accept: "application/json" },

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setVSChats } from "src/stores/vs-product";
 import { generateKnowIdstring } from "src/utils/helpers";
+import { API_PROD_URL } from "src/utils/axios";
 
 const AiAgent = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +33,7 @@ const AiAgent = () => {
   const fetchResponse = async (userInput: string) => {
     const threadId = generateKnowIdstring();
     try {
-      const response = await axios.post("https://templateuserrequirements.azurewebsites.net/process-step", {
+      const response = await axios.post(`${API_PROD_URL}/process-step`, {
         userId: String(userId), // Convert userId to string
         threadId,
         industry: "AI",
@@ -47,29 +48,25 @@ const AiAgent = () => {
       return "An error occurred while processing your request. Please try again.";
     }
   };
-  
 
-  const onSendQuery = useCallback(
-    async () => {
-      if (!query.trim()) return; // Prevent sending empty messages
-      setIsLoading(true);
+  const onSendQuery = useCallback(async () => {
+    if (!query.trim()) return; // Prevent sending empty messages
+    setIsLoading(true);
 
-      // Add user query to chat
-      dispatch(setVSChats({ query, answer: "" }));
+    // Add user query to chat
+    dispatch(setVSChats({ query, answer: "" }));
 
-      try {
-        const answer = await fetchResponse(query);
-        // Add the response to chat
-        dispatch(setVSChats({ query: "", answer }));
-      } catch (error) {
-        dispatch(setVSChats({ query: "", answer: "Error while processing the request." }));
-      } finally {
-        setQuery(""); // Clear input field
-        setIsLoading(false);
-      }
-    },
-    [dispatch, query]
-  );
+    try {
+      const answer = await fetchResponse(query);
+      // Add the response to chat
+      dispatch(setVSChats({ query: "", answer }));
+    } catch (error) {
+      dispatch(setVSChats({ query: "", answer: "Error while processing the request." }));
+    } finally {
+      setQuery(""); // Clear input field
+      setIsLoading(false);
+    }
+  }, [dispatch, query]);
 
   return (
     <div className="px-0 md:px-3 w-full mx-auto h-full flex flex-col">

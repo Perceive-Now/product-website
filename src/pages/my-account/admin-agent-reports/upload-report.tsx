@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UploadIcon } from "src/components/icons";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import { API_PROD_URL } from "src/utils/axios";
 
 const listContent = [
   "PDF (.pdf) - Portable Document Format",
@@ -25,9 +26,7 @@ const UploadAgentReport = () => {
 
   const fetchUploadedFiles = async () => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/reportcheck/${userid}/${threadid}`,
-      );
+      const response = await fetch(`${API_PROD_URL}/agents/reportcheck/${userid}/${threadid}`);
       if (response.ok) {
         const data = await response.json();
         // Set uploaded files from the fetched report info
@@ -69,14 +68,11 @@ const UploadAgentReport = () => {
     formData.append("files", selectedFile);
 
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/upload_report/${userid}/${threadid}`,
-        {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: formData,
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/agents/upload_report/${userid}/${threadid}`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: formData,
+      });
 
       if (response.ok) {
         setMessage("File uploaded successfully!");

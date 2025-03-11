@@ -6,6 +6,7 @@ import Button from "src/components/reusable/button";
 import { LoadingIcon } from "src/components/icons";
 import classNames from "classnames";
 import { useNavigate } from "react-router-dom";
+import { API_PROD_URL } from "src/utils/axios";
 
 const AgentAdminDashboard = () => {
   const navigate = useNavigate();
@@ -30,16 +31,13 @@ const AgentAdminDashboard = () => {
     setPasswordError("");
 
     try {
-      const response = await fetch(
-        "https://templateuserrequirements.azurewebsites.net/agents/unique-users",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            Authorization: "Basic " + btoa("admin:securepass"), // Basic Auth
-          },
+      const response = await fetch(`${API_PROD_URL}/agents/unique-users`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Basic " + btoa("admin:securepass"), // Basic Auth
         },
-      );
+      });
 
       if (response.ok) {
         const data = await response.json();

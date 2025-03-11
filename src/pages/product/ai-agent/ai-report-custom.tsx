@@ -11,6 +11,7 @@ import PrimaryButton from "src/components/reusable/button/primary-button";
 import classNames from "classnames";
 import { Texts } from "src/pages/my-account/my-reports/quick-report";
 import CustmizationForm from "./CustmizationForm";
+import { API_PROD_URL } from "src/utils/axios";
 
 // Define the structure for options
 // Define options
@@ -51,7 +52,7 @@ const AIReportCustomization: React.FC = () => {
 
     if (reportName) {
       const res = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${userId}/${searchParams.get(
+        `${API_PROD_URL}/agents/rename_thread/${userId}/${searchParams.get(
           "thread_id",
         )}?thread_name=${reportName}`,
         {

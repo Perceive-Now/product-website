@@ -37,6 +37,7 @@ import { fetchAgentThreadDetails } from "../agent-report.action";
 import Loading from "src/components/reusable/loading";
 import AgentHead from "src/pages/product/ai-agent/AgentHead";
 import ReportCustomizationThread from "./ReportCustomization";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -77,9 +78,7 @@ const MyAgentReportManagement = () => {
   const fetchReports = async (theadId: string) => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/reportcheck/${userId}/${theadId}`,
-      );
+      const response = await fetch(`${API_PROD_URL}/agents/reportcheck/${userId}/${theadId}`);
       if (response.ok) {
         const data = await response.json();
         setreports(data?.report_info || []);

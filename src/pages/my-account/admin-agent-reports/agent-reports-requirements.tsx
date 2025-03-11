@@ -11,6 +11,7 @@ import AddIcon from "src/components/icons/common/add-icon";
 import IconFile from "src/components/icons/side-bar/icon-file";
 import ReportConversation from "../my-agent-reports/my-reports/ReportConversation";
 import ReportCustomizationThread from "../my-agent-reports/my-reports/ReportCustomization";
+import { API_PROD_URL } from "src/utils/axios";
 
 interface Report {
   report_name: string;
@@ -130,9 +131,7 @@ const AgentRequirements = () => {
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/reportcheck/${userid}/${threadid}`,
-      );
+      const response = await fetch(`${API_PROD_URL}/agents/reportcheck/${userid}/${threadid}`);
       if (response.ok) {
         const data = await response.json();
         console.log("Reports fetched:", data);
@@ -166,9 +165,7 @@ const AgentRequirements = () => {
   const fetchConversation = async (threadId: string, userId: string) => {
     setReportConversationLoading(true);
     try {
-      const res = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/threads/${threadId}/${userId}`,
-      );
+      const res = await fetch(`${API_PROD_URL}/threads/${threadId}/${userId}`);
       const data = await res.json();
       setReportConversation(data);
     } catch (err) {

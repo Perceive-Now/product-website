@@ -1,15 +1,14 @@
+import { API_PROD_URL } from "src/utils/axios";
+
 export const fetchAgentReports = async (
   userId: string,
   callback: (value: { reports: any[]; loading: boolean }) => void,
 ) => {
   try {
-    const response = await fetch(
-      `https://templateuserrequirements.azurewebsites.net/threads/${userId}`,
-      {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      },
-    );
+    const response = await fetch(`${API_PROD_URL}/threads/${userId}`, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -35,13 +34,10 @@ export const fetchAgentThreadDetails = async (
   callback: (value: { reports: any; loading: boolean }) => void,
 ) => {
   try {
-    const response = await fetch(
-      `https://templateuserrequirements.azurewebsites.net/threads/${thread_id}/${userId}`,
-      {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      },
-    );
+    const response = await fetch(`${API_PROD_URL}/threads/${thread_id}/${userId}`, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
 
     if (response.ok) {
       const data = await response.json();

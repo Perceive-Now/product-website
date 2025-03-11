@@ -14,6 +14,7 @@ import Button from "src/components/reusable/button";
 import Loading from "src/components/reusable/loading";
 import { generateReportName } from "src/utils/helpers";
 import { useListing } from "./DraftProvider";
+import { API_PROD_URL } from "src/utils/axios";
 
 const reverseAgentMapping: Record<string, string> = {
   "Startup Diligence Agent": "company-diligence-agent",
@@ -101,7 +102,7 @@ const DraftReports = (props: Props) => {
 
     if (reportName) {
       const res = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/agents/rename_thread/${userId}/${selectedThread.threadId}?thread_name=${reportName}`,
+        `${API_PROD_URL}/agents/rename_thread/${userId}/${selectedThread.threadId}?thread_name=${reportName}`,
         {
           method: "PUT",
           headers: {
@@ -136,7 +137,7 @@ const DraftReports = (props: Props) => {
       thread_id: selectedThread.threadId.toString(),
     };
 
-    const res = await fetch(`https://templateuserrequirements.azurewebsites.net/threads/delete`, {
+    const res = await fetch(`${API_PROD_URL}/threads/delete`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
