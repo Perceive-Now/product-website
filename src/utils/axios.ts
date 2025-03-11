@@ -7,10 +7,9 @@ import jsCookie from "js-cookie";
 
 //
 
-export const API_PROD_URL =
-  "https://template-user-requirements-prod.lemonmoss-01a23a5e.eastus2.azurecontainerapps.io";
+export const API_PROD_URL = "https://templateuserrequirements.azurewebsites.net";
 
-const API_URL = "https://api.perceivenow.ai";
+const API_URL = process.env.REACT_APP_API_URL;
 
 /**
  *
