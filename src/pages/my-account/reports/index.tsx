@@ -18,6 +18,7 @@ import TableSearch from "../../../components/reusable/table-search";
 import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -43,13 +44,10 @@ const MyReports = () => {
   useEffect(() => {
     const fetchHistoryData = async () => {
       try {
-        const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/reports/${userId}`,
-          {
-            method: "GET",
-            headers: { Accept: "application/json" },
-          },
-        );
+        const response = await fetch(`${API_PROD_URL}/reports/${userId}`, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -262,7 +260,6 @@ const MyReports = () => {
         </div>
       </div>
       <div className="flex items-center gap-1 w-full">
-        
         {selectedRows.length > 0 && (
           <div className="ml-auto flex gap-3">
             {/* <Button type="gray" handleClick={onShare}>
@@ -296,7 +293,7 @@ const MyReports = () => {
           rowsData={filteredReports}
           size="medium"
           noTopBorder
-          rowSelection={rowSelection} 
+          rowSelection={rowSelection}
           onRowSelectionChange={handleRowSelectionChange}
         />
       )}

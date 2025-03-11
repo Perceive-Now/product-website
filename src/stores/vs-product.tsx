@@ -93,16 +93,13 @@ export const sendQuery = createAsyncThunk(
   ): Promise<any> => {
     const state = getState() as RootState;
     const pitchdeckData = state.VSProduct.pitchdeck_data;
-    const response: any = await fetch(
-      `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_input, user_id, thread_id, pitchdeck_data: pitchdeckData }),
+    const response: any = await fetch(`${API_PROD_URL}/interact_openai/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ user_input, user_id, thread_id, pitchdeck_data: pitchdeckData }),
+    });
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
 
@@ -202,7 +199,7 @@ export const addActivityComment = async (userId: string, comment: string, projec
       comment: comment,
       date_and_time: new Date(),
     };
-    const response = await fetch("https://templateuserrequirements.azurewebsites.net/comments/", {
+    const response = await fetch(`${API_PROD_URL}/comments/`, {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json" },
       body: JSON.stringify(body),

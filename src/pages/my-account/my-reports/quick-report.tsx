@@ -26,6 +26,7 @@ import { addActivityComment } from "src/stores/vs-product";
 import AgentHead from "src/pages/product/ai-agent/AgentHead";
 import CustmizationForm from "src/pages/product/ai-agent/CustmizationForm";
 import DotLoader from "src/components/reusable/dot-loader";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -324,17 +325,14 @@ const QuickReports = () => {
     };
 
     try {
-      const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/create-project/`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+      const response: any = await fetch(`${API_PROD_URL}/create-project/`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -404,7 +402,7 @@ const QuickReports = () => {
 
     try {
       const response: any = await axios.post(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
+        `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
         dataPayload,
       );
 
@@ -425,7 +423,7 @@ const QuickReports = () => {
         });
         try {
           const fileUploadResponse: any = await fetch(
-            `https://templateuserrequirements.azurewebsites.net/upload-files/${userId}/${projectId}/${response.data.report_id}`,
+            `${API_PROD_URL}/upload-files/${userId}/${projectId}/${response.data.report_id}`,
             {
               method: "POST",
               headers: { Accept: "application/json" },

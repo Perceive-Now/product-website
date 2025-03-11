@@ -6,10 +6,11 @@ import jsCookie from "js-cookie";
 // import { setAuthToken } from "../stores/auth";
 
 //
-const API_URL = process.env.REACT_APP_API_URL;
 
 export const API_PROD_URL =
   "https://template-user-requirements-prod.lemonmoss-01a23a5e.eastus2.azurecontainerapps.io";
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 /**
  *

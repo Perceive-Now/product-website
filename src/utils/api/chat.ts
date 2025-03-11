@@ -1,6 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AppConfig } from "src/config/app.config";
+import { API_PROD_URL } from "../axios";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -23,9 +24,9 @@ export async function addAnswer(value: IAnswers) {
 
 export async function getUserChats(user_id: string, requirement_gathering_id: string) {
   const response = await axios.get<IData>(
-    `https://templateuserrequirements.azurewebsites.net/get-items?userId=${String(
-      user_id,
-    )}&requirementId=${String(requirement_gathering_id)}`,
+    `${API_PROD_URL}/get-items?userId=${String(user_id)}&requirementId=${String(
+      requirement_gathering_id,
+    )}`,
     // `${BASE_PN_REPORT_URL}/get-answers/?userID=${user_id}&requirement_gathering_id=${requirement_gathering_id}`,
   );
 

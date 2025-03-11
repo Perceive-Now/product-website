@@ -3,6 +3,7 @@ import axios from "axios";
 import jsCookie from "js-cookie";
 import { AppConfig } from "src/config/app.config";
 import { IAnswer } from "src/utils/api/chat";
+import { API_PROD_URL } from "src/utils/axios";
 
 const BASE_PN_REPORT_URL = AppConfig.REPORT_API_URL;
 
@@ -202,9 +203,9 @@ export const getMadlibAnswers = createAsyncThunk(
     const requirementGatheringId = jsCookie.get("requirement_gathering_id");
     try {
       const response = await axios.get(
-        `https://templateuserrequirements.azurewebsites.net/get-items?userId=${String(
-          user_id,
-        )}&requirementId=${String(requirementGatheringId)}`,
+        `${API_PROD_URL}/get-items?userId=${String(user_id)}&requirementId=${String(
+          requirementGatheringId,
+        )}`,
       );
       return {
         success: true,

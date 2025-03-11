@@ -32,6 +32,7 @@ import { arrayBufferDownload, formatDate, formatReportDate } from "src/utils/hel
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import toast from "react-hot-toast";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -76,13 +77,10 @@ const Reports = () => {
 
   const fetchActivityLog = async () => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/comments/?user_id=${userId}&project_id=${id}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/comments/?user_id=${userId}&project_id=${id}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
       if (response.ok) {
         const data = await response.json();
         setActivityLog(data);
@@ -99,13 +97,10 @@ const Reports = () => {
 
   const fetchHistoryData = async () => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/reports/${userId}/${id}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
       if (response.ok) {
         const data = await response.json();
 
@@ -228,16 +223,13 @@ const Reports = () => {
     });
 
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/reports/zip/custom`,
-        {
-          method: "POST",
-          headers: { Accept: "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({
-            [reportName]: obj,
-          }),
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/reports/zip/custom`, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+          [reportName]: obj,
+        }),
+      });
       toast.success("Downloading Reports");
 
       if (response.ok) {
@@ -253,7 +245,7 @@ const Reports = () => {
   const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
       const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/report/delete?user_id=${userId}&project_id=${id}&report_id=${projectid}`,
+        `${API_PROD_URL}/report/delete?user_id=${userId}&project_id=${id}&report_id=${projectid}`,
         {
           method: "DELETE",
           headers: { Accept: "application/json" },
