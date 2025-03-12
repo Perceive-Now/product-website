@@ -1,8 +1,8 @@
 export const AppConfig = {
   WEBSITE_URL: process.env.REACT_APP_WEBSITE_URL ?? "",
   GOOGLE_API_KEY: process.env.REACT_APP_GOOGLE_API_KEY ?? "",
-  API_URL: process.env.REACT_APP_API_URL ?? "",
-  Auth_CODE: process.env.REACT_APP_AUTH_CODE ?? "",
+  API_URL: "https://develop.api.perceivenow.ai",
+  Auth_CODE: "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==",
   STRIPE_PUBLISHABLE_KEY: process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY,
   KNOW_NOW_IP_API: process.env.REACT_APP_KNOW_NOW_IP_API,
   KNOW_NOW_MARKET_API: process.env.REACT_APP_KNOW_NOW_MARKET_API,

@@ -35,7 +35,7 @@ type TeamMember = {
 };
 
 const CompanyProfile = ({ changeActiveStep, userDetail }: Props) => {
-  const authCode = process.env.REACT_APP_AUTH_CODE;
+  const authCode = "kETFs1RXmwbP8nbptBg1dnXXwISsjAecJq4aRhIKaJ4VAzFucUcn3Q==";
 
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
