@@ -7,7 +7,7 @@ import jsCookie from "js-cookie";
 
 //
 
-export const API_PROD_URL = "https://templateuserrequirements.azurewebsites.net";
+export const API_PROD_URL = process.env.REACT_APP_API_AZURE_URL;
 
 const API_URL = process.env.REACT_APP_API_URL;
 
