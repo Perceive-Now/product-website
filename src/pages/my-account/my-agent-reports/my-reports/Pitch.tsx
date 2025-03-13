@@ -16,29 +16,32 @@ const PitchDeck = ({
 
   return (
     <>
-      {filename_url ? <PitchFile filename_url={filename_url} /> : null}
+      {filename_url && Object.keys(filename_url).length ? (
+        <PitchFile filename_url={filename_url} />
+      ) : null}
       {pitchdeck_summary?.pages ? null : (
         <>
-          <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
-            {/* <h2 className="text-xl font-bold mb-4">Pitch Deck Summary</h2> */}
-            {Array.isArray(pitchdeck_summary)
-              ? pitchdeck_summary?.map(([title, content]: any, index: any) => (
+          {Array.isArray(pitchdeck_summary) ? (
+            <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
+              {pitchdeck_summary?.map(([title, content]: any, index: any) => (
+                <div key={index} className="mb-4">
+                  <h3 className="text-lg font-semibold">{title}</h3>
+                  <p className="whitespace-pre-line">{content}</p>
+                </div>
+              ))}
+            </div>
+          ) : typeof pitchdeck_summary === "object" && pitchdeck_summary !== null ? (
+            <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
+              {Object.values(pitchdeck_summary)?.map(([title, content]: any, index: any) =>
+                typeof title === "object" ? null : (
                   <div key={index} className="mb-4">
                     <h3 className="text-lg font-semibold">{title}</h3>
                     <p className="whitespace-pre-line">{content}</p>
                   </div>
-                ))
-              : typeof pitchdeck_summary === "object" && pitchdeck_summary !== null
-              ? Object.values(pitchdeck_summary)?.map(([title, content]: any, index: any) =>
-                  typeof title === "object" ? null : (
-                    <div key={index} className="mb-4">
-                      <h3 className="text-lg font-semibold">{title}</h3>
-                      <p className="whitespace-pre-line">{content}</p>
-                    </div>
-                  ),
-                )
-              : null}
-          </div>
+                ),
+              )}
+            </div>
+          ) : null}
         </>
       )}
     </>

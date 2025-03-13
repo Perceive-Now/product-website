@@ -37,6 +37,9 @@ const PitchFile = ({ filename_url }: { filename_url: any }) => {
   };
 
   const getFileExtension = (name: string) => {
+    if (!name) {
+      return;
+    }
     const parts = name.split(".");
     return parts.length > 1 ? parts?.pop()?.toLowerCase() || "" : "unknown";
   };
@@ -48,7 +51,7 @@ const PitchFile = ({ filename_url }: { filename_url: any }) => {
       <div className="bg-foundationOrange-100 border-secondary-500 p-2 rounded-2xl rounded-br-none mt-2">
         <div className="flex items-center justify-between ">
           <div className="flex items-center">
-            {getFileTypeIcon(fileExtension)}
+            {fileExtension ? getFileTypeIcon(fileExtension) : null}
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-800">{original_filename}</p>
               <p className="text-xs text-gray-500">{fileExtension}</p>
