@@ -1,5 +1,5 @@
 import { PaginationState } from "@tanstack/react-table";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fetchAgentReports } from "src/pages/my-account/my-agent-reports/agent-report.action";
 import jsCookie from "js-cookie";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -39,6 +39,9 @@ interface Props {
 
 const DraftReports = (props: Props) => {
   const { open, setOpen } = props;
+
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openMenuId, setOpenMenuId] = useState("");
 
   const { records, setRecords } = useListing();
   const navigate = useNavigate();
@@ -90,6 +93,22 @@ const DraftReports = (props: Props) => {
 
   const [reportName, setReportName] = useState("");
   const [reportNameError, setReportNameError] = useState("");
+
+  const menuRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      const currentMenu = menuRefs.current[openMenuId];
+      if (currentMenu && !currentMenu.contains(event.target)) {
+        setOpenMenu(false);
+        setOpenMenuId("");
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openMenuId]);
 
   const handleRenameReport = async () => {
     if (reportNameError) {
@@ -180,7 +199,15 @@ const DraftReports = (props: Props) => {
           {open && <span className=" text-secondary-800 text-base">{"Report Drafts"}</span>}
         </div>
         {open ? (
-          <div className="max-h-[300px] overflow-y-auto pn_scroller">
+          <div
+            className="max-h-[300px] overflow-y-auto pn_scroller"
+            onScroll={(e) => {
+              if (openMenu) {
+                setOpenMenu(false);
+                setOpenMenuId("");
+              }
+            }}
+          >
             {records?.map((report: any) => (
               <div
                 className={`transition-all flex items-center gap-1 w-full ${
@@ -210,79 +237,97 @@ const DraftReports = (props: Props) => {
                 </Link>
 
                 {/* Three dots - Show on hover */}
-                <div className={`relative hidden ${open ? "group-hover:block" : ""}`}>
-                  <Tooltip
-                    isCustomPanel={true}
-                    right="0px"
-                    trigger={
-                      <VerticalThreeDots
-                        data-dropdown-toggle="dropdown"
-                        className="cursor-pointer"
-                      />
-                    }
-                    panelClassName={`rounded-lg pt-2 px-2 text-gray-700  left-50 z-[1] !fixed z-[9999]`}
-                  >
-                    <ul id="dropdown">
-                      <li
-                        className="mb-2 cursor-pointer"
-                        onClick={() => {
-                          undefined;
-                        }}
-                      >
-                        <div
-                          className="flex items-center gap-x-1"
+                <div
+                  className={`hidden ${
+                    openMenu && open && openMenuId === report.id ? "!block" : ""
+                  } ${open ? "group-hover:block" : ""}`}
+                  ref={(el) => (menuRefs.current[report.id] = el)}
+                >
+                  <VerticalThreeDots
+                    data-dropdown-toggle="dropdown"
+                    className="cursor-pointer"
+                    onClick={(event) => {
+                      const rect = (event.target as HTMLElement).getBoundingClientRect();
+                      setMenuPosition({
+                        top: rect.bottom + window.scrollY,
+                        left: rect.left + window.scrollX,
+                      });
+                      setOpenMenu(true);
+                      setOpenMenuId(report.id);
+                    }}
+                  />
+
+                  {openMenu && openMenuId === report.id && menuPosition ? (
+                    <div
+                      className="absolute p-2 mt-2 w-[150px] bg-white rounded-lg shadow-lg border z-[1]"
+                      style={{
+                        top: menuPosition.top,
+                        left: menuPosition.left,
+                      }}
+                    >
+                      <ul id="dropdown">
+                        <li
+                          className="mb-2 cursor-pointer"
                           onClick={() => {
-                            navigate(
-                              `/ai-agent?agent=${
-                                reverseAgentMapping[report.agent_name] || "company-diligence-agent"
-                              }&threadId=${report.id}`,
-                            );
+                            undefined;
                           }}
                         >
-                          <ShareIcon />
-                          Continue
-                        </div>
-                      </li>
-                      <li
-                        className="mb-2 cursor-pointer"
-                        onClick={() => {
-                          undefined;
-                        }}
-                      >
-                        <div
-                          className="flex items-center gap-x-1"
+                          <div
+                            className="flex items-center gap-x-1"
+                            onClick={() => {
+                              navigate(
+                                `/ai-agent?agent=${
+                                  reverseAgentMapping[report.agent_name] ||
+                                  "company-diligence-agent"
+                                }&threadId=${report.id}`,
+                              );
+                            }}
+                          >
+                            <ShareIcon />
+                            Continue
+                          </div>
+                        </li>
+                        <li
+                          className="mb-2 cursor-pointer"
                           onClick={() => {
-                            setSelectedThread({
-                              open: true,
-                              threadId: report.id,
-                              type: "rename",
-                            });
+                            undefined;
                           }}
                         >
-                          <EditIcon /> Rename
-                        </div>
-                      </li>
-                      <li
-                        className="mb-2 cursor-pointer"
-                        onClick={() => {
-                          undefined;
-                        }}
-                      >
-                        <div
-                          className="flex items-center gap-x-1"
+                          <div
+                            className="flex items-center gap-x-1"
+                            onClick={() => {
+                              setSelectedThread({
+                                open: true,
+                                threadId: report.id,
+                                type: "rename",
+                              });
+                            }}
+                          >
+                            <EditIcon /> Rename
+                          </div>
+                        </li>
+                        <li
+                          className=" cursor-pointer"
                           onClick={() => {
-                            setSelectedThread({
-                              open: true,
-                              threadId: report.id,
-                              type: "delete",
-                            });
+                            undefined;
                           }}
                         >
-                          <DustbinIcon /> Delete
-                        </div>
-                      </li>
-                    </ul>
-                  </Tooltip>
+                          <div
+                            className="flex items-center gap-x-1"
+                            onClick={() => {
+                              setSelectedThread({
+                                open: true,
+                                threadId: report.id,
+                                type: "delete",
+                              });
+                            }}
+                          >
+                            <DustbinIcon /> Delete
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ))}
