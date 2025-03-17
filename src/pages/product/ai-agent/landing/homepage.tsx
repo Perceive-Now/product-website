@@ -14,17 +14,17 @@ import {
   technologyAndRndImage,
 } from "./_assets";
 
-import startupDilligenceIcon from "./_assets/AgentLanding-Icons/Company.svg";
-import corporateVentureIcon from "./_assets/AgentLanding-Icons/Corporate.svg";
-import financeAndStrategyIcon from "./_assets/AgentLanding-Icons/Finance.svg";
-import fundRaisingIcon from "./_assets/AgentLanding-Icons/Fundraising.svg";
-import legalAndComplianceIcon from "./_assets/AgentLanding-Icons/Legal.svg";
+import startupDilligenceIcon from "./_assets/AgentLanding-Icons/CompanyDilligance.svg";
+import corporateVentureIcon from "./_assets/AgentLanding-Icons/VentureCapital.svg";
+import financeAndStrategyIcon from "./_assets/AgentLanding-Icons/FinanceStrategy.svg";
+import fundRaisingIcon from "./_assets/AgentLanding-Icons/FundRaising.svg";
+import legalAndComplianceIcon from "./_assets/AgentLanding-Icons/LegalSupport.svg";
 import marketStrategyIcon from "./_assets/AgentLanding-Icons/MarketStrategy.svg";
-import marketingAndSalesIcon from "./_assets/AgentLanding-Icons/Marketing.svg";
-import portfolioSupportIcon from "./_assets/AgentLanding-Icons/portfolio.svg";
-import productEngineeringIcon from "./_assets/AgentLanding-Icons/Product.svg";
+import marketingAndSalesIcon from "./_assets/AgentLanding-Icons/MarketingSales.svg";
+import portfolioSupportIcon from "./_assets/AgentLanding-Icons/Portfolio.svg";
+import productEngineeringIcon from "./_assets/AgentLanding-Icons/ProductEngineering.svg";
 import reportOnAnythingIcon from "./_assets/AgentLanding-Icons/ReportAnything.svg";
-import technologyAndRndIcon from "./_assets/AgentLanding-Icons/Technology.svg";
+import technologyAndRndIcon from "./_assets/AgentLanding-Icons/TechnologyR-D.svg";
 
 import AgentCard from "./_components/AgentCard";
 import AgentHead from "../AgentHead";
