@@ -17,7 +17,7 @@ import {
 import startupDilligenceIcon from "./_assets/AgentLanding-Icons/CompanyDilligance.svg";
 import corporateVentureIcon from "./_assets/AgentLanding-Icons/VentureCapital.svg";
 import financeAndStrategyIcon from "./_assets/AgentLanding-Icons/FinanceStrategy.svg";
-import fundRaisingIcon from "./_assets/AgentLanding-Icons/FundRaising.svg";
+import fundRaisingIcon from "./_assets/AgentLanding-Icons/fundraise.svg";
 import legalAndComplianceIcon from "./_assets/AgentLanding-Icons/LegalSupport.svg";
 import marketStrategyIcon from "./_assets/AgentLanding-Icons/MarketStrategy.svg";
 import marketingAndSalesIcon from "./_assets/AgentLanding-Icons/MarketingSales.svg";
