@@ -21,7 +21,7 @@ import fundRaisingIcon from "./_assets/AgentLanding-Icons/fundraise.svg";
 import legalAndComplianceIcon from "./_assets/AgentLanding-Icons/LegalSupport.svg";
 import marketStrategyIcon from "./_assets/AgentLanding-Icons/MarketStrategy.svg";
 import marketingAndSalesIcon from "./_assets/AgentLanding-Icons/MarketingSales.svg";
-import portfolioSupportIcon from "./_assets/AgentLanding-Icons/Portfolio.svg";
+import portfolioSupportIcon from "./_assets/AgentLanding-Icons/port.svg";
 import productEngineeringIcon from "./_assets/AgentLanding-Icons/ProductEngineering.svg";
 import reportOnAnythingIcon from "./_assets/AgentLanding-Icons/ReportAnything.svg";
 import technologyAndRndIcon from "./_assets/AgentLanding-Icons/TechnologyR-D.svg";
