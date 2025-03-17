@@ -99,10 +99,10 @@ const AgentHead = (props: Props) => {
                 src={iconSrc}
                 alt={displayName}
                 className="w-3 h-3 p-[2px]"
-                // style={{
-                //   filter:
-                //     "brightness(0) saturate(100%) invert(22%) sepia(16%) saturate(3004%) hue-rotate(225deg) brightness(92%) contrast(104%)",
-                // }}
+                style={{
+                  filter:
+                    "invert(100%) sepia(0%) saturate(2%) hue-rotate(270deg) brightness(109%) contrast(101%)",
+                }}
               />
             </div>
           )}
