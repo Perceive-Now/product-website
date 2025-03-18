@@ -10,11 +10,17 @@ interface ExtractInfoProps {
   info: string;
   obj?: any;
   onSendQuery: (query: string, answer: string, file?: File, button?: boolean) => void;
-  modalOpen: boolean; 
+  modalOpen: boolean;
   setModalOpen: (open: boolean) => void;
 }
 
-const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, obj, onSendQuery, modalOpen, setModalOpen }) => {
+const ExtractInfo: React.FC<ExtractInfoProps> = ({
+  info,
+  obj,
+  onSendQuery,
+  modalOpen,
+  setModalOpen,
+}) => {
   console.log("infooo", info);
   console.log("obj-----", obj);
   const dispatch = useAppDispatch();
@@ -31,8 +37,8 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({ info, obj, onSendQuery, modal
       .filter((line) => line)
       .join("\n\n")
       .replace(/\],?/g, "")
-      .replace(/\[|\]/g, '') 
-          };
+      .replace(/\[|\]/g, "");
+  };
 
   const parseInfo = (info: string): Record<string, string> => {
     const lines = info.split("\n").filter((line) => line);

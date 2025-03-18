@@ -108,6 +108,36 @@ const AiAgent = () => {
     newParams.set(newKey, newValue); // Add or update the search param
     setSearchParams(newParams);
   };
+
+  const handleRenameThread = async (user_input: string) => {
+    if (chats.length === 1) {
+      const url = new URL(window.location.href);
+      const searchParamsCurrent = new URLSearchParams(url.search);
+      const threadIdCurrent = searchParamsCurrent.get("threadId");
+      if (user_input) {
+        const dynaminc = await fetch(
+          `${API_PROD_URL}/agents/rename_thread/${userId}/${
+            thread_id || threadId || threadIdCurrent || ""
+          }?thread_name=${user_input
+            .trim()
+            .split(/\s+/)
+            .slice(0, Math.min(3, user_input.trim().split(/\s+/).length))
+            .join(" ")}`,
+          {
+            method: "PUT",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        if (dynaminc) {
+          fetchListing && fetchListing();
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     setIsloading(true);
 
@@ -222,6 +252,7 @@ const AiAgent = () => {
             sendAiAgentQuery({
               agentName: AgentName[agent || ""],
               ...ai_query,
+              shouldRename: chats.length === 2,
             }),
           ).unwrap();
 
@@ -270,6 +301,9 @@ const AiAgent = () => {
   const [chatEnded, setChatEnded] = useState(false);
 
   const handleFileSubmitQuery = async (file: File) => {
+    const url = new URL(window.location.href);
+    const searchParamsCurrent = new URLSearchParams(url.search);
+    const threadIdCurrent = searchParamsCurrent.get("threadId");
     const errorUploadingFile = "Error generating extract summary. Please upload file again";
     const newQueryIndex = generateKnowId();
     const firstQuery = {
@@ -286,9 +320,7 @@ const AiAgent = () => {
       });
     };
     setTimeout(() => {
-      if (!agent || agent === "company-diligence-agent") {
-        dispatch(setVSChats(firstQuery));
-      }
+      dispatch(setVSChats(firstQuery));
       dispatch(setCurrentStep(1));
     }, 1000);
     setUplaodingFile(true);
@@ -298,7 +330,7 @@ const AiAgent = () => {
       dynamicThreadName({
         fileData: fileResponse,
         userId: userId || "",
-        threadId: thread_id,
+        threadId: thread_id || threadId || threadIdCurrent || "",
       }),
     ).unwrap();
     if (dynaminc) {
@@ -366,11 +398,15 @@ const AiAgent = () => {
       shouldSentPitch?: boolean,
     ) => {
       setIsloading(true);
+      const url = new URL(window.location.href);
+      const searchParamsCurrent = new URLSearchParams(url.search);
+      const threadIdCurrent = searchParamsCurrent.get("threadId");
       const newQueryIndex = generateKnowId();
       try {
         setJsonResponse(null);
         setDataSources(null);
         setanswer("");
+        console.log("LSDKLSKD", file);
         if (file) {
           handleFileSubmitQuery(file);
         } else {
@@ -395,7 +431,7 @@ const AiAgent = () => {
             user_input: answer,
             // answer == "Continue" && Step == 3 ? "how many question we want to answer" : answer,
             user_id: userId || "",
-            thread_id: thread_id,
+            thread_id: thread_id || threadIdCurrent || "",
             button: button,
           };
 
@@ -622,6 +658,7 @@ const AiAgent = () => {
                   file_upload_status: true,
                 }),
               ).unwrap();
+              handleRenameThread(answer);
               if (data) {
                 setIsloading(false);
                 setAnalysingFile(false);
@@ -659,6 +696,7 @@ const AiAgent = () => {
                   // sendPitchData: !!Object.keys(dataSources || {}).length,
                 }),
               ).unwrap();
+              handleRenameThread(answer);
               if (data) {
                 setIsloading(false);
               }

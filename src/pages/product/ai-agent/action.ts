@@ -14,6 +14,7 @@ export const sendAiAgentQuery = createAsyncThunk(
       thread_id,
       sendPitchData,
       file_upload_status,
+      shouldRename,
     }: {
       agentName?: string;
       user_input: string;
@@ -21,6 +22,7 @@ export const sendAiAgentQuery = createAsyncThunk(
       thread_id: string;
       sendPitchData?: boolean;
       file_upload_status?: boolean;
+      shouldRename?: boolean;
     },
     { getState },
   ): Promise<any> => {

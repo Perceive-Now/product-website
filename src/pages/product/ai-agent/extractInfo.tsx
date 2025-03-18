@@ -112,23 +112,24 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
 
   return (
     <>
-      <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
-        <div className="font-semibold text-md text-end">
-          <Switch
-            checked={true}
-            onChange={() => {
-              setModalOpen(true);
-            }}
-            className={`border border-appGray-500 relative inline-flex items-center h-2 rounded-full w-4 mr-1`}
-          >
-            <span
-              className={`translate-x-0 inline-block w-[12px] h-[12px] transform bg-appGray-500 rounded-full`}
-            />
-          </Switch>
-          Edit Extract
-        </div>
+      {Object.entries(formData)?.length ? (
+        <div className="bg-foundationOrange-100 p-3 rounded-md mt-2 mb-2">
+          <div className="font-semibold text-md text-end">
+            <Switch
+              checked={true}
+              onChange={() => {
+                setModalOpen(true);
+              }}
+              className={`border border-appGray-500 relative inline-flex items-center h-2 rounded-full w-4 mr-1`}
+            >
+              <span
+                className={`translate-x-0 inline-block w-[12px] h-[12px] transform bg-appGray-500 rounded-full`}
+              />
+            </Switch>
+            Edit Extract
+          </div>
 
-        {/* <>
+          {/* <>
           {obj && Array.isArray(obj) ? (
             obj?.map(([title, content]: any, index: any) => (
               <div key={index} className="mb-4">
@@ -156,38 +157,39 @@ const ExtractInfo: React.FC<ExtractInfoProps> = ({
           )}
         </> */}
 
-        {Object.entries(formData).map(([key, value]) => {
-          if (Array.isArray(value) && !value.every((item) => typeof item === "string")) {
-            return null;
-          }
+          {Object.entries(formData).map(([key, value]) => {
+            if (Array.isArray(value) && !value.every((item) => typeof item === "string")) {
+              return null;
+            }
 
-          return (
-            <div key={key}>
-              {Array.isArray(value) && value.length > 1 ? (
-                <>
-                  <div className="font-bold">{key}:</div>
-                  <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
-                    {value.map((item, index) => (
-                      <li key={index}>{item}</li>
-                    ))}
-                  </ul>
-                  <br />
-                </>
-              ) : Array.isArray(value) ||
-                typeof value === "string" ||
-                typeof value === "number" ||
-                typeof value === "boolean" ? (
-                <>
-                  <p>
-                    <span className="font-bold">{key}:</span> {value}
-                  </p>
-                  <br />
-                </>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
+            return (
+              <div key={key}>
+                {Array.isArray(value) && value.length > 1 ? (
+                  <>
+                    <div className="font-bold">{key}:</div>
+                    <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+                      {value.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                    <br />
+                  </>
+                ) : Array.isArray(value) ||
+                  typeof value === "string" ||
+                  typeof value === "number" ||
+                  typeof value === "boolean" ? (
+                  <>
+                    <p>
+                      <span className="font-bold">{key}:</span> {value}
+                    </p>
+                    <br />
+                  </>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
 
       <Modal open={modalOpen} handleOnClose={handleModalClose}>
         <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg h-[90vh] overflow-y-auto pn_scroller">
