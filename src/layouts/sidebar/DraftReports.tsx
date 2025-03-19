@@ -180,6 +180,8 @@ const DraftReports = (props: Props) => {
     }
   };
 
+  console.log("recordsrecordsrecords", records);
+
   return (
     <>
       <div className="min-h-screen">
@@ -215,7 +217,7 @@ const DraftReports = (props: Props) => {
                     ? "min-w-[200px] hover:bg-[#FFE2B0] transition-all ease-in-out duration-100 rounded-[8px]"
                     : ""
                 } justify-between group`}
-                key={report.thread_name}
+                key={report.id}
               >
                 <Link
                   onClick={setOpen}

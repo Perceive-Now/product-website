@@ -885,6 +885,7 @@ const AiAgent = () => {
                 // }}
                 fileRequired={!agent || agent === "company-diligence-agent"}
                 sendQuery={handleSendQuery}
+                allDisabled={chats?.filter((chat) => chat.answer === "chat_ended")?.length > 0}
               />
             </div>
           </div>
