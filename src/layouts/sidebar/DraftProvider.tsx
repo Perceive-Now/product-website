@@ -23,7 +23,12 @@ export const ListingProvider = ({ children }: any) => {
     });
     fetchAgentReports(userId || "", ({ reports, loading }) => {
       setReportList({
-        reports: reports?.length > 0 ? reports.sort((a, b) => b.id - a.id) : [],
+        reports:
+          reports?.length > 0
+            ? reports
+                .sort((a, b) => b.id - a.id)
+                .filter((report: any) => report.is_complete === false)
+            : [],
         loading,
       });
     });
