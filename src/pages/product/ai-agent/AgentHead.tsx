@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import FundraisingStrategy from "../../../assets/images/icons/P-Icons/fund-raise.svg";
+import FundraisingStrategy from "../../../assets/images/icons/P-Icons/Fundraise-Icon.svg";
 import CompanyDiligence from "../../../assets/images/icons/P-Icons/CompanyDilligence.svg";
 import ReportonAnything from "../../../assets/images/icons/P-Icons/ReportonAnything.svg";
 import MarketingStrategy from "../../../assets/images/icons/P-Icons/MarketStrategy.svg";
