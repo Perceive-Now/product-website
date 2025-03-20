@@ -276,9 +276,9 @@ export const VSProductSlice = createSlice({
     ) => {
       const { diligenceLevelCovered, pitchdeckSummary, searchQueries, reportGenerations } =
         action.payload;
-      if (diligenceLevelCovered) {
-        state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
-      }
+      // if (diligenceLevelCovered) {
+      //   state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
+      // }
       if (pitchdeckSummary) {
         console.log(" state.chats", state.chats);
         const extractChat = state.chats.find((chat) => chat.extract && chat.extract !== "");
@@ -286,9 +286,9 @@ export const VSProductSlice = createSlice({
 
         state.pitchdeck_data.pitchdeck_summary = `\n {${pitchdeckSummary} \n}`;
       }
-      if (searchQueries) {
-        state.pitchdeck_data.search_queries = searchQueries;
-      }
+      // if (searchQueries) {
+      //   state.pitchdeck_data.search_queries = searchQueries;
+      // }
       if (reportGenerations) {
         state.pitchdeck_data.report_generations = JSON.stringify(reportGenerations);
       }
@@ -386,8 +386,8 @@ export const VSProductSlice = createSlice({
       state.pitchdeck_data = {
         // "Company/Startup Name": state.companyName,
         pitchdeck_summary: action.payload?.slideData,
-        "diligence level_covered": state.SidescreenOptions,
-        search_queries: {},
+        // "diligence level_covered": state.SidescreenOptions,
+        // search_queries: {},
       };
       state.fileData = action.payload?.fileData;
     });
