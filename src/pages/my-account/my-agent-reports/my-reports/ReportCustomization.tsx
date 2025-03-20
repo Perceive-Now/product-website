@@ -21,12 +21,20 @@ const ReportCustomizationThread = () => {
   });
   const { customReport, loading } = reportList;
 
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+
+  const adminUserId = useParams().userid;
+
   useEffect(() => {
     setReportList({
       customReport: {},
       loading: true,
     });
-    fetchCustomizeReport(id || threadid || "", userId || "", setReportList);
+    fetchCustomizeReport(
+      id || threadid || "",
+      isAuthenticated ? adminUserId || userId || "" : userId || "",
+      setReportList,
+    );
   }, []);
   return (
     <div className="mt-2 px-0 md:px-3 w-full mx-auto  max-w-2xl mx-auto p-3 bg-white shadow-lg rounded-lg">
