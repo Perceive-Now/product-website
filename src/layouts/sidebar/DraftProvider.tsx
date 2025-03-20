@@ -16,23 +16,22 @@ export const ListingProvider = ({ children }: any) => {
     reports: [],
   });
 
-  const filteredReports =
-    reportList.reports.length > 0
-      ? reportList.reports
-          .sort((a: any, b: any) => {
-            const dateA = +new Date(a.created_at);
-            const dateB = +new Date(b.created_at);
-            return dateB - dateA; // Descending order
-          })
-          .filter((report: any) => report.is_complete === false)
-      : [];
-
   const fetchListing = () => {
     setReportList({
       ...reportList,
       loading: true,
     });
-    fetchAgentReports(userId || "", setReportList);
+    fetchAgentReports(userId || "", ({ reports, loading }) => {
+      setReportList({
+        reports:
+          reports?.length > 0
+            ? reports
+                .sort((a, b) => b.id - a.id)
+                .filter((report: any) => report.is_complete === false)
+            : [],
+        loading,
+      });
+    });
   };
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export const ListingProvider = ({ children }: any) => {
   }, [threadId]);
   return (
     <ListingContext.Provider
-      value={{ records: filteredReports, setRecords: setReportList, fetchListing }}
+      value={{ records: reportList.reports, setRecords: setReportList, fetchListing }}
     >
       {children}
     </ListingContext.Provider>

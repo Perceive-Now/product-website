@@ -15,6 +15,7 @@ interface Props {
   uploadStatus?: boolean;
   setFile: (file: File) => void;
   fileRequired?: boolean;
+  allDisabled?: boolean;
 }
 
 const AddQueryAgent = ({
@@ -25,6 +26,7 @@ const AddQueryAgent = ({
   setFile,
   sendQuery,
   setanswer,
+  allDisabled,
 }: Props) => {
   //   const {  } = useAppSelector((state) => state.VSProduct);
   const textareaRef = useRef<any>(null);
@@ -140,19 +142,19 @@ const AddQueryAgent = ({
             onChange={(e) => {
               setanswer(e.target.value);
             }}
-            disabled={fileRequired && uploadStatus}
+            disabled={(fileRequired && uploadStatus) || allDisabled}
             value={answer}
             onKeyDown={handleKeyDown}
             className={classNames(
               "appearance-none leading-tight w-full h-full p-2 border-none rounded-md bg-white placeholder:text-appGray-600 focus:border-none focus-visible:border-none focus:outline-none focus:ring-0",
-              uploadStatus ? "cursor-not-allowed" : "",
+              uploadStatus || allDisabled ? "cursor-not-allowed" : "",
             )}
             placeholder="Type here"
           />
         </div>
 
         <div className="bg-appGray-100 rounded-b-lg p-2 flex items-center">
-          {uploadStatus || !fileRequired ? (
+          {!allDisabled && (uploadStatus || !fileRequired) ? (
             <>
               <button className="inline-flex gitems-center" onClick={handleAttachClick}>
                 <IconFile /> <span className="mr-2 ml-1 relative">Attach</span>
@@ -187,7 +189,10 @@ const AddQueryAgent = ({
           )}
           <div className="absolute right-2">
             <button
-              className="bg-primary-900 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer"
+              disabled={allDisabled}
+              className={`bg-primary-900 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer ${
+                allDisabled ? "!cursor-not-allowed" : ""
+              }`}
               type="button"
               onClick={() => {
                 sendQuery(query, answer, attachedFile || undefined), setAttachedFile(null);

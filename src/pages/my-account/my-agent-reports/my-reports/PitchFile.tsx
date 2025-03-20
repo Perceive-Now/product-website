@@ -23,7 +23,7 @@ const PitchFile = ({ filename_url }: { filename_url: any }) => {
         );
       case "pdf":
         return (
-          <div className="h-6 w-6 bg-red-500 rounded text-white flex items-center justify-center">
+          <div className="h-6 w-6 bg-gray-500 rounded text-white flex items-center justify-center">
             📄
           </div>
         );
