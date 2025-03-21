@@ -13,7 +13,11 @@ import quotes from "./_constants/quote";
 
 import pnCloveSvg from "src/assets/images/pn_clove.svg";
 
+//
 import backgroundImage from "../_assets/background.png";
+import mailboxSvg from "./_assets/mailbox.svg";
+import paperPlaneSvg from "./_assets/paper-plane.svg";
+import { Link } from "react-router-dom";
 
 interface IConfirmEmail {
   verification_code: string;
@@ -90,21 +94,23 @@ const VerificationConfirm = () => {
   };
 
   return (
-    <div className="flex justify-center items-start min-h-screen bg-gradient-to-b from-white to-[#F7F5FF] p-2">
-      <div className="max-w-[400px] mt-[30vh] 2xl:mt-[20vh]">
+    <div className="flex justify-between items-start h-screen lg:h-[calc(100vh-100px)] bg-gradient-to-b from-white to-[#F7F5FF]">
+      <div className="flex-[1] flex flex-col justify-center max-w-[400px] mt-[30vh] 2xl:mt-[20vh] mx-auto">
         <div className="flex flex-col gap-y-2">
-          <div>
-            <img src={perceiveNowImage} alt="welcome" className="w-[3rem] h-[3rem]" />
+          <h1 className="text-[#373D3F] text-5xl font-bold">Great!</h1>
+          <div className="text-center my-4">
+            <img src={mailboxSvg} alt="welcome" className="w-[5rem] h-[5rem] mx-auto" />
           </div>
           <p className="text-left text-[#373D3F] font-semibold">
-            Great! 🎉 We’ve sent you a link to continue
-            <br /> signing up.
+            An email with a confirmation link has been sent to you. Check your inbox and complete
+            your signup
           </p>
-          <p className="text-[#373D3F] font-semibold mt-[0.5] cursor-pointer">
-            <a href="https://mail.google.com/mail/u/0/#inbox" className="text-inherit" target="_blank" rel="noreferrer">
-              📩 Check your inbox!
-            </a>
-          </p>
+        </div>
+
+        <div className="flex items-end gap-x-2 mt-10 text-sm">
+          <img src={pnCloveSvg} alt="Perceive Now" className="w-[2rem]" />
+          Didn&apos;t receive the email? <br />
+          Check your spam folder or try resending
         </div>
         {/* <div className="text-center w-full">
         <p className="text-secondary-800 ">drake@example.com</p>
@@ -127,6 +133,29 @@ const VerificationConfirm = () => {
           </Button>
         </p>
       </div> */}
+      </div>
+      <div
+        className="flex flex-col flex-[0.5] relative"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          height: "100%",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex items-center justify-center">
+            <img
+              src={paperPlaneSvg}
+              alt="welcome"
+              className="scale-90 absolute left-5 bottom-[25%]"
+            />
+          </div>
+          <div className="absolute bottom-[20%] max-w-lg">
+            <p className="text-[#373D3F] text-base font-bold">{getCurrentQuotes()}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

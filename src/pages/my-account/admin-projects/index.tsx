@@ -21,6 +21,7 @@ import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "src/utils/helpers";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -56,13 +57,10 @@ const AdmimProjects = () => {
   useEffect(() => {
     const fetchHistoryData = async () => {
       try {
-        const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/projects/${id}`,
-          {
-            method: "GET",
-            headers: { Accept: "application/json" },
-          },
-        );
+        const response = await fetch(`${API_PROD_URL}/projects/${id}`, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
 
         if (response.ok) {
           const data = await response.json();

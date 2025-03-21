@@ -20,13 +20,14 @@ interface Props {
   children: any;
   title: string;
   placement?: Placement;
+  tooltipClose?: boolean;
 }
 
-const ToolTip = ({ children, title, placement = "top" }: Props) => {
+const ToolTip = ({ children, title, placement = "top", tooltipClose = false }: Props) => {
   return (
     <Tippy
       content={title}
-      className="pn-tooltip-theme text-justify"
+      className={`pn-tooltip-theme text-justify ${tooltipClose && "pn-tooltip-close"}`}
       placement={placement}
       // visible={true}
     >

@@ -45,7 +45,7 @@ const googleAPIKey = AppConfig.GOOGLE_API_KEY;
  *
  */
 root.render(
-  <StrictMode>
+  <>
     <Toaster position="bottom-right" />
     <BrowserRouter>
       <Provider store={store}>
@@ -56,7 +56,7 @@ root.render(
         </GoogleOAuthProvider>
       </Provider>
     </BrowserRouter>
-  </StrictMode>,
+  </>,
 );
 
 // If you want to start measuring performance in your app, pass a function

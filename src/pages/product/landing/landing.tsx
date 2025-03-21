@@ -12,13 +12,14 @@ import PN from "../../../assets/images/pn.svg";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setStartTour, setFinishTour } from "src/stores/dashboard";
 import RightArrow from "src/components/icons/common/right-arrow";
-import handClock from "../../../components/icons/home-images/handclock.svg";
-import targetPaper from "../../../components/icons/home-images/targetPaper.svg";
-import bulbIcon from '../../../components/icons/home-images/bulbicon.svg';
-import aimDart from '../../../components/icons/home-images/aimdart.svg';
-import bulbMagni from '../../../components/icons/home-images/bulbmagni.svg';
+import handClock from "../../../components/icons/home-images/48hourDelivery.svg";
+import targetPaper from "../../../components/icons/home-images/ContextRichness.svg";
+import bulbIcon from "../../../components/icons/home-images/HyperTailored.svg";
+import aimDart from "../../../components/icons/home-images/AI.svg";
+import bulbMagni from "../../../components/icons/home-images/ZeroHaul.svg";
 
 import pnLogo from "../../../assets/images/pn.svg";
+import AgentHead from "../ai-agent/AgentHead";
 
 const stepsList = [
   {
@@ -221,7 +222,8 @@ export default function Landing() {
     //   </div> */}
     // </div>
     <>
-      <div className="w-full">
+      <div className=" flex flex-col w-full">
+        <AgentHead agentName="" />
         <nav className="w-full text-white px-6">
           <div className="flex justify-between items-center">
             {/* <Link to="/" className="text-[18px] font-semibold text-black">
@@ -263,13 +265,13 @@ export default function Landing() {
           </div>
         </nav>
 
-        <div className="h-screen px-3 w-full mx-auto flex flex-col justify-center items-center">
+        <div className="flex-1 px-3 w-full mx-auto flex flex-col justify-center items-center">
           <div className="flex items-center justify-between w-full max-w-2xl 2xl:max-w-3xl px-6">
             <div className="flex flex-col ml-6 w-full">
               {/* <div className="h-16 w-16 rounded-full flex mb-2">  
                 <img className="h-10 w-10" src={PN} alt="Pn" />
               </div> */}
-              <h1 className="text-3xl font-semibold mb-3 font-nunito">
+              <h1 className="text-[36px] font-semibold mb-3 font-nunito">
                 See the Future, Shape the Present.
               </h1>
               <p className="text-base leading-relaxed mb-4 font-nunito font-normal">
@@ -299,14 +301,16 @@ export default function Landing() {
                 </div>
                 <div className="flex items-center gap-1">
                   <img src={aimDart} alt="arrow-down" className="w-4 h-4" />
-                  <p className="text-xs font-light font-nunito">Complete AI Transparency</p>
+                  <p className="text-xs font-light font-nunito">
+                    AI transparency and Explainability
+                  </p>
                 </div>
               </div>
               <div className="flex gap-2 mt-4">
-                <Link to="/my-projects">
+                <Link to="/ai-agent/landing">
                   <div className="flex items-center justify-center border-4 bg-secondary-500  border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold">
                     Get Started
-                    <RightArrow className="ml-1"/>
+                    <RightArrow className="ml-1" />
                   </div>
                 </Link>
                 {/* <Link to="/vc-product">

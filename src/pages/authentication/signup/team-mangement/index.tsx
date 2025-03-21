@@ -9,6 +9,9 @@ import { NEW_BACKEND_URL } from "../env";
 import { roles } from "../../invite/profile-setup/_constants/roles";
 import { addTeamMember } from "src/stores/auth";
 import EmailChipInput from "src/components/reusable/input/EmailInput";
+import PrimaryButton from "src/components/reusable/button/primary-button";
+import ArrowLeftIcon from "src/components/icons/common/arrow-left";
+import RightArrow from "src/components/icons/common/right-arrow";
 
 const mockApiCall = async (data: { email: string; role: string }) => {
   return new Promise((resolve) => {
@@ -49,18 +52,15 @@ const TeamManagementScreen = () => {
     return emailRegex.test(email);
   };
 
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
 
   const handleInvite = async () => {
-
-
-
     if (error) {
-      return
+      return;
     }
     if (!emails.length && !inputValue) {
-      setError("Please enter email")
-      return
+      setError("Please enter email");
+      return;
     }
     setIsSubmitting(true);
 
@@ -77,7 +77,7 @@ const TeamManagementScreen = () => {
 
       const finalEmailList = emails;
       if (inputValue) {
-        finalEmailList.push(inputValue)
+        finalEmailList.push(inputValue);
       }
 
       // Map each email to a promise for API call
@@ -120,10 +120,10 @@ const TeamManagementScreen = () => {
       // Process successful invitations
       const successfulInvites = results.filter((result) => result.success);
       if (successfulInvites.length > 0) {
-        setEmails([])
-        setInputValue("")
+        setEmails([]);
+        setInputValue("");
         setTeamMembers((prev) =>
-          prev.concat(successfulInvites.map((invite) => ({ email: invite.email, role: "User" })))
+          prev.concat(successfulInvites.map((invite) => ({ email: invite.email, role: "User" }))),
         );
         successfulInvites.forEach((invite) => {
           dispatch(addTeamMember(invite.email));
@@ -149,7 +149,7 @@ const TeamManagementScreen = () => {
   const [inputValue, setInputValue] = useState<string>("");
 
   return (
-    <SignUpLayout currentStep={2} completedSteps={[0, 1]}>
+    <SignUpLayout currentStep={3} completedSteps={[0, 1, 2]}>
       <div className="max-w-[1000px] p-7 space-y-[40px]">
         {/* Title */}
         <h1 className="text-[20px] font-semibold text-[#373D3F]">Team Management</h1>
@@ -163,7 +163,14 @@ const TeamManagementScreen = () => {
                 <label htmlFor="email" className="text-[16px] text-[#4F4F4F] block mb-2">
                   Who would you like to invite to join your team?
                 </label>
-                <EmailChipInput emails={emails} setEmails={setEmails} setError={setError} teamMembers={teamMembers.map((mem) => mem.email)} inputValue={inputValue} setInputValue={setInputValue} />
+                <EmailChipInput
+                  emails={emails}
+                  setEmails={setEmails}
+                  setError={setError}
+                  teamMembers={teamMembers.map((mem) => mem.email)}
+                  inputValue={inputValue}
+                  setInputValue={setInputValue}
+                />
                 <p className="text-red-500 text-sm mt-2">{error}</p>
               </div>
               {/* <div>
@@ -243,7 +250,7 @@ const TeamManagementScreen = () => {
         {/* Navigation Buttons */}
         <div className="flex justify-between space-x-[16px]">
           <div className="flex space-x-[16px]">
-            <Button
+            {/* <Button
               rounded="full"
               type="gray"
               classname="w-[120px]"
@@ -257,17 +264,28 @@ const TeamManagementScreen = () => {
               handleClick={() => navigate("/signup/review")}
             >
               Next
-            </Button>
+            </Button> */}
+            <PrimaryButton
+              onClick={() => navigate("/signup/plan")}
+              className="flex-row-reverse"
+              variant="secondary"
+              text="Back"
+              icon={<RightArrow className="rotate-180 mr-2" />}
+            />
+            <PrimaryButton
+              onClick={() => navigate("/signup/review")}
+              variant="primary"
+              text="Next"
+              icon={<RightArrow />}
+            />
           </div>
 
-          <Button
-            rounded="full"
-            type="secondary"
-            classname="w-[120px]"
-            handleClick={() => navigate("/signup/review")}
-          >
-            Skip
-          </Button>
+          <PrimaryButton
+            onClick={() => navigate("/signup/review")}
+            variant="secondary"
+            text="Skip"
+            icon={<RightArrow />}
+          />
         </div>
       </div>
     </SignUpLayout>

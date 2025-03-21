@@ -21,6 +21,7 @@ import {
   updateResponse,
 } from "src/stores/Q&A";
 import { NewQAList } from "src/pages/product/report-q&a/_new-question";
+import { API_PROD_URL } from "src/utils/axios";
 
 // import { getUserChats, IAnswer } from "src/utils/api/chat";
 
@@ -96,7 +97,7 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
 
       try {
         !hasMatchingItems && isResponseGood
-          ? await axios.post("https://templateuserrequirements.azurewebsites.net/create-items/", {
+          ? await axios.post(`${API_PROD_URL}/create-items/`, {
               questionId: String(question.questionId),
               question: String(question.question),
               answer: value.answer,
@@ -105,11 +106,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
               requirementId: String(requirementGatheringId),
             })
           : await axios.put(
-              `https://templateuserrequirements.azurewebsites.net/update-items/?userId=${String(
-                userId,
-              )}&requirementId=${String(requirementGatheringId)}&questionId=${String(
-                question.questionId,
-              )}&usecaseId=${question.usecase}`,
+              `${API_PROD_URL}/update-items/?userId=${String(userId)}&requirementId=${String(
+                requirementGatheringId,
+              )}&questionId=${String(question.questionId)}&usecaseId=${question.usecase}`,
               {
                 question: String(filterQuestion.question),
                 answer: value.answer,
@@ -119,12 +118,9 @@ const ReportChatQuestionAnswer = ({ question, questionWithUsecase }: Props) => {
         const check =
           question.questionId === 1 || question.questionId === 2
             ? ("" as any)
-            : await axios.post(
-                "https://templateuserrequirements.azurewebsites.net/check_matlib_qa",
-                {
-                  text: `question:${filterQuestion.question} answer:${value.answer}`,
-                },
-              );
+            : await axios.post(`${API_PROD_URL}/check_matlib_qa`, {
+                text: `question:${filterQuestion.question} answer:${value.answer}`,
+              });
 
         const responseText = check?.data?.response?.Response || "";
         const badMarker = "@@bad@@";

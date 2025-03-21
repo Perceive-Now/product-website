@@ -1,4 +1,4 @@
-const NEW_BACKEND_URL = `https://templateuserrequirements.azurewebsites.net`
-export {
-    NEW_BACKEND_URL
-}
+import { API_PROD_URL } from "src/utils/axios";
+
+const NEW_BACKEND_URL = API_PROD_URL;
+export { NEW_BACKEND_URL };

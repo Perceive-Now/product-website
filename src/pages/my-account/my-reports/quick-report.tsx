@@ -23,11 +23,15 @@ import SelectBox from "./selectBox";
 import axios from "axios";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import { addActivityComment } from "src/stores/vs-product";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
+import CustmizationForm from "src/pages/product/ai-agent/CustmizationForm";
+import DotLoader from "src/components/reusable/dot-loader";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
 
-const Texts = [
+export const Texts = [
   "",
   "single page summaries",
   "stakeholder specific reports",
@@ -102,7 +106,7 @@ const QuickReports = () => {
     }
   };
 
-  const AnimatedPlaceholder = ({ className, onClick }: { className: any, onClick: () => void }) => {
+  const AnimatedPlaceholder = ({ className, onClick }: { className: any; onClick: () => void }) => {
     return (
       <div className={classNames(className, "wrapper")} onClick={onClick}>
         <div className="words">
@@ -116,12 +120,49 @@ const QuickReports = () => {
     );
   };
 
+  const changeHighlight = () => {
+    setHighlight(true);
+    setTimeout(() => setHighlight(false), 1500);
+  };
+
   const handleDrop = (e: any) => {
     e.preventDefault();
     setDragging(false);
     const files = e.dataTransfer.files;
-    const fileList = Array.from(files).map((file: any) => file.name);
-    setUploadedFiles((prevFiles) => [...prevFiles, ...fileList]);
+    if (files) {
+      const fileList = Array.from(files);
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const invalidFiles = fileList.filter((file: any) => {
+        const isInvalidType = !allowedTypes.includes(file.type);
+        const isInvalidSize = file.size > 200 * 1024 * 1024;
+        if (isInvalidType || isInvalidSize) {
+          return true;
+        }
+        return false;
+      });
+
+      if (invalidFiles.length > 0) {
+        toast.error("Invalid file uploaded.");
+      } else {
+        setTimeout(() => {
+          setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        }, 1500);
+        changeHighlight();
+      }
+    }
+    // const fileList = Array.from(files).map((file: any) => file.name);
+    // setUploadedFiles((prevFiles) => [...prevFiles, ...fileList]);
   };
 
   const handlePasteURL = () => {
@@ -159,7 +200,10 @@ const QuickReports = () => {
       if (invalidFiles.length > 0) {
         toast.error("Invalid file uploaded.");
       } else {
-        setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        setTimeout(() => {
+          setUploadedFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+        }, 1500);
+        changeHighlight();
       }
     }
   };
@@ -210,7 +254,6 @@ const QuickReports = () => {
           .required("Question is required"),
       )
       .min(3, "Array must contain at least 3 non-empty strings"), // Minimum 3 valid items
-
   });
 
   const {
@@ -244,7 +287,7 @@ const QuickReports = () => {
     getValues: customReportValues,
     control: customReportControl,
     setValue: setCustomReportValue,
-    setFocus
+    setFocus,
   } = useForm({
     defaultValues: customReportInitialValue,
     resolver: yupResolver(customReportFormResolver),
@@ -271,8 +314,6 @@ const QuickReports = () => {
     }
   }, [location.state]);
 
-
-
   const handleSubmitProject = async (values: INewReportValues) => {
     setLoading(true);
     const user_id = userId ?? "";
@@ -284,24 +325,24 @@ const QuickReports = () => {
     };
 
     try {
-      const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/create-project/`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+      const response: any = await fetch(`${API_PROD_URL}/create-project/`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         const data = await response.json();
         // id = data.project_id;
         setProjectId(data.project_id);
-        const activityReponse = await addActivityComment(userId as string
-          , `${ACTIVITY_COMMENT.PROJECT_ADDED} "${values.projectName}"`, data.project_id);
+        const activityReponse = await addActivityComment(
+          userId as string,
+          `${ACTIVITY_COMMENT.PROJECT_ADDED} "${values.projectName}"`,
+          data.project_id,
+        );
         setStep(2);
       } else {
         toast.error("Unable to submit report");
@@ -354,23 +395,26 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
-    const dataPayload: Record<string, string[]> = {}
+    const dataPayload: Record<string, string[]> = {};
     dataPayload.websites = pastedURLs;
     dataPayload.question = values.questions;
-    dataPayload.format = customReport.format
-
+    dataPayload.format = customReport.format;
 
     try {
       const response: any = await axios.post(
-        `https://templateuserrequirements.azurewebsites.net/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
+        `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
         dataPayload,
       );
 
       if (response.status === 200) {
-        await addActivityComment(userId as string, disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED, projectId as string)
+        await addActivityComment(
+          userId as string,
+          disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED,
+          projectId as string,
+        );
         if (uploadedFiles.length === 0) {
-          setStep(4)
-          return
+          setStep(4);
+          return;
         }
         const formData = new FormData();
 
@@ -379,7 +423,7 @@ const QuickReports = () => {
         });
         try {
           const fileUploadResponse: any = await fetch(
-            `https://templateuserrequirements.azurewebsites.net/upload-files/${userId}/${projectId}/${response.data.report_id}`,
+            `${API_PROD_URL}/upload-files/${userId}/${projectId}/${response.data.report_id}`,
             {
               method: "POST",
               headers: { Accept: "application/json" },
@@ -388,9 +432,7 @@ const QuickReports = () => {
           );
 
           if (fileUploadResponse.ok) {
-
             setStep(4);
-
           } else {
             toast.error("Unable to submit report");
           }
@@ -415,8 +457,26 @@ const QuickReports = () => {
     // console.log("formData------", formData);
   };
 
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
+    reportScopeOptions: [],
+    reportFormatOptions: [],
+    visualStyleOptions: [],
+    chartsOptions: [],
+    citationsOptions: [],
+    audienceFocusOneOptions: [],
+    audienceFocusTwoOptions: [],
+    reportToneOptions: [],
+    collaborationOptions: [],
+    explainabilityOptions: [],
+  });
+
+  const [customInput, setCustomInput] = useState<Record<string, Record<string, string>>>({});
+
+  const [highlight, setHighlight] = useState(false);
+
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
+      <AgentHead agentName="" />
       <div>
         {id ? (
           <div className="p-1 pl-0">
@@ -572,91 +632,6 @@ const QuickReports = () => {
                       </div>
                     )}
                   </div>
-
-                  {/* File Upload Box */}
-                  <h6 className="font-semibold text-base font-nunito">
-                    Upload Resources for Your Report
-                  </h6>
-                  <div
-                    className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${dragging ? "bg-gray-200" : ""
-                      }`}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      setDragging(true);
-                    }}
-                    onDragLeave={() => setDragging(false)}
-                    onDrop={handleDrop}
-                  >
-                    <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
-                      <UploadIcon />
-                      <p className="text-center text-base font-bold font-nunito mt-3">
-                        Drag and Drop files to upload
-                      </p>
-                      <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                      <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                        Browse
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Hidden File Input */}
-                  <input
-                    type="file"
-                    multiple
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-
-                  {/* Paste URL Section */}
-                  <div>
-                    <h6 className="font-semibold text-base mb-2 font-nunito">
-                      Enter or Paste Your URL
-                    </h6>
-                    <div className="flex">
-                      <input
-                        type="text"
-                        placeholder="Paste Your URL here"
-                        value={urlInput}
-                        onChange={handleUrlChange}
-                        className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
-                      />
-                      <button
-                        type="button"
-                        className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
-                        onClick={handlePasteURL}
-                      >
-                        Paste
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Supported Files and URLs */}
-                  <div className="mt-4 flex justify-between">
-                    <div>
-                      <p className="text-lg font-semibold font-nunito">
-                        Supported file types (up to 200mb)
-                      </p>
-                      <ul className="list-disc pl-[20px]">
-                        {listContent.map((content) => (
-                          <li key={content} className="text-xs">
-                            {content}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <p className="text-lg font-semibold font-nunito">Recommended URL</p>
-                      <ul className="list-disc pl-[20px]">
-                        {urlContent.map((content) => (
-                          <li key={content} className="text-xs">
-                            {content}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Second Part: Added Websites and Urls Listing */}
@@ -708,8 +683,9 @@ const QuickReports = () => {
                     ))}
                     {requirementQuestions.length < 10 ? (
                       <div
-                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${requirementQuestions.length > 3 ? "mr-5" : ""
-                          }`}
+                        className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
+                          requirementQuestions.length > 3 ? "mr-5" : ""
+                        }`}
                         onClick={handleAddMoreQuestions}
                       >
                         + Add more
@@ -719,36 +695,66 @@ const QuickReports = () => {
                     )}
                   </div>
                   {/* Added Websites */}
-                  <div className="h-[70%] pr-[25%]">
-                    <div className="border border-appGray-600 rounded-lg h-full flex flex-col px-2 pt-2 pb-[20px]">
-                      <div className="rounded-lg p-2 flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
-
-                        {pastedURLs.length > 0 ? (
-                          <div className="h-[180px] pn_scroller overflow-y-auto p-1">
-                            {pastedURLs.map((url, index) => (
-                              <div key={index}>
-                                {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
-                                <div className="flex justify-between items-center">
-                                  <p className="text-sm font-nunito">{url}</p>
-                                  <TrashIcon
-                                    className="cursor-pointer"
-                                    onClick={() => handleDelete(index, "url")}
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
-                            No websites added yet.
-                          </p>
-                        )}
+                </div>
+              </div>
+              <div>
+                <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                  <div className="flex-1">
+                    <h6 className="font-semibold text-base font-nunito mb-1">
+                      Upload Resources for Your Report
+                    </h6>
+                    <div
+                      className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                        dragging ? "bg-gray-200" : ""
+                      }`}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setDragging(true);
+                      }}
+                      onDragLeave={() => setDragging(false)}
+                      onDrop={handleDrop}
+                    >
+                      <div
+                        className="flex flex-col items-center text-lg"
+                        onClick={handleBrowseClick}
+                      >
+                        <UploadIcon />
+                        <p className="text-center text-base font-bold font-nunito mt-3">
+                          Drag and Drop files to upload
+                        </p>
+                        <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                        <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                          Browse
+                        </p>
                       </div>
-
-                      {/* Added Reports Listing */}
+                    </div>
+                    {/* Hidden File Input */}
+                    <input
+                      type="file"
+                      multiple
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                    <div className="mt-2 mb-2">
+                      <p className="text-lg font-semibold font-nunito">
+                        Supported file types (up to 200mb)
+                      </p>
+                      <ul className="list-disc pl-[20px]">
+                        {listContent.map((content) => (
+                          <li key={content} className="text-xs">
+                            {content}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
+                    <div
+                      className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                    >
                       <div className="rounded-lg p-2 flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
                         {uploadedFiles.length > 0 ? (
                           <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
                             {uploadedFiles.map((file, index) => (
@@ -764,12 +770,91 @@ const QuickReports = () => {
                                 </div>
                               </div>
                             ))}
+                            {/* {highlight ? ( */}
+                            {/* ) : null} */}
+                          </div>
+                        ) : highlight ? (
+                          <div className="flex items-center justify-center p-5 h-full">
+                            <DotLoader />
                           </div>
                         ) : (
                           <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
                             No file uploaded yet.
                           </p>
                         )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  {/* File Upload Box */}
+
+                  {/* Paste URL Section */}
+                  <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+                    <div className="flex-1">
+                      <div>
+                        <h6 className="font-semibold text-base mb-1 font-nunito">
+                          Enter or Paste Your URL
+                        </h6>
+                        <div className="flex">
+                          <input
+                            type="text"
+                            placeholder="Paste Your URL here"
+                            value={urlInput}
+                            onChange={handleUrlChange}
+                            className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
+                            onClick={handlePasteURL}
+                          >
+                            Paste
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Supported Files and URLs */}
+                      <div className="mt-4 flex justify-between">
+                        <div>
+                          <p className="text-lg font-semibold font-nunito">Recommended URL</p>
+                          <ul className="list-disc pl-[20px]">
+                            {urlContent.map((content) => (
+                              <li key={content} className="text-xs">
+                                {content}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
+                      <div className="border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]">
+                        <div className="rounded-lg p-2 flex-1">
+                          {pastedURLs.length > 0 ? (
+                            <div className="h-[180px] pn_scroller overflow-y-auto p-1">
+                              {pastedURLs.map((url, index) => (
+                                <div key={index}>
+                                  {index !== 0 && (
+                                    <hr className="my-1 border-1 border-appGray-300" />
+                                  )}
+                                  <div className="flex justify-between items-center">
+                                    <p className="text-sm font-nunito">{url}</p>
+                                    <TrashIcon
+                                      className="cursor-pointer"
+                                      onClick={() => handleDelete(index, "url")}
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
+                              No websites added yet.
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -796,7 +881,7 @@ const QuickReports = () => {
           <div className="p-3 w-[50%]">
             <form onSubmit={handleSubmitForm(handleSubmitProject)}>
               <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
-                Name your project
+                Name your project <span className="text-red-500 ml-0">*</span>
               </label>
               <input
                 type="text"
@@ -828,8 +913,13 @@ const QuickReports = () => {
           <div className="p-3 w-full">
             <form onSubmit={handleSubmitCustomReport(handleFinalSubmitProject)}>
               <h6 className="text-lg font-semibold ml-0 mb-3">Report Customization</h6>
-
-              <div className="mb-2">
+              <CustmizationForm
+                selectedOptions={selectedOptions}
+                setSelectedOptions={setSelectedOptions}
+                customInput={customInput}
+                setCustomInput={setCustomInput}
+              />
+              {/* <div className="mb-2">
                 <h6 className="font-semibold mb-1 text-base font-nunito">Report Tone</h6>
                 <SelectBox
                   options={[
@@ -900,12 +990,11 @@ const QuickReports = () => {
                     handleReportChange("format", value);
                   }}
                 />
-              </div>
+              </div> */}
               <div className="mt-5">
                 <h6 className="font-semibold mb-1 text-base font-nunito">
-                  Have any special requests? Let us know what you need, and we’ll tailor the report to
-                  fit your goals!{" "}
-                  <span className="text-red-500 ml-0">*</span>
+                  Have any special requests? Let us know what you need, and we’ll tailor the report
+                  to fit your goals!
                 </h6>
                 <div
                   className="relative w-full overflow-hidden bg-white"
@@ -932,7 +1021,10 @@ const QuickReports = () => {
                     </div>
                   )}
                   {additionalSummary === "" && (
-                    <AnimatedPlaceholder className="absolute top-1 left-2 pt-1 bg-transparent" onClick={() => setFocus("additional")} />
+                    <AnimatedPlaceholder
+                      className="absolute top-1 left-2 pt-1 bg-transparent"
+                      onClick={() => setFocus("additional")}
+                    />
                   )}
                 </div>
               </div>

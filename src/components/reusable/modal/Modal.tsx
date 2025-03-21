@@ -4,12 +4,14 @@ import { Fragment, FunctionComponent, PropsWithChildren } from "react";
 interface Props {
   open: boolean;
   handleOnClose: () => void;
+  width?: string;
 }
 
 export const Modal: FunctionComponent<PropsWithChildren<Props>> = ({
   open,
   handleOnClose,
   children,
+  width,
 }) => {
   return (
     <>
@@ -38,7 +40,9 @@ export const Modal: FunctionComponent<PropsWithChildren<Props>> = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel>{children}</Dialog.Panel>
+                <Dialog.Panel className={width ? width : "w-full max-w-[95vw]"}>
+                  {children}
+                </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>

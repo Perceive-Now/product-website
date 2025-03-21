@@ -17,6 +17,7 @@ import Button from "src/components/reusable/button";
 import axios from "axios";
 import { AppConfig } from "src/config/app.config";
 import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
 type IModal = "profile" | "password";
 
 /**
@@ -222,6 +223,7 @@ const Basics = () => {
     // </>
 
     <div className="space-y-[20px] w-full z-10 pb-[9%]">
+      <AgentHead agentName="" />
       <div className="p-1">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; Basics</h6>
         <div className="flex justify-start items-center pt-3 pl-1">

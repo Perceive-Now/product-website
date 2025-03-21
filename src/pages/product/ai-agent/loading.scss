@@ -1,0 +1,39 @@
+.chat-bubble {
+  position: relative;
+  border-radius: 12px 12px 12px 0;
+}
+
+.chat-bubble::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent white transparent transparent;
+}
+
+.shine-effect {
+  overflow: hidden;
+  position: relative;
+}
+
+.shine-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: shine 1.5s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}

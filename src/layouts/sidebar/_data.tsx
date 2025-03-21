@@ -21,6 +21,8 @@ import ReportsSidebarIcon from "src/assets/sidebar/report";
 import KnowNowIcon from "src/assets/sidebar/knowNowIcon";
 import Home from "src/components/icons/sidenav/home";
 import NewReport from "src/components/icons/sidenav/newreport";
+import AiAgentReportIcon from "./_assets/paper-icon";
+import StackFolders from "./_assets/stacked-folders";
 
 const sidebarItems: ISidebarListItem[] = [
   {
@@ -29,18 +31,26 @@ const sidebarItems: ISidebarListItem[] = [
     icon: Home,
     to: "/",
   },
-  // {
-  //   title: "AI Agents",
-  //   key: "new-report",
-  //   icon: NewReport,
-  //   to: "/vc-product",
-  // },
+  {
+    title: "AI Agents",
+    key: "new-report",
+    icon: NewReport,
+    to: "/ai-agent/landing",
+    children: [
+      {
+        title: "My AI Agent Reports",
+        key: "reportManagement",
+        icon: AiAgentReportIcon,
+        to: "/my-agent-reports",
+      },
+    ],
+  },
   {
     title: "Project Hub",
     key: "reportManagement",
-    classname:"mb-1",
-    icon: NewReportIcon,
-    to:"/my-projects"
+    // classname: "mb-1",
+    icon: StackFolders,
+    to: "/my-projects",
   },
   // {
   //   title: "Know Now",
@@ -111,7 +121,7 @@ const sidebarItems: ISidebarListItem[] = [
 
 export interface ISidebarItem {
   title: string;
-  key: string,
+  key: string;
   icon: ReactElement;
   to: string;
 }
@@ -121,7 +131,7 @@ export interface ISidebarListItem {
   key: string;
   icon?: any;
   to?: string;
-  classname?:string;
+  classname?: string;
   children?: ISidebarListItem[];
   subList?: ISidebarListItem[];
 }

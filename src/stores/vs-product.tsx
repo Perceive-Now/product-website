@@ -1,5 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
+import jsCookie from "js-cookie";
+import { API_PROD_URL } from "src/utils/axios";
 interface VSChat {
   id?: number;
   query: string;
@@ -9,6 +11,8 @@ interface VSChat {
   options?: string[];
   hasbutton?: boolean;
   hasselected?: boolean;
+  isFile?: boolean;
+  file?: File;
 }
 
 interface VSProduct {
@@ -21,6 +25,7 @@ interface VSProduct {
   ReportTemplate?: any;
   pitchdeck_data: any;
   uploadStatus: boolean;
+  fileData?: any;
 }
 
 const initialState: VSProduct = {
@@ -51,7 +56,7 @@ const initialState: VSProduct = {
   uploadStatus: false,
 };
 
-const formatJsonResponse = (inputString: string): any => {
+export const formatJsonResponse = (inputString: string): any => {
   try {
     const data = JSON.parse(inputString);
     console.log("data 1", data);
@@ -88,16 +93,13 @@ export const sendQuery = createAsyncThunk(
   ): Promise<any> => {
     const state = getState() as RootState;
     const pitchdeckData = state.VSProduct.pitchdeck_data;
-    const response: any = await fetch(
-      `https://templateuserrequirements.azurewebsites.net/interact_openai/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_input, user_id, thread_id, pitchdeck_data: pitchdeckData }),
+    const response: any = await fetch(`${API_PROD_URL}/interact_openai/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ user_input, user_id, thread_id, pitchdeck_data: pitchdeckData }),
+    });
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
 
@@ -138,56 +140,84 @@ export const sendQuery = createAsyncThunk(
 export const extractFileData = createAsyncThunk("extractFileData", async (file: File) => {
   const formData = new FormData();
   formData.append("file", file);
+  const userId = jsCookie.get("user_id");
 
-  const response = await fetch(
-    "https://templateuserrequirements.azurewebsites.net/extract-ppt-data",
-    {
-      method: "POST",
-      headers: { Accept: "application/json" },
-      body: formData,
-    },
-  );
+  const response = await fetch(`${API_PROD_URL}/extract-ppt-data?user_id=${userId}`, {
+    method: "POST",
+    headers: { Accept: "application/json" },
+    body: formData,
+  });
   const data = await response.json();
   if (data.message === "Text extracted successfully") {
     console.log("extracted successfully", data.slides_data);
 
     // console.log("ppppppppppppp",JSON.parse(data.slides_))
-    return data.slides_data;
+    return {
+      slideData: data.slides_data,
+      fileData: data.file_details,
+    };
   }
 });
+
+export const dynamicThreadName = createAsyncThunk(
+  "dynamicThreadName",
+  async (values: { fileData: string; userId: string; threadId: string }) => {
+    const dataToSend = {
+      data: JSON.stringify(values.fileData),
+    };
+
+    const response = await fetch(`${API_PROD_URL}/dynamic_thread`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      const res = await fetch(
+        `${API_PROD_URL}/agents/rename_thread/${values.userId}/${values.threadId}?thread_name=${data}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      return res;
+    }
+  },
+);
 
 export const addActivityComment = async (userId: string, comment: string, project_id: string) => {
   try {
     const body = {
-      "user_id": userId,
-      "project_id": project_id.toString(),
-      "comment": comment,
-      "date_and_time": new Date()
-    }
-    const response = await fetch(
-      "https://templateuserrequirements.azurewebsites.net/comments/",
-      {
-        method: "POST",
-        headers: { Accept: "application/json", "Content-Type": "application/json", },
-        body: JSON.stringify(body)
-      },
-    );
+      user_id: userId,
+      project_id: project_id.toString(),
+      comment: comment,
+      date_and_time: new Date(),
+    };
+    const response = await fetch(`${API_PROD_URL}/comments/`, {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
     if (response.ok) {
       const data = await response.json();
-      console.log("ActivityLog", data)
-      return true
-    }
-    else {
-      return true
+      console.log("ActivityLog", data);
+      return true;
+    } else {
+      return true;
       // setreports([])
       // setTotalReports(0)
     }
   } catch (err) {
-    return true
+    return true;
     console.error(err);
   }
 };
-
 
 export const VSProductSlice = createSlice({
   name: "vs-product",
@@ -244,10 +274,11 @@ export const VSProductSlice = createSlice({
         reportGenerations?: any;
       }>,
     ) => {
-      const { diligenceLevelCovered, pitchdeckSummary, searchQueries, reportGenerations } = action.payload;
-      if (diligenceLevelCovered) {
-        state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
-      }
+      const { diligenceLevelCovered, pitchdeckSummary, searchQueries, reportGenerations } =
+        action.payload;
+      // if (diligenceLevelCovered) {
+      //   state.pitchdeck_data["diligence level_covered"] = diligenceLevelCovered;
+      // }
       if (pitchdeckSummary) {
         console.log(" state.chats", state.chats);
         const extractChat = state.chats.find((chat) => chat.extract && chat.extract !== "");
@@ -255,9 +286,9 @@ export const VSProductSlice = createSlice({
 
         state.pitchdeck_data.pitchdeck_summary = `\n {${pitchdeckSummary} \n}`;
       }
-      if (searchQueries) {
-        state.pitchdeck_data.search_queries = searchQueries;
-      }
+      // if (searchQueries) {
+      //   state.pitchdeck_data.search_queries = searchQueries;
+      // }
       if (reportGenerations) {
         state.pitchdeck_data.report_generations = JSON.stringify(reportGenerations);
       }
@@ -277,11 +308,11 @@ export const VSProductSlice = createSlice({
         //   const option = [];
         //   const prevanswer = state.chats[state.chats.length - 1].answer || ""
         //   if (
-        //     prevanswer.trim().toLowerCase() == "continue" || 
+        //     prevanswer.trim().toLowerCase() == "continue" ||
         //     prevanswer.trim().toLowerCase() == "proceed"
         //   ) {
         //     option.push("Continue to answer questions");
-        //   }          
+        //   }
         //   option.push("Skip and proceed to step 5");
         //   state.chats[state.chats.length - 1].query = response;
         //   state.chats.push({ query: "",  answer: "" ,options:option});
@@ -291,7 +322,7 @@ export const VSProductSlice = createSlice({
           console.log("data sources", DataSources);
           state.chats[state.chats.length - 1].query = response;
           state.chats.push({ query: "", answer: "", options: ["Continue"] });
-        } else if (Step == 5 && typeof response === 'object') {
+        } else if (Step == 5 && typeof response === "object") {
           console.log("step 6 response", response);
           state.ReportTemplate = response;
           state.chats[
@@ -353,11 +384,12 @@ export const VSProductSlice = createSlice({
     });
     builder.addCase(extractFileData.fulfilled, (state, action) => {
       state.pitchdeck_data = {
-        "Company/Startup Name": state.companyName,
-        pitchdeck_summary: action.payload,
-        "diligence level_covered": state.SidescreenOptions,
-        search_queries: {},
+        // "Company/Startup Name": state.companyName,
+        pitchdeck_summary: action.payload?.slideData,
+        // "diligence level_covered": state.SidescreenOptions,
+        // search_queries: {},
       };
+      state.fileData = action.payload?.fileData;
     });
   },
 });
@@ -377,5 +409,3 @@ export const {
   setCompanyName,
   updatePitchdeckData,
 } = VSProductSlice.actions;
-
-

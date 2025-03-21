@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import IconButton from "../reusable/icon-button";
 import UserIcon from "../reusable/userIcon";
@@ -17,6 +17,9 @@ import Modal from "../reusable/modal";
 import remarkGfm from "remark-gfm";
 import Markdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
+import { Switch } from "@headlessui/react";
+import SourcesData from "src/pages/product/ai-agent/DataSources";
+import TemplateReport from "src/pages/product/ai-agent/ReportTemplate";
 // interface IChat {
 //   query: string;
 //   answer: string;
@@ -30,9 +33,20 @@ interface Props {
   editIndex?: any;
   setQuery?: any;
   isloadingCompleted?: boolean;
+  shouldStream?: boolean;
+  json_report?: any;
+  dataSource?: any;
 }
 
-const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props) => {
+const ChatQuery = ({
+  query,
+  updateQuery,
+  editIndex,
+  isloadingCompleted,
+  shouldStream = true,
+  json_report,
+  dataSource,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const userDetail = useAppSelector((state) => state.auth.user);
@@ -81,6 +95,12 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
     return words.length > 50;
   }
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
   if (!query) return <></>;
 
   return (
@@ -95,17 +115,58 @@ const ChatQuery = ({ query, updateQuery, editIndex, isloadingCompleted }: Props)
           className={`text-secondary-800 text-justify ${showMore ? "" : ""}`}
           dangerouslySetInnerHTML={{ __html: sanitizedQuery }}
         /> */}
-          <Markdown
-                      className="markdownWrapper text-secondary-800 text-justify text-align"
-                      remarkPlugins={[remarkGfm]}
-                      rehypePlugins={[
-                        [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }],
-                      ]}
-                    >
-                      {query}
-                    </Markdown>
-
+        <Markdown
+          className="markdownWrapper text-secondary-800 text-justify text-align"
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[[rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]]}
+        >
+          {query}
+        </Markdown>
       </div>
+      {Object.keys(dataSource || {}).length || Object.keys(json_report || {}).length ? (
+        <div className="font-semibold text-md text-end">
+          <Switch
+            checked={true}
+            onChange={() => {
+              setModalOpen(true);
+            }}
+            className={`border border-appGray-500 relative inline-flex items-center h-2 rounded-full w-4 mr-1`}
+          >
+            <span
+              className={`translate-x-0 inline-block w-[12px] h-[12px] transform bg-appGray-500 rounded-full`}
+            />
+          </Switch>
+          {Object.keys(dataSource || {}).length ? "Data Sources" : "Report Template"}
+        </div>
+      ) : null}
+      <Modal width="mx-auto" open={modalOpen} handleOnClose={handleModalClose}>
+        <div className="bg-foundationOrange-100 p-4 border border-secondary-500 mx-auto rounded-lg h-[90vh] overflow-y-auto pn_scroller">
+          <div className="font-bold text-md text-end">
+            <Switch
+              checked={true}
+              onChange={() => {
+                setModalOpen(false);
+              }}
+              className={`bg-primary-900 relative inline-flex items-center h-2 rounded-full w-4 mr-1 mb-2`}
+            >
+              <span
+                className={`translate-x-2 inline-block w-2 h-2 transform bg-white rounded-full`}
+              />
+            </Switch>
+            {Object.keys(dataSource || {}).length ? "Data Sources" : "Report Template"}
+          </div>
+          {Object.keys(dataSource || {}).length ? (
+            <div className="mx-auto justify-center flex">
+              <SourcesData dataSource={dataSource} disabled />
+            </div>
+          ) : null}
+          {Object.keys(json_report || {}).length ? (
+            <div className="mx-auto justify-center flex">
+              <TemplateReport reportSummary={json_report.sections} disabled />
+            </div>
+          ) : null}
+        </div>
+      </Modal>
     </div>
   );
 };

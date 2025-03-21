@@ -26,7 +26,7 @@ interface SideBarProps {
 const sidebarSteps: Steps[] = [
   { label: "Organization Settings", logo: organizationSettingSVG },
   { label: "Profile Setup", logo: profileSetupSVG },
-  // { label: "Plan Selection", logo: planSelectionSVG },
+  { label: "Solution Overview", logo: planSelectionSVG },
   // { label: "Payment", logo: paymentSVG },
   { label: "Team Management", logo: teamManagementSVG },
   { label: "Review & Confirmation", logo: reviewConfirmationSVG },
@@ -43,7 +43,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedD
   const steps = pathname.includes("/invite/") ? invitedSteps : sidebarSteps;
 
   return (
-    <div className="max-w-[300px] bg-[#F5F7FF] min-h-screen p-3 flex flex-col gap-y-2 items-start">
+    <div className="max-w-[300px] bg-[#FFA300] min-h-screen p-3 flex flex-col gap-y-2 items-start">
       {/* Logo at the top */}
       <div className="pt-7">
         <img src={perceiveNowImage} alt="Perceive Now" className="w-20 mx-auto" />
@@ -56,7 +56,7 @@ const SideBar: React.FC<SideBarProps> = ({ currentStep, completedSteps, invitedD
             <div key={step.label} className="flex items-center gap-x-1 my-[4px]">
               {/* Step Indicator */}
               <div
-                className={`w-[1.1rem] h-[1.1rem] flex items-center justify-center rounded-full ${
+                className={`w-[1.25rem] h-[1.25rem] flex items-center justify-center rounded-full ${
                   completedSteps.includes(index)
                     ? "bg-[#533F73]" // Completed step
                     : index === currentStep

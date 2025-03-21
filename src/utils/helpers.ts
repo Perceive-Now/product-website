@@ -19,9 +19,9 @@ export const formatNumber = (number: number, options?: IFormatNumberOptions) => 
     maximumFractionDigits: maxFraction,
     ...(options?.isCurrency
       ? {
-        style: "currency",
-        currency: "USD",
-      }
+          style: "currency",
+          currency: "USD",
+        }
       : {}),
   }).format(number);
 };
@@ -106,7 +106,7 @@ export function convertToBase64String(profile_photo?: string): string | undefine
 }
 
 export function generateKnowId() {
-  const maxDigits = 8
+  const maxDigits = 8;
   const maxValue = 10 ** maxDigits - 1;
   const uniqueInt = Math.floor(Math.random() * (maxValue + 1));
 
@@ -118,10 +118,14 @@ export function generateKnowIdstring() {
   return newUuid;
 }
 
+export function generateAgentThreadName(agentName: string) {
+  return `Untitled-${agentName.split(" ")?.[0]}_${+new Date()}`;
+}
+
 export function getRandomErrorMessage() {
   const messages = [
     "I’m sorry, I didn’t quite catch that. Could you please select one of the available options to help me assist you better?",
-    "Apologies, I couldn’t process that input. Please choose from the provided options so we can continue smoothly."
+    "Apologies, I couldn’t process that input. Please choose from the provided options so we can continue smoothly.",
   ];
 
   return messages[Math.floor(Math.random() * messages.length)];
@@ -144,9 +148,8 @@ export function formatDate(dateString: string) {
   return date.toLocaleString("en-GB", options);
 }
 
-
 export function formatReportDate(datetime: string) {
-  const [year, month, day, hour, minute, second] = datetime.split('-').map(Number);
+  const [year, month, day, hour, minute, second] = datetime.split("-").map(Number);
 
   // Create a Date object
   const date = new Date(year, month - 1, day, hour, minute, second);
@@ -174,7 +177,7 @@ export const arrayBufferDownload = async (response: any) => {
   const blobUrl = URL.createObjectURL(blob);
 
   // Create an anchor element to trigger download
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = blobUrl;
   link.download = "report.zip";
 
@@ -187,5 +190,44 @@ export const arrayBufferDownload = async (response: any) => {
   // Clean up
   document.body.removeChild(link);
   URL.revokeObjectURL(blobUrl);
+};
+export function processResponse(response: string) {
+  // Extract options inside @@ delimiters and clean them up
+  const options =
+    response.match(/@@(.*?)@@/gs)?.flatMap(
+      (match) =>
+        match
+          .replace(/@@/g, "")
+          .trim()
+          .split("\n")
+          .map(
+            (option) => option.trim().replace(/^[\d.-]+\s*/, ""), // Remove leading numbers, dots, or dashes
+          )
+          .filter((option) => option), // Remove empty options
+    ) || [];
 
+  // Remove extracted options along with the @@ delimiters from the response text
+  let remainingText = response.replace(/@@(.*?)@@/gs, "").trim();
+
+  // Remove text inside @?[ ... ]@ completely
+  remainingText = remainingText.replace(/@\?\[.*?\]@/gs, "").trim();
+
+  // Remove ?[ ... ]? brackets but keep the text inside
+  remainingText = remainingText.replace(/\?\[(.*?)\]\?/gs, "$1").trim();
+
+  // Remove empty bullet points or leftover lines that start with "-", "*", or similar
+  remainingText = remainingText.replace(/^\s*[-*]\s*$/gm, "").trim();
+
+  return { options, remainingText };
+}
+
+export function generateReportName(dateString: any) {
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, "0"); // 04
+  const month = date.toLocaleString("en-US", { month: "short" }); // Mar
+  const hours = String(date.getHours()).padStart(2, "0"); // 15
+  const minutes = String(date.getMinutes()).padStart(2, "0"); // 23
+
+  return `${month}${day}-${hours}:${minutes}`;
 }

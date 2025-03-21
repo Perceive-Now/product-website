@@ -27,6 +27,8 @@ import ToolTip from "src/components/reusable/tool-tip";
 import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import toast from "react-hot-toast";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -52,29 +54,26 @@ const MyProjects = () => {
   const filteredReports =
     reports.length > 0
       ? reports
-        .sort((a: any, b: any) => {
-          const dateA = +new Date(a.date_modified);
-          const dateB = +new Date(b.date_modified);
-          return dateB - dateA; // Descending order
-        })
-        .filter((report: any) =>
-          report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
-        .slice(
-          pagination.pageIndex * pagination.pageSize,
-          pagination.pageIndex * pagination.pageSize + pagination.pageSize,
-        )
+          .sort((a: any, b: any) => {
+            const dateA = +new Date(a.date_modified);
+            const dateB = +new Date(b.date_modified);
+            return dateB - dateA; // Descending order
+          })
+          .filter((report: any) =>
+            report.project_name.toLowerCase().includes(searchQuery.toLowerCase()),
+          )
+          .slice(
+            pagination.pageIndex * pagination.pageSize,
+            pagination.pageIndex * pagination.pageSize + pagination.pageSize,
+          )
       : [];
 
   const fetchHistoryData = async () => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/projects/${userId}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/projects/${userId}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -90,13 +89,10 @@ const MyProjects = () => {
 
   const fetchProjectData = async (id: any) => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/reports/${userId}/${id}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        }
-      );
+      const response = await fetch(`${API_PROD_URL}/reports/${userId}/${id}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -146,47 +142,40 @@ const MyProjects = () => {
 
   const deleteReportHandler = useCallback(async (projectid: number) => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/project/${userId}/${projectid}`,
-        {
-          method: "DELETE",
-          headers: { Accept: "application/json" },
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/project/${userId}/${projectid}`, {
+        method: "DELETE",
+        headers: { Accept: "application/json" },
+      });
 
       if (response.ok) {
-        addActivityComment(userId as string, ACTIVITY_COMMENT.PROJECT_DELETE, projectid.toString() as string)
+        addActivityComment(
+          userId as string,
+          ACTIVITY_COMMENT.PROJECT_DELETE,
+          projectid.toString() as string,
+        );
         // setreports((prevReports) => prevReports.filter((_, i) => i !== index));
         fetchHistoryData();
       }
     } catch (err) {
       console.error(err);
     }
-  },
-    [],
-  );
+  }, []);
 
   const downloadReportHandler = useCallback(async (projectid: number) => {
     try {
-      const response = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/reports/zip/${userId}/${projectid}`,
-        {
-          method: "GET",
-          headers: { Accept: "application/json" },
-        },
-      );
+      const response = await fetch(`${API_PROD_URL}/reports/zip/${userId}/${projectid}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
       toast.success("Downloading Reports");
 
       if (response.ok) {
-        arrayBufferDownload(response)
+        arrayBufferDownload(response);
       }
     } catch (err) {
       console.error(err);
     }
-  },
-    [],
-  );
-
+  }, []);
 
   const openFileHandler = (fileUrl: string) => {
     window.open(fileUrl, "_blank");
@@ -217,7 +206,7 @@ const MyProjects = () => {
       event.preventDefault();
       event.stopPropagation();
       // openFileHandler(row.original.file_data.file1);
-      downloadReportHandler(row.original.project_id)
+      downloadReportHandler(row.original.project_id);
     };
 
     return (
@@ -288,12 +277,7 @@ const MyProjects = () => {
       columnHelper.display({
         id: "actions",
         minSize: 200,
-        cell: ({ row }) => (
-          <RowActions
-            row={row}
-            openFileHandler={openFileHandler}
-          />
-        ),
+        cell: ({ row }) => <RowActions row={row} openFileHandler={openFileHandler} />,
       }),
       columnHelper.display({
         id: "actions",
@@ -313,14 +297,12 @@ const MyProjects = () => {
                 });
               }}
             >
-
               <EditIcon />
               {/* Update Requirements */}
             </div>
           </ToolTip>
         ),
-      })
-
+      }),
     ],
     [],
   );
@@ -328,8 +310,7 @@ const MyProjects = () => {
   const getRowProps = (row: any) => ({
     onClick: () => {
       const project_id = row.original.project_id;
-      navigate(`/my-reports/${project_id}?project=${row.original.project_name}`
-      );
+      navigate(`/my-reports/${project_id}?project=${row.original.project_name}`);
     },
     style: {
       cursor: "pointer",
@@ -338,6 +319,7 @@ const MyProjects = () => {
 
   return (
     <div className="space-y-[20px] w-full z-10 pb-[7%]">
+      <AgentHead agentName="" />
       <div className="p-1 pl-0">
         <h6 className="text-lg font-semibold ml-0">Project Hub</h6>
         <div className="flex justify-start items-center pt-3 pl-1">
