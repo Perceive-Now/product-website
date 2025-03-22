@@ -43,9 +43,9 @@ export default function AppFooter() {
         <Link to="/feedback" className="text-primary-900">
           Feedback
         </Link>
-        <Link to="#" className="text-primary-900">
+        {/* <Link to="#" className="text-primary-900">
           FAQs
-        </Link>
+        </Link> */}
       </div>
 
       <div className="flex flex-col justify-center md:flex-row gap-x-3">
