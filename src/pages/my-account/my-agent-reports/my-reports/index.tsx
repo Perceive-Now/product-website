@@ -510,6 +510,7 @@ const MyAgentReportManagement = () => {
                   noTopBorder
                   rowSelection={rowSelection}
                   onRowSelectionChange={handleRowSelectionChange}
+                  errorMessage="Your report is on the way"
                 />
                 <div className=" flex items-center justify-end mt-2.5">
                   <Pagination
