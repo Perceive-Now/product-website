@@ -465,7 +465,7 @@ const AiAgent = () => {
                   const { options, remainingText } = processResponse(data.response);
                   if (data.response?.toLowerCase().includes("24-48 hours")) {
                     convoOptions = ["End Conversation"];
-                    updateUrlParam("side", "false");
+                    // updateUrlParam("side", "false");
                   }
                   const userOptions = options?.length
                     ? options
