@@ -6,6 +6,9 @@ import jsCookie from "js-cookie";
 // import { setAuthToken } from "../stores/auth";
 
 //
+
+export const API_PROD_URL = process.env.REACT_APP_API_AZURE_URL;
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 /**
@@ -93,7 +96,7 @@ axiosInstance.interceptors.response.use(
 //         sessionStorage.setItem("pn_access", token);
 //         jsCookie.set("pn_refresh", refreshToken);
 
-//         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+//         .defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 //         return axiosInstance(originalRequest);
 //       }

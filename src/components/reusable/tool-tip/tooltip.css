@@ -5,6 +5,10 @@
   font-weight: 600;
 }
 
+.pn-tooltip-close {
+  transform: translateX(-100%) !important;
+}
+
 .tippy-box[data-placement^="right"] > .tippy-arrow:before {
   border-right-color: #442873;
 }

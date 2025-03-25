@@ -472,7 +472,8 @@ I’m here to turn the startup’s info into a powerful, data-driven report just
             dispatch(setCurrentStep(1));
           }, 1000);
 
-          const fileResponse = await dispatch(extractFileData(file)).unwrap();
+          const pptResp = await dispatch(extractFileData(file)).unwrap();
+          const fileResponse = pptResp?.slideData;
           console.log("file ress", fileResponse);
           if (fileResponse) {
             // const res = await dispatch(

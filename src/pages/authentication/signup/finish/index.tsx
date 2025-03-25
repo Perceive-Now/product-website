@@ -6,6 +6,10 @@ import { useAppDispatch } from "../../../../hooks/redux";
 
 // image
 import perceiveNowImage from "../../../../assets/images/pn.svg";
+import PrimaryButton from "src/components/reusable/button/primary-button";
+import backgroundImage from "../_assets/background.png";
+
+import RightArrow from "src/components/icons/common/right-arrow";
 
 const Finish = () => {
   const navigate = useNavigate();
@@ -24,16 +28,17 @@ const Finish = () => {
   }, [dispatch, isLoggingOut, navigate]);
 
   return (
-    <div className="flex justify-center min-h-screen bg-gradient-to-b from-white to-[#F7F5FF] p-2">
-      <div className="flex flex-col gap-y-2 max-w-[400px] mt-[30vh] 2xl:mt-[20vh]">
-        <img src={perceiveNowImage} alt="welcome" className="w-[3rem] h-[3rem]" />
-        <h2 className="text-2xl font-semibold text-[#373D3F] text-left">You’re All Set! 🚀</h2>
-        <p className="text-left text-[#373D3F] font-semibold">
-          Great job completing your setup! Now, let’s get to work and start making things happen.
-          Click below to dive right in and explore what’s next.
+    <div className="flex justify-between min-h-screen bg-gradient-to-b from-white to-[#F7F5FF]">
+      <div className="flex flex-col mx-auto gap-y-2 flex-[1] max-w-[550px] mt-[30vh] 2xl:mt-[20vh]">
+        <h2 className="text-4xl mb-4 font-semibold text-[#373D3F] text-left">
+          You’re In.
+          <br /> Now, Let’s Get to Work. 🚀
+        </h2>
+        <p className="text-left text-[#373D3F] font-normal">
+          Your setup is complete. Discover our solutions.
         </p>
-        <div className="mt-3">
-          <Button
+        <div className="flex justify-end mt-3">
+          {/* <Button
             type="primary"
             rounded="full"
             handleClick={() =>
@@ -41,10 +46,23 @@ const Finish = () => {
                 replace: true,
               })
             }
-          >
+            >
             <span className="font-light text-[15px]">Let&apos;s Get to Work!</span>
-          </Button>
+            </Button> */}
+          <PrimaryButton
+            onClick={() => {
+              navigate("/", {
+                replace: true,
+              });
+            }}
+            text="Get Started"
+            icon={<RightArrow />}
+            variant="primary"
+          />
         </div>
+      </div>
+      <div className="hidden md:flex md:flex-[0.5]">
+        <img src={backgroundImage} alt="Perceive Now" />
       </div>
     </div>
   );

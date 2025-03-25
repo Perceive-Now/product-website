@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { LoadingIcon } from "src/components/icons";
 import { useParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -39,10 +40,10 @@ const urlContent = [
 const AdminUploadReport = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();  
-  const urlParams = new URLSearchParams(location.search); 
-  const project_id = urlParams.get('project_id'); 
-  const user_id = urlParams.get('user_id'); 
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const project_id = urlParams.get("project_id");
+  const user_id = urlParams.get("user_id");
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const userId = jsCookie.get("user_id");
@@ -117,12 +118,11 @@ const AdminUploadReport = () => {
       formData.append("file", file);
     });
 
-   
     const threadId = generateKnowIdstring();
 
     try {
       const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-report-file/${user_id}/${project_id}/${id}`,
+        `${API_PROD_URL}/upload-report-file/${user_id}/${project_id}/${id}`,
         {
           method: "POST",
           headers: { Accept: "application/json" },
@@ -168,7 +168,7 @@ const AdminUploadReport = () => {
     <div className="space-y-[20px] w-full z-10 p-1">
       <div>
         <h6 className="text-lg font-semibold ml-0">
-         Settings &gt; Admin Report management &gt; Upload File
+          Settings &gt; Admin Report management &gt; Upload File
         </h6>
         {step === 1 && (
           <div className="flex justify-start items-center pt-3">
@@ -183,14 +183,11 @@ const AdminUploadReport = () => {
       </div>
 
       <div className="overflow-y-auto">
-        
-          <div className="">
-            <div className="flex space-x-4">
-              {/* First Part: File Upload and Paste URL */}
-              <div className="w-1/2 space-y-4">
-               
-
-                {/* <div className="mb-1">
+        <div className="">
+          <div className="flex space-x-4">
+            {/* First Part: File Upload and Paste URL */}
+            <div className="w-1/2 space-y-4">
+              {/* <div className="mb-1">
                   <label htmlFor="industry" className="block text-md text-secondary-800">
                     Select Report
                   </label>
@@ -228,67 +225,62 @@ const AdminUploadReport = () => {
                   </select>
                 </div> */}
 
-                {/* File Upload Box */}
-                <h6 className="font-semibold text-base font-nunito">
-                  Upload File
-                </h6>
-                <div
-                  className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                    dragging ? "bg-gray-200" : ""
-                  }`}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setDragging(true);
-                  }}
-                  onDragLeave={() => setDragging(false)}
-                  onDrop={handleDrop}
-                >
-                  <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
-                    <UploadIcon />
-                    <p className="text-center text-base font-bold font-nunito mt-3">
-                      Drag and Drop files to upload
-                    </p>
-                    <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                    <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
-                      Browse
-                    </p>
-                  </div>
+              {/* File Upload Box */}
+              <h6 className="font-semibold text-base font-nunito">Upload File</h6>
+              <div
+                className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                  dragging ? "bg-gray-200" : ""
+                }`}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragging(true);
+                }}
+                onDragLeave={() => setDragging(false)}
+                onDrop={handleDrop}
+              >
+                <div className="flex flex-col items-center text-lg" onClick={handleBrowseClick}>
+                  <UploadIcon />
+                  <p className="text-center text-base font-bold font-nunito mt-3">
+                    Drag and Drop files to upload
+                  </p>
+                  <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                  <p className="text-primary-900 font-bold underline cursor-pointer hover:text-primary-800 transition duration-300 ease-in-out text-base font-nunito">
+                    Browse
+                  </p>
                 </div>
-
-                {/* Hidden File Input */}
-                <input
-                  type="file"
-                  multiple
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-
-            
-                {/* Supported Files and URLs */}
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <p className="text-lg font-semibold font-nunito">
-                      Supported file types (up to 200mb)
-                    </p>
-                    <ul className="list-disc pl-[20px]">
-                      {listContent.map((content) => (
-                        <li key={content} className="text-xs">
-                          {content}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-</div>
               </div>
 
-              {/* Second Part: Added Websites and Urls Listing */}
-              <div className="w-1/2 px-3 flex flex-col">
-             
-                {/* Added Websites */}
-                <div className="h-full px-15">
+              {/* Hidden File Input */}
+              <input
+                type="file"
+                multiple
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+
+              {/* Supported Files and URLs */}
+              <div className="mt-4 flex justify-between">
+                <div>
+                  <p className="text-lg font-semibold font-nunito">
+                    Supported file types (up to 200mb)
+                  </p>
+                  <ul className="list-disc pl-[20px]">
+                    {listContent.map((content) => (
+                      <li key={content} className="text-xs">
+                        {content}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Second Part: Added Websites and Urls Listing */}
+            <div className="w-1/2 px-3 flex flex-col">
+              {/* Added Websites */}
+              <div className="h-full px-15">
                 <div className="border border-appGray-600 rounded-lg h-full flex flex-col p-2">
-                
                   {/* Added Reports Listing */}
                   <div className="rounded-lg p-2 flex-1">
                     <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
@@ -315,20 +307,19 @@ const AdminUploadReport = () => {
                     )}
                   </div>
                 </div>
-                </div>
               </div>
             </div>
-            <div className="max-w-[120px] mt-5">
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
-              >
-                {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
-              </button>
-            </div>
           </div>
-        
+          <div className="max-w-[120px] mt-5">
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="cursor-pointer flex justify-center text-center border w-full border-[#442873] bg-[#442873] text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+            >
+              {loading ? <LoadingIcon width={18} height={18} className="" /> : "Submit"}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

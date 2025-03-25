@@ -10,6 +10,7 @@ import { updateUserProfile } from "../../../utils/api/userProfile";
 import { roles } from "./_constants/roles";
 import { NEW_BACKEND_URL } from "src/pages/authentication/signup/env";
 import Button from "src/components/reusable/button";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
 
 type IModal = "profile" | "password";
 
@@ -86,6 +87,7 @@ const AddUser = () => {
 
   return (
     <div className="space-y-[20px] h-[calc(100vh-120px)] w-full z-10">
+      <AgentHead agentName="" />
       <div className="p-1">
         <h6 className="text-lg font-semibold ml-0">Settings &gt; User management &gt; User</h6>
         <div className="flex justify-start items-center pt-3 pl-1">

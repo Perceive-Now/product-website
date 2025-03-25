@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { getCurrentSession, loginUser } from "../../../stores/auth";
 import GoogleAuth from "../../../components/@auth/google";
 import { setSession } from "../../../stores/session";
+import PrimaryButton from "src/components/reusable/button/primary-button";
 
 interface ILoginFormValues {
   username: string;
@@ -117,7 +118,7 @@ export default function LoginPage() {
   return (
     <div className="flex h-full 2xl:h-[calc(100vh-200px)] justify-center items-center px-2">
       <form onSubmit={handleSubmit(handleLogin)} className="w-full md:w-[400px]">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col">
           <h1 className="text-4xl font-extrabold text-secondary-800 mt-5">Sign In</h1>
         </div>
 
@@ -129,10 +130,9 @@ export default function LoginPage() {
                 {...register("username")}
                 type="text"
                 className={classNames(
-                  "appearance-none block w-full px-2 py-[10px] bg-gray-100 border rounded-md placeholder:text-gray-400 focus:ring-0.5 focus:outline-none",
-                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
+                  "appearance-none block w-full px-2 py-[10px] border-[1px] border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
                   errors.username
-                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
                     : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Username/Email"
@@ -152,11 +152,10 @@ export default function LoginPage() {
                 {...register("password")}
                 type={isPasswordVisible ? "text" : "password"}
                 className={classNames(
-                  "appearance-none block w-full pl-2 pr-7 py-[10px] bg-gray-100 border rounded-md placeholder:text-gray-400 focus:ring-0.5 focus:outline-none",
-                  error && "ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500",
+                  "appearance-none block w-full pl-2 pr-7 py-[10px] border-[1px] border-[#87888C] rounded-full placeholder:text-gray-400 focus:ring-0.5",
                   errors.password
-                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                    : "border-gray-400  focus:border-primary-500 focus:ring-primary-500",
+                    ? "border-danger-500 focus:border-danger-500 focus:ring-danger-500"
+                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                 )}
                 placeholder="Password"
               />
@@ -177,13 +176,15 @@ export default function LoginPage() {
               </div>
             )}
           </fieldset>
-          <div className="text-sm font-bold mt-0.5">
-            <Link to="/forgot-password" className="text-[#442873]">Forgot password?</Link>
+          <div className="text-sm font-bold mt-1">
+            <Link to="/forgot-password" className="text-[#442873]">
+              Forgot password?
+            </Link>
           </div>
         </div>
 
         <div className="flex justify-center w-full mt-3">
-          <Button
+          {/* <Button
             classname="w-full"
             htmlType="submit"
             disabled={isSubmitting || isGoogleSubmitting}
@@ -192,7 +193,8 @@ export default function LoginPage() {
             rounded="full"
           >
             Sign In
-          </Button>
+          </Button> */}
+          <PrimaryButton className="w-full" type="submit" loading={isSubmitting} text="Sign In" />
         </div>
 
         <p className="text-center mt-2.5">

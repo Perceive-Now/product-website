@@ -13,6 +13,7 @@ import { addActivityComment } from "src/stores/vs-product";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import TrashIcon from "src/components/icons/common/trash";
 import classNames from "classnames";
+import { API_PROD_URL } from "src/utils/axios";
 // import JSZip from "jszip";
 // import { saveAs } from 'file-saver';
 
@@ -110,17 +111,16 @@ const DetailedReport = () => {
     } else {
       toast.error("Please upload only one file.");
     }
-    e.target.value = null
+    e.target.value = null;
   };
 
   const handleSubmit = async () => {
-
     if (!highlights.trim()) {
       if (highlightRef.current) {
-        highlightRef.current.focus()
+        highlightRef.current.focus();
       }
-      setHighlightError("Report Highlights is mandatory")
-      return
+      setHighlightError("Report Highlights is mandatory");
+      return;
     }
     setLoading(true);
     if (!uploadedFiles.length) {
@@ -136,7 +136,7 @@ const DetailedReport = () => {
 
     try {
       const response: any = await fetch(
-        `https://templateuserrequirements.azurewebsites.net/upload-report-files/${user_id}/${project_id}/${report_id}?request_body=${highlights}`,
+        `${API_PROD_URL}/upload-report-files/${user_id}/${project_id}/${report_id}?request_body=${highlights}`,
         // {itemData.report_id}`,
         {
           method: "POST",
@@ -145,9 +145,12 @@ const DetailedReport = () => {
         },
       );
 
-
       if (response.ok) {
-        const activityResponse = await addActivityComment(user_id as string, ACTIVITY_COMMENT.REPORT_ADDED, project_id as string)
+        const activityResponse = await addActivityComment(
+          user_id as string,
+          ACTIVITY_COMMENT.REPORT_ADDED,
+          project_id as string,
+        );
         navigate(`/admin`);
       } else {
         toast.error("Unable to submit report");
@@ -270,9 +273,9 @@ const DetailedReport = () => {
   //     }
   //   };
 
-  const highlightRef = useRef<any>(null)
-  const [highlights, setHighlights] = useState("")
-  const [highlightError, setHighlightError] = useState("")
+  const highlightRef = useRef<any>(null);
+  const [highlights, setHighlights] = useState("");
+  const [highlightError, setHighlightError] = useState("");
 
   return (
     <div className="space-y-[20px] w-full z-10">
@@ -328,8 +331,9 @@ const DetailedReport = () => {
               {/* File Upload Box */}
               <h6 className="font-semibold text-base font-nunito">Add Report File</h6>
               <div
-                className={`border border-appGray-600 rounded-lg h-[280px] flex justify-center items-center cursor-pointer p-10 ${dragging ? "bg-gray-200" : ""
-                  }`}
+                className={`border border-appGray-600 rounded-lg h-[280px] flex justify-center items-center cursor-pointer p-10 ${
+                  dragging ? "bg-gray-200" : ""
+                }`}
                 onDragOver={(e) => {
                   e.preventDefault();
                   setDragging(true);
@@ -338,7 +342,6 @@ const DetailedReport = () => {
                 onDrop={handleDrop}
                 onClick={handleBrowseClick}
               >
-
                 <div className="flex flex-col items-center text-lg">
                   <UploadIcon />
                   <p className="text-center text-base font-bold font-nunito mt-3">
@@ -497,12 +500,10 @@ const DetailedReport = () => {
                 </div>
               </div>
             </div> */}
-
           </div>
           <div className="mt-5">
             <h6 className="font-semibold mb-1 text-base font-nunito">
-              Report Highlights{" "}
-              <span className="text-red-500 ml-0">*</span>
+              Report Highlights <span className="text-red-500 ml-0">*</span>
             </h6>
             <input
               // ref={inputRef}
@@ -518,15 +519,11 @@ const DetailedReport = () => {
               placeholder="Report Highlights"
               value={highlights}
               onChange={(e) => {
-                setHighlights(e.target.value)
-                setHighlightError("")
+                setHighlights(e.target.value);
+                setHighlightError("");
               }}
             />
-            {highlightError && (
-              <div className="mt-1 text-s text-danger-500">
-                {highlightError}
-              </div>
-            )}
+            {highlightError && <div className="mt-1 text-s text-danger-500">{highlightError}</div>}
           </div>
           <div className="max-w-[120px] mt-5 mb-5">
             <button

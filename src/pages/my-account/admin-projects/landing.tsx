@@ -21,6 +21,8 @@ import TableDropdown from "../../../components/reusable/table-dropdown";
 import Button from "src/components/reusable/button";
 import DownloadIcon from "src/components/icons/common/download-icon";
 import { useNavigate } from "react-router-dom";
+import TaskType from "../admin-agent-reports/task-type";
+import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
@@ -66,13 +68,10 @@ const AdminDashboard = () => {
       console.log("ajaj", password);
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://templateuserrequirements.azurewebsites.net/admin/projects/users?password=${password}`,
-          {
-            method: "GET",
-            headers: { Accept: "application/json" },
-          },
-        );
+        const response = await fetch(`${API_PROD_URL}/admin/projects/users?password=${password}`, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
 
         if (response.ok) {
           localStorage.setItem("isAuthenticated", "true");

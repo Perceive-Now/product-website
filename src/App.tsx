@@ -83,7 +83,7 @@ import GenerateMarketReport from "./components/@report-generate/market-report-ge
 import ReportDetailedQAPage from "./pages/product/report-q&a/report-page";
 import OrganizationSettings from "./pages/authentication/signup/organization-settings";
 import ProfileSetup from "./pages/authentication/signup/profile-setup";
-import UserPlan from "./pages/authentication/signup/user-plan";
+import UserPlan from "./pages/authentication/signup/user-plan/index";
 import PaymentScreen from "./pages/authentication/signup/payment";
 import TeamMangementScreen from "./pages/authentication/signup/team-mangement";
 import ReviewConfirmationScreen from "./pages/authentication/signup/review-and-confirmation";
@@ -100,6 +100,18 @@ import InviteReviewConfirmation from "./pages/authentication/invite/review-confi
 import VerifyInviteToken from "./pages/authentication/invite/verify-token";
 import InviteAuthLayout from "./layouts/invitation/layout";
 import InviteFinish from "./pages/authentication/invite/success";
+import AiAgent from "./pages/product/ai-agent";
+import AgentLanding from "./pages/product/ai-agent/landing/homepage";
+import AgentAdminDashboard from "./pages/my-account/admin-agent-reports";
+import AgentReports from "./pages/my-account/admin-agent-reports/agent-reports";
+import AgentRequirements from "./pages/my-account/admin-agent-reports/agent-reports-requirements";
+import MyAgentReport from "./pages/my-account/my-agent-reports";
+import MyAgentReportManagement from "./pages/my-account/my-agent-reports/my-reports";
+import UploadAgentReport from "./pages/my-account/admin-agent-reports/upload-report";
+import TaskType from "./pages/my-account/admin-agent-reports/task-type";
+import AdminMain from "./pages/my-account/admin-projects/admin-main";
+import AIReportCustomization from "./pages/product/ai-agent/ai-report-custom";
+import FinalReportPage from "./pages/product/ai-agent/FinalMessage";
 // import MadLibEditor from "./test";
 
 /**
@@ -229,19 +241,31 @@ function App() {
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/add-user" element={<AddUser />} />
 
-            <Route path="/admin" element={<AdminDashboard />} />
+            {/* agent reports  */}
+            <Route path="/my-agent-reports" element={<MyAgentReport />} />
+            <Route path="/my-agent-reports/:id" element={<MyAgentReportManagement />} />
+
+            <Route path="/admin" element={<AdminMain />} />
             <Route path="/admin-projects/:id" element={<AdminProjects />} />
             <Route path="/admin-reports/:id" element={<AdminReports />} />
             <Route path="/upload-report/:id" element={<AdminUploadReport />} />
             <Route path="/detailed-report" element={<DetailedReport />} />
 
+            <Route path="/agent-admin" element={<AgentAdminDashboard />} />
+            <Route path="/agent-admin-reports/:userid" element={<AgentReports />} />
+            <Route path="/agent-reports/:threadid/:userid" element={<AgentRequirements />} />
+            <Route
+              path="/agent-admin/upload-agent-report/:threadid/:userid"
+              element={<UploadAgentReport />}
+            />
+
             {/* Report-section */}
             <Route element={<ReportSectionStateManagementService />}>
               <Route path="/draft-reports" element={<DraftReports />} />
 
-              <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
+              {/* <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} /> */}
 
-              <Route
+              {/* <Route
                 path={`/${EReportSectionPageIDs.InteractionMethod}`}
                 element={<InteractionMethod />}
               />
@@ -253,7 +277,7 @@ function App() {
               <Route
                 path={`/${EReportSectionPageIDs.UploadQuickPrompts}`}
                 element={<QuickPromptPage />}
-              />
+              /> */}
             </Route>
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
 
@@ -272,6 +296,12 @@ function App() {
 
             {/* VC-report */}
             <Route path="/vc-product" element={<VCProduct />} />
+
+            {/* Ai-Agent */}
+            <Route path="/ai-agent" element={<AiAgent />} />
+            <Route path="/ai-agent-customization" element={<AIReportCustomization />} />
+            <Route path="/ai-agent-final" element={<FinalReportPage />} />
+            <Route path="/ai-agent/landing" element={<AgentLanding />} />
 
             {/*Graph */}
             <Route path="/analytics" element={<IPFullReport />} />

@@ -1,5 +1,5 @@
 import { useState, useRef, FunctionComponent, useCallback, useEffect, Fragment } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import PerceiveLogo from "../../assets/images/logo.svg";
 import PerceiveIcon from "../../assets/images/logo-small.svg";
@@ -7,6 +7,9 @@ import PerceiveIcon from "../../assets/images/logo-small.svg";
 //
 import LogoSm from "../../assets/images/logo-small.svg";
 import Logo from "../../assets/images/logo.svg";
+
+import sidebarBackground from "src/assets/images/sidebar-background.webp";
+import collapsibleSvg from "./_assets/collapsible.svg";
 
 import classNames from "classnames";
 
@@ -28,6 +31,7 @@ import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS, CallBackProps } from "react-j
 import { setCurrentStep } from "src/stores/vs-product";
 import { setStartTour, setFinishTour } from "src/stores/dashboard";
 import RoundedArrowIcon from "src/components/icons/side-bar/rounded-arrow";
+import DraftReports from "./DraftReports";
 interface Props {
   show?: boolean;
   handleShow?: () => void;
@@ -220,12 +224,20 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
 
   const { pathname } = useLocation();
 
+  const [searchParams] = useSearchParams();
+
   const userDetail = useAppSelector((state) => state.auth.user);
   const runTour = useAppSelector((state) => state.dashboard.startTour);
 
   // const startTour = () => {
   //   setRunTour(true);
   // };
+
+  useEffect(() => {
+    if (searchParams.get("side") === "false") {
+      setOpen(false);
+    }
+  }, [searchParams]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -263,9 +275,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   // const titles = pathname?.split("/").slice(1);
 
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(
-    sidebarItems.map((itm) => itm.key),
-  );
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
 
   const updateActiveGroup = (group: string) => {
     if (expandedGroups.includes(group)) {
@@ -482,9 +492,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
       {/* new one */}
       <div className={`flex mr-[66px] sidebar fixed top-0 left-0 z-10`}>
         <div
-          className={`bg-appGray-100 ${open ? "w-[250px]" : "w-[56px]"} items-start ${
+          className={`bg-[#FFA301] ${open ? "w-[250px]" : "w-[56px]"} items-start ${
             open ? "pl-3" : "pl-1 pb-[54px]"
           } duration-300  flex flex-col justify-between h-[100vh] z-10 pb-[20%]`}
+          // style={{
+          //   backgroundColor: "#FFA301",
+          // }}
         >
           <div className="z-10">
             <div className="py-1 px-1 container">
@@ -521,28 +534,119 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           />
 
           <div className="space-y-1 mb-auto text-nowrap">
-            <ToolTip title={open ? "Close Sidebar" : "Open Sidebar"} placement="right">
+          <div className="inline-flex">
+            <ToolTip
+              title={open ? "Close Sidebar" : "Open Sidebar"}
+              placement="right"
+              tooltipClose={open}
+            >
               <button
                 type="button"
-                className="hover:bg-white h-5 w-5 rounded-full flex justify-center items-center"
+                className={`h-5 w-5 rounded-full flex justify-center items-center ${open ? "mr-11" : ""}`}
                 onClick={() => setOpen(!open)}
               >
-                <RoundedArrowIcon className={classNames(open ? "" : "rotate-180")} />
+                <img
+                  src={collapsibleSvg}
+                  alt="collapsible"
+                  className={classNames(!open ? "rotate-180" : "")}
+                />
               </button>
             </ToolTip>
+            </div>
 
-            {sidebarItems.map((item) => (
-              <Link
-                to={item.to || "/"}
-                key={item.key}
-                className={classNames(
-                  "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
-                )}
-              >
-                <item.icon />
-                {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
-              </Link>
-            ))}
+            {sidebarItems.map((item) =>
+              !item.children ? (
+                <Link
+                  to={item.to || "/"}
+                  key={item.key}
+                  className={classNames(
+                    "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                  )}
+                >
+                  <div
+                    style={{
+                      filter: "grayscale(1)",
+                    }}
+                  >
+                    <item.icon />
+                  </div>
+
+                  {open && <span className=" text-secondary-800 text-base">{item.title}</span>}
+                </Link>
+              ) : (
+                // dropdown links
+                <div key={item.key}>
+                  <div
+                    className={`flex items-center gap-x-1 my-1 rounded-lg cursor-pointer text-sm`}
+                  >
+                    <div className="flex items-center">
+                      <div
+                        className="h-5 w-5 rounded-full flex justify-center items-center"
+                        style={{
+                          filter: "grayscale(1)",
+                        }}
+                      >
+                        {item.icon && open ? (
+                          <item.icon className="text-primary-900" />
+                        ) : (
+                          <Link to={item.to || "/"}>
+                            <item.icon className="text-primary-900" />
+                          </Link>
+                        )}
+                      </div>
+                      <Link to={item.to || "/"} className="text-sm text-inherit">
+                        {open && <span className="text-sm">{item.title}</span>}
+                      </Link>
+                    </div>
+                    {open && (
+                      <div className="">
+                        {expandedGroups.includes(item.key) && (
+                          <ChevronUp
+                            className="w-2 h-2"
+                            onClick={() => updateActiveGroup(item.key)}
+                          />
+                        )}
+                        {!expandedGroups.includes(item.key) && (
+                          <ChevronDown
+                            className="w-2 h-2"
+                            onClick={() => updateActiveGroup(item.key)}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {expandedGroups.includes(item.key) && (
+                    <div className="space-y-1">
+                      {
+                        // keep it closed by default
+                        item.children?.map((child, jndex) => (
+                          <div key={jndex} className="">
+                            {!child.children && (
+                              <NavLinkItem
+                                open={open}
+                                key={`main-content-${jndex}`}
+                                value={child.key}
+                                icon={child.icon}
+                                title={child.title}
+                                to={child.to}
+                                classname="text-sm"
+                              />
+                            )}
+                          </div>
+                        ))
+                      }
+                    </div>
+                  )}
+                </div>
+              ),
+            )}
+            <DraftReports
+              open={open}
+              setOpen={() => {
+                setOpen(true);
+              }}
+            />
           </div>
 
           <div className="space-y-0 text-nowrap">
