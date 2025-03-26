@@ -545,7 +545,10 @@ const AiAgent = () => {
                         hasbutton: true,
                       }),
                     );
-                  } else if (data.type_json === "Final_report") {
+                  } else if (
+                    data.type_json === "Final_report" ||
+                    data.response?.toLowerCase().includes("24-48 hours")
+                  ) {
                     dispatch(
                       setVSChats({
                         query: "",
