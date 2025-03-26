@@ -88,7 +88,10 @@ const QueryAnswer = ({
                     // dispatch(setprevres({ answer: stage }));
 
                     // if(Step == 2 && stage === "Looks good" || Step == 3 && stage === "Continue" || Step == 4  && stage === "Skip and proceed to step 5" ||Step == 5 && stage === "Continue")
-                    if (options.length === 1 && options.includes("Submit")) {
+                    if (
+                      options.length === 1 &&
+                      (options.includes("Submit") || options.includes("End Conversation"))
+                    ) {
                       setShowSubmit(true);
                       setDirectSubmit(true);
                     } else if (options.length === 1 || options.includes("Edit Summary")) {
