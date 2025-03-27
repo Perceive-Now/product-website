@@ -21,9 +21,16 @@ interface Props {
   title: string;
   placement?: Placement;
   tooltipClose?: boolean;
+  className?: string;
 }
 
-const ToolTip = ({ children, title, placement = "top", tooltipClose = false }: Props) => {
+const ToolTip = ({
+  children,
+  title,
+  placement = "top",
+  tooltipClose = false,
+  className,
+}: Props) => {
   return (
     <Tippy
       content={title}
@@ -31,7 +38,7 @@ const ToolTip = ({ children, title, placement = "top", tooltipClose = false }: P
       placement={placement}
       // visible={true}
     >
-      <span className="text-justify">{children}</span>
+      <span className={`text-justify ${className || ""}`}>{children}</span>
     </Tippy>
   );
 };
