@@ -198,7 +198,7 @@ const DraftReports = (props: Props) => {
           >
             <SvgDocumentIcon />
           </div>
-          {open && <span className=" text-secondary-800 text-base">{"Report Drafts"}</span>}
+          {open && <span className=" text-secondary-800 text-base">{"Scope of Work Draft"}</span>}
         </div>
         {open ? (
           <div

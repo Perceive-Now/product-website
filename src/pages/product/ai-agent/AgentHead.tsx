@@ -91,18 +91,18 @@ const AgentHead = (props: Props) => {
           {agentName && (
             <div
               className="rounded-full w-full h-full flex items-center justify-center"
-              style={{
-                background: "rgb(68, 40, 115)",
-              }}
+              // style={{
+              //   background: "rgb(68, 40, 115)",
+              // }}
             >
               <img
                 src={iconSrc}
                 alt={displayName}
-                className="w-3 h-3 p-[2px]"
-                style={{
-                  filter:
-                    "invert(100%) sepia(0%) saturate(2%) hue-rotate(270deg) brightness(109%) contrast(101%)",
-                }}
+                className="w-4 h-4"
+                // style={{
+                //   filter:
+                //     "invert(100%) sepia(0%) saturate(2%) hue-rotate(270deg) brightness(109%) contrast(101%)",
+                // }}
               />
             </div>
           )}

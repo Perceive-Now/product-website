@@ -613,12 +613,17 @@ const AiAgent = () => {
                     setJsonType(data.type_json);
                     setJsonResponse(json_response);
                   }
+                  const userOptions = options?.length
+                    ? options
+                    : convoOptions.length
+                    ? convoOptions
+                    : [];
                   dispatch(
                     setVSChats({
                       query: remainingText,
                       answer: "",
-                      options: options || [],
-                      hasbutton: !!options?.length,
+                      options: userOptions,
+                      hasbutton: !!userOptions?.length,
                     }),
                   );
                   if (data.type_json === "Data_sources") {

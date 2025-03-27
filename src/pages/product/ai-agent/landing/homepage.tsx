@@ -157,7 +157,7 @@ export default function AgentsGrid() {
   return (
     <div className="px-4 pt-2 pb-12">
       <AgentHead agentName="" />
-      <h1 className="text-4xl font-bold mb-4">Agents</h1>
+      <h1 className="text-4xl font-bold mb-4">Our Suite of AI Agents</h1>
       <p className="text-lg mb-2">
         Explore our AI agents, each tailored to assist with specific tasks.
       </p>
