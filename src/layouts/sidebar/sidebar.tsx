@@ -500,7 +500,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           // }}
         >
           <div className="z-10">
-            <div className="py-1 px-1 container">
+            <div className="py-1 px-1 container flex  justify-center">
               <Link to="/">
                 <img
                   src={open ? PerceiveLogo : PerceiveIcon}
@@ -508,12 +508,30 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                   className="h-[32px]"
                 />
               </Link>
+              <ToolTip
+                title={open ? "Close Sidebar" : "Open Sidebar"}
+                placement="bottom-start"
+                tooltipClose={open}
+                className="w-[40px]"
+              >
+                <button
+                  type="button"
+                  className={`h-5 w-5 rounded-full flex justify-center items-center`}
+                  onClick={() => setOpen(!open)}
+                >
+                  <img
+                    src={collapsibleSvg}
+                    alt="collapsible"
+                    className={classNames(!open ? "rotate-180" : "")}
+                  />
+                </button>
+              </ToolTip>
             </div>
           </div>
 
           <Joyride
             steps={steps}
-            run={runTour}
+            run={true}
             continuous
             scrollToFirstStep
             // showSkipButton
@@ -532,28 +550,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             callback={handleJoyrideCallback}
             stepIndex={currentStepIndex}
           />
-
           <div className="space-y-1 mb-auto text-nowrap">
-          <div className="inline-flex">
-            <ToolTip
-              title={open ? "Close Sidebar" : "Open Sidebar"}
-              placement="right"
-              tooltipClose={open}
-            >
-              <button
-                type="button"
-                className={`h-5 w-5 rounded-full flex justify-center items-center ${open ? "mr-11" : ""}`}
-                onClick={() => setOpen(!open)}
-              >
-                <img
-                  src={collapsibleSvg}
-                  alt="collapsible"
-                  className={classNames(!open ? "rotate-180" : "")}
-                />
-              </button>
-            </ToolTip>
-            </div>
-
             {sidebarItems.map((item) =>
               !item.children ? (
                 <Link

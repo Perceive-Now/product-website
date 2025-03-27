@@ -886,7 +886,15 @@ const AiAgent = () => {
                 setanswer={setanswer}
                 query={query}
                 answer={answer}
-                uploadStatus={uploadStatus}
+                uploadStatus={
+                  uploadStatus ||
+                  chats?.[chats?.length - 1]?.query
+                    ?.toLowerCase()
+                    ?.includes("upload the pitch deck") ||
+                  chats?.[chats?.length - 1]?.query
+                    ?.toLowerCase()
+                    ?.includes("upload your pitch deck")
+                }
                 setFile={setAttachedFile}
                 // sendQuery={() => {
                 //   fetchResponse(query);
