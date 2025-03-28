@@ -34,35 +34,37 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="text-appGray-900">
-      <div className="font-semibold text-2xl">Feedback</div>
+    <div className="border border-black rounded-xl my-auto">
+      <div className="text-appGray-900 py-3 px-4">
+        <div className="font-semibold text-2xl">Feedback</div>
 
-      <div className="mt-5">
-        <div className="mb-5">
-          <div className="text-[22px] font-semibold text-primary-900 mb-4">
-            How satisfied are you with the overall experience?
+        <div className="mt-4">
+          <div className="mb-4">
+            <div className="text-[22px] font-semibold text-primary-900 mb-4">
+              How satisfied are you with the overall experience?
+            </div>
+
+            <FeedbackInput activeNumber={feedbackNumber} handleChange={handleFeedbackNumberChange} />
           </div>
 
-          <FeedbackInput activeNumber={feedbackNumber} handleChange={handleFeedbackNumberChange} />
-        </div>
+          <div className="mb-5 max-w-[580px]">
+            <div className="text-[22px] font-semibold text-primary-900 mb-4">
+              Let us know how we can better serve your needs
+            </div>
 
-        <div className="mb-5 max-w-[580px]">
-          <div className="text-[22px] font-semibold text-primary-900 mb-4">
-            Let us know how we can better serve your needs
-          </div>
-
-          <Input
-            type="textarea"
-            placeholder="Enter your feedback"
-            label="Comment"
+            <Input
+              type="textarea"
+              placeholder="Enter your feedback"
+              label="Comment"
             // value={feedback}
             // handleChange={handleFeedbackChange}
-          />
-        </div>
+            />
+          </div>
 
-        <Button disabled={isSubmitDisabled} handleClick={handleSubmit}>
-          Submit Feedback
-        </Button>
+          <Button disabled={isSubmitDisabled} handleClick={handleSubmit}>
+            Submit Feedback
+          </Button>
+        </div>
       </div>
     </div>
   );

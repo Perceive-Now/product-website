@@ -139,6 +139,7 @@ const MyAgentReport = () => {
             rowsData={filteredReports}
             size="medium"
             rowSelection={rowSelection}
+            errorMessage="Your report is on the way"
           />
           <div className=" flex items-center justify-end">
             <Pagination

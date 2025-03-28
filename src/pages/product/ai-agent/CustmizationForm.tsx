@@ -5,7 +5,7 @@ const options = {
   reportScopeOptions: [
     { label: "Detailed Analysis", value: "Detailed Analysis", showTextBox: false },
     { label: "High-Level Summary", value: "High-Level Summary", showTextBox: false },
-    { label: "Custom", value: "Custom", showTextBox: false },
+    { label: "Custom", value: "Other", showTextBox: true },
   ],
   reportFormatOptions: [
     { label: "PDF", value: "PDF", showTextBox: false },
@@ -65,7 +65,7 @@ const options = {
       value: "Detailed Methodology Section",
       showTextBox: false,
     },
-    { label: "Custom Citation Style", value: "Custom Citation Style", showTextBox: false },
+    { label: "Custom Citation Style", value: "Other", showTextBox: true },
   ],
   audienceFocusOneOptions: [
     { label: "C-Suite Executives", value: "C-Suite Executives", showTextBox: false },
@@ -108,7 +108,7 @@ const options = {
       showTextBox: false,
     },
     { label: "Neutral & Objective", value: "Neutral & Objective", showTextBox: false },
-    { label: "Custom", value: "Custom", showTextBox: false },
+    { label: "Custom", value: "Other", showTextBox: true },
   ],
   collaborationOptions: [
     { label: "No collaboration needed", value: "No collaboration needed", showTextBox: false },

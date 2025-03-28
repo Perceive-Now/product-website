@@ -83,7 +83,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
       className={`flex max-w-full items-start mb-2 transition-transform duration-200 ease-in-out ${
         disabled ? "" : "cursor-grab"
       } ${isDragging ? "scale-105 bg-gray-100 shadow-lg" : "bg-transparent"}`}
-      style={{ marginLeft: indentLevel * 33 }}
+      // style={{ marginLeft: indentLevel * 33 }}
     >
       {disabled ? null : <img src={DragIconTwo} className="pb-10" alt="Drag" />}
       <div className="flex flex-col w-full py-2 border border-gray-300 rounded-lg p-2">

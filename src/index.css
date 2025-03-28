@@ -50,6 +50,8 @@
     @apply text-primary-500;
   }
 #root > div{ height: 100%;}
+
+.closeBtn-hovered [id^="tippy-"] { left:100px !important;}
   .primary-gradient-text {
     background: linear-gradient(273deg, #442873 16.28%, #804bd9 104.76%);
     background-clip: text;

@@ -191,10 +191,13 @@ const AddQueryAgent = ({
             <button
               disabled={allDisabled}
               className={`bg-primary-900 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer ${
-                allDisabled ? "!cursor-not-allowed" : ""
+                allDisabled || (!attachedFile && !answer?.trim()) ? "!cursor-not-allowed" : ""
               }`}
               type="button"
               onClick={() => {
+                if (!attachedFile && !answer?.trim()) {
+                  return;
+                }
                 sendQuery(query, answer, attachedFile || undefined), setAttachedFile(null);
               }}
             >

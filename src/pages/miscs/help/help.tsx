@@ -34,40 +34,42 @@ export default function HelpPage() {
   };
 
   return (
-    <div className="text-appGray-900">
-      <div className="font-semibold text-2xl mb-2">Help</div>
+    <div className="border border-black rounded-xl my-auto">
+      <div className="text-appGray-900 py-3 px-4">
+        <div className="font-semibold text-2xl mb-2">Help</div>
 
-      <div className="max-w-[548px]">
-        Thank you for your interest in Perceive Now, Inc. Please feel free to reach out to us with
-        any questions, comments or interest in getting involved.
+        <div className="max-w-[548px]">
+          Thank you for your interest in Perceive Now, Inc. Please feel free to reach out to us with
+          any questions, comments or interest in getting involved.
+        </div>
+
+        <form onSubmit={handleSubmit(handleHelpFormSubmit)} className="mt-4 max-w-[480px]">
+          <div className="mb-2">
+            <Input
+              register={register}
+              // name={"subject"}
+              label="Subject"
+              placeholder="Subject"
+              error={errors["subject"]}
+            />
+          </div>
+
+          <div>
+            <Input
+              // name={"comment"}
+              label="Comment"
+              register={register}
+              type="textarea"
+              placeholder="Enter your comment"
+              error={errors["comment"]}
+            />
+          </div>
+
+          <Button classname="mt-4" disabled={!isValid}>
+            Submit
+          </Button>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit(handleHelpFormSubmit)} className="mt-7 max-w-[480px]">
-        <div className="mb-4">
-          <Input
-            register={register}
-            // name={"subject"}
-            label="Subject"
-            placeholder="Subject"
-            error={errors["subject"]}
-          />
-        </div>
-
-        <div className="mb-4">
-          <Input
-            // name={"comment"}
-            label="Comment"
-            register={register}
-            type="textarea"
-            placeholder="Enter your comment"
-            error={errors["comment"]}
-          />
-        </div>
-
-        <Button classname="mt-7" disabled={!isValid}>
-          Submit
-        </Button>
-      </form>
     </div>
   );
 }

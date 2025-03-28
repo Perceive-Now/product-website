@@ -465,7 +465,7 @@ const AiAgent = () => {
                   const { options, remainingText } = processResponse(data.response);
                   if (data.response?.toLowerCase().includes("24-48 hours")) {
                     convoOptions = ["End Conversation"];
-                    updateUrlParam("side", "false");
+                    // updateUrlParam("side", "false");
                   }
                   const userOptions = options?.length
                     ? options
@@ -545,7 +545,10 @@ const AiAgent = () => {
                         hasbutton: true,
                       }),
                     );
-                  } else if (data.type_json === "Final_report") {
+                  } else if (
+                    data.type_json === "Final_report" ||
+                    data.response?.toLowerCase().includes("24-48 hours")
+                  ) {
                     dispatch(
                       setVSChats({
                         query: "",
@@ -610,12 +613,17 @@ const AiAgent = () => {
                     setJsonType(data.type_json);
                     setJsonResponse(json_response);
                   }
+                  const userOptions = options?.length
+                    ? options
+                    : convoOptions.length
+                    ? convoOptions
+                    : [];
                   dispatch(
                     setVSChats({
                       query: remainingText,
                       answer: "",
-                      options: options || [],
-                      hasbutton: !!options?.length,
+                      options: userOptions,
+                      hasbutton: !!userOptions?.length,
                     }),
                   );
                   if (data.type_json === "Data_sources") {
@@ -878,7 +886,15 @@ const AiAgent = () => {
                 setanswer={setanswer}
                 query={query}
                 answer={answer}
-                uploadStatus={uploadStatus}
+                uploadStatus={
+                  uploadStatus ||
+                  chats?.[chats?.length - 1]?.query
+                    ?.toLowerCase()
+                    ?.includes("upload the pitch deck") ||
+                  chats?.[chats?.length - 1]?.query
+                    ?.toLowerCase()
+                    ?.includes("upload your pitch deck")
+                }
                 setFile={setAttachedFile}
                 // sendQuery={() => {
                 //   fetchResponse(query);

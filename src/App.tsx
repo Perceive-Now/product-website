@@ -263,9 +263,9 @@ function App() {
             <Route element={<ReportSectionStateManagementService />}>
               <Route path="/draft-reports" element={<DraftReports />} />
 
-              <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} />
+              {/* <Route path={`/${EReportSectionPageIDs.UseCases}`} element={<UseCasePage />} /> */}
 
-              <Route
+              {/* <Route
                 path={`/${EReportSectionPageIDs.InteractionMethod}`}
                 element={<InteractionMethod />}
               />
@@ -277,7 +277,7 @@ function App() {
               <Route
                 path={`/${EReportSectionPageIDs.UploadQuickPrompts}`}
                 element={<QuickPromptPage />}
-              />
+              /> */}
             </Route>
             <Route path="/generate-market-report" element={<GenerateMarketReport />} />
 
