@@ -3,6 +3,8 @@ import LayoutIcon from "src/components/icons/miscs/layout";
 import AddIcon from "src/components/icons/common/add-icon";
 import { useAppSelector, useAppDispatch } from "src/hooks/redux";
 import TrashIconTwo from "src/assets/images/TrashTwo.svg";
+import BookIcon from "src/assets/images/book.svg";
+import SwitchIcon from "src/assets/images/switch.svg";
 import { updatePitchdeckData } from "src/stores/vs-product";
 
 interface Props {
@@ -68,11 +70,16 @@ const SourcesData: React.FC<Props> = (props) => {
         } bg-opacity-50 rounded-lg`}
       >
         <div className="flex items-center">
-          <div onClick={() => setOpen(!open)} className="cursor-pointer">
-            <LayoutIcon />
+          <div className="cursor-pointer">
+            <img src={BookIcon} alt="book" className="w-4 h-4" />
           </div>
           <div className="ml-2">
-            <h2 className="text-lg font-semibold">Data Sources</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Data Sources</h2>
+              <div onClick={() => setOpen(!open)} className="cursor-pointer">
+                <img src={SwitchIcon} alt="book" className="w-4 h-4" />
+              </div>
+            </div>
             {open && (
               <>
                 <h4 className="mb-4 text-sm sm:text-base">
