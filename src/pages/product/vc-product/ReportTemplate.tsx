@@ -335,16 +335,15 @@ const TemplateReport: React.FC = () => {
             open ? "w-full h-full" : "w-full h-auto"
           } bg-opacity-50 rounded-lg`}
         >
-          <div className="flex flex-col gap-y-2">
- 
-            <div className="ml-2 flex items-start gap-x-2">
-            <div onClick={() => setOpen(!open)} className="cursor-pointer">
-              <LayoutIcon />
-            </div>
-            <div>
-
+          <div className="flex justify-between items-center gap-y-2">
+            <LayoutIcon />
+            <div className="ml-2 flex items-start gap-x-2 flex-1">            
+            <div className="flex justify-between items-center">
               <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
               {open && <h4 className="mb-4">Customize sections to suit your needs.</h4>}
+            </div>
+            <div onClick={() => setOpen(!open)} className="cursor-pointer">
+              <LayoutIcon />
             </div>
             </div>
           </div>

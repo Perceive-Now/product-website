@@ -184,11 +184,11 @@ const DraftReports = (props: Props) => {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="flex-1 flex flex-col min-h-0">
         <div
           onClick={setOpen}
           className={classNames(
-            "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+            "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800 flex-0",
           )}
         >
           <div
@@ -202,7 +202,7 @@ const DraftReports = (props: Props) => {
         </div>
         {open ? (
           <div
-            className="max-h-[300px] overflow-y-auto pn_scroller"
+            className=" overflow-y-auto pn_scroller flex-1 min-h-0"
             onScroll={(e) => {
               if (openMenu) {
                 setOpenMenu(false);

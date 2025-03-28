@@ -37,10 +37,10 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
             <div className="flex flex-col">
               <img src={agent.icon} alt={agent.title} className="w-10 h-10 mb-2" />
               <div
-                className="bg-white p-[5px] w-fit rounded-[5px] backdrop-blur-sm"
-                style={{ fontFamily: "serif" }}
+                className="bg-white p-0.5 w-fit rounded backdrop-blur-sm"
+                
               >
-                <h3 className="text-[1.7rem] text-gray-800">{agent.title}</h3>
+                <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
               </div>
             </div>
             <p className="text-[#373D3F] text-sm">{agent.description}</p>

@@ -10,6 +10,8 @@ import { updatePitchdeckData } from "src/stores/vs-product";
 import Select from "react-select";
 import ArrowDown from "src/components/icons/miscs/ArrowDown";
 import ArrowUp from "src/components/icons/miscs/ArrowUp";
+import BookIcon from "src/assets/images/book.svg";
+import SwitchIcon from "src/assets/images/switch.svg";
 
 const ItemType = {
   ITEM: "item",
@@ -368,11 +370,16 @@ const TemplateReport: React.FC<Props> = (props) => {
         >
           <div className="flex flex-col gap-y-2">
             <div className="ml-2 flex items-start gap-x-2">
-              <div onClick={() => setOpen(!open)} className="cursor-pointer">
-                <LayoutIcon />
+              <div className="cursor-pointer">
+                <img src={BookIcon} alt="book" className="w-4 h-4" />
               </div>
               <div>
-                <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
+                  <div onClick={() => setOpen(!open)} className="cursor-pointer">
+                    <img src={SwitchIcon} alt="book" className="w-4 h-4" />
+                  </div>
+                </div>
                 {open && <h4 className="mb-4">Customize sections to suit your needs.</h4>}
               </div>
             </div>

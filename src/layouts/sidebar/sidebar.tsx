@@ -332,6 +332,23 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   };
 
   const [collapseOpen, setIsCollapseOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleClick = () => {
+    setIsHovered(false); 
+    document.body.classList.remove('closeBtn-hovered');
+    setTimeout(() => setIsHovered(true), 10); 
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    document.body.classList.add('closeBtn-hovered');
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    document.body.classList.remove('closeBtn-hovered');
+  };
 
   return (
     <>
@@ -499,8 +516,8 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           //   backgroundColor: "#FFA301",
           // }}
         >
-          <div className="z-10">
-            <div className="py-1 px-1 container flex  justify-center">
+          <div className="z-10 flex-0">
+            <div className="py-1 px-1 container flex  justify-between">
               <Link to="/">
                 <img
                   src={open ? PerceiveLogo : PerceiveIcon}
@@ -508,24 +525,53 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                   className="h-[32px]"
                 />
               </Link>
-              <ToolTip
-                title={open ? "Close Sidebar" : "Open Sidebar"}
-                placement="bottom-start"
-                tooltipClose={open}
-                className="w-[40px]"
-              >
-                <button
-                  type="button"
-                  className={`h-5 w-5 rounded-full flex justify-center items-center`}
-                  onClick={() => setOpen(!open)}
+              {open ? (
+              <div className="z-10 flex relative w-[40px] closeTooltipBtn"
+              onClick={handleClick}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}>
+                <ToolTip
+                  title={open ? "Close Sidebar" : "Open Sidebar"}
+                  placement="bottom-start"
+                  tooltipClose={open}
+                  className={``}
                 >
-                  <img
-                    src={collapsibleSvg}
-                    alt="collapsible"
-                    className={classNames(!open ? "rotate-180" : "")}
-                  />
-                </button>
-              </ToolTip>
+                  <button
+                    type="button"
+                    className={`h-5 w-5 rounded-full flex justify-center items-center `}
+                    onClick={() => setOpen(!open)}
+                  >
+                    
+                    <img
+                      src={collapsibleSvg}
+                      alt="collapsible"
+                      className={`${classNames(!open ? "rotate-180" : "")} `}
+                    />
+                  </button>
+                </ToolTip>
+              </div>
+              ) : (
+              <div className="z-10 flex relative w-[40px] closeTooltipBtn" >
+                <ToolTip
+                  title={open ? "Close Sidebar" : "Open Sidebar"}
+                  placement="bottom-start"
+                  tooltipClose={open}
+                  className={``}
+                >
+                  <button
+                    type="button"
+                    className={`h-5 w-5 rounded-full flex justify-center items-center`}
+                    onClick={() => setOpen(!open)}
+                  >
+                    <img
+                      src={collapsibleSvg}
+                      alt="collapsible"
+                      className={classNames(!open ? "rotate-180" : "")}
+                    />
+                  </button>
+                </ToolTip>
+              </div>
+              )}
             </div>
           </div>
 
@@ -550,7 +596,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             callback={handleJoyrideCallback}
             stepIndex={currentStepIndex}
           />
-          <div className="space-y-1 mb-auto text-nowrap">
+          <div className=" text-nowrap flex-1 flex flex-col justify-start min-h-0">
             {sidebarItems.map((item) =>
               !item.children ? (
                 <Link
@@ -646,7 +692,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             />
           </div>
 
-          <div className="space-y-0 text-nowrap">
+          <div className="space-y-0 text-nowrap hidden">
             <div
               onClick={() => setOpen((prev) => !prev)}
               className={classNames(
