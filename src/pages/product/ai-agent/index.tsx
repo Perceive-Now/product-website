@@ -53,6 +53,8 @@ import { useListing } from "src/layouts/sidebar/DraftProvider";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 import { API_PROD_URL } from "src/utils/axios";
+import AgentInfo from "./AgentInfo";
+import DiligenceAgentThinking from "./AgentInit";
 
 const AgentName: Record<string, string> = {
   "company-diligence-agent": "Company Diligence Agent",
@@ -89,6 +91,7 @@ const AiAgent = () => {
   const [isfile, setFile] = useState<string>("");
   const chatRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsloading] = useState(false);
+  const [isInitLoad, setIsInitLoad] = useState(false);
   const [delayLoading, setDelayLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [finalMessage, setFinalMessage] = useState(false);
@@ -203,6 +206,7 @@ const AiAgent = () => {
           });
       });
     } else {
+      setIsInitLoad(true);
       const fun = async () => {
         try {
           dispatch(resetChats());
@@ -270,6 +274,7 @@ const AiAgent = () => {
         } finally {
           setQuery(""); // Clear input field
           setIsloading(false);
+          setIsInitLoad(false);
         }
       };
       fun();
@@ -806,6 +811,9 @@ const AiAgent = () => {
         </div>
         <AgentHead agentName={AgentName[agent || ""] || "Company Diligence Agent"} />
         <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
+          <div>
+            <AgentInfo />
+          </div>
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">
             {/* <div className="relative flex-none">
               <div className="absolute left-[-25px] md:left-[-40px] lg:left-[-45px] top-2 w-[10px]">
@@ -869,6 +877,10 @@ const AiAgent = () => {
                     )}
                     {uploadingfile || analysingfile ? (
                       <LoadingUI uploadingFile={uploadingfile} analyzing={analysingfile} />
+                    ) : isInitLoad ? (
+                      <div className="flex items-center justify-center p-5 h-full">
+                        <DiligenceAgentThinking agentName={AgentName[agent || ""]} />
+                      </div>
                     ) : (
                       isLoading && (
                         <div className="flex items-center justify-center p-5 h-full">
