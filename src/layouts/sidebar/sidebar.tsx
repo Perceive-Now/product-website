@@ -560,7 +560,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                 >
                   <button
                     type="button"
-                    className={`h-5 w-5 rounded-full flex justify-center items-center`}
+                    className={`h-5 w-5 rounded-full flex items-center`}
                     onClick={() => setOpen(!open)}
                   >
                     <img

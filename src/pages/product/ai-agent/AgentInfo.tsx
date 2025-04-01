@@ -1,25 +1,26 @@
 import React from "react";
+import checkIcon from "./_assets/checkIcon.svg"
 
 const AgentInfo = () => {
   return (
-    <div className="space-y-4  max-w-[300px] w-full">
-      <div className="flex items-start space-x-3 p-4 bg-orange-50 rounded-xl">
-        <span className="text-purple-600 text-xl">✔</span>
-        <p className="text-gray-800">
-          I’ll help you build a world-class Scope of Work in just <b>6 quick steps</b>.
+    <div className="max-w-[215px] w-full bg-orange-50 gap-y-4 flex flex-col rounded-xl p-[12px]">
+      <div className="flex items-start gap-2">
+        <span className="text-purple-600 text-xl w-6 h-3 rounded-full bg-primary-50 flex-[0_0_24px] inline-flex items-center justify-center"><img src={checkIcon} alt="" /></span>
+        <p className="text-gray-800 flex-auto text-sm">
+          I’ll help you build a world-class Scope of Work in just 6 quick steps.
         </p>
       </div>
 
-      <div className="flex items-start space-x-3 p-4 bg-orange-50 rounded-xl">
-        <span className="text-purple-600 text-xl">✔</span>
-        <p className="text-gray-800">
-          Don’t have all the answers? Just say: <i>“Skip and go to the next step”</i>.
+      <div className="flex items-start gap-2">
+        <span className="text-purple-600 text-xl w-6 h-3 rounded-full bg-primary-50 flex-[0_0_24px] inline-flex items-center justify-center"><img src={checkIcon} alt="" /></span>
+        <p className="text-gray-800 flex-auto text-sm">
+          Don’t have all the answers? Just say: <span className="font-medium italic">“Skip and go to the next step”</span>.
         </p>
       </div>
 
-      <div className="flex items-start space-x-3 p-4 bg-orange-50 rounded-xl">
-        <span className="text-purple-600 text-xl">✔</span>
-        <p className="text-gray-800">You can customize your report further on the next page.</p>
+      <div className="flex items-start gap-2">
+        <span className="text-purple-600 text-xl w-6 h-3 rounded-full bg-primary-50 flex-[0_0_24px] inline-flex items-center justify-center"><img src={checkIcon} alt="" /></span>
+        <p className="text-gray-800 flex-auto text-sm">You can customize your report further on the next page.</p>
       </div>
     </div>
   );

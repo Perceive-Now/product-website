@@ -69,15 +69,15 @@ const SourcesData: React.FC<Props> = (props) => {
           open ? "w-full h-full" : "w-full h-auto"
         } bg-opacity-50 rounded-lg`}
       >
-        <div className="flex items-center">
-          <div className="cursor-pointer">
-            <img src={BookIcon} alt="book" className="w-4 h-4" />
+        <div className="flex">
+          <div className="cursor-pointer py-1">
+            <img src={BookIcon} alt="book" className="w-4" />
           </div>
           <div className="ml-2">
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between">
               <h2 className="text-lg font-semibold">Data Sources</h2>
-              <div onClick={() => setOpen(!open)} className="cursor-pointer">
-                <img src={SwitchIcon} alt="book" className="w-4 h-4" />
+              <div onClick={() => setOpen(!open)} className="cursor-pointer rounded border border-[#DFE3E8] p-1">
+                <img src={SwitchIcon} alt="book" className="w-[20px]" />
               </div>
             </div>
             {open && (
