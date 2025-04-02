@@ -834,7 +834,7 @@ const AiAgent = () => {
               <div className="flex flex-row flex-auto justify-center">
                 <div
                   ref={chatRef}
-                  className="bg-white rounded-lg p-3 w-full max-h-[calc(100vh-244px)] overflow-y-auto pn_scroller shadow-[0_4px_4px_0] shadow-[#000]/[0.06]"
+                  className="bg-white rounded-lg p-3 pt-0 w-full max-h-[calc(100vh-244px)] overflow-y-auto pn_scroller shadow-[0_4px_4px_0] shadow-[#000]/[0.06]"
                 >
                   <div className="">
                     {chats.map((chat, idx) => (
