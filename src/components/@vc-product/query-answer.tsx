@@ -66,7 +66,7 @@ const QueryAnswer = ({
   return (
     <>
       {/* {answer!== "" && options!== undefined && ( */}
-      <div className="flex flex-wrap items-center justify-end gap-2 mt-2">
+      <div className={`flex flex-wrap items-center justify-end gap-2 ${index === 0 ? "" : "mt-2"}`}>
         {/* {answer === "Loading..." ? (
             <DotLoader />
           ) : ( */}
