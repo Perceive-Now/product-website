@@ -922,7 +922,10 @@ const AiAgent = () => {
                     ?.includes("upload the pitch deck") ||
                   chats?.[chats?.length - 1]?.query
                     ?.toLowerCase()
-                    ?.includes("upload your pitch deck")
+                    ?.includes("upload your pitch deck") ||
+                  chats?.[chats?.length - 1]?.query
+                    ?.toLowerCase()
+                    ?.includes("upload their pitch deck")
                 }
                 setFile={setAttachedFile}
                 // sendQuery={() => {

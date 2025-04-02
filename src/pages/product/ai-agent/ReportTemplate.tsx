@@ -370,14 +370,17 @@ const TemplateReport: React.FC<Props> = (props) => {
         >
           <div className="flex flex-col gap-y-2">
             <div className="ml-2 flex items-start gap-x-2">
-              <div className="cursor-pointer">
-                <img src={BookIcon} alt="book" className="w-4 h-4" />
+              <div className="cursor-pointer py-1">
+                <img src={BookIcon} alt="book" className="w-4" />
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <h2 className="text-base lg:text-lg font-semibold">Report Template</h2>
-                  <div onClick={() => setOpen(!open)} className="cursor-pointer">
-                    <img src={SwitchIcon} alt="book" className="w-4 h-4" />
+                  <div
+                    onClick={() => setOpen(!open)}
+                    className="cursor-pointer rounded border border-[#DFE3E8] p-1"
+                  >
+                    <img src={SwitchIcon} alt="book" className="w-[20px]" />
                   </div>
                 </div>
                 {open && <h4 className="mb-4">Customize sections to suit your needs.</h4>}

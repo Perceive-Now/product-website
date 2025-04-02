@@ -21,6 +21,9 @@ import { Switch } from "@headlessui/react";
 import SourcesData from "src/pages/product/ai-agent/DataSources";
 import TemplateReport from "src/pages/product/ai-agent/ReportTemplate";
 import { getTimeCurrent } from "src/utils/helpers";
+import pdot from "src/assets/images/icons/p-dot.svg";
+import blinkSpinner from "src/assets/images/icons/blink-spinner.svg";
+
 // interface IChat {
 //   query: string;
 //   answer: string;
@@ -126,8 +129,8 @@ const ChatQuery = ({
           <div className=" w-full">
             {/* Header */}
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-2">
-                <span className="text-purple-600">🟣</span>
+              <div className="flex items-center space-x-1">
+                <img src={pdot} alt={"Pn"} className="h-4 w-4 " />
                 <h2 className="text-gray-900 font-semibold">{agentName}</h2>
               </div>
               <span className="relative before:content-[''] before:absolute before:left-0 before:top-0 before:w-[2px] before:h-full before:bg-gray-200 before:mr-2 pl-2 text-gray-400 text-sm">
@@ -137,12 +140,19 @@ const ChatQuery = ({
             <hr className="border-gray-300 my-1"></hr>
 
             {/* Status Indicator */}
-            <div className="flex items-center space-x-2 bg-purple-100 text-purple-700 px-3 py-1 rounded-full w-fit mb-3 mt-2">
-              <span className="font-medium">Thinking</span>
-              {initLoading ? (
-                <div className="animate-spin h-4 w-4 border-2 border-purple-700 border-t-transparent rounded-full"></div>
-              ) : null}
-            </div>
+
+            {initLoading ? (
+              <div className="flex items-center space-x-2 bg-primary-900  text-white px-3 py-1 rounded-full w-fit mb-3 mt-2">
+                <span>Thinking</span>
+                <img
+                  style={{ animation: "spin 2s linear infinite" }}
+                  className=""
+                  src={blinkSpinner}
+                  alt={"Pn"}
+                />
+              </div>
+            ) : null}
+
             <Markdown
               className="markdownWrapper text-gray-500 text-justify text-align relative before:content-[''] before:absolute before:left-0 before:top-0 before:w-[2px] before:h-full before:bg-gray-300 before:mr-2 pl-2"
               remarkPlugins={[remarkGfm]}
