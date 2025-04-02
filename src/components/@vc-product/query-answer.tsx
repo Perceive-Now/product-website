@@ -10,6 +10,7 @@ import { setprevres } from "src/stores/vs-product";
 import UploadedFileItem from "./UploadedFile";
 import { Dialog } from "@headlessui/react";
 import Button from "../reusable/button";
+import DiligenceAgentThinking from "src/pages/product/ai-agent/AgentInit";
 
 interface Props {
   isLoading: boolean;
@@ -25,6 +26,8 @@ interface Props {
   file?: File;
   disabled?: boolean;
   threadId?: string;
+  initLoading?: boolean;
+  index?: number;
 }
 
 type IFeedback = "good" | "bad";
@@ -39,6 +42,8 @@ const QueryAnswer = ({
   file,
   disabled,
   threadId,
+  initLoading,
+  index,
 }: Props) => {
   const dispatch = useAppDispatch();
   const userDetail = useAppSelector((state) => state.auth.user);
@@ -122,6 +127,7 @@ const QueryAnswer = ({
               <div
                 className={`rounded-2xl rounded-br-none whitespace-pre-line flex items-center justify-center px-4 py-2 gap-2 relative select-text bg-foundationOrange-100`}
               >
+                {index === 0 ? <DiligenceAgentThinking agentName="" loading={initLoading} /> : null}
                 {answer}
               </div>
             )

@@ -20,7 +20,7 @@ const LoadingUI = (props: Props) => {
   }, []);
 
   return (
-    <div className="flex items-start justify-center ">
+    <div className="flex items-start justify-center mt-2">
       <div className="bg-white  rounded-lg p-4 max-w-xs relative shine-effect chat-bubble">
         <p className="text-md font-medium text-gray-800">
           {uploadingFile ? "Analyzing the file" : "Summarizing"}...
