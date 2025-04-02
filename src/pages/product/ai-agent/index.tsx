@@ -839,8 +839,17 @@ const AiAgent = () => {
                   <div className="">
                     {chats.map((chat, idx) => (
                       <>
-                        {chat.options?.length ? <ChatQuery query={chat.query} /> : null}
+                        {chat.options?.length ? (
+                          <ChatQuery
+                            query={chat.query}
+                            index={idx}
+                            initLoading={isInitLoad}
+                            agentName={AgentName[agent || ""]}
+                          />
+                        ) : null}
                         <QueryAnswer
+                          index={idx}
+                          initLoading={isInitLoad}
                           ido={`chat-[${idx}]`}
                           query={chat.query}
                           answer={chat.answer || ""}
@@ -866,7 +875,12 @@ const AiAgent = () => {
                             obj={chat.extractObject}
                           />
                         ) : !chat.options?.length ? (
-                          <ChatQuery query={chat.query} />
+                          <ChatQuery
+                            query={chat.query}
+                            index={idx}
+                            initLoading={isInitLoad}
+                            agentName={AgentName[agent || ""]}
+                          />
                         ) : null}
                       </>
                     ))}
@@ -879,7 +893,10 @@ const AiAgent = () => {
                       <LoadingUI uploadingFile={uploadingfile} analyzing={analysingfile} />
                     ) : isInitLoad ? (
                       <div className="flex items-center justify-center p-5 h-full">
-                        <DiligenceAgentThinking agentName={AgentName[agent || ""]} />
+                        <DiligenceAgentThinking
+                          agentName={AgentName[agent || ""]}
+                          loading={isInitLoad}
+                        />
                       </div>
                     ) : (
                       isLoading && (
