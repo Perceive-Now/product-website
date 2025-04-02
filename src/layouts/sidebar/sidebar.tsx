@@ -10,6 +10,7 @@ import Logo from "../../assets/images/logo.svg";
 
 import sidebarBackground from "src/assets/images/sidebar-background.webp";
 import collapsibleSvg from "./_assets/collapsible.svg";
+import reportSmallSvg from "./_assets/report-small-icon.svg";
 
 import classNames from "classnames";
 
@@ -517,12 +518,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           // }}
         >
           <div className="z-10 flex-0">
-            <div className="py-1 px-1 container flex  justify-between">
+            <div className={`py-1 px-1 container flex  justify-between ${open ? '' : 'flex-col gap-2 mt-3'}`}>
               <Link to="/">
                 <img
                   src={open ? PerceiveLogo : PerceiveIcon}
                   alt="PerceiveNow logo"
-                  className="h-[32px]"
+                  className={`${open ? 'h-[32px]' : 'h-[20px]'} `}
                 />
               </Link>
               {open ? (
@@ -566,7 +567,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                     <img
                       src={collapsibleSvg}
                       alt="collapsible"
-                      className={classNames(!open ? "rotate-180" : "")}
+                      className={classNames(!open ? "rotate-180 -ml-[3px]" : "")}
                     />
                   </button>
                 </ToolTip>
@@ -574,6 +575,22 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
               )}
             </div>
           </div>
+          
+          {open &&
+          <div className="my-2 rounded-xl bg-white flex text-base text-[#373D3F] w-full max-w-[206px] min-w-[206px] justify-between items-center px-[12px] py-[10px]">
+            <span>Start New Report</span>
+            <span className="gap-1 inline-flex">
+              <span className="border border-[#DBDEEB] rounded w-[18px] h-[18px] text-[#C8C8C8] text-[8px] inline-flex justify-center items-center">
+                <img
+                      src={reportSmallSvg}
+                      alt="Report"
+                    />
+                    
+                </span>
+              <span className="border border-[#DBDEEB] rounded w-[18px] h-[18px] text-[#C8C8C8] text-[8px] inline-flex justify-center items-center">K</span>
+            </span>
+          </div>
+          }
 
           <Joyride
             steps={steps}
