@@ -40,6 +40,7 @@ module.exports = {
       helvetica: ["Helvetica", "Arial", "sans-serif"],
       mulish: ["Mulish", "sans-serif"],
       nunito: ["Nunito", "sans-serif"],
+      poppins: ["Poppins", "sans-serif"],
     },
     extend: {
       colors: {

@@ -224,7 +224,7 @@ function App() {
           {/* Actual product pages */}
 
           <Route element={<DefaultLayout />}>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<AgentLanding />} />
 
             <Route path="/payment" element={<Payment />} />
             <Route path="/stay-tuned" element={<StayTunedPage />} />

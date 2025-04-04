@@ -620,7 +620,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
                   to={item.to || "/"}
                   key={item.key}
                   className={classNames(
-                    "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800",
+                    `${item.classname} py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800`,
                   )}
                 >
                   <div

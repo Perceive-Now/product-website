@@ -188,7 +188,7 @@ const DraftReports = (props: Props) => {
         <div
           onClick={setOpen}
           className={classNames(
-            "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800 flex-0",
+            "py-1 px-1 rounded flex items-center gap-1 text-sm text-secondary-800 flex-0 sidebar-scope",
           )}
         >
           <div

@@ -28,6 +28,7 @@ import technologyAndRndIcon from "./_assets/AgentLanding-Icons/TechnologyR-D.svg
 
 import AgentCard from "./_components/AgentCard";
 import AgentHead from "../AgentHead";
+import StartupModal from "./startup-modal";
 
 // Custom SVG Icons (replace these with your own SVGs)
 
@@ -155,6 +156,8 @@ const agents = [
 
 export default function AgentsGrid() {
   return (
+    <>
+     <StartupModal/>
     <div className="px-4 pt-2 pb-12">
       <AgentHead agentName="" />
       <h1 className="text-4xl font-bold mb-4">Our Suite of AI Agents</h1>
@@ -206,5 +209,7 @@ export default function AgentsGrid() {
         </div>
       </div>
     </div>
+   
+    </>
   );
 }

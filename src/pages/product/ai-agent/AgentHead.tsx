@@ -111,7 +111,7 @@ const AgentHead = (props: Props) => {
       </div>
 
       {/* Right Section: Profile Image */}
-      <div className="relative" onClick={() => setOpen((prev) => !prev)} ref={menuRef}>
+      <div className="relative joy-profile" onClick={() => setOpen((prev) => !prev)} ref={menuRef}>
         <UserIcon
           first_name={userDetail?.first_name || ""}
           last_name={userDetail?.last_name || ""}
