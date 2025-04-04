@@ -133,9 +133,9 @@ export default function StartupModal() {
     useEffect(() => {
         const modalShown = localStorage.getItem("modalShown");
         
-        if (!modalShown) {
+        if (modalShown) {
           setIsOpen(true);
-          localStorage.setItem("modalShown", "true");
+          localStorage.setItem("modalShown", "false");
         }else{
             setIsOpen(false);          
         }
