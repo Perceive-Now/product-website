@@ -161,7 +161,7 @@ const agents = [
     bgClass: "from-purple-200 to-blue-100",
     className: "",
     backgroundImage: marketingAndSalesImage,
-    agentLink: "legal-compliance-agent",
+    agentLink: "prior-art-agent",
   },
   {
     agentName: "FTO Agent",
@@ -172,7 +172,7 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: financeStrategyImage,
-    agentLink: "legal-compliance-agent",
+    agentLink: "fto-agent",
   },
   {
     agentName: "Patent Licensing Agent",
@@ -183,7 +183,7 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: legalAndComplianceImage,
-    agentLink: "legal-compliance-agent",
+    agentLink: "patent-licensing-agent",
   },
   {
     agentName: "Patent Landscape Agent",
@@ -194,7 +194,7 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: productEngineeringImage,
-    agentLink: "legal-compliance-agent",
+    agentLink: "patent-landscape-agent",
   },
   {
     agentName: "Prosecution History Agent",
@@ -205,7 +205,7 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: startupDilligenceImage,
-    agentLink: "legal-compliance-agent",
+    agentLink: "prosecution-history-agent",
   },
 ];
 
