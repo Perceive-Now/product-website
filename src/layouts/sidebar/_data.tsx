@@ -52,7 +52,7 @@ const sidebarItems: ISidebarListItem[] = [
     key: "reportManagement",
     classname: "sidebar-project",
     icon: StackFolders,
-    to: "/my-projects",
+    to: "/my-projects/landing",
   },
   // {
   //   title: "Know Now",

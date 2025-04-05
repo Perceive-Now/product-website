@@ -9,7 +9,8 @@ type Agent = {
   bgClass: string;
   className: string;
   backgroundImage: string;
-  agentLink: string;
+  agentLink?: string;
+  navLink?: string
 };
 
 type AgentCardProps = {
@@ -18,7 +19,7 @@ type AgentCardProps = {
 
 const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
   return (
-    <Link to={`/ai-agent?agent=${agent.agentLink}`} className="h-full">
+    <Link to={agent.navLink || `/ai-agent?agent=${agent.agentLink}`} className="h-full">
       <div
         className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow h-full ${
           agent.className

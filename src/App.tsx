@@ -102,6 +102,7 @@ import InviteAuthLayout from "./layouts/invitation/layout";
 import InviteFinish from "./pages/authentication/invite/success";
 import AiAgent from "./pages/product/ai-agent";
 import AgentLanding from "./pages/product/ai-agent/landing/homepage";
+import ProjectHubLanding from "./pages/my-account/my-projects/homepage";
 import AgentAdminDashboard from "./pages/my-account/admin-agent-reports";
 import AgentReports from "./pages/my-account/admin-agent-reports/agent-reports";
 import AgentRequirements from "./pages/my-account/admin-agent-reports/agent-reports-requirements";
@@ -302,6 +303,7 @@ function App() {
             <Route path="/ai-agent-customization" element={<AIReportCustomization />} />
             <Route path="/ai-agent-final" element={<FinalReportPage />} />
             <Route path="/ai-agent/landing" element={<AgentLanding />} />
+            <Route path="/my-projects/landing" element={<ProjectHubLanding />} />
 
             {/*Graph */}
             <Route path="/analytics" element={<IPFullReport />} />
