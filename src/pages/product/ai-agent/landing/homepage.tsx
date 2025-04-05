@@ -40,7 +40,7 @@ const agents = [
       "Evaluate company to uncover risks, validate potential, and guide informed investment decisions.",
     icon: startupDilligenceIcon,
     bgClass: "from-pink-200 to-red-100",
-    className: "col-span-6 row-span-1",
+    className: "",
     backgroundImage: startupDilligenceImage,
     agentLink: "company-diligence-agent",
   },
@@ -51,7 +51,7 @@ const agents = [
       "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
     icon: fundRaisingIcon,
     bgClass: "from-blue-200 to-blue-100",
-    className: "col-span-1 row-span-1 h-[550px]",
+    className: "",
     backgroundImage: fundRaisingImage,
     agentLink: "fundraising-strategy-agent",
   },
@@ -62,7 +62,7 @@ const agents = [
       "Generate tailored, data-rich reports for any business need, quickly and accurately.",
     icon: reportOnAnythingIcon,
     bgClass: "from-purple-200 to-pink-100",
-    className: "col-span-1 row-span-1 h-full",
+    className: "",
     backgroundImage: reportOnAnythingImage,
     agentLink: "report-on-anything-agent",
   },
@@ -73,7 +73,7 @@ const agents = [
       "Analyze trends and develop strategies to unlock market potential and drive growth.",
     icon: marketStrategyIcon,
     bgClass: "from-teal-200 to-blue-100",
-    className: "col-span-1 row-span-1 h-[550px]",
+    className: "",
     backgroundImage: marketStrategyImage,
     agentLink: "market-strategy-agent",
   },
@@ -84,7 +84,7 @@ const agents = [
       "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
     icon: portfolioSupportIcon,
     bgClass: "from-pink-200 to-purple-100",
-    className: "col-span-1 row-span-1 h-[550px]",
+    className: "",
     backgroundImage: portfolioSupportImage,
     agentLink: "portfolio-support-agent",
   },
@@ -95,7 +95,7 @@ const agents = [
       "Stay ahead with insights on emerging technologies, innovation strategies, and R&D opportunities.",
     icon: technologyAndRndIcon,
     bgClass: "from-yellow-200 to-green-100",
-    className: "col-span-2 row-span-1",
+    className: "",
     backgroundImage: technologyAndRndImage,
     agentLink: "technology-agent",
   },
@@ -106,7 +106,7 @@ const agents = [
       "Accelerate product development and engineering with process optimization and market alignment.",
     icon: productEngineeringIcon,
     bgClass: "from-red-200 to-pink-100",
-    className: "col-span-1 row-span-1 h-[420px]",
+    className: "",
     backgroundImage: productEngineeringImage,
     agentLink: "product-engineering-agent",
   },
@@ -116,7 +116,7 @@ const agents = [
     description: "Identify and manage promising startup investments to maximize venture success.",
     icon: corporateVentureIcon,
     bgClass: "from-blue-200 to-purple-100",
-    className: "col-span-1 row-span-1 h-[420px]",
+    className: "",
     backgroundImage: corporateVentureImage,
     agentLink: "corporate-venture-capital-agent",
   },
@@ -127,7 +127,7 @@ const agents = [
       "Make confident financial decisions with data-driven analysis and strategic insights.",
     icon: financeAndStrategyIcon,
     bgClass: "from-pink-200 to-red-100",
-    className: "col-span-1 row-span-1",
+    className: "",
     backgroundImage: financeStrategyImage,
     agentLink: "finance-strategy-agent",
   },
@@ -137,7 +137,7 @@ const agents = [
     description: "Boost revenue by crafting impactful campaigns and closing deals with precision.",
     icon: marketingAndSalesIcon,
     bgClass: "from-purple-200 to-blue-100",
-    className: "col-span-1 row-span-1 h-[450px]",
+    className: "",
     backgroundImage: marketingAndSalesImage,
     agentLink: "marketing-sales-agent",
   },
@@ -148,8 +148,63 @@ const agents = [
       "Navigate legal and regulatory challenges to ensure compliance and mitigate risks.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
-    className: "col-span-1 row-span-1 h-[450px]",
+    className: "",
     backgroundImage: legalAndComplianceImage,
+    agentLink: "legal-compliance-agent",
+  },
+  {
+    agentName: "Prior Art Agent",
+    title: "Prior Art Agent",
+    description:
+      "Protect your idea before it turns up in someone else’s patent.",
+    icon: legalAndComplianceIcon,
+    bgClass: "from-purple-200 to-blue-100",
+    className: "",
+    backgroundImage: marketingAndSalesImage,
+    agentLink: "legal-compliance-agent",
+  },
+  {
+    agentName: "FTO Agent",
+    title: "FTO Agent",
+    description:
+      "Launch with confidence — no red tape, no regrets.",
+    icon: legalAndComplianceIcon,
+    bgClass: "from-yellow-200 to-orange-100",
+    className: "",
+    backgroundImage: financeStrategyImage,
+    agentLink: "legal-compliance-agent",
+  },
+  {
+    agentName: "Patent Licensing Agent",
+    title: "Patent Licensing Agent",
+    description:
+      "Turn unused patents into untapped revenue.",
+    icon: legalAndComplianceIcon,
+    bgClass: "from-yellow-200 to-orange-100",
+    className: "",
+    backgroundImage: legalAndComplianceImage,
+    agentLink: "legal-compliance-agent",
+  },
+  {
+    agentName: "Patent Landscape Agent",
+    title: "Patent Landscape Agent",
+    description:
+      "See the full IP battlefield — and your best path through it.",
+    icon: legalAndComplianceIcon,
+    bgClass: "from-yellow-200 to-orange-100",
+    className: "",
+    backgroundImage: productEngineeringImage,
+    agentLink: "legal-compliance-agent",
+  },
+  {
+    agentName: "Prosecution History Agent",
+    title: "Prosecution History Agent",
+    description:
+      "Learn from every claim, correction, and curveball — before you file.",
+    icon: legalAndComplianceIcon,
+    bgClass: "from-yellow-200 to-orange-100",
+    className: "",
+    backgroundImage: startupDilligenceImage,
     agentLink: "legal-compliance-agent",
   },
 ];
@@ -170,43 +225,35 @@ export default function AgentsGrid() {
       </p>
 
       <div className="max-w-[1500px]">
-        {/* startup dilligence to technology and rnd */}
-        <div className="flex gap-2">
-          <div>
-            <AgentCard agent={agents[0]} />
-            <div className="flex gap-2 mt-2">
-              <AgentCard agent={agents[3]} />
 
-              <AgentCard agent={agents[4]} />
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="flex gap-2 mb-2">
-              <AgentCard agent={agents[1]} />
-              <AgentCard agent={agents[2]} />
-            </div>
-
-            <AgentCard agent={agents[5]} />
-          </div>
+        <h2 className="text-4xl font-bold mb-4">Investors</h2>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-4">
+          <div className="col-span-6"><AgentCard agent={agents[0]} /></div>
+          <div className="col-span-6"><AgentCard agent={agents[1]} /></div>
+          <div className="col-span-7"><AgentCard agent={agents[4]} /></div>
+          <div className="col-span-5"><AgentCard agent={agents[7]} /></div>
         </div>
 
-        <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-2">
-          <div className="col-span-2">
-            <div className="grid grid-cols-2 gap-2">
-              <AgentCard agent={agents[6]} />
-              <AgentCard agent={agents[7]} />
-            </div>
-            <div className="grid grid-cols-2 gap-2 mt-2">
-              <AgentCard agent={agents[9]} />
-
-              <AgentCard agent={agents[10]} />
-            </div>
-          </div>
-          <div className="col-span-1 h-full">
-            <AgentCard agent={agents[8]} />
-          </div>
+        <h2 className="text-4xl font-bold mb-4">Enterprises</h2>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-4">
+          <div className="col-span-5"><AgentCard agent={agents[3]} /></div>
+          <div className="col-span-7"><AgentCard agent={agents[6]} /></div>
+          <div className="col-span-7"><AgentCard agent={agents[9]} /></div>
+          <div className="col-span-5"><AgentCard agent={agents[5]} /></div>
+          <div className="col-span-6"><AgentCard agent={agents[8]} /></div>
+          <div className="col-span-6"><AgentCard agent={agents[10]} /></div>
+          <div className="col-span-12"><AgentCard agent={agents[2]} /></div>
         </div>
+
+        <h2 className="text-4xl font-bold mb-4">IP Experts</h2>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2">
+          <div className="col-span-6"><AgentCard agent={agents[11]} /></div>
+          <div className="col-span-6"><AgentCard agent={agents[12]} /></div>
+          <div className="col-span-7"><AgentCard agent={agents[13]} /></div>
+          <div className="col-span-5"><AgentCard agent={agents[14]} /></div>
+          <div className="col-span-12"><AgentCard agent={agents[15]} /></div>
+        </div>
+
       </div>
     </div>
    

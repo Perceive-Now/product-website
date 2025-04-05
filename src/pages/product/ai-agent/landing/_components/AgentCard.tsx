@@ -18,9 +18,9 @@ type AgentCardProps = {
 
 const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
   return (
-    <Link to={`/ai-agent?agent=${agent.agentLink}`}>
+    <Link to={`/ai-agent?agent=${agent.agentLink}`} className="h-full">
       <div
-        className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow ${
+        className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow h-full ${
           agent.className
         } ${agent.agentName === "Finance & Strategy Agent" && "h-full"} cu`}
       >
