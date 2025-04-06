@@ -190,7 +190,7 @@ interface CheckboxGroupProps {
   optionKey: string;
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
+export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   options,
   selectedOptions,
   onChange,

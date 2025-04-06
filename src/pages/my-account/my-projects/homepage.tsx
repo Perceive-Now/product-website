@@ -33,8 +33,8 @@ import AgentCard from "src/pages/product/ai-agent/landing/_components/AgentCard"
 
 const agents = [
   {
-    agentName: "Startup Diligence Agent",
-    title: "Company Diligence Agent",
+    agentName: "Startup Diligence",
+    title: "Company Diligence",
     description:
       "Evaluate company to uncover risks, validate potential, and guide informed investment decisions.",
     icon: startupDilligenceIcon,
@@ -44,8 +44,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Fundraising Strategy Agent",
-    title: "Fundraising Strategy Agent",
+    agentName: "Fundraising Strategy",
+    title: "Fundraising Strategy",
     description:
       "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
     icon: fundRaisingIcon,
@@ -55,8 +55,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Report on Anything Agent",
-    title: "Report on Anything Agent",
+    agentName: "Report on Anything",
+    title: "Report on Anything",
     description:
       "Generate tailored, data-rich reports for any business need, quickly and accurately.",
     icon: reportOnAnythingIcon,
@@ -66,8 +66,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Market Strategy Agent",
-    title: "Market Strategy Agent",
+    agentName: "Market Strategy",
+    title: "Market Strategy",
     description:
       "Analyze trends and develop strategies to unlock market potential and drive growth.",
     icon: marketStrategyIcon,
@@ -77,8 +77,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Portfolio Support Agent",
-    title: "Portfolio Support Agent",
+    agentName: "Portfolio Support",
+    title: "Portfolio Support",
     description:
       "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
     icon: portfolioSupportIcon,
@@ -88,8 +88,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Technology & R&D Agent",
-    title: "Technology & R&D Agent",
+    agentName: "Technology & R&D",
+    title: "Technology & R&D",
     description:
       "Stay ahead with insights on emerging technologies, innovation strategies, and R&D opportunities.",
     icon: technologyAndRndIcon,
@@ -99,8 +99,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Product & Engineering Agent",
-    title: "Product & Engineering Agent",
+    agentName: "Product & Engineering",
+    title: "Product & Engineering",
     description:
       "Accelerate product development and engineering with process optimization and market alignment.",
     icon: productEngineeringIcon,
@@ -110,8 +110,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Corporate Venture Capital Agent",
-    title: "Corporate Venture Capital Agent",
+    agentName: "Corporate Venture Capital",
+    title: "Corporate Venture Capital",
     description: "Identify and manage promising startup investments to maximize venture success.",
     icon: corporateVentureIcon,
     bgClass: "from-blue-200 to-purple-100",
@@ -120,8 +120,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Finance & Strategy Agent",
-    title: "Finance & Strategy Agent",
+    agentName: "Finance & Strategy",
+    title: "Finance & Strategy",
     description:
       "Make confident financial decisions with data-driven analysis and strategic insights.",
     icon: financeAndStrategyIcon,
@@ -131,8 +131,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Marketing & Sales Agent",
-    title: "Marketing & Sales Agent",
+    agentName: "Marketing & Sales",
+    title: "Marketing & Sales",
     description: "Boost revenue by crafting impactful campaigns and closing deals with precision.",
     icon: marketingAndSalesIcon,
     bgClass: "from-purple-200 to-blue-100",
@@ -141,8 +141,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Legal & Compliance Agent",
-    title: "Legal & Compliance Agent",
+    agentName: "Legal & Compliance",
+    title: "Legal & Compliance",
     description:
       "Navigate legal and regulatory challenges to ensure compliance and mitigate risks.",
     icon: legalAndComplianceIcon,
@@ -152,8 +152,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Prior Art Agent",
-    title: "Prior Art Agent",
+    agentName: "Prior Art",
+    title: "Prior Art",
     description:
       "Protect your idea before it turns up in someone else’s patent.",
     icon: legalAndComplianceIcon,
@@ -163,8 +163,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "FTO Agent",
-    title: "FTO Agent",
+    agentName: "FTO",
+    title: "FTO",
     description:
       "Launch with confidence — no red tape, no regrets.",
     icon: legalAndComplianceIcon,
@@ -174,8 +174,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Patent Licensing Agent",
-    title: "Patent Licensing Agent",
+    agentName: "Patent Licensing",
+    title: "Patent Licensing",
     description:
       "Turn unused patents into untapped revenue.",
     icon: legalAndComplianceIcon,
@@ -185,8 +185,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Patent Landscape Agent",
-    title: "Patent Landscape Agent",
+    agentName: "Patent Landscape",
+    title: "Patent Landscape",
     description:
       "See the full IP battlefield — and your best path through it.",
     icon: legalAndComplianceIcon,
@@ -196,8 +196,8 @@ const agents = [
     navLink: "/my-projects"
   },
   {
-    agentName: "Prosecution History Agent",
-    title: "Prosecution History Agent",
+    agentName: "Prosecution History",
+    title: "Prosecution History",
     description:
       "Learn from every claim, correction, and curveball — before you file.",
     icon: legalAndComplianceIcon,
@@ -213,10 +213,10 @@ export default function AgentsGrid() {
     <>
     <div className="px-4 pt-2 pb-12">
       <AgentHead agentName="" />
-      <h1 className="text-4xl font-bold mb-4">Our Suite of AI Agents</h1>
-      <p className="text-lg mb-2">
+      <h1 className="text-4xl font-bold mb-4">Deal Flow Screening</h1>
+      {/* <p className="text-lg mb-2">
         Explore our AI agents, each tailored to assist with specific tasks.
-      </p>
+      </p> */}
       <p className="text-lg mb-8">
         <span className="text-orange-500 font-medium">Select</span> the one that best suits your
         needs to get started!

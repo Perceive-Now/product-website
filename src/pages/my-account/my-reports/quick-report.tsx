@@ -24,12 +24,85 @@ import axios from "axios";
 import { ACTIVITY_COMMENT } from "src/utils/constants";
 import { addActivityComment } from "src/stores/vs-product";
 import AgentHead from "src/pages/product/ai-agent/AgentHead";
-import CustmizationForm from "src/pages/product/ai-agent/CustmizationForm";
+import CustmizationForm, { CheckboxGroup } from "src/pages/product/ai-agent/CustmizationForm";
 import DotLoader from "src/components/reusable/dot-loader";
 import { API_PROD_URL } from "src/utils/axios";
 /**
  *
  */
+
+const options = {
+  sectorFocus: [
+    {label:"Healthtech", value:"Healthtech",showTextBox:false},
+    {label:"Fintech", value:"Fintech",showTextBox:false},
+    {label:"AI/ML", value:"AI/ML",showTextBox:false},
+    {label:"Climate Tech", value:"Climate Tech",showTextBox:false},
+    {label:"SaaS", value:"SaaS",showTextBox:false},
+    {label:"Edtech", value:"Edtech",showTextBox:false},
+    {label:"Biotech", value:"Biotech",showTextBox:false},
+    {label:"Web3", value:"Web3",showTextBox:false},
+    {label:"Deep Tech", value:"Deep Tech",showTextBox:false},
+    {label:"Enterprise Software", value:"Enterprise Software",showTextBox:false},
+    {label:"Consumer Tech", value:"Consumer Tech",showTextBox:false},
+    {label:"Industrial Tech", value:"Industrial Tech",showTextBox:false},
+    {label:"Mobility", value:"Mobility",showTextBox:false},
+    {label:"Cybersecurity", value:"Cybersecurity",showTextBox:false},
+    {label:"AgTech", value:"AgTech",showTextBox:false},
+    {label:"LegalTech", value:"LegalTech",showTextBox:false},
+    {label:"PropTech", value:"PropTech",showTextBox:false},
+    {label:"Insurtech", value:"Insurtech",showTextBox:false},
+    {label:"Energy", value:"Energy",showTextBox:false},
+    {label:"Other", value:"Other",showTextBox:true},
+  ],
+  geographicFocus:[
+    {label:"North America", value:"North America",showTextBox:false},
+    {label:"Europe", value:"Europe",showTextBox:false},
+    {label:"Asia-Pacific", value:"Asia-Pacific",showTextBox:false},
+    {label:"Middle East", value:"Middle East",showTextBox:false},
+    {label:"Latin America", value:"Latin America",showTextBox:false},
+    {label:"Africa", value:"Africa",showTextBox:false},
+    {label:"Global", value:"Global",showTextBox:false},
+    {label:"Other", value:"Other",showTextBox:true},
+  ],
+  businessModel:[
+    {label:"B2B SaaS", value:"B2B SaaS",showTextBox:false},
+    {label:"B2C Platform", value:"B2C Platform",showTextBox:false},
+    {label:"Marketplace", value:"Marketplace",showTextBox:false},
+    {label:"Direct-to-Consumer", value:"Direct-to-Consumer",showTextBox:false},
+    {label:"Hardware-as-a-Service", value:"Hardware-as-a-Service",showTextBox:false},
+    {label:"API-first", value:"API-first",showTextBox:false},
+    {label:"Subscription", value:"Subscription",showTextBox:false},
+    {label:"Freemium", value:"Freemium",showTextBox:false},
+    {label:"Licensing", value:"Licensing",showTextBox:false},
+    {label:"On-Demand", value:"On-Demand",showTextBox:false},
+    {label:"Transaction-Based", value:"Transaction-Based",showTextBox:false},
+    {label:"E-commerce", value:"E-commerce",showTextBox:false},
+    {label:"Other", value:"Other",showTextBox:true},
+  ],
+  preferredStage:[
+    {label:"Pre-Seed", value:"Pre-Seed",showTextBox:false},
+    {label:"Seed", value:"Seed",showTextBox:false},
+    {label:"Series A", value:"Series A",showTextBox:false},
+    {label:"Series B", value:"Series B",showTextBox:false},
+    {label:"Series C", value:"Series C",showTextBox:false},
+    {label:"Growth", value:"Growth",showTextBox:false},
+    {label:"Late-stage", value:"Late-stage",showTextBox:false},
+    {label:"Other", value:"Other",showTextBox:true},
+  ],
+  benchmarkComparison:[
+    {label:"Revenue", value:"Revenue",showTextBox:false},
+    {label:"Churn", value:"Churn",showTextBox:false},
+    {label:"CAC", value:"CAC",showTextBox:false},
+    {label:"LTV", value:"LTV",showTextBox:false},
+    {label:"Gross Margin", value:"Gross Margin",showTextBox:false},
+    {label:"Burn Rate", value:"Burn Rate",showTextBox:false},
+    {label:"Growth Rate", value:"Growth Rate",showTextBox:false},
+    {label:"Headcount", value:"Headcount",showTextBox:false},
+    {label:"Founder Experience", value:"Founder Experience",showTextBox:false},
+    {label:"Market Size", value:"Market Size",showTextBox:false},
+    {label:"Other", value:"Other",showTextBox:false},
+  ]
+}
 
 export const Texts = [
   "",
@@ -67,6 +140,8 @@ interface IRequirementValues {
   reportName: string;
   usecase: string;
   questions: Array<string>;
+  screeningType: string;
+  strategicFitCriteria:string
 }
 
 interface ICustomReportValues {
@@ -87,7 +162,7 @@ const QuickReports = () => {
   const [pastedURLs, setPastedURLs] = useState<string[]>([]);
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
-  const [step, setStep] = useState(id ? 2 : 1);
+  const [step, setStep] = useState(2);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [customReport, setCustomReport] = useState({
     report_tone: "",
@@ -240,11 +315,14 @@ const QuickReports = () => {
     reportName: "",
     usecase: "",
     questions: ["", "", ""],
+    screeningType:"",
+    strategicFitCriteria:""
   };
 
   const projectFormResolver = yup.object().shape({
     reportName: yup.string().trim().required("Report name is required"),
     usecase: yup.string().trim().required("Primary objective is required"),
+    screeningType:yup.string().trim().required("Screening Type is required"),
     questions: yup
       .array()
       .of(
@@ -395,6 +473,8 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
+    console.log("SLDKLKSD", values, selectedOptions)
+
     const dataPayload: Record<string, string[]> = {};
     dataPayload.websites = pastedURLs;
     dataPayload.question = values.questions;
@@ -403,7 +483,7 @@ const QuickReports = () => {
     try {
       const response: any = await axios.post(
         `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
-        dataPayload,
+        {...dataPayload,...values,...selectedOptions},
       );
 
       if (response.status === 200) {
@@ -457,7 +537,37 @@ const QuickReports = () => {
     // console.log("formData------", formData);
   };
 
+  const handleCheckboxChange = (category: string, value: string) => {
+    const currentSelections = selectedOptions[category] || [];
+    const isSelected = currentSelections.includes(value);
+    setSelectedOptions({
+      ...selectedOptions,
+      [category]: isSelected
+        ? currentSelections.filter((item) => item !== value)
+        : [...currentSelections, value],
+    });
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string,
+    optionKey: string,
+  ) => {
+    setCustomInput({
+      ...customInput,
+      [optionKey]: {
+        ...(customInput[optionKey] || {}),
+        [field]: e.target.value,
+      },
+    });
+  };
+
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
+    sectorFocus:[],
+    geographicFocus:[],
+    businessModel:[],
+    preferredStage:[],
+    benchmarkComparison:[],
     reportScopeOptions: [],
     reportFormatOptions: [],
     visualStyleOptions: [],
@@ -558,19 +668,27 @@ const QuickReports = () => {
         {step === 2 ? (
           <div className="">
             <form onSubmit={handleSubmitFormRequirement(handleSubmit)}>
-              <div className="flex space-x-4">
+            <div className="border border-gray-300 rounded-md mt-8">
+  <div className="relative">
+    <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+    <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+      Basic Information
+    </h2>
+  </div>
+
+  <div className="flex space-x-4 p-2">
                 {/* First Part: File Upload and Paste URL */}
                 <div className="w-1/2 space-y-4">
                   <div className="w-full">
                     <label htmlFor="fullName" className="block text-md  text-secondary-800">
-                      Name your report <span className="text-red-500 ml-0">*</span>
+                    Report Name <span className="text-red-500 ml-0">*</span>
                     </label>
                     <input
                       type="text"
                       id="reportName"
                       {...requirementRegister("reportName")}
                       // required
-                      placeholder="Report Name"
+                      placeholder="Report NameAI Startup Screening – Q2"
                       disabled={disabled}
                       className={classNames(
                         "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
@@ -595,7 +713,7 @@ const QuickReports = () => {
                       id="usecase"
                       disabled={disabled}
                       {...requirementRegister("usecase")}
-                      placeholder="Describe the overall objective of the report"
+                      placeholder="Identify top 5 companies aligned with our GenAI investment thesis"
                       className={classNames(
                         "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
                         disabled ? "bg-gray-400 cursor-not-allowed" : "",
@@ -604,28 +722,6 @@ const QuickReports = () => {
                           : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
                       )}
                     />
-                    {/* <select
-                      id="usecase"
-                      {...requirementRegister("usecase")}
-                      // onChange={(e) => setUsecase(e.target.value)}
-                      // required
-                      className={classNames(
-                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                        requirementErrors.usecase
-                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                      )}
-                    >
-                      <option value="">Select</option>
-                      <option value="founder">Venture Capital</option>
-                      <option value="admin">Market and IP Research Firms</option>
-                      <option value="admin">Web3</option>
-                      <option value="admin">M&A</option>
-                      <option value="admin">IP Attorny</option>
-                      <option value="admin">Technology Transfer Office</option>
-                      <option value="admin">Healthcare</option>
-                    </select>
-                    */}
                     {requirementErrors.usecase && (
                       <div className="mt-0 text-s text-danger-500">
                         {requirementErrors.usecase?.message}
@@ -637,7 +733,7 @@ const QuickReports = () => {
                 {/* Second Part: Added Websites and Urls Listing */}
                 <div className="w-1/2 px-1 flex flex-col">
                   <label htmlFor="requirement" className="block text-md text-secondary-800 mb-1">
-                    Questions you want answered in the report{" "}
+                  Key Questions to Answer{" "}
                     <span className="text-red-500 ml-0">*</span>
                   </label>
                   <div className="h-fit">
@@ -652,7 +748,7 @@ const QuickReports = () => {
                             //   ? requirementRegister(`questions.${index}`)
                             //   : {})}
                             // required
-                            placeholder={`Enter here`}
+                            placeholder={`What companies align best with our AI + workflow focus?`}
                             className={classNames(
                               "flex-grow p-[10px] w-full placeholder-black border border-appGray-600 focus:outline-none rounded-lg bg-transparent mt-1",
                               requirementErrors.questions?.[index]
@@ -697,11 +793,54 @@ const QuickReports = () => {
                   {/* Added Websites */}
                 </div>
               </div>
-              <div>
+</div>
+<div className="border border-gray-300 rounded-md mt-8">
+  <div className="relative">
+    <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+    <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+    Screening Configuration
+    </h2>
+  </div>
+  <div className="w-full p-2">
+                    <label htmlFor="screeningType" className="block text-md  text-secondary-800">
+                    Screening Type <span className="text-red-500 ml-0">*</span>
+                    </label>
+  <select
+                      id="screeningType"
+                      {...requirementRegister("screeningType")}
+                      // onChange={(e) => setUsecase(e.target.value)}
+                      // required
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        requirementErrors.screeningType
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    >
+                      <option value="">Select</option>
+                      <option value="Quick Screening">Quick Screening</option>
+                      <option value="In-Depth Screening">In-Depth Screening</option>
+                    </select>
+                    {requirementErrors.screeningType && (
+                      <div className="mt-0 text-s text-danger-500">
+                        {requirementErrors.screeningType?.message}
+                      </div>
+                    )}
+                    </div>
+  </div>
+  <div className="border border-gray-300 rounded-md mt-8">
+  <div className="relative">
+    <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+    <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+    Document Intake
+    </h2>
+  </div>
+  <div className="w-full p-2">
+  <div>
                 <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                   <div className="flex-1">
                     <h6 className="font-semibold text-base font-nunito mb-1">
-                      Upload Resources for Your Report
+                    Upload Pitch Decks
                     </h6>
                     <div
                       className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
@@ -737,15 +876,15 @@ const QuickReports = () => {
                       className="hidden"
                     />
                     <div className="mt-2 mb-2">
-                      <p className="text-lg font-semibold font-nunito">
-                        Supported file types (up to 200mb)
-                      </p>
-                      <ul className="list-disc pl-[20px]">
-                        {listContent.map((content) => (
-                          <li key={content} className="text-xs">
-                            {content}
+                      {/* <p className="text-lg font-semibold font-nunito">
+                      Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                      </p> */}
+                      <ul className="list-none pl-[20px]">
+                        {/* {listContent.map((content) => ( */}
+                          <li className="text-xs">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
                           </li>
-                        ))}
+                        {/* ))} */}
                       </ul>
                     </div>
                   </div>
@@ -794,7 +933,7 @@ const QuickReports = () => {
                     <div className="flex-1">
                       <div>
                         <h6 className="font-semibold text-base mb-1 font-nunito">
-                          Enter or Paste Your URL
+                        Paste Drive Folder Link
                         </h6>
                         <div className="flex">
                           <input
@@ -817,13 +956,13 @@ const QuickReports = () => {
                       {/* Supported Files and URLs */}
                       <div className="mt-4 flex justify-between">
                         <div>
-                          <p className="text-lg font-semibold font-nunito">Recommended URL</p>
-                          <ul className="list-disc pl-[20px]">
-                            {urlContent.map((content) => (
-                              <li key={content} className="text-xs">
-                                {content}
+                          {/* <p className="text-lg font-semibold font-nunito">Recommended URL</p> */}
+                          <ul className="list-none pl-[20px]">
+                            {/* {urlContent.map((content) => ( */}
+                              <li className="text-xs">
+                              Link to Google Drive, Dropbox, Box, or Notion folder
                               </li>
-                            ))}
+                            {/* ))} */}
                           </ul>
                         </div>
                       </div>
@@ -860,6 +999,315 @@ const QuickReports = () => {
                   </div>
                 </div>
               </div>
+  </div>
+  </div>
+  <div className="border border-gray-300 rounded-md mt-8">
+  <div className="relative">
+    <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+    <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+    Investment Thesis Parameters
+    </h2>
+  </div>
+
+  <div className="flex space-x-4 p-2">
+                {/* First Part: File Upload and Paste URL */}
+                <div className="w-1/2 space-y-4">
+                  <div className="w-full">
+                    <label htmlFor="strategicFitCriteria" className="block text-md  text-secondary-800">
+                    Strategic Fit Criteria <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <textarea
+                      id="strategicFitCriteria"
+                      {...requirementRegister("strategicFitCriteria")}
+                      // required
+                      placeholder="Enterprise-focused AI tools solving workflow inefficiencies"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.strategicFitCriteria
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.strategicFitCriteria && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.strategicFitCriteria?.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
+                    Sector Focus <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <CheckboxGroup
+                  options={options.sectorFocus}
+                  selectedOptions={selectedOptions.sectorFocus}
+                  onChange={(value) => handleCheckboxChange("sectorFocus", value)}
+                  customInput={customInput}
+                  onInputChange={handleInputChange}
+                  optionKey="sectorFocus"
+                />
+                    
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="geographicFocus" className="block text-md  text-secondary-800">
+                    Geographic Focus <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <CheckboxGroup
+                  options={options.geographicFocus}
+                  selectedOptions={selectedOptions.geographicFocus}
+                  onChange={(value) => handleCheckboxChange("geographicFocus", value)}
+                  customInput={customInput}
+                  onInputChange={handleInputChange}
+                  optionKey="geographicFocus"
+                />
+                    
+                  </div>
+                  {/* businessModel */}
+
+</div>
+<div className="w-1/2 space-y-4"> <div className="w-full">
+                    <label htmlFor="businessModel" className="block text-md  text-secondary-800">
+                    Business Model <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <CheckboxGroup
+                  options={options.businessModel}
+                  selectedOptions={selectedOptions.businessModel}
+                  onChange={(value) => handleCheckboxChange("businessModel", value)}
+                  customInput={customInput}
+                  onInputChange={handleInputChange}
+                  optionKey="businessModel"
+                />
+                    
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="preferredStage" className="block text-md  text-secondary-800">
+                    Preferred Stage <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <CheckboxGroup
+                  options={options.preferredStage}
+                  selectedOptions={selectedOptions.preferredStage}
+                  onChange={(value) => handleCheckboxChange("preferredStage", value)}
+                  customInput={customInput}
+                  onInputChange={handleInputChange}
+                  optionKey="preferredStage"
+                />
+                    
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="minAnnualRev" className="block text-md  text-secondary-800">
+                    Minimum Annual Revenue (USD) <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="minAnnualRev"
+                      {...requirementRegister("minAnnualRev")}
+                      // required
+                      placeholder="500000"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.minAnnualRev
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.minAnnualRev && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.minAnnualRev?.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="minARR" className="block text-md  text-secondary-800">
+                    Minimum ARR (USD) <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="minARR"
+                      {...requirementRegister("minARR")}
+                      // required
+                      placeholder="1000000"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.minARR
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.minARR && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.minARR?.message}
+                      </div>
+                    )}
+                  </div>
+                  </div>
+
+                  {/* preferredStage */}
+</div>
+</div>
+
+<div className="border border-gray-300 rounded-md mt-8">
+  <div className="relative">
+    <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+    <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+    Individual Company Fields
+    </h2>
+  </div>
+
+  <div className="flex space-x-4 p-2">
+                {/* First Part: File Upload and Paste URL */}
+                <div className="w-1/2 space-y-4">
+                <div className="w-full">
+                    <label htmlFor="companyName" className="block text-md  text-secondary-800">
+                    Company Name <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="companyName"
+                      {...requirementRegister("companyName")}
+                      // required
+                      placeholder="Acme AI Inc"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.companyName
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.companyName && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.companyName?.message}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="w-full">
+                    <label htmlFor="fundRaised" className="block text-md  text-secondary-800">
+                    Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="fundRaised"
+                      {...requirementRegister("fundRaised")}
+                      // required
+                      placeholder="3,000,000"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.fundRaised
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.fundRaised && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.fundRaised?.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="founderCount" className="block text-md  text-secondary-800">
+                    Number of Founders <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="founderCount"
+                      {...requirementRegister("founderCount")}
+                      // required
+                      placeholder="2"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.founderCount
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.founderCount && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.founderCount?.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="customerTractionSumary" className="block text-md  text-secondary-800">
+                    Customer Traction Summary <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <textarea
+                    
+                      id="customerTractionSumary"
+                      {...requirementRegister("customerTractionSumary")}
+                      // required
+                      placeholder="$200k in ARR, signed 2 Fortune 100 clients"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.customerTractionSumary
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.customerTractionSumary && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.customerTractionSumary?.message}
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="knownRisk" className="block text-md  text-secondary-800">
+                    Known Risks or Gaps <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="knownRisk"
+                      {...requirementRegister("knownRisk")}
+                      // required
+                      placeholder="Single founder, lack of defensible moat"
+                      disabled={disabled}
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                        requirementErrors.knownRisk
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    />
+                    {requirementErrors.knownRisk && (
+                      <div className="mt-1 text-s text-danger-500">
+                        {requirementErrors.knownRisk?.message}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="w-1/2">
+                <div className="w-full">
+                    <label htmlFor="benchmarkComparison" className="block text-md  text-secondary-800">
+                    Preferred Stage <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <CheckboxGroup
+                  options={options.benchmarkComparison}
+                  selectedOptions={selectedOptions.benchmarkComparison}
+                  onChange={(value) => handleCheckboxChange("benchmarkComparison", value)}
+                  customInput={customInput}
+                  onInputChange={handleInputChange}
+                  optionKey="benchmarkComparison"
+                />
+                    
+                  </div>
+                </div>
+                </div>
+                </div>
+              
               <div className="max-w-[120px] mt-5">
                 <button
                   type="submit"
