@@ -2,164 +2,174 @@ import React, { useState } from "react";
 import customizationIcon from "./_assets/customization-icon.svg";
 
 const options = {
-  reportScopeOptions: [
-    { label: "Detailed Analysis", value: "Detailed Analysis", showTextBox: false },
-    { label: "High-Level Summary", value: "High-Level Summary", showTextBox: false },
-    { label: "Custom", value: "Other", showTextBox: true },
-  ],
+  // reportScopeOptions: [
+  //   { label: "Detailed Analysis", value: "Detailed Analysis", showTextBox: false },
+  //   { label: "High-Level Summary", value: "High-Level Summary", showTextBox: false },
+  //   { label: "Custom", value: "Other", showTextBox: true },
+  // ],
   reportFormatOptions: [
-    { label: "PDF", value: "PDF", showTextBox: false },
-    { label: "Word Document", value: "Word Document", showTextBox: false },
-    { label: "Presentation Deck (PPTX)", value: "Presentation Deck (PPTX)", showTextBox: false },
+    { label: "PDF Report (default)", value: "PDF Report (default)", showTextBox: false, desc:"Clean and print-ready. Ideal for official sharing and archiving." },
+    { label: "Presentation Deck (PPT)", value: "Presentation Deck (PPT)", showTextBox: false, desc:"Visual slides for executive or team briefings" },
+    { label: "Editable Word Doc", value: "Editable Word Doc", showTextBox: false, desc:"Useful for internal annotations and customization." },
     {
-      label: "Spreadsheet Summary (CSV/Excel)",
-      value: "Spreadsheet Summary (CSV/Excel)",
+      label: "Spreadsheet (Excel/CSV)",
+      value: "Spreadsheet (Excel/CSV)",
       showTextBox: false,
+      desc:"Tabular data for deeper internal analysis or integration."
     },
-    { label: "Interactive Web Report", value: "Interactive Web Report", showTextBox: false },
-    { label: "API Export", value: "API Export", showTextBox: false },
+    { label: "Short Topical Summaries", value: "Short Topical Summaries", showTextBox: false,desc:"1-page summaries for specific subtopics. You’ll be prompted to list which topics need summarizing.\nExample: “Summarize Competitive Landscape and Regulatory Risk sections separately.”" },
   ],
-  visualStyleOptions: [
-    { label: "Minimal Text, More Data", value: "Minimal Text, More Data", showTextBox: false },
-    {
-      label: "Balanced Mix of Visuals & Text",
-      value: "Balanced Mix of Visuals & Text",
-      showTextBox: false,
-    },
-    {
-      label: "Extensive Annotations & Explanations",
-      value: "Extensive Annotations & Explanations",
-      showTextBox: false,
-    },
-    { label: "Infographic-Heavy", value: "Infographic-Heavy", showTextBox: false },
-  ],
-  chartsOptions: [
-    {
-      label: "Minimal (1-2 charts/tables)",
-      value: "Minimal (1-2 charts/tables)",
-      showTextBox: false,
-    },
-    {
-      label: "Moderate (4-6 charts/tables)",
-      value: "Moderate (4-6 charts/tables)",
-      showTextBox: false,
-    },
-    {
-      label: "Extensive (8+ charts/tables)",
-      value: "Extensive (8+ charts/tables)",
-      showTextBox: false,
-    },
-    { label: "Dashboard Integration", value: "Dashboard Integration", showTextBox: false },
-  ],
+  // visualStyleOptions: [
+  //   { label: "Minimal Text, More Data", value: "Minimal Text, More Data", showTextBox: false },
+  //   {
+  //     label: "Balanced Mix of Visuals & Text",
+  //     value: "Balanced Mix of Visuals & Text",
+  //     showTextBox: false,
+  //   },
+  //   {
+  //     label: "Extensive Annotations & Explanations",
+  //     value: "Extensive Annotations & Explanations",
+  //     showTextBox: false,
+  //   },
+  //   { label: "Infographic-Heavy", value: "Infographic-Heavy", showTextBox: false },
+  // ],
   citationsOptions: [
-    { label: "Hyperlinked Sources", value: "Hyperlinked Sources", showTextBox: false },
     {
-      label: "Endnotes & References Section",
-      value: "Endnotes & References Section",
+      label: "Inline Hyperlinks",
+      value: "Inline Hyperlinks",
       showTextBox: false,
+      desc:`Sources appear directly in-line. Example: “...as reported in Gartner, 2023”`
     },
-    { label: "Footnotes on Each Page", value: "Footnotes on Each Page", showTextBox: false },
-    { label: "No Citations Needed", value: "No Citations Needed", showTextBox: false },
     {
-      label: "Detailed Methodology Section",
-      value: "Detailed Methodology Section",
+      label: "Endnotes with Hyperlinks",
+      value: "Endnotes with Hyperlinks",
       showTextBox: false,
+      desc:"Citations shown as numbered footnotes at the end. Keeps main content clean."
     },
-    { label: "Custom Citation Style", value: "Other", showTextBox: true },
+    {
+      label: "Standard Reference List",
+      value: "Standard Reference List",
+      showTextBox: false,
+      desc:`APA-style or numbered list at the end of the report.\nExamples:
+APA Style: Gartner. (2024). AI Trends in Consumer Goods. Retrieved from https://www.gartner.com/report/cpg-ai-2024
+Numbered Style: [1] Gartner, AI Trends in Consumer Goods, 2024. https://www.gartner.com/report/cpg-ai-2024`
+    },
+    { label: "No Citations", value: "No Citations", showTextBox: false, desc:"For internal-only reports or early drafts." },
   ],
+ 
   audienceFocusOneOptions: [
     { label: "C-Suite Executives", value: "C-Suite Executives", showTextBox: false },
-    { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
     { label: "Finance Teams", value: "Finance Teams", showTextBox: false },
-    { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
     {
       label: "Business Development Teams",
       value: "Business Development Teams",
       showTextBox: false,
     },
-    { label: "Operations Teams", value: "Operations Teams", showTextBox: false },
     {
       label: "Regulatory & Compliance Teams",
       value: "Regulatory & Compliance Teams",
       showTextBox: false,
     },
+    { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
+    
+    { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
+   
+    { label: "Operations Teams", value: "Operations Teams", showTextBox: false },
+    
     { label: "Product Management Teams", value: "Product Management Teams", showTextBox: false },
     { label: "Other", value: "Other", showTextBox: true },
   ],
   audienceFocusTwoOptions: [
     { label: "General Partners (GPs)", value: "General Partners (GPs)", showTextBox: false },
-    { label: "Portfolio Managers", value: "Portfolio Managers", showTextBox: false },
     { label: "Risk & Compliance Teams", value: "Risk & Compliance Teams", showTextBox: false },
-    { label: "Managing Directors", value: "Managing Directors", showTextBox: false },
     { label: "Fund Managers", value: "Fund Managers", showTextBox: false },
-    { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
     { label: "M&A Teams", value: "M&A Teams", showTextBox: false },
-    { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
     { label: "Deal Sourcing Teams", value: "Deal Sourcing Teams", showTextBox: false },
+    { label: "Portfolio Managers", value: "Portfolio Managers", showTextBox: false },
+    
+    { label: "Managing Directors", value: "Managing Directors", showTextBox: false },
+   
+    { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
+   
+    { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
+   
     { label: "Other", value: "Other", showTextBox: true },
   ],
   reportToneOptions: [
-    { label: "Formal & Professional", value: "Formal & Professional", showTextBox: false },
-    { label: "Concise & Executive-Level", value: "Concise & Executive-Level", showTextBox: false },
-    { label: "Data-Driven & Analytical", value: "Data-Driven & Analytical", showTextBox: false },
+    { label: "Confident & Assertive", value: "Confident & Assertive", showTextBox: false, desc:`No fluff, no fence-sitting. Clear stances, strong language, action-ready.
+Example: “Here’s the signal. Here’s the move. Now go.”` },
+    { label: "Witty & Sharp", value: "Witty & Sharp", showTextBox: false, desc:`Slightly edgy, clever, intelligent. For readers who appreciate personality with their data.
+Example: “The only thing flatter than the growth rate in this sector is a soda left open overnight.”` },
+    { label: "Executive-Level Strategic", value: "Executive-Level Strategic", showTextBox: false, desc:`High-level clarity for decision-makers. Think boardroom-ready.
+Example: “This space is consolidating fast — M&A is no longer optional, it’s survival.”` },
     {
-      label: "Persuasive & Investor-Focused",
-      value: "Persuasive & Investor-Focused",
+      label: "Analytical & Data-Driven",
+      value: "Analytical & Data-Driven",
       showTextBox: false,
+      desc:`Math, methods, and meaning — minus the fluff.
+Example: “95% CI, p < 0.05. Here’s how we got there and why it matters.”`
     },
-    { label: "Neutral & Objective", value: "Neutral & Objective", showTextBox: false },
-    { label: "Custom", value: "Other", showTextBox: true },
+    { label: "Clear & Jargon-Free", value: "Clear & Jargon-Free", showTextBox: false, desc:`Explain-it-to-a-human simplicity. No acronyms or buzzwords.
+Example: “This tech is like GPS in the 2000s — early, valuable, and soon-to-be everywhere.”` },
+    { label: "Bold & Visionary", value: "Bold & Visionary", showTextBox: false, desc:`Moonshot tone for future-forward thinkers.
+Example: “If you’re not already building in this space, you’ll be buying from someone who is.”` },
   ],
-  collaborationOptions: [
-    { label: "No collaboration needed", value: "No collaboration needed", showTextBox: false },
-    {
-      label: "Live Google Docs/Notion Collaboration",
-      value: "Live Google Docs/Notion Collaboration",
-      showTextBox: false,
-    },
-    {
-      label: "Editable Spreadsheets & Databases",
-      value: "Editable Spreadsheets & Databases",
-      showTextBox: false,
-    },
-  ],
+  // collaborationOptions: [
+  //   { label: "No collaboration needed", value: "No collaboration needed", showTextBox: false },
+  //   {
+  //     label: "Live Google Docs/Notion Collaboration",
+  //     value: "Live Google Docs/Notion Collaboration",
+  //     showTextBox: false,
+  //   },
+  //   {
+  //     label: "Editable Spreadsheets & Databases",
+  //     value: "Editable Spreadsheets & Databases",
+  //     showTextBox: false,
+  //   },
+  // ],
   explainabilityOptions: [
     {
-      label: "Source Citations for Every Claim",
-      value: "Source Citations for Every Claim",
+      label: "Logic Path Appendix",
+      value: "Logic Path Appendix",
       showTextBox: false,
+      desc:`Step-by-step breakdown of how each insight was derived.
+Example: “Revenue potential = Market size × Adoption rate × Pricing tier.”`
     },
     {
-      label: "Logical Breakdown of Insights",
-      value: "Logical Breakdown of Insights",
+      label: "Breakdown by Source Type",
+      value: "Breakdown by Source Type",
       showTextBox: false,
+      desc:`Clarifies if the insight came from patents, market data, expert models, or AI-generated scoring.`
     },
     {
-      label: "Multi-Layered Explainability",
-      value: "Multi-Layered Explainability",
+      label: "Statistical Parameters",
+      value: "Statistical Parameters",
       showTextBox: false,
+      desc:`Includes confidence intervals, p-values, error margins, sample sizes, and other key indicators.
+Example: “Forecasted CAGR: 18.2% (±2.3% margin, 95% CI).”`
     },
     {
-      label: "Confidence Levels & Uncertainty Markers",
-      value: "Confidence Levels & Uncertainty Markers",
+      label: "Forecasting Model Disclosure",
+      value: "Forecasting Model Disclosure",
       showTextBox: false,
+      desc:`List of assumptions and equations used to make forward-looking projections.
+Example: Adoption rate modeled on historical S-curve + benchmark multipliers.`
     },
     {
-      label: "Confidence Intervals for Predictions",
-      value: "Confidence Intervals for Predictions",
+      label: "Input vs. Output Mapping",
+      value: "Input vs. Output Mapping",
       showTextBox: false,
+      desc:`“From → to” flow showing what data led to what insight.
+Example: “Patent clusters → Tech trends → Commercialization score.”`
     },
     {
-      label: "Standard Deviation & Variance Reporting",
-      value: "Standard Deviation & Variance Reporting",
+      label: "Insight Type Labeling",
+      value: "Insight Type Labeling",
       showTextBox: false,
+      desc:`Each insight tagged as: Derived (data-driven), Interpreted (expert judgment), or Predicted (forecasted).`
     },
-    { label: "Comparative Analysis View", value: "Comparative Analysis View", showTextBox: false },
-    {
-      label: "Probability-Based Risk Scoring",
-      value: "Probability-Based Risk Scoring",
-      showTextBox: false,
-    },
+    { label: "Explainable AI Summary", value: "Explainable AI Summary", showTextBox: false, desc:`Plain-language breakdown of where and how AI was used in the analysis.
+Example: “Generated using a fine-tuned LLM trained on 200K+ patents and filings.”` },
   ],
 };
 
@@ -167,6 +177,7 @@ interface Option {
   label: string;
   value: string;
   showTextBox: boolean;
+  desc?: string
 }
 
 // Reusable component for rendering checkbox groups
@@ -210,6 +221,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
               className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
             />
           )}
+          {item.desc ? <p className="italic text-xs whitespace-pre-line text-gray-500">{item.desc}</p> : null}
         </div>
       ))}
     </div>
@@ -268,7 +280,7 @@ interface Props {
 const CustmizationForm = (props: Props) => {
   const { selectedOptions, setSelectedOptions, customInput, setCustomInput } = props;
 
-  const [currentTab, setCurrentTab] = useState("reportScopeOptions");
+  const [currentTab, setCurrentTab] = useState("reportFormatOptions");
 
   const handleCheckboxChange = (category: string, value: string) => {
     const currentSelections = selectedOptions[category] || [];
@@ -303,7 +315,7 @@ const CustmizationForm = (props: Props) => {
             <img src={customizationIcon} alt="Customization Icon" />
             Customization options
           </div>
-          <div
+          {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "reportScopeOptions" && "bg-[#F5F7FF]"
             }`}
@@ -311,17 +323,20 @@ const CustmizationForm = (props: Props) => {
           >
             <input type="radio" checked={currentTab === "reportScopeOptions"} />
             Report Scope
-          </div>
+          </div> */}
           <div
-            className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "reportFormatOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("reportFormatOptions")}
           >
+            <div className="flex items-center gap-x-2">
             <input type="radio" checked={currentTab === "reportFormatOptions"} />
             Report Format
+            </div>
+            <p className="italic text-xs">Select one or more formats you'd like the report delivered in</p>
           </div>
-          <div
+          {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "visualStyleOptions" && "bg-[#F5F7FF]"
             }`}
@@ -329,8 +344,8 @@ const CustmizationForm = (props: Props) => {
           >
             <input type="radio" checked={currentTab === "visualStyleOptions"} />
             Visual Emphasis
-          </div>
-          <div
+          </div> */}
+          {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "chartsOptions" && "bg-[#F5F7FF]"
             }`}
@@ -338,35 +353,44 @@ const CustmizationForm = (props: Props) => {
           >
             <input type="radio" checked={currentTab === "chartsOptions"} />
             Data Presentation
-          </div>
+          </div> */}
           <div
-            className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "citationsOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("citationsOptions")}
           >
+            <div className="flex items-center gap-x-2">
             <input type="radio" checked={currentTab === "citationsOptions"} />
             Citations & References
+            </div>
+            <p className="italic text-xs">Choose how you'd like sources to appear in the report</p>
           </div>
           <div
-            className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "audienceFocus" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("audienceFocus")}
           >
+              <div className="flex items-center gap-x-2">
             <input type="radio" checked={currentTab === "audienceFocus"} />
             Target Audience
+            </div>
+            <p className="italic text-xs">Select all that apply — we’ll tailor tone and depth accordingly</p>
           </div>
           <div
-            className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "reportToneOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("reportToneOptions")}
           >
+              <div className="flex items-center gap-x-2">
             <input type="radio" checked={currentTab === "reportToneOptions"} />
             Tone of the Report
+            </div>
+            <p className="italic text-xs">Choose the tone that best fits your audience or brand personality</p>
           </div>
-          <div
+          {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "collaborationOptions" && "bg-[#F5F7FF]"
             }`}
@@ -374,20 +398,23 @@ const CustmizationForm = (props: Props) => {
           >
             <input type="radio" checked={currentTab === "collaborationOptions"} />
             Collaboration Needs
-          </div>
+          </div> */}
           <div
-            className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
               currentTab === "explainabilityOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("explainabilityOptions")}
           >
+              <div className="flex items-center gap-x-2">
             <input type="radio" checked={currentTab === "explainabilityOptions"} />
             Explainability & Transparency
+            </div>
+            <p className="italic text-xs">Select how much clarity you want into how insights were generated</p>
           </div>
         </div>
         <div className="flex-[2] pl-3">
           <div className="grid grid-cols-1 gap-x-3 gap-y-4 mt-2">
-            {currentTab === "reportScopeOptions" && (
+            {/* {currentTab === "reportScopeOptions" && (
               <div className="flex flex-col w-full">
                 <div className="">Report Scope</div>
                 <CheckboxGroup
@@ -399,7 +426,7 @@ const CustmizationForm = (props: Props) => {
                   optionKey="reportScopeOptions"
                 />
               </div>
-            )}
+            )} */}
             {currentTab === "reportFormatOptions" && (
               <div className="flex flex-col w-full">
                 <div className="">Report Format</div>
@@ -413,7 +440,7 @@ const CustmizationForm = (props: Props) => {
                 />
               </div>
             )}
-            {currentTab === "visualStyleOptions" && (
+            {/* {currentTab === "visualStyleOptions" && (
               <div className="flex flex-col w-full">
                 <div className="">Visual Emphasis</div>
                 <CheckboxGroup
@@ -425,8 +452,8 @@ const CustmizationForm = (props: Props) => {
                   optionKey="visualStyleOptions"
                 />
               </div>
-            )}
-            {currentTab === "chartsOptions" && (
+            )} */}
+            {/* {currentTab === "chartsOptions" && (
               <div className="flex flex-col w-full ">
                 <div className="">Data Presentation</div>
                 <CheckboxGroup
@@ -438,7 +465,7 @@ const CustmizationForm = (props: Props) => {
                   optionKey="chartsOptions"
                 />
               </div>
-            )}
+            )} */}
             {currentTab === "citationsOptions" && (
               <div className="flex flex-col w-full ">
                 <div className="">Citations & References</div>
@@ -493,7 +520,7 @@ const CustmizationForm = (props: Props) => {
                 />
               </div>
             )}
-            {currentTab === "collaborationOptions" && (
+            {/* {currentTab === "collaborationOptions" && (
               <div className="flex flex-col w-full ">
                 <div className="">Collaboration Needs</div>
                 <CheckboxGroup
@@ -505,7 +532,7 @@ const CustmizationForm = (props: Props) => {
                   optionKey="collaborationOptions"
                 />
               </div>
-            )}
+            )} */}
             {currentTab === "explainabilityOptions" && (
               <div className="flex flex-col w-full ">
                 <div className="">Explainability & Transparency</div>
