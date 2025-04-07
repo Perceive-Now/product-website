@@ -13,6 +13,7 @@ type Agent = {
   agentLink?: string;
   navLink?: string,
   section_name?: string;
+  disabled?: boolean
 };
 
 type AgentCardProps = {
@@ -21,7 +22,7 @@ type AgentCardProps = {
 
 const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
   return (
-    <Link to={agent.navLink || `/ai-agent?agent=${agent.agentLink}`} className="h-full">
+    <Link to={agent.disabled ? "" : (agent.navLink || `/ai-agent?agent=${agent.agentLink}`)} className="h-full">
       <div
         className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow h-full ${
           agent.className

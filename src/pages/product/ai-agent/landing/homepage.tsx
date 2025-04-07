@@ -174,6 +174,7 @@ const agents = [
     backgroundImage: marketingAndSalesImage,
     agentLink: "prior-art-agent",
     section_name: "ip_experts",
+    disabled: true
   },
   {
     agentName: "FTO Agent",
@@ -186,6 +187,7 @@ const agents = [
     backgroundImage: financeStrategyImage,
     agentLink: "fto-agent",
     section_name: "ip_experts",
+    disabled: true
   },
   {
     agentName: "Patent Licensing Agent",
@@ -198,6 +200,7 @@ const agents = [
     backgroundImage: legalAndComplianceImage,
     agentLink: "patent-licensing-agent",
     section_name: "ip_experts",
+    disabled: true
   },
   {
     agentName: "Patent Landscape Agent",
@@ -210,6 +213,7 @@ const agents = [
     backgroundImage: productEngineeringImage,
     agentLink: "patent-landscape-agent",
     section_name: "ip_experts",
+    disabled: true
   },
   {
     agentName: "Prosecution History Agent",
@@ -222,6 +226,7 @@ const agents = [
     backgroundImage: startupDilligenceImage,
     agentLink: "prosecution-history-agent",
     section_name: "ip_experts",
+    disabled: true
   },
 ];
 
