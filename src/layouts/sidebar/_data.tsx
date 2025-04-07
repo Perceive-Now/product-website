@@ -48,11 +48,11 @@ const sidebarItems: ISidebarListItem[] = [
     ],
   },
   {
-    title: "Project Hub",
+    title: "Deal Flow Screening",
     key: "reportManagement",
     classname: "sidebar-project",
     icon: StackFolders,
-    to: "/my-projects/landing",
+    to: "/my-projects",
   },
   // {
   //   title: "Know Now",
