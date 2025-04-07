@@ -33,76 +33,86 @@ import { API_PROD_URL } from "src/utils/axios";
 
 const options = {
   sectorFocus: [
-    {label:"Healthtech", value:"Healthtech",showTextBox:false},
-    {label:"Fintech", value:"Fintech",showTextBox:false},
-    {label:"AI/ML", value:"AI/ML",showTextBox:false},
-    {label:"Climate Tech", value:"Climate Tech",showTextBox:false},
-    {label:"SaaS", value:"SaaS",showTextBox:false},
-    {label:"Edtech", value:"Edtech",showTextBox:false},
-    {label:"Biotech", value:"Biotech",showTextBox:false},
-    {label:"Web3", value:"Web3",showTextBox:false},
-    {label:"Deep Tech", value:"Deep Tech",showTextBox:false},
-    {label:"Enterprise Software", value:"Enterprise Software",showTextBox:false},
-    {label:"Consumer Tech", value:"Consumer Tech",showTextBox:false},
-    {label:"Industrial Tech", value:"Industrial Tech",showTextBox:false},
-    {label:"Mobility", value:"Mobility",showTextBox:false},
-    {label:"Cybersecurity", value:"Cybersecurity",showTextBox:false},
-    {label:"AgTech", value:"AgTech",showTextBox:false},
-    {label:"LegalTech", value:"LegalTech",showTextBox:false},
-    {label:"PropTech", value:"PropTech",showTextBox:false},
-    {label:"Insurtech", value:"Insurtech",showTextBox:false},
-    {label:"Energy", value:"Energy",showTextBox:false},
-    {label:"Other", value:"Other",showTextBox:true},
+    { label: "Healthtech", value: "Healthtech", showTextBox: false },
+    { label: "Fintech", value: "Fintech", showTextBox: false },
+    { label: "AI/ML", value: "AI/ML", showTextBox: false },
+    { label: "Climate Tech", value: "Climate Tech", showTextBox: false },
+    { label: "SaaS", value: "SaaS", showTextBox: false },
+    { label: "Edtech", value: "Edtech", showTextBox: false },
+    { label: "Biotech", value: "Biotech", showTextBox: false },
+    { label: "Web3", value: "Web3", showTextBox: false },
+    { label: "Deep Tech", value: "Deep Tech", showTextBox: false },
+    { label: "Enterprise Software", value: "Enterprise Software", showTextBox: false },
+    { label: "Consumer Tech", value: "Consumer Tech", showTextBox: false },
+    { label: "Industrial Tech", value: "Industrial Tech", showTextBox: false },
+    { label: "Mobility", value: "Mobility", showTextBox: false },
+    { label: "Cybersecurity", value: "Cybersecurity", showTextBox: false },
+    { label: "AgTech", value: "AgTech", showTextBox: false },
+    { label: "LegalTech", value: "LegalTech", showTextBox: false },
+    { label: "PropTech", value: "PropTech", showTextBox: false },
+    { label: "Insurtech", value: "Insurtech", showTextBox: false },
+    { label: "Energy", value: "Energy", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
   ],
-  geographicFocus:[
-    {label:"North America", value:"North America",showTextBox:false},
-    {label:"Europe", value:"Europe",showTextBox:false},
-    {label:"Asia-Pacific", value:"Asia-Pacific",showTextBox:false},
-    {label:"Middle East", value:"Middle East",showTextBox:false},
-    {label:"Latin America", value:"Latin America",showTextBox:false},
-    {label:"Africa", value:"Africa",showTextBox:false},
-    {label:"Global", value:"Global",showTextBox:false},
-    {label:"Other", value:"Other",showTextBox:true},
+  geographicFocus: [
+    { label: "North America", value: "North America", showTextBox: false },
+    { label: "Europe", value: "Europe", showTextBox: false },
+    { label: "Asia-Pacific", value: "Asia-Pacific", showTextBox: false },
+    { label: "Middle East", value: "Middle East", showTextBox: false },
+    { label: "Latin America", value: "Latin America", showTextBox: false },
+    { label: "Africa", value: "Africa", showTextBox: false },
+    { label: "Global", value: "Global", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
   ],
-  businessModel:[
-    {label:"B2B SaaS", value:"B2B SaaS",showTextBox:false},
-    {label:"B2C Platform", value:"B2C Platform",showTextBox:false},
-    {label:"Marketplace", value:"Marketplace",showTextBox:false},
-    {label:"Direct-to-Consumer", value:"Direct-to-Consumer",showTextBox:false},
-    {label:"Hardware-as-a-Service", value:"Hardware-as-a-Service",showTextBox:false},
-    {label:"API-first", value:"API-first",showTextBox:false},
-    {label:"Subscription", value:"Subscription",showTextBox:false},
-    {label:"Freemium", value:"Freemium",showTextBox:false},
-    {label:"Licensing", value:"Licensing",showTextBox:false},
-    {label:"On-Demand", value:"On-Demand",showTextBox:false},
-    {label:"Transaction-Based", value:"Transaction-Based",showTextBox:false},
-    {label:"E-commerce", value:"E-commerce",showTextBox:false},
-    {label:"Other", value:"Other",showTextBox:true},
+  businessModel: [
+    { label: "B2B SaaS", value: "B2B SaaS", showTextBox: false },
+    { label: "B2C Platform", value: "B2C Platform", showTextBox: false },
+    { label: "Marketplace", value: "Marketplace", showTextBox: false },
+    { label: "Direct-to-Consumer", value: "Direct-to-Consumer", showTextBox: false },
+    { label: "Hardware-as-a-Service", value: "Hardware-as-a-Service", showTextBox: false },
+    { label: "API-first", value: "API-first", showTextBox: false },
+    { label: "Subscription", value: "Subscription", showTextBox: false },
+    { label: "Freemium", value: "Freemium", showTextBox: false },
+    { label: "Licensing", value: "Licensing", showTextBox: false },
+    { label: "On-Demand", value: "On-Demand", showTextBox: false },
+    { label: "Transaction-Based", value: "Transaction-Based", showTextBox: false },
+    { label: "E-commerce", value: "E-commerce", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
   ],
-  preferredStage:[
-    {label:"Pre-Seed", value:"Pre-Seed",showTextBox:false},
-    {label:"Seed", value:"Seed",showTextBox:false},
-    {label:"Series A", value:"Series A",showTextBox:false},
-    {label:"Series B", value:"Series B",showTextBox:false},
-    {label:"Series C", value:"Series C",showTextBox:false},
-    {label:"Growth", value:"Growth",showTextBox:false},
-    {label:"Late-stage", value:"Late-stage",showTextBox:false},
-    {label:"Other", value:"Other",showTextBox:true},
+  preferredStage: [
+    { label: "Pre-Seed", value: "Pre-Seed", showTextBox: false },
+    { label: "Seed", value: "Seed", showTextBox: false },
+    { label: "Series A", value: "Series A", showTextBox: false },
+    { label: "Series B", value: "Series B", showTextBox: false },
+    { label: "Series C", value: "Series C", showTextBox: false },
+    { label: "Growth", value: "Growth", showTextBox: false },
+    { label: "Late-stage", value: "Late-stage", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
   ],
-  benchmarkComparison:[
-    {label:"Revenue", value:"Revenue",showTextBox:false},
-    {label:"Churn", value:"Churn",showTextBox:false},
-    {label:"CAC", value:"CAC",showTextBox:false},
-    {label:"LTV", value:"LTV",showTextBox:false},
-    {label:"Gross Margin", value:"Gross Margin",showTextBox:false},
-    {label:"Burn Rate", value:"Burn Rate",showTextBox:false},
-    {label:"Growth Rate", value:"Growth Rate",showTextBox:false},
-    {label:"Headcount", value:"Headcount",showTextBox:false},
-    {label:"Founder Experience", value:"Founder Experience",showTextBox:false},
-    {label:"Market Size", value:"Market Size",showTextBox:false},
-    {label:"Other", value:"Other",showTextBox:false},
-  ]
-}
+  benchmarkComparison: [
+    { label: "Revenue", value: "Revenue", showTextBox: false },
+    { label: "Churn", value: "Churn", showTextBox: false },
+    { label: "CAC", value: "CAC", showTextBox: false },
+    { label: "LTV", value: "LTV", showTextBox: false },
+    { label: "Gross Margin", value: "Gross Margin", showTextBox: false },
+    { label: "Burn Rate", value: "Burn Rate", showTextBox: false },
+    { label: "Growth Rate", value: "Growth Rate", showTextBox: false },
+    { label: "Headcount", value: "Headcount", showTextBox: false },
+    { label: "Founder Experience", value: "Founder Experience", showTextBox: false },
+    { label: "Market Size", value: "Market Size", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: false },
+  ],
+  companyStage: [
+    { label: "Pre-Seed", value: "Pre-Seed", showTextBox: false },
+    { label: "Seed", value: "Seed", showTextBox: false },
+    { label: "Series A", value: "Series A", showTextBox: false },
+    { label: "Series B", value: "Series B", showTextBox: false },
+    { label: "Series C", value: "Series C", showTextBox: false },
+    { label: "Growth", value: "Growth", showTextBox: false },
+    { label: "Late-stage", value: "Late-stage", showTextBox: false },
+    { label: "Other", value: "Other", showTextBox: true },
+  ],
+};
 
 export const Texts = [
   "",
@@ -141,7 +151,7 @@ interface IRequirementValues {
   usecase: string;
   questions: Array<string>;
   screeningType: string;
-  strategicFitCriteria:string,
+  strategicFitCriteria: string;
   minAnnualRev: number; // Add this field
   minARR: number; // Add this field if needed
   companyName: string; // Add this field if needed
@@ -151,9 +161,10 @@ interface IRequirementValues {
   knownRisk: string; // Add this field if needed
   company_website: string; // Add this field if needed
   linkedin_page: string; // Add this field if needed
-  Crunchbase:string;
-  product_demo:string;
-  other_source:string;
+  Crunchbase: string;
+  product_demo: string;
+  other_source: string;
+  targetOwnership: string;
 }
 
 interface ICustomReportValues {
@@ -190,7 +201,7 @@ const QuickReports = () => {
   const supportInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    console.log("id value of the page ===========", id)
+    console.log("id value of the page ===========", id);
     if (id) {
       setStep(2); // If there's an ID in the URL, set step to 2
     } else {
@@ -323,13 +334,13 @@ const QuickReports = () => {
         "application/vnd.oasis.opendocument.text",
         "application/vnd.apple.keynote",
       ];
-  
+
       const invalidFiles = fileList.filter((file: any) => {
         const isInvalidType = !allowedTypes.includes(file.type);
         const isInvalidSize = file.size > 200 * 1024 * 1024;
         return isInvalidType || isInvalidSize;
       });
-  
+
       if (invalidFiles.length > 0) {
         toast.error("Invalid file uploaded.");
       } else {
@@ -340,7 +351,7 @@ const QuickReports = () => {
       }
     }
   };
-  
+
   const handleSupportFileChange = (e: any) => {
     const files = e.target.files;
     if (files) {
@@ -356,13 +367,13 @@ const QuickReports = () => {
         "application/vnd.oasis.opendocument.text",
         "application/vnd.apple.keynote",
       ];
-  
+
       const invalidFiles = fileList.filter((file: any) => {
         const isInvalidType = !allowedTypes.includes(file.type);
         const isInvalidSize = file.size > 200 * 1024 * 1024;
         return isInvalidType || isInvalidSize;
       });
-  
+
       if (invalidFiles.length > 0) {
         toast.error("Invalid file uploaded.");
       } else {
@@ -373,7 +384,6 @@ const QuickReports = () => {
       }
     }
   };
-  
 
   const handleSubmit = async (values: IRequirementValues) => {
     setStep(3);
@@ -418,15 +428,16 @@ const QuickReports = () => {
     knownRisk: "", // Default value for known risks
     company_website: "", // Default value for company website
     linkedin_page: "",
-    Crunchbase:"",
-    product_demo:"",
-    other_source:""
+    Crunchbase: "",
+    product_demo: "",
+    other_source: "",
+    targetOwnership: "",
   };
 
   const projectFormResolver = yup.object().shape({
     reportName: yup.string().trim().required("Report name is required"),
     usecase: yup.string().trim().required("Primary objective is required"),
-    screeningType:yup.string().trim().required("Screening Type is required"),
+    screeningType: yup.string().trim().required("Screening Type is required"),
     questions: yup
       .array()
       .of(
@@ -553,7 +564,6 @@ const QuickReports = () => {
       supportInputRef.current.click();
     }
   };
-  
 
   const handleDelete = (index: number, type: "url" | "file" | "capTable") => {
     if (type === "url") {
@@ -564,7 +574,6 @@ const QuickReports = () => {
       setSupportFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     }
   };
-  
 
   const handleReportChange = (field: string, value: any) => {
     setCustomReport((prevState) => ({
@@ -587,17 +596,102 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
-    console.log("SLDKLKSD", values, selectedOptions)
+    console.log("SLDKLKSD", values, selectedOptions);
 
-    const dataPayload: Record<string, string[]> = {};
+    const dataPayload: Record<string, string[] | any> = {};
     dataPayload.websites = pastedURLs;
     dataPayload.question = values.questions;
-    dataPayload.format = customReport.format;
+    // dataPayload.format = customReport.format;
+    dataPayload.config = {
+      report_format: {
+        selected: selectedOptions.reportFormatOptions,
+        other: customInput?.["reportFormatOptions"]?.["Other"] || "",
+      },
+      citations: {
+        selected: selectedOptions.citationsOptions,
+        other: customInput?.["citationsOptions"]?.["Other"] || "",
+      },
+      report_tone: {
+        selected: selectedOptions.reportToneOptions,
+        other: customInput?.["reportToneOptions"]?.["Other"] || "",
+      },
+      explainability: {
+        selected: selectedOptions.explainabilityOptions,
+        other: customInput?.["explainabilityOptions"]?.["Other"] || "",
+      },
+      audience_focus: {
+        enterprise: {
+          selected: selectedOptions.audienceFocusOneOptions,
+          other: customInput?.["audienceFocusOneOptions"]?.["Other"] || "",
+        },
+        investors: {
+          selected: selectedOptions.audienceFocusTwoOptions,
+          other: customInput?.["audienceFocusTwoOptions"]?.["Other"] || "",
+        },
+      },
+      other: additionalSummary,
+    };
+
+    dataPayload.classification = {
+      screeningType: values.screeningType,
+    };
+    dataPayload.additional_metadata = {
+      strategicFitCriteria: values.strategicFitCriteria,
+      sectorFocus: {
+        selected: selectedOptions.sectorFocus,
+        other: customInput?.["sectorFocus"]?.["Other"] || "",
+      },
+      geographicFocus: {
+        selected: selectedOptions.geographicFocus,
+        other: customInput?.["geographicFocus"]?.["Other"] || "",
+      },
+      businessModel: {
+        selected: selectedOptions.businessModel,
+        other: customInput?.["businessModel"]?.["Other"] || "",
+      },
+      preferredStage: {
+        selected: selectedOptions.preferredStage,
+        other: customInput?.["preferredStage"]?.["Other"] || "",
+      },
+      minAnnualRev: values.minAnnualRev,
+      minARR: values.minARR,
+      targetOwnership: values.targetOwnership,
+      companyName: values.companyName,
+      companyStage: {
+        selected: selectedOptions.companyStage,
+        other: customInput?.["companyStage"]?.["Other"] || "",
+      },
+      benchmarkComparison: {
+        selected: selectedOptions.benchmarkComparison,
+        other: customInput?.["benchmarkComparison"]?.["Other"] || "",
+      },
+      fundRaised: values.fundRaised,
+      founderCount: values.founderCount,
+      customerTractionSumary: values.customerTractionSumary,
+      knownRisk: values.knownRisk,
+      company_website: values.company_website,
+      linkedin_page: values.linkedin_page,
+      Crunchbase: values.Crunchbase,
+      product_demo: values.product_demo,
+      other_source: values.other_source,
+    };
+
+    // {
+    //   "websites": [
+    //     "string"
+    //   ],
+    //   "question": [
+    //     "string"
+    //   ],
+    //   "classification": {},
+    //   "config": {},
+    //   "additional_metadata": {}
+    // }
 
     try {
       const response: any = await axios.post(
-        `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}&report_tone=${customReport.report_tone}&no_of_charts=${customReport.no_of_charts}&citations=${customReport.citations}&visual_style=${customReport.visual_style}`,
-        {...dataPayload,...values,...selectedOptions},
+        `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}`,
+        { ...dataPayload, ...values, ...selectedOptions },
       );
 
       if (response.status === 200) {
@@ -651,15 +745,21 @@ const QuickReports = () => {
     // console.log("formData------", formData);
   };
 
-  const handleCheckboxChange = (category: string, value: string) => {
+  const handleCheckboxChange = (category: string, value: string, isSingle?: boolean) => {
     const currentSelections = selectedOptions[category] || [];
     const isSelected = currentSelections.includes(value);
-    setSelectedOptions({
-      ...selectedOptions,
-      [category]: isSelected
-        ? currentSelections.filter((item) => item !== value)
-        : [...currentSelections, value],
-    });
+    if (isSingle) {
+      setSelectedOptions({
+        ...selectedOptions,
+        [category]: isSelected ? currentSelections.filter((item) => item !== value) : [value],
+      });
+    } else
+      setSelectedOptions({
+        ...selectedOptions,
+        [category]: isSelected
+          ? currentSelections.filter((item) => item !== value)
+          : [...currentSelections, value],
+      });
   };
 
   const handleInputChange = (
@@ -677,11 +777,12 @@ const QuickReports = () => {
   };
 
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({
-    sectorFocus:[],
-    geographicFocus:[],
-    businessModel:[],
-    preferredStage:[],
-    benchmarkComparison:[],
+    sectorFocus: [],
+    geographicFocus: [],
+    businessModel: [],
+    preferredStage: [],
+    benchmarkComparison: [],
+    companyStage: [],
     reportScopeOptions: [],
     reportFormatOptions: [],
     visualStyleOptions: [],
@@ -795,14 +896,14 @@ const QuickReports = () => {
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
                       <label htmlFor="fullName" className="block text-md  text-secondary-800">
-                      Report Name <span className="text-red-500 ml-0">*</span>
+                        Report Name <span className="text-red-500 ml-0">*</span>
                       </label>
                       <input
                         type="text"
                         id="reportName"
                         {...requirementRegister("reportName")}
                         // required
-                        placeholder="Report NameAI Startup Screening – Q2"
+                        placeholder="AI Startup Screening – Q2"
                         disabled={disabled}
                         className={classNames(
                           "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
@@ -847,8 +948,7 @@ const QuickReports = () => {
                   {/* Second Part: Added Websites and Urls Listing */}
                   <div className="w-1/2 px-1 flex flex-col">
                     <label htmlFor="requirement" className="block text-md text-secondary-800 mb-1">
-                    Key Questions to Answer{" "}
-                      <span className="text-red-500 ml-0">*</span>
+                      Key Questions to Answer <span className="text-red-500 ml-0">*</span>
                     </label>
                     <div className="h-fit">
                       {requirementQuestions?.map((requirement, index) => (
@@ -864,7 +964,8 @@ const QuickReports = () => {
                               // required
                               placeholder={`What companies align best with our AI + workflow focus?`}
                               className={classNames(
-                                "flex-grow p-[10px] w-full placeholder-black border border-appGray-600 focus:outline-none rounded-lg bg-transparent mt-1",
+                                "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                                disabled ? "bg-gray-400 cursor-not-allowed" : "",
                                 requirementErrors.questions?.[index]
                                   ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
                                   : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
@@ -909,44 +1010,44 @@ const QuickReports = () => {
                 </div>
               </div>
               <div className="border border-gray-300 rounded-md mt-8">
-              <div className="relative">
-                <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-                Screening Configuration
-                </h2>
-              </div>
-              <div className="w-full p-2">
-                                <label htmlFor="screeningType" className="block text-md  text-secondary-800">
-                                Screening Type <span className="text-red-500 ml-0">*</span>
-                                </label>
-              <select
-                                  id="screeningType"
-                                  {...requirementRegister("screeningType")}
-                                  // onChange={(e) => setUsecase(e.target.value)}
-                                  // required
-                                  className={classNames(
-                                    "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                                    requirementErrors.screeningType
-                                      ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                                  )}
-                                >
-                                  <option value="">Select</option>
-                                  <option value="Quick Screening">Quick Screening</option>
-                                  <option value="In-Depth Screening">In-Depth Screening</option>
-                                </select>
-                                {requirementErrors.screeningType && (
-                                  <div className="mt-0 text-s text-danger-500">
-                                    {requirementErrors.screeningType?.message}
-                                  </div>
-                                )}
-                                </div>
+                <div className="relative">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                    Screening Configuration
+                  </h2>
+                </div>
+                <div className="w-full p-2">
+                  <label htmlFor="screeningType" className="block text-md  text-secondary-800">
+                    Screening Type <span className="text-red-500 ml-0">*</span>
+                  </label>
+                  <select
+                    id="screeningType"
+                    {...requirementRegister("screeningType")}
+                    // onChange={(e) => setUsecase(e.target.value)}
+                    // required
+                    className={classNames(
+                      "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                      requirementErrors.screeningType
+                        ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                    )}
+                  >
+                    <option value="">Select</option>
+                    <option value="Quick Screening">Quick Screening</option>
+                    <option value="In-Depth Screening">In-Depth Screening</option>
+                  </select>
+                  {requirementErrors.screeningType && (
+                    <div className="mt-0 text-s text-danger-500">
+                      {requirementErrors.screeningType?.message}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="border border-gray-300 rounded-md mt-8">
                 <div className="relative">
                   <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
                   <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-                  Document Intake
+                    Document Intake
                   </h2>
                 </div>
                 <div className="w-full p-2">
@@ -954,7 +1055,7 @@ const QuickReports = () => {
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
                         <h6 className="font-semibold text-base font-nunito mb-1">
-                        Upload Pitch Decks
+                          Upload Pitch Decks
                         </h6>
                         <div
                           className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
@@ -995,9 +1096,9 @@ const QuickReports = () => {
                           </p> */}
                           <ul className="list-none pl-[20px]">
                             {/* {listContent.map((content) => ( */}
-                              <li className="text-xs">
+                            <li className="text-xs">
                               Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                              </li>
+                            </li>
                             {/* ))} */}
                           </ul>
                         </div>
@@ -1012,7 +1113,9 @@ const QuickReports = () => {
                               <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
                                 {uploadedFiles.map((file, index) => (
                                   <div key={index}>
-                                    {index !== 0 && <hr className="my-1 border-1 border-appGray-300" />}
+                                    {index !== 0 && (
+                                      <hr className="my-1 border-1 border-appGray-300" />
+                                    )}
                                     <div className="flex justify-between items-center">
                                       <p className="text-sm font-nunito">{file.name}</p>
                                       <TrashIcon
@@ -1047,7 +1150,7 @@ const QuickReports = () => {
                         <div className="flex-1">
                           <div>
                             <h6 className="font-semibold text-base mb-1 font-nunito">
-                            Paste Drive Folder Link
+                              Paste Drive Folder Link
                             </h6>
                             <div className="flex">
                               <input
@@ -1073,16 +1176,18 @@ const QuickReports = () => {
                               {/* <p className="text-lg font-semibold font-nunito">Recommended URL</p> */}
                               <ul className="list-none pl-[20px]">
                                 {/* {urlContent.map((content) => ( */}
-                                  <li className="text-xs">
+                                <li className="text-xs">
                                   Link to Google Drive, Dropbox, Box, or Notion folder
-                                  </li>
+                                </li>
                                 {/* ))} */}
                               </ul>
                             </div>
                           </div>
                         </div>
                         <div className="flex-1">
-                          <h6 className="font-semibold mb-1 text-base font-nunito">Added Websites</h6>
+                          <h6 className="font-semibold mb-1 text-base font-nunito">
+                            Added Websites
+                          </h6>
                           <div className="border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]">
                             <div className="rounded-lg p-2 flex-1">
                               {pastedURLs.length > 0 ? (
@@ -1116,169 +1221,200 @@ const QuickReports = () => {
                 </div>
               </div>
               <div className="border border-gray-300 rounded-md mt-8">
-              <div className="relative">
-                <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-                Investment Thesis Parameters
-                </h2>
-              </div>
+                <div className="relative">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                    Investment Thesis Parameters
+                  </h2>
+                </div>
 
-              <div className="flex space-x-4 p-2">
-                            {/* First Part: File Upload and Paste URL */}
-                            <div className="w-1/2 space-y-4">
-                              <div className="w-full">
-                                <label htmlFor="strategicFitCriteria" className="block text-md  text-secondary-800">
-                                Strategic Fit Criteria <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <textarea
-                                  id="strategicFitCriteria"
-                                  {...requirementRegister("strategicFitCriteria")}
-                                  // required
-                                  placeholder="Enterprise-focused AI tools solving workflow inefficiencies"
-                                  disabled={disabled}
-                                  className={classNames(
-                                    "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                                    disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                                    requirementErrors.strategicFitCriteria
-                                      ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                                  )}
-                                />
-                                {requirementErrors.strategicFitCriteria && (
-                                  <div className="mt-1 text-s text-danger-500">
-                                    {requirementErrors.strategicFitCriteria?.message}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="w-full">
-                                <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
-                                Sector Focus <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <CheckboxGroup
-                              options={options.sectorFocus}
-                              selectedOptions={selectedOptions.sectorFocus}
-                              onChange={(value) => handleCheckboxChange("sectorFocus", value)}
-                              customInput={customInput}
-                              onInputChange={handleInputChange}
-                              optionKey="sectorFocus"
-                            />
-                                
-                              </div>
-                              <div className="w-full">
-                                <label htmlFor="geographicFocus" className="block text-md  text-secondary-800">
-                                Geographic Focus <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <CheckboxGroup
-                              options={options.geographicFocus}
-                              selectedOptions={selectedOptions.geographicFocus}
-                              onChange={(value) => handleCheckboxChange("geographicFocus", value)}
-                              customInput={customInput}
-                              onInputChange={handleInputChange}
-                              optionKey="geographicFocus"
-                            />
-                                
-                              </div>
-                              {/* businessModel */}
+                <div className="flex space-x-4 p-2">
+                  {/* First Part: File Upload and Paste URL */}
+                  <div className="w-1/2 space-y-4">
+                    <div className="w-full">
+                      <label
+                        htmlFor="strategicFitCriteria"
+                        className="block text-md  text-secondary-800"
+                      >
+                        Strategic Fit Criteria
+                      </label>
+                      <textarea
+                        id="strategicFitCriteria"
+                        {...requirementRegister("strategicFitCriteria")}
+                        // required
+                        placeholder="Enterprise-focused AI tools solving workflow inefficiencies"
+                        disabled={disabled}
+                        className={classNames(
+                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                          requirementErrors.strategicFitCriteria
+                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                        )}
+                      />
+                      {requirementErrors.strategicFitCriteria && (
+                        <div className="mt-1 text-s text-danger-500">
+                          {requirementErrors.strategicFitCriteria?.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
+                        Sector Focus
+                      </label>
+                      <CheckboxGroup
+                        options={options.sectorFocus}
+                        selectedOptions={selectedOptions.sectorFocus}
+                        onChange={(value) => handleCheckboxChange("sectorFocus", value)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
+                        optionKey="sectorFocus"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label
+                        htmlFor="geographicFocus"
+                        className="block text-md  text-secondary-800"
+                      >
+                        Geographic Focus
+                      </label>
+                      <CheckboxGroup
+                        options={options.geographicFocus}
+                        selectedOptions={selectedOptions.geographicFocus}
+                        onChange={(value) => handleCheckboxChange("geographicFocus", value)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
+                        optionKey="geographicFocus"
+                      />
+                    </div>
+                    {/* businessModel */}
+                  </div>
+                  <div className="w-1/2 space-y-4">
+                    {" "}
+                    <div className="w-full">
+                      <label htmlFor="businessModel" className="block text-md  text-secondary-800">
+                        Business Model
+                      </label>
+                      <CheckboxGroup
+                        options={options.businessModel}
+                        selectedOptions={selectedOptions.businessModel}
+                        onChange={(value) => handleCheckboxChange("businessModel", value)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
+                        optionKey="businessModel"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="preferredStage" className="block text-md  text-secondary-800">
+                        Preferred Stage
+                      </label>
+                      <CheckboxGroup
+                        options={options.preferredStage}
+                        selectedOptions={selectedOptions.preferredStage}
+                        onChange={(value) => handleCheckboxChange("preferredStage", value)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
+                        optionKey="preferredStage"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="minAnnualRev" className="block text-md  text-secondary-800">
+                        Minimum Annual Revenue (USD)
+                      </label>
+                      <input
+                        type="number"
+                        id="minAnnualRev"
+                        {...requirementRegister("minAnnualRev")}
+                        // required
+                        placeholder="500000"
+                        disabled={disabled}
+                        className={classNames(
+                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                          requirementErrors.minAnnualRev
+                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                        )}
+                      />
+                      {requirementErrors.minAnnualRev && (
+                        <div className="mt-1 text-s text-danger-500">
+                          {requirementErrors.minAnnualRev?.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="w-full">
+                      <label htmlFor="minARR" className="block text-md  text-secondary-800">
+                        Minimum ARR (USD)
+                      </label>
+                      <input
+                        type="number"
+                        id="minARR"
+                        {...requirementRegister("minARR")}
+                        // required
+                        placeholder="1000000"
+                        disabled={disabled}
+                        className={classNames(
+                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                          requirementErrors.minARR
+                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                        )}
+                      />
+                      {requirementErrors.minARR && (
+                        <div className="mt-1 text-s text-danger-500">
+                          {requirementErrors.minARR?.message}
+                        </div>
+                      )}
+                    </div>
+                    <div className="w-full">
+                      <label
+                        htmlFor="targetOwnership"
+                        className="block text-md  text-secondary-800"
+                      >
+                        Target Ownership Stake (%)
+                      </label>
+                      <input
+                        type="number"
+                        id="targetOwnership"
+                        {...requirementRegister("targetOwnership")}
+                        // required
+                        placeholder="15"
+                        disabled={disabled}
+                        className={classNames(
+                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                          requirementErrors.targetOwnership
+                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                        )}
+                      />
+                      {requirementErrors.targetOwnership && (
+                        <div className="mt-1 text-s text-danger-500">
+                          {requirementErrors.targetOwnership?.message}
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-            </div>
-            <div className="w-1/2 space-y-4"> <div className="w-full">
-                                <label htmlFor="businessModel" className="block text-md  text-secondary-800">
-                                Business Model <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <CheckboxGroup
-                              options={options.businessModel}
-                              selectedOptions={selectedOptions.businessModel}
-                              onChange={(value) => handleCheckboxChange("businessModel", value)}
-                              customInput={customInput}
-                              onInputChange={handleInputChange}
-                              optionKey="businessModel"
-                            />
-                                
-                              </div>
-                              <div className="w-full">
-                                <label htmlFor="preferredStage" className="block text-md  text-secondary-800">
-                                Preferred Stage <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <CheckboxGroup
-                              options={options.preferredStage}
-                              selectedOptions={selectedOptions.preferredStage}
-                              onChange={(value) => handleCheckboxChange("preferredStage", value)}
-                              customInput={customInput}
-                              onInputChange={handleInputChange}
-                              optionKey="preferredStage"
-                            />
-                                
-                              </div>
-                              <div className="w-full">
-                                <label htmlFor="minAnnualRev" className="block text-md  text-secondary-800">
-                                Minimum Annual Revenue (USD) <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <input
-                                  type="number"
-                                  id="minAnnualRev"
-                                  {...requirementRegister("minAnnualRev")}
-                                  // required
-                                  placeholder="500000"
-                                  disabled={disabled}
-                                  className={classNames(
-                                    "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                                    disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                                    requirementErrors.minAnnualRev
-                                      ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                                  )}
-                                />
-                                {requirementErrors.minAnnualRev && (
-                                  <div className="mt-1 text-s text-danger-500">
-                                    {requirementErrors.minAnnualRev?.message}
-                                  </div>
-                                )}
-                              </div>
-                              <div className="w-full">
-                                <label htmlFor="minARR" className="block text-md  text-secondary-800">
-                                Minimum ARR (USD) <span className="text-red-500 ml-0">*</span>
-                                </label>
-                                <input
-                                  type="number"
-                                  id="minARR"
-                                  {...requirementRegister("minARR")}
-                                  // required
-                                  placeholder="1000000"
-                                  disabled={disabled}
-                                  className={classNames(
-                                    "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                                    disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                                    requirementErrors.minARR
-                                      ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                                      : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                                  )}
-                                />
-                                {requirementErrors.minARR && (
-                                  <div className="mt-1 text-s text-danger-500">
-                                    {requirementErrors.minARR?.message}
-                                  </div>
-                                )}
-                              </div>
-                              </div>
-
-                              {/* preferredStage */}
-            </div>
+                  {/* preferredStage */}
+                </div>
               </div>
 
               <div className="border border-gray-300 rounded-md mt-8">
-    <div className="relative">
-      <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-      <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-      Individual Company Fields
-      </h2>
-    </div>
+                <div className="relative">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                    Individual Company Fields
+                  </h2>
+                </div>
 
-    <div className="flex space-x-4 p-2">
+                <div className="flex space-x-4 p-2">
                   {/* First Part: File Upload and Paste URL */}
                   <div className="w-1/2 space-y-4">
-                  <div className="w-full">
+                    <div className="w-full">
                       <label htmlFor="companyName" className="block text-md  text-secondary-800">
-                      Company Name <span className="text-red-500 ml-0">*</span>
+                        Company Name <span className="text-red-500 ml-0">*</span>
                       </label>
                       <input
                         type="text"
@@ -1301,13 +1437,27 @@ const QuickReports = () => {
                         </div>
                       )}
                     </div>
+                    <div className="w-full">
+                      <label htmlFor="companyStage" className="block text-md  text-secondary-800">
+                        Company Stage
+                      </label>
+                      <CheckboxGroup
+                        options={options.companyStage}
+                        selectedOptions={selectedOptions.companyStage}
+                        onChange={(value) => handleCheckboxChange("companyStage", value, true)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
+                        optionKey="companyStage"
+                      />
+                    </div>
+                    {/* companyStage */}
 
                     <div className="w-full">
                       <label htmlFor="fundRaised" className="block text-md  text-secondary-800">
-                      Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
+                        Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         id="fundRaised"
                         {...requirementRegister("fundRaised")}
                         // required
@@ -1329,7 +1479,7 @@ const QuickReports = () => {
                     </div>
                     <div className="w-full">
                       <label htmlFor="founderCount" className="block text-md  text-secondary-800">
-                      Number of Founders <span className="text-red-500 ml-0">*</span>
+                        Number of Founders
                       </label>
                       <input
                         type="number"
@@ -1352,12 +1502,16 @@ const QuickReports = () => {
                         </div>
                       )}
                     </div>
+                  </div>
+                  <div className="w-1/2">
                     <div className="w-full">
-                      <label htmlFor="customerTractionSumary" className="block text-md  text-secondary-800">
-                      Customer Traction Summary <span className="text-red-500 ml-0">*</span>
+                      <label
+                        htmlFor="customerTractionSumary"
+                        className="block text-md  text-secondary-800"
+                      >
+                        Customer Traction Summary <span className="text-red-500 ml-0">*</span>
                       </label>
                       <textarea
-                      
                         id="customerTractionSumary"
                         {...requirementRegister("customerTractionSumary")}
                         // required
@@ -1379,7 +1533,7 @@ const QuickReports = () => {
                     </div>
                     <div className="w-full">
                       <label htmlFor="knownRisk" className="block text-md  text-secondary-800">
-                      Known Risks or Gaps <span className="text-red-500 ml-0">*</span>
+                        Known Risks or Gaps
                       </label>
                       <input
                         type="text"
@@ -1402,28 +1556,28 @@ const QuickReports = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                  <div className="w-1/2">
-                  <div className="w-full">
-                      <label htmlFor="benchmarkComparison" className="block text-md  text-secondary-800">
-                      Preferred Stage <span className="text-red-500 ml-0">*</span>
+                    <div className="w-full">
+                      <label
+                        htmlFor="benchmarkComparison"
+                        className="block text-md  text-secondary-800"
+                      >
+                        Benchmark Comparisons Requested <span className="text-red-500 ml-0">*</span>
                       </label>
                       <CheckboxGroup
-                    options={options.benchmarkComparison}
-                    selectedOptions={selectedOptions.benchmarkComparison}
-                    onChange={(value) => handleCheckboxChange("benchmarkComparison", value)}
-                    customInput={customInput}
-                    onInputChange={handleInputChange}
-                    optionKey="benchmarkComparison"
-                  />
-                      
+                        options={options.benchmarkComparison}
+                        selectedOptions={selectedOptions.benchmarkComparison}
+                        onChange={(value) => handleCheckboxChange("benchmarkComparison", value)}
+                        customInput={customInput}
+                        onInputChange={handleInputChange}
+                        optionKey="benchmarkComparison"
+                      />
                     </div>
                   </div>
-                  </div>
+                </div>
               </div>
 
-                {/* Relevant Links start  */}
-                <div className="border border-gray-300 rounded-md mt-8">
+              {/* Relevant Links start  */}
+              <div className="border border-gray-300 rounded-md mt-8">
                 <div className="relative">
                   <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
                   <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
@@ -1435,8 +1589,11 @@ const QuickReports = () => {
                   {/* First Part: File Upload and Paste URL */}
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
-                      <label htmlFor="company_website" className="block text-md  text-secondary-800">
-                      Company Website <span className="text-red-500 ml-0">*</span>
+                      <label
+                        htmlFor="company_website"
+                        className="block text-md  text-secondary-800"
+                      >
+                        Company Website <span className="text-red-500 ml-0">*</span>
                       </label>
                       <input
                         type="text"
@@ -1462,7 +1619,7 @@ const QuickReports = () => {
 
                     <div className="mb-1">
                       <label htmlFor="linkedin_page" className="block text-md text-secondary-800">
-                      LinkedIn Page <span className="text-red-500 ml-0">*</span>
+                        LinkedIn Page <span className="text-red-500 ml-0">*</span>
                       </label>
                       <input
                         id="linkedin_page"
@@ -1488,7 +1645,7 @@ const QuickReports = () => {
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
                       <label htmlFor="crunchbase" className="block text-md  text-secondary-800">
-                      Crunchbase / Pitchbook / Dealroom
+                        Crunchbase / Pitchbook / Dealroom
                       </label>
                       <input
                         type="text"
@@ -1514,7 +1671,7 @@ const QuickReports = () => {
 
                     <div className="mb-1">
                       <label htmlFor="product_demo" className="block text-md text-secondary-800">
-                      Product Demo or Landing Page
+                        Product Demo or Landing Page
                       </label>
                       <input
                         id="product_demo"
@@ -1541,7 +1698,7 @@ const QuickReports = () => {
                   <div className="w-full space-y-4">
                     <div className="w-full">
                       <label htmlFor="other_source" className="block text-md  text-secondary-800">
-                      Other Source Links
+                        Other Source Links
                       </label>
                       <input
                         type="text"
@@ -1564,9 +1721,7 @@ const QuickReports = () => {
                         </div>
                       )}
                     </div>
-                  
                   </div>
-                 
                 </div>
               </div>
               {/* Relevant Links end  */}
@@ -1576,17 +1731,16 @@ const QuickReports = () => {
                 <div className="relative">
                   <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
                   <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-                  Supporting Materials
+                    Supporting Materials
                   </h2>
                 </div>
-
 
                 <div className="w-full p-2">
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
                         <h6 className="font-semibold text-base font-nunito mb-1">
-                       Supporting Materials
+                          Supporting Materials
                         </h6>
                         <div
                           className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
@@ -1615,27 +1769,29 @@ const QuickReports = () => {
                         </div>
                         {/* Hidden File Input */}
                         <input
-                        type="file"
-                        multiple
-                        ref={supportInputRef}
-                        onChange={handleSupportFileChange}
-                        className="hidden"
-                      />
+                          type="file"
+                          multiple
+                          ref={supportInputRef}
+                          onChange={handleSupportFileChange}
+                          className="hidden"
+                        />
                         <div className="mt-2 mb-2">
                           {/* <p className="text-lg font-semibold font-nunito">
                           Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
                           </p> */}
                           <ul className="list-none pl-[20px]">
                             {/* {listContent.map((content) => ( */}
-                              <li className="text-xs">
+                            <li className="text-xs">
                               Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                              </li>
+                            </li>
                             {/* ))} */}
                           </ul>
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files Support</h6>
+                        <h6 className="font-semibold mb-1 text-base font-nunito">
+                          Uploaded files Support
+                        </h6>
                         <div
                           className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
                         >
@@ -1670,15 +1826,12 @@ const QuickReports = () => {
                         </div>
                       </div>
                     </div>
-                    <div>
-                      {/* File Upload Box */}
-                  
-                    </div>
+                    <div>{/* File Upload Box */}</div>
                   </div>
                 </div>
               </div>
               {/* Supporting Materials end */}
-                
+
               <div className="max-w-[120px] mt-5">
                 <button
                   type="submit"
@@ -1694,8 +1847,6 @@ const QuickReports = () => {
                   Next
                 </button>
               </div>
-
-            
             </form>
           </div>
         ) : step === 1 ? (
