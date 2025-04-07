@@ -34,177 +34,193 @@ import AgentCard from "src/pages/product/ai-agent/landing/_components/AgentCard"
 const agents = [
   {
     agentName: "Startup Diligence",
-    title: "Company Diligence",
+    title: "Company Diligence Agent",
     description:
-      "Evaluate company to uncover risks, validate potential, and guide informed investment decisions.",
+      "See the signals others miss — before they become headlines.",
     icon: startupDilligenceIcon,
     bgClass: "from-pink-200 to-red-100",
     className: "",
     backgroundImage: startupDilligenceImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Fundraising Strategy",
-    title: "Fundraising Strategy",
+    title: "Fundraising Strategy Agent",
     description:
-      "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
+      "Close your next round with a strategy that sells itself.",
     icon: fundRaisingIcon,
     bgClass: "from-blue-200 to-blue-100",
     className: "",
     backgroundImage: fundRaisingImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Report on Anything",
-    title: "Report on Anything",
+    title: "Report on Anything Agent",
     description:
-      "Generate tailored, data-rich reports for any business need, quickly and accurately.",
+      "Get answers to any question — no team, no wait time.",
     icon: reportOnAnythingIcon,
     bgClass: "from-purple-200 to-pink-100",
     className: "",
     backgroundImage: reportOnAnythingImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Market Strategy",
-    title: "Market Strategy",
+    title: "Market Strategy Agent",
     description:
-      "Analyze trends and develop strategies to unlock market potential and drive growth.",
+      "Turn trends into traction before the market catches on.",
     icon: marketStrategyIcon,
     bgClass: "from-teal-200 to-blue-100",
     className: "",
     backgroundImage: marketStrategyImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Portfolio Support",
-    title: "Portfolio Support",
+    title: "Portfolio Support Agent",
     description:
-      "Optimize portfolio performance through monitoring, diversification, and growth strategies.",
+      "Grow your portfolio without growing your headache.",
     icon: portfolioSupportIcon,
     bgClass: "from-pink-200 to-purple-100",
     className: "",
     backgroundImage: portfolioSupportImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Technology & R&D",
-    title: "Technology & R&D",
+    title: "Technology & R&D Agent",
     description:
-      "Stay ahead with insights on emerging technologies, innovation strategies, and R&D opportunities.",
+      "Stay three steps ahead of what’s coming next.s",
     icon: technologyAndRndIcon,
     bgClass: "from-yellow-200 to-green-100",
     className: "",
     backgroundImage: technologyAndRndImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Product & Engineering",
-    title: "Product & Engineering",
+    title: "Product & Engineering Agent",
     description:
-      "Accelerate product development and engineering with process optimization and market alignment.",
+      "Build what the market’s already waiting for",
     icon: productEngineeringIcon,
     bgClass: "from-red-200 to-pink-100",
     className: "",
     backgroundImage: productEngineeringImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Corporate Venture Capital",
-    title: "Corporate Venture Capital",
-    description: "Identify and manage promising startup investments to maximize venture success.",
+    title: "Corporate Venture Capital Agent",
+    description: "Find your next unicorn — and ride it all the way to ROI.",
     icon: corporateVentureIcon,
     bgClass: "from-blue-200 to-purple-100",
     className: "",
     backgroundImage: corporateVentureImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name:"investors"
   },
   {
     agentName: "Finance & Strategy",
-    title: "Finance & Strategy",
+    title: "Finance & Strategy Agent",
     description:
-      "Make confident financial decisions with data-driven analysis and strategic insights.",
+      "Make every business move a calculated win.",
     icon: financeAndStrategyIcon,
     bgClass: "from-pink-200 to-red-100",
     className: "",
     backgroundImage: financeStrategyImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Marketing & Sales",
-    title: "Marketing & Sales",
-    description: "Boost revenue by crafting impactful campaigns and closing deals with precision.",
+    title: "Marketing & Sales Agent",
+    description: "Turn campaigns into conversions — and headlines into revenue.",
     icon: marketingAndSalesIcon,
     bgClass: "from-purple-200 to-blue-100",
     className: "",
     backgroundImage: marketingAndSalesImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Legal & Compliance",
+    agentName: "Legal & Compliance Agent",
     title: "Legal & Compliance",
     description:
-      "Navigate legal and regulatory challenges to ensure compliance and mitigate risks.",
+      "Navigate complexity with confidence — and zero surprises.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: legalAndComplianceImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Prior Art",
-    title: "Prior Art",
+    title: "Prior Art Agent",
     description:
       "Protect your idea before it turns up in someone else’s patent.",
     icon: legalAndComplianceIcon,
     bgClass: "from-purple-200 to-blue-100",
     className: "",
     backgroundImage: marketingAndSalesImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "ip_experts",
   },
   {
     agentName: "FTO",
-    title: "FTO",
+    title: "FTO Agent",
     description:
       "Launch with confidence — no red tape, no regrets.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: financeStrategyImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "ip_experts",
   },
   {
     agentName: "Patent Licensing",
-    title: "Patent Licensing",
+    title: "Patent Licensing Agent",
     description:
       "Turn unused patents into untapped revenue.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: legalAndComplianceImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "ip_experts"
   },
   {
     agentName: "Patent Landscape",
-    title: "Patent Landscape",
+    title: "Patent Landscape Agent",
     description:
       "See the full IP battlefield — and your best path through it.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: productEngineeringImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "ip_experts"
   },
   {
     agentName: "Prosecution History",
-    title: "Prosecution History",
+    title: "Prosecution History Agent",
     description:
       "Learn from every claim, correction, and curveball — before you file.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: startupDilligenceImage,
-    navLink: "/my-projects"
+    navLink: "/my-projects",
+    section_name: "ip_experts"
   },
 ];
 

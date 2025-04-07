@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ToolTip from "src/components/reusable/tool-tip";
 
 type Agent = {
   agentName: string;
@@ -10,7 +11,8 @@ type Agent = {
   className: string;
   backgroundImage: string;
   agentLink?: string;
-  navLink?: string
+  navLink?: string,
+  section_name?: string;
 };
 
 type AgentCardProps = {
@@ -41,7 +43,13 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
                 className="bg-white p-0.5 w-fit rounded backdrop-blur-sm"
                 
               >
-                <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
+                {agent.section_name == "ip_experts" ? (
+                    <ToolTip title="Coming Soon" placement="bottom">
+                    <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
+                  </ToolTip>
+                ) : (
+                  <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
+                )}   
               </div>
             </div>
             <p className="text-[#373D3F] text-sm">{agent.description}</p>
