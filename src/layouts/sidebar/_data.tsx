@@ -29,6 +29,7 @@ const sidebarItems: ISidebarListItem[] = [
     title: "Home",
     key: "home",
     icon: Home,
+    classname: "sidebar-home",
     to: "/",
   },
   {
@@ -36,6 +37,7 @@ const sidebarItems: ISidebarListItem[] = [
     key: "new-report",
     icon: NewReport,
     to: "/ai-agent/landing",
+    classname: "sidebar-agent",
     children: [
       {
         title: "My AI Agent Reports",
@@ -46,9 +48,9 @@ const sidebarItems: ISidebarListItem[] = [
     ],
   },
   {
-    title: "Project Hub",
+    title: "Deal Flow Screening",
     key: "reportManagement",
-    // classname: "mb-1",
+    classname: "sidebar-project",
     icon: StackFolders,
     to: "/my-projects",
   },

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ToolTip from "src/components/reusable/tool-tip";
 
 type Agent = {
   agentName: string;
@@ -9,7 +10,10 @@ type Agent = {
   bgClass: string;
   className: string;
   backgroundImage: string;
-  agentLink: string;
+  agentLink?: string;
+  navLink?: string,
+  section_name?: string;
+  disabled?: boolean
 };
 
 type AgentCardProps = {
@@ -18,9 +22,9 @@ type AgentCardProps = {
 
 const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
   return (
-    <Link to={`/ai-agent?agent=${agent.agentLink}`}>
+    <Link to={agent.disabled ? "" : (agent.navLink || `/ai-agent?agent=${agent.agentLink}`)} className="h-full">
       <div
-        className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow ${
+        className={`flex flex-1 rounded-lg overflow-hidden hover:shadow-lg cursor-pointer transition-shadow h-full ${
           agent.className
         } ${agent.agentName === "Finance & Strategy Agent" && "h-full"} cu`}
       >
@@ -40,7 +44,13 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent }) => {
                 className="bg-white p-0.5 w-fit rounded backdrop-blur-sm"
                 
               >
-                <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
+                {agent.section_name == "ip_experts" ? (
+                    <ToolTip title="Coming Soon" placement="bottom">
+                    <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
+                  </ToolTip>
+                ) : (
+                  <h3 className="text-3xl text-[#373D3F]">{agent.title}</h3>
+                )}   
               </div>
             </div>
             <p className="text-[#373D3F] text-sm">{agent.description}</p>

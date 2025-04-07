@@ -128,7 +128,9 @@ export default function SignupPage() {
             replace: true,
           });
         }
+        localStorage.setItem("modalShown", "true");
         navigate("/signup/confirm");
+        
       }
     } else {
       toast.error(response.message, {

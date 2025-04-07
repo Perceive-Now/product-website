@@ -422,14 +422,14 @@ input {
 .markdownWrapper * {
   @apply select-text;
 }
-.react-joyride__tooltip {
+/* .react-joyride__tooltip {
   position: relative;
   bottom: 25px !important;
-}
-.react-joyride__tooltip div{
+} */
+/* .react-joyride__tooltip div{
   text-align: left !important;
-}
-.react-joyride__tooltip button[title="Next"],.react-joyride__tooltip button[title="Last"]{
+} */
+/* .react-joyride__tooltip button[title="Next"],.react-joyride__tooltip button[title="Last"]{
   position: absolute;
   top:110%;
   right:0;
@@ -445,17 +445,17 @@ input {
   justify-content: center;
   align-items: center;
 }
-.__floater{ filter: none !important;}
+.__floater{ filter: none !important;} */
 
-.__floater__body > .react-joyride__tooltip{
+/* .__floater__body > .react-joyride__tooltip{
   border-radius: 25px !important;
   padding-bottom:0 !important;
   font-size:14px !important;
   font-weight: 600 !important;
   position: relative !important;
   z-index: 1;
-}
-.__floater__arrow span{
+} */
+/* .__floater__arrow span{
   background-image:url('../src/assets/images/tootlipArrow.png');
   background-position: bottom left;
   width: 48px;
@@ -473,4 +473,4 @@ input {
 .__floater__body div[style="padding: 20px 10px;"]{
   padding-bottom:0 !important;
   padding-top: 0 !important;
-}
+} */

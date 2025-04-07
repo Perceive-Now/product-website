@@ -12,29 +12,28 @@ import {
   productEngineeringImage,
   reportOnAnythingImage,
   technologyAndRndImage,
-} from "./_assets";
+} from "../../product/ai-agent/landing/_assets";
 
-import startupDilligenceIcon from "./_assets/AgentLanding-Icons/CompanyDilligance.svg";
-import corporateVentureIcon from "./_assets/AgentLanding-Icons/VentureCapital.svg";
-import financeAndStrategyIcon from "./_assets/AgentLanding-Icons/FinanceStrategy.svg";
-import fundRaisingIcon from "./_assets/AgentLanding-Icons/fundraise.svg";
-import legalAndComplianceIcon from "./_assets/AgentLanding-Icons/LegalSupport.svg";
-import marketStrategyIcon from "./_assets/AgentLanding-Icons/MarketStrategy.svg";
-import marketingAndSalesIcon from "./_assets/AgentLanding-Icons/MarketingSales.svg";
-import portfolioSupportIcon from "./_assets/AgentLanding-Icons/port.svg";
-import productEngineeringIcon from "./_assets/AgentLanding-Icons/ProductEngineering.svg";
-import reportOnAnythingIcon from "./_assets/AgentLanding-Icons/ReportAnything.svg";
-import technologyAndRndIcon from "./_assets/AgentLanding-Icons/TechnologyR-D.svg";
+import startupDilligenceIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/CompanyDilligance.svg";
+import corporateVentureIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/VentureCapital.svg";
+import financeAndStrategyIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/FinanceStrategy.svg";
+import fundRaisingIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/fundraise.svg";
+import legalAndComplianceIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/LegalSupport.svg";
+import marketStrategyIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/MarketStrategy.svg";
+import marketingAndSalesIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/MarketingSales.svg";
+import portfolioSupportIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/port.svg";
+import productEngineeringIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/ProductEngineering.svg";
+import reportOnAnythingIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/ReportAnything.svg";
+import technologyAndRndIcon from "../../product/ai-agent/landing/_assets/AgentLanding-Icons/TechnologyR-D.svg";
+import AgentHead from "src/pages/product/ai-agent/AgentHead";
+import AgentCard from "src/pages/product/ai-agent/landing/_components/AgentCard";
 
-import AgentCard from "./_components/AgentCard";
-import AgentHead from "../AgentHead";
-import StartupModal from "./startup-modal";
 
 // Custom SVG Icons (replace these with your own SVGs)
 
 const agents = [
   {
-    agentName: "Startup Diligence Agent",
+    agentName: "Startup Diligence",
     title: "Company Diligence Agent",
     description:
       "See the signals others miss — before they become headlines.",
@@ -42,11 +41,11 @@ const agents = [
     bgClass: "from-pink-200 to-red-100",
     className: "",
     backgroundImage: startupDilligenceImage,
-    agentLink: "company-diligence-agent",
+    navLink: "/my-projects",
     section_name: "investors",
   },
   {
-    agentName: "Fundraising Strategy Agent",
+    agentName: "Fundraising Strategy",
     title: "Fundraising Strategy Agent",
     description:
       "Close your next round with a strategy that sells itself.",
@@ -54,11 +53,11 @@ const agents = [
     bgClass: "from-blue-200 to-blue-100",
     className: "",
     backgroundImage: fundRaisingImage,
-    agentLink: "fundraising-strategy-agent",
+    navLink: "/my-projects",
     section_name: "investors",
   },
   {
-    agentName: "Report on Anything Agent",
+    agentName: "Report on Anything",
     title: "Report on Anything Agent",
     description:
       "Get answers to any question — no team, no wait time.",
@@ -66,11 +65,11 @@ const agents = [
     bgClass: "from-purple-200 to-pink-100",
     className: "",
     backgroundImage: reportOnAnythingImage,
-    agentLink: "report-on-anything-agent",
+    navLink: "/my-projects",
     section_name: "investors",
   },
   {
-    agentName: "Market Strategy Agent",
+    agentName: "Market Strategy",
     title: "Market Strategy Agent",
     description:
       "Turn trends into traction before the market catches on.",
@@ -78,58 +77,58 @@ const agents = [
     bgClass: "from-teal-200 to-blue-100",
     className: "",
     backgroundImage: marketStrategyImage,
-    agentLink: "market-strategy-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Portfolio Support Agent",
+    agentName: "Portfolio Support",
     title: "Portfolio Support Agent",
     description:
-      "Grow your portfolio without growing your headache",
+      "Grow your portfolio without growing your headache.",
     icon: portfolioSupportIcon,
     bgClass: "from-pink-200 to-purple-100",
     className: "",
     backgroundImage: portfolioSupportImage,
-    agentLink: "portfolio-support-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Technology & R&D Agent",
+    agentName: "Technology & R&D",
     title: "Technology & R&D Agent",
     description:
-      "Stay three steps ahead of what’s coming next.",
+      "Stay three steps ahead of what’s coming next.s",
     icon: technologyAndRndIcon,
     bgClass: "from-yellow-200 to-green-100",
     className: "",
     backgroundImage: technologyAndRndImage,
-    agentLink: "technology-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Product & Engineering Agent",
+    agentName: "Product & Engineering",
     title: "Product & Engineering Agent",
     description:
-      "Build what the market’s already waiting for.",
+      "Build what the market’s already waiting for",
     icon: productEngineeringIcon,
     bgClass: "from-red-200 to-pink-100",
     className: "",
     backgroundImage: productEngineeringImage,
-    agentLink: "product-engineering-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Corporate Venture Capital Agent",
+    agentName: "Corporate Venture Capital",
     title: "Corporate Venture Capital Agent",
-    description: "Find your next unicorn — and ride it all the way to ROI",
+    description: "Find your next unicorn — and ride it all the way to ROI.",
     icon: corporateVentureIcon,
     bgClass: "from-blue-200 to-purple-100",
     className: "",
     backgroundImage: corporateVentureImage,
-    agentLink: "corporate-venture-capital-agent",
-    section_name: "investors",
+    navLink: "/my-projects",
+    section_name:"investors"
   },
   {
-    agentName: "Finance & Strategy Agent",
+    agentName: "Finance & Strategy",
     title: "Finance & Strategy Agent",
     description:
       "Make every business move a calculated win.",
@@ -137,34 +136,34 @@ const agents = [
     bgClass: "from-pink-200 to-red-100",
     className: "",
     backgroundImage: financeStrategyImage,
-    agentLink: "finance-strategy-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Marketing & Sales Agent",
+    agentName: "Marketing & Sales",
     title: "Marketing & Sales Agent",
     description: "Turn campaigns into conversions — and headlines into revenue.",
     icon: marketingAndSalesIcon,
     bgClass: "from-purple-200 to-blue-100",
     className: "",
     backgroundImage: marketingAndSalesImage,
-    agentLink: "marketing-sales-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
     agentName: "Legal & Compliance Agent",
-    title: "Legal & Compliance Agent",
+    title: "Legal & Compliance",
     description:
       "Navigate complexity with confidence — and zero surprises.",
     icon: legalAndComplianceIcon,
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: legalAndComplianceImage,
-    agentLink: "legal-compliance-agent",
-    section_name: "enterprises",
+    navLink: "/my-projects",
+    section_name: "investors",
   },
   {
-    agentName: "Prior Art Agent",
+    agentName: "Prior Art",
     title: "Prior Art Agent",
     description:
       "Protect your idea before it turns up in someone else’s patent.",
@@ -172,12 +171,11 @@ const agents = [
     bgClass: "from-purple-200 to-blue-100",
     className: "",
     backgroundImage: marketingAndSalesImage,
-    agentLink: "prior-art-agent",
+    navLink: "/my-projects",
     section_name: "ip_experts",
-    disabled: true
   },
   {
-    agentName: "FTO Agent",
+    agentName: "FTO",
     title: "FTO Agent",
     description:
       "Launch with confidence — no red tape, no regrets.",
@@ -185,12 +183,11 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: financeStrategyImage,
-    agentLink: "fto-agent",
+    navLink: "/my-projects",
     section_name: "ip_experts",
-    disabled: true
   },
   {
-    agentName: "Patent Licensing Agent",
+    agentName: "Patent Licensing",
     title: "Patent Licensing Agent",
     description:
       "Turn unused patents into untapped revenue.",
@@ -198,12 +195,11 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: legalAndComplianceImage,
-    agentLink: "patent-licensing-agent",
-    section_name: "ip_experts",
-    disabled: true
+    navLink: "/my-projects",
+    section_name: "ip_experts"
   },
   {
-    agentName: "Patent Landscape Agent",
+    agentName: "Patent Landscape",
     title: "Patent Landscape Agent",
     description:
       "See the full IP battlefield — and your best path through it.",
@@ -211,12 +207,11 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: productEngineeringImage,
-    agentLink: "patent-landscape-agent",
-    section_name: "ip_experts",
-    disabled: true
+    navLink: "/my-projects",
+    section_name: "ip_experts"
   },
   {
-    agentName: "Prosecution History Agent",
+    agentName: "Prosecution History",
     title: "Prosecution History Agent",
     description:
       "Learn from every claim, correction, and curveball — before you file.",
@@ -224,22 +219,20 @@ const agents = [
     bgClass: "from-yellow-200 to-orange-100",
     className: "",
     backgroundImage: startupDilligenceImage,
-    agentLink: "prosecution-history-agent",
-    section_name: "ip_experts",
-    disabled: true
+    navLink: "/my-projects",
+    section_name: "ip_experts"
   },
 ];
 
 export default function AgentsGrid() {
   return (
     <>
-     <StartupModal/>
     <div className="px-4 pt-2 pb-12">
       <AgentHead agentName="" />
-      <h1 className="text-4xl font-bold mb-4">Our Suite of AI Agents</h1>
-      <p className="text-lg mb-2">
+      <h1 className="text-4xl font-bold mb-4">Deal Flow Screening</h1>
+      {/* <p className="text-lg mb-2">
         Explore our AI agents, each tailored to assist with specific tasks.
-      </p>
+      </p> */}
       <p className="text-lg mb-8">
         <span className="text-orange-500 font-medium">Select</span> the one that best suits your
         needs to get started!

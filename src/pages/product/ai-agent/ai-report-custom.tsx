@@ -85,25 +85,25 @@ const AIReportCustomization: React.FC = () => {
       user_id: searchParams.get("user_id"),
       thread_id: searchParams.get("thread_id"),
       config: {
-        report_depth: {
-          selected: selectedOptions.reportScopeOptions,
-          other:
-            customInput?.["reportScopeOptions"]?.["Other"] ||
-            customInput?.["Quick Sub-Topic Summaries"]?.["Other"] ||
-            "",
-        },
+        // report_depth: {
+        //   selected: selectedOptions.reportScopeOptions,
+        //   other:
+        //     customInput?.["reportScopeOptions"]?.["Other"] ||
+        //     customInput?.["Quick Sub-Topic Summaries"]?.["Other"] ||
+        //     "",
+        // },
         report_format: {
           selected: selectedOptions.reportFormatOptions,
           other: customInput?.["reportFormatOptions"]?.["Other"] || "",
         },
-        visual_style: {
-          selected: selectedOptions.visualStyleOptions,
-          other: customInput?.["visualStyleOptions"]?.["Other"] || "",
-        },
-        number_of_charts: {
-          selected: selectedOptions.chartsOptions,
-          other: customInput?.["chartsOptions"]?.["Other"] || "",
-        },
+        // visual_style: {
+        //   selected: selectedOptions.visualStyleOptions,
+        //   other: customInput?.["visualStyleOptions"]?.["Other"] || "",
+        // },
+        // number_of_charts: {
+        //   selected: selectedOptions.chartsOptions,
+        //   other: customInput?.["chartsOptions"]?.["Other"] || "",
+        // },
         citations: {
           selected: selectedOptions.citationsOptions,
           other: customInput?.["citationsOptions"]?.["Other"] || "",
@@ -112,10 +112,10 @@ const AIReportCustomization: React.FC = () => {
           selected: selectedOptions.reportToneOptions,
           other: customInput?.["reportToneOptions"]?.["Other"] || "",
         },
-        collaboration_needs: {
-          selected: selectedOptions.collaborationOptions,
-          other: customInput?.["collaborationOptions"]?.["Other"] || "",
-        },
+        // collaboration_needs: {
+        //   selected: selectedOptions.collaborationOptions,
+        //   other: customInput?.["collaborationOptions"]?.["Other"] || "",
+        // },
         explainability: {
           selected: selectedOptions.explainabilityOptions,
           other: customInput?.["explainabilityOptions"]?.["Other"] || "",
@@ -130,6 +130,7 @@ const AIReportCustomization: React.FC = () => {
             other: customInput?.["audienceFocusTwoOptions"]?.["Other"] || "",
           },
         },
+        other: additionalSummary
       },
     };
     console.log("dataToSend", dataToSend);
