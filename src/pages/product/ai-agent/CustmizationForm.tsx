@@ -8,16 +8,36 @@ const options = {
   //   { label: "Custom", value: "Other", showTextBox: true },
   // ],
   reportFormatOptions: [
-    { label: "PDF Report (default)", value: "PDF Report (default)", showTextBox: false, desc:"Clean and print-ready. Ideal for official sharing and archiving." },
-    { label: "Presentation Deck (PPT)", value: "Presentation Deck (PPT)", showTextBox: false, desc:"Visual slides for executive or team briefings" },
-    { label: "Editable Word Doc", value: "Editable Word Doc", showTextBox: false, desc:"Useful for internal annotations and customization." },
+    {
+      label: "PDF Report (default)",
+      value: "PDF Report (default)",
+      showTextBox: false,
+      desc: "Clean and print-ready. Ideal for official sharing and archiving.",
+    },
+    {
+      label: "Presentation Deck (PPT)",
+      value: "Presentation Deck (PPT)",
+      showTextBox: false,
+      desc: "Visual slides for executive or team briefings",
+    },
+    {
+      label: "Editable Word Doc",
+      value: "Editable Word Doc",
+      showTextBox: false,
+      desc: "Useful for internal annotations and customization.",
+    },
     {
       label: "Spreadsheet (Excel/CSV)",
       value: "Spreadsheet (Excel/CSV)",
       showTextBox: false,
-      desc:"Tabular data for deeper internal analysis or integration."
+      desc: "Tabular data for deeper internal analysis or integration.",
     },
-    { label: "Short Topical Summaries", value: "Short Topical Summaries", showTextBox: false,desc:"1-page summaries for specific subtopics. You’ll be prompted to list which topics need summarizing.\nExample: “Summarize Competitive Landscape and Regulatory Risk sections separately.”" },
+    {
+      label: "Short Topical Summaries",
+      value: "Short Topical Summaries",
+      showTextBox: true,
+      desc: "1-page summaries for specific subtopics. You’ll be prompted to list which topics need summarizing.\nExample: “Summarize Competitive Landscape and Regulatory Risk sections separately.”",
+    },
   ],
   // visualStyleOptions: [
   //   { label: "Minimal Text, More Data", value: "Minimal Text, More Data", showTextBox: false },
@@ -38,25 +58,30 @@ const options = {
       label: "Inline Hyperlinks",
       value: "Inline Hyperlinks",
       showTextBox: false,
-      desc:`Sources appear directly in-line. Example: “...as reported in Gartner, 2023”`
+      desc: `Sources appear directly in-line. Example: “...as reported in Gartner, 2023”`,
     },
     {
       label: "Endnotes with Hyperlinks",
       value: "Endnotes with Hyperlinks",
       showTextBox: false,
-      desc:"Citations shown as numbered footnotes at the end. Keeps main content clean."
+      desc: "Citations shown as numbered footnotes at the end. Keeps main content clean.",
     },
     {
       label: "Standard Reference List",
       value: "Standard Reference List",
       showTextBox: false,
-      desc:`APA-style or numbered list at the end of the report.\nExamples:
+      desc: `APA-style or numbered list at the end of the report.\nExamples:
 APA Style: Gartner. (2024). AI Trends in Consumer Goods. Retrieved from https://www.gartner.com/report/cpg-ai-2024
-Numbered Style: [1] Gartner, AI Trends in Consumer Goods, 2024. https://www.gartner.com/report/cpg-ai-2024`
+Numbered Style: [1] Gartner, AI Trends in Consumer Goods, 2024. https://www.gartner.com/report/cpg-ai-2024`,
     },
-    { label: "No Citations", value: "No Citations", showTextBox: false, desc:"For internal-only reports or early drafts." },
+    {
+      label: "No Citations",
+      value: "No Citations",
+      showTextBox: false,
+      desc: "For internal-only reports or early drafts.",
+    },
   ],
- 
+
   audienceFocusOneOptions: [
     { label: "C-Suite Executives", value: "C-Suite Executives", showTextBox: false },
     { label: "Finance Teams", value: "Finance Teams", showTextBox: false },
@@ -71,11 +96,11 @@ Numbered Style: [1] Gartner, AI Trends in Consumer Goods, 2024. https://www.gart
       showTextBox: false,
     },
     { label: "R&D Teams", value: "R&D Teams", showTextBox: false },
-    
+
     { label: "Sales & Marketing Teams", value: "Sales & Marketing Teams", showTextBox: false },
-   
+
     { label: "Operations Teams", value: "Operations Teams", showTextBox: false },
-    
+
     { label: "Product Management Teams", value: "Product Management Teams", showTextBox: false },
     { label: "Other", value: "Other", showTextBox: true },
   ],
@@ -86,33 +111,58 @@ Numbered Style: [1] Gartner, AI Trends in Consumer Goods, 2024. https://www.gart
     { label: "M&A Teams", value: "M&A Teams", showTextBox: false },
     { label: "Deal Sourcing Teams", value: "Deal Sourcing Teams", showTextBox: false },
     { label: "Portfolio Managers", value: "Portfolio Managers", showTextBox: false },
-    
+
     { label: "Managing Directors", value: "Managing Directors", showTextBox: false },
-   
+
     { label: "Investment Analysts", value: "Investment Analysts", showTextBox: false },
-   
+
     { label: "Venture Partners", value: "Venture Partners", showTextBox: false },
-   
+
     { label: "Other", value: "Other", showTextBox: true },
   ],
   reportToneOptions: [
-    { label: "Confident & Assertive", value: "Confident & Assertive", showTextBox: false, desc:`No fluff, no fence-sitting. Clear stances, strong language, action-ready.
-Example: “Here’s the signal. Here’s the move. Now go.”` },
-    { label: "Witty & Sharp", value: "Witty & Sharp", showTextBox: false, desc:`Slightly edgy, clever, intelligent. For readers who appreciate personality with their data.
-Example: “The only thing flatter than the growth rate in this sector is a soda left open overnight.”` },
-    { label: "Executive-Level Strategic", value: "Executive-Level Strategic", showTextBox: false, desc:`High-level clarity for decision-makers. Think boardroom-ready.
-Example: “This space is consolidating fast — M&A is no longer optional, it’s survival.”` },
+    {
+      label: "Confident & Assertive",
+      value: "Confident & Assertive",
+      showTextBox: false,
+      desc: `No fluff, no fence-sitting. Clear stances, strong language, action-ready.
+Example: “Here’s the signal. Here’s the move. Now go.”`,
+    },
+    {
+      label: "Witty & Sharp",
+      value: "Witty & Sharp",
+      showTextBox: false,
+      desc: `Slightly edgy, clever, intelligent. For readers who appreciate personality with their data.
+Example: “The only thing flatter than the growth rate in this sector is a soda left open overnight.”`,
+    },
+    {
+      label: "Executive-Level Strategic",
+      value: "Executive-Level Strategic",
+      showTextBox: false,
+      desc: `High-level clarity for decision-makers. Think boardroom-ready.
+Example: “This space is consolidating fast — M&A is no longer optional, it’s survival.”`,
+    },
     {
       label: "Analytical & Data-Driven",
       value: "Analytical & Data-Driven",
       showTextBox: false,
-      desc:`Math, methods, and meaning — minus the fluff.
-Example: “95% CI, p < 0.05. Here’s how we got there and why it matters.”`
+      desc: `Math, methods, and meaning — minus the fluff.
+Example: “95% CI, p < 0.05. Here’s how we got there and why it matters.”`,
     },
-    { label: "Clear & Jargon-Free", value: "Clear & Jargon-Free", showTextBox: false, desc:`Explain-it-to-a-human simplicity. No acronyms or buzzwords.
-Example: “This tech is like GPS in the 2000s — early, valuable, and soon-to-be everywhere.”` },
-    { label: "Bold & Visionary", value: "Bold & Visionary", showTextBox: false, desc:`Moonshot tone for future-forward thinkers.
-Example: “If you’re not already building in this space, you’ll be buying from someone who is.”` },
+    {
+      label: "Clear & Jargon-Free",
+      value: "Clear & Jargon-Free",
+      showTextBox: false,
+      desc: `Explain-it-to-a-human simplicity. No acronyms or buzzwords.
+Example: “This tech is like GPS in the 2000s — early, valuable, and soon-to-be everywhere.”`,
+    },
+    {
+      label: "Bold & Visionary",
+      value: "Bold & Visionary",
+      showTextBox: false,
+      desc: `Moonshot tone for future-forward thinkers.
+Example: “If you’re not already building in this space, you’ll be buying from someone who is.”`,
+    },
   ],
   // collaborationOptions: [
   //   { label: "No collaboration needed", value: "No collaboration needed", showTextBox: false },
@@ -132,44 +182,49 @@ Example: “If you’re not already building in this space, you’ll be buying f
       label: "Logic Path Appendix",
       value: "Logic Path Appendix",
       showTextBox: false,
-      desc:`Step-by-step breakdown of how each insight was derived.
-Example: “Revenue potential = Market size × Adoption rate × Pricing tier.”`
+      desc: `Step-by-step breakdown of how each insight was derived.
+Example: “Revenue potential = Market size × Adoption rate × Pricing tier.”`,
     },
     {
       label: "Breakdown by Source Type",
       value: "Breakdown by Source Type",
       showTextBox: false,
-      desc:`Clarifies if the insight came from patents, market data, expert models, or AI-generated scoring.`
+      desc: `Clarifies if the insight came from patents, market data, expert models, or AI-generated scoring.`,
     },
     {
       label: "Statistical Parameters",
       value: "Statistical Parameters",
       showTextBox: false,
-      desc:`Includes confidence intervals, p-values, error margins, sample sizes, and other key indicators.
-Example: “Forecasted CAGR: 18.2% (±2.3% margin, 95% CI).”`
+      desc: `Includes confidence intervals, p-values, error margins, sample sizes, and other key indicators.
+Example: “Forecasted CAGR: 18.2% (±2.3% margin, 95% CI).”`,
     },
     {
       label: "Forecasting Model Disclosure",
       value: "Forecasting Model Disclosure",
       showTextBox: false,
-      desc:`List of assumptions and equations used to make forward-looking projections.
-Example: Adoption rate modeled on historical S-curve + benchmark multipliers.`
+      desc: `List of assumptions and equations used to make forward-looking projections.
+Example: Adoption rate modeled on historical S-curve + benchmark multipliers.`,
     },
     {
       label: "Input vs. Output Mapping",
       value: "Input vs. Output Mapping",
       showTextBox: false,
-      desc:`“From → to” flow showing what data led to what insight.
-Example: “Patent clusters → Tech trends → Commercialization score.”`
+      desc: `“From → to” flow showing what data led to what insight.
+Example: “Patent clusters → Tech trends → Commercialization score.”`,
     },
     {
       label: "Insight Type Labeling",
       value: "Insight Type Labeling",
       showTextBox: false,
-      desc:`Each insight tagged as: Derived (data-driven), Interpreted (expert judgment), or Predicted (forecasted).`
+      desc: `Each insight tagged as: Derived (data-driven), Interpreted (expert judgment), or Predicted (forecasted).`,
     },
-    { label: "Explainable AI Summary", value: "Explainable AI Summary", showTextBox: false, desc:`Plain-language breakdown of where and how AI was used in the analysis.
-Example: “Generated using a fine-tuned LLM trained on 200K+ patents and filings.”` },
+    {
+      label: "Explainable AI Summary",
+      value: "Explainable AI Summary",
+      showTextBox: false,
+      desc: `Plain-language breakdown of where and how AI was used in the analysis.
+Example: “Generated using a fine-tuned LLM trained on 200K+ patents and filings.”`,
+    },
   ],
 };
 
@@ -177,7 +232,7 @@ interface Option {
   label: string;
   value: string;
   showTextBox: boolean;
-  desc?: string
+  desc?: string;
 }
 
 // Reusable component for rendering checkbox groups
@@ -221,7 +276,9 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
               className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
             />
           )}
-          {item.desc ? <p className="italic text-xs whitespace-pre-line text-gray-500">{item.desc}</p> : null}
+          {item.desc ? (
+            <p className="italic text-xs whitespace-pre-line text-gray-500">{item.desc}</p>
+          ) : null}
         </div>
       ))}
     </div>
@@ -331,10 +388,12 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("reportFormatOptions")}
           >
             <div className="flex items-center gap-x-2">
-            <input type="radio" checked={currentTab === "reportFormatOptions"} />
-            Report Format
+              <input type="radio" checked={currentTab === "reportFormatOptions"} />
+              Report Format
             </div>
-            <p className="italic text-xs">Select one or more formats you'd like the report delivered in</p>
+            <p className="italic text-xs">
+              Select one or more formats you'd like the report delivered in
+            </p>
           </div>
           {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -361,8 +420,8 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("citationsOptions")}
           >
             <div className="flex items-center gap-x-2">
-            <input type="radio" checked={currentTab === "citationsOptions"} />
-            Citations & References
+              <input type="radio" checked={currentTab === "citationsOptions"} />
+              Citations & References
             </div>
             <p className="italic text-xs">Choose how you'd like sources to appear in the report</p>
           </div>
@@ -372,11 +431,13 @@ const CustmizationForm = (props: Props) => {
             }`}
             onClick={() => setCurrentTab("audienceFocus")}
           >
-              <div className="flex items-center gap-x-2">
-            <input type="radio" checked={currentTab === "audienceFocus"} />
-            Target Audience
+            <div className="flex items-center gap-x-2">
+              <input type="radio" checked={currentTab === "audienceFocus"} />
+              Target Audience
             </div>
-            <p className="italic text-xs">Select all that apply — we’ll tailor tone and depth accordingly</p>
+            <p className="italic text-xs">
+              Select all that apply — we’ll tailor tone and depth accordingly
+            </p>
           </div>
           <div
             className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -384,11 +445,13 @@ const CustmizationForm = (props: Props) => {
             }`}
             onClick={() => setCurrentTab("reportToneOptions")}
           >
-              <div className="flex items-center gap-x-2">
-            <input type="radio" checked={currentTab === "reportToneOptions"} />
-            Tone of the Report
+            <div className="flex items-center gap-x-2">
+              <input type="radio" checked={currentTab === "reportToneOptions"} />
+              Tone of the Report
             </div>
-            <p className="italic text-xs">Choose the tone that best fits your audience or brand personality</p>
+            <p className="italic text-xs">
+              Choose the tone that best fits your audience or brand personality
+            </p>
           </div>
           {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -405,11 +468,13 @@ const CustmizationForm = (props: Props) => {
             }`}
             onClick={() => setCurrentTab("explainabilityOptions")}
           >
-              <div className="flex items-center gap-x-2">
-            <input type="radio" checked={currentTab === "explainabilityOptions"} />
-            Explainability & Transparency
+            <div className="flex items-center gap-x-2">
+              <input type="radio" checked={currentTab === "explainabilityOptions"} />
+              Explainability & Transparency
             </div>
-            <p className="italic text-xs">Select how much clarity you want into how insights were generated</p>
+            <p className="italic text-xs">
+              Select how much clarity you want into how insights were generated
+            </p>
           </div>
         </div>
         <div className="flex-[2] pl-3">

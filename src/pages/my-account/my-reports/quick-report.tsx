@@ -1405,7 +1405,7 @@ const QuickReports = () => {
                 <div className="relative">
                   <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
                   <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-                    Individual Company Fields
+                    Company Details
                   </h2>
                 </div>
 
