@@ -82,9 +82,10 @@ const SourcesData: React.FC<Props> = (props) => {
             </div>
             {open && (
               <>
-                <h4 className="mb-4 text-sm sm:text-base">
+                <h4 className="mb-2 text-sm sm:text-base">
                   Customize sections to suit your needs.
                 </h4>
+                <p className="mb-2 text-sm sm:text-base">The data sources shown represent only 10% to 20% of those that may appear in the final report. The complete set of sources will be curated by Perceive Now’s proprietary AI agents, tailored to the specific use case, industry context, and client objectives.</p>
                 <div className="text-xs sm:text-sm">
                   {dataSourceKeys.map((tab) => (
                     <button
