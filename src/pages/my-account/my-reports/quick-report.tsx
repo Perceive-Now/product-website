@@ -209,13 +209,12 @@ const QuickReports = () => {
   const [bioUrl, setBioUrl] = useState("");
   const [draggingBio, setDraggingBio] = useState(false);
   const bioFileInputRef = useRef<HTMLInputElement | null>(null);
-  
+
   const [productInputMode, setProductInputMode] = useState<"file" | "url">("file");
   const [productFile, setProductFile] = useState<File | null>(null);
   const [productUrl, setProductUrl] = useState("");
   const [draggingProduct, setDraggingProduct] = useState(false);
   const productFileInputRef = useRef<HTMLInputElement | null>(null);
-
 
   useEffect(() => {
     console.log("id value of the page ===========", id);
@@ -397,11 +396,11 @@ const QuickReports = () => {
           toast.error("You can upload a maximum of 5 files.");
           return prevFiles;
         }
-  
+
         setTimeout(() => {
           changeHighlight(); // Optional visual change
         }, 1500);
-  
+
         return totalFiles;
       });
       // if (invalidFiles.length > 0) {
@@ -417,7 +416,7 @@ const QuickReports = () => {
 
   const handleCapTableFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-  
+
     if (file) {
       const allowedTypes = [
         "application/pdf",
@@ -430,10 +429,10 @@ const QuickReports = () => {
         "application/vnd.oasis.opendocument.text",
         "application/vnd.apple.keynote",
       ];
-  
+
       const isInvalidType = !allowedTypes.includes(file.type);
       const isInvalidSize = file.size > 200 * 1024 * 1024;
-  
+
       if (isInvalidType || isInvalidSize) {
         toast.error("Invalid file uploaded.");
       } else {
@@ -446,7 +445,7 @@ const QuickReports = () => {
 
   const handleCusListFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-  
+
     if (file) {
       const allowedTypes = [
         "application/pdf",
@@ -459,10 +458,10 @@ const QuickReports = () => {
         "application/vnd.oasis.opendocument.text",
         "application/vnd.apple.keynote",
       ];
-  
+
       const isInvalidType = !allowedTypes.includes(file.type);
       const isInvalidSize = file.size > 200 * 1024 * 1024;
-  
+
       if (isInvalidType || isInvalidSize) {
         toast.error("Invalid file uploaded.");
       } else {
@@ -479,7 +478,7 @@ const QuickReports = () => {
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
       const file = files[0]; // Only take the first file
-  
+
       const allowedTypes = [
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -491,10 +490,10 @@ const QuickReports = () => {
         "application/vnd.oasis.opendocument.text",
         "application/vnd.apple.keynote",
       ];
-  
+
       const isInvalidType = !allowedTypes.includes(file.type);
       const isInvalidSize = file.size > 200 * 1024 * 1024;
-  
+
       if (isInvalidType || isInvalidSize) {
         toast.error("Invalid file uploaded.");
       } else {
@@ -512,7 +511,7 @@ const QuickReports = () => {
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
       const file = files[0]; // Only take the first file
-  
+
       const allowedTypes = [
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -524,10 +523,10 @@ const QuickReports = () => {
         "application/vnd.oasis.opendocument.text",
         "application/vnd.apple.keynote",
       ];
-  
+
       const isInvalidType = !allowedTypes.includes(file.type);
       const isInvalidSize = file.size > 200 * 1024 * 1024;
-  
+
       if (isInvalidType || isInvalidSize) {
         toast.error("Invalid file uploaded.");
       } else {
@@ -538,19 +537,19 @@ const QuickReports = () => {
       }
     }
   };
-  
-  // code for team bios start 
+
+  // code for team bios start
   const handleBioBrowseClick = () => {
     bioFileInputRef.current?.click();
   };
-  
+
   const handleBioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setBioFile(file);
     }
   };
-  
+
   const handleBioFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDraggingBio(false);
@@ -559,21 +558,21 @@ const QuickReports = () => {
       setBioFile(file);
     }
   };
-  
+
   // code for team bios end
 
-  // code for product screenshoot start 
+  // code for product screenshoot start
   const handleProductBrowseClick = () => {
     productFileInputRef.current?.click();
   };
-  
+
   const handleProductFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setProductFile(file);
     }
   };
-  
+
   const handleProductFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDraggingProduct(false);
@@ -807,8 +806,6 @@ const QuickReports = () => {
 
     const values = requirementValues();
 
-    console.log("SLDKLKSD", values, selectedOptions);
-
     const dataPayload: Record<string, string[] | any> = {};
     dataPayload.websites = pastedURLs;
     dataPayload.question = values.questions;
@@ -887,6 +884,14 @@ const QuickReports = () => {
       other_source: values.other_source,
     };
 
+    if (bioUrl) {
+      dataPayload.additional_metadata.bioUrl = bioUrl;
+    }
+
+    if (productUrl) {
+      dataPayload.additional_metadata.productUrl = productUrl;
+    }
+
     // {
     //   "websites": [
     //     "string"
@@ -902,7 +907,7 @@ const QuickReports = () => {
     try {
       const response: any = await axios.post(
         `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}`,
-        { ...dataPayload, ...values, ...selectedOptions },
+        { ...dataPayload },
       );
 
       if (response.status === 200) {
@@ -911,32 +916,91 @@ const QuickReports = () => {
           disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED,
           projectId as string,
         );
-        if (uploadedFiles.length === 0) {
+        const allEmpty =
+          uploadedFiles.length === 0 &&
+          supportFiles.length === 0 &&
+          !capTableFile &&
+          !cusListFile &&
+          pastedURLs.length === 0;
+
+        if (allEmpty) {
           setStep(4);
           return;
         }
-        const formData = new FormData();
-
-        uploadedFiles.forEach((file: File) => {
-          formData.append("files", file);
-        });
         try {
-          const fileUploadResponse: any = await fetch(
-            `${API_PROD_URL}/upload-files/${userId}/${projectId}/${response.data.report_id}?classification=Company Diligance`,
-            {
-              method: "POST",
-              headers: { Accept: "application/json" },
-              body: formData,
-            },
-          );
+          const uploadPromises: Promise<Response>[] = [];
 
-          if (fileUploadResponse.ok) {
+          const createFormAndUpload = (
+            files: File[] | File,
+            endpoint: string,
+            fieldName = "files",
+          ): Promise<Response> => {
+            const formData = new FormData();
+            if (Array.isArray(files)) {
+              files.forEach((file) => formData.append(fieldName, file));
+            } else if (files) {
+              formData.append(fieldName, files);
+            }
+
+            return fetch(
+              `${API_PROD_URL}/upload-files/${userId}/${projectId}/${response.data.report_id}?classification=${endpoint}`,
+              {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: formData,
+              },
+            );
+          };
+
+          if (uploadedFiles.length > 0) {
+            uploadPromises.push(createFormAndUpload(uploadedFiles, "Company Diligence"));
+          }
+
+          if (supportFiles.length > 0) {
+            uploadPromises.push(createFormAndUpload(supportFiles, "Supporting Files"));
+          }
+
+          if (capTableFile) {
+            uploadPromises.push(createFormAndUpload(capTableFile, "Cap Table"));
+          }
+
+          if (cusListFile) {
+            uploadPromises.push(createFormAndUpload(cusListFile, "Customer List"));
+          }
+          if (bioFile) {
+            uploadPromises.push(createFormAndUpload(bioFile, "Team Bios"));
+          }
+          if (productFile) {
+            uploadPromises.push(createFormAndUpload(productFile, "Product Screenshots"));
+          }
+
+          // if (pastedURLs.length > 0) {
+          //   const urlFormData = new FormData();
+          //   pastedURLs.forEach((url) => urlFormData.append("urls", url));
+          //   uploadPromises.push(
+          //     fetch(
+          //       `${API_PROD_URL}/upload-links/${userId}/${projectId}/${response.data.report_id}?classification=Linked URLs`,
+          //       {
+          //         method: "POST",
+          //         headers: { Accept: "application/json" },
+          //         body: urlFormData,
+          //       },
+          //     ),
+          //   );
+          // }
+
+          const responses = await Promise.all(uploadPromises);
+
+          const allSuccess = responses.every((res) => res.ok);
+
+          if (allSuccess) {
             setStep(4);
           } else {
-            toast.error("Unable to submit report");
+            toast.error("Some files failed to upload");
           }
         } catch (e) {
-          console.log("err", e);
+          console.error("Upload error:", e);
+          toast.error("Unexpected error while uploading");
         } finally {
           setLoading(false);
         }
@@ -1801,9 +1865,7 @@ const QuickReports = () => {
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
-                        <h6 className="font-semibold text-base font-nunito mb-1">
-                        Cap Table
-                        </h6>
+                        <h6 className="font-semibold text-base font-nunito mb-1">Cap Table</h6>
                         <div
                           className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
                             dragging ? "bg-gray-200" : ""
@@ -1831,31 +1893,33 @@ const QuickReports = () => {
                         </div>
                         {/* Hidden File Input */}
                         <input
-                        type="file"
-                        ref={capTableInputRef}
-                        onChange={handleCapTableFileChange}
-                        className="hidden"
-                      />
+                          type="file"
+                          ref={capTableInputRef}
+                          onChange={handleCapTableFileChange}
+                          className="hidden"
+                        />
                         <div className="mt-2 mb-2">
                           {/* <p className="text-lg font-semibold font-nunito">
                           Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
                           </p> */}
                           <ul className="list-none pl-[20px]">
                             {/* {listContent.map((content) => ( */}
-                              <li className="text-xs">
+                            <li className="text-xs">
                               Upload Single file (PDF, PPTX, DOCX, Keynote)
-                              </li>
+                            </li>
                             {/* ))} */}
                           </ul>
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Cap Table file</h6>
+                        <h6 className="font-semibold mb-1 text-base font-nunito">
+                          Uploaded Cap Table file
+                        </h6>
                         <div
                           className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
                         >
                           <div className="rounded-lg p-2 flex-1">
-                          {capTableFile ? (
+                            {capTableFile ? (
                               <div className="flex justify-between items-center">
                                 <p className="text-sm font-nunito">{capTableFile.name}</p>
                                 <TrashIcon
@@ -1869,15 +1933,11 @@ const QuickReports = () => {
                                 No file uploaded yet.
                               </p>
                             )}
-
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div>
-                      {/* File Upload Box */}
-                  
-                    </div>
+                    <div>{/* File Upload Box */}</div>
                   </div>
                 </div>
                 {/* cap table field end  */}
@@ -2011,14 +2071,12 @@ const QuickReports = () => {
                 </div>
                 {/* Team Bios end  */}
 
-                  {/* Customer List field start  */}
+                {/* Customer List field start  */}
                 <div className="w-full p-2">
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
-                        <h6 className="font-semibold text-base font-nunito mb-1">
-                        Customer List
-                        </h6>
+                        <h6 className="font-semibold text-base font-nunito mb-1">Customer List</h6>
                         <div
                           className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
                             dragging ? "bg-gray-200" : ""
@@ -2046,31 +2104,33 @@ const QuickReports = () => {
                         </div>
                         {/* Hidden File Input */}
                         <input
-                        type="file"
-                        ref={cusListInputRef}
-                        onChange={handleCusListFileChange}
-                        className="hidden"
-                      />
+                          type="file"
+                          ref={cusListInputRef}
+                          onChange={handleCusListFileChange}
+                          className="hidden"
+                        />
                         <div className="mt-2 mb-2">
                           {/* <p className="text-lg font-semibold font-nunito">
                           Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
                           </p> */}
                           <ul className="list-none pl-[20px]">
                             {/* {listContent.map((content) => ( */}
-                              <li className="text-xs">
+                            <li className="text-xs">
                               Upload Single file (PDF, PPTX, DOCX, Keynote)
-                              </li>
+                            </li>
                             {/* ))} */}
                           </ul>
                         </div>
                       </div>
                       <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Cap Table file</h6>
+                        <h6 className="font-semibold mb-1 text-base font-nunito">
+                          Uploaded Cap Table file
+                        </h6>
                         <div
                           className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
                         >
                           <div className="rounded-lg p-2 flex-1">
-                          {cusListFile ? (
+                            {cusListFile ? (
                               <div className="flex justify-between items-center">
                                 <p className="text-sm font-nunito">{cusListFile.name}</p>
                                 <TrashIcon
@@ -2084,15 +2144,11 @@ const QuickReports = () => {
                                 No file uploaded yet.
                               </p>
                             )}
-
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div>
-                      {/* File Upload Box */}
-                  
-                    </div>
+                    <div>{/* File Upload Box */}</div>
                   </div>
                 </div>
                 {/* Customer List field end  */}
@@ -2322,12 +2378,11 @@ const QuickReports = () => {
                   </div>
                 </div>
                 {/* supporting material field end  */}
-
               </div>
               {/* Supporting Materials end */}
 
-                {/* Relevant Links start  */}
-                <div className="border border-gray-300 rounded-md mt-8">
+              {/* Relevant Links start  */}
+              <div className="border border-gray-300 rounded-md mt-8">
                 <div className="relative">
                   <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
                   <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">

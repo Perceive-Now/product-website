@@ -270,6 +270,7 @@ const AiAgent = () => {
             }),
           );
         } catch (error) {
+          handleApiError();
           console.log(error);
         } finally {
           setQuery(""); // Clear input field
@@ -297,7 +298,7 @@ const AiAgent = () => {
 
   const [dataSources, setDataSources] = useState<any>(null);
 
-  const updateVsChat = (payload: { query: string; answer: string }) => {
+  const updateVsChat = (payload: { query: string; answer: string; isError?: boolean }) => {
     dispatch(setVSChats(payload));
   };
 
@@ -305,11 +306,23 @@ const AiAgent = () => {
   const [analysingfile, setAnalysingFile] = useState(false);
   const [chatEnded, setChatEnded] = useState(false);
 
+  const apiResponseError =
+    "Hmm... something seems to have gone wrong. Please type your input again!";
+
+  const handleApiError = () => {
+    updateVsChat({
+      query: apiResponseError,
+      answer: "",
+      isError: true,
+    });
+  };
+
   const handleFileSubmitQuery = async (file: File) => {
     const url = new URL(window.location.href);
     const searchParamsCurrent = new URLSearchParams(url.search);
     const threadIdCurrent = searchParamsCurrent.get("threadId");
     const errorUploadingFile = "Error generating extract summary. Please upload file again";
+
     const newQueryIndex = generateKnowId();
     const firstQuery = {
       id: newQueryIndex,
@@ -318,6 +331,7 @@ const AiAgent = () => {
       isFile: true,
       file,
     };
+
     const handleFileUploadError = () => {
       updateVsChat({
         query: errorUploadingFile,
@@ -524,6 +538,7 @@ const AiAgent = () => {
                       setJsonResponse(json_response);
                     }
                   } catch (error) {
+                    handleApiError();
                     if (data.response?.toLowerCase().includes("24-48 hours")) {
                       convoOptions = ["End Conversation"];
                       updateUrlParam("side", "false");
@@ -611,6 +626,7 @@ const AiAgent = () => {
                       setJsonResponse(json_response);
                     }
                   } catch (error) {
+                    handleApiError();
                     if (data.response?.toLowerCase().includes("24-48 hours")) {
                       convoOptions = ["End Conversation"];
                       updateUrlParam("side", "false");
@@ -734,6 +750,7 @@ const AiAgent = () => {
                     setJsonResponse(json_response);
                   }
                 } catch (error) {
+                  handleApiError();
                   if (data.response?.toLowerCase().includes("24-48 hours")) {
                     convoOptions = ["End Conversation"];
                     updateUrlParam("side", "false");
@@ -788,6 +805,7 @@ const AiAgent = () => {
         }
         // dispatch(setVSChats({ query: response?.response, answer: query }));
       } catch (error) {
+        handleApiError();
         setIsloading(false);
         console.error("Error fetching API response:", error);
       } finally {
@@ -845,6 +863,7 @@ const AiAgent = () => {
                             index={idx}
                             initLoading={isInitLoad}
                             agentName={AgentName[agent || ""]}
+                            isError={chat.isError}
                           />
                         ) : null}
                         <QueryAnswer
@@ -880,6 +899,7 @@ const AiAgent = () => {
                             index={idx}
                             initLoading={isInitLoad}
                             agentName={AgentName[agent || ""]}
+                            isError={chat.isError}
                           />
                         ) : null}
                       </>

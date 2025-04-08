@@ -13,6 +13,7 @@ interface VSChat {
   hasselected?: boolean;
   isFile?: boolean;
   file?: File;
+  isError?: boolean;
 }
 
 interface VSProduct {
