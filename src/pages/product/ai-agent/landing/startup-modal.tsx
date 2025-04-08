@@ -91,7 +91,7 @@ const steps = [
                   alt="Joyride"
               />
               <div className="p-3 pb-0">
-                  <h2 className="text-base font-semibold text-secondary-800 mb-1">Scope of Work Drafts – Your Work, Saved</h2>
+                  <h2 className="text-base font-semibold text-secondary-800 mb-2">Scope of Work Drafts – Your Work, Saved</h2>
                   <p className="text-secondary-800 text-sm">
                   Ever start a report but need to come back to it later? That’s what this section is for! All your saved drafts live here, so you can pick up right where you left off.
                   </p>

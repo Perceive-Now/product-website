@@ -608,149 +608,173 @@ const Reports = () => {
                                       <ArrowDown className="size-2" />
                                     )}
                                   </Disclosure.Button>
+
                                   <Disclosure.Panel className="w-full mt-5 text-sm text-black transition-all duration-300 ease-in-out">
-                                    <div className="w-full mt-4">
-                                      <label
-                                        htmlFor="fullName"
-                                        className="block text-base font-semibold"
-                                      >
-                                        Questions:
-                                      </label>
+                                    <div className="mb-4">
+                                      <p>
+                                        <strong>Report Name:</strong> {report.report_name}
+                                      </p>
+                                      <p>
+                                        <strong>Report Type:</strong> {report.report_type}
+                                      </p>
+                                      <p>
+                                        <strong>Report Size:</strong> {report.report_size}
+                                      </p>
+                                      <p>
+                                        <strong>Use Case:</strong> {report.usecase}
+                                      </p>
+                                      <p>
+                                        <strong>Classification:</strong>{" "}
+                                        {report?.classification?.screeningType || "N/A"}
+                                      </p>
+                                    </div>
+
+                                    <div className="mb-4">
+                                      <h4 className="font-semibold text-base">Questions:</h4>
                                       <div className="ml-3 mt-1">
                                         {Array.isArray(report?.question) &&
                                         report?.question.length > 0
                                           ? report?.question.map(
-                                              (question: string, index: number) => (
-                                                <div key={index}>
-                                                  {index + 1}. {question}
+                                              (question: string, qIndex: number) => (
+                                                <div key={qIndex}>
+                                                  {qIndex + 1}. {question}
                                                 </div>
                                               ),
                                             )
                                           : "No questions available"}
                                       </div>
                                     </div>
-                                    <div className="flex justify-between my-2">
-                                      <div className="flex flex-col w-1/2">
-                                        <div className="mt-1">
-                                          <label
-                                            htmlFor="fullName"
-                                            className="block text-base font-semibold"
-                                          >
-                                            Report Customization:
-                                          </label>
-                                          <ul className="list-disc pl-5">
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Report Tone:
-                                              </span>
-                                              <span className="font-normal">
-                                                {" "}
-                                                {report?.report_tone || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                No. of charts/Tables:
-                                              </span>
-                                              <span className="font-normal">
-                                                {" "}
-                                                {report?.no_of_charts || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Visual Style:
-                                              </span>
-                                              <span className="font-normal">
-                                                {" "}
-                                                {report?.visual_style || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Citations:
-                                              </span>
-                                              <span className="font-normal">
-                                                {" "}
-                                                {report?.citations || "N/A"}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              <span className="font-semibold text-base">
-                                                Format:
-                                              </span>
-                                              <span className="font-normal">
-                                                {report?.format && report?.format.length > 0
-                                                  ? report?.format.join(", ")
-                                                  : "No formats available"}
-                                              </span>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                      </div>
 
-                                      <div className="flex flex-col w-1/2">
-                                        <div className="mt-1 ml-2">
-                                          <h6 className="font-semibold mb-1 text-base font-nunito">
-                                            Added Websites
-                                          </h6>
+                                    {/* Report Customization */}
+                                    <div className="mb-4">
+                                      <h4 className="font-semibold text-base">
+                                        Report Customization
+                                      </h4>
+                                      <ul className="list-disc pl-5">
+                                        <li>
+                                          <strong>Report Tone:</strong>{" "}
+                                          {report?.config?.report_tone?.selected?.join(", ") ||
+                                            "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Citations:</strong>{" "}
+                                          {report?.config?.citations?.selected?.join(", ") || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Format:</strong>{" "}
+                                          {report?.config?.report_format?.selected?.join(", ") ||
+                                            "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Audience Focus - Investors:</strong>{" "}
+                                          {report?.config?.audience_focus?.investors?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Audience Focus - Enterprise:</strong>{" "}
+                                          {report?.config?.audience_focus?.enterprise?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Explainability:</strong>{" "}
+                                          {report?.config?.explainability?.selected?.join(", ") ||
+                                            "N/A"}
+                                        </li>
+                                      </ul>
+                                    </div>
 
-                                          {report?.websites && report?.websites.length > 0 ? (
-                                            <div className="p-1">
-                                              {report?.websites.map((url: any, index: number) => (
-                                                <div key={index}>
-                                                  <div className="flex justify-between items-center">
-                                                    <a
-                                                      href={url}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                      className="text-sm font-nunito cursor-pointer text-blue-600"
-                                                    >
-                                                      {url}
-                                                    </a>
-                                                  </div>
+                                    {/* Additional Metadata */}
+                                    <div className="mb-4">
+                                      <h4 className="font-semibold text-base">
+                                        Additional Metadata
+                                      </h4>
+                                      <ul className="list-disc pl-5">
+                                        <li>
+                                          <strong>Sector Focus:</strong>{" "}
+                                          {report?.additional_metadata?.sectorFocus?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Company Stage:</strong>{" "}
+                                          {report?.additional_metadata?.companyStage?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Preferred Stage:</strong>{" "}
+                                          {report?.additional_metadata?.preferredStage?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Business Model:</strong>{" "}
+                                          {report?.additional_metadata?.businessModel?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Geographic Focus:</strong>{" "}
+                                          {report?.additional_metadata?.geographicFocus?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                        <li>
+                                          <strong>Benchmark Comparison:</strong>{" "}
+                                          {report?.additional_metadata?.benchmarkComparison?.selected?.join(
+                                            ", ",
+                                          ) || "N/A"}
+                                        </li>
+                                      </ul>
+                                    </div>
+
+                                    {/* Websites */}
+                                    <div className="mb-4">
+                                      <h4 className="font-semibold text-base">Added Websites</h4>
+                                      {report?.websites?.length > 0 ? (
+                                        report?.websites.map((url: string, wIndex: number) => (
+                                          <div key={wIndex}>
+                                            <a
+                                              href={url}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              className="text-sm text-blue-600 underline"
+                                            >
+                                              {url}
+                                            </a>
+                                          </div>
+                                        ))
+                                      ) : (
+                                        <p>No websites added.</p>
+                                      )}
+                                    </div>
+
+                                    {/* Files */}
+                                    <div className="mb-4">
+                                      <h4 className="font-semibold text-base">Uploaded Files</h4>
+                                      {report?.file_data &&
+                                      Object.keys(report.file_data).length > 0 ? (
+                                        Object.entries(report.file_data).map(
+                                          ([category, files]: any, i) => (
+                                            <div key={i} className="mb-2">
+                                              <p className="font-medium">{category}</p>
+                                              {files.map((url: string, fIndex: number) => (
+                                                <div
+                                                  key={fIndex}
+                                                  className="cursor-pointer"
+                                                  onClick={() => openFileHandler(url)}
+                                                >
+                                                  <IconFile className="h-[60px] w-[60px]" />
+                                                  <p className="text-xs">{url}</p>
                                                 </div>
                                               ))}
                                             </div>
-                                          ) : (
-                                            <p className="">No websites added.</p>
-                                          )}
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div className="mt-2">
-                                      <h6 className="font-semibold mb-1 text-base font-nunito flex items-center">
-                                        Uploaded files
-                                      </h6>
-
-                                      {Object.keys(report?.file_data).length > 0 ? (
-                                        <div className="pr-1">
-                                          {Object.keys(report?.file_data).map((key, index) => {
-                                            const fileUrl = report?.file_data[key];
-                                            if (!fileUrl) return null;
-                                            return (
-                                              <div key={index}>
-                                                <div
-                                                  onClick={() => {
-                                                    openFileHandler(fileUrl);
-                                                  }}
-                                                >
-                                                  <IconFile className="cursor-pointer h-[60px] w-[60px]" />
-                                                </div>
-                                                {/* <div className="w-full">
-                                                  <p className="text-[12px] text-wrap font-nunito">
-                                                    {fileUrl}
-                                                  </p>{" "}
-                                                </div> */}
-                                              </div>
-                                            );
-                                          })}
-                                        </div>
+                                          ),
+                                        )
                                       ) : (
-                                        <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                          No file uploaded
-                                        </p>
+                                        <p className="text-sm text-gray-500">No files uploaded.</p>
                                       )}
                                     </div>
                                   </Disclosure.Panel>

@@ -183,6 +183,8 @@ const QuickReports = () => {
   const [projectId, setProjectId] = useState(id);
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [supportFiles, setSupportFiles] = useState<any[]>([]);
+  const [capTableFile, setCapTableFile] = useState<File | null>(null);
+  const [cusListFile, setCusListFile] = useState<File | null>(null);
   const [pastedURLs, setPastedURLs] = useState<string[]>([]);
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
@@ -199,6 +201,20 @@ const QuickReports = () => {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const supportInputRef = useRef<HTMLInputElement | null>(null);
+  const capTableInputRef = useRef<HTMLInputElement | null>(null);
+  const cusListInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [bioInputMode, setBioInputMode] = useState<"file" | "url">("file");
+  const [bioFile, setBioFile] = useState<File | null>(null);
+  const [bioUrl, setBioUrl] = useState("");
+  const [draggingBio, setDraggingBio] = useState(false);
+  const bioFileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [productInputMode, setProductInputMode] = useState<"file" | "url">("file");
+  const [productFile, setProductFile] = useState<File | null>(null);
+  const [productUrl, setProductUrl] = useState("");
+  const [draggingProduct, setDraggingProduct] = useState(false);
+  const productFileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     console.log("id value of the page ===========", id);
@@ -374,16 +390,198 @@ const QuickReports = () => {
         return isInvalidType || isInvalidSize;
       });
 
-      if (invalidFiles.length > 0) {
+      setSupportFiles((prevFiles: any) => {
+        const totalFiles = [...prevFiles, ...fileList];
+        if (totalFiles.length > 5) {
+          toast.error("You can upload a maximum of 5 files.");
+          return prevFiles;
+        }
+
+        setTimeout(() => {
+          changeHighlight(); // Optional visual change
+        }, 1500);
+
+        return totalFiles;
+      });
+      // if (invalidFiles.length > 0) {
+      //   toast.error("Invalid file uploaded.");
+      // } else {
+      //   setTimeout(() => {
+      //     setSupportFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+      //   }, 1500);
+      //   changeHighlight();
+      // }
+    }
+  };
+
+  const handleCapTableFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const isInvalidType = !allowedTypes.includes(file.type);
+      const isInvalidSize = file.size > 200 * 1024 * 1024;
+
+      if (isInvalidType || isInvalidSize) {
         toast.error("Invalid file uploaded.");
       } else {
         setTimeout(() => {
-          setSupportFiles((prevFiles: any) => [...prevFiles, ...fileList]);
+          setCapTableFile(file);
+        }, 1500);
+      }
+    }
+  };
+
+  const handleCusListFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const isInvalidType = !allowedTypes.includes(file.type);
+      const isInvalidSize = file.size > 200 * 1024 * 1024;
+
+      if (isInvalidType || isInvalidSize) {
+        toast.error("Invalid file uploaded.");
+      } else {
+        setTimeout(() => {
+          setCusListFile(file);
+        }, 1500);
+      }
+    }
+  };
+
+  const handleCapTableDrop = (e: any) => {
+    e.preventDefault();
+    setDragging(false);
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0]; // Only take the first file
+
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const isInvalidType = !allowedTypes.includes(file.type);
+      const isInvalidSize = file.size > 200 * 1024 * 1024;
+
+      if (isInvalidType || isInvalidSize) {
+        toast.error("Invalid file uploaded.");
+      } else {
+        setTimeout(() => {
+          setCapTableFile(file); // Replace any existing file with this one
         }, 1500);
         changeHighlight();
       }
     }
   };
+
+  const handleCusListDrop = (e: any) => {
+    e.preventDefault();
+    setDragging(false);
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      const file = files[0]; // Only take the first file
+
+      const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "text/plain",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.oasis.opendocument.text",
+        "application/vnd.apple.keynote",
+      ];
+
+      const isInvalidType = !allowedTypes.includes(file.type);
+      const isInvalidSize = file.size > 200 * 1024 * 1024;
+
+      if (isInvalidType || isInvalidSize) {
+        toast.error("Invalid file uploaded.");
+      } else {
+        setTimeout(() => {
+          setCusListFile(file); // Replace any existing file with this one
+        }, 1500);
+        changeHighlight();
+      }
+    }
+  };
+
+  // code for team bios start
+  const handleBioBrowseClick = () => {
+    bioFileInputRef.current?.click();
+  };
+
+  const handleBioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setBioFile(file);
+    }
+  };
+
+  const handleBioFileDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDraggingBio(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setBioFile(file);
+    }
+  };
+
+  // code for team bios end
+
+  // code for product screenshoot start
+  const handleProductBrowseClick = () => {
+    productFileInputRef.current?.click();
+  };
+
+  const handleProductFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProductFile(file);
+    }
+  };
+
+  const handleProductFileDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDraggingProduct(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setProductFile(file);
+    }
+  };
+  // code for team product screenshoot end
 
   const handleSubmit = async (values: IRequirementValues) => {
     setStep(3);
@@ -565,6 +763,18 @@ const QuickReports = () => {
     }
   };
 
+  const handleCapTableBrowseClick = () => {
+    if (capTableInputRef.current) {
+      capTableInputRef.current.click();
+    }
+  };
+
+  const handleCusListBrowseClick = () => {
+    if (cusListInputRef.current) {
+      cusListInputRef.current.click();
+    }
+  };
+
   const handleDelete = (index: number, type: "url" | "file" | "capTable") => {
     if (type === "url") {
       setPastedURLs((prevURLs) => prevURLs.filter((_, i) => i !== index));
@@ -595,8 +805,6 @@ const QuickReports = () => {
     setLoading(true);
 
     const values = requirementValues();
-
-    console.log("SLDKLKSD", values, selectedOptions);
 
     const dataPayload: Record<string, string[] | any> = {};
     dataPayload.websites = pastedURLs;
@@ -676,6 +884,14 @@ const QuickReports = () => {
       other_source: values.other_source,
     };
 
+    if (bioUrl) {
+      dataPayload.additional_metadata.bioUrl = bioUrl;
+    }
+
+    if (productUrl) {
+      dataPayload.additional_metadata.productUrl = productUrl;
+    }
+
     // {
     //   "websites": [
     //     "string"
@@ -691,7 +907,7 @@ const QuickReports = () => {
     try {
       const response: any = await axios.post(
         `${API_PROD_URL}/upload-files/?user_id=${userId}&project_id=${projectId}&report_name=${values.reportName}&usecase=${values.usecase}`,
-        { ...dataPayload, ...values, ...selectedOptions },
+        { ...dataPayload },
       );
 
       if (response.status === 200) {
@@ -700,32 +916,91 @@ const QuickReports = () => {
           disabled ? ACTIVITY_COMMENT.REQUIREMENT_UPDATED : ACTIVITY_COMMENT.REQUIREMENT_ADDED,
           projectId as string,
         );
-        if (uploadedFiles.length === 0) {
+        const allEmpty =
+          uploadedFiles.length === 0 &&
+          supportFiles.length === 0 &&
+          !capTableFile &&
+          !cusListFile &&
+          pastedURLs.length === 0;
+
+        if (allEmpty) {
           setStep(4);
           return;
         }
-        const formData = new FormData();
-
-        uploadedFiles.forEach((file: File) => {
-          formData.append("files", file);
-        });
         try {
-          const fileUploadResponse: any = await fetch(
-            `${API_PROD_URL}/upload-files/${userId}/${projectId}/${response.data.report_id}?classification=Company Diligance`,
-            {
-              method: "POST",
-              headers: { Accept: "application/json" },
-              body: formData,
-            },
-          );
+          const uploadPromises: Promise<Response>[] = [];
 
-          if (fileUploadResponse.ok) {
+          const createFormAndUpload = (
+            files: File[] | File,
+            endpoint: string,
+            fieldName = "files",
+          ): Promise<Response> => {
+            const formData = new FormData();
+            if (Array.isArray(files)) {
+              files.forEach((file) => formData.append(fieldName, file));
+            } else if (files) {
+              formData.append(fieldName, files);
+            }
+
+            return fetch(
+              `${API_PROD_URL}/upload-files/${userId}/${projectId}/${response.data.report_id}?classification=${endpoint}`,
+              {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: formData,
+              },
+            );
+          };
+
+          if (uploadedFiles.length > 0) {
+            uploadPromises.push(createFormAndUpload(uploadedFiles, "Company Diligence"));
+          }
+
+          if (supportFiles.length > 0) {
+            uploadPromises.push(createFormAndUpload(supportFiles, "Supporting Files"));
+          }
+
+          if (capTableFile) {
+            uploadPromises.push(createFormAndUpload(capTableFile, "Cap Table"));
+          }
+
+          if (cusListFile) {
+            uploadPromises.push(createFormAndUpload(cusListFile, "Customer List"));
+          }
+          if (bioFile) {
+            uploadPromises.push(createFormAndUpload(bioFile, "Team Bios"));
+          }
+          if (productFile) {
+            uploadPromises.push(createFormAndUpload(productFile, "Product Screenshots"));
+          }
+
+          // if (pastedURLs.length > 0) {
+          //   const urlFormData = new FormData();
+          //   pastedURLs.forEach((url) => urlFormData.append("urls", url));
+          //   uploadPromises.push(
+          //     fetch(
+          //       `${API_PROD_URL}/upload-links/${userId}/${projectId}/${response.data.report_id}?classification=Linked URLs`,
+          //       {
+          //         method: "POST",
+          //         headers: { Accept: "application/json" },
+          //         body: urlFormData,
+          //       },
+          //     ),
+          //   );
+          // }
+
+          const responses = await Promise.all(uploadPromises);
+
+          const allSuccess = responses.every((res) => res.ok);
+
+          if (allSuccess) {
             setStep(4);
           } else {
-            toast.error("Unable to submit report");
+            toast.error("Some files failed to upload");
           }
         } catch (e) {
-          console.log("err", e);
+          console.error("Upload error:", e);
+          toast.error("Unexpected error while uploading");
         } finally {
           setLoading(false);
         }
@@ -1576,6 +1851,536 @@ const QuickReports = () => {
                 </div>
               </div>
 
+              {/* Supporting Materials start */}
+              <div className="border border-gray-300 rounded-md mt-8">
+                <div className="relative">
+                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
+                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                    Supporting Materials
+                  </h2>
+                </div>
+
+                {/* cap table field start  */}
+                <div className="w-full p-2">
+                  <div>
+                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                      <div className="flex-1">
+                        <h6 className="font-semibold text-base font-nunito mb-1">Cap Table</h6>
+                        <div
+                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                            dragging ? "bg-gray-200" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging(true);
+                          }}
+                          onDragLeave={() => setDragging(false)}
+                          onDrop={handleCapTableDrop}
+                        >
+                          <div
+                            className="flex flex-col items-center text-lg"
+                            onClick={handleCapTableBrowseClick}
+                          >
+                            <UploadIcon />
+                            <p className="text-center text-base font-bold font-nunito mt-3">
+                              Drag and Drop files to upload
+                            </p>
+                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                              Browse
+                            </p>
+                          </div>
+                        </div>
+                        {/* Hidden File Input */}
+                        <input
+                          type="file"
+                          ref={capTableInputRef}
+                          onChange={handleCapTableFileChange}
+                          className="hidden"
+                        />
+                        <div className="mt-2 mb-2">
+                          {/* <p className="text-lg font-semibold font-nunito">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                          </p> */}
+                          <ul className="list-none pl-[20px]">
+                            {/* {listContent.map((content) => ( */}
+                            <li className="text-xs">
+                              Upload Single file (PDF, PPTX, DOCX, Keynote)
+                            </li>
+                            {/* ))} */}
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h6 className="font-semibold mb-1 text-base font-nunito">
+                          Uploaded Cap Table file
+                        </h6>
+                        <div
+                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                        >
+                          <div className="rounded-lg p-2 flex-1">
+                            {capTableFile ? (
+                              <div className="flex justify-between items-center">
+                                <p className="text-sm font-nunito">{capTableFile.name}</p>
+                                <TrashIcon
+                                  className="cursor-pointer"
+                                  width={25}
+                                  onClick={() => setCapTableFile(null)}
+                                />
+                              </div>
+                            ) : (
+                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                No file uploaded yet.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>{/* File Upload Box */}</div>
+                  </div>
+                </div>
+                {/* cap table field end  */}
+
+                {/* Team Bios start  */}
+                <div className="w-full p-2">
+                  <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                    {/* Left side - Upload or URL */}
+                    <div className="flex-1">
+                      <h6 className="font-semibold text-base font-nunito mb-1">
+                        Team Bios or LinkedIn URLs
+                      </h6>
+
+                      {/* Toggle Mode */}
+                      <div className="flex items-center space-x-4 mb-3">
+                        <label className="text-sm font-nunito">
+                          <input
+                            type="radio"
+                            name="teamBioInputMode"
+                            checked={bioInputMode === "file"}
+                            onChange={() => setBioInputMode("file")}
+                            className="mr-1"
+                          />
+                          Upload File
+                        </label>
+                        <label className="text-sm font-nunito">
+                          <input
+                            type="radio"
+                            name="teamBioInputMode"
+                            checked={bioInputMode === "url"}
+                            onChange={() => setBioInputMode("url")}
+                            className="mr-1"
+                          />
+                          Enter URL
+                        </label>
+                      </div>
+
+                      {/* File Upload */}
+                      {bioInputMode === "file" && (
+                        <div
+                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                            draggingBio ? "bg-gray-200" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDraggingBio(true);
+                          }}
+                          onDragLeave={() => setDraggingBio(false)}
+                          onDrop={handleBioFileDrop}
+                        >
+                          <div
+                            className="flex flex-col items-center text-lg"
+                            onClick={handleBioBrowseClick}
+                          >
+                            <UploadIcon />
+                            <p className="text-center text-base font-bold font-nunito mt-3">
+                              Drag and Drop file to upload
+                            </p>
+                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                              Browse
+                            </p>
+                          </div>
+                          <input
+                            type="file"
+                            ref={bioFileInputRef}
+                            onChange={handleBioFileChange}
+                            className="hidden"
+                          />
+                        </div>
+                      )}
+
+                      {/* URL Input */}
+                      {bioInputMode === "url" && (
+                        <input
+                          type="text"
+                          value={bioUrl}
+                          onChange={(e) => setBioUrl(e.target.value)}
+                          className="w-full border border-appGray-600 rounded-lg p-2 font-nunito"
+                          placeholder="Paste LinkedIn profile link"
+                        />
+                      )}
+
+                      {/* Notes */}
+                      <div className="mt-2 mb-2">
+                        <ul className="list-none pl-[20px]">
+                          <li className="text-xs">Upload resumes or paste profile links</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Right side - Uploaded data */}
+                    <div className="flex-1">
+                      <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Bio</h6>
+                      <div className="border border-appGray-600 rounded-lg px-2 pt-2 pb-[20px]">
+                        <div className="rounded-lg p-2 flex-1">
+                          {bioInputMode === "file" && bioFile ? (
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-nunito">{bioFile.name}</p>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                width={25}
+                                onClick={() => setBioFile(null)}
+                              />
+                            </div>
+                          ) : bioInputMode === "url" && bioUrl ? (
+                            <div className="flex justify-between items-center">
+                              <a
+                                href={bioUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-900 underline text-sm font-nunito"
+                              >
+                                {bioUrl}
+                              </a>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                width={25}
+                                onClick={() => setBioUrl("")}
+                              />
+                            </div>
+                          ) : (
+                            <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                              No file or link provided yet.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Team Bios end  */}
+
+                {/* Customer List field start  */}
+                <div className="w-full p-2">
+                  <div>
+                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                      <div className="flex-1">
+                        <h6 className="font-semibold text-base font-nunito mb-1">Customer List</h6>
+                        <div
+                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                            dragging ? "bg-gray-200" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging(true);
+                          }}
+                          onDragLeave={() => setDragging(false)}
+                          onDrop={handleCusListDrop}
+                        >
+                          <div
+                            className="flex flex-col items-center text-lg"
+                            onClick={handleCusListBrowseClick}
+                          >
+                            <UploadIcon />
+                            <p className="text-center text-base font-bold font-nunito mt-3">
+                              Drag and Drop files to upload
+                            </p>
+                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                              Browse
+                            </p>
+                          </div>
+                        </div>
+                        {/* Hidden File Input */}
+                        <input
+                          type="file"
+                          ref={cusListInputRef}
+                          onChange={handleCusListFileChange}
+                          className="hidden"
+                        />
+                        <div className="mt-2 mb-2">
+                          {/* <p className="text-lg font-semibold font-nunito">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                          </p> */}
+                          <ul className="list-none pl-[20px]">
+                            {/* {listContent.map((content) => ( */}
+                            <li className="text-xs">
+                              Upload Single file (PDF, PPTX, DOCX, Keynote)
+                            </li>
+                            {/* ))} */}
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h6 className="font-semibold mb-1 text-base font-nunito">
+                          Uploaded Cap Table file
+                        </h6>
+                        <div
+                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                        >
+                          <div className="rounded-lg p-2 flex-1">
+                            {cusListFile ? (
+                              <div className="flex justify-between items-center">
+                                <p className="text-sm font-nunito">{cusListFile.name}</p>
+                                <TrashIcon
+                                  className="cursor-pointer"
+                                  width={25}
+                                  onClick={() => setCusListFile(null)}
+                                />
+                              </div>
+                            ) : (
+                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                No file uploaded yet.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>{/* File Upload Box */}</div>
+                  </div>
+                </div>
+                {/* Customer List field end  */}
+
+                {/* Product Screenshots start  */}
+                <div className="w-full p-2">
+                  <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                    {/* Left side - Upload or URL */}
+                    <div className="flex-1">
+                      <h6 className="font-semibold text-base font-nunito mb-1">
+                        Product Screenshots or Demo Links
+                      </h6>
+
+                      {/* Toggle Mode */}
+                      <div className="flex items-center space-x-4 mb-3">
+                        <label className="text-sm font-nunito">
+                          <input
+                            type="radio"
+                            name="productMode"
+                            checked={productInputMode === "file"}
+                            onChange={() => setProductInputMode("file")}
+                            className="mr-1"
+                          />
+                          Upload File
+                        </label>
+                        <label className="text-sm font-nunito">
+                          <input
+                            type="radio"
+                            name="ProductInputMode"
+                            checked={productInputMode === "url"}
+                            onChange={() => setProductInputMode("url")}
+                            className="mr-1"
+                          />
+                          Enter URL
+                        </label>
+                      </div>
+
+                      {/* File Upload */}
+                      {productInputMode === "file" && (
+                        <div
+                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                            draggingProduct ? "bg-gray-200" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDraggingBio(true);
+                          }}
+                          onDragLeave={() => setDraggingBio(false)}
+                          onDrop={handleProductFileDrop}
+                        >
+                          <div
+                            className="flex flex-col items-center text-lg"
+                            onClick={handleProductBrowseClick}
+                          >
+                            <UploadIcon />
+                            <p className="text-center text-base font-bold font-nunito mt-3">
+                              Drag and Drop file to upload
+                            </p>
+                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                              Browse
+                            </p>
+                          </div>
+                          <input
+                            type="file"
+                            ref={productFileInputRef}
+                            onChange={handleProductFileChange}
+                            className="hidden"
+                          />
+                        </div>
+                      )}
+
+                      {/* URL Input */}
+                      {productInputMode === "url" && (
+                        <input
+                          type="text"
+                          value={productUrl}
+                          onChange={(e) => setProductUrl(e.target.value)}
+                          className="w-full border border-appGray-600 rounded-lg p-2 font-nunito"
+                          placeholder="Paste LinkedIn profile link"
+                        />
+                      )}
+
+                      {/* Notes */}
+                      <div className="mt-2 mb-2">
+                        <ul className="list-none pl-[20px]">
+                          <li className="text-xs">Optional</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Right side - Uploaded data */}
+                    <div className="flex-1">
+                      <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Bio</h6>
+                      <div className="border border-appGray-600 rounded-lg px-2 pt-2 pb-[20px]">
+                        <div className="rounded-lg p-2 flex-1">
+                          {productInputMode === "file" && productFile ? (
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-nunito">{productFile.name}</p>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                width={25}
+                                onClick={() => setProductFile(null)}
+                              />
+                            </div>
+                          ) : productInputMode === "url" && productUrl ? (
+                            <div className="flex justify-between items-center">
+                              <a
+                                href={productUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary-900 underline text-sm font-nunito"
+                              >
+                                {productUrl}
+                              </a>
+                              <TrashIcon
+                                className="cursor-pointer"
+                                width={25}
+                                onClick={() => setProductUrl("")}
+                              />
+                            </div>
+                          ) : (
+                            <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                              No file or link provided yet.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Product Screenshots end  */}
+
+                {/* supporting material field start  */}
+                <div className="w-full p-2">
+                  <div>
+                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                      <div className="flex-1">
+                        <h6 className="font-semibold text-base font-nunito mb-1">
+                          Supporting Materials
+                        </h6>
+                        <div
+                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                            dragging ? "bg-gray-200" : ""
+                          }`}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragging(true);
+                          }}
+                          onDragLeave={() => setDragging(false)}
+                          onDrop={handleSupportDrop}
+                        >
+                          <div
+                            className="flex flex-col items-center text-lg"
+                            onClick={handleSupportBrowseClick}
+                          >
+                            <UploadIcon />
+                            <p className="text-center text-base font-bold font-nunito mt-3">
+                              Drag and Drop files to upload
+                            </p>
+                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                              Browse
+                            </p>
+                          </div>
+                        </div>
+                        {/* Hidden File Input */}
+                        <input
+                          type="file"
+                          multiple
+                          ref={supportInputRef}
+                          onChange={handleSupportFileChange}
+                          className="hidden"
+                        />
+                        <div className="mt-2 mb-2">
+                          {/* <p className="text-lg font-semibold font-nunito">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                          </p> */}
+                          <ul className="list-none pl-[20px]">
+                            {/* {listContent.map((content) => ( */}
+                            <li className="text-xs">
+                              Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                            </li>
+                            {/* ))} */}
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h6 className="font-semibold mb-1 text-base font-nunito">
+                          Uploaded files Support
+                        </h6>
+                        <div
+                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                        >
+                          <div className="rounded-lg p-2 flex-1">
+                            {supportFiles.length > 0 ? (
+                              <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
+                                {supportFiles.map((file, index) => (
+                                  <div key={index}>
+                                    <div className="flex justify-between items-center">
+                                      <p className="text-sm font-nunito">{file.name}</p>
+                                      <TrashIcon
+                                        className="cursor-pointer"
+                                        width={25}
+                                        onClick={() => handleDelete(index, "capTable")}
+                                      />
+                                    </div>
+                                  </div>
+                                ))}
+                                {/* {highlight ? ( */}
+                                {/* ) : null} */}
+                              </div>
+                            ) : highlight ? (
+                              <div className="flex items-center justify-center p-5 h-full">
+                                <DotLoader />
+                              </div>
+                            ) : (
+                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                No file uploaded yet.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>{/* File Upload Box */}</div>
+                  </div>
+                </div>
+                {/* supporting material field end  */}
+              </div>
+              {/* Supporting Materials end */}
+
               {/* Relevant Links start  */}
               <div className="border border-gray-300 rounded-md mt-8">
                 <div className="relative">
@@ -1725,112 +2530,6 @@ const QuickReports = () => {
                 </div>
               </div>
               {/* Relevant Links end  */}
-
-              {/* Supporting Materials start */}
-              <div className="border border-gray-300 rounded-md mt-8">
-                <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
-                    Supporting Materials
-                  </h2>
-                </div>
-
-                <div className="w-full p-2">
-                  <div>
-                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
-                      <div className="flex-1">
-                        <h6 className="font-semibold text-base font-nunito mb-1">
-                          Supporting Materials
-                        </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            dragging ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging(true);
-                          }}
-                          onDragLeave={() => setDragging(false)}
-                          onDrop={handleSupportDrop}
-                        >
-                          <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleSupportBrowseClick}
-                          >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop files to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
-                          </div>
-                        </div>
-                        {/* Hidden File Input */}
-                        <input
-                          type="file"
-                          multiple
-                          ref={supportInputRef}
-                          onChange={handleSupportFileChange}
-                          className="hidden"
-                        />
-                        <div className="mt-2 mb-2">
-                          {/* <p className="text-lg font-semibold font-nunito">
-                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                          </p> */}
-                          <ul className="list-none pl-[20px]">
-                            {/* {listContent.map((content) => ( */}
-                            <li className="text-xs">
-                              Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                            </li>
-                            {/* ))} */}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">
-                          Uploaded files Support
-                        </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
-                        >
-                          <div className="rounded-lg p-2 flex-1">
-                            {supportFiles.length > 0 ? (
-                              <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
-                                {supportFiles.map((file, index) => (
-                                  <div key={index}>
-                                    <div className="flex justify-between items-center">
-                                      <p className="text-sm font-nunito">{file.name}</p>
-                                      <TrashIcon
-                                        className="cursor-pointer"
-                                        width={25}
-                                        onClick={() => handleDelete(index, "capTable")}
-                                      />
-                                    </div>
-                                  </div>
-                                ))}
-                                {/* {highlight ? ( */}
-                                {/* ) : null} */}
-                              </div>
-                            ) : highlight ? (
-                              <div className="flex items-center justify-center p-5 h-full">
-                                <DotLoader />
-                              </div>
-                            ) : (
-                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                No file uploaded yet.
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>{/* File Upload Box */}</div>
-                  </div>
-                </div>
-              </div>
-              {/* Supporting Materials end */}
 
               <div className="max-w-[120px] mt-5">
                 <button
