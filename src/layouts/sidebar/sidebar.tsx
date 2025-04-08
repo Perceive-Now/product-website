@@ -576,7 +576,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
             </div>
           </div>
           
-          {open &&
+          {/* {open &&
           <div className="my-2 rounded-xl bg-white flex text-base text-[#373D3F] w-full max-w-[206px] min-w-[206px] justify-between items-center px-[12px] py-[10px]">
             <span>Start New Report</span>
             <span className="gap-1 inline-flex items-center leading-none">
@@ -597,7 +597,7 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
               </ToolTip> 
             </span>
           </div>
-          }
+          } */}
 
           <Joyride
             steps={steps}
