@@ -184,7 +184,7 @@ const DraftReports = (props: Props) => {
 
   return (
     <>
-      <div className="flex-1 flex flex-col min-h-0">
+      <div className="flex-1 flex flex-col min-h-0 border-t border-t-[#FFF6E6] mt-2">
         <div
           onClick={setOpen}
           className={classNames(
