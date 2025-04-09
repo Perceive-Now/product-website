@@ -336,19 +336,19 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = () => {
-    setIsHovered(false); 
-    document.body.classList.remove('closeBtn-hovered');
-    setTimeout(() => setIsHovered(true), 10); 
+    setIsHovered(false);
+    document.body.classList.remove("closeBtn-hovered");
+    setTimeout(() => setIsHovered(true), 10);
   };
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    document.body.classList.add('closeBtn-hovered');
+    document.body.classList.add("closeBtn-hovered");
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    document.body.classList.remove('closeBtn-hovered');
+    document.body.classList.remove("closeBtn-hovered");
   };
 
   return (
@@ -518,68 +518,75 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           // }}
         >
           <div className="z-10 flex-0">
-            <div className={`py-1 px-1 container flex  justify-between ${open ? '' : 'flex-col gap-2 mt-3'}`}>
+            <div
+              className={`py-1 px-1 container flex  justify-between ${
+                open ? "" : "flex-col gap-2 mt-3"
+              }`}
+            >
               <Link to="/">
                 <img
                   src={open ? PerceiveLogo : PerceiveIcon}
                   alt="PerceiveNow logo"
-                  className={`${open ? 'h-[32px]' : 'h-[20px]'} `}
+                  className={`${open ? "h-[32px]" : "h-[20px]"} `}
                 />
               </Link>
               {open ? (
-              <div className="z-10 flex relative w-[40px] closeTooltipBtn"
-              onClick={handleClick}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}>
-                <ToolTip
-                  title={open ? "Close Sidebar" : "Open Sidebar"}
-                  placement="bottom-start"
-                  tooltipClose={open}
-                  className={``}
+                <div
+                  className="z-10 flex relative w-[40px] closeTooltipBtn"
+                  onClick={handleClick}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <button
-                    type="button"
-                    className={`h-5 w-5 rounded-full flex justify-center items-center `}
-                    onClick={() => setOpen(!open)}
+                  <ToolTip
+                    title={open ? "Close Sidebar" : "Open Sidebar"}
+                    placement="bottom-start"
+                    tooltipClose={open}
+                    className={``}
                   >
-                    
-                    <img
-                      src={collapsibleSvg}
-                      alt="collapsible"
-                      className={`${classNames(!open ? "rotate-180" : "")} `}
-                    />
-                  </button>
-                </ToolTip>
-              </div>
+                    <button
+                      type="button"
+                      className={`h-5 w-5 rounded-full flex justify-center items-center `}
+                      onClick={() => setOpen(!open)}
+                    >
+                      <img
+                        src={collapsibleSvg}
+                        alt="collapsible"
+                        className={`${classNames(!open ? "rotate-180" : "")} `}
+                      />
+                    </button>
+                  </ToolTip>
+                </div>
               ) : (
-              <div className="z-10 flex relative w-[40px] closeTooltipBtn" >
-                <ToolTip
-                  title={open ? "Close Sidebar" : "Open Sidebar"}
-                  placement="bottom-start"
-                  tooltipClose={open}
-                  className={``}
-                >
-                  <button
-                    type="button"
-                    className={`h-5 w-5 rounded-full flex items-center`}
-                    onClick={() => setOpen(!open)}
+                <div className="z-10 flex relative w-[40px] closeTooltipBtn">
+                  <ToolTip
+                    title={open ? "Close Sidebar" : "Open Sidebar"}
+                    placement="bottom-start"
+                    tooltipClose={open}
+                    className={``}
                   >
-                    <img
-                      src={collapsibleSvg}
-                      alt="collapsible"
-                      className={classNames(!open ? "rotate-180 -ml-[3px]" : "")}
-                    />
-                  </button>
-                </ToolTip>
-              </div>
+                    <button
+                      type="button"
+                      className={`h-5 w-5 rounded-full flex items-center`}
+                      onClick={() => setOpen(!open)}
+                    >
+                      <img
+                        src={collapsibleSvg}
+                        alt="collapsible"
+                        className={classNames(!open ? "rotate-180 -ml-[3px]" : "")}
+                      />
+                    </button>
+                  </ToolTip>
+                </div>
               )}
             </div>
           </div>
-          
-          {/* {open &&
-          <div className="my-2 rounded-xl bg-white flex text-base text-[#373D3F] w-full max-w-[206px] min-w-[206px] justify-between items-center px-[12px] py-[10px]">
-            <span>Start New Report</span>
-            <span className="gap-1 inline-flex items-center leading-none">
+
+          {open && (
+            <div className="my-2 rounded-xl bg-white flex text-base text-[#373D3F] w-full max-w-[206px] min-w-[206px] justify-between items-center px-[12px] py-[10px]" onClick={()=>{
+              navigate("/ai-agent/start-new")
+            }}>
+              <span>Start New Report</span>
+              {/* <span className="gap-1 inline-flex items-center leading-none">
             <ToolTip title="Coming Soon" placement="bottom">
               <span className="border border-[#DBDEEB] rounded w-[18px] h-[18px] text-[#C8C8C8] text-[8px] inline-flex justify-center items-center">
                 
@@ -595,9 +602,9 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
               <span className="leading-none">K</span> 
               </span>
               </ToolTip> 
-            </span>
-          </div>
-          } */}
+            </span> */}
+            </div>
+          )}
 
           <Joyride
             steps={steps}

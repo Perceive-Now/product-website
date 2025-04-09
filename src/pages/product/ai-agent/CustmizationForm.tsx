@@ -253,19 +253,25 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   onInputChange,
   optionKey,
 }) => (
-  <div className="flex gap-x-4 p-2 rounded-b-lg w-full">
-    <div className="grid grid-cols-2 gap-2 w-full">
+  <div className="flex px-2 py-1 mb-3 rounded-b-lg w-full">
+    <div className="grid grid-cols-1 gap-2 w-full">
       {options.map((item) => (
         <div key={item.value} className="">
-          <label className="flex items-center space-x-2">
+          <label className="flex items-start space-x-1">
             <input
               type="checkbox"
               value={item.value}
               checked={selectedOptions.includes(item.value)}
               onChange={() => onChange(item.value)}
-              className="form-radio text-base font-normal"
+              className="form-radio text-base font-normal mt-1"
             />
-            <span className="font-light">{item.label}</span>
+            <span className="flex flex-col">
+            <span className="font-medium text-secondary-800">{item.label}</span>
+            {item.desc ? (
+            <span className="text-xs text-secondary-800">{item.desc}</span>
+          ) : null}
+            </span>
+            
           </label>
           {selectedOptions.includes(item.value) && item.showTextBox && (
             <input
@@ -276,9 +282,7 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
               className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
             />
           )}
-          {item.desc ? (
-            <p className="italic text-xs whitespace-pre-line text-gray-500">{item.desc}</p>
-          ) : null}
+          
         </div>
       ))}
     </div>
@@ -365,10 +369,10 @@ const CustmizationForm = (props: Props) => {
   };
 
   return (
-    <div className=" bg-white shadow-lg mt-4 rounded-lg">
-      <div className="flex">
-        <div className="flex-[0.9] p-2 pr-10 border-r">
-          <div className="flex items-center gap-x-2 mb-4">
+    <div className=" bg-white shadow-[0_4px_24px_0_#2222220F] mt-4 rounded-lg">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:divide-x">
+        <div className="p-2 space-y-1">
+          <div className="flex items-center gap-x-1 mb-4 font-semibold text-xl">
             <img src={customizationIcon} alt="Customization Icon" />
             Customization options
           </div>
@@ -382,18 +386,21 @@ const CustmizationForm = (props: Props) => {
             Report Scope
           </div> */}
           <div
-            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-lg py-[12px] px-1 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover group ${
               currentTab === "reportFormatOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("reportFormatOptions")}
           >
-            <div className="flex items-center gap-x-2">
-              <input type="radio" checked={currentTab === "reportFormatOptions"} />
+            <div className="flex items-center">
+              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+              currentTab === "reportFormatOptions" && "bg-primary-900 text-white border-primary-900"
+            }`}>1</div>
+              <input type="radio" checked={currentTab === "reportFormatOptions"} className="hidden" />
               Report Format
             </div>
-            <p className="italic text-xs">
+            {/* <p className="italic text-xs">
               Select one or more formats you'd like the report delivered in
-            </p>
+            </p> */}
           </div>
           {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -414,44 +421,53 @@ const CustmizationForm = (props: Props) => {
             Data Presentation
           </div> */}
           <div
-            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-lg py-[12px] px-1 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover group ${
               currentTab === "citationsOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("citationsOptions")}
           >
-            <div className="flex items-center gap-x-2">
-              <input type="radio" checked={currentTab === "citationsOptions"} />
+            <div className="flex items-center">
+              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+              currentTab === "citationsOptions" && "bg-primary-900 text-white border-primary-900"
+            }`}>2</div>
+              <input type="radio" checked={currentTab === "citationsOptions"} className="hidden" />
               Citations & References
             </div>
-            <p className="italic text-xs">Choose how you'd like sources to appear in the report</p>
+            {/* <p className="italic text-xs">Choose how you'd like sources to appear in the report</p> */}
           </div>
           <div
-            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-lg py-[12px] px-1 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover group ${
               currentTab === "audienceFocus" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("audienceFocus")}
           >
-            <div className="flex items-center gap-x-2">
-              <input type="radio" checked={currentTab === "audienceFocus"} />
+            <div className="flex items-center">
+              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+              currentTab === "audienceFocus" && "bg-primary-900 text-white border-primary-900"
+            }`}>3</div>
+              <input type="radio" checked={currentTab === "audienceFocus"} className="hidden"  />
               Target Audience
             </div>
-            <p className="italic text-xs">
+            {/* <p className="italic text-xs">
               Select all that apply — we’ll tailor tone and depth accordingly
-            </p>
+            </p> */}
           </div>
           <div
-            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-lg py-[12px] px-1 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover group ${
               currentTab === "reportToneOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("reportToneOptions")}
           >
-            <div className="flex items-center gap-x-2">
-              <input type="radio" checked={currentTab === "reportToneOptions"} />
+            <div className="flex items-center">
+              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+              currentTab === "reportToneOptions" && "bg-primary-900 text-white border-primary-900"
+            }`}>4</div>
+              <input type="radio" checked={currentTab === "reportToneOptions"} className="hidden"  />
               Tone of the Report
             </div>
-            <p className="italic text-xs">
+            {/* <p className="italic text-xs">
               Choose the tone that best fits your audience or brand personality
-            </p>
+            </p> */}
           </div>
           {/* <div
             className={`flex items-center gap-x-2 rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
@@ -463,21 +479,24 @@ const CustmizationForm = (props: Props) => {
             Collaboration Needs
           </div> */}
           <div
-            className={` rounded-md py-1 px-2 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover ${
+            className={` rounded-lg py-[12px] px-1 text-base font-light cursor-pointer hover:bg-[#f5f7ff] transition-hover group ${
               currentTab === "explainabilityOptions" && "bg-[#F5F7FF]"
             }`}
             onClick={() => setCurrentTab("explainabilityOptions")}
           >
-            <div className="flex items-center gap-x-2">
-              <input type="radio" checked={currentTab === "explainabilityOptions"} />
+            <div className="flex items-center">
+              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+              currentTab === "explainabilityOptions" && "bg-primary-900 text-white border-primary-900"
+            }`}>5</div>
+              <input type="radio" checked={currentTab === "explainabilityOptions"} className="hidden" />
               Explainability & Transparency
             </div>
-            <p className="italic text-xs">
+            {/* <p className="italic text-xs">
               Select how much clarity you want into how insights were generated
-            </p>
+            </p> */}
           </div>
         </div>
-        <div className="flex-[2] pl-3">
+        <div className="pl-5 p-2">
           <div className="grid grid-cols-1 gap-x-3 gap-y-4 mt-2">
             {/* {currentTab === "reportScopeOptions" && (
               <div className="flex flex-col w-full">
@@ -494,7 +513,7 @@ const CustmizationForm = (props: Props) => {
             )} */}
             {currentTab === "reportFormatOptions" && (
               <div className="flex flex-col w-full">
-                <div className="">Report Format</div>
+                <div className="font-semibold text-secondary-800">Select one or more formats you'd like the report delivered in</div>
                 <CheckboxGroup
                   options={options.reportFormatOptions}
                   selectedOptions={selectedOptions.reportFormatOptions}
@@ -533,7 +552,7 @@ const CustmizationForm = (props: Props) => {
             )} */}
             {currentTab === "citationsOptions" && (
               <div className="flex flex-col w-full ">
-                <div className="">Citations & References</div>
+                <div className="font-semibold text-secondary-800">Choose how you'd like sources to appear in the report</div>
                 <CheckboxGroup
                   options={options.citationsOptions}
                   selectedOptions={selectedOptions.citationsOptions}
@@ -547,7 +566,7 @@ const CustmizationForm = (props: Props) => {
             {currentTab === "audienceFocus" && (
               <div className="flex flex-col">
                 <div className="flex flex-col w-full">
-                  <div className="">Target Audience</div>
+                  <div className="font-semibold text-secondary-800">Select all that apply — we’ll tailor tone and depth accordingly</div>
                   <p className="mt-2">For enterprises</p>
                   <CheckboxGroup
                     options={options.audienceFocusOneOptions}
@@ -558,7 +577,7 @@ const CustmizationForm = (props: Props) => {
                     optionKey="audienceFocusOneOptions"
                   />
 
-                  <div className="flex flex-col mt-4">
+                  <div className="flex flex-col">
                     <p className="mt-2">For Investors & Financial Insitutions</p>
                     <CheckboxGroup
                       options={options.audienceFocusTwoOptions}
@@ -574,7 +593,7 @@ const CustmizationForm = (props: Props) => {
             )}
             {currentTab === "reportToneOptions" && (
               <div className="flex flex-col w-full ">
-                <div className="">Tone of the Report</div>
+                <div className="font-semibold text-secondary-800">Choose the tone that best fits your audience or brand personality</div>
                 <CheckboxGroup
                   options={options.reportToneOptions}
                   selectedOptions={selectedOptions.reportToneOptions}
@@ -600,7 +619,7 @@ const CustmizationForm = (props: Props) => {
             )} */}
             {currentTab === "explainabilityOptions" && (
               <div className="flex flex-col w-full ">
-                <div className="">Explainability & Transparency</div>
+                <div className="font-semibold text-secondary-800">Select how much clarity you want into how insights were generated</div>
                 <CheckboxGroup
                   options={options.explainabilityOptions}
                   selectedOptions={selectedOptions.explainabilityOptions}

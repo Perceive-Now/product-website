@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { Texts } from "src/pages/my-account/my-reports/quick-report";
 import CustmizationForm from "./CustmizationForm";
 import { API_PROD_URL } from "src/utils/axios";
+import ArrowLeftIcon from "src/components/icons/common/arrow-left";
 
 // Define the structure for options
 // Define options
@@ -177,24 +178,37 @@ const AIReportCustomization: React.FC = () => {
   const [additionalSummary, setadditionalSummary] = useState("");
 
   return (
-    <div className="space-y-[20px] w-full max-w-[998px] bg-[#FFFFFF] z-10 pb-[7%]">
+    <div className="space-y-2 w-full bg-[#FFFFFF] z-10 pb-[7%]">      
+            
       <div className="p-1 pl-0">
-        <div className="text-start text-black mt-2 text-[16px] leading-[19.2px] font-normal">
+        <div className="flex justify-start items-center py-3">
+          <Link to="/my-agent-reports">
+            <p className="mr-4 text-secondary-800 flex items-center">
+              <ArrowLeftIcon className="mr-1" />
+              Back
+            </p>
+          </Link>
+        </div>
+        <h2 className="text-lg font-semibold mt-3 mb-0">Report Customization</h2>
+      </div>
+
+      <div className="p-1 pl-0 pt-0">
+        {/* <div className="text-start text-black mt-2 text-[16px] leading-[19.2px] font-normal">
           <p>Customize your report to match your needs.</p>
           <p>
             <span className="text-[#FFA300] font-medium">Choose</span> the format, level of detail,
             and key insights to get the most relevant results!
           </p>
-        </div>
+        </div> */}
 
-        <div className="mb-2 mt-4">
-          <h2 className="text-black text-base mb-1">
+        <div className="mb-2">
+          <h2 className="text-secondary-800 text-base mb-1 font-medium">
             Report name <span className="text-red-500 ml-0">*</span>
           </h2>
 
-          <div className="max-w-md rounded-lg shadow-xl border">
+          <div className="rounded-lg border border-gray-300">
             <input
-              className="w-full p-2 outline-none rounded-lg text-sm"
+              className="w-full p-2 max-h-6 outline-none rounded-lg text-sm"
               placeholder="Type your report name"
               value={reportName}
               onChange={(e) => {
@@ -218,7 +232,7 @@ const AIReportCustomization: React.FC = () => {
         />
 
         <div className="mt-5">
-          <h6 className="font-semibold mb-1 text-base font-nunito">
+          <h6 className="font-medium text-secondary-800 mb-1 text-base font-nunito">
             Have any special requests? Let us know what you need, and we’ll tailor the report to fit
             your goals!
           </h6>
@@ -232,8 +246,8 @@ const AIReportCustomization: React.FC = () => {
               id="specialRequests"
               type="text"
               className={classNames(
-                "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                "mt-1 p-[10px] max-h-6 w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                "border-gray-300 focus:border-primary-500 focus:ring-primary-500",
               )}
               placeholder=""
               value={additionalSummary}
@@ -249,11 +263,11 @@ const AIReportCustomization: React.FC = () => {
       </div>
       <div className="flex gap-3 mt-4">
         <div
-          className="flex items-center justify-center gap-x-2 border-4 bg-secondary-500 border-[#442873] rounded-[32px] py-1 px-2 text-lg text-white font-bold"
+          className="bg-[#442873] rounded-[32px] py-[10px] px-4 text-base text-white cursor-pointer"
           onClick={submitFinalReport}
         >
           {!submitting ? "Submit" : <LoadingIcon className="animate-spin text-black" />}
-          <RightArrow className="ml-1" />
+          
         </div>
       </div>
     </div>
