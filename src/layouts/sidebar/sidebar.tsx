@@ -582,9 +582,12 @@ export const AppSidebar: FunctionComponent<Props> = ({ onSidebarToggle }) => {
           </div>
 
           {open && (
-            <div className="my-2 rounded-xl bg-white flex text-base text-[#373D3F] w-full max-w-[206px] min-w-[206px] justify-between items-center px-[12px] py-[10px]" onClick={()=>{
-              navigate("/ai-agent/start-new")
-            }}>
+            <div
+              className="my-2 rounded-xl bg-white flex text-base text-[#373D3F] w-full max-w-[206px] min-w-[206px] justify-between items-center px-[12px] py-[10px] cursor-pointer"
+              onClick={() => {
+                navigate("/ai-agent/start-new");
+              }}
+            >
               <span>Start New Report</span>
               {/* <span className="gap-1 inline-flex items-center leading-none">
             <ToolTip title="Coming Soon" placement="bottom">
