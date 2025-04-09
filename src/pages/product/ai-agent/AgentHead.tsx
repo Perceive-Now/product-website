@@ -25,7 +25,7 @@ import { setSession } from "src/stores/session";
 import { logoutUser } from "src/stores/auth";
 
 interface Props {
-  agentName: string;
+  agentName?: string;
 }
 
 const agentIcons: Record<string, string> = {
@@ -43,7 +43,7 @@ const agentIcons: Record<string, string> = {
 };
 
 const AgentHead = (props: Props) => {
-  const { agentName } = props;
+  const { agentName = "" } = props;
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

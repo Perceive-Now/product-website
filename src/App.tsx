@@ -113,6 +113,7 @@ import TaskType from "./pages/my-account/admin-agent-reports/task-type";
 import AdminMain from "./pages/my-account/admin-projects/admin-main";
 import AIReportCustomization from "./pages/product/ai-agent/ai-report-custom";
 import FinalReportPage from "./pages/product/ai-agent/FinalMessage";
+import StartNewchat from "./pages/product/ai-agent/landing/StartNewchat";
 // import MadLibEditor from "./test";
 
 /**
@@ -303,6 +304,7 @@ function App() {
             <Route path="/ai-agent-customization" element={<AIReportCustomization />} />
             <Route path="/ai-agent-final" element={<FinalReportPage />} />
             <Route path="/ai-agent/landing" element={<AgentLanding />} />
+            <Route path="/ai-agent/start-new" element={<StartNewchat />} />
             <Route path="/my-projects/landing" element={<ProjectHubLanding />} />
 
             {/*Graph */}
