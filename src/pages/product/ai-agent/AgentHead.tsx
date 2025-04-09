@@ -95,15 +95,17 @@ const AgentHead = (props: Props) => {
               //   background: "rgb(68, 40, 115)",
               // }}
             >
-              <img
-                src={iconSrc}
-                alt={displayName}
-                className="w-4 h-4"
-                // style={{
-                //   filter:
-                //     "invert(100%) sepia(0%) saturate(2%) hue-rotate(270deg) brightness(109%) contrast(101%)",
-                // }}
-              />
+              {agentIcons[agentName] ? (
+                <img
+                  src={iconSrc}
+                  alt={displayName}
+                  className="w-4 h-4"
+                  // style={{
+                  //   filter:
+                  //     "invert(100%) sepia(0%) saturate(2%) hue-rotate(270deg) brightness(109%) contrast(101%)",
+                  // }}
+                />
+              ) : null}
             </div>
           )}
         </div>

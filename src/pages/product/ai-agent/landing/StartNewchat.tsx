@@ -20,7 +20,7 @@ const StartNewchat = () => {
             </p>
           </Link>
         </div>
-        <AgentHead />
+        <AgentHead agentName="Start new report" />
         <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-y-0 gap-x-5 lg:gap-x-2">
           <div className="flex-auto relative flex flex-col gap-2 max-w-[780px] mx-auto h-[100vh]">
             <div className="flex flex-row flex-auto justify-center">
