@@ -34,6 +34,7 @@ import StepIcon3 from "./_assets/stepIcon3";
 import StepIcon4 from "./_assets/stepIcon4";
 import StepIcon5 from "./_assets/stepIcon5";
 import StepIcon6 from "./_assets/stepIcon6";
+import CheckIcon from "./_assets/checkIcon";
 import { MultiSelectDropdown } from "src/components/reusable/multi-select";
 
 const requirementFieldsByStep: any = {
@@ -1206,36 +1207,44 @@ const QuickReports = () => {
             <div className="grid grid-cols-6 p-2 mt-3 border border-gray-300 rounded-xl text-center relative after:h-[1px] after:absolute after:left-[105px] after:right-[105px] after:top-[36px] after:bg-gray-300 after:-z-10">
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-primary-900 border-primary-900 ${
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center   ${
                     requirementStep === 1
-                      ? "bg-appGray-200"
+                      ? "bg-appGray-200 text-primary-900 border-primary-900"
                       : requirementStep > 1
-                      ? "bg-[#FFA301]"
-                      : ""
+                      ? "bg-[#FFA301] text-primary-900 border-primary-900"
+                      : "bg-white text-secondary-800 border-gray-300"
                   } `}
                   onClick={() => {
                     setRequirementStep(1);
                   }}
                 >
-                  <StepIcon1 />
+                  { requirementStep > 1 ?(
+                    <CheckIcon />                    
+                    ) : (
+                    <StepIcon1 />
+                  )}
                 </div>
                 <div className="text-sm font-medium text-secondary-800">Basic Information</div>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center    ${
                     requirementStep === 2
-                      ? "bg-appGray-200"
+                      ? "bg-appGray-200 text-primary-900 border-primary-900"
                       : requirementStep > 2
-                      ? "bg-[#FFA301]"
-                      : ""
+                      ? "bg-[#FFA301] text-primary-900 border-primary-900"
+                      : "bg-white text-secondary-800 border-gray-300"
                   }`}
                   onClick={() => {
                     if (requirementStep > 1) setRequirementStep(2);
                   }}
                 >
-                  <StepIcon2 />
+                  { requirementStep > 2 ?(
+                    <CheckIcon />                    
+                    ) : (
+                    <StepIcon2 />
+                  )}
                 </div>
                 <div className="text-sm font-medium text-secondary-800">
                   Screening Configuration
@@ -1244,36 +1253,44 @@ const QuickReports = () => {
 
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center    ${
                     requirementStep === 3
-                      ? "bg-appGray-200"
+                      ? "bg-appGray-200 text-primary-900 border-primary-900"
                       : requirementStep > 3
-                      ? "bg-[#FFA301]"
-                      : ""
+                      ? "bg-[#FFA301] text-primary-900 border-primary-900"
+                      : "bg-white text-secondary-800 border-gray-300"
                   }`}
                   onClick={() => {
                     if (requirementStep > 2) setRequirementStep(3);
                   }}
                 >
-                  <StepIcon3 />
+                  { requirementStep > 3 ?(
+                    <CheckIcon />                    
+                    ) : (
+                    <StepIcon3 />
+                  )}
                 </div>
                 <div className="text-sm font-medium text-secondary-800">Document Intake</div>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center    ${
                     requirementStep === 4
-                      ? "bg-appGray-200"
+                      ? "bg-appGray-200 text-primary-900 border-primary-900"
                       : requirementStep > 4
-                      ? "bg-[#FFA301]"
-                      : ""
+                      ? "bg-[#FFA301] text-primary-900 border-primary-900"
+                      : "bg-white text-secondary-800 border-gray-300"
                   }`}
                   onClick={() => {
                     if (requirementStep > 3) setRequirementStep(4);
                   }}
                 >
-                  <StepIcon4 />
+                  { requirementStep > 4 ?(
+                    <CheckIcon />                    
+                    ) : (
+                    <StepIcon4 />
+                  )}
                 </div>
                 <div className="text-sm font-medium text-secondary-800">
                   Investment Thesis Parameters
@@ -1282,36 +1299,44 @@ const QuickReports = () => {
 
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center    ${
                     requirementStep === 5
-                      ? "bg-appGray-200"
+                      ? "bg-appGray-200 text-primary-900 border-primary-900"
                       : requirementStep > 5
-                      ? "bg-[#FFA301]"
-                      : ""
+                      ? "bg-[#FFA301] text-primary-900 border-primary-900"
+                      : "bg-white text-secondary-800 border-gray-300"
                   }`}
                   onClick={() => {
                     if (requirementStep > 4) setRequirementStep(5);
                   }}
                 >
-                  <StepIcon5 />
+                  { requirementStep > 5 ?(
+                    <CheckIcon />                    
+                    ) : (
+                    <StepIcon5 />
+                  )}
                 </div>
                 <div className="text-sm font-medium text-secondary-800">Supporting Materials</div>
               </div>
 
               <div className="flex flex-col items-center gap-1">
                 <div
-                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center    ${
                     requirementStep === 6
-                      ? "bg-appGray-200"
+                      ? "bg-appGray-200 text-primary-900 border-primary-900"
                       : requirementStep > 6
-                      ? "bg-[#FFA301]"
-                      : ""
+                      ? "bg-[#FFA301] text-primary-900 border-primary-900"
+                      : "bg-white text-secondary-800 border-gray-300"
                   }`}
                   onClick={() => {
                     if (requirementStep > 5) setRequirementStep(6);
                   }}
                 >
-                  <StepIcon6 />
+                  { requirementStep > 6 ?(
+                    <CheckIcon />                    
+                    ) : (
+                    <StepIcon6 />
+                  )}
                 </div>
                 <div className="text-sm font-medium text-secondary-800">Relevant Links</div>
               </div>
@@ -1322,16 +1347,16 @@ const QuickReports = () => {
               {requirementStep === 1 ? (
                 <div className="mt-6">
                   <div className="relative">
-                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300 mb-1">
                       Basic Information
                     </h2>
                   </div>
 
                   <div className="flex space-x-4 py-2">
                     {/* First Part: File Upload and Paste URL */}
-                    <div className="w-1/2 space-y-4">
+                    <div className="w-1/2 space-y-3">
                       <div className="w-full">
-                        <label htmlFor="fullName" className="block text-md  text-secondary-800">
+                        <label htmlFor="fullName" className="block text-md  text-heroDark-900 font-medium">
                           Report Name <span className="text-red-500 ml-0">*</span>
                         </label>
                         <input
@@ -1433,7 +1458,7 @@ const QuickReports = () => {
                         ))}
                         {requirementQuestions.length < 10 ? (
                           <div
-                            className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
+                            className={`mt-2 text-primary-900 font-semibold text-end cursor-pointer ${
                               requirementQuestions.length > 3 ? "mr-5" : ""
                             }`}
                             onClick={handleAddMoreQuestions}
@@ -1453,12 +1478,12 @@ const QuickReports = () => {
               {requirementStep === 2 ? (
                 <div className="mt-6">
                   <div className="relative">
-                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300 mb-1">
                       Screening Configuration
                     </h2>
                   </div>
                   <div className="w-full py-2">
-                    <label htmlFor="screeningType" className="block text-md  text-secondary-800">
+                    <label htmlFor="screeningType" className="block text-md  text-heroDark-900 font-medium">
                       Screening Type <span className="text-red-500 ml-0">*</span>
                     </label>
                     <select
@@ -1484,11 +1509,11 @@ const QuickReports = () => {
                     )}
                   </div>
                   <hr />
-                  <div className="flex space-x-4 py-2">
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-3 py-2">
                     {/* First Part: File Upload and Paste URL */}
-                    <div className="w-1/2 space-y-4">
+                    
                       <div className="w-full">
-                        <label htmlFor="companyName" className="block text-md  text-secondary-800">
+                        <label htmlFor="companyName" className="block text-md  text-heroDark-900 font-medium">
                           Company Name <span className="text-red-500 ml-0">*</span>
                         </label>
                         <input
@@ -1513,76 +1538,9 @@ const QuickReports = () => {
                         )}
                       </div>
                       <div className="w-full">
-                        <label htmlFor="companyStage" className="block text-md  text-secondary-800">
-                          Company Stage
-                        </label>
-                        <MultiSelectDropdown
-                          options={options.companyStage}
-                          selectedOptions={selectedOptions.companyStage}
-                          onChange={(value) => handleCheckboxChange("companyStage", value, true)}
-                          customInput={customInput}
-                          onInputChange={handleInputChange}
-                          optionKey="companyStage"
-                        />
-                      </div>
-                      {/* companyStage */}
-
-                      <div className="w-full">
-                        <label htmlFor="fundRaised" className="block text-md  text-secondary-800">
-                          Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          id="fundRaised"
-                          {...requirementRegister("fundRaised")}
-                          // required
-                          placeholder="3,000,000"
-                          disabled={disabled}
-                          className={classNames(
-                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                            requirementErrors.fundRaised
-                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                          )}
-                        />
-                        {requirementErrors.fundRaised && (
-                          <div className="mt-1 text-s text-danger-500">
-                            {requirementErrors.fundRaised?.message}
-                          </div>
-                        )}
-                      </div>
-                      <div className="w-full">
-                        <label htmlFor="founderCount" className="block text-md  text-secondary-800">
-                          Number of Founders
-                        </label>
-                        <input
-                          type="number"
-                          id="founderCount"
-                          {...requirementRegister("founderCount")}
-                          // required
-                          placeholder="2"
-                          disabled={disabled}
-                          className={classNames(
-                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                            requirementErrors.founderCount
-                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                          )}
-                        />
-                        {requirementErrors.founderCount && (
-                          <div className="mt-1 text-s text-danger-500">
-                            {requirementErrors.founderCount?.message}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="w-1/2">
-                      <div className="w-full">
                         <label
                           htmlFor="customerTractionSumary"
-                          className="block text-md  text-secondary-800"
+                          className="block text-md  text-heroDark-900 font-medium"
                         >
                           Customer Traction Summary <span className="text-red-500 ml-0">*</span>
                         </label>
@@ -1607,7 +1565,20 @@ const QuickReports = () => {
                         )}
                       </div>
                       <div className="w-full">
-                        <label htmlFor="knownRisk" className="block text-md  text-secondary-800">
+                        <label htmlFor="companyStage" className="block text-md  text-heroDark-900 font-medium">
+                          Company Stage
+                        </label>
+                        <MultiSelectDropdown
+                          options={options.companyStage}
+                          selectedOptions={selectedOptions.companyStage}
+                          onChange={(value) => handleCheckboxChange("companyStage", value, true)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="companyStage"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="knownRisk" className="block text-md  text-heroDark-900 font-medium">
                           Known Risks or Gaps
                         </label>
                         <input
@@ -1631,10 +1602,37 @@ const QuickReports = () => {
                           </div>
                         )}
                       </div>
+                      {/* companyStage */}
+
+                      <div className="w-full">
+                        <label htmlFor="fundRaised" className="block text-md  text-heroDark-900 font-medium">
+                          Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          id="fundRaised"
+                          {...requirementRegister("fundRaised")}
+                          // required
+                          placeholder="3,000,000"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.fundRaised
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.fundRaised && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.fundRaised?.message}
+                          </div>
+                        )}
+                      </div>
                       <div className="w-full">
                         <label
                           htmlFor="benchmarkComparison"
-                          className="block text-md  text-secondary-800"
+                          className="block text-md  text-heroDark-900 font-medium"
                         >
                           Benchmark Comparisons Requested{" "}
                           <span className="text-red-500 ml-0">*</span>
@@ -1648,14 +1646,40 @@ const QuickReports = () => {
                           optionKey="benchmarkComparison"
                         />
                       </div>
-                    </div>
+                      <div className="w-full">
+                        <label htmlFor="founderCount" className="block text-md  text-heroDark-900 font-medium">
+                          Number of Founders
+                        </label>
+                        <input
+                          type="number"
+                          id="founderCount"
+                          {...requirementRegister("founderCount")}
+                          // required
+                          placeholder="2"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.founderCount
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.founderCount && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.founderCount?.message}
+                          </div>
+                        )}
+                      </div>
+                   
+                    
                   </div>
                 </div>
               ) : null}
               {requirementStep === 3 ? (
                 <div className="mt-6">
                   <div className="relative">
-                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300 mb-1">
                       Document Intake
                     </h2>
                   </div>
@@ -1835,18 +1859,18 @@ const QuickReports = () => {
               {requirementStep === 4 ? (
                 <div className="mt-6">
                   <div className="relative">
-                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300 mb-1">
                       Investment Thesis Parameters
                     </h2>
                   </div>
 
-                  <div className="flex space-x-4 py-2">
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-3 py-2">
                     {/* First Part: File Upload and Paste URL */}
-                    <div className="w-1/2 space-y-4">
+                    
                       <div className="w-full">
                         <label
                           htmlFor="strategicFitCriteria"
-                          className="block text-md  text-secondary-800"
+                          className="block text-md  text-heroDark-900 font-medium"
                         >
                           Strategic Fit Criteria
                         </label>
@@ -1871,58 +1895,9 @@ const QuickReports = () => {
                         )}
                       </div>
                       <div className="w-full">
-                        <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
-                          Sector Focus
-                        </label>
-                        <MultiSelectDropdown
-                          options={options.sectorFocus}
-                          selectedOptions={selectedOptions.sectorFocus}
-                          onChange={(value) => handleCheckboxChange("sectorFocus", value)}
-                          customInput={customInput}
-                          onInputChange={handleInputChange}
-                          optionKey="sectorFocus"
-                        />
-                      </div>
-                      <div className="w-full">
-                        <label
-                          htmlFor="geographicFocus"
-                          className="block text-md  text-secondary-800"
-                        >
-                          Geographic Focus
-                        </label>
-                        <MultiSelectDropdown
-                          options={options.geographicFocus}
-                          selectedOptions={selectedOptions.geographicFocus}
-                          onChange={(value) => handleCheckboxChange("geographicFocus", value)}
-                          customInput={customInput}
-                          onInputChange={handleInputChange}
-                          optionKey="geographicFocus"
-                        />
-                      </div>
-                      {/* businessModel */}
-                    </div>
-                    <div className="w-1/2 space-y-4">
-                      {" "}
-                      <div className="w-full">
-                        <label
-                          htmlFor="businessModel"
-                          className="block text-md  text-secondary-800"
-                        >
-                          Business Model
-                        </label>
-                        <MultiSelectDropdown
-                          options={options.businessModel}
-                          selectedOptions={selectedOptions.businessModel}
-                          onChange={(value) => handleCheckboxChange("businessModel", value)}
-                          customInput={customInput}
-                          onInputChange={handleInputChange}
-                          optionKey="businessModel"
-                        />
-                      </div>
-                      <div className="w-full">
                         <label
                           htmlFor="preferredStage"
-                          className="block text-md  text-secondary-800"
+                          className="block text-md  text-heroDark-900 font-medium"
                         >
                           Preferred Stage
                         </label>
@@ -1936,7 +1911,20 @@ const QuickReports = () => {
                         />
                       </div>
                       <div className="w-full">
-                        <label htmlFor="minAnnualRev" className="block text-md  text-secondary-800">
+                        <label htmlFor="sectorFocus" className="block text-md  text-heroDark-900 font-medium">
+                          Sector Focus
+                        </label>
+                        <MultiSelectDropdown
+                          options={options.sectorFocus}
+                          selectedOptions={selectedOptions.sectorFocus}
+                          onChange={(value) => handleCheckboxChange("sectorFocus", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="sectorFocus"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="minAnnualRev" className="block text-md  text-heroDark-900 font-medium">
                           Minimum Annual Revenue (USD)
                         </label>
                         <input
@@ -1961,7 +1949,23 @@ const QuickReports = () => {
                         )}
                       </div>
                       <div className="w-full">
-                        <label htmlFor="minARR" className="block text-md  text-secondary-800">
+                        <label
+                          htmlFor="geographicFocus"
+                          className="block text-md  text-heroDark-900 font-medium"
+                        >
+                          Geographic Focus
+                        </label>
+                        <MultiSelectDropdown
+                          options={options.geographicFocus}
+                          selectedOptions={selectedOptions.geographicFocus}
+                          onChange={(value) => handleCheckboxChange("geographicFocus", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="geographicFocus"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="minARR" className="block text-md  text-heroDark-900 font-medium">
                           Minimum ARR (USD)
                         </label>
                         <input
@@ -1987,8 +1991,24 @@ const QuickReports = () => {
                       </div>
                       <div className="w-full">
                         <label
+                          htmlFor="businessModel"
+                          className="block text-md  text-heroDark-900 font-medium"
+                        >
+                          Business Model
+                        </label>
+                        <MultiSelectDropdown
+                          options={options.businessModel}
+                          selectedOptions={selectedOptions.businessModel}
+                          onChange={(value) => handleCheckboxChange("businessModel", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="businessModel"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label
                           htmlFor="targetOwnership"
-                          className="block text-md  text-secondary-800"
+                          className="block text-md  text-heroDark-900 font-medium"
                         >
                           Target Ownership Stake (%)
                         </label>
@@ -2013,7 +2033,9 @@ const QuickReports = () => {
                           </div>
                         )}
                       </div>
-                    </div>
+                      {/* businessModel */}
+                   
+                    
 
                     {/* preferredStage */}
                   </div>
@@ -2024,7 +2046,7 @@ const QuickReports = () => {
               {requirementStep === 5 ? (
                 <div className="mt-6">
                   <div className="relative">
-                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300 mb-1">
                       Supporting Materials
                     </h2>
                   </div>
@@ -2557,18 +2579,17 @@ const QuickReports = () => {
               {requirementStep === 6 ? (
                 <div className="mt-6">
                   <div className="relative">
-                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300 mb-1">
                       Relevant Links
                     </h2>
                   </div>
 
-                  <div className="flex  space-x-4 py-2">
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-3 py-2">
                     {/* First Part: File Upload and Paste URL */}
-                    <div className="w-1/2 space-y-4">
-                      <div className="w-full">
+                    <div className="w-full">
                         <label
                           htmlFor="company_website"
-                          className="block text-md  text-secondary-800"
+                          className="block text-md  text-heroDark-900 font-medium"
                         >
                           Company Website <span className="text-red-500 ml-0">*</span>
                         </label>
@@ -2594,7 +2615,31 @@ const QuickReports = () => {
                         )}
                       </div>
 
-                      <div className="mb-1">
+                      <div className="w-full">
+                        <label htmlFor="product_demo" className="block text-md text-secondary-800">
+                          Product Demo or Landing Page
+                        </label>
+                        <input
+                          id="product_demo"
+                          disabled={disabled}
+                          {...requirementRegister("product_demo")}
+                          placeholder=""
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.product_demo
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.product_demo && (
+                          <div className="mt-0 text-s text-danger-500">
+                            {requirementErrors.product_demo?.message}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="w-full">
                         <label htmlFor="linkedin_page" className="block text-md text-secondary-800">
                           LinkedIn Page <span className="text-red-500 ml-0">*</span>
                         </label>
@@ -2617,11 +2662,35 @@ const QuickReports = () => {
                           </div>
                         )}
                       </div>
-                    </div>
 
-                    <div className="w-1/2 space-y-4">
                       <div className="w-full">
-                        <label htmlFor="crunchbase" className="block text-md  text-secondary-800">
+                        <label htmlFor="other_source" className="block text-md  text-heroDark-900 font-medium">
+                          Other Source Links
+                        </label>
+                        <input
+                          type="text"
+                          id="other_source"
+                          {...requirementRegister("other_source")}
+                          // required
+                          placeholder=""
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.other_source
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.other_source && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.other_source?.message}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="w-full">
+                        <label htmlFor="crunchbase" className="block text-md  text-heroDark-900 font-medium">
                           Crunchbase / Pitchbook / Dealroom
                         </label>
                         <input
@@ -2646,65 +2715,20 @@ const QuickReports = () => {
                         )}
                       </div>
 
-                      <div className="mb-1">
-                        <label htmlFor="product_demo" className="block text-md text-secondary-800">
-                          Product Demo or Landing Page
-                        </label>
-                        <input
-                          id="product_demo"
-                          disabled={disabled}
-                          {...requirementRegister("product_demo")}
-                          placeholder=""
-                          className={classNames(
-                            "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
-                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                            requirementErrors.product_demo
-                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                          )}
-                        />
-                        {requirementErrors.product_demo && (
-                          <div className="mt-0 text-s text-danger-500">
-                            {requirementErrors.product_demo?.message}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                      
+
+                      
+
+
 
                     {/* Second Part: Added Websites and Urls Listing */}
-                    <div className="w-full space-y-4">
-                      <div className="w-full">
-                        <label htmlFor="other_source" className="block text-md  text-secondary-800">
-                          Other Source Links
-                        </label>
-                        <input
-                          type="text"
-                          id="other_source"
-                          {...requirementRegister("other_source")}
-                          // required
-                          placeholder=""
-                          disabled={disabled}
-                          className={classNames(
-                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                            requirementErrors.other_source
-                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                          )}
-                        />
-                        {requirementErrors.other_source && (
-                          <div className="mt-1 text-s text-danger-500">
-                            {requirementErrors.other_source?.message}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
               ) : null}
               {/* Relevant Links end  */}
 
-              <div className="max-w-[120px] mt-5">
+              <div className="max-w-[120px] mt-1">
                 <button
                   type={requirementStep === 6 ? "submit" : "button"}
                   // onClick={() => {
@@ -2725,7 +2749,7 @@ const QuickReports = () => {
         ) : step === 1 ? (
           <div className="py-3">
             <form onSubmit={handleSubmitForm(handleSubmitProject)}>
-              <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
+              <label htmlFor="fullName" className="block text-md text-heroDark-900 font-medium">
                 Name your project <span className="text-red-500 ml-0">*</span>
               </label>
               <input
@@ -2875,7 +2899,7 @@ const QuickReports = () => {
               </div>
 
               <div className="max-w-[125px] mt-5 justify-center items-center">
-                <div className="max-w-[120px] mt-5">
+                <div className="max-w-[120px] mt-1">
                   <button
                     type="submit"
                     disabled={loading}
