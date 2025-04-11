@@ -34,6 +34,7 @@ import StepIcon3 from "./_assets/stepIcon3";
 import StepIcon4 from "./_assets/stepIcon4";
 import StepIcon5 from "./_assets/stepIcon5";
 import StepIcon6 from "./_assets/stepIcon6";
+import { MultiSelectDropdown } from "src/components/reusable/multi-select";
 
 const requirementFieldsByStep: any = {
   1: ["reportName", "usecase", "questions"],
@@ -1108,6 +1109,7 @@ const QuickReports = () => {
 
   const handleNextRequirement = async () => {
     if (requirementStep === 6) {
+      handleSubmitFormRequirement(handleSubmit)();
       return;
     }
     const valid = await trigger(requirementFieldsByStep[requirementStep]);
@@ -1514,7 +1516,7 @@ const QuickReports = () => {
                         <label htmlFor="companyStage" className="block text-md  text-secondary-800">
                           Company Stage
                         </label>
-                        <CheckboxGroup
+                        <MultiSelectDropdown
                           options={options.companyStage}
                           selectedOptions={selectedOptions.companyStage}
                           onChange={(value) => handleCheckboxChange("companyStage", value, true)}
@@ -1637,7 +1639,7 @@ const QuickReports = () => {
                           Benchmark Comparisons Requested{" "}
                           <span className="text-red-500 ml-0">*</span>
                         </label>
-                        <CheckboxGroup
+                        <MultiSelectDropdown
                           options={options.benchmarkComparison}
                           selectedOptions={selectedOptions.benchmarkComparison}
                           onChange={(value) => handleCheckboxChange("benchmarkComparison", value)}
@@ -1872,7 +1874,7 @@ const QuickReports = () => {
                         <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
                           Sector Focus
                         </label>
-                        <CheckboxGroup
+                        <MultiSelectDropdown
                           options={options.sectorFocus}
                           selectedOptions={selectedOptions.sectorFocus}
                           onChange={(value) => handleCheckboxChange("sectorFocus", value)}
@@ -1888,7 +1890,7 @@ const QuickReports = () => {
                         >
                           Geographic Focus
                         </label>
-                        <CheckboxGroup
+                        <MultiSelectDropdown
                           options={options.geographicFocus}
                           selectedOptions={selectedOptions.geographicFocus}
                           onChange={(value) => handleCheckboxChange("geographicFocus", value)}
@@ -1908,7 +1910,7 @@ const QuickReports = () => {
                         >
                           Business Model
                         </label>
-                        <CheckboxGroup
+                        <MultiSelectDropdown
                           options={options.businessModel}
                           selectedOptions={selectedOptions.businessModel}
                           onChange={(value) => handleCheckboxChange("businessModel", value)}
@@ -1924,7 +1926,7 @@ const QuickReports = () => {
                         >
                           Preferred Stage
                         </label>
-                        <CheckboxGroup
+                        <MultiSelectDropdown
                           options={options.preferredStage}
                           selectedOptions={selectedOptions.preferredStage}
                           onChange={(value) => handleCheckboxChange("preferredStage", value)}

@@ -266,12 +266,9 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
               className="form-radio text-base font-normal mt-1"
             />
             <span className="flex flex-col">
-            <span className="font-medium text-secondary-800">{item.label}</span>
-            {item.desc ? (
-            <span className="text-xs text-secondary-800">{item.desc}</span>
-          ) : null}
+              <span className="font-medium text-secondary-800">{item.label}</span>
+              {item.desc ? <span className="text-xs text-secondary-800">{item.desc}</span> : null}
             </span>
-            
           </label>
           {selectedOptions.includes(item.value) && item.showTextBox && (
             <input
@@ -282,7 +279,6 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
               className="border border-neutral-500 rounded px-1 py-0.5 bg-transparent my-1 w-full text-sm"
             />
           )}
-          
         </div>
       ))}
     </div>
@@ -392,10 +388,19 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("reportFormatOptions")}
           >
             <div className="flex items-center">
-              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
-              currentTab === "reportFormatOptions" && "bg-primary-900 text-white border-primary-900"
-            }`}>1</div>
-              <input type="radio" checked={currentTab === "reportFormatOptions"} className="hidden" />
+              <div
+                className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+                  currentTab === "reportFormatOptions" &&
+                  "bg-primary-900 text-white border-primary-900"
+                }`}
+              >
+                1
+              </div>
+              <input
+                type="radio"
+                checked={currentTab === "reportFormatOptions"}
+                className="hidden"
+              />
               Report Format
             </div>
             {/* <p className="italic text-xs">
@@ -427,9 +432,14 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("citationsOptions")}
           >
             <div className="flex items-center">
-              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
-              currentTab === "citationsOptions" && "bg-primary-900 text-white border-primary-900"
-            }`}>2</div>
+              <div
+                className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+                  currentTab === "citationsOptions" &&
+                  "bg-primary-900 text-white border-primary-900"
+                }`}
+              >
+                2
+              </div>
               <input type="radio" checked={currentTab === "citationsOptions"} className="hidden" />
               Citations & References
             </div>
@@ -442,10 +452,14 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("audienceFocus")}
           >
             <div className="flex items-center">
-              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
-              currentTab === "audienceFocus" && "bg-primary-900 text-white border-primary-900"
-            }`}>3</div>
-              <input type="radio" checked={currentTab === "audienceFocus"} className="hidden"  />
+              <div
+                className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+                  currentTab === "audienceFocus" && "bg-primary-900 text-white border-primary-900"
+                }`}
+              >
+                3
+              </div>
+              <input type="radio" checked={currentTab === "audienceFocus"} className="hidden" />
               Target Audience
             </div>
             {/* <p className="italic text-xs">
@@ -459,10 +473,15 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("reportToneOptions")}
           >
             <div className="flex items-center">
-              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
-              currentTab === "reportToneOptions" && "bg-primary-900 text-white border-primary-900"
-            }`}>4</div>
-              <input type="radio" checked={currentTab === "reportToneOptions"} className="hidden"  />
+              <div
+                className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+                  currentTab === "reportToneOptions" &&
+                  "bg-primary-900 text-white border-primary-900"
+                }`}
+              >
+                4
+              </div>
+              <input type="radio" checked={currentTab === "reportToneOptions"} className="hidden" />
               Tone of the Report
             </div>
             {/* <p className="italic text-xs">
@@ -485,10 +504,19 @@ const CustmizationForm = (props: Props) => {
             onClick={() => setCurrentTab("explainabilityOptions")}
           >
             <div className="flex items-center">
-              <div className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
-              currentTab === "explainabilityOptions" && "bg-primary-900 text-white border-primary-900"
-            }`}>5</div>
-              <input type="radio" checked={currentTab === "explainabilityOptions"} className="hidden" />
+              <div
+                className={`w-[28px] h-[28px] font-semibold text-sm text-secondary-800 rounded-sm border border-appGray-200 inline-flex justify-center items-center mr-[10px] group-hover:bg-primary-900 group-hover:text-white group-hover:border-primary-900 ${
+                  currentTab === "explainabilityOptions" &&
+                  "bg-primary-900 text-white border-primary-900"
+                }`}
+              >
+                5
+              </div>
+              <input
+                type="radio"
+                checked={currentTab === "explainabilityOptions"}
+                className="hidden"
+              />
               Explainability & Transparency
             </div>
             {/* <p className="italic text-xs">
@@ -513,7 +541,9 @@ const CustmizationForm = (props: Props) => {
             )} */}
             {currentTab === "reportFormatOptions" && (
               <div className="flex flex-col w-full">
-                <div className="font-semibold text-secondary-800">Select one or more formats you'd like the report delivered in</div>
+                <div className="font-semibold text-secondary-800">
+                  Select one or more formats you'd like the report delivered in
+                </div>
                 <CheckboxGroup
                   options={options.reportFormatOptions}
                   selectedOptions={selectedOptions.reportFormatOptions}
@@ -552,7 +582,9 @@ const CustmizationForm = (props: Props) => {
             )} */}
             {currentTab === "citationsOptions" && (
               <div className="flex flex-col w-full ">
-                <div className="font-semibold text-secondary-800">Choose how you'd like sources to appear in the report</div>
+                <div className="font-semibold text-secondary-800">
+                  Choose how you'd like sources to appear in the report
+                </div>
                 <CheckboxGroup
                   options={options.citationsOptions}
                   selectedOptions={selectedOptions.citationsOptions}
@@ -566,7 +598,9 @@ const CustmizationForm = (props: Props) => {
             {currentTab === "audienceFocus" && (
               <div className="flex flex-col">
                 <div className="flex flex-col w-full">
-                  <div className="font-semibold text-secondary-800">Select all that apply — we’ll tailor tone and depth accordingly</div>
+                  <div className="font-semibold text-secondary-800">
+                    Select all that apply — we’ll tailor tone and depth accordingly
+                  </div>
                   <p className="mt-2">For enterprises</p>
                   <CheckboxGroup
                     options={options.audienceFocusOneOptions}
@@ -593,7 +627,9 @@ const CustmizationForm = (props: Props) => {
             )}
             {currentTab === "reportToneOptions" && (
               <div className="flex flex-col w-full ">
-                <div className="font-semibold text-secondary-800">Choose the tone that best fits your audience or brand personality</div>
+                <div className="font-semibold text-secondary-800">
+                  Choose the tone that best fits your audience or brand personality
+                </div>
                 <CheckboxGroup
                   options={options.reportToneOptions}
                   selectedOptions={selectedOptions.reportToneOptions}
@@ -619,7 +655,9 @@ const CustmizationForm = (props: Props) => {
             )} */}
             {currentTab === "explainabilityOptions" && (
               <div className="flex flex-col w-full ">
-                <div className="font-semibold text-secondary-800">Select how much clarity you want into how insights were generated</div>
+                <div className="font-semibold text-secondary-800">
+                  Select how much clarity you want into how insights were generated
+                </div>
                 <CheckboxGroup
                   options={options.explainabilityOptions}
                   selectedOptions={selectedOptions.explainabilityOptions}
