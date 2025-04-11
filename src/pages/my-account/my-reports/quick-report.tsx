@@ -27,6 +27,14 @@ import AgentHead from "src/pages/product/ai-agent/AgentHead";
 import CustmizationForm, { CheckboxGroup } from "src/pages/product/ai-agent/CustmizationForm";
 import DotLoader from "src/components/reusable/dot-loader";
 import { API_PROD_URL } from "src/utils/axios";
+
+import StepIcon1 from "./_assets/stepIcon1"
+import StepIcon2 from "./_assets/stepIcon2"
+import StepIcon3 from "./_assets/stepIcon3"
+import StepIcon4 from "./_assets/stepIcon4"
+import StepIcon5 from "./_assets/stepIcon5"
+import StepIcon6 from "./_assets/stepIcon6"
+
 /**
  *
  */
@@ -1076,97 +1084,132 @@ const QuickReports = () => {
 
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
-      <AgentHead agentName="" />
-      <div>
-        {id ? (
-          <div className="p-1 pl-0">
-            <div className="flex justify-start items-center pt-3 pl-1">
-              <p
-                className="mr-4 text-secondary-800 flex items-center cursor-pointer"
-                onClick={() => {
-                  if (step === 3) {
-                    setStep(2);
-                  } else {
-                    // navigate(`/my-reports/${id}?project=${project_name}`, {
-                    //   state: { tab: 1 },
-                    // });
-                    navigate(`/my-projects`);
-                  }
-                }}
-              >
-                <ArrowLeftIcon className="mr-1" />
-                Back
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="p-1 pl-0">
-            <h6 className="text-lg font-semibold ml-0">
-              {" "}
-              Report management &gt; {step === 1 ? "New Project" : "Project Requirements"}
-            </h6>
-            <div className="flex justify-start items-center pt-3 pl-1">
-              <p
-                className="mr-4 text-secondary-800 flex items-center cursor-pointer"
-                onClick={() => {
-                  if (step === 3) {
-                    setStep(2);
-                  } else {
-                    navigate(`/my-projects`);
-                  }
-                }}
-              >
-                <ArrowLeftIcon className="mr-1" />
-                Back
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* {id && step !== 3 && step !== 4 && (
-          <div className="mt-2">
-            <Tab.Group defaultIndex={1}>
-              <Tab.List className="flex w-[15%] h-[45px]">
-                <Tab
+      <div className="flex justify-between">
+        
+        <div>
+          {id ? (
+            <div className="p-1 pl-0">
+              <div className="flex justify-start items-center pt-3 pl-1">
+                <p
+                  className="mr-4 text-secondary-800 flex items-center cursor-pointer"
                   onClick={() => {
-                    navigate(`/my-reports/${id}`);
+                    if (step === 3) {
+                      setStep(2);
+                    } else {
+                      // navigate(`/my-reports/${id}?project=${project_name}`, {
+                      //   state: { tab: 1 },
+                      // });
+                      navigate(`/my-projects`);
+                    }
                   }}
-                  className={({ selected }) =>
-                    `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-t border-b border-appGray-600 ${
-                      selected ? "text-white bg-primary-900" : "text-black"
-                    }`
-                  }
                 >
-                  Reports
-                </Tab>
-                <Tab
-                  className={({ selected }) =>
-                    `w-full text-base px-2 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
-                      selected ? "text-white bg-primary-900" : "text-black"
-                    }`
-                  }
+                  <ArrowLeftIcon className="mr-1" />
+                  Back
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="p-1 pl-0">
+              <h6 className="text-lg font-semibold ml-0">
+                {" "}
+                Report management &gt; {step === 1 ? "New Project" : "Project Requirements"}
+              </h6>
+              <div className="flex justify-start items-center pt-3 pl-1">
+                <p
+                  className="mr-4 text-secondary-800 flex items-center cursor-pointer"
+                  onClick={() => {
+                    if (step === 3) {
+                      setStep(2);
+                    } else {
+                      navigate(`/my-projects`);
+                    }
+                  }}
                 >
-                  Requirements
-                </Tab>
-              </Tab.List>
-            </Tab.Group>
-          </div>
-        )} */}
+                  <ArrowLeftIcon className="mr-1" />
+                  Back
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* {id && step !== 3 && step !== 4 && (
+            <div className="mt-2">
+              <Tab.Group defaultIndex={1}>
+                <Tab.List className="flex w-[15%] h-[45px]">
+                  <Tab
+                    onClick={() => {
+                      navigate(`/my-reports/${id}`);
+                    }}
+                    className={({ selected }) =>
+                      `w-full text-base px-3 rounded-tl-md rounded-bl-md focus:outline-none font-nunito border-l border-t border-b border-appGray-600 ${
+                        selected ? "text-white bg-primary-900" : "text-black"
+                      }`
+                    }
+                  >
+                    Reports
+                  </Tab>
+                  <Tab
+                    className={({ selected }) =>
+                      `w-full text-base px-2 rounded-tr-md rounded-br-md focus:outline-none font-nunito border-r border-t border-b border-appGray-600 ${
+                        selected ? "text-white bg-primary-900" : "text-black"
+                      }`
+                    }
+                  >
+                    Requirements
+                  </Tab>
+                </Tab.List>
+              </Tab.Group>
+            </div>
+          )} */}
+        </div>
+        <AgentHead agentName="" />
       </div>
 
       <div className="overflow-y-auto pb-[11%]">
         {step == 2 ? (
           <div className="">
+            
+            <div className="grid grid-cols-6 p-2 mt-3 border border-gray-300 rounded-xl text-center relative after:h-[1px] after:absolute after:left-[105px] after:right-[105px] after:top-[36px] after:bg-gray-300 after:-z-10">
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-primary-900 border-primary-900 bg-appGray-200 `}><StepIcon1/></div>
+                  <div className="text-sm font-medium text-secondary-800">Basic Information</div>
+                </div> 
+
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon2/></div>
+                  <div className="text-sm font-medium text-secondary-800">Screening Configuration</div>
+                </div>
+
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon3/></div>
+                  <div className="text-sm font-medium text-secondary-800">Document Intake</div>
+                </div>
+
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon4 /></div>
+                  <div className="text-sm font-medium text-secondary-800">Investment Thesis Parameters</div>
+                </div>
+
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon5 /></div>
+                  <div className="text-sm font-medium text-secondary-800">Supporting Materials</div>
+                </div>
+
+                <div className="flex flex-col items-center gap-1">
+                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon6 /></div>
+                  <div className="text-sm font-medium text-secondary-800">Relevant Links</div>
+                </div>
+            </div>{/*** Top steps */}
+
             <form onSubmit={handleSubmitFormRequirement(handleSubmit)}>
-              <div className="border border-gray-300 rounded-md mt-8">
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Basic Information
                   </h2>
                 </div>
 
-                <div className="flex space-x-4 p-2">
+                <div className="flex space-x-4 py-2">
                   {/* First Part: File Upload and Paste URL */}
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
@@ -1284,14 +1327,15 @@ const QuickReports = () => {
                   </div>
                 </div>
               </div>
-              <div className="border border-gray-300 rounded-md mt-8">
+
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Screening Configuration
                   </h2>
                 </div>
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <label htmlFor="screeningType" className="block text-md  text-secondary-800">
                     Screening Type <span className="text-red-500 ml-0">*</span>
                   </label>
@@ -1318,14 +1362,14 @@ const QuickReports = () => {
                   )}
                 </div>
               </div>
-              <div className="border border-gray-300 rounded-md mt-8">
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Document Intake
                   </h2>
                 </div>
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
@@ -1495,15 +1539,15 @@ const QuickReports = () => {
                   </div>
                 </div>
               </div>
-              <div className="border border-gray-300 rounded-md mt-8">
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Investment Thesis Parameters
                   </h2>
                 </div>
 
-                <div className="flex space-x-4 p-2">
+                <div className="flex space-x-4 py-2">
                   {/* First Part: File Upload and Paste URL */}
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
@@ -1676,15 +1720,15 @@ const QuickReports = () => {
                 </div>
               </div>
 
-              <div className="border border-gray-300 rounded-md mt-8">
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Company Details
                   </h2>
                 </div>
 
-                <div className="flex space-x-4 p-2">
+                <div className="flex space-x-4 py-2">
                   {/* First Part: File Upload and Paste URL */}
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
@@ -1852,16 +1896,16 @@ const QuickReports = () => {
               </div>
 
               {/* Supporting Materials start */}
-              <div className="border border-gray-300 rounded-md mt-8">
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Supporting Materials
                   </h2>
                 </div>
 
                 {/* cap table field start  */}
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
@@ -1943,7 +1987,7 @@ const QuickReports = () => {
                 {/* cap table field end  */}
 
                 {/* Team Bios start  */}
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                     {/* Left side - Upload or URL */}
                     <div className="flex-1">
@@ -2072,7 +2116,7 @@ const QuickReports = () => {
                 {/* Team Bios end  */}
 
                 {/* Customer List field start  */}
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
@@ -2154,7 +2198,7 @@ const QuickReports = () => {
                 {/* Customer List field end  */}
 
                 {/* Product Screenshots start  */}
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                     {/* Left side - Upload or URL */}
                     <div className="flex-1">
@@ -2283,7 +2327,7 @@ const QuickReports = () => {
                 {/* Product Screenshots end  */}
 
                 {/* supporting material field start  */}
-                <div className="w-full p-2">
+                <div className="w-full py-2">
                   <div>
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
                       <div className="flex-1">
@@ -2382,15 +2426,15 @@ const QuickReports = () => {
               {/* Supporting Materials end */}
 
               {/* Relevant Links start  */}
-              <div className="border border-gray-300 rounded-md mt-8">
+              <div className="mt-6">
                 <div className="relative">
-                  <div className="absolute inset-x-0 top-0 h-px bg-gray-300"></div>
-                  <h2 className="relative inline-block bg-white  text-gray-700 text-lg font-medium ml-4 z-10 top-[-14px]">
+                  
+                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
                     Relevant Links
                   </h2>
                 </div>
 
-                <div className="flex  space-x-4 p-2">
+                <div className="flex  space-x-4 py-2">
                   {/* First Part: File Upload and Paste URL */}
                   <div className="w-1/2 space-y-4">
                     <div className="w-full">
@@ -2549,7 +2593,7 @@ const QuickReports = () => {
             </form>
           </div>
         ) : step === 1 ? (
-          <div className="p-3 w-[50%]">
+          <div className="py-3">
             <form onSubmit={handleSubmitForm(handleSubmitProject)}>
               <label htmlFor="fullName" className="block text-md font-nunito text-secondary-800">
                 Name your project <span className="text-red-500 ml-0">*</span>
@@ -2573,7 +2617,7 @@ const QuickReports = () => {
                 <div
                   role="button"
                   onClick={handleSubmitForm(handleSubmitProject)}
-                  className="cursor-pointer border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
+                  className="inline-flex justify-center items-center cursor-pointer border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   {loading ? <LoadingIcon width={18} height={18} className="" /> : "Next"}
                 </div>
