@@ -28,12 +28,28 @@ import CustmizationForm, { CheckboxGroup } from "src/pages/product/ai-agent/Cust
 import DotLoader from "src/components/reusable/dot-loader";
 import { API_PROD_URL } from "src/utils/axios";
 
-import StepIcon1 from "./_assets/stepIcon1"
-import StepIcon2 from "./_assets/stepIcon2"
-import StepIcon3 from "./_assets/stepIcon3"
-import StepIcon4 from "./_assets/stepIcon4"
-import StepIcon5 from "./_assets/stepIcon5"
-import StepIcon6 from "./_assets/stepIcon6"
+import StepIcon1 from "./_assets/stepIcon1";
+import StepIcon2 from "./_assets/stepIcon2";
+import StepIcon3 from "./_assets/stepIcon3";
+import StepIcon4 from "./_assets/stepIcon4";
+import StepIcon5 from "./_assets/stepIcon5";
+import StepIcon6 from "./_assets/stepIcon6";
+
+const requirementFieldsByStep: any = {
+  1: ["reportName", "usecase", "questions"],
+  2: [
+    "screeningType",
+    "companyName",
+    "fundRaised",
+    "founderCount",
+    "customerTractionSumary",
+    "knownRisk",
+  ],
+  3: [],
+  4: ["strategicFitCriteria", "minAnnualRev", "minARR", "targetOwnership"],
+  5: [],
+  6: ["company_website", "linkedin_page", "Crunchbase", "product_demo", "other_source"],
+};
 
 /**
  *
@@ -197,6 +213,7 @@ const QuickReports = () => {
   const [urlInput, setUrlInput] = useState<string>("");
   const [dragging, setDragging] = useState<boolean>(false);
   const [step, setStep] = useState(1);
+  const [requirementStep, setRequirementStep] = useState(1);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [customReport, setCustomReport] = useState({
     report_tone: "",
@@ -653,6 +670,12 @@ const QuickReports = () => {
           .required("Question is required"),
       )
       .min(3, "Array must contain at least 3 non-empty strings"), // Minimum 3 valid items
+    company_website: yup.string().trim().required("Company Website is required"),
+    linkedin_page: yup.string().trim().required("LinkedIn Page is required"),
+    companyName: yup.string().trim().required("Company Name is required"),
+    // companyStage: yup.string().trim().required("Company Stage is required"),
+    fundRaised: yup.string().trim().required("Funding Raised is required"),
+    customerTractionSumary: yup.string().trim().required("Customer Traction Summary is required"),
   });
 
   const {
@@ -663,6 +686,7 @@ const QuickReports = () => {
     getValues: requirementValues,
     control: requirementControl,
     setValue: setRequirementValue,
+    trigger,
   } = useForm({
     defaultValues: projectRequitementInitialValue,
     resolver: yupResolver(projectFormResolver),
@@ -1082,10 +1106,19 @@ const QuickReports = () => {
 
   const [highlight, setHighlight] = useState(false);
 
+  const handleNextRequirement = async () => {
+    if (requirementStep === 6) {
+      return;
+    }
+    const valid = await trigger(requirementFieldsByStep[requirementStep]);
+    if (valid) {
+      setRequirementStep(requirementStep + 1);
+    }
+  };
+
   return (
     <div className="space-y-[20px] w-full z-10 p-1">
       <div className="flex justify-between">
-        
         <div>
           {id ? (
             <div className="p-1 pl-0">
@@ -1168,1416 +1201,1510 @@ const QuickReports = () => {
       <div className="overflow-y-auto pb-[11%]">
         {step == 2 ? (
           <div className="">
-            
             <div className="grid grid-cols-6 p-2 mt-3 border border-gray-300 rounded-xl text-center relative after:h-[1px] after:absolute after:left-[105px] after:right-[105px] after:top-[36px] after:bg-gray-300 after:-z-10">
-                <div className="flex flex-col items-center gap-1">
-                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-primary-900 border-primary-900 bg-appGray-200 `}><StepIcon1/></div>
-                  <div className="text-sm font-medium text-secondary-800">Basic Information</div>
-                </div> 
-
-                <div className="flex flex-col items-center gap-1">
-                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon2/></div>
-                  <div className="text-sm font-medium text-secondary-800">Screening Configuration</div>
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-primary-900 border-primary-900 ${
+                    requirementStep === 1
+                      ? "bg-appGray-200"
+                      : requirementStep > 1
+                      ? "bg-[#FFA301]"
+                      : ""
+                  } `}
+                  onClick={() => {
+                    setRequirementStep(1);
+                  }}
+                >
+                  <StepIcon1 />
                 </div>
+                <div className="text-sm font-medium text-secondary-800">Basic Information</div>
+              </div>
 
-                <div className="flex flex-col items-center gap-1">
-                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon3/></div>
-                  <div className="text-sm font-medium text-secondary-800">Document Intake</div>
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                    requirementStep === 2
+                      ? "bg-appGray-200"
+                      : requirementStep > 2
+                      ? "bg-[#FFA301]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (requirementStep > 1) setRequirementStep(2);
+                  }}
+                >
+                  <StepIcon2 />
                 </div>
+                <div className="text-sm font-medium text-secondary-800">
+                  Screening Configuration
+                </div>
+              </div>
 
-                <div className="flex flex-col items-center gap-1">
-                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon4 /></div>
-                  <div className="text-sm font-medium text-secondary-800">Investment Thesis Parameters</div>
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                    requirementStep === 3
+                      ? "bg-appGray-200"
+                      : requirementStep > 3
+                      ? "bg-[#FFA301]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (requirementStep > 2) setRequirementStep(3);
+                  }}
+                >
+                  <StepIcon3 />
                 </div>
+                <div className="text-sm font-medium text-secondary-800">Document Intake</div>
+              </div>
 
-                <div className="flex flex-col items-center gap-1">
-                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon5 /></div>
-                  <div className="text-sm font-medium text-secondary-800">Supporting Materials</div>
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                    requirementStep === 4
+                      ? "bg-appGray-200"
+                      : requirementStep > 4
+                      ? "bg-[#FFA301]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (requirementStep > 3) setRequirementStep(4);
+                  }}
+                >
+                  <StepIcon4 />
                 </div>
+                <div className="text-sm font-medium text-secondary-800">
+                  Investment Thesis Parameters
+                </div>
+              </div>
 
-                <div className="flex flex-col items-center gap-1">
-                  <div className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300 bg-white`}><StepIcon6 /></div>
-                  <div className="text-sm font-medium text-secondary-800">Relevant Links</div>
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                    requirementStep === 5
+                      ? "bg-appGray-200"
+                      : requirementStep > 5
+                      ? "bg-[#FFA301]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (requirementStep > 4) setRequirementStep(5);
+                  }}
+                >
+                  <StepIcon5 />
                 </div>
-            </div>{/*** Top steps */}
+                <div className="text-sm font-medium text-secondary-800">Supporting Materials</div>
+              </div>
+
+              <div className="flex flex-col items-center gap-1">
+                <div
+                  className={`w-5 h-5 rounded-full border inline-flex items-center justify-center  text-secondary-800 border-gray-300  ${
+                    requirementStep === 6
+                      ? "bg-appGray-200"
+                      : requirementStep > 6
+                      ? "bg-[#FFA301]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (requirementStep > 5) setRequirementStep(6);
+                  }}
+                >
+                  <StepIcon6 />
+                </div>
+                <div className="text-sm font-medium text-secondary-800">Relevant Links</div>
+              </div>
+            </div>
+            {/*** Top steps */}
 
             <form onSubmit={handleSubmitFormRequirement(handleSubmit)}>
-              <div className="mt-6">
-                <div className="relative">
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Basic Information
-                  </h2>
-                </div>
-
-                <div className="flex space-x-4 py-2">
-                  {/* First Part: File Upload and Paste URL */}
-                  <div className="w-1/2 space-y-4">
-                    <div className="w-full">
-                      <label htmlFor="fullName" className="block text-md  text-secondary-800">
-                        Report Name <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="reportName"
-                        {...requirementRegister("reportName")}
-                        // required
-                        placeholder="AI Startup Screening – Q2"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.reportName
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.reportName && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.reportName?.message}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mb-1">
-                      <label htmlFor="industry" className="block text-md text-secondary-800">
-                        Primary Objective <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <textarea
-                        id="usecase"
-                        disabled={disabled}
-                        {...requirementRegister("usecase")}
-                        placeholder="Identify top 5 companies aligned with our GenAI investment thesis"
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.usecase
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.usecase && (
-                        <div className="mt-0 text-s text-danger-500">
-                          {requirementErrors.usecase?.message}
-                        </div>
-                      )}
-                    </div>
+              {requirementStep === 1 ? (
+                <div className="mt-6">
+                  <div className="relative">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                      Basic Information
+                    </h2>
                   </div>
 
-                  {/* Second Part: Added Websites and Urls Listing */}
-                  <div className="w-1/2 px-1 flex flex-col">
-                    <label htmlFor="requirement" className="block text-md text-secondary-800 mb-1">
-                      Key Questions to Answer <span className="text-red-500 ml-0">*</span>
-                    </label>
-                    <div className="h-fit">
-                      {requirementQuestions?.map((requirement, index) => (
-                        <>
-                          <div key={index} className="flex items-center space-x-2">
-                            <input
-                              type="text"
-                              id={`questions.${index}`}
-                              {...requirementRegister(`questions.${index}`)}
-                              // {...(index === 0 || index === 1 || index === 2
-                              //   ? requirementRegister(`questions.${index}`)
-                              //   : {})}
-                              // required
-                              placeholder={`What companies align best with our AI + workflow focus?`}
-                              className={classNames(
-                                "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
-                                disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                                requirementErrors.questions?.[index]
-                                  ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                                  : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                              )}
-                            />
-                            {requirementQuestions.length > 3 ? (
-                              <button
-                                type="button"
-                                disabled={index === 0 || index === 1 || index === 2}
-                                onClick={() => removeQuestion(index)}
-                                className="text-red-500 hover:text-red-700 transition duration-300"
-                              >
-                                {index === 0 || index === 1 || index === 2 ? (
-                                  <div className="w-3"></div>
-                                ) : (
-                                  <TrashIcon className="w-3 h-3" />
-                                )}
-                              </button>
-                            ) : null}
-                          </div>
-                          <div className="mt-1 text-s text-danger-500">
-                            {requirementErrors.questions?.[index]?.message &&
-                              requirementErrors.questions[index]?.message}
-                          </div>
-                        </>
-                      ))}
-                      {requirementQuestions.length < 10 ? (
-                        <div
-                          className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
-                            requirementQuestions.length > 3 ? "mr-5" : ""
-                          }`}
-                          onClick={handleAddMoreQuestions}
-                        >
-                          + Add more
-                        </div>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    {/* Added Websites */}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <div className="relative">
-                  
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Screening Configuration
-                  </h2>
-                </div>
-                <div className="w-full py-2">
-                  <label htmlFor="screeningType" className="block text-md  text-secondary-800">
-                    Screening Type <span className="text-red-500 ml-0">*</span>
-                  </label>
-                  <select
-                    id="screeningType"
-                    {...requirementRegister("screeningType")}
-                    // onChange={(e) => setUsecase(e.target.value)}
-                    // required
-                    className={classNames(
-                      "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                      requirementErrors.screeningType
-                        ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                        : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                    )}
-                  >
-                    <option value="">Select</option>
-                    <option value="Quick Screening">Quick Screening</option>
-                    <option value="In-Depth Screening">In-Depth Screening</option>
-                  </select>
-                  {requirementErrors.screeningType && (
-                    <div className="mt-0 text-s text-danger-500">
-                      {requirementErrors.screeningType?.message}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="mt-6">
-                <div className="relative">
-                  
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Document Intake
-                  </h2>
-                </div>
-                <div className="w-full py-2">
-                  <div>
-                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
-                      <div className="flex-1">
-                        <h6 className="font-semibold text-base font-nunito mb-1">
-                          Upload Pitch Decks
-                        </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            dragging ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging(true);
-                          }}
-                          onDragLeave={() => setDragging(false)}
-                          onDrop={handleDrop}
-                        >
-                          <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleBrowseClick}
-                          >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop files to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
-                          </div>
-                        </div>
-                        {/* Hidden File Input */}
+                  <div className="flex space-x-4 py-2">
+                    {/* First Part: File Upload and Paste URL */}
+                    <div className="w-1/2 space-y-4">
+                      <div className="w-full">
+                        <label htmlFor="fullName" className="block text-md  text-secondary-800">
+                          Report Name <span className="text-red-500 ml-0">*</span>
+                        </label>
                         <input
-                          type="file"
-                          multiple
-                          ref={fileInputRef}
-                          onChange={handleFileChange}
-                          className="hidden"
+                          type="text"
+                          id="reportName"
+                          {...requirementRegister("reportName")}
+                          // required
+                          placeholder="AI Startup Screening – Q2"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.reportName
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
                         />
-                        <div className="mt-2 mb-2">
-                          {/* <p className="text-lg font-semibold font-nunito">
-                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                          </p> */}
-                          <ul className="list-none pl-[20px]">
-                            {/* {listContent.map((content) => ( */}
-                            <li className="text-xs">
-                              Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                            </li>
-                            {/* ))} */}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded files</h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
-                        >
-                          <div className="rounded-lg p-2 flex-1">
-                            {uploadedFiles.length > 0 ? (
-                              <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
-                                {uploadedFiles.map((file, index) => (
-                                  <div key={index}>
-                                    {index !== 0 && (
-                                      <hr className="my-1 border-1 border-appGray-300" />
-                                    )}
-                                    <div className="flex justify-between items-center">
-                                      <p className="text-sm font-nunito">{file.name}</p>
-                                      <TrashIcon
-                                        className="cursor-pointer"
-                                        width={25}
-                                        onClick={() => handleDelete(index, "file")}
-                                      />
-                                    </div>
-                                  </div>
-                                ))}
-                                {/* {highlight ? ( */}
-                                {/* ) : null} */}
-                              </div>
-                            ) : highlight ? (
-                              <div className="flex items-center justify-center p-5 h-full">
-                                <DotLoader />
-                              </div>
-                            ) : (
-                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                No file uploaded yet.
-                              </p>
-                            )}
+                        {requirementErrors.reportName && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.reportName?.message}
                           </div>
-                        </div>
+                        )}
+                      </div>
+
+                      <div className="mb-1">
+                        <label htmlFor="industry" className="block text-md text-secondary-800">
+                          Primary Objective <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <textarea
+                          id="usecase"
+                          disabled={disabled}
+                          {...requirementRegister("usecase")}
+                          placeholder="Identify top 5 companies aligned with our GenAI investment thesis"
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.usecase
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.usecase && (
+                          <div className="mt-0 text-s text-danger-500">
+                            {requirementErrors.usecase?.message}
+                          </div>
+                        )}
                       </div>
                     </div>
-                    <div>
-                      {/* File Upload Box */}
 
-                      {/* Paste URL Section */}
-                      <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
-                        <div className="flex-1">
-                          <div>
-                            <h6 className="font-semibold text-base mb-1 font-nunito">
-                              Paste Drive Folder Link
-                            </h6>
-                            <div className="flex">
+                    {/* Second Part: Added Websites and Urls Listing */}
+                    <div className="w-1/2 px-1 flex flex-col">
+                      <label
+                        htmlFor="requirement"
+                        className="block text-md text-secondary-800 mb-1"
+                      >
+                        Key Questions to Answer <span className="text-red-500 ml-0">*</span>
+                      </label>
+                      <div className="h-fit">
+                        {requirementQuestions?.map((requirement, index) => (
+                          <>
+                            <div key={index} className="flex items-center space-x-2">
                               <input
                                 type="text"
-                                placeholder="Paste Your URL here"
-                                value={urlInput}
-                                onChange={handleUrlChange}
-                                className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                                id={`questions.${index}`}
+                                {...requirementRegister(`questions.${index}`)}
+                                // {...(index === 0 || index === 1 || index === 2
+                                //   ? requirementRegister(`questions.${index}`)
+                                //   : {})}
+                                // required
+                                placeholder={`What companies align best with our AI + workflow focus?`}
+                                className={classNames(
+                                  "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                                  disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                                  requirementErrors.questions?.[index]
+                                    ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                                    : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                                )}
                               />
-                              <button
-                                type="button"
-                                className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
-                                onClick={handlePasteURL}
-                              >
-                                Paste
-                              </button>
+                              {requirementQuestions.length > 3 ? (
+                                <button
+                                  type="button"
+                                  disabled={index === 0 || index === 1 || index === 2}
+                                  onClick={() => removeQuestion(index)}
+                                  className="text-red-500 hover:text-red-700 transition duration-300"
+                                >
+                                  {index === 0 || index === 1 || index === 2 ? (
+                                    <div className="w-3"></div>
+                                  ) : (
+                                    <TrashIcon className="w-3 h-3" />
+                                  )}
+                                </button>
+                              ) : null}
+                            </div>
+                            <div className="mt-1 text-s text-danger-500">
+                              {requirementErrors.questions?.[index]?.message &&
+                                requirementErrors.questions[index]?.message}
+                            </div>
+                          </>
+                        ))}
+                        {requirementQuestions.length < 10 ? (
+                          <div
+                            className={`mt-2 mb-2 text-primary-900 font-semibold text-end cursor-pointer ${
+                              requirementQuestions.length > 3 ? "mr-5" : ""
+                            }`}
+                            onClick={handleAddMoreQuestions}
+                          >
+                            + Add more
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      {/* Added Websites */}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
+              {requirementStep === 2 ? (
+                <div className="mt-6">
+                  <div className="relative">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                      Screening Configuration
+                    </h2>
+                  </div>
+                  <div className="w-full py-2">
+                    <label htmlFor="screeningType" className="block text-md  text-secondary-800">
+                      Screening Type <span className="text-red-500 ml-0">*</span>
+                    </label>
+                    <select
+                      id="screeningType"
+                      {...requirementRegister("screeningType")}
+                      // onChange={(e) => setUsecase(e.target.value)}
+                      // required
+                      className={classNames(
+                        "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                        requirementErrors.screeningType
+                          ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                          : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                      )}
+                    >
+                      <option value="">Select</option>
+                      <option value="Quick Screening">Quick Screening</option>
+                      <option value="In-Depth Screening">In-Depth Screening</option>
+                    </select>
+                    {requirementErrors.screeningType && (
+                      <div className="mt-0 text-s text-danger-500">
+                        {requirementErrors.screeningType?.message}
+                      </div>
+                    )}
+                  </div>
+                  <hr />
+                  <div className="flex space-x-4 py-2">
+                    {/* First Part: File Upload and Paste URL */}
+                    <div className="w-1/2 space-y-4">
+                      <div className="w-full">
+                        <label htmlFor="companyName" className="block text-md  text-secondary-800">
+                          Company Name <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="companyName"
+                          {...requirementRegister("companyName")}
+                          // required
+                          placeholder="Acme AI Inc"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.companyName
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.companyName && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.companyName?.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="companyStage" className="block text-md  text-secondary-800">
+                          Company Stage
+                        </label>
+                        <CheckboxGroup
+                          options={options.companyStage}
+                          selectedOptions={selectedOptions.companyStage}
+                          onChange={(value) => handleCheckboxChange("companyStage", value, true)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="companyStage"
+                        />
+                      </div>
+                      {/* companyStage */}
+
+                      <div className="w-full">
+                        <label htmlFor="fundRaised" className="block text-md  text-secondary-800">
+                          Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          id="fundRaised"
+                          {...requirementRegister("fundRaised")}
+                          // required
+                          placeholder="3,000,000"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.fundRaised
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.fundRaised && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.fundRaised?.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="founderCount" className="block text-md  text-secondary-800">
+                          Number of Founders
+                        </label>
+                        <input
+                          type="number"
+                          id="founderCount"
+                          {...requirementRegister("founderCount")}
+                          // required
+                          placeholder="2"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.founderCount
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.founderCount && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.founderCount?.message}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="w-1/2">
+                      <div className="w-full">
+                        <label
+                          htmlFor="customerTractionSumary"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Customer Traction Summary <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <textarea
+                          id="customerTractionSumary"
+                          {...requirementRegister("customerTractionSumary")}
+                          // required
+                          placeholder="$200k in ARR, signed 2 Fortune 100 clients"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.customerTractionSumary
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.customerTractionSumary && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.customerTractionSumary?.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="knownRisk" className="block text-md  text-secondary-800">
+                          Known Risks or Gaps
+                        </label>
+                        <input
+                          type="text"
+                          id="knownRisk"
+                          {...requirementRegister("knownRisk")}
+                          // required
+                          placeholder="Single founder, lack of defensible moat"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.knownRisk
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.knownRisk && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.knownRisk?.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full">
+                        <label
+                          htmlFor="benchmarkComparison"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Benchmark Comparisons Requested{" "}
+                          <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <CheckboxGroup
+                          options={options.benchmarkComparison}
+                          selectedOptions={selectedOptions.benchmarkComparison}
+                          onChange={(value) => handleCheckboxChange("benchmarkComparison", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="benchmarkComparison"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              {requirementStep === 3 ? (
+                <div className="mt-6">
+                  <div className="relative">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                      Document Intake
+                    </h2>
+                  </div>
+                  <div className="w-full py-2">
+                    <div>
+                      <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                        <div className="flex-1">
+                          <h6 className="font-semibold text-base font-nunito mb-1">
+                            Upload Pitch Decks
+                          </h6>
+                          <div
+                            className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                              dragging ? "bg-gray-200" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDragging(true);
+                            }}
+                            onDragLeave={() => setDragging(false)}
+                            onDrop={handleDrop}
+                          >
+                            <div
+                              className="flex flex-col items-center text-lg"
+                              onClick={handleBrowseClick}
+                            >
+                              <UploadIcon />
+                              <p className="text-center text-base font-bold font-nunito mt-3">
+                                Drag and Drop files to upload
+                              </p>
+                              <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                              <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                                Browse
+                              </p>
                             </div>
                           </div>
-
-                          {/* Supported Files and URLs */}
-                          <div className="mt-4 flex justify-between">
-                            <div>
-                              {/* <p className="text-lg font-semibold font-nunito">Recommended URL</p> */}
-                              <ul className="list-none pl-[20px]">
-                                {/* {urlContent.map((content) => ( */}
-                                <li className="text-xs">
-                                  Link to Google Drive, Dropbox, Box, or Notion folder
-                                </li>
-                                {/* ))} */}
-                              </ul>
-                            </div>
+                          {/* Hidden File Input */}
+                          <input
+                            type="file"
+                            multiple
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            className="hidden"
+                          />
+                          <div className="mt-2 mb-2">
+                            {/* <p className="text-lg font-semibold font-nunito">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                          </p> */}
+                            <ul className="list-none pl-[20px]">
+                              {/* {listContent.map((content) => ( */}
+                              <li className="text-xs">
+                                Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                              </li>
+                              {/* ))} */}
+                            </ul>
                           </div>
                         </div>
                         <div className="flex-1">
                           <h6 className="font-semibold mb-1 text-base font-nunito">
-                            Added Websites
+                            Uploaded files
                           </h6>
-                          <div className="border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]">
+                          <div
+                            className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                          >
                             <div className="rounded-lg p-2 flex-1">
-                              {pastedURLs.length > 0 ? (
-                                <div className="h-[180px] pn_scroller overflow-y-auto p-1">
-                                  {pastedURLs.map((url, index) => (
+                              {uploadedFiles.length > 0 ? (
+                                <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
+                                  {uploadedFiles.map((file, index) => (
                                     <div key={index}>
                                       {index !== 0 && (
                                         <hr className="my-1 border-1 border-appGray-300" />
                                       )}
                                       <div className="flex justify-between items-center">
-                                        <p className="text-sm font-nunito">{url}</p>
+                                        <p className="text-sm font-nunito">{file.name}</p>
                                         <TrashIcon
                                           className="cursor-pointer"
-                                          onClick={() => handleDelete(index, "url")}
+                                          width={25}
+                                          onClick={() => handleDelete(index, "file")}
                                         />
                                       </div>
                                     </div>
                                   ))}
+                                  {/* {highlight ? ( */}
+                                  {/* ) : null} */}
+                                </div>
+                              ) : highlight ? (
+                                <div className="flex items-center justify-center p-5 h-full">
+                                  <DotLoader />
                                 </div>
                               ) : (
-                                <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
-                                  No websites added yet.
+                                <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                  No file uploaded yet.
                                 </p>
                               )}
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div>
+                        {/* File Upload Box */}
+
+                        {/* Paste URL Section */}
+                        <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+                          <div className="flex-1">
+                            <div>
+                              <h6 className="font-semibold text-base mb-1 font-nunito">
+                                Paste Drive Folder Link
+                              </h6>
+                              <div className="flex">
+                                <input
+                                  type="text"
+                                  placeholder="Paste Your URL here"
+                                  value={urlInput}
+                                  onChange={handleUrlChange}
+                                  className="w-full p-2 rounded-tl-xl rounded-bl-xl border border-appGray-600 focus:border-primary-900 focus:outline-none"
+                                />
+                                <button
+                                  type="button"
+                                  className="px-4 bg-primary-900 text-white rounded-br-xl rounded-tr-xl"
+                                  onClick={handlePasteURL}
+                                >
+                                  Paste
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Supported Files and URLs */}
+                            <div className="mt-4 flex justify-between">
+                              <div>
+                                {/* <p className="text-lg font-semibold font-nunito">Recommended URL</p> */}
+                                <ul className="list-none pl-[20px]">
+                                  {/* {urlContent.map((content) => ( */}
+                                  <li className="text-xs">
+                                    Link to Google Drive, Dropbox, Box, or Notion folder
+                                  </li>
+                                  {/* ))} */}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <h6 className="font-semibold mb-1 text-base font-nunito">
+                              Added Websites
+                            </h6>
+                            <div className="border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]">
+                              <div className="rounded-lg p-2 flex-1">
+                                {pastedURLs.length > 0 ? (
+                                  <div className="h-[180px] pn_scroller overflow-y-auto p-1">
+                                    {pastedURLs.map((url, index) => (
+                                      <div key={index}>
+                                        {index !== 0 && (
+                                          <hr className="my-1 border-1 border-appGray-300" />
+                                        )}
+                                        <div className="flex justify-between items-center">
+                                          <p className="text-sm font-nunito">{url}</p>
+                                          <TrashIcon
+                                            className="cursor-pointer"
+                                            onClick={() => handleDelete(index, "url")}
+                                          />
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-gray-500 font-nunito text-center p-3 mt-3">
+                                    No websites added yet.
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="mt-6">
-                <div className="relative">
-                  
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Investment Thesis Parameters
-                  </h2>
-                </div>
-
-                <div className="flex space-x-4 py-2">
-                  {/* First Part: File Upload and Paste URL */}
-                  <div className="w-1/2 space-y-4">
-                    <div className="w-full">
-                      <label
-                        htmlFor="strategicFitCriteria"
-                        className="block text-md  text-secondary-800"
-                      >
-                        Strategic Fit Criteria
-                      </label>
-                      <textarea
-                        id="strategicFitCriteria"
-                        {...requirementRegister("strategicFitCriteria")}
-                        // required
-                        placeholder="Enterprise-focused AI tools solving workflow inefficiencies"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.strategicFitCriteria
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.strategicFitCriteria && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.strategicFitCriteria?.message}
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
-                        Sector Focus
-                      </label>
-                      <CheckboxGroup
-                        options={options.sectorFocus}
-                        selectedOptions={selectedOptions.sectorFocus}
-                        onChange={(value) => handleCheckboxChange("sectorFocus", value)}
-                        customInput={customInput}
-                        onInputChange={handleInputChange}
-                        optionKey="sectorFocus"
-                      />
-                    </div>
-                    <div className="w-full">
-                      <label
-                        htmlFor="geographicFocus"
-                        className="block text-md  text-secondary-800"
-                      >
-                        Geographic Focus
-                      </label>
-                      <CheckboxGroup
-                        options={options.geographicFocus}
-                        selectedOptions={selectedOptions.geographicFocus}
-                        onChange={(value) => handleCheckboxChange("geographicFocus", value)}
-                        customInput={customInput}
-                        onInputChange={handleInputChange}
-                        optionKey="geographicFocus"
-                      />
-                    </div>
-                    {/* businessModel */}
-                  </div>
-                  <div className="w-1/2 space-y-4">
-                    {" "}
-                    <div className="w-full">
-                      <label htmlFor="businessModel" className="block text-md  text-secondary-800">
-                        Business Model
-                      </label>
-                      <CheckboxGroup
-                        options={options.businessModel}
-                        selectedOptions={selectedOptions.businessModel}
-                        onChange={(value) => handleCheckboxChange("businessModel", value)}
-                        customInput={customInput}
-                        onInputChange={handleInputChange}
-                        optionKey="businessModel"
-                      />
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="preferredStage" className="block text-md  text-secondary-800">
-                        Preferred Stage
-                      </label>
-                      <CheckboxGroup
-                        options={options.preferredStage}
-                        selectedOptions={selectedOptions.preferredStage}
-                        onChange={(value) => handleCheckboxChange("preferredStage", value)}
-                        customInput={customInput}
-                        onInputChange={handleInputChange}
-                        optionKey="preferredStage"
-                      />
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="minAnnualRev" className="block text-md  text-secondary-800">
-                        Minimum Annual Revenue (USD)
-                      </label>
-                      <input
-                        type="number"
-                        id="minAnnualRev"
-                        {...requirementRegister("minAnnualRev")}
-                        // required
-                        placeholder="500000"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.minAnnualRev
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.minAnnualRev && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.minAnnualRev?.message}
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="minARR" className="block text-md  text-secondary-800">
-                        Minimum ARR (USD)
-                      </label>
-                      <input
-                        type="number"
-                        id="minARR"
-                        {...requirementRegister("minARR")}
-                        // required
-                        placeholder="1000000"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.minARR
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.minARR && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.minARR?.message}
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full">
-                      <label
-                        htmlFor="targetOwnership"
-                        className="block text-md  text-secondary-800"
-                      >
-                        Target Ownership Stake (%)
-                      </label>
-                      <input
-                        type="number"
-                        id="targetOwnership"
-                        {...requirementRegister("targetOwnership")}
-                        // required
-                        placeholder="15"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.targetOwnership
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.targetOwnership && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.targetOwnership?.message}
-                        </div>
-                      )}
-                    </div>
+              ) : null}
+              {requirementStep === 4 ? (
+                <div className="mt-6">
+                  <div className="relative">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                      Investment Thesis Parameters
+                    </h2>
                   </div>
 
-                  {/* preferredStage */}
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <div className="relative">
-                  
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Company Details
-                  </h2>
-                </div>
-
-                <div className="flex space-x-4 py-2">
-                  {/* First Part: File Upload and Paste URL */}
-                  <div className="w-1/2 space-y-4">
-                    <div className="w-full">
-                      <label htmlFor="companyName" className="block text-md  text-secondary-800">
-                        Company Name <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="companyName"
-                        {...requirementRegister("companyName")}
-                        // required
-                        placeholder="Acme AI Inc"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.companyName
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                  <div className="flex space-x-4 py-2">
+                    {/* First Part: File Upload and Paste URL */}
+                    <div className="w-1/2 space-y-4">
+                      <div className="w-full">
+                        <label
+                          htmlFor="strategicFitCriteria"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Strategic Fit Criteria
+                        </label>
+                        <textarea
+                          id="strategicFitCriteria"
+                          {...requirementRegister("strategicFitCriteria")}
+                          // required
+                          placeholder="Enterprise-focused AI tools solving workflow inefficiencies"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.strategicFitCriteria
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.strategicFitCriteria && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.strategicFitCriteria?.message}
+                          </div>
                         )}
-                      />
-                      {requirementErrors.companyName && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.companyName?.message}
-                        </div>
-                      )}
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="sectorFocus" className="block text-md  text-secondary-800">
+                          Sector Focus
+                        </label>
+                        <CheckboxGroup
+                          options={options.sectorFocus}
+                          selectedOptions={selectedOptions.sectorFocus}
+                          onChange={(value) => handleCheckboxChange("sectorFocus", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="sectorFocus"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label
+                          htmlFor="geographicFocus"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Geographic Focus
+                        </label>
+                        <CheckboxGroup
+                          options={options.geographicFocus}
+                          selectedOptions={selectedOptions.geographicFocus}
+                          onChange={(value) => handleCheckboxChange("geographicFocus", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="geographicFocus"
+                        />
+                      </div>
+                      {/* businessModel */}
                     </div>
-                    <div className="w-full">
-                      <label htmlFor="companyStage" className="block text-md  text-secondary-800">
-                        Company Stage
-                      </label>
-                      <CheckboxGroup
-                        options={options.companyStage}
-                        selectedOptions={selectedOptions.companyStage}
-                        onChange={(value) => handleCheckboxChange("companyStage", value, true)}
-                        customInput={customInput}
-                        onInputChange={handleInputChange}
-                        optionKey="companyStage"
-                      />
+                    <div className="w-1/2 space-y-4">
+                      {" "}
+                      <div className="w-full">
+                        <label
+                          htmlFor="businessModel"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Business Model
+                        </label>
+                        <CheckboxGroup
+                          options={options.businessModel}
+                          selectedOptions={selectedOptions.businessModel}
+                          onChange={(value) => handleCheckboxChange("businessModel", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="businessModel"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label
+                          htmlFor="preferredStage"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Preferred Stage
+                        </label>
+                        <CheckboxGroup
+                          options={options.preferredStage}
+                          selectedOptions={selectedOptions.preferredStage}
+                          onChange={(value) => handleCheckboxChange("preferredStage", value)}
+                          customInput={customInput}
+                          onInputChange={handleInputChange}
+                          optionKey="preferredStage"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="minAnnualRev" className="block text-md  text-secondary-800">
+                          Minimum Annual Revenue (USD)
+                        </label>
+                        <input
+                          type="number"
+                          id="minAnnualRev"
+                          {...requirementRegister("minAnnualRev")}
+                          // required
+                          placeholder="500000"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.minAnnualRev
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.minAnnualRev && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.minAnnualRev?.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="minARR" className="block text-md  text-secondary-800">
+                          Minimum ARR (USD)
+                        </label>
+                        <input
+                          type="number"
+                          id="minARR"
+                          {...requirementRegister("minARR")}
+                          // required
+                          placeholder="1000000"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.minARR
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.minARR && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.minARR?.message}
+                          </div>
+                        )}
+                      </div>
+                      <div className="w-full">
+                        <label
+                          htmlFor="targetOwnership"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Target Ownership Stake (%)
+                        </label>
+                        <input
+                          type="number"
+                          id="targetOwnership"
+                          {...requirementRegister("targetOwnership")}
+                          // required
+                          placeholder="15"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.targetOwnership
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.targetOwnership && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.targetOwnership?.message}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    {/* companyStage */}
 
-                    <div className="w-full">
-                      <label htmlFor="fundRaised" className="block text-md  text-secondary-800">
-                        Funding Raised to Date (USD) <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        id="fundRaised"
-                        {...requirementRegister("fundRaised")}
-                        // required
-                        placeholder="3,000,000"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.fundRaised
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.fundRaised && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.fundRaised?.message}
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="founderCount" className="block text-md  text-secondary-800">
-                        Number of Founders
-                      </label>
-                      <input
-                        type="number"
-                        id="founderCount"
-                        {...requirementRegister("founderCount")}
-                        // required
-                        placeholder="2"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.founderCount
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.founderCount && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.founderCount?.message}
-                        </div>
-                      )}
-                    </div>
+                    {/* preferredStage */}
                   </div>
-                  <div className="w-1/2">
-                    <div className="w-full">
-                      <label
-                        htmlFor="customerTractionSumary"
-                        className="block text-md  text-secondary-800"
-                      >
-                        Customer Traction Summary <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <textarea
-                        id="customerTractionSumary"
-                        {...requirementRegister("customerTractionSumary")}
-                        // required
-                        placeholder="$200k in ARR, signed 2 Fortune 100 clients"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.customerTractionSumary
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.customerTractionSumary && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.customerTractionSumary?.message}
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full">
-                      <label htmlFor="knownRisk" className="block text-md  text-secondary-800">
-                        Known Risks or Gaps
-                      </label>
-                      <input
-                        type="text"
-                        id="knownRisk"
-                        {...requirementRegister("knownRisk")}
-                        // required
-                        placeholder="Single founder, lack of defensible moat"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.knownRisk
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.knownRisk && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.knownRisk?.message}
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full">
-                      <label
-                        htmlFor="benchmarkComparison"
-                        className="block text-md  text-secondary-800"
-                      >
-                        Benchmark Comparisons Requested <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <CheckboxGroup
-                        options={options.benchmarkComparison}
-                        selectedOptions={selectedOptions.benchmarkComparison}
-                        onChange={(value) => handleCheckboxChange("benchmarkComparison", value)}
-                        customInput={customInput}
-                        onInputChange={handleInputChange}
-                        optionKey="benchmarkComparison"
-                      />
-                    </div>
-                  </div>
                 </div>
-              </div>
+              ) : null}
 
               {/* Supporting Materials start */}
-              <div className="mt-6">
-                <div className="relative">
-                  
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Supporting Materials
-                  </h2>
-                </div>
-
-                {/* cap table field start  */}
-                <div className="w-full py-2">
-                  <div>
-                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
-                      <div className="flex-1">
-                        <h6 className="font-semibold text-base font-nunito mb-1">Cap Table</h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            dragging ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging(true);
-                          }}
-                          onDragLeave={() => setDragging(false)}
-                          onDrop={handleCapTableDrop}
-                        >
-                          <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleCapTableBrowseClick}
-                          >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop files to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
-                          </div>
-                        </div>
-                        {/* Hidden File Input */}
-                        <input
-                          type="file"
-                          ref={capTableInputRef}
-                          onChange={handleCapTableFileChange}
-                          className="hidden"
-                        />
-                        <div className="mt-2 mb-2">
-                          {/* <p className="text-lg font-semibold font-nunito">
-                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                          </p> */}
-                          <ul className="list-none pl-[20px]">
-                            {/* {listContent.map((content) => ( */}
-                            <li className="text-xs">
-                              Upload Single file (PDF, PPTX, DOCX, Keynote)
-                            </li>
-                            {/* ))} */}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">
-                          Uploaded Cap Table file
-                        </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
-                        >
-                          <div className="rounded-lg p-2 flex-1">
-                            {capTableFile ? (
-                              <div className="flex justify-between items-center">
-                                <p className="text-sm font-nunito">{capTableFile.name}</p>
-                                <TrashIcon
-                                  className="cursor-pointer"
-                                  width={25}
-                                  onClick={() => setCapTableFile(null)}
-                                />
-                              </div>
-                            ) : (
-                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                No file uploaded yet.
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>{/* File Upload Box */}</div>
+              {requirementStep === 5 ? (
+                <div className="mt-6">
+                  <div className="relative">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                      Supporting Materials
+                    </h2>
                   </div>
-                </div>
-                {/* cap table field end  */}
 
-                {/* Team Bios start  */}
-                <div className="w-full py-2">
-                  <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
-                    {/* Left side - Upload or URL */}
-                    <div className="flex-1">
-                      <h6 className="font-semibold text-base font-nunito mb-1">
-                        Team Bios or LinkedIn URLs
-                      </h6>
-
-                      {/* Toggle Mode */}
-                      <div className="flex items-center space-x-4 mb-3">
-                        <label className="text-sm font-nunito">
-                          <input
-                            type="radio"
-                            name="teamBioInputMode"
-                            checked={bioInputMode === "file"}
-                            onChange={() => setBioInputMode("file")}
-                            className="mr-1"
-                          />
-                          Upload File
-                        </label>
-                        <label className="text-sm font-nunito">
-                          <input
-                            type="radio"
-                            name="teamBioInputMode"
-                            checked={bioInputMode === "url"}
-                            onChange={() => setBioInputMode("url")}
-                            className="mr-1"
-                          />
-                          Enter URL
-                        </label>
-                      </div>
-
-                      {/* File Upload */}
-                      {bioInputMode === "file" && (
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            draggingBio ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDraggingBio(true);
-                          }}
-                          onDragLeave={() => setDraggingBio(false)}
-                          onDrop={handleBioFileDrop}
-                        >
+                  {/* cap table field start  */}
+                  <div className="w-full py-2">
+                    <div>
+                      <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                        <div className="flex-1">
+                          <h6 className="font-semibold text-base font-nunito mb-1">Cap Table</h6>
                           <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleBioBrowseClick}
+                            className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                              dragging ? "bg-gray-200" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDragging(true);
+                            }}
+                            onDragLeave={() => setDragging(false)}
+                            onDrop={handleCapTableDrop}
                           >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop file to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
+                            <div
+                              className="flex flex-col items-center text-lg"
+                              onClick={handleCapTableBrowseClick}
+                            >
+                              <UploadIcon />
+                              <p className="text-center text-base font-bold font-nunito mt-3">
+                                Drag and Drop files to upload
+                              </p>
+                              <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                              <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                                Browse
+                              </p>
+                            </div>
                           </div>
+                          {/* Hidden File Input */}
                           <input
                             type="file"
-                            ref={bioFileInputRef}
-                            onChange={handleBioFileChange}
+                            ref={capTableInputRef}
+                            onChange={handleCapTableFileChange}
                             className="hidden"
                           />
-                        </div>
-                      )}
-
-                      {/* URL Input */}
-                      {bioInputMode === "url" && (
-                        <input
-                          type="text"
-                          value={bioUrl}
-                          onChange={(e) => setBioUrl(e.target.value)}
-                          className="w-full border border-appGray-600 rounded-lg p-2 font-nunito"
-                          placeholder="Paste LinkedIn profile link"
-                        />
-                      )}
-
-                      {/* Notes */}
-                      <div className="mt-2 mb-2">
-                        <ul className="list-none pl-[20px]">
-                          <li className="text-xs">Upload resumes or paste profile links</li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Right side - Uploaded data */}
-                    <div className="flex-1">
-                      <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Bio</h6>
-                      <div className="border border-appGray-600 rounded-lg px-2 pt-2 pb-[20px]">
-                        <div className="rounded-lg p-2 flex-1">
-                          {bioInputMode === "file" && bioFile ? (
-                            <div className="flex justify-between items-center">
-                              <p className="text-sm font-nunito">{bioFile.name}</p>
-                              <TrashIcon
-                                className="cursor-pointer"
-                                width={25}
-                                onClick={() => setBioFile(null)}
-                              />
-                            </div>
-                          ) : bioInputMode === "url" && bioUrl ? (
-                            <div className="flex justify-between items-center">
-                              <a
-                                href={bioUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary-900 underline text-sm font-nunito"
-                              >
-                                {bioUrl}
-                              </a>
-                              <TrashIcon
-                                className="cursor-pointer"
-                                width={25}
-                                onClick={() => setBioUrl("")}
-                              />
-                            </div>
-                          ) : (
-                            <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                              No file or link provided yet.
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Team Bios end  */}
-
-                {/* Customer List field start  */}
-                <div className="w-full py-2">
-                  <div>
-                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
-                      <div className="flex-1">
-                        <h6 className="font-semibold text-base font-nunito mb-1">Customer List</h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            dragging ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging(true);
-                          }}
-                          onDragLeave={() => setDragging(false)}
-                          onDrop={handleCusListDrop}
-                        >
-                          <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleCusListBrowseClick}
-                          >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop files to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
-                          </div>
-                        </div>
-                        {/* Hidden File Input */}
-                        <input
-                          type="file"
-                          ref={cusListInputRef}
-                          onChange={handleCusListFileChange}
-                          className="hidden"
-                        />
-                        <div className="mt-2 mb-2">
-                          {/* <p className="text-lg font-semibold font-nunito">
+                          <div className="mt-2 mb-2">
+                            {/* <p className="text-lg font-semibold font-nunito">
                           Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
                           </p> */}
-                          <ul className="list-none pl-[20px]">
-                            {/* {listContent.map((content) => ( */}
-                            <li className="text-xs">
-                              Upload Single file (PDF, PPTX, DOCX, Keynote)
-                            </li>
-                            {/* ))} */}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">
-                          Uploaded Cap Table file
-                        </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
-                        >
-                          <div className="rounded-lg p-2 flex-1">
-                            {cusListFile ? (
-                              <div className="flex justify-between items-center">
-                                <p className="text-sm font-nunito">{cusListFile.name}</p>
-                                <TrashIcon
-                                  className="cursor-pointer"
-                                  width={25}
-                                  onClick={() => setCusListFile(null)}
-                                />
-                              </div>
-                            ) : (
-                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                No file uploaded yet.
-                              </p>
-                            )}
+                            <ul className="list-none pl-[20px]">
+                              {/* {listContent.map((content) => ( */}
+                              <li className="text-xs">
+                                Upload Single file (PDF, PPTX, DOCX, Keynote)
+                              </li>
+                              {/* ))} */}
+                            </ul>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div>{/* File Upload Box */}</div>
-                  </div>
-                </div>
-                {/* Customer List field end  */}
-
-                {/* Product Screenshots start  */}
-                <div className="w-full py-2">
-                  <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
-                    {/* Left side - Upload or URL */}
-                    <div className="flex-1">
-                      <h6 className="font-semibold text-base font-nunito mb-1">
-                        Product Screenshots or Demo Links
-                      </h6>
-
-                      {/* Toggle Mode */}
-                      <div className="flex items-center space-x-4 mb-3">
-                        <label className="text-sm font-nunito">
-                          <input
-                            type="radio"
-                            name="productMode"
-                            checked={productInputMode === "file"}
-                            onChange={() => setProductInputMode("file")}
-                            className="mr-1"
-                          />
-                          Upload File
-                        </label>
-                        <label className="text-sm font-nunito">
-                          <input
-                            type="radio"
-                            name="ProductInputMode"
-                            checked={productInputMode === "url"}
-                            onChange={() => setProductInputMode("url")}
-                            className="mr-1"
-                          />
-                          Enter URL
-                        </label>
-                      </div>
-
-                      {/* File Upload */}
-                      {productInputMode === "file" && (
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            draggingProduct ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDraggingBio(true);
-                          }}
-                          onDragLeave={() => setDraggingBio(false)}
-                          onDrop={handleProductFileDrop}
-                        >
+                        <div className="flex-1">
+                          <h6 className="font-semibold mb-1 text-base font-nunito">
+                            Uploaded Cap Table file
+                          </h6>
                           <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleProductBrowseClick}
+                            className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
                           >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop file to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
+                            <div className="rounded-lg p-2 flex-1">
+                              {capTableFile ? (
+                                <div className="flex justify-between items-center">
+                                  <p className="text-sm font-nunito">{capTableFile.name}</p>
+                                  <TrashIcon
+                                    className="cursor-pointer"
+                                    width={25}
+                                    onClick={() => setCapTableFile(null)}
+                                  />
+                                </div>
+                              ) : (
+                                <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                  No file uploaded yet.
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <input
-                            type="file"
-                            ref={productFileInputRef}
-                            onChange={handleProductFileChange}
-                            className="hidden"
-                          />
-                        </div>
-                      )}
-
-                      {/* URL Input */}
-                      {productInputMode === "url" && (
-                        <input
-                          type="text"
-                          value={productUrl}
-                          onChange={(e) => setProductUrl(e.target.value)}
-                          className="w-full border border-appGray-600 rounded-lg p-2 font-nunito"
-                          placeholder="Paste LinkedIn profile link"
-                        />
-                      )}
-
-                      {/* Notes */}
-                      <div className="mt-2 mb-2">
-                        <ul className="list-none pl-[20px]">
-                          <li className="text-xs">Optional</li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Right side - Uploaded data */}
-                    <div className="flex-1">
-                      <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Bio</h6>
-                      <div className="border border-appGray-600 rounded-lg px-2 pt-2 pb-[20px]">
-                        <div className="rounded-lg p-2 flex-1">
-                          {productInputMode === "file" && productFile ? (
-                            <div className="flex justify-between items-center">
-                              <p className="text-sm font-nunito">{productFile.name}</p>
-                              <TrashIcon
-                                className="cursor-pointer"
-                                width={25}
-                                onClick={() => setProductFile(null)}
-                              />
-                            </div>
-                          ) : productInputMode === "url" && productUrl ? (
-                            <div className="flex justify-between items-center">
-                              <a
-                                href={productUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-primary-900 underline text-sm font-nunito"
-                              >
-                                {productUrl}
-                              </a>
-                              <TrashIcon
-                                className="cursor-pointer"
-                                width={25}
-                                onClick={() => setProductUrl("")}
-                              />
-                            </div>
-                          ) : (
-                            <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                              No file or link provided yet.
-                            </p>
-                          )}
                         </div>
                       </div>
+                      <div>{/* File Upload Box */}</div>
                     </div>
                   </div>
-                </div>
-                {/* Product Screenshots end  */}
+                  {/* cap table field end  */}
 
-                {/* supporting material field start  */}
-                <div className="w-full py-2">
-                  <div>
+                  {/* Team Bios start  */}
+                  <div className="w-full py-2">
                     <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                      {/* Left side - Upload or URL */}
                       <div className="flex-1">
                         <h6 className="font-semibold text-base font-nunito mb-1">
-                          Supporting Materials
+                          Team Bios or LinkedIn URLs
                         </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
-                            dragging ? "bg-gray-200" : ""
-                          }`}
-                          onDragOver={(e) => {
-                            e.preventDefault();
-                            setDragging(true);
-                          }}
-                          onDragLeave={() => setDragging(false)}
-                          onDrop={handleSupportDrop}
-                        >
-                          <div
-                            className="flex flex-col items-center text-lg"
-                            onClick={handleSupportBrowseClick}
-                          >
-                            <UploadIcon />
-                            <p className="text-center text-base font-bold font-nunito mt-3">
-                              Drag and Drop files to upload
-                            </p>
-                            <p className="text-base py-0.5 font-bold font-nunito">or</p>
-                            <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
-                              Browse
-                            </p>
-                          </div>
+
+                        {/* Toggle Mode */}
+                        <div className="flex items-center space-x-4 mb-3">
+                          <label className="text-sm font-nunito">
+                            <input
+                              type="radio"
+                              name="teamBioInputMode"
+                              checked={bioInputMode === "file"}
+                              onChange={() => setBioInputMode("file")}
+                              className="mr-1"
+                            />
+                            Upload File
+                          </label>
+                          <label className="text-sm font-nunito">
+                            <input
+                              type="radio"
+                              name="teamBioInputMode"
+                              checked={bioInputMode === "url"}
+                              onChange={() => setBioInputMode("url")}
+                              className="mr-1"
+                            />
+                            Enter URL
+                          </label>
                         </div>
-                        {/* Hidden File Input */}
-                        <input
-                          type="file"
-                          multiple
-                          ref={supportInputRef}
-                          onChange={handleSupportFileChange}
-                          className="hidden"
-                        />
+
+                        {/* File Upload */}
+                        {bioInputMode === "file" && (
+                          <div
+                            className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                              draggingBio ? "bg-gray-200" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDraggingBio(true);
+                            }}
+                            onDragLeave={() => setDraggingBio(false)}
+                            onDrop={handleBioFileDrop}
+                          >
+                            <div
+                              className="flex flex-col items-center text-lg"
+                              onClick={handleBioBrowseClick}
+                            >
+                              <UploadIcon />
+                              <p className="text-center text-base font-bold font-nunito mt-3">
+                                Drag and Drop file to upload
+                              </p>
+                              <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                              <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                                Browse
+                              </p>
+                            </div>
+                            <input
+                              type="file"
+                              ref={bioFileInputRef}
+                              onChange={handleBioFileChange}
+                              className="hidden"
+                            />
+                          </div>
+                        )}
+
+                        {/* URL Input */}
+                        {bioInputMode === "url" && (
+                          <input
+                            type="text"
+                            value={bioUrl}
+                            onChange={(e) => setBioUrl(e.target.value)}
+                            className="w-full border border-appGray-600 rounded-lg p-2 font-nunito"
+                            placeholder="Paste LinkedIn profile link"
+                          />
+                        )}
+
+                        {/* Notes */}
                         <div className="mt-2 mb-2">
-                          {/* <p className="text-lg font-semibold font-nunito">
-                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                          </p> */}
                           <ul className="list-none pl-[20px]">
-                            {/* {listContent.map((content) => ( */}
-                            <li className="text-xs">
-                              Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
-                            </li>
-                            {/* ))} */}
+                            <li className="text-xs">Upload resumes or paste profile links</li>
                           </ul>
                         </div>
                       </div>
+
+                      {/* Right side - Uploaded data */}
                       <div className="flex-1">
-                        <h6 className="font-semibold mb-1 text-base font-nunito">
-                          Uploaded files Support
-                        </h6>
-                        <div
-                          className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
-                        >
+                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Bio</h6>
+                        <div className="border border-appGray-600 rounded-lg px-2 pt-2 pb-[20px]">
                           <div className="rounded-lg p-2 flex-1">
-                            {supportFiles.length > 0 ? (
-                              <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
-                                {supportFiles.map((file, index) => (
-                                  <div key={index}>
-                                    <div className="flex justify-between items-center">
-                                      <p className="text-sm font-nunito">{file.name}</p>
-                                      <TrashIcon
-                                        className="cursor-pointer"
-                                        width={25}
-                                        onClick={() => handleDelete(index, "capTable")}
-                                      />
-                                    </div>
-                                  </div>
-                                ))}
-                                {/* {highlight ? ( */}
-                                {/* ) : null} */}
+                            {bioInputMode === "file" && bioFile ? (
+                              <div className="flex justify-between items-center">
+                                <p className="text-sm font-nunito">{bioFile.name}</p>
+                                <TrashIcon
+                                  className="cursor-pointer"
+                                  width={25}
+                                  onClick={() => setBioFile(null)}
+                                />
                               </div>
-                            ) : highlight ? (
-                              <div className="flex items-center justify-center p-5 h-full">
-                                <DotLoader />
+                            ) : bioInputMode === "url" && bioUrl ? (
+                              <div className="flex justify-between items-center">
+                                <a
+                                  href={bioUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary-900 underline text-sm font-nunito"
+                                >
+                                  {bioUrl}
+                                </a>
+                                <TrashIcon
+                                  className="cursor-pointer"
+                                  width={25}
+                                  onClick={() => setBioUrl("")}
+                                />
                               </div>
                             ) : (
                               <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
-                                No file uploaded yet.
+                                No file or link provided yet.
                               </p>
                             )}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div>{/* File Upload Box */}</div>
                   </div>
+                  {/* Team Bios end  */}
+
+                  {/* Customer List field start  */}
+                  <div className="w-full py-2">
+                    <div>
+                      <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                        <div className="flex-1">
+                          <h6 className="font-semibold text-base font-nunito mb-1">
+                            Customer List
+                          </h6>
+                          <div
+                            className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                              dragging ? "bg-gray-200" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDragging(true);
+                            }}
+                            onDragLeave={() => setDragging(false)}
+                            onDrop={handleCusListDrop}
+                          >
+                            <div
+                              className="flex flex-col items-center text-lg"
+                              onClick={handleCusListBrowseClick}
+                            >
+                              <UploadIcon />
+                              <p className="text-center text-base font-bold font-nunito mt-3">
+                                Drag and Drop files to upload
+                              </p>
+                              <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                              <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                                Browse
+                              </p>
+                            </div>
+                          </div>
+                          {/* Hidden File Input */}
+                          <input
+                            type="file"
+                            ref={cusListInputRef}
+                            onChange={handleCusListFileChange}
+                            className="hidden"
+                          />
+                          <div className="mt-2 mb-2">
+                            {/* <p className="text-lg font-semibold font-nunito">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                          </p> */}
+                            <ul className="list-none pl-[20px]">
+                              {/* {listContent.map((content) => ( */}
+                              <li className="text-xs">
+                                Upload Single file (PDF, PPTX, DOCX, Keynote)
+                              </li>
+                              {/* ))} */}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <h6 className="font-semibold mb-1 text-base font-nunito">
+                            Uploaded Cap Table file
+                          </h6>
+                          <div
+                            className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                          >
+                            <div className="rounded-lg p-2 flex-1">
+                              {cusListFile ? (
+                                <div className="flex justify-between items-center">
+                                  <p className="text-sm font-nunito">{cusListFile.name}</p>
+                                  <TrashIcon
+                                    className="cursor-pointer"
+                                    width={25}
+                                    onClick={() => setCusListFile(null)}
+                                  />
+                                </div>
+                              ) : (
+                                <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                  No file uploaded yet.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>{/* File Upload Box */}</div>
+                    </div>
+                  </div>
+                  {/* Customer List field end  */}
+
+                  {/* Product Screenshots start  */}
+                  <div className="w-full py-2">
+                    <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                      {/* Left side - Upload or URL */}
+                      <div className="flex-1">
+                        <h6 className="font-semibold text-base font-nunito mb-1">
+                          Product Screenshots or Demo Links
+                        </h6>
+
+                        {/* Toggle Mode */}
+                        <div className="flex items-center space-x-4 mb-3">
+                          <label className="text-sm font-nunito">
+                            <input
+                              type="radio"
+                              name="productMode"
+                              checked={productInputMode === "file"}
+                              onChange={() => setProductInputMode("file")}
+                              className="mr-1"
+                            />
+                            Upload File
+                          </label>
+                          <label className="text-sm font-nunito">
+                            <input
+                              type="radio"
+                              name="ProductInputMode"
+                              checked={productInputMode === "url"}
+                              onChange={() => setProductInputMode("url")}
+                              className="mr-1"
+                            />
+                            Enter URL
+                          </label>
+                        </div>
+
+                        {/* File Upload */}
+                        {productInputMode === "file" && (
+                          <div
+                            className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                              draggingProduct ? "bg-gray-200" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDraggingBio(true);
+                            }}
+                            onDragLeave={() => setDraggingBio(false)}
+                            onDrop={handleProductFileDrop}
+                          >
+                            <div
+                              className="flex flex-col items-center text-lg"
+                              onClick={handleProductBrowseClick}
+                            >
+                              <UploadIcon />
+                              <p className="text-center text-base font-bold font-nunito mt-3">
+                                Drag and Drop file to upload
+                              </p>
+                              <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                              <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                                Browse
+                              </p>
+                            </div>
+                            <input
+                              type="file"
+                              ref={productFileInputRef}
+                              onChange={handleProductFileChange}
+                              className="hidden"
+                            />
+                          </div>
+                        )}
+
+                        {/* URL Input */}
+                        {productInputMode === "url" && (
+                          <input
+                            type="text"
+                            value={productUrl}
+                            onChange={(e) => setProductUrl(e.target.value)}
+                            className="w-full border border-appGray-600 rounded-lg p-2 font-nunito"
+                            placeholder="Paste LinkedIn profile link"
+                          />
+                        )}
+
+                        {/* Notes */}
+                        <div className="mt-2 mb-2">
+                          <ul className="list-none pl-[20px]">
+                            <li className="text-xs">Optional</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Right side - Uploaded data */}
+                      <div className="flex-1">
+                        <h6 className="font-semibold mb-1 text-base font-nunito">Uploaded Bio</h6>
+                        <div className="border border-appGray-600 rounded-lg px-2 pt-2 pb-[20px]">
+                          <div className="rounded-lg p-2 flex-1">
+                            {productInputMode === "file" && productFile ? (
+                              <div className="flex justify-between items-center">
+                                <p className="text-sm font-nunito">{productFile.name}</p>
+                                <TrashIcon
+                                  className="cursor-pointer"
+                                  width={25}
+                                  onClick={() => setProductFile(null)}
+                                />
+                              </div>
+                            ) : productInputMode === "url" && productUrl ? (
+                              <div className="flex justify-between items-center">
+                                <a
+                                  href={productUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary-900 underline text-sm font-nunito"
+                                >
+                                  {productUrl}
+                                </a>
+                                <TrashIcon
+                                  className="cursor-pointer"
+                                  width={25}
+                                  onClick={() => setProductUrl("")}
+                                />
+                              </div>
+                            ) : (
+                              <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                No file or link provided yet.
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Product Screenshots end  */}
+
+                  {/* supporting material field start  */}
+                  <div className="w-full py-2">
+                    <div>
+                      <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 mb-2">
+                        <div className="flex-1">
+                          <h6 className="font-semibold text-base font-nunito mb-1">
+                            Supporting Materials
+                          </h6>
+                          <div
+                            className={`border border-appGray-600 rounded-lg h-[185px] flex justify-center items-center p-10 ${
+                              dragging ? "bg-gray-200" : ""
+                            }`}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              setDragging(true);
+                            }}
+                            onDragLeave={() => setDragging(false)}
+                            onDrop={handleSupportDrop}
+                          >
+                            <div
+                              className="flex flex-col items-center text-lg"
+                              onClick={handleSupportBrowseClick}
+                            >
+                              <UploadIcon />
+                              <p className="text-center text-base font-bold font-nunito mt-3">
+                                Drag and Drop files to upload
+                              </p>
+                              <p className="text-base py-0.5 font-bold font-nunito">or</p>
+                              <p className="text-primary-900 font-bold underline cursor-pointer transition duration-300 ease-in-out text-base font-nunito">
+                                Browse
+                              </p>
+                            </div>
+                          </div>
+                          {/* Hidden File Input */}
+                          <input
+                            type="file"
+                            multiple
+                            ref={supportInputRef}
+                            onChange={handleSupportFileChange}
+                            className="hidden"
+                          />
+                          <div className="mt-2 mb-2">
+                            {/* <p className="text-lg font-semibold font-nunito">
+                          Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                          </p> */}
+                            <ul className="list-none pl-[20px]">
+                              {/* {listContent.map((content) => ( */}
+                              <li className="text-xs">
+                                Upload up to 100 files (PDF, PPTX, DOCX, Keynote)
+                              </li>
+                              {/* ))} */}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <h6 className="font-semibold mb-1 text-base font-nunito">
+                            Uploaded files Support
+                          </h6>
+                          <div
+                            className={`border border-appGray-600 rounded-lg flex flex-col px-2 pt-2 pb-[20px]`}
+                          >
+                            <div className="rounded-lg p-2 flex-1">
+                              {supportFiles.length > 0 ? (
+                                <div className="h-[180px] pn_scroller overflow-y-auto pr-1">
+                                  {supportFiles.map((file, index) => (
+                                    <div key={index}>
+                                      <div className="flex justify-between items-center">
+                                        <p className="text-sm font-nunito">{file.name}</p>
+                                        <TrashIcon
+                                          className="cursor-pointer"
+                                          width={25}
+                                          onClick={() => handleDelete(index, "capTable")}
+                                        />
+                                      </div>
+                                    </div>
+                                  ))}
+                                  {/* {highlight ? ( */}
+                                  {/* ) : null} */}
+                                </div>
+                              ) : highlight ? (
+                                <div className="flex items-center justify-center p-5 h-full">
+                                  <DotLoader />
+                                </div>
+                              ) : (
+                                <p className="text-xs text-gray-500 text-center p-3 font-nunito mt-3">
+                                  No file uploaded yet.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>{/* File Upload Box */}</div>
+                    </div>
+                  </div>
+                  {/* supporting material field end  */}
                 </div>
-                {/* supporting material field end  */}
-              </div>
+              ) : null}
               {/* Supporting Materials end */}
 
               {/* Relevant Links start  */}
-              <div className="mt-6">
-                <div className="relative">
-                  
-                  <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
-                    Relevant Links
-                  </h2>
+              {requirementStep === 6 ? (
+                <div className="mt-6">
+                  <div className="relative">
+                    <h2 className="bg-white text-primary-900 text-xl font-semibold pb-1 border-b border-gray-300">
+                      Relevant Links
+                    </h2>
+                  </div>
+
+                  <div className="flex  space-x-4 py-2">
+                    {/* First Part: File Upload and Paste URL */}
+                    <div className="w-1/2 space-y-4">
+                      <div className="w-full">
+                        <label
+                          htmlFor="company_website"
+                          className="block text-md  text-secondary-800"
+                        >
+                          Company Website <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="company_website"
+                          {...requirementRegister("company_website")}
+                          // required
+                          placeholder="https://acmeai.com"
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.company_website
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.company_website && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.company_website?.message}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="mb-1">
+                        <label htmlFor="linkedin_page" className="block text-md text-secondary-800">
+                          LinkedIn Page <span className="text-red-500 ml-0">*</span>
+                        </label>
+                        <input
+                          id="linkedin_page"
+                          disabled={disabled}
+                          {...requirementRegister("linkedin_page")}
+                          placeholder="https://linkedin.com/company/acmeai"
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.linkedin_page
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.linkedin_page && (
+                          <div className="mt-0 text-s text-danger-500">
+                            {requirementErrors.linkedin_page?.message}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="w-1/2 space-y-4">
+                      <div className="w-full">
+                        <label htmlFor="crunchbase" className="block text-md  text-secondary-800">
+                          Crunchbase / Pitchbook / Dealroom
+                        </label>
+                        <input
+                          type="text"
+                          id="Crunchbase"
+                          {...requirementRegister("Crunchbase")}
+                          // required
+                          placeholder=""
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.Crunchbase
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.Crunchbase && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.Crunchbase?.message}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="mb-1">
+                        <label htmlFor="product_demo" className="block text-md text-secondary-800">
+                          Product Demo or Landing Page
+                        </label>
+                        <input
+                          id="product_demo"
+                          disabled={disabled}
+                          {...requirementRegister("product_demo")}
+                          placeholder=""
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.product_demo
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.product_demo && (
+                          <div className="mt-0 text-s text-danger-500">
+                            {requirementErrors.product_demo?.message}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Second Part: Added Websites and Urls Listing */}
+                    <div className="w-full space-y-4">
+                      <div className="w-full">
+                        <label htmlFor="other_source" className="block text-md  text-secondary-800">
+                          Other Source Links
+                        </label>
+                        <input
+                          type="text"
+                          id="other_source"
+                          {...requirementRegister("other_source")}
+                          // required
+                          placeholder=""
+                          disabled={disabled}
+                          className={classNames(
+                            "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
+                            disabled ? "bg-gray-400 cursor-not-allowed" : "",
+                            requirementErrors.other_source
+                              ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
+                              : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
+                          )}
+                        />
+                        {requirementErrors.other_source && (
+                          <div className="mt-1 text-s text-danger-500">
+                            {requirementErrors.other_source?.message}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="flex  space-x-4 py-2">
-                  {/* First Part: File Upload and Paste URL */}
-                  <div className="w-1/2 space-y-4">
-                    <div className="w-full">
-                      <label
-                        htmlFor="company_website"
-                        className="block text-md  text-secondary-800"
-                      >
-                        Company Website <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="company_website"
-                        {...requirementRegister("company_website")}
-                        // required
-                        placeholder="https://acmeai.com"
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.company_website
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.company_website && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.company_website?.message}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mb-1">
-                      <label htmlFor="linkedin_page" className="block text-md text-secondary-800">
-                        LinkedIn Page <span className="text-red-500 ml-0">*</span>
-                      </label>
-                      <input
-                        id="linkedin_page"
-                        disabled={disabled}
-                        {...requirementRegister("linkedin_page")}
-                        placeholder="https://linkedin.com/company/acmeai"
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.linkedin_page
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.linkedin_page && (
-                        <div className="mt-0 text-s text-danger-500">
-                          {requirementErrors.linkedin_page?.message}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="w-1/2 space-y-4">
-                    <div className="w-full">
-                      <label htmlFor="crunchbase" className="block text-md  text-secondary-800">
-                        Crunchbase / Pitchbook / Dealroom
-                      </label>
-                      <input
-                        type="text"
-                        id="Crunchbase"
-                        {...requirementRegister("Crunchbase")}
-                        // required
-                        placeholder=""
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.Crunchbase
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.Crunchbase && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.Crunchbase?.message}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mb-1">
-                      <label htmlFor="product_demo" className="block text-md text-secondary-800">
-                        Product Demo or Landing Page
-                      </label>
-                      <input
-                        id="product_demo"
-                        disabled={disabled}
-                        {...requirementRegister("product_demo")}
-                        placeholder=""
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600 focus:outline-none rounded-lg bg-transparent resize-none",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.product_demo
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.product_demo && (
-                        <div className="mt-0 text-s text-danger-500">
-                          {requirementErrors.product_demo?.message}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Second Part: Added Websites and Urls Listing */}
-                  <div className="w-full space-y-4">
-                    <div className="w-full">
-                      <label htmlFor="other_source" className="block text-md  text-secondary-800">
-                        Other Source Links
-                      </label>
-                      <input
-                        type="text"
-                        id="other_source"
-                        {...requirementRegister("other_source")}
-                        // required
-                        placeholder=""
-                        disabled={disabled}
-                        className={classNames(
-                          "mt-1 p-[10px] w-full border border-appGray-600  focus:outline-none rounded-lg bg-transparent",
-                          disabled ? "bg-gray-400 cursor-not-allowed" : "",
-                          requirementErrors.other_source
-                            ? "border-danger-500 ring-danger-500 ring-1 focus:border-danger-500 focus:ring-danger-500"
-                            : "border-gray-400 focus:border-primary-500 focus:ring-primary-500",
-                        )}
-                      />
-                      {requirementErrors.other_source && (
-                        <div className="mt-1 text-s text-danger-500">
-                          {requirementErrors.other_source?.message}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ) : null}
               {/* Relevant Links end  */}
 
               <div className="max-w-[120px] mt-5">
                 <button
-                  type="submit"
+                  type={requirementStep === 6 ? "submit" : "button"}
                   // onClick={() => {
                   //   setStep(3);
                   //   window.scrollTo({
@@ -2585,6 +2712,7 @@ const QuickReports = () => {
                   //     behavior: "smooth",
                   //   });
                   // }}
+                  onClick={handleNextRequirement}
                   className="cursor-pointer flex justify-center text-center border w-full border-primary-900 bg-primary-900 text-white rounded-[32px] px-[40px] py-[12px] transition-all ease-in-out duration-150 font-normal text-[16px] font-nunito"
                 >
                   Next
